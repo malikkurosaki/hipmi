@@ -15,13 +15,13 @@ __Team__
 1. panter module bisa mengikuti contoh
 2. untuk commit beri keterangan lengkap dan jelas
     
-    **Pantern**
+    **PANTERN**
     1. Tag Commit (Commit Tag)
     2. Deskripsi (Description)
     3. Body
     4. Referensi Isu (Issue References)
     
-    **Contoh**
+    **CONTOH**
     ```txt
     feat: Tambahkan fitur kalkulator
 
@@ -32,7 +32,7 @@ __Team__
     Fixes #12
     ```
 
-    **Refrensi**
+    **REFRENSI**
 
    1. **`fix`**: Digunakan untuk menandakan perbaikan bug atau masalah yang ada dalam kode.
 
@@ -117,6 +117,37 @@ __Team__
 
    Fixes #102
    ```
+3. lakukan push dengan tahapan yang benar jangan menggunakan `git add -A ` tapi sesuai yang diedit atau yang di create saja
+
+    **REFRENSI**
+
+   1. **`git status`**: Pertama, periksa status repositori menggunakan perintah `git status`. Ini akan memberikan daftar perubahan yang belum ditambahkan ke area staging (unstaged changes) dan perubahan yang telah ditambahkan ke area staging (changes to be committed).
+
+   2. **`git add`**: Tambahkan perubahan ke area staging menggunakan perintah `git add`. Misalnya, jika Anda ingin menambahkan semua perubahan, gunakan `git add .`, atau jika ingin menambahkan file tertentu, gunakan `git add <nama_file>`.
+
+   3. **`git commit`**: Setelah perubahan ditambahkan ke area staging, lakukan commit perubahan menggunakan perintah `git commit -m "pesan_commit"`. Pastikan pesan commit yang Anda cantumkan informatif dan jelas mengenai perubahan yang Anda lakukan.
+
+   4. **`git pull`**: Sebelum melakukan `push`, disarankan untuk melakukan `git pull` terlebih dahulu untuk mengambil perubahan terbaru dari repositori pusat (remote repository) dan memastikan bahwa Anda bekerja di atas versi terbaru dari branch yang Anda gunakan.
+
+   5. **`git push`**: Jika tidak ada konflik dengan versi terbaru dari repositori pusat, Anda dapat melakukan `push` perubahan Anda ke repositori menggunakan perintah `git push`. Pastikan Anda memiliki izin yang cukup untuk melakukan `push` ke branch yang sedang Anda kerjakan.
+
+   6. **`git log`**: Setelah `push`, gunakan perintah `git log` untuk memeriksa daftar commit yang telah Anda lakukan. Ini memastikan bahwa perubahan Anda berhasil tercatat di repositori.
+
+    *note*
+
+    - single file 
+    
+        git add index.html
+    - multi file
+
+        git add file1.txt file2.js file3.css
+    - dir atau folder
+
+        git add assets/
+
+
+
+
 
 
 
