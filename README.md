@@ -11,6 +11,17 @@ __Team__
 - lia
 - malik
 
+### Source
+
+| name            | des                            |
+| --------------- | ------------------------------ |
+| server          | debian 11                      |
+| framework       | Nextjs                         |
+| database        | Postgres                       |
+| Ui              | Mantin                         |
+| Teknologi       | Javascript, Nodejs, Typescript |
+| Service Manager | Pm2                            |
+
 ### note 
 1. panter module bisa mengikuti contoh
 2. untuk commit beri keterangan lengkap dan jelas
@@ -145,7 +156,51 @@ __Team__
 
         git add assets/
 
+### Info Umum Git
 
+### Inisialisasi dan Kloning Repository:
+- `git init`: Menginisialisasi repositori Git baru di direktori lokal.
+- `git clone <URL>`: Mengkloning repositori dari GitHub ke direktori lokal.
+
+### Pengelolaan Perubahan:
+- `git status`: Menampilkan status perubahan dalam repositori.
+- `git add <file/folder>`: Menambahkan file atau folder ke area staging untuk dimasukkan ke dalam commit.
+- `git commit -m "pesan_commit"`: Membuat commit untuk menyimpan perubahan yang sudah ditambahkan ke area staging dengan pesan commit tertentu.
+- `git push`: Mengirim perubahan dari repositori lokal ke repositori pusat (remote repository) di GitHub.
+- `git pull`: Mengambil perubahan terbaru dari repositori pusat ke repositori lokal.
+
+### Pengelolaan Branch:
+- `git branch`: Menampilkan daftar branch yang ada dalam repositori.
+- `git branch <nama_branch>`: Membuat branch baru dengan nama tertentu.
+- `git checkout <nama_branch>`: Beralih ke branch tertentu.
+- `git merge <nama_branch>`: Menggabungkan branch tertentu ke branch aktif.
+- `git branch -d <nama_branch>`: Menghapus branch tertentu.
+
+### Pengelolaan Remote Repository (GitHub):
+- `git remote`: Menampilkan daftar remote repository yang terhubung dengan repositori lokal.
+- `git remote add <nama_remote> <URL>`: Menambahkan remote repository baru ke repositori lokal.
+- `git remote remove <nama_remote>`: Menghapus remote repository tertentu dari repositori lokal.
+
+### Sinkronisasi dengan Repositori Pusat (Pull Request):
+- `git fetch`: Mengambil perubahan dari repositori pusat tanpa menggabungkannya dengan branch aktif.
+- `git pull origin <nama_branch>`: Mengambil perubahan dari repositori pusat dan menggabungkannya dengan branch aktif.
+- `git push origin <nama_branch>`: Mengirim perubahan dari branch lokal ke branch yang sesuai di repositori pusat.
+
+### Log dan Pencarian Commit:
+- `git log`: Menampilkan log commit dalam repositori.
+- `git log --oneline`: Menampilkan log commit dalam satu baris.
+- `git log --author="nama_pengguna"`: Menampilkan log commit berdasarkan nama pengguna.
+- `git log --grep="kata_kunci"`: Mencari commit berdasarkan kata kunci tertentu.
+
+### Pembatalan Perubahan:
+- `git reset <file>`: Membatalkan perubahan yang belum ditambahkan ke area staging.
+- `git reset --soft HEAD~1`: Membatalkan commit terakhir dan mengembalikan perubahan ke area staging.
+- `git reset --hard HEAD~1`: Menghapus commit terakhir dan mengembalikan perubahan ke kondisi sebelum commit tersebut.
+
+### Lainnya:
+- `git config`: Mengatur konfigurasi Git, seperti nama pengguna dan alamat email.
+- `git stash`: Menyimpan perubahan sementara untuk diterapkan nanti.
+- `git tag <nama_tag>`: Menandai titik spesifik dalam sejarah commit untuk memudahkan referensi di masa mendatang.
 
 
 
