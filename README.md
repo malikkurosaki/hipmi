@@ -6,10 +6,12 @@
 
 __Team__
 
-- bagas
-- lukman
-- lia
-- malik
+| name   | des                     |
+| ------ | ----------------------- |
+| bagas  | frontend, devOps        |
+| lukman | frontend, ui        |
+| lia    | backend , frontend , QC |
+| malik  | leader                  |
 
 ### Source
 
@@ -203,10 +205,93 @@ __Team__
 - `git tag <nama_tag>`: Menandai titik spesifik dalam sejarah commit untuk memudahkan referensi di masa mendatang.
 
 
+### Standar Komentar Pada File
+
+1. **Komentar Header File**: Pada awal file TypeScript, sebaiknya tambahkan komentar header yang menjelaskan tentang isi file, tujuan file, penulis, tanggal pembuatan, dll.
+
+```typescript
+/**
+ * Nama File: app.ts
+ * Deskripsi: Ini adalah file utama aplikasi.
+ * Pembuat: John Doe
+ * Tanggal: 27 Juli 2023
+ */
+```
+
+2. **Komentar Fungsi**: Setiap fungsi harus diikuti dengan komentar yang menjelaskan fungsionalitasnya, parameter yang diterima, dan nilai yang dikembalikan (jika ada).
+
+```typescript
+/**
+ * Fungsi untuk menambahkan dua angka.
+ * @param {number} a - Angka pertama.
+ * @param {number} b - Angka kedua.
+ * @returns {number} Hasil penjumlahan a dan b.
+ */
+function addNumbers(a: number, b: number): number {
+  return a + b;
+}
+```
+
+3. **Komentar Variabel**: Komentar juga diperlukan untuk menjelaskan variabel yang digunakan, terutama jika namanya tidak cukup deskriptif.
+
+```typescript
+// Nilai maksimum yang diizinkan
+const maxLimit = 100;
+
+// Nama pelanggan saat ini
+let currentCustomer: string;
+```
+
+4. **Komentar Tipe Data Kustom**: Jika Anda mendefinisikan tipe data kustom, komentar berguna untuk menjelaskan properti-properti yang dimiliki oleh tipe data tersebut.
+
+```typescript
+/**
+ * Interface untuk merepresentasikan informasi pelanggan.
+ */
+interface Customer {
+  id: number; // ID pelanggan
+  name: string; // Nama pelanggan
+  age?: number; // Umur pelanggan (opsional)
+}
+```
+
+5. **Komentar Penanganan Error**: Jika Anda memiliki blok penanganan error, berikan komentar yang menjelaskan tindakan apa yang diambil untuk menangani kesalahan tertentu.
+
+```typescript
+try {
+  // Potensi kode yang bisa menimbulkan kesalahan
+} catch (error) {
+  // Kesalahan: tindakan apa yang diambil?
+}
+```
+
+6. **Komentar Tambahan**: Berikan komentar tambahan pada bagian yang kompleks atau penting dalam kode untuk membantu pengembang lain memahami alur logika atau pengambilan keputusan.
+
+```typescript
+// Periksa apakah pelanggan memiliki diskon
+if (isDiscountAvailable(customer)) {
+  // Diskon berlaku: apa yang harus dilakukan?
+}
+```
 
 
+### Task
 
-
-
-
+1. auth [login, registrasi]
+2. landing page user
+3. dashboard user
+4. dashboard super admin
+5. dashboard admin
+6. halaman data struktur
+7. halaman tentang kami
+8. halaman tentang kami sejarah
+9. halaman tentang kami visi misi
+10. halaman asset
+11. halaman informasi
+12. halaman informasi berita
+13. halaman informasi pengumuman
+14. halaman informasi galery
+15. api
+16. database
+    
 
