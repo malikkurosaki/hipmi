@@ -1,5 +1,9 @@
-export default function PageDev() {
-    return <>
-        Page Dev
+import PageLandingPage from "./landing-page/page";
+
+export default async function PageDev() {
+  return (
+    <>
+      <PageLandingPage />
     </>
+  );
 }
