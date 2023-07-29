@@ -1,7 +1,12 @@
-import  DashboardAdmin  from "@/modules/dashboard_admin";
+import DashboardAdmin from '@/modules/dashboard_admin';
+import React from 'react';
 
-export default function PageDashboardAdmin(){
-    return <>
+function Page() {
+  return (
+    <>
     <DashboardAdmin/>
     </>
+  );
 }
+
+export default Page;
