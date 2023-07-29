@@ -7,6 +7,7 @@ import {
   Box,
   Burger,
   Button,
+  Drawer,
   Flex,
   Footer,
   Grid,
@@ -17,13 +18,17 @@ import {
   MediaQuery,
   Menu,
   Navbar,
+  Paper,
+  Stack,
   Text,
+  Title,
   useMantineTheme,
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import {HiOutlineLogin} from "react-icons/hi"
 
 export default function LayoutLandingPage({
   children,
@@ -45,6 +50,7 @@ export default function LayoutLandingPage({
   return (
     <>
       <AppShell
+        // m={{base: -16, sm: -16}}
         styles={{
           main: {
             background:
@@ -53,53 +59,108 @@ export default function LayoutLandingPage({
                 : theme.colors.gray[0],
           },
         }}
-        // navbarOffsetBreakpoint="sm"
-        // asideOffsetBreakpoint="sm"
+        navbarOffsetBreakpoint="sm"
+        asideOffsetBreakpoint="sm"
+        navbar={
+          <MediaQuery largerThan="xs" styles={{ display: "none" }}>
+            <Drawer
+              // withCloseButton={false}
+              closeOnClickOutside
+              opened={opened}
+              onClose={() => {
+                setOpened(false);
+              }}
+            >
+              <Flex gap={"xl"} direction={"column"}>
+                <Text>Beranda</Text>
+                <Text>Tentang Kami</Text>
+                <Text>Informasi</Text>
+                <Text>Galeri</Text>
+              </Flex>
+            </Drawer>
+          </MediaQuery>
+        }
         header={
-          <Header height={{ base: 50, md: 70 }} p="md">
-            <div style={{ height: "100%" }}>
-              <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-                <Burger
-                  opened={opened}
-                  onClick={() => setOpened((o) => !o)}
-                  size="sm"
-                  color={theme.colors.gray[6]}
-                  mr="xl"
-                />
+          <Header height={{ base: 70, md: 70 }} p="md" sx={{backgroundColor: "transparent", border: "transparent"}}>
+           <MediaQuery largerThan="md" styles={{ display: "none" }}>
+                <Group position="apart">
+                  <Burger
+                    opened={opened}
+                    onClick={() => setOpened((o) => !o)}
+                    size="sm"
+                    color="white"
+                    mr="xl"
+                  />
+                   <Group>
+                    <Title order={5}>HIPMI Badung</Title>
+                   </Group>
+                  <Menu position="bottom">
+                    <Menu.Target>
+                     <ActionIcon bg={"white"} radius={50}>
+                      <HiOutlineLogin/>
+                     </ActionIcon>
+                    </Menu.Target>
+                    <Menu.Dropdown>
+                      <Menu.Item onClick={() => router.push("/dev/auth/login")}>
+                        Login
+                      </Menu.Item>
+                      <Menu.Item
+                        onClick={() => router.push("/dev/dashboard-admin")}
+                      >
+                        Dashboard Admin
+                      </Menu.Item>
+                      <Menu.Item
+                        onClick={() =>
+                          router.push("/dev/dashboard-super-admin")
+                        }
+                      >
+                        Dashboard Super Admin
+                      </Menu.Item>
+                    </Menu.Dropdown>
+                  </Menu>
+                </Group>
               </MediaQuery>
 
-              <Group position="apart">
-              <Image maw={150}  src="/img/logo_1.png" alt="Random image" />
-                <Box>
-                  <Flex gap={"xl"}>
-                    <Text>Beranda</Text>
-                    <Text>Tentang Kami</Text>
-                    <Text>Informasi</Text>
-                    <Text>Galeri</Text>
-                  </Flex>
-                </Box>
-                <Menu position="bottom">
-                  <Menu.Target>
-                    <Button>Login</Button>
-                  </Menu.Target>
-                  <Menu.Dropdown>
-                    <Menu.Item onClick={() => router.push("/dev/login")}>
-                      Login
-                    </Menu.Item>
-                    <Menu.Item
-                      onClick={() => router.push("/dev/dashboard-admin")}
-                    >
-                      Dashboard Admin
-                    </Menu.Item>
-                    <Menu.Item
-                      onClick={() => router.push("/dev/dashboard-super-admin")}
-                    >
-                      Dashboard Super Admin
-                    </Menu.Item>
-                  </Menu.Dropdown>
-                </Menu>
-              </Group>
-            </div>
+              <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
+                <Group position="apart">
+                <Group>
+                    <Title order={3}>HIPMI Badung</Title>
+                   </Group>
+                  <Box hidden={opened ? true : false}>
+                    <Flex gap={"xl"} >
+                      <Text>Beranda</Text>
+                      <Text>Tentang Kami</Text>
+                      <Text>Informasi</Text>
+                      <Text>Galeri</Text>
+                    </Flex>
+                  </Box>
+
+                  <Menu position="bottom">
+                    <Menu.Target>
+                    <ActionIcon bg={"white"} radius={50} size={40}>
+                      <HiOutlineLogin/>
+                     </ActionIcon>
+                    </Menu.Target>
+                    <Menu.Dropdown>
+                      <Menu.Item onClick={() => router.push("/dev/auth/login")}>
+                        Login
+                      </Menu.Item>
+                      <Menu.Item
+                        onClick={() => router.push("/dev/dashboard-admin")}
+                      >
+                        Dashboard Admin
+                      </Menu.Item>
+                      <Menu.Item
+                        onClick={() =>
+                          router.push("/dev/dashboard-super-admin")
+                        }
+                      >
+                        Dashboard Super Admin
+                      </Menu.Item>
+                    </Menu.Dropdown>
+                  </Menu>
+                </Group>
+              </MediaQuery>
           </Header>
         }
       >
