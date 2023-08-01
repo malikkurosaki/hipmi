@@ -15,12 +15,25 @@ import {
   Text,
   Button,
   Image,
+  NavLink,
+  Paper,
+  Box,
 } from "@mantine/core";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { AiOutlineLogout, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { BsClipboardData, BsDatabaseCheck } from "react-icons/bs";
-import { HiOutlineBriefcase, HiOutlineInformationCircle, HiOutlineShoppingCart, HiOutlineUserGroup } from "react-icons/hi";
-
+import { CiCircleCheck } from "react-icons/ci";
+import { FiUser } from "react-icons/fi";
+import { GiOrganigram } from "react-icons/gi";
+import { MdOutlineAnnouncement } from "react-icons/md";
+import { PiFolderSimpleUser, PiImage, PiUserList } from "react-icons/pi";
+import {
+  HiOutlineBriefcase,
+  HiOutlineInformationCircle,
+  HiOutlineNewspaper,
+  HiOutlineShoppingCart,
+  HiOutlineUserGroup,
+} from "react-icons/hi";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -86,66 +99,100 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const data = [
-  { 
-    link: "/dev/dashboard-admin", 
-  label: "Dashboard", 
-  icon: LuLayoutDashboard
-},
+const dashboard_aset = [
   {
-    link: "/dashboard/data_struktur",
-    label: "Data Struktur",
-    icon: BsClipboardData,
+    id: 1,
+    link: "/dev/dashboard-admin",
+    label: "Dashboard",
+    icon: LuLayoutDashboard,
   },
   {
-    link: "/dashboard/tentang_kami",
-    label: "Tentang Kami",
-    icon: HiOutlineUserGroup,
-  },
-  {
-    link: "/dashboard/informasi",
-    label: "Informasi",
-    icon: HiOutlineInformationCircle,
-  },
-  {
-    link: "/dashboard/data_aset",
+    id: 2,
+    link: "/dev/dashboard-admin/data-aset",
     label: "Data Aset",
     icon: BsDatabaseCheck,
   },
+];
 
+const data_turunan = [
+  {
+    id: 1,
+    name: "Data Struktur",
+    icon: BsClipboardData,
+    child: [
+      {
+        id: 1,
+        label: "Konfirmasi User",
+        icon: FiUser,
+        link: "/dev/dashboard-admin/data-struktur/konfirmasi-user",
+      },
+      {
+        id: 2,
+        label: "Data Struktur Organisasi",
+        icon: GiOrganigram,
+        link: "/dev/dashboard-admin/data-struktur/data-struktur-organisasi",
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "Tentang Kami",
+    icon: HiOutlineUserGroup,
+    child: [
+      {
+        id: 1,
+        link: "/dev/dashboard-admin/tentang-kami/halaman-sejarah",
+        label: "Halaman Sejarah",
+        icon: PiFolderSimpleUser,
+      },
+      {
+        id: 2,
+        link: "/dev/dashboard-admin/tentang-kami/halaman-visi-misi",
+        label: "Halaman Visi Misi",
+        icon: PiUserList,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "informasi",
+    icon: HiOutlineInformationCircle,
+    child: [
+      {
+        id: 1,
+        link: "/dev/dashboard-admin/informasi/halaman-berita",
+        label: "Halaman Berita",
+        icon: HiOutlineNewspaper,
+      },
+      {
+        id: 2,
+        link: "/dev/dashboard-admin/informasi/halaman-pengumuman",
+        label: "Halaman Pengumuman",
+        icon: MdOutlineAnnouncement,
+      },
+      {
+        id: 3,
+        link: "/dev/dashboard-admin/informasi/halaman-galeri",
+        label: "Halaman Galeri",
+        icon: PiImage,
+      },
+    ],
+  },
 ];
 
 export default function LayoutDashboardAdmin({ children }: PropsWithChildren) {
-  const { classes, cx } = useStyles();
-  const [active, setActive] = useState('Dashboard');
+  const [active, setActive] = useState(0);
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
-
-  const links = data.map((item) => (
-    <a
-      className={cx(classes.link, {
-        [classes.linkActive]: item.label === active,
-      })}
-      href={item.link}
-      key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(item.label);
-      }}
-    >
-      <item.icon className={classes.linkIcon} size={20} />
-      <span>{item.label}</span>
-    </a>
-  ));
 
   return (
     <AppShell
       styles={{
         main: {
-          background: "#EEEDED"
-            // theme.colorScheme === "dark"
-            //   ? theme.colors.dark[8]
-            //   : theme.colors.dark[9],
+          background: "#EEEDED",
+          // theme.colorScheme === "dark"
+          //   ? theme.colors.dark[8]
+          //   : theme.colors.dark[9],
         },
       }}
       navbarOffsetBreakpoint="sm"
@@ -158,21 +205,51 @@ export default function LayoutDashboardAdmin({ children }: PropsWithChildren) {
           width={{ sm: 200, lg: 300 }}
           bg={"white"}
         >
-          <Navbar.Section grow>{links}</Navbar.Section>
-
-          <Navbar.Section className={classes.footer}>
-            <a href="/" className={classes.link}>
-              <AiOutlineLogout className={classes.linkIcon} size={20} />
-              <span onClick={() => {
-              }}>Logout</span>
-            </a>
+          <Navbar.Section>
+          {dashboard_aset.map((e, i) => (
+              <NavLink
+                key={`${e.id}${i}`}
+                label={e.label}
+                icon={<e.icon size={20} />}
+                component="a"
+                href={e.link}
+                c={e.label ? "#17594A" : "dark"}
+                fw={e.label ? "bolder" : "normal"}
+              />
+            ))}
+            {data_turunan.map((e, i) => (
+              <NavLink
+                key={`${e.id}${i}`}
+                label={e.name}
+                icon={<e.icon size={20} />}
+                c={e.name ? "#17594A" : "dark"}
+                fw={e.name ? "bolder" : "normal"}
+              >
+                {e.child.map((v, ii) => (
+                  <Paper key={`${v.id}${ii}`}>
+                    <NavLink
+                      icon={<v.icon color={"#17594A"} />}
+                      label={v.label}
+                      // active={true}
+                      c={v.label ? "#17594A" : "dark"}
+                      component="a"
+                      href={v.link}
+                    />
+                  </Paper>
+                ))}
+              </NavLink>
+            ))}
           </Navbar.Section>
         </Navbar>
       }
       header={
-        <Header height={{ base: 90, md: 90 }} p="md" style={{
-          background: "#17594A"
-        }}>
+        <Header
+          height={{ base: 90, md: 90 }}
+          p="md"
+          style={{
+            background: "#17594A",
+          }}
+        >
           <div
             style={{ display: "flex", alignItems: "center", height: "100%" }}
           >
@@ -189,7 +266,7 @@ export default function LayoutDashboardAdmin({ children }: PropsWithChildren) {
               {/* <Text component="a" href="/" fw={700}  >
                 Dashboard Admin
               </Text> */}
-              <Image src="/img/logo_1.png" alt="logo"/>
+              <Image src="/img/logo_1.png" alt="logo" />
             </Group>
           </div>
         </Header>
@@ -199,4 +276,3 @@ export default function LayoutDashboardAdmin({ children }: PropsWithChildren) {
     </AppShell>
   );
 }
-
