@@ -14,14 +14,14 @@ export function DashboardAdmin() {
     <>
       <Box>
         <Paper shadow="lg" radius="md" p="md">
-            <Box component="a" href="/dev/dashboard-admin" style={{textDecoration: "none"}}>
-          <Group>
-            <LuLayoutDashboard size={25} color="#17594A" />
-            <Text fw={"bold"} color="#17594A" fz={20}>
-              DASHBOARD
-            </Text>
-          </Group>
-            </Box>
+          <Box>
+            <Group>
+              <LuLayoutDashboard size={25} color="#17594A" />
+              <Text fw={"bold"} color="#17594A" fz={20}>
+                DASHBOARD
+              </Text>
+            </Group>
+          </Box>
         </Paper>
         <Box pt={30}>
           <SimpleGrid
@@ -47,7 +47,7 @@ export function DashboardAdmin() {
                     bg="#17594A"
                     radius={"md"}
                     component="a"
-                    href={"//dev/dashboard-admin/data_struktur"}
+                    href={"/dev/dashboard-admin/data-struktur"}
                   >
                     Lihat Data Struktur
                   </Button>
@@ -69,7 +69,7 @@ export function DashboardAdmin() {
                     bg="#17594A"
                     radius={"md"}
                     component="a"
-                    href={"//dev/dashboard-admin/tentang_kami"}
+                    href={"/dev/dashboard-admin/informasi"}
                   >
                     Lihat Informasi
                   </Button>
@@ -91,7 +91,7 @@ export function DashboardAdmin() {
                     bg="#17594A"
                     radius={"md"}
                     component="a"
-                    href={"//dev/dashboard-admin/data_aset"}
+                    href={"/dev/dashboard-admin/data-aset"}
                   >
                     Lihat Data Aset
                   </Button>
