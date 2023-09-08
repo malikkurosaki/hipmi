@@ -22,6 +22,7 @@ const token = val?.id
       username: true,
       nomor: true,
       active: true,
+      Profile: true,
     },
   })
 

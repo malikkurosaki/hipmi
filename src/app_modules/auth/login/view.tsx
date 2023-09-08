@@ -21,7 +21,7 @@ export default function Login() {
   const [nomor, setNomor] = useState("");
   const router = useRouter();
   const [otp, setOtp] = useAtom(valueOtp);
-  const [inputNomor, setInputNomor] = useAtom(valueNomor)
+  const [inputNomor, setInputNomor] = useAtom(valueNomor);
 
   async function onLogin() {
     const body = {
@@ -30,7 +30,7 @@ export default function Login() {
     };
 
     if (_.values(body).includes("")) return toast("Masukan nomor anda");
-    setInputNomor(body.nomor)
+    setInputNomor(body.nomor);
 
     await fetch("/api/auth/login", {
       method: "POST",
@@ -41,10 +41,10 @@ export default function Login() {
     })
       .then((res) => res.json())
       .then((val) => {
-        console.log(val)
+        // console.log(val);
         setOtp(val.body.otp);
 
-        return router.push("/dev/auth/validasi");
+        return setTimeout(() =>  router.push("/dev/auth/validasi"), 2000)
       });
   }
   return (

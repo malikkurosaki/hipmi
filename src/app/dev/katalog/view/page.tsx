@@ -1,10 +1,7 @@
-import prisma from "@/app/lib/prisma";
-import { Logout } from "@/app_modules/auth";
-import { ViewHome } from "@/app_modules/home";
+import { ViewProfile } from "@/app_modules/katalog"; 
+import { getDataProfile } from "@/app_modules/katalog/profile/fun/get-profile";
 import { unsealData } from "iron-session";
-import _ from "lodash";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export default async function Page() {
   const c = cookies().get("session");
@@ -16,13 +13,13 @@ export default async function Page() {
         })
       );
 
-  if (!c || !c.value || _.isEmpty(c.value)) return redirect("/dev/auth/login");
+  // console.log(token.id)
+
+  const data = await getDataProfile(token.id);
 
   return (
     <>
-      {/* {JSON.stringify(token)}
-      <Logout/> */}
-      <ViewHome />
+      <ViewProfile data={data} />
     </>
   );
 }

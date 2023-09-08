@@ -23,8 +23,6 @@ export default function Validasi() {
   const [nomor, setNomor] = useAtom(valueNomor);
   const [valToken, setToken] = useAtom(valueCookies);
 
-
-
   const router = useRouter();
 
   async function onValid() {
@@ -46,10 +44,10 @@ export default function Validasi() {
       .then((val) => {
         if (val.status == 200) {
           toast("Selamat datang");
-          return router.push("/dev/home");
+          return setTimeout(() => router.push("/dev/home"),2000)
         } else {
           toast("Regis dulu");
-          return setTimeout(() => (router.push("/dev/auth/register"), 2000))
+          return setTimeout(() => (router.push("/dev/auth/register"), 2000));
         }
       });
   }

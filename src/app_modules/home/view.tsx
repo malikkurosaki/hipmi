@@ -13,28 +13,37 @@ import { getAllUser } from "./fun/get-one";
 
 export default function ViewHome() {
   const router = useRouter();
-  const [dataUser, setDataUser] = useAtom(s_getOneUser);
-  const [valToken, setToken] = useAtom(valueCookies)
-
+  const [valToken, setToken] = useAtom(valueCookies);
 
   useShallowEffect(() => {
-    getData()
-  },[])
+    getData();
+  }, []);
 
   async function getData() {
-   const data = await fetch("/api/user/get-one").then((res) => res.json()).then((val) => setToken(val))
-
+    const data = await fetch("/api/user/get-one")
+      .then((res) => res.json())
+      .then((val) => setToken(val));
   }
 
   return (
     <>
-      {JSON.stringify(valToken)}
+      {/* {JSON.stringify(valToken, null, 2)} */}
 
       <Center>
         <Flex direction={"column"} gap={"lg"}>
           <Title>Home</Title>
-          <Text>{valToken?.data?.username}</Text>
-          <Button onClick={() => router.push("/dev/katalog")}>Katalog</Button>
+          <Text>Welcome, {valToken?.data?.username}</Text>
+          <Button
+            onClick={() => {
+              if (valToken?.data?.Profile === null) {
+                return router.push("/dev/katalog/profile/create");
+              } else {
+                return router.push("/dev/katalog/view");
+              }
+            }}
+          >
+            Katalog
+          </Button>
 
           <Logout />
         </Flex>
