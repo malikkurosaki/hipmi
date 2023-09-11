@@ -23,7 +23,7 @@ export default function Logout() {
           router.push("/dev/auth/login");
         }
       })
-    );
+    )
     // await deleteCookies()
   }
   return (
