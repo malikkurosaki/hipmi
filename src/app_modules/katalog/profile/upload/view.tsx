@@ -7,6 +7,7 @@ import {
   FileButton,
   FileInput,
   Group,
+  Header,
   Image,
   Stack,
   Text,
@@ -19,6 +20,7 @@ import _ from "lodash";
 import toast from "react-simple-toasts";
 import { funUploadFoto } from "../fun/upload_foto";
 import { useRouter } from "next/navigation";
+import { IconChevronLeft } from "@tabler/icons-react";
 
 export default function UploadFoto() {
   const [file, setFile] = useState<File | null>(null);
@@ -29,10 +31,18 @@ export default function UploadFoto() {
 
   return (
     <>
-      <Button onClick={() => router.push("/dev/katalog/view")}>back</Button>
-      <Center>Upload</Center>
+      <Header height={50} px={"sm"}>
+        <Group position="apart" align="center" h={50}>
+          <ActionIcon onClick={() => router.push("/dev/katalog/view")}>
+            <IconChevronLeft size={20} />
+          </ActionIcon>
+          <Title order={4}>Upload Foto</Title>
+          &nbsp; &nbsp; &nbsp; &nbsp; 
+        </Group>
+      </Header>
+    
 
-      <Stack spacing={"xl"}>
+      <Stack spacing={"xl"} pt={100}>
         <Center>
           <Dropzone
             w={130}
@@ -62,7 +72,7 @@ export default function UploadFoto() {
         </Center>
         <Center>
           <Box miw={300} pos={"relative"}>
-            {hasilGambar && <Image src={hasilGambar} alt="" width={300} />}
+            {hasilGambar && <Image src={hasilGambar ? hasilGambar: "/aset/avatar.png" } alt="" width={300} />}
           </Box>
         </Center>
       </Stack>

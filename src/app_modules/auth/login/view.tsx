@@ -16,6 +16,8 @@ import toast from "react-simple-toasts";
 import { atom, useAtom } from "jotai";
 import { randomOTP } from "../fun/fun-rondom-otp";
 import { valueNomor, valueOtp, valueStatus } from "../state/s_login";
+import { IconCircleLetterH } from "@tabler/icons-react";
+import { Warna } from "@/app/lib/warna";
 
 export default function Login() {
   const [nomor, setNomor] = useState("");
@@ -41,10 +43,10 @@ export default function Login() {
     })
       .then((res) => res.json())
       .then((val) => {
-        // console.log(val);
+        console.log(val);
         setOtp(val.body.otp);
 
-        return setTimeout(() =>  router.push("/dev/auth/validasi"), 2000)
+        return setTimeout(() => router.push("/dev/auth/validasi"), 2000);
       });
   }
   return (
@@ -53,14 +55,17 @@ export default function Login() {
         align={"center"}
         justify={"center"}
         direction={"column"}
-        gap={"xl"}
+        gap={"lg"}
         h={"100vh"}
       >
-        <Title>Login</Title>
-        <Text>abil: 6281339158911</Text>
-        <Text>bagas: 6282340374412</Text>
+        {/* <Title order={4}>Login</Title> */}
+        {/* <Text>abil: 6281339158911</Text>
+        <Text>bagas: 6282340374412</Text> */}
+        <IconCircleLetterH size={150} />
 
         <TextInput
+          label="Phone Number"
+          w={250}
           type="number"
           placeholder="Nomor"
           onChange={(val) => {
@@ -68,6 +73,10 @@ export default function Login() {
           }}
         />
         <Button
+          radius={50}
+          compact
+          bg={Warna.hijau_muda}
+          color={"green"}
           onClick={() => {
             onLogin();
             // console.log(nomor)

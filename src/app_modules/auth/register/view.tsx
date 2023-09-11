@@ -8,6 +8,7 @@ import _ from "lodash";
 import toast from "react-simple-toasts";
 import { useAtom } from "jotai";
 import { valueNomor } from "../state/s_login";
+import { IconCircleLetterH } from "@tabler/icons-react";
 
 export default function Register() {
   const [nomor, setNomor] = useAtom(valueNomor);
@@ -33,17 +34,17 @@ export default function Register() {
     })
       .then((res) => res.json())
       .then((val) => {
-        if(val.status == 201){
-          toast("Berhasil mendaftar")
-          return router.push("/dev/home")
+        if (val.status == 201) {
+          toast("Berhasil mendaftar");
+          return router.push("/dev/home");
         } else {
-          toast("Gagal ")
+          toast("Gagal ");
         }
       });
   }
   return (
     <>
-      <Flex
+      {/* <Flex
         align={"center"}
         justify={"center"}
         direction={"column"}
@@ -51,16 +52,7 @@ export default function Register() {
         h={"100vh"}
       >
         <Title>Register</Title>
-        {/* <TextInput
-          type="number"
-          placeholder="Nomor"
-          onChange={(val) => {
-            setValue({
-              ...value,
-              nomor: val.target.value,
-            });
-          }}
-        /> */}
+       
 
         <Flex direction={"column"}>
           <TextInput
@@ -82,13 +74,41 @@ export default function Register() {
           Register
         </Button>
 
-        {/* <Text
-          onClick={() => {
-            router.push("/dev/auth/login");
-          }}
-        >
-          Sudah punya akun
-        </Text> */}
+        
+      </Flex> */}
+
+      <Flex
+        align={"center"}
+        justify={"center"}
+        direction={"column"}
+        gap={50}
+        h={"100vh"}
+      >
+        <Title order={4}>Registrasi</Title>
+        <IconCircleLetterH size={150} />
+        <Flex direction={"column"} gap={"xl"} align={"center"}>
+          <Flex direction={"column"}>
+            <TextInput
+              label="Username"
+              placeholder="Username"
+              onChange={(val) => {
+                setValue({
+                  ...value,
+                  username: val.target.value,
+                });
+              }}
+            />
+            <Text>Nomor : {nomor}</Text>
+          </Flex>
+          <Button
+            compact
+            onClick={() => {
+              onRegister();
+            }}
+          >
+            Register
+          </Button>
+        </Flex>
       </Flex>
     </>
   );

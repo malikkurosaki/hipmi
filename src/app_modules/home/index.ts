@@ -1,3 +1,3 @@
 import ViewHome from "./view"
-
-export {ViewHome}
+import HomeLayout from "./layout"
+export {ViewHome, HomeLayout}

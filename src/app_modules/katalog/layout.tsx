@@ -1,23 +1,41 @@
 "use client";
 
-import { ActionIcon, AppShell, Button, Group, Header, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  AppShell,
+  Button,
+  Group,
+  Header,
+  Title,
+} from "@mantine/core";
 
-import { IconArrowLeft } from "@tabler/icons-react"
+import {
+  IconArrowLeft,
+  IconChevronLeft,
+  IconPencilPlus,
+} from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { Logout } from "../auth";
 
 export default function KatalogLayout({ children }: { children: any }) {
-    const router = useRouter()
+  const router = useRouter();
   return (
     <>
       <AppShell
         header={
-          <Header height={50} px={"sm"}>
+          <Header height={50} px={"sm"} bg={"dark"}>
             <Group position="apart" align="center" h={50}>
-              <ActionIcon onClick={() => router.push("/dev/home")}>
-                <IconArrowLeft size={15}/>
+              <ActionIcon variant="transparent" onClick={() => router.push("/dev/home")} >
+                <IconChevronLeft size={20} />
               </ActionIcon>
-              <Title order={4}>Katalog</Title>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <Title color="white" order={4}>Katalog</Title>
+              
+             <Group spacing={1}>
+              <Logout/>
+             <ActionIcon>
+                <IconPencilPlus />
+              </ActionIcon>
+             </Group>
             </Group>
           </Header>
         }
