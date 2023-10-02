@@ -1,6 +1,6 @@
 "use client";
 
-import { Title } from "@mantine/core";
+import { Flex, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -22,7 +22,9 @@ export default function SplashScreen() {
   }, []);
   return (
     <>
-      <Title>Splash Screen</Title>
+      <Flex justify={"center"} align={"center"} h={"100vh"}>
+        <Title order={1}>Splash Screen</Title>
+      </Flex>
     </>
   );
 }
