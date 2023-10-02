@@ -14,6 +14,7 @@ Deskripsi: Library untuk menampung beberapa function seperti:
 
 ### bin
 Deskripsi: JSON seeder
+- menjalankan seeder : http://localhost:3000/api/seeder?dev=DEV-HIPMI
 
 ### App_Modules
 Deskripsi: Folder client yang mencakup sub menu dari menu-menu utama
