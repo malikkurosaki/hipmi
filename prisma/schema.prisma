@@ -10,4 +10,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
   
+model User {
+  id               String         @id @default(cuid())
+  username         String         @unique
+  nomor            String         @unique
+  active           Boolean        @default(true)
+  createdAt        DateTime?      @default(now())
+  updatedAt        DateTime?      @updatedAt
+  MasterUserRole   MasterUserRole @relation(fields: [masterUserRoleId], references: [id])
+  masterUserRoleId String         @default("1")
+  UserSession      UserSession?
+}
 
+model MasterUserRole {
+  id        String    @id
+  name      String
+  active    Boolean   @default(true)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  User      User[]
+}
+
+model UserSession {
+  id        String   @id @default(cuid())
+  token     String
+  expires   DateTime
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+}

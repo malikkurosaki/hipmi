@@ -5,12 +5,12 @@ import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function SplashScreen() {
+export default function SplashScreen({ data }: { data: any }) {
   const router = useRouter();
   const [val, setVal] = useState(false);
 
   useShallowEffect(() => {
-    if (!val) {
+    if (!data) {
       setTimeout(() => {
         return router.push("/dev/auth/login");
       }, 2000);
