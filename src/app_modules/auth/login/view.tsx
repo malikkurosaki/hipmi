@@ -51,11 +51,11 @@ export default function Login() {
 
   return (
     <>
-      <pre>
+      {/* <pre>
         {JSON.stringify(inputNumber, null, 2)}
         <br />
         {JSON.stringify(code)}
-      </pre>
+      </pre> */}
 
       <Flex
         h={"100vh"}

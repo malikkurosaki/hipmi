@@ -58,8 +58,8 @@ export default function Validasi() {
 
   return (
     <>
-      {JSON.stringify(nomor)}
-      {JSON.stringify(code)}
+      {/* {JSON.stringify(nomor)}
+      {JSON.stringify(code)} */}
 
       <Flex
         align={"center"}

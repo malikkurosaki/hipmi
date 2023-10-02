@@ -7,7 +7,7 @@ export default function Page() {
 
   return (
     <>
-    {JSON.stringify(tkn)}
+      {/* {JSON.stringify(tkn)} */}
       <Login />;
     </>
   );
