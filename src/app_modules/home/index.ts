@@ -1,3 +1,4 @@
 import HomeView from "./view";
-
-export {HomeView}
+import HomeLayout from "./layout";
+import { getToken } from "./fun/get-token";
+export {HomeView, HomeLayout, getToken}

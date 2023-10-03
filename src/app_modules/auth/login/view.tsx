@@ -64,34 +64,35 @@ export default function Login() {
         align={"center"}
         gap={"lg"}
       >
-        <>
-          <IconCircleLetterH size={150} />
-          <Title>Login</Title>
+        <IconCircleLetterH size={150} />
+        <Title>Login</Title>
 
-          <TextInput
-            label="Phone Number"
-            w={250}
-            type="number"
-            placeholder="62 xx xxx xxx xxx"
-            // value={nomor}
-            onChange={(val) => {
-              setNomor(val.target.value);
-            }}
-          />
+        <TextInput
+          label="Phone Number"
+          w={250}
+          type="number"
+          placeholder="62 xx xxx xxx xxx"
+          // value={nomor}
+          onChange={(val) => {
+            setNomor(val.target.value);
+          }}
+        />
 
-          <Button
-            h={30}
-            radius={50}
-            compact
-            bg={Warna.hijau_muda}
-            color={"green"}
-            onClick={() => {
-              onLogin();
-            }}
-          >
-            Login
-          </Button>
-        </>
+        <Button
+          mt={"xs"}
+          h={30}
+          w={250}
+
+          radius={50}
+          compact
+          bg={Warna.hijau_muda}
+          color={"green"}
+          onClick={() => {
+            onLogin();
+          }}
+        >
+          Login
+        </Button>
       </Flex>
     </>
   );
