@@ -1,6 +1,16 @@
 "use client";
 
-import { ActionIcon, Box, Flex, Image, Paper, SimpleGrid, Text, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Box,
+  Flex,
+  Image,
+  Loader,
+  Paper,
+  SimpleGrid,
+  Text,
+  Title,
+} from "@mantine/core";
 import { Logout } from "../auth";
 import { useState } from "react";
 import { ApiHipmi } from "@/app/lib/api";
@@ -18,8 +28,12 @@ import {
   IconShoppingBag,
   IconUserCircle,
 } from "@tabler/icons-react";
-import router from "next/router";
+
 import toast from "react-simple-toasts";
+import { getProfile } from "../katalog/profile";
+import { useRouter } from "next/navigation";
+import { useAtom } from "jotai";
+import { gs_token } from "./state/global_state";
 
 const listHalaman = [
   {
@@ -65,7 +79,9 @@ const listHalaman = [
 ];
 
 export default function HomeView() {
-  const [token, setToken] = useState<any | null>(null);
+  const router = useRouter();
+  const [token, setToken] = useAtom(gs_token);
+  const [profile, setProfile] = useState<any | null>(null);
 
   useShallowEffect(() => {
     getUserId();
@@ -75,27 +91,37 @@ export default function HomeView() {
     setToken(data);
   }
 
+  useShallowEffect(() => {
+    getUserProfile();
+  }, []);
+  async function getUserProfile() {
+    const data = await getProfile();
+    setProfile(data);
+  }
+
   return (
     <>
-      {/* <pre>{JSON.stringify(token, null, 2)}</pre> */}
-      
+      {/* <pre>{JSON.stringify(profile, null, 2)}</pre> */}
       <Box>
         <Flex align={"center"} gap={"sm"}>
           <ActionIcon
             size={30}
             variant="transparent"
-            // onClick={() => {
-            //   if (valToken?.data?.Profile === null) {
-            //     return router.push("/dev/katalog/profile/create");
-            //   } else {
-            //     return router.push("/dev/katalog/view");
-            //   }
-            // }}
+            onClick={() => {
+              if (profile === null) {
+                return router.push("/dev/katalog/profile/create");
+              } else {
+                return router.push("/dev/katalog/view");
+              }
+            }}
           >
             <IconUserCircle size={50} color="black" />
           </ActionIcon>
 
-          <Text>Welcome to, {token?.username ?  token?.username : "SERVER ERROR"}</Text>
+          <Text>
+            Welcome to,{" "}
+            {token?.username ? token?.username : <Loader size={"xs"} />}
+          </Text>
         </Flex>
         <Paper bg={"dark"} radius={5} my={"xs"}>
           <Image alt="logo" src={"/aset/logo.png"} />
