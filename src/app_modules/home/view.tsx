@@ -95,7 +95,7 @@ export default function HomeView() {
             <IconUserCircle size={50} color="black" />
           </ActionIcon>
 
-          <Text>Welcome to, {token?.username}</Text>
+          <Text>Welcome to, {token?.username ?  token?.username : "SERVER ERROR"}</Text>
         </Flex>
         <Paper bg={"dark"} radius={5} my={"xs"}>
           <Image alt="logo" src={"/aset/logo.png"} />

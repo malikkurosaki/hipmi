@@ -14,7 +14,7 @@ export default async function Page() {
   //       })
   //     );
 
-  if (!c?.value) return redirect("/dev/auth/login");
+  // if (!c?.value) return redirect("/dev/auth/login");
 
   return (
     <>

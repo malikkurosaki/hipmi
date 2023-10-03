@@ -1,10 +1,12 @@
 "use client";
 import { myConsole } from "@/app/fun/my_console";
 import { ApiHipmi } from "@/app/lib/api";
-import { Button } from "@mantine/core";
+import { ActionIcon, Button } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { gs_nomor, gs_otp } from "../state/state";
+import { IconLogout } from "@tabler/icons-react";
+import { Warna } from "@/app/lib/warna";
 
 export default function Logout() {
   const router = useRouter();
@@ -28,9 +30,9 @@ export default function Logout() {
 
   return (
     <>
-      <Button compact onClick={() => onLogout()}>
-        Logout
-      </Button>
+    <ActionIcon variant="transparent">
+      <IconLogout color={Warna.merah} onClick={() => onLogout()}/>
+    </ActionIcon>
     </>
   );
 }
