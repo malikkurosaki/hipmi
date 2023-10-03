@@ -6,13 +6,13 @@ import { redirect } from "next/navigation";
 
 export default async function Page() {
   const c = cookies().get("ssn");
-  const tkn = !c
-    ? null
-    : JSON.parse(
-        await unsealData(c.value as string, {
-          password: process.env.PWD as string,
-        })
-      );
+  // const tkn = !c
+  //   ? null
+  //   : JSON.parse(
+  //       await unsealData(c.value as string, {
+  //         password: process.env.PWD as string,
+  //       })
+  //     );
 
   if (!c?.value) return redirect("/dev/auth/login");
 
