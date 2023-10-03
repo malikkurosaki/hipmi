@@ -3,7 +3,7 @@ import prisma from "@/app/lib/prisma";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { sealData, unsealData } from "iron-session";
-import {getConfig} from "@/bin/config";
+import { getConfig } from "@/bin/config";
 
 export async function POST(req: Request) {
   if (req.method === "POST") {
@@ -35,7 +35,9 @@ export async function POST(req: Request) {
         }
       );
 
-      const un = await unsealData(res, { password: process.env.PWD as string });
+      const un = await unsealData(res, {
+        password: (await getConfig()).server.password,
+      });
       //   console.log(JSON.stringify(un), "route validasi")
 
       cookies().set({
