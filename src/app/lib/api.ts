@@ -6,4 +6,7 @@ export const ApiHipmi = {
   validasi: "/api/auth/validasi",
   register: "/api/auth/register",
   logout: "/api/auth/logout",
+
+  //Profile
+  create_profile: "/api/profile/create"
 };
