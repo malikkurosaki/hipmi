@@ -6,8 +6,11 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getConfig } from "@/bin/config";
 
-export async function POST(req: Request) {
+import fs from "fs";
+import yaml from "yaml";
+const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
+export async function POST(req: Request) {
   if (req.method === "POST") {
     const body = await req.json();
     // MyConsole(body);
@@ -37,7 +40,7 @@ export async function POST(req: Request) {
           username: data.username,
         }),
         {
-          password: (await getConfig()).server.password,
+          password: await config.server.password,
         }
       );
 

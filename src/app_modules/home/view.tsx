@@ -30,7 +30,7 @@ export default function HomeView() {
 
   return (
     <>
-      <pre>{JSON.stringify(token, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(token, null, 2)}</pre> */}
       <Title>Home</Title>
       <Text>Welcome, {token?.username}</Text>
       <Logout />

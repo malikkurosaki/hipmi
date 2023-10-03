@@ -92,6 +92,7 @@ export default function Validasi() {
             color="green"
             onClick={() => {
               onValid();
+              // myConsole("ok")
             }}
           >
             Submit

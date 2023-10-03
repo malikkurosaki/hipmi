@@ -4,11 +4,15 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { sealData, unsealData } from "iron-session";
 import { getConfig } from "@/bin/config";
+import yaml from "yaml";
+import fs from "fs";
+const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
 export async function POST(req: Request) {
+
   if (req.method === "POST") {
     const body = await req.json();
-    myConsole(body);
+
 
     const data = await prisma.user.findUnique({
       where: {
@@ -22,6 +26,8 @@ export async function POST(req: Request) {
       },
     });
 
+    myConsole(data)
+
     if (!data) return NextResponse.json({ status: 404 });
 
     if (data) {
@@ -31,14 +37,9 @@ export async function POST(req: Request) {
           username: data.username,
         }),
         {
-          password: (await getConfig()).server.password,
+          password: (await config.server.password),
         }
       );
-
-      const un = await unsealData(res, {
-        password: (await getConfig()).server.password,
-      });
-      //   console.log(JSON.stringify(un), "route validasi")
 
       cookies().set({
         name: "ssn",
