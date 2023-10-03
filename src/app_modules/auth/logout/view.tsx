@@ -1,5 +1,5 @@
 "use client";
-import { MyConsole } from "@/app/fun/my_console";
+import { myConsole } from "@/app/fun/my_console";
 import { ApiHipmi } from "@/app/lib/api";
 import { Button } from "@mantine/core";
 import { useRouter } from "next/navigation";

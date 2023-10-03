@@ -1,6 +1,6 @@
 "use client";
 
-import { MyConsole } from "@/app/fun/my_console";
+import { myConsole } from "@/app/fun/my_console";
 import { randomOTP } from "@/app/fun/rondom_otp";
 import { ApiHipmi } from "@/app/lib/api";
 import { Warna } from "@/app/lib/warna";
@@ -37,7 +37,7 @@ export default function Login() {
     })
       .then((res) => res.json())
       .then((val) => {
-        MyConsole(val);
+        myConsole(val);
         if (val.status == 200) {
           toast(val.message);
           setCode(val.body.otp);

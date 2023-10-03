@@ -1,5 +1,5 @@
 import { sealData } from "iron-session";
-import { MyConsole } from "@/app/fun/my_console";
+import { myConsole } from "@/app/fun/my_console";
 import prisma from "@/app/lib/prisma";
 import { data } from "autoprefixer";
 import { NextResponse } from "next/server";
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       },
     });
 
-    MyConsole(cekUsername);
+    myConsole(cekUsername);
 
     if (cekUsername)
       return NextResponse.json({ status: 400, message: "Username sudah ada" });

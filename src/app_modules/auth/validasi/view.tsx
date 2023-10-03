@@ -13,7 +13,7 @@ import {
 import { gs_nomor, gs_otp } from "../state/state";
 import { Warna } from "@/app/lib/warna";
 import { useState } from "react";
-import { MyConsole } from "@/app/fun/my_console";
+import { myConsole } from "@/app/fun/my_console";
 import { IconCircleLetterH } from "@tabler/icons-react";
 import toast from "react-simple-toasts";
 import { ApiHipmi } from "@/app/lib/api";
@@ -45,7 +45,7 @@ export default function Validasi() {
     })
       .then((res) => res.json())
       .then((val) => {
-        MyConsole(val);
+        myConsole(val);
         if (val.status == 200) {
           toast("Berhasil Login");
           return router.push("/dev/home");

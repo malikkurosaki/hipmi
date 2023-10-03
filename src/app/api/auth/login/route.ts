@@ -1,11 +1,11 @@
-import { MyConsole } from "@/app/fun/my_console";
+import { myConsole } from "@/app/fun/my_console";
 import prisma from "@/app/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   if (req.method === "POST") {
     const body = await req.json();
-    MyConsole(body);
+    myConsole(body);
 
     try {
       await fetch(

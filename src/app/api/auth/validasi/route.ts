@@ -1,4 +1,4 @@
-import { MyConsole } from "@/app/fun/my_console";
+import { myConsole } from "@/app/fun/my_console";
 import prisma from "@/app/lib/prisma";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
@@ -8,7 +8,7 @@ import {getConfig} from "@/bin/config";
 export async function POST(req: Request) {
   if (req.method === "POST") {
     const body = await req.json();
-    MyConsole(body);
+    myConsole(body);
 
     const data = await prisma.user.findUnique({
       where: {

@@ -6,7 +6,7 @@ import { IconCircleLetterH } from "@tabler/icons-react";
 import { gs_nomor } from "../state/state";
 import { useAtom } from "jotai";
 import { useState } from "react";
-import { MyConsole } from "@/app/fun/my_console";
+import { myConsole } from "@/app/fun/my_console";
 import toast from "react-simple-toasts";
 import { ApiHipmi } from "@/app/lib/api";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ export default function Register() {
   const [value, setValue] = useState("");
 
   const onRegister = async () => {
-    MyConsole(value);
+    myConsole(value);
 
     const body = {
       username: value,
@@ -36,7 +36,7 @@ export default function Register() {
     })
       .then((res) => res.json())
       .then((val) => {
-        MyConsole(val);
+        myConsole(val);
         if (val.status == 201) {
           toast("Pendaftaran Berhasil");
           return route.push("/dev/home");
