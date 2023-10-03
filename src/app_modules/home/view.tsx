@@ -8,6 +8,7 @@ import { useShallowEffect } from "@mantine/hooks";
 
 export default function HomeView() {
   const [token, setToken] = useState<any | null>(null);
+  
 
   useShallowEffect(() => {
     userToken();
