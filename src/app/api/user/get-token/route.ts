@@ -8,6 +8,5 @@ export async function GET() {
   const data = JSON.parse(
     await unsealData(c?.value as string, {password: ((await getConfig()).server.password)})
   )
-
   return NextResponse.json(data);
 }
