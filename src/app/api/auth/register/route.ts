@@ -4,8 +4,10 @@ import prisma from "@/app/lib/prisma";
 import { data } from "autoprefixer";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { getConfig } from "@/bin/config";
 
 export async function POST(req: Request) {
+
   if (req.method === "POST") {
     const body = await req.json();
     // MyConsole(body);
@@ -35,7 +37,7 @@ export async function POST(req: Request) {
           username: data.username,
         }),
         {
-          password: process.env.PWD as string,
+          password: (await getConfig()).server.password,
         }
       );
 
@@ -45,8 +47,7 @@ export async function POST(req: Request) {
         maxAge: 60 * 60 * 24 * 7,
       });
 
-
-      return NextResponse.json({ status: 201});
+      return NextResponse.json({ status: 201 });
     }
 
     return NextResponse.json({ success: true });

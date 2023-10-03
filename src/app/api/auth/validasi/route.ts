@@ -3,6 +3,7 @@ import prisma from "@/app/lib/prisma";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { sealData, unsealData } from "iron-session";
+import {getConfig} from "@/bin/config";
 
 export async function POST(req: Request) {
   if (req.method === "POST") {
@@ -30,7 +31,7 @@ export async function POST(req: Request) {
           username: data.username,
         }),
         {
-          password: process.env.PWD as string,
+          password: (await getConfig()).server.password,
         }
       );
 
