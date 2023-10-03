@@ -1,6 +1,6 @@
 export function myConsole(value: any) {
-    const onData = false
-    if (onData) {
-      console.log(value);
-    }
+  const onData = false;
+  if (onData) {
+    console.log(value);
   }
+}
