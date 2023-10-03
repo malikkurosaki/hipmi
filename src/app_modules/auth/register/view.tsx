@@ -60,6 +60,7 @@ export default function Register() {
         <Flex direction={"column"} gap={"xl"} align={"center"}>
           <Flex direction={"column"}>
             <TextInput
+              w={250}
               label="Username"
               placeholder="Username"
               onChange={(val) => {
@@ -70,6 +71,8 @@ export default function Register() {
             <Text>Nomor : {nomor}</Text>
           </Flex>
           <Button
+            w={250}
+            mt={"md"}
             radius={50}
             bg={Warna.biru}
             color="cyan"

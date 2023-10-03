@@ -9,6 +9,9 @@ import fs from "fs";
 import yaml from "yaml";
 const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
+/**
+ * @returns token(id and username)
+ */
 export async function getToken() {
   const c = cookies().get("ssn");
 

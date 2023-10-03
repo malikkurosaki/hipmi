@@ -81,11 +81,15 @@ export default function Validasi() {
             <Text>to {nomor}</Text>
           </Flex>
           <PinInput
+            spacing={"md"}
+            mt={"md"}
             onChange={(val) => {
               setInputOtp(val);
             }}
           />
           <Button
+            w={100}
+            mt={"md"}
             compact
             radius={50}
             bg={Warna.hijau_tua}
