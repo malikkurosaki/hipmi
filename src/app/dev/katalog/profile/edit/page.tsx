@@ -1,12 +1,13 @@
 import { getProfile } from "@/app_modules/katalog/profile";
-import { KatalogView } from "@/app_modules/katalog/view";
+import EditProfile from "@/app_modules/katalog/profile/edit/view";
 
 export default async function Page() {
   const data = await getProfile();
+
   return (
     <>
       {/* {JSON.stringify(data)} */}
-      <KatalogView />
+      <EditProfile data={data} />
     </>
   );
 }
