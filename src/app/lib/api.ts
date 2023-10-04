@@ -10,4 +10,5 @@ export const ApiHipmi = {
   //Profile
   create_profile: "/api/profile/create",
   edit_profile: "/api/profile/edit",
+  get_foto: "/api/profile/foto/",
 };
