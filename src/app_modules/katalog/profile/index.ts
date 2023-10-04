@@ -1,4 +1,8 @@
 import ProfileLayout from "./create/layout";
 import CreateProfile from "./create/view";
-import {getProfile} from "./fun/get-profile";
-export {ProfileLayout, CreateProfile, getProfile}
+import {getProfile} from "./fun/api-get-profile";
+import EditProfileLayout from './edit/layout';
+import EditProfileView from './edit/view'
+
+
+export {ProfileLayout, CreateProfile, getProfile, EditProfileView, EditProfileLayout}
