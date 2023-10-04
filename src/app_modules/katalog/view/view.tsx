@@ -29,7 +29,9 @@ import { getProfile } from "../profile";
 import { gs_profile } from "../profile/state/global_state";
 import { myConsole } from "@/app/fun/my_console";
 import { useAtom } from "jotai";
-import { g_getProfile } from "../profile/fun/fun-get-profile";
+import { g_getProfile } from "../profile/fun/fun_get_profile";
+import { getFotoProfile } from "../profile/fun/get_foto_profile";
+import { ApiHipmi } from "@/app/lib/api";
 
 export default function KatalogView() {
   const router = useRouter();
@@ -40,20 +42,51 @@ export default function KatalogView() {
     g_getProfile(setProfile);
   }, []);
 
+  const [foto, setFoto] = useState<any | null>(null);
+  useShallowEffect(() => {
+    if (profile?.imagesId === undefined || profile?.imagesId === null) {
+      myConsole("Waiting data");
+    } else {
+      getFotoProfile(profile?.imagesId).then((res) => setFoto(res?.url));
+    }
+    myConsole(profile?.imagesId);
+  }, [profile?.imagesId]);
+
   return (
     <>
+      {/* Background dan foto */}
       <Box>
         <Paper bg={"gray"} p={"md"}>
           <Image alt="" src={"/aset/logo.png"} />
         </Paper>
         <Center>
-          <Image
-            alt=""
-            src={"/aset/avatar.png"}
-            height={100}
-            width={100}
-            sx={{ position: "absolute", marginBottom: 10, paddingBottom: 10 }}
-          />
+          {foto ? (
+            <Image
+              radius={50}
+              alt=""
+              src={ApiHipmi.get_foto + `${foto}`}
+              height={100}
+              width={100}
+              sx={{
+                position: "absolute",
+                marginBottom: 10,
+                paddingBottom: 10,
+              }}
+            />
+          ) : (
+            <Image
+              radius={50}
+              alt=""
+              src={"/aset/avatar.png"}
+              height={100}
+              width={100}
+              sx={{
+                position: "absolute",
+                marginBottom: 10,
+                paddingBottom: 10,
+              }}
+            />
+          )}
         </Center>
         <Center>
           <ActionIcon
@@ -62,7 +95,7 @@ export default function KatalogView() {
             variant="transparent"
             bg={"gray"}
             radius={50}
-            // onClick={() => router.push("/dev/katalog/profile/upload")}
+            onClick={() => router.push("/dev/katalog/profile/upload")}
             sx={{ position: "relative" }}
           >
             <IconCamera color="black" size={20} />
@@ -70,6 +103,7 @@ export default function KatalogView() {
         </Center>
       </Box>
 
+      {/* Username dan Nama */}
       <Group position="apart">
         <Flex direction={"column"} mt={"lg"}>
           <Text fz={"lg"} fw={"bold"}>
@@ -87,6 +121,7 @@ export default function KatalogView() {
         </ActionIcon>
       </Group>
 
+      {/* Info user: nomor, email dll */}
       <Flex direction={"column"} pt={"lg"}>
         <Grid>
           <Grid.Col span={"content"}>

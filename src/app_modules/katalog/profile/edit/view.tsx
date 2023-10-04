@@ -12,9 +12,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-simple-toasts";
 import { gs_profile } from "../state/global_state";
-import { g_getProfile } from "../fun/fun-get-profile";
+import { g_getProfile } from "../fun/fun_get_profile";
 
-export default function EditProfile({ data }: { data: any }) {
+export default function EditProfile() {
   const router = useRouter();
 
   //Get data profile
@@ -22,6 +22,8 @@ export default function EditProfile({ data }: { data: any }) {
   useShallowEffect(() => {
     g_getProfile(setProfile);
   }, []);
+
+
 
 
   async function onUpdate() {
@@ -51,8 +53,8 @@ export default function EditProfile({ data }: { data: any }) {
     <>
       {/* {JSON.stringify(profile)} */}
       <Stack px={"sm"}>
-        <TextInput label="Username" disabled value={data.User.username} />
-        <TextInput label="Nomor" disabled value={data.User.nomor} />
+        <TextInput label="Username" disabled value={profile.User.username} />
+        <TextInput label="Nomor" disabled value={profile.User.nomor} />
 
         <TextInput
           label="Nama"

@@ -24,13 +24,7 @@ export async function getProfile() {
       alamat: true,
       jenisKelamin: true,
       active: true,
-      ImageProfile: {
-        select: {
-          id: true,
-          url: true,
-          active: true,
-        },
-      },
+      imagesId: true,
       User: {
         select : {
           username: true,
