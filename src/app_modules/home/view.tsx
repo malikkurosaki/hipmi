@@ -15,7 +15,7 @@ import { Logout } from "../auth";
 import { useState } from "react";
 import { ApiHipmi } from "@/app/lib/api";
 import { useShallowEffect } from "@mantine/hooks";
-import { getToken } from "./fun/get-token";
+import { getToken } from "./fun/api-get-token";
 
 import {
   IconAffiliate,

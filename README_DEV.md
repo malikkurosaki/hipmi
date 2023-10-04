@@ -1,3 +1,5 @@
+## Page info
+
 ### API
 - src/app/api
 
@@ -28,3 +30,8 @@ Deskripsi: Folder client yang mencakup sub menu dari menu-menu utama
 
 - Home:
 1. home page
+
+## NOTE
+Function name: 
+- g = global
+- gs = global state

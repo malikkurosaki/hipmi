@@ -5,6 +5,11 @@ import prisma from "@/app/lib/prisma";
 import { getToken } from "@/app_modules/home";
 import { NextResponse } from "next/server";
 
+
+/**
+ * @function api get data profile by user id
+ * @returns data profile 
+ */
 export async function getProfile() {
   const token = await getToken();
 
@@ -26,6 +31,12 @@ export async function getProfile() {
           active: true,
         },
       },
+      User: {
+        select : {
+          username: true,
+          nomor: true
+        }
+      }
     },
   });
 
