@@ -34,6 +34,8 @@ import { getProfile } from "../katalog/profile";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { gs_token } from "./state/global_state";
+import { g_getProfile } from "../katalog/profile/fun/fun_get_profile";
+import { gs_profile } from "../katalog/profile/state/global_state";
 
 const listHalaman = [
   {
@@ -81,7 +83,7 @@ const listHalaman = [
 export default function HomeView() {
   const router = useRouter();
   const [token, setToken] = useAtom(gs_token);
-  const [profile, setProfile] = useState<any | null>(null);
+
 
   useShallowEffect(() => {
     getUserId();
@@ -91,13 +93,10 @@ export default function HomeView() {
     setToken(data);
   }
 
+  const [profile, setProfile] = useAtom(gs_profile);
   useShallowEffect(() => {
-    getUserProfile();
+    g_getProfile(setProfile);
   }, []);
-  async function getUserProfile() {
-    const data = await getProfile();
-    setProfile(data);
-  }
 
   return (
     <>
