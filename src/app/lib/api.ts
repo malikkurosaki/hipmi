@@ -8,5 +8,6 @@ export const ApiHipmi = {
   logout: "/api/auth/logout",
 
   //Profile
-  create_profile: "/api/profile/create"
+  create_profile: "/api/profile/create",
+  edit_profile: "/api/profile/edit",
 };
