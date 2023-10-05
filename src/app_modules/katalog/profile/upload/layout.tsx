@@ -15,7 +15,7 @@ import { useAtom } from "jotai";
 import toast from "react-simple-toasts";
 import { gs_profile } from "../state/global_state";
 import { useShallowEffect } from "@mantine/hooks";
-import { g_getProfile } from "../fun/fun_get_profile";
+import { loadDataProfile } from "../fun/fun_get_profile";
 import { funUploadFoto } from "../fun/upload_foto";
 import { useRouter } from "next/navigation";
 
@@ -27,7 +27,7 @@ export default function UploadFotoProfileLayout({
   const router = useRouter()
   const [profile, setProfile] = useAtom(gs_profile);
   useShallowEffect(() => {
-    g_getProfile(setProfile);
+    loadDataProfile(setProfile);
   }, []);
 
   return (

@@ -34,7 +34,7 @@ import { getProfile } from "../katalog/profile";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { gs_token } from "./state/global_state";
-import { g_getProfile } from "../katalog/profile/fun/fun_get_profile";
+import { loadDataProfile } from "../katalog/profile/fun/fun_get_profile";
 import { gs_profile } from "../katalog/profile/state/global_state";
 
 const listHalaman = [
@@ -95,7 +95,7 @@ export default function HomeView() {
 
   const [profile, setProfile] = useAtom(gs_profile);
   useShallowEffect(() => {
-    g_getProfile(setProfile);
+    loadDataProfile(setProfile);
   }, []);
 
   return (

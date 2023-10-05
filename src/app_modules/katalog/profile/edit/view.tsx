@@ -12,15 +12,15 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-simple-toasts";
 import { gs_profile } from "../state/global_state";
-import { g_getProfile } from "../fun/fun_get_profile";
+import { loadDataProfile } from "../fun/fun_get_profile";
 
-export default function EditProfile() {
+export default function EditProfile({data}: {data: any}) {
   const router = useRouter();
 
   //Get data profile
   const [profile, setProfile] = useAtom(gs_profile);
   useShallowEffect(() => {
-    g_getProfile(setProfile);
+    loadDataProfile(setProfile);
   }, []);
 
 

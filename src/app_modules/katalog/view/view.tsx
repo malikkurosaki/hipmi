@@ -29,7 +29,7 @@ import { getProfile } from "../profile";
 import { gs_profile } from "../profile/state/global_state";
 import { myConsole } from "@/app/fun/my_console";
 import { useAtom } from "jotai";
-import { g_getProfile } from "../profile/fun/fun_get_profile";
+import { loadDataProfile } from "../profile/fun/fun_get_profile";
 import { getFotoProfile } from "../profile/fun/get_foto_profile";
 import { ApiHipmi } from "@/app/lib/api";
 
@@ -39,7 +39,7 @@ export default function KatalogView() {
   //Get data profile
   const [profile, setProfile] = useAtom(gs_profile);
   useShallowEffect(() => {
-    g_getProfile(setProfile);
+    loadDataProfile(setProfile);
   }, []);
 
   const [foto, setFoto] = useState<any | null>(null);
