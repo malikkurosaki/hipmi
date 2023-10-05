@@ -40,7 +40,7 @@ export default function EditProfile({ data }: { data: any }) {
         if (val.status == 200) {
           toast("Data tersimpan");
           loadDataProfile(setProfile)
-          return router.push("/dev/katalog/view");
+          return setTimeout(() => router.push("/dev/katalog/view"), 1000);
         } else {
           return toast("Gagal update !!!");
         }

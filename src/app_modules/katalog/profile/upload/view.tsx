@@ -5,7 +5,7 @@ import { useShallowEffect } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { loadDataProfile } from "../fun/fun_get_profile";
 import { gs_profile } from "../state/global_state";
-import { getFotoProfile } from "../fun/get_foto_profile";
+import { getFotoProfile } from "../api/get-foto-profile";
 import { useState } from "react";
 import { ApiHipmi } from "@/app/lib/api";
 import { myConsole } from "@/app/fun/my_console";
