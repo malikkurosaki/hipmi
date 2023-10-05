@@ -6,7 +6,7 @@ export default async function Page() {
   return (
     <>
       {/* {JSON.stringify(data)} */}
-      <KatalogView />
+      <KatalogView data={data} />
     </>
   );
 }

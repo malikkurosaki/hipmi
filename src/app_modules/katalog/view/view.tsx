@@ -33,11 +33,11 @@ import { loadDataProfile } from "../profile/fun/fun_get_profile";
 import { getFotoProfile } from "../profile/fun/get_foto_profile";
 import { ApiHipmi } from "@/app/lib/api";
 
-export default function KatalogView() {
+export default function KatalogView({data}: {data: any}) {
   const router = useRouter();
 
   //Get data profile
-  const [profile, setProfile] = useAtom(gs_profile);
+  const [profile, setProfile] = useState(data)
   useShallowEffect(() => {
     loadDataProfile(setProfile);
   }, []);

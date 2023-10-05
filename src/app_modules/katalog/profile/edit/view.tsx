@@ -14,17 +14,14 @@ import toast from "react-simple-toasts";
 import { gs_profile } from "../state/global_state";
 import { loadDataProfile } from "../fun/fun_get_profile";
 
-export default function EditProfile({data}: {data: any}) {
+export default function EditProfile({ data }: { data: any }) {
   const router = useRouter();
 
   //Get data profile
-  const [profile, setProfile] = useAtom(gs_profile);
+  const [profile, setProfile] = useState(data);
   useShallowEffect(() => {
     loadDataProfile(setProfile);
   }, []);
-
-
-
 
   async function onUpdate() {
     const body = profile;
