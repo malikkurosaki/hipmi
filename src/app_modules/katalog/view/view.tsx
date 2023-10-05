@@ -29,31 +29,40 @@ import { getProfile } from "../profile";
 import { gs_profile } from "../profile/state/global_state";
 import { myConsole } from "@/app/fun/my_console";
 import { useAtom } from "jotai";
-import { g_getProfile } from "../profile/fun/fun_get_profile";
-import { getFotoProfile } from "../profile/fun/get_foto_profile";
+import { loadDataProfile } from "../profile/fun/fun_get_profile";
+import { getFotoProfile } from "../profile/fun/api-get-foto-profile";
 import { ApiHipmi } from "@/app/lib/api";
+import { loadFotoProfile } from "../profile/fun/fun_get_foto_profile";
 
-export default function KatalogView() {
+export default function KatalogView({data}: {data: any}) {
   const router = useRouter();
 
   //Get data profile
-  const [profile, setProfile] = useAtom(gs_profile);
+  const [profile, setProfile] = useState(data)
   useShallowEffect(() => {
-    g_getProfile(setProfile);
+    loadDataProfile(setProfile);
   }, []);
 
-  const [foto, setFoto] = useState<any | null>(null);
+  const [foto, setFoto] = useState("")
   useShallowEffect(() => {
-    if (profile?.imagesId === undefined || profile?.imagesId === null) {
-      myConsole("Waiting data");
-    } else {
-      getFotoProfile(profile?.imagesId).then((res) => setFoto(res?.url));
-    }
-    myConsole(profile?.imagesId);
-  }, [profile?.imagesId]);
+    console.log(profile.imagesId, "use efek")
+    loadFotoProfile(profile.imagesId, setFoto)
+  },[])
+  
+
+  // useShallowEffect(() => {
+  //   if (profile?.imagesId === undefined || profile?.imagesId === null) {
+  //     myConsole("Waiting data");
+  //   } else {
+  //     getFotoProfile(profile?.imagesId).then((res) => setFoto(res?.url));
+  //   }
+  //   myConsole(profile?.imagesId);
+  // }, [profile?.imagesId]);
 
   return (
     <>
+    {JSON.stringify(profile.imagesId)}<br/> 
+    {JSON.stringify(foto)}
       {/* Background dan foto */}
       <Box>
         <Paper bg={"gray"} p={"md"}>

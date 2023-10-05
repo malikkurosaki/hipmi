@@ -15,9 +15,11 @@ import { useAtom } from "jotai";
 import toast from "react-simple-toasts";
 import { gs_profile } from "../state/global_state";
 import { useShallowEffect } from "@mantine/hooks";
-import { g_getProfile } from "../fun/fun_get_profile";
+import { loadDataProfile } from "../fun/fun_get_profile";
 import { funUploadFoto } from "../fun/upload_foto";
 import { useRouter } from "next/navigation";
+import { loadFotoProfile } from "../fun/fun_get_foto_profile";
+import { useState } from "react";
 
 export default function UploadFotoProfileLayout({
   children,
@@ -27,8 +29,10 @@ export default function UploadFotoProfileLayout({
   const router = useRouter()
   const [profile, setProfile] = useAtom(gs_profile);
   useShallowEffect(() => {
-    g_getProfile(setProfile);
+    loadDataProfile(setProfile);
   }, []);
+
+  const [foto, setFoto] = useState("")
 
   return (
     <>
@@ -64,7 +68,7 @@ export default function UploadFotoProfileLayout({
                       if (upFoto.success) {
                         toast("Upload berhasil");
                         router.push("/dev/katalog/view")
-                        // loadDataProfile(valUser.id, setUser, setProfile);
+                        loadFotoProfile(upFoto.data.id, setFoto)
                       }
                     }}
                     accept="image/png,image/jpeg,image/webp"
