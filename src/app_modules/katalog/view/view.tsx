@@ -47,7 +47,7 @@ export default function KatalogView({data}: {data: any}) {
     if (profile?.imagesId === undefined || profile?.imagesId === null) {
       myConsole("Waiting data");
     } else {
-      getFotoProfile(profile?.imagesId).then((res) => setFoto(res?.url));
+      getFotoProfile(profile.imagesId).then((res) => setFoto(res?.url));
     }
     myConsole(profile?.imagesId);
   }, [profile?.imagesId]);

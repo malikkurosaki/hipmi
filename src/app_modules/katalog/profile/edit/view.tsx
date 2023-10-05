@@ -18,7 +18,7 @@ export default function EditProfile({ data }: { data: any }) {
   const router = useRouter();
 
   //Get data profile
-  const [profile, setProfile] = useState(data);
+  const [profile, setProfile] = useState(data)
   useShallowEffect(() => {
     loadDataProfile(setProfile);
   }, []);
@@ -39,6 +39,7 @@ export default function EditProfile({ data }: { data: any }) {
         myConsole(val);
         if (val.status == 200) {
           toast("Data tersimpan");
+          loadDataProfile(setProfile)
           return router.push("/dev/katalog/view");
         } else {
           return toast("Gagal update !!!");
@@ -46,17 +47,19 @@ export default function EditProfile({ data }: { data: any }) {
       });
   }
 
+  if(!profile) return <></>
+
   return (
     <>
       {/* {JSON.stringify(profile)} */}
       <Stack px={"sm"}>
-        <TextInput label="Username" disabled value={profile.User.username} />
-        <TextInput label="Nomor" disabled value={profile.User.nomor} />
+        <TextInput label="Username" disabled value={profile?.User.username} />
+        <TextInput label="Nomor" disabled value={profile?.User.nomor} />
 
         <TextInput
           label="Nama"
           placeholder="username"
-          value={profile.name}
+          value={profile?.name}
           onChange={(val) => {
             setProfile({
               ...profile,
@@ -68,7 +71,7 @@ export default function EditProfile({ data }: { data: any }) {
         <TextInput
           label="Email"
           placeholder="email"
-          value={profile.email}
+          value={profile?.email}
           onChange={(val) => {
             myConsole(val.target.value);
             setProfile({
@@ -81,7 +84,7 @@ export default function EditProfile({ data }: { data: any }) {
         <TextInput
           label="Alamat"
           placeholder="alamat"
-          value={profile.alamat}
+          value={profile?.alamat}
           onChange={(val) => {
             myConsole(val.target.value);
             setProfile({
@@ -93,7 +96,7 @@ export default function EditProfile({ data }: { data: any }) {
 
         <Select
           label="Jenis Kelamin"
-          value={profile.jenisKelamin}
+          value={profile?.jenisKelamin}
           data={[
             { value: "Laki-laki", label: "Laki-laki" },
             { value: "Perempuan", label: "Perempuan" },
