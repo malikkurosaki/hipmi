@@ -6,7 +6,7 @@ import { getProfile } from "..";
  * @param setProfile
  * @returns data profile
  */
-export async function g_getProfile(setProfile: any) {
+export async function loadDataProfile(setProfile: any) {
   await getProfile()
     .then((res) => res)
     .then((val) => {

@@ -7,19 +7,18 @@ export async function POST(req: Request) {
     const body = await req.json();
     // myConsole(body);
 
-    const data = await prisma.profile.create({
+    const data = await prisma.katalog.create({
       data: {
-        userId: body.userId,
-        name: body.name,
-        email: body.email,
-        alamat: body.alamat,
-        jenisKelamin: body.jenisKelamin,
+        profileId: body.profileId,
+        namaBisnis: body.namaBisnis,
+        alamatKantor: body.alamatKantor,
+        tlpn: body.tlpn,
+        deskripssi: body.deskripssi,
+        masterBidangBisnisId: body.masterBidangBisnisId,
       },
     });
 
-    if (data) return NextResponse.json({ status: 201 });
-
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ status: 201, success: true });
   }
   return NextResponse.json({ success: false });
 }
