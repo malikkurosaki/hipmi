@@ -36,6 +36,7 @@ import { useAtom } from "jotai";
 import { gs_token } from "./state/global_state";
 import { loadDataProfile } from "../katalog/profile/fun/fun_get_profile";
 import { gs_profile } from "../katalog/profile/state/global_state";
+import { loadListPortofolio } from "../katalog/portofolio/fun/fun_get_all_portofolio";
 
 const listHalaman = [
   {
@@ -97,6 +98,11 @@ export default function HomeView() {
   useShallowEffect(() => {
     loadDataProfile(setProfile);
   }, []);
+
+  // const [listPorto, setListPorto] = useState<any | null>(null);
+  // useShallowEffect(() => {
+  //   loadListPortofolio(profile?.id).then((res) => setListPorto(res));
+  // }, [profile?.id]);
 
   return (
     <>

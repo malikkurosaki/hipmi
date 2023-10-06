@@ -44,18 +44,19 @@ model UserSession {
 }
 
 model Profile {
-  id           String   @id @default(cuid())
+  id           String    @id @default(cuid())
   name         String
-  email        String   @unique
+  email        String    @unique
   alamat       String
   jenisKelamin String
-  active       Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
-  User         User?    @relation(fields: [userId], references: [id])
-  userId       String?  @unique
-  ImageProfile Images?  @relation(fields: [imagesId], references: [id])
-  imagesId     String?  @unique
+  active       Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now()) @updatedAt
+  User         User?     @relation(fields: [userId], references: [id])
+  userId       String?   @unique
+  ImageProfile Images?   @relation(fields: [imagesId], references: [id])
+  imagesId     String?   @unique
+  Katalog      Katalog[]
 }
 
 model Images {
@@ -65,4 +66,28 @@ model Images {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   Profile   Profile?
+}
+
+model Katalog {
+  id                   String             @id @default(cuid())
+  namaBisnis           String
+  alamatKantor         String
+  tlpn                 String
+  deskripssi           String
+  active               Boolean            @default(true)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @default(now()) @updatedAt
+  Profile              Profile?           @relation(fields: [profileId], references: [id])
+  profileId            String?            
+  MasterBidangBisnis   MasterBidangBisnis @relation(fields: [masterBidangBisnisId], references: [id])
+  masterBidangBisnisId String
+}
+
+model MasterBidangBisnis {
+  id        String    @id
+  name      String
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  Katalog   Katalog[]
 }
