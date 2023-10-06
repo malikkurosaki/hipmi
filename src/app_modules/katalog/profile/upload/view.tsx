@@ -4,7 +4,7 @@ import { AspectRatio, FileButton, Image, Paper, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { loadDataProfile } from "../fun/fun_get_profile";
-import { gs_profile } from "../state/global_state";
+import { gs_fotoProfile, gs_profile } from "../state/global_state";
 import { getFotoProfile } from "../api/get-foto-profile";
 import { useState } from "react";
 import { ApiHipmi } from "@/app/lib/api";
@@ -16,7 +16,7 @@ export default function UploadFotoProfile() {
     loadDataProfile(setProfile);
   }, []);
 
-  const [foto, setFoto] = useState<any | null>(null);
+  const [foto, setFoto] = useAtom(gs_fotoProfile)
   useShallowEffect(() => {
     if (profile?.imagesId === undefined || profile?.imagesId === null) {
       myConsole("Waiting data");
@@ -29,7 +29,7 @@ export default function UploadFotoProfile() {
     <>
     {/* {JSON.stringify(foto)} */}
       <AspectRatio ratio={1 / 1} >
-       <Paper  p={"lg"}>
+       <Paper  p={"lg"} shadow="xl">
        {foto ? <Image alt="" src={ApiHipmi.get_foto + `${foto}`} /> : <Image alt="" src={"/aset/avatar.png"} />}
        </Paper>
       </AspectRatio>

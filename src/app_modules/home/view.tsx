@@ -35,8 +35,11 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { gs_token } from "./state/global_state";
 import { loadDataProfile } from "../katalog/profile/fun/fun_get_profile";
-import { gs_profile } from "../katalog/profile/state/global_state";
+import { gs_fotoProfile, gs_profile } from "../katalog/profile/state/global_state";
 import { loadListPortofolio } from "../katalog/portofolio/fun/fun_get_all_portofolio";
+import { gs_ListPortofolio } from "../katalog/portofolio/state/global_state";
+import { myConsole } from "@/app/fun/my_console";
+import { getFotoProfile } from "../katalog/profile/api/get-foto-profile";
 
 const listHalaman = [
   {
@@ -99,10 +102,19 @@ export default function HomeView() {
     loadDataProfile(setProfile);
   }, []);
 
-  // const [listPorto, setListPorto] = useState<any | null>(null);
-  // useShallowEffect(() => {
-  //   loadListPortofolio(profile?.id).then((res) => setListPorto(res));
-  // }, [profile?.id]);
+  const [foto, setFoto] = useAtom(gs_fotoProfile);
+  useShallowEffect(() => {
+    if (profile?.imagesId === undefined) {
+      return myConsole("Waiting data");
+    } else {
+      getFotoProfile(profile?.imagesId).then((v) => setFoto(v?.url));
+    }
+  }, [profile?.imagesId]);
+
+  const [listPorto, setListPorto] = useAtom(gs_ListPortofolio)
+  useShallowEffect(() => {
+    loadListPortofolio(profile?.id).then((res) => setListPorto(res));
+  }, [profile?.id]);
 
   return (
     <>

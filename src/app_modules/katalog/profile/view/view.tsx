@@ -30,67 +30,70 @@ import { useAtom } from "jotai";
 import { ApiHipmi } from "@/app/lib/api";
 import { loadDataProfile } from "../fun/fun_get_profile";
 import { getFotoProfile } from "../api/get-foto-profile";
+import { gs_fotoProfile, gs_profile } from "../state/global_state";
 
-export default function ProfileView({data}: {data: any}) {
+export default function ProfileView({ data }: { data: any }) {
   const router = useRouter();
 
   //Get data profile
-  const [profile, setProfile] = useState(data);
+  const [profile, setProfile] = useAtom(gs_profile);
   useShallowEffect(() => {
     loadDataProfile(setProfile);
   }, []);
 
-  const [foto, setFoto] = useState<any | null>(null);
+  const [foto, setFoto] = useAtom(gs_fotoProfile);
   useShallowEffect(() => {
-    if (profile?.imagesId === undefined || profile?.imagesId === null) {
-      myConsole("Waiting data");
+    if (profile?.imagesId === undefined) {
+      return myConsole("Waiting data");
     } else {
-      getFotoProfile(profile.imagesId).then((res) => setFoto(res?.url));
+      getFotoProfile(profile?.imagesId).then((v) => setFoto(v?.url));
     }
-    myConsole(profile?.imagesId);
   }, [profile?.imagesId]);
 
   return (
     <>
-    {/* {JSON.stringify(data)} */}
+      {/* {JSON.stringify(data)} */}
       {/* Background dan foto */}
       <Box>
         <Paper bg={"gray"} p={"md"}>
           <Image alt="" src={"/aset/logo.png"} />
         </Paper>
         <Center>
-          {foto ? (
-            <Image
-              radius={50}
-              alt=""
-              src={ApiHipmi.get_foto + `${foto}`}
-              height={100}
-              width={100}
-              sx={{
-                position: "absolute",
-                marginBottom: 10,
-                paddingBottom: 10,
-              }}
-            />
-          ) : (
-            <Image
-              radius={50}
-              alt=""
-              src={"/aset/avatar.png"}
-              height={100}
-              width={100}
-              sx={{
-                position: "absolute",
-                marginBottom: 10,
-                paddingBottom: 10,
-              }}
-            />
-          )}
+          <Paper
+            radius={100}
+            h={105}
+            w={105}
+            sx={{
+              borderStyle: "solid",
+              borderRadius: "100%",
+              borderWidth: 2,
+              marginBottom: 10,
+              paddingBottom: 10,
+              position: "absolute",
+              zIndex: 0,
+            }}
+          >
+            <Center h={101}>
+              <Image
+                src={ApiHipmi.get_foto + foto ?? ""}
+                alt=""
+                radius={100}
+                width={100}
+                height={100}
+                sx={
+                  {
+                    // position: "fixed",
+                  }
+                }
+              />
+            </Center>
+          </Paper>
         </Center>
+
         <Center>
           <ActionIcon
             mr={-70}
-            mt={10}
+            mt={15}
             variant="transparent"
             bg={"gray"}
             radius={50}

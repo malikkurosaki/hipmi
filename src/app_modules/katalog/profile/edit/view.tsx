@@ -18,7 +18,7 @@ export default function EditProfile({ data }: { data: any }) {
   const router = useRouter();
 
   //Get data profile
-  const [profile, setProfile] = useState(data)
+  const [profile, setProfile] = useAtom(gs_profile)
   useShallowEffect(() => {
     loadDataProfile(setProfile);
   }, []);

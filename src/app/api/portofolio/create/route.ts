@@ -17,7 +17,6 @@ export async function POST(req: Request) {
         masterBidangBisnisId: body.masterBidangBisnisId,
       },
     });
-    console.log(data)
 
     return NextResponse.json({ status: 201, success: true });
   }
