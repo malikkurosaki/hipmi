@@ -109,16 +109,20 @@ export default function HomeView() {
     setProfile(data);
   }
 
-  // const [foto, setFoto] = useAtom(gs_fotoProfile);
-  // useShallowEffect(() => {
-  //   if (profile?.imagesId === undefined) {
-  //     return myConsole("Waiting data");
-  //   } else {
-  //     getFotoProfile(profile?.imagesId).then((v) => setFoto(v?.url));
-  //   }
-  // }, [profile?.imagesId]);
+  const [foto, setFoto] = useAtom(gs_fotoProfile);
+  useShallowEffect(() => {
+    if (profile?.imagesId === undefined) {
+      return myConsole("Waiting data");
+    } else {
+      getFoto(profile?.imagesId);
+    }
+  }, [profile?.imagesId]);
 
-  
+  async function getFoto(id: string) {
+    const data = await getFotoProfile(id);
+    setFoto(data);
+  }
+
   // const [listPorto, setListPorto] = useAtom(gs_ListPortofolio);
   // useShallowEffect(() => {
   //   getListPorto(profile?.id);
@@ -148,7 +152,7 @@ export default function HomeView() {
           </ActionIcon>
 
           <Text>
-            Welcome to I ,{" "}
+            Welcome to ,{" "}
             {token?.username ? token?.username : <Loader size={"xs"} />}
           </Text>
         </Flex>
