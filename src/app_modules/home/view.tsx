@@ -3,6 +3,7 @@
 import {
   ActionIcon,
   Box,
+  Center,
   Flex,
   Image,
   Loader,
@@ -90,14 +91,15 @@ const listHalaman = [
 
 export default function HomeView() {
   const router = useRouter();
-  const [token, setToken] = useAtom(gs_token);
 
+  const [token, setToken] = useAtom(gs_token);
   useShallowEffect(() => {
     getUserId();
   }, []);
   async function getUserId() {
-    const data = await getToken();
-    setToken(data);
+    const get = await getToken();
+    if(!get) return myConsole("Data Kosong")
+    setToken(get);
   }
 
   const [profile, setProfile] = useAtom(gs_profile);
@@ -105,43 +107,38 @@ export default function HomeView() {
     loadProfile();
   }, []);
   async function loadProfile() {
-    const data = await getProfile();
-
-    setProfile(data);
+    const get = await getProfile();
+    if(!get) return myConsole("Data Kosong")
+    setProfile(get);
   }
 
-  // const [foto, setFoto] = useAtom(gs_fotoProfile);
-  // useShallowEffect(() => {
-  //   getFoto(profile?.imagesId);
-  //   // if (profile?.imagesId === undefined) {
-  //   //   return myConsole("Waiting data");
-  //   // } else {
-  //   //   getFoto(profile?.imagesId);
-  //   // }
-  // }, [profile?.imagesId]);
-
-  // async function getFoto(id: string) {
-  //   if(id === undefined){
-  //     return myConsole("Waiting data")
-  //   } else {
-  //     const data = await getFotoProfile(id);
-  //     setFoto(data);
-  //   }
-    
-  // }
-
-  const [listPorto, setListPorto] = useAtom(gs_ListPortofolio);
+  const [foto, setFoto] = useAtom(gs_fotoProfile);
   useShallowEffect(() => {
-    getListPorto(profile?.id);
-  }, [profile?.id]);
-  async function getListPorto(id: string) {
-    const data = await getListPortofolio(id);
-    setListPorto(data);
+    getFoto(profile?.imagesId);
+  }, [profile?.imagesId]);
+
+  async function getFoto(id: string) {
+    if(id === undefined){
+      return myConsole("Waiting data")
+    } else {
+      const data = await getFotoProfile(id);
+      setFoto(data?.url);
+    }
   }
+
+  // const [listPorto, setListPorto] = useAtom(gs_ListPortofolio);
+  // useShallowEffect(() => {
+  //   getListPorto(profile?.id);
+  // }, [profile?.id]);
+  // async function getListPorto(id: string) {
+  //   const data = await getListPortofolio(id);
+  //   setListPorto(data);
+  // }
 
   return (
     <>
-      {/* <pre>{JSON.stringify(profile, null, 2)}</pre> */}
+      {/* <pre>{JSON.stringify(foto, null, 2)}</pre> */}
+      <Center><Image src={ApiHipmi.get_foto + foto ?? ""} alt="" height={100} width={100}/></Center>
       <Box>
         <Flex align={"center"} gap={"sm"}>
           <ActionIcon
