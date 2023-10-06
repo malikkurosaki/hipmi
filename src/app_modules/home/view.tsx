@@ -111,16 +111,22 @@ export default function HomeView() {
 
   const [foto, setFoto] = useAtom(gs_fotoProfile);
   useShallowEffect(() => {
-    if (profile?.imagesId === undefined) {
-      return myConsole("Waiting data");
-    } else {
-      getFoto(profile?.imagesId);
-    }
+    getFoto(profile?.imagesId);
+    // if (profile?.imagesId === undefined) {
+    //   return myConsole("Waiting data");
+    // } else {
+    //   getFoto(profile?.imagesId);
+    // }
   }, [profile?.imagesId]);
 
   async function getFoto(id: string) {
-    const data = await getFotoProfile(id);
-    setFoto(data);
+    if(id === undefined){
+      return myConsole("Waiting data")
+    } else {
+      const data = await getFotoProfile(id);
+      setFoto(data);
+    }
+    
   }
 
   // const [listPorto, setListPorto] = useAtom(gs_ListPortofolio);
