@@ -97,10 +97,10 @@ export default function HomeView() {
     setToken(data);
   }
 
-  const [profile, setProfile] = useAtom(gs_profile);
-  useShallowEffect(() => {
-    loadDataProfile(setProfile);
-  }, []);
+  // const [profile, setProfile] = useAtom(gs_profile);
+  // useShallowEffect(() => {
+  //   loadDataProfile(setProfile);
+  // }, []);
 
   // const [foto, setFoto] = useAtom(gs_fotoProfile);
   // useShallowEffect(() => {
@@ -120,7 +120,7 @@ export default function HomeView() {
     <>
       {/* <pre>{JSON.stringify(profile, null, 2)}</pre> */}
       <Box>
-        <Flex align={"center"} gap={"sm"}>
+        {/* <Flex align={"center"} gap={"sm"}>
           <ActionIcon
             size={30}
             variant="transparent"
@@ -139,7 +139,7 @@ export default function HomeView() {
             Welcome to,{" "}
             {token?.username ? token?.username : <Loader size={"xs"} />}
           </Text>
-        </Flex>
+        </Flex> */}
         <Paper bg={"dark"} radius={5} my={"xs"}>
           <Image alt="logo" src={"/aset/logo.png"} />
         </Paper>
