@@ -15,7 +15,7 @@ import { Logout } from "../auth";
 import { useState } from "react";
 import { ApiHipmi } from "@/app/lib/api";
 import { useShallowEffect } from "@mantine/hooks";
-import { getToken } from "./fun/api-get-token";
+import { getToken } from "./api/api-get-token";
 
 import {
   IconAffiliate,
@@ -35,11 +35,15 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { gs_token } from "./state/global_state";
 import { loadDataProfile } from "../katalog/profile/fun/fun_get_profile";
-import { gs_fotoProfile, gs_profile } from "../katalog/profile/state/global_state";
+import {
+  gs_fotoProfile,
+  gs_profile,
+} from "../katalog/profile/state/global_state";
 import { loadListPortofolio } from "../katalog/portofolio/fun/fun_get_all_portofolio";
 import { gs_ListPortofolio } from "../katalog/portofolio/state/global_state";
 import { myConsole } from "@/app/fun/my_console";
 import { getFotoProfile } from "../katalog/profile/api/get-foto-profile";
+import getListPortofolio from "../katalog/portofolio/api/get-portofolio";
 
 const listHalaman = [
   {
@@ -88,7 +92,6 @@ export default function HomeView() {
   const router = useRouter();
   const [token, setToken] = useAtom(gs_token);
 
-
   useShallowEffect(() => {
     getUserId();
   }, []);
@@ -99,28 +102,31 @@ export default function HomeView() {
 
   const [profile, setProfile] = useAtom(gs_profile);
   useShallowEffect(() => {
-    // loadDataProfile(setProfile);
-    loadProfile()
+    loadProfile();
   }, []);
   async function loadProfile() {
-    const data = await getProfile()
-    setProfile(data)
-    
+    const data = await getProfile();
+    setProfile(data);
   }
 
-  // const [foto, setFoto] = useAtom(gs_fotoProfile);
-  // useShallowEffect(() => {
-  //   if (profile?.imagesId === undefined) {
-  //     return myConsole("Waiting data");
-  //   } else {
-  //     getFotoProfile(profile?.imagesId).then((v) => setFoto(v?.url));
-  //   }
-  // }, [profile?.imagesId]);
+  const [foto, setFoto] = useAtom(gs_fotoProfile);
+  useShallowEffect(() => {
+    if (profile?.imagesId === undefined) {
+      return myConsole("Waiting data");
+    } else {
+      getFotoProfile(profile?.imagesId).then((v) => setFoto(v?.url));
+    }
+  }, [profile?.imagesId]);
 
-  // const [listPorto, setListPorto] = useAtom(gs_ListPortofolio)
-  // useShallowEffect(() => {
-  //   loadListPortofolio(profile?.id).then((res) => setListPorto(res));
-  // }, [profile?.id]);
+  
+  const [listPorto, setListPorto] = useAtom(gs_ListPortofolio);
+  useShallowEffect(() => {
+    getListPorto(profile?.id);
+  }, [profile?.id]);
+  async function getListPorto(id: string) {
+    const data = await getListPortofolio(id);
+    setListPorto(data);
+  }
 
   return (
     <>
