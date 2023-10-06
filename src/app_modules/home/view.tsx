@@ -102,19 +102,19 @@ export default function HomeView() {
     loadDataProfile(setProfile);
   }, []);
 
-  const [foto, setFoto] = useAtom(gs_fotoProfile);
-  useShallowEffect(() => {
-    if (profile?.imagesId === undefined) {
-      return myConsole("Waiting data");
-    } else {
-      getFotoProfile(profile?.imagesId).then((v) => setFoto(v?.url));
-    }
-  }, [profile?.imagesId]);
+  // const [foto, setFoto] = useAtom(gs_fotoProfile);
+  // useShallowEffect(() => {
+  //   if (profile?.imagesId === undefined) {
+  //     return myConsole("Waiting data");
+  //   } else {
+  //     getFotoProfile(profile?.imagesId).then((v) => setFoto(v?.url));
+  //   }
+  // }, [profile?.imagesId]);
 
-  const [listPorto, setListPorto] = useAtom(gs_ListPortofolio)
-  useShallowEffect(() => {
-    loadListPortofolio(profile?.id).then((res) => setListPorto(res));
-  }, [profile?.id]);
+  // const [listPorto, setListPorto] = useAtom(gs_ListPortofolio)
+  // useShallowEffect(() => {
+  //   loadListPortofolio(profile?.id).then((res) => setListPorto(res));
+  // }, [profile?.id]);
 
   return (
     <>
