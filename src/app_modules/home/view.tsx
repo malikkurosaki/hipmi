@@ -97,10 +97,16 @@ export default function HomeView() {
     setToken(data);
   }
 
-  // const [profile, setProfile] = useAtom(gs_profile);
-  // useShallowEffect(() => {
-  //   loadDataProfile(setProfile);
-  // }, []);
+  const [profile, setProfile] = useAtom(gs_profile);
+  useShallowEffect(() => {
+    // loadDataProfile(setProfile);
+    loadProfile()
+  }, []);
+  async function loadProfile() {
+    const data = await getProfile()
+    setProfile(data)
+    
+  }
 
   // const [foto, setFoto] = useAtom(gs_fotoProfile);
   // useShallowEffect(() => {
