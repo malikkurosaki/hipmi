@@ -106,6 +106,7 @@ export default function HomeView() {
   }, []);
   async function loadProfile() {
     const data = await getProfile();
+
     setProfile(data);
   }
 
@@ -129,14 +130,14 @@ export default function HomeView() {
     
   // }
 
-  // const [listPorto, setListPorto] = useAtom(gs_ListPortofolio);
-  // useShallowEffect(() => {
-  //   getListPorto(profile?.id);
-  // }, [profile?.id]);
-  // async function getListPorto(id: string) {
-  //   const data = await getListPortofolio(id);
-  //   setListPorto(data);
-  // }
+  const [listPorto, setListPorto] = useAtom(gs_ListPortofolio);
+  useShallowEffect(() => {
+    getListPorto(profile?.id);
+  }, [profile?.id]);
+  async function getListPorto(id: string) {
+    const data = await getListPortofolio(id);
+    setListPorto(data);
+  }
 
   return (
     <>
@@ -158,7 +159,7 @@ export default function HomeView() {
           </ActionIcon>
 
           <Text>
-            Welcome to ,{" "}
+            Welcome to I,{" "}
             {token?.username ? token?.username : <Loader size={"xs"} />}
           </Text>
         </Flex>
