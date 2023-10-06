@@ -109,14 +109,14 @@ export default function HomeView() {
     setProfile(data);
   }
 
-  const [foto, setFoto] = useAtom(gs_fotoProfile);
-  useShallowEffect(() => {
-    if (profile?.imagesId === undefined) {
-      return myConsole("Waiting data");
-    } else {
-      getFotoProfile(profile?.imagesId).then((v) => setFoto(v?.url));
-    }
-  }, [profile?.imagesId]);
+  // const [foto, setFoto] = useAtom(gs_fotoProfile);
+  // useShallowEffect(() => {
+  //   if (profile?.imagesId === undefined) {
+  //     return myConsole("Waiting data");
+  //   } else {
+  //     getFotoProfile(profile?.imagesId).then((v) => setFoto(v?.url));
+  //   }
+  // }, [profile?.imagesId]);
 
   
   // const [listPorto, setListPorto] = useAtom(gs_ListPortofolio);
