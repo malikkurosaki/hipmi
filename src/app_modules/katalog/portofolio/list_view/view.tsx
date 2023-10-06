@@ -9,6 +9,7 @@ import { loadDataProfile } from "../../profile/fun/fun_get_profile";
 import { useAtom } from "jotai";
 import { gs_profile } from "../../profile/state/global_state";
 import getListPortofolio from "../api/get-portofolio";
+import { gs_ListPortofolio } from "../state/global_state";
 
 export default function PortofolioView({
   profileId,
@@ -22,7 +23,7 @@ export default function PortofolioView({
     loadDataProfile(setProfile);
   }, []);
 
-  const [listPorto, setListPorto] = useState<any | null>(porto);
+  const [listPorto, setListPorto] = useAtom(gs_ListPortofolio)
   useShallowEffect(() => {
     loadListPortofolio(profile?.id).then((res) => setListPorto(res));
   }, [profile?.id]);

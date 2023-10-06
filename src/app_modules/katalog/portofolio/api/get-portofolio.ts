@@ -4,13 +4,12 @@ import { myConsole } from "@/app/fun/my_console";
 import prisma from "@/app/lib/prisma";
 
 /**
- * 
+ *
  * @param id - profileId
  * @returns list portofolio by Id
  */
 export default async function getListPortofolio(id: string) {
-  myConsole(id);
-  
+  // myConsole(id);
 
   const data = await prisma.katalog.findMany({
     where: {
@@ -26,9 +25,9 @@ export default async function getListPortofolio(id: string) {
       masterBidangBisnisId: true,
     },
   });
-  
+
   if (!data) {
-    throw new Error('Failed to fetch data')
+    throw new Error("Failed to fetch data");
   }
 
   return data;
