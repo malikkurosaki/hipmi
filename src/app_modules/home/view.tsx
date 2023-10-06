@@ -148,7 +148,7 @@ export default function HomeView() {
           </ActionIcon>
 
           <Text>
-            Welcome to,{" "}
+            Welcome to I ,{" "}
             {token?.username ? token?.username : <Loader size={"xs"} />}
           </Text>
         </Flex>
