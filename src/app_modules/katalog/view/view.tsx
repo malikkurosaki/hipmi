@@ -33,13 +33,14 @@ import { loadDataProfile } from "../profile/fun/fun_get_profile";
 import { getFotoProfile } from "../profile/api/get-foto-profile";
 import { ApiHipmi } from "@/app/lib/api";
 import { PortofolioView } from "../portofolio";
+import { User } from "@prisma/client";
+import { USER_PROFILE } from "@/app_modules/models/user_profile";
 
-export default function KatalogView({ data, porto }: { data: any, porto: any }) {
+export default function KatalogView({ user }: { user: USER_PROFILE }) {
   return (
     <>
-    
-      <ProfileView data={data} />
-      <PortofolioView profileId={data.id} porto={porto}/>
+      <ProfileView user={user} />
+      <PortofolioView />
     </>
   );
 }

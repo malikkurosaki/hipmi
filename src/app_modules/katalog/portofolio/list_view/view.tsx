@@ -10,24 +10,23 @@ import { useAtom } from "jotai";
 import { gs_profile } from "../../profile/state/global_state";
 import getListPortofolio from "../api/get-portofolio";
 import { gs_ListPortofolio } from "../state/global_state";
+import { myConsole } from "@/app/fun/my_console";
+import { getProfile } from "../../profile";
 
-export default function PortofolioView({
-  profileId,
-  porto,
-}: {
-  profileId: any;
-  porto: any;
-}) {
+export default function PortofolioView() {
   const [profile, setProfile] = useAtom(gs_profile);
   useShallowEffect(() => {
-    loadDataProfile(setProfile);
+    loadProfile();
   }, []);
-
-  const [listPorto, setListPorto] = useAtom(gs_ListPortofolio)
+  async function loadProfile() {
+    const get = await getProfile();
+    if (!get) return myConsole("Data Kosong");
+    setProfile(get);
+  }
+  const [listPorto, setListPorto] = useAtom(gs_ListPortofolio);
   useShallowEffect(() => {
     loadListPortofolio(profile?.id).then((res) => setListPorto(res));
   }, [profile?.id]);
-
 
   return (
     <>
@@ -37,13 +36,13 @@ export default function PortofolioView({
       <Center>
         <Title order={4}>Portofolio</Title>
       </Center>
-      <Box mt={"md"} >
+      <Box mt={"md"}>
         {(() => {
           if (listPorto) {
             return (
               <>
                 {_.map(listPorto).map((e: any) => (
-                  <Paper key={e.id} h={50} bg={"gray"} my={"md"} >
+                  <Paper key={e.id} h={50} bg={"gray"} my={"md"}>
                     <Grid h={50} align="center" px={"md"}>
                       <Grid.Col span={10}>
                         <Text fw={"bold"}>{e.namaBisnis}</Text>

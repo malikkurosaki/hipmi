@@ -31,25 +31,39 @@ import { ApiHipmi } from "@/app/lib/api";
 import { loadDataProfile } from "../fun/fun_get_profile";
 import { getFotoProfile } from "../api/get-foto-profile";
 import { gs_fotoProfile, gs_profile } from "../state/global_state";
+import { getProfile } from "..";
+import { USER_PROFILE } from "@/app_modules/models/user_profile";
+import { funGetUserProfile } from "@/app_modules/fun/get_user_profile";
 
-export default function ProfileView({ data }: { data: any }) {
+export default function ProfileView({ user }: { user: USER_PROFILE }) {
   const router = useRouter();
+  const [stateUser, setStateUser] = useState(user);
 
   //Get data profile
   const [profile, setProfile] = useAtom(gs_profile);
   useShallowEffect(() => {
-    loadDataProfile(setProfile);
+    loadProfile();
   }, []);
+  async function loadProfile() {
+    const get = await getProfile();
+    if (!get) return myConsole("Data Kosong");
+    setProfile(get);
+  }
 
   const [foto, setFoto] = useAtom(gs_fotoProfile);
-  useShallowEffect(() => {
-    if (profile?.imagesId === undefined) {
-      return myConsole("Waiting data");
-    } else {
-      getFotoProfile(profile?.imagesId).then((v) => setFoto(v?.url));
-    }
-  }, [profile?.imagesId]);
+  // useShallowEffect(() => {
+  //   if (profile?.imagesId === undefined) {
+  //     return myConsole("Waiting data");
+  //   } else {
+  //     getFotoProfile(profile?.imagesId).then((v) => setFoto(v?.url));
+  //   }
+  // }, [profile?.imagesId]);
 
+  useShallowEffect(() => {
+    funGetUserProfile(user.id ?? "").then(setStateUser as any);
+  }, []);
+
+  if (!stateUser) return <></>;
   return (
     <>
       {/* {JSON.stringify(data)} */}
@@ -74,18 +88,21 @@ export default function ProfileView({ data }: { data: any }) {
             }}
           >
             <Center h={101}>
-              <Image
-                src={ApiHipmi.get_foto + foto ?? ""}
-                alt=""
-                radius={100}
-                width={100}
-                height={100}
-                sx={
-                  {
-                    // position: "fixed",
+              {/* {stateUser.Profile?.ImageProfile?.url} */}
+              {stateUser.Profile?.ImageProfile?.url && (
+                <Image
+                  src={"/img/" + stateUser.Profile?.ImageProfile?.url}
+                  alt=""
+                  radius={100}
+                  width={100}
+                  height={100}
+                  sx={
+                    {
+                      // position: "fixed",
+                    }
                   }
-                }
-              />
+                />
+              )}
             </Center>
           </Paper>
         </Center>

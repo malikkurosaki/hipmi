@@ -4,22 +4,23 @@ import { unsealData } from "iron-session";
 import _ from "lodash";
 import { redirect } from "next/navigation";
 
+import yaml from "yaml";
+import fs from "fs";
+const config = yaml.parse(fs.readFileSync("config.yaml").toString());
+
 export default async function Page() {
   const c = cookies().get("ssn");
-  // const tkn = !c
-  //   ? null
-  //   : JSON.parse(
-  //       await unsealData(c.value as string, {
-  //         password: process.env.PWD as string,
-  //       })
-  //     );
 
-  // if (!c?.value) return redirect("/dev/auth/login");
+  if (!c?.value) return redirect("/dev/auth/login");
+  const usr = JSON.parse(
+    await unsealData(c?.value as string, {
+      password: config.server.password,
+    })
+  );
 
   return (
     <>
-      {/* {JSON.stringify(tkn)} */}
-      <HomeView />
+      <HomeView user={usr} />
     </>
   );
 }

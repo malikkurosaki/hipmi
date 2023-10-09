@@ -6,6 +6,7 @@ import { sealData, unsealData } from "iron-session";
 import { getConfig } from "@/bin/config";
 import yaml from "yaml";
 import fs from "fs";
+import { revalidatePath } from "next/cache";
 const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
 export async function POST(req: Request) {
@@ -46,6 +47,8 @@ export async function POST(req: Request) {
         value: res,
         maxAge: 60 * 60 * 24 * 7,
       });
+
+      revalidatePath("/dev/home")
 
       return NextResponse.json({ status: 200, data });
     }

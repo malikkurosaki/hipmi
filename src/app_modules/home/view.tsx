@@ -45,6 +45,8 @@ import { gs_ListPortofolio } from "../katalog/portofolio/state/global_state";
 import { myConsole } from "@/app/fun/my_console";
 import { getFotoProfile } from "../katalog/profile/api/get-foto-profile";
 import getListPortofolio from "../katalog/portofolio/api/get-portofolio";
+import { funGetUserProfile } from "../fun/get_user_profile";
+import { USER_PROFILE } from "../models/user_profile";
 
 const listHalaman = [
   {
@@ -89,63 +91,43 @@ const listHalaman = [
   },
 ];
 
-export default function HomeView() {
+// export const dynamic = "force-dynamic"
+// export const revalidate = 0
+
+export default function HomeView({ user }: { user: USER_PROFILE }) {
   const router = useRouter();
+  const [stateUser, setStateUser] = useState(user);
 
-  const [token, setToken] = useAtom(gs_token);
-  useShallowEffect(() => {
-    getUserId();
-  }, []);
-  async function getUserId() {
-    const get = await getToken();
-    if(!get) return myConsole("Data Kosong")
-    setToken(get);
-  }
-
-  const [profile, setProfile] = useAtom(gs_profile);
-  useShallowEffect(() => {
-    loadProfile();
-  }, []);
-  async function loadProfile() {
-    const get = await getProfile();
-    if(!get) return myConsole("Data Kosong")
-    setProfile(get);
-  }
-
-  const [foto, setFoto] = useAtom(gs_fotoProfile);
-  useShallowEffect(() => {
-    getFoto(profile?.imagesId);
-  }, [profile?.imagesId]);
-
-  async function getFoto(id: string) {
-    if(id === undefined){
-      return myConsole("Waiting data")
-    } else {
-      const data = await getFotoProfile(id);
-      setFoto(data?.url);
-    }
-  }
-
-  // const [listPorto, setListPorto] = useAtom(gs_ListPortofolio);
+  // const [token, setToken] = useAtom(gs_token);
   // useShallowEffect(() => {
-  //   getListPorto(profile?.id);
-  // }, [profile?.id]);
-  // async function getListPorto(id: string) {
-  //   const data = await getListPortofolio(id);
-  //   setListPorto(data);
+  //   getUserId();
+  // }, []);
+  // async function getUserId() {
+  //   const get = await getToken();
+  //   if (!get) return myConsole("Data Kosong");
+  //   setToken(get);
+  // }
+
+  // const [profile, setProfile] = useAtom(gs_profile);
+  // useShallowEffect(() => {
+  //   loadProfile();
+  // }, []);
+  // async function loadProfile() {
+  //   const get = await getProfile();
+  //   if (!get) return myConsole("Data Kosong");
+  //   setProfile(get);
   // }
 
   return (
     <>
-      {/* <pre>{JSON.stringify(foto, null, 2)}</pre> */}
-      <Center><Image src={ApiHipmi.get_foto + foto ?? ""} alt="" height={100} width={100}/></Center>
+      {/* <Center><Image src={ApiHipmi.get_foto + foto ?? ""} alt="" height={100} width={100}/></Center> */}
       <Box>
         <Flex align={"center"} gap={"sm"}>
           <ActionIcon
             size={30}
             variant="transparent"
             onClick={() => {
-              if (profile === null) {
+              if (stateUser.Profile === null) {
                 return router.push("/dev/katalog/profile/create");
               } else {
                 return router.push("/dev/katalog/view");
@@ -156,13 +138,17 @@ export default function HomeView() {
           </ActionIcon>
 
           <Text>
-            Welcome to I,{" "}
-            {token?.username ? token?.username : <Loader size={"xs"} />}
+            Welcome to ,{" "}
+            {stateUser.username ? stateUser.username : <Loader size={"xs"} />}
           </Text>
         </Flex>
+
         <Paper bg={"dark"} radius={5} my={"xs"}>
           <Image alt="logo" src={"/aset/logo.png"} />
         </Paper>
+
+        {/* <pre>{JSON.stringify(stateUser, null, 2)}</pre> */}
+
         <Box my={"sm"}>
           <SimpleGrid cols={2}>
             {listHalaman.map((e, i) => (
