@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 export async function funGetUserProfile(userId: string) {
   const user = await prisma.user.findUnique({
     where: {
-      id: userId,
+      id: userId
     },
     select: {
       id: true,
