@@ -40,11 +40,9 @@ import {
   gs_fotoProfile,
   gs_profile,
 } from "../katalog/profile/state/global_state";
-import { loadListPortofolio } from "../katalog/portofolio/fun/fun_get_all_portofolio";
 import { gs_ListPortofolio } from "../katalog/portofolio/state/global_state";
 import { myConsole } from "@/app/fun/my_console";
 import { getFotoProfile } from "../katalog/profile/api/get-foto-profile";
-import getListPortofolio from "../katalog/portofolio/api/get-portofolio";
 import { funGetUserProfile } from "../fun/get_user_profile";
 import { USER_PROFILE } from "../models/user_profile";
 
@@ -128,7 +126,7 @@ export default function HomeView({ user }: { user: USER_PROFILE }) {
             variant="transparent"
             onClick={() => {
               if (stateUser.Profile === null) {
-                return router.push("/dev/katalog/profile/create");
+                return router.push("/dev/profile/create");
               } else {
                 return router.push("/dev/katalog/view");
               }

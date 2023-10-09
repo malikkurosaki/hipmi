@@ -38,27 +38,6 @@ import { funGetUserProfile } from "@/app_modules/fun/get_user_profile";
 export default function ProfileView({ user }: { user: USER_PROFILE }) {
   const router = useRouter();
   const [stateUser, setStateUser] = useState(user);
-
-  //Get data profile
-  const [profile, setProfile] = useAtom(gs_profile);
-  useShallowEffect(() => {
-    loadProfile();
-  }, []);
-  async function loadProfile() {
-    const get = await getProfile();
-    if (!get) return myConsole("Data Kosong");
-    setProfile(get);
-  }
-
-  const [foto, setFoto] = useAtom(gs_fotoProfile);
-  // useShallowEffect(() => {
-  //   if (profile?.imagesId === undefined) {
-  //     return myConsole("Waiting data");
-  //   } else {
-  //     getFotoProfile(profile?.imagesId).then((v) => setFoto(v?.url));
-  //   }
-  // }, [profile?.imagesId]);
-
   useShallowEffect(() => {
     funGetUserProfile(user.id ?? "").then(setStateUser as any);
   }, []);
@@ -114,7 +93,7 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
             variant="transparent"
             bg={"gray"}
             radius={50}
-            onClick={() => router.push("/dev/katalog/profile/upload")}
+            onClick={() => router.push("/dev/profile/upload")}
             sx={{ position: "relative" }}
           >
             <IconCamera color="black" size={20} />
@@ -126,14 +105,14 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
       <Group position="apart">
         <Flex direction={"column"} mt={"lg"}>
           <Text fz={"lg"} fw={"bold"}>
-            {profile?.name}
+            {stateUser.Profile?.name}
           </Text>
-          <Text fz={"xs"}>@{profile?.User?.username}</Text>
+          <Text fz={"xs"}>@{stateUser.username}</Text>
         </Flex>
         <ActionIcon
           variant="transparent"
           onClick={() => {
-            router.push("/dev/katalog/profile/edit");
+            router.push("/dev/profile/edit");
           }}
         >
           <IconEditCircle color={Warna.hijau_muda} size={20} />
@@ -149,7 +128,7 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
           <Grid.Col span={"auto"}>
             <Text>
               {" "}
-              <Text>+{profile?.User.nomor}</Text>
+              <Text>+{stateUser.nomor}</Text>
             </Text>
           </Grid.Col>
         </Grid>
@@ -161,7 +140,7 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
           <Grid.Col span={"auto"}>
             <Text>
               {" "}
-              <Text> {profile?.email}</Text>
+              <Text> {stateUser.Profile?.email}</Text>
             </Text>
           </Grid.Col>
         </Grid>
@@ -171,12 +150,12 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
             <IconHome />
           </Grid.Col>
           <Grid.Col span={"auto"}>
-            <Text> {profile?.alamat}</Text>
+            <Text> {stateUser.Profile?.alamat}</Text>
           </Grid.Col>
         </Grid>
 
         {(() => {
-          if (profile?.jenisKelamin === "Laki - laki") {
+          if (stateUser.Profile?.jenisKelamin === "Laki - laki") {
             return (
               <>
                 <Grid>
@@ -184,7 +163,7 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
                     <IconGenderMale />
                   </Grid.Col>
                   <Grid.Col span={"auto"}>
-                    <Text> {profile?.jenisKelamin}</Text>
+                    <Text> {stateUser.Profile?.jenisKelamin}</Text>
                   </Grid.Col>
                 </Grid>
               </>
@@ -197,7 +176,7 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
                     <IconGenderFemale />
                   </Grid.Col>
                   <Grid.Col span={"auto"}>
-                    <Text> {profile?.jenisKelamin}</Text>
+                    <Text> {stateUser.Profile?.jenisKelamin}</Text>
                   </Grid.Col>
                 </Grid>
               </>

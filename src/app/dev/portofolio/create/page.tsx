@@ -1,6 +1,6 @@
 import { myConsole } from "@/app/fun/my_console";
 import { CreatePortofolio } from "@/app_modules/katalog/portofolio";
-import { getBidangBisnis } from "@/app_modules/katalog/portofolio/api/get-bidang-bisnis";
+import { getBidangBisnis } from "@/app_modules/katalog/portofolio/fun/get_list_bidang_bisnis";
 import { getProfile } from "@/app_modules/katalog/profile";
 
 export default async function Page() {
@@ -10,7 +10,6 @@ export default async function Page() {
 
   return (
     <>
-    {JSON.stringify(profileId)}
       <CreatePortofolio data={bidangBisnis} profileId={profileId} />
     </>
   );

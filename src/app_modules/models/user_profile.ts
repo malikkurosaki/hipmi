@@ -3,6 +3,7 @@ export interface USER_PROFILE {
   username: string;
   nomor: string;
   Profile: {
+    id: string;
     alamat: string;
     email: string;
     jenisKelamin: string;

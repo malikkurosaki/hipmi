@@ -13,6 +13,7 @@ export async function funGetUserProfile(userId: string) {
       nomor: true,
       Profile: {
         select: {
+          id: true,
           alamat: true,
           email: true,
           jenisKelamin: true,

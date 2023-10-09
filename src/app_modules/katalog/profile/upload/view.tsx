@@ -10,27 +10,15 @@ import { useState } from "react";
 import { ApiHipmi } from "@/app/lib/api";
 import { myConsole } from "@/app/fun/my_console";
 
-export default function UploadFotoProfile() {
-  const [profile, setProfile] = useAtom(gs_profile);
-  useShallowEffect(() => {
-    loadDataProfile(setProfile);
-  }, []);
-
-  const [foto, setFoto] = useAtom(gs_fotoProfile)
-  useShallowEffect(() => {
-    if (profile?.imagesId === undefined || profile?.imagesId === null) {
-      myConsole("Waiting data");
-    } else {
-      getFotoProfile(profile?.imagesId).then((res) => setFoto(res?.url));
-    }
-  }, [profile?.imagesId]);
+export default function UploadFotoProfile({imageUrl}: {imageUrl: any}) {
+  const [img, setImg] = useState(imageUrl)
 
   return (
     <>
     {/* {JSON.stringify(foto)} */}
       <AspectRatio ratio={1 / 1} >
        <Paper  p={"lg"} shadow="xl">
-       {foto ? <Image alt="" src={ApiHipmi.get_foto + `${foto}`} /> : <Image alt="" src={"/aset/avatar.png"} />}
+       {img ? <Image alt="" src={`/img/${img}`} /> : <Image alt="" src={"/aset/avatar.png"} />}
        </Paper>
       </AspectRatio>
       {/* {JSON.stringify(profile)} */}

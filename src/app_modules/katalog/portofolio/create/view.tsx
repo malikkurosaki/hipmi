@@ -58,7 +58,7 @@ export default function CreatePortofolio({
 
   return (
     <>
-      {/* {JSON.stringify(data)} */}
+
       <Stack px={"sm"}>
         <TextInput
           label="Nama Bisnis"
