@@ -70,7 +70,7 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
               {/* {stateUser.Profile?.ImageProfile?.url} */}
               {stateUser.Profile?.ImageProfile?.url && (
                 <Image
-                  src={"/img/" + stateUser.Profile?.ImageProfile?.url}
+                  src={ApiHipmi.get_foto + stateUser.Profile?.ImageProfile?.url}
                   alt=""
                   radius={100}
                   width={100}
