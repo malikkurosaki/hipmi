@@ -18,6 +18,7 @@ import { IconCircleLetterH } from "@tabler/icons-react";
 import toast from "react-simple-toasts";
 import { ApiHipmi } from "@/app/lib/api";
 import { useRouter } from "next/navigation";
+import { funGetUserProfile } from "@/app_modules/fun/get_user_profile";
 
 export default function Validasi() {
   const router = useRouter();
@@ -48,7 +49,8 @@ export default function Validasi() {
         myConsole(val);
         if (val.status == 200) {
           toast("Berhasil Login");
-          return router.push("/dev/home");
+          setTimeout(() => router.push("/dev/home"), 2000);
+          funGetUserProfile(val.data.id);
         } else {
           toast("Silahkan Registrasi");
           return router.push("/dev/auth/register");

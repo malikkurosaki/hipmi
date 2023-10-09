@@ -5,7 +5,7 @@ import EditProfileLayout from "./edit/layout";
 import EditProfileView from "./edit/view";
 import UploadFotoProfile from "./upload/view";
 import UploadFotoProfileLayout from "./upload/layout"
-import ProfileView from "./view/view";
+import ProfileView from "./main/view";
 
 export {
   ProfileLayout,

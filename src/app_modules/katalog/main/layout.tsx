@@ -25,7 +25,7 @@ export default function KatalogLayout({ children }: { children: any }) {
                Katalog
               </Text>
               <Group spacing={"sm"}>
-                <ActionIcon variant="transparent" onClick={() => router.push("/dev/katalog/portofolio/create")}>
+                <ActionIcon variant="transparent" onClick={() => router.push("/dev/portofolio/create")}>
                   <IconPencilPlus />
                 </ActionIcon>
                 {/* <Logout /> */}

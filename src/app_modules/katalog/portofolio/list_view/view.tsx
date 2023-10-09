@@ -2,48 +2,37 @@
 import { Box, Center, Grid, Paper, Text, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useState } from "react";
-import { loadListPortofolio } from "../fun/fun_get_all_portofolio";
 import _ from "lodash";
 import { IconCaretRightFilled } from "@tabler/icons-react";
 import { loadDataProfile } from "../../profile/fun/fun_get_profile";
 import { useAtom } from "jotai";
 import { gs_profile } from "../../profile/state/global_state";
-import getListPortofolio from "../api/get-portofolio";
 import { gs_ListPortofolio } from "../state/global_state";
+import { myConsole } from "@/app/fun/my_console";
+import { getProfile } from "../../profile";
+import { LIST_PORTOFOLIO } from "@/app_modules/models/portofolio";
 
-export default function PortofolioView({
-  profileId,
-  porto,
+export default function ListPortofolioView({
+  listPorto,
 }: {
-  profileId: any;
-  porto: any;
+  listPorto: LIST_PORTOFOLIO;
 }) {
-  const [profile, setProfile] = useAtom(gs_profile);
-  useShallowEffect(() => {
-    loadDataProfile(setProfile);
-  }, []);
-
-  const [listPorto, setListPorto] = useAtom(gs_ListPortofolio)
-  useShallowEffect(() => {
-    loadListPortofolio(profile?.id).then((res) => setListPorto(res));
-  }, [profile?.id]);
-
+  const [porto, setPorto] = useState(listPorto);
 
   return (
     <>
-      {/* {JSON.stringify(profile.id)}
-      <br />
-      {JSON.stringify(listPorto)} */}
+      {/* <pre>{JSON.stringify(porto, null, 2)}</pre> */}
       <Center>
         <Title order={4}>Portofolio</Title>
       </Center>
-      <Box mt={"md"} >
+      <Box mt={"md"}>
         {(() => {
-          if (listPorto) {
+          if (porto) {
             return (
               <>
-                {_.map(listPorto).map((e: any) => (
-                  <Paper key={e.id} h={50} bg={"gray"} my={"md"} >
+                {" "}
+                {_.map(porto as any).map((e: any) => (
+                  <Paper key={e.id} h={50} bg={"gray"} my={"md"}>
                     <Grid h={50} align="center" px={"md"}>
                       <Grid.Col span={10}>
                         <Text fw={"bold"}>{e.namaBisnis}</Text>

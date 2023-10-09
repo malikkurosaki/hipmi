@@ -1,4 +1,4 @@
-import { KatalogLayout } from "@/app_modules/katalog/view";
+import { KatalogLayout } from "@/app_modules/katalog/main";
 
 export default async function Layout({ children }: { children: any }) {
   return (
