@@ -45,7 +45,7 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
   if (!stateUser) return <></>;
   return (
     <>
-      {JSON.stringify(stateUser)}
+      {/* {JSON.stringify(stateUser)} */}
       {/* Background dan foto */}
       <Box>
         <Paper bg={"gray"} p={"md"}>
