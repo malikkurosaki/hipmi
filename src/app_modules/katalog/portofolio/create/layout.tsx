@@ -4,7 +4,7 @@ import { ActionIcon, AppShell, Group, Header, Text } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
-export default function PortofolioLayout({ children }: { children: any }) {
+export default function CreatePortofolioLayout({ children }: { children: any }) {
   const router = useRouter();
   return (
     <>

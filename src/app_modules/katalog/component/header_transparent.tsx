@@ -2,22 +2,28 @@
 
 import { Header, Group, ActionIcon, Text } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 import React from "react";
 
-export default function headerTransparent({
-  icon1,
+export default function HeaderTransparent({
+  route,
   icon2,
   title,
 }: {
-  icon1: React.ReactNode;
-  icon2: React.ReactNode;
+  route: any;
+  icon2: any;
   title: string;
 }) {
+  const router = useRouter();
   return (
     <>
+
       <Header height={50} px={"sm"}>
         <Group position="apart" h={50}>
-          {icon1}
+          <ActionIcon variant="transparent" onClick={() => router.push(route)}>
+            <IconArrowLeft />
+          </ActionIcon>
+
           <Text>{title}</Text>
           {icon2}
         </Group>

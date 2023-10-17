@@ -3,6 +3,7 @@
 import { myConsole } from "@/app/fun/my_console";
 import { ApiHipmi } from "@/app/lib/api";
 import { Warna } from "@/app/lib/warna";
+import { BIDANG_BISNIS } from "@/app_modules/models/portofolio";
 import { Button, Select, Stack, TextInput, Title } from "@mantine/core";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
@@ -10,10 +11,10 @@ import { useState } from "react";
 import toast from "react-simple-toasts";
 
 export default function CreatePortofolio({
-  data,
+  bidangBisnis,
   profileId,
 }: {
-  data: any;
+  bidangBisnis: BIDANG_BISNIS;
   profileId: any;
 }) {
   const router = useRouter();
@@ -46,7 +47,7 @@ export default function CreatePortofolio({
     })
       .then((res) => res.json())
       .then((val) => {
-        myConsole(val)
+        myConsole(val);
         if (val.status == 201) {
           toast("Berhasil disimpan");
           return router.push("/dev/katalog/view");
@@ -58,6 +59,7 @@ export default function CreatePortofolio({
 
   return (
     <>
+      {/* {JSON.stringify(bidangBisnis)} */}
 
       <Stack px={"sm"}>
         <TextInput
@@ -71,7 +73,10 @@ export default function CreatePortofolio({
         />
         <Select
           label="Bidang Bisnis"
-          data={_.map(data).map((e: any) => ({ label: e.name, value: e.id }))}
+          data={_.map(bidangBisnis as any).map((e : any) => ({
+            value: e.id,
+            label: e.name,
+          }))}
           onChange={(val) => {
             setValue({
               ...value,
