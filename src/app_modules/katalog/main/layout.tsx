@@ -5,7 +5,7 @@ import { ActionIcon, AppShell, Group, Header, Text } from "@mantine/core";
 import { IconUserSearch, IconAward, IconQrcode, IconArrowLeft, IconPencilPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
-export default function KatalogLayout({ children }: { children: any }) {
+export default function KatalogLayout({ children, profileId }: { children: any, profileId: any }) {
     const router = useRouter()
   return (
     <>
@@ -25,7 +25,7 @@ export default function KatalogLayout({ children }: { children: any }) {
                Katalog
               </Text>
               <Group spacing={"sm"}>
-                <ActionIcon variant="transparent" onClick={() => router.push("/dev/portofolio/create")}>
+                <ActionIcon variant="transparent" onClick={() => router.push(`/dev/portofolio/create/${profileId}`)}>
                   <IconPencilPlus />
                 </ActionIcon>
                 {/* <Logout /> */}

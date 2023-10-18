@@ -10,6 +10,7 @@ import { myConsole } from "@/app/fun/my_console";
 import toast from "react-simple-toasts";
 import { ApiHipmi } from "@/app/lib/api";
 import { useRouter } from "next/navigation";
+import _ from "lodash";
 
 export default function Register() {
   const route = useRouter();
@@ -20,7 +21,7 @@ export default function Register() {
     myConsole(value);
 
     const body = {
-      username: value,
+      username: _.lowerCase(value),
       nomor: nomor,
     };
 

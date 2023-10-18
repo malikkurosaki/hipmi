@@ -12,9 +12,10 @@ export async function funGetListPortofolio(profileId: any) {
       namaBisnis: true,
       alamatKantor: true,
       tlpn: true,
-      deskripssi: true,
+      deskripsi: true,
       masterBidangBisnisId: true,
       active: true,
+      profileId: true
     },
   });
 

@@ -4,7 +4,7 @@ import { myConsole } from "@/app/fun/my_console";
 import { ApiHipmi } from "@/app/lib/api";
 import { Warna } from "@/app/lib/warna";
 import { gs_token } from "@/app_modules/home/state/global_state";
-import { Button, Select, Stack, TextInput } from "@mantine/core";
+import { Button, Loader, Select, Stack, TextInput } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import _ from "lodash";
@@ -13,57 +13,53 @@ import { useState } from "react";
 import toast from "react-simple-toasts";
 import { gs_profile } from "../state/global_state";
 import { loadDataProfile } from "../fun/fun_get_profile";
+import { USER_PROFILE } from "@/app_modules/models/user_profile";
+import funEditProfile from "../fun/fun_edit_profile";
 
-export default function EditProfile({ data }: { data: any }) {
+export default function EditProfile({ data }: { data: USER_PROFILE }) {
   const router = useRouter();
 
   //Get data profile
-  const [profile, setProfile] = useAtom(gs_profile)
-  useShallowEffect(() => {
-    loadDataProfile(setProfile);
-  }, []);
+  const [dataProfile, setDataProfile] = useState(data);
 
   async function onUpdate() {
-    const body = profile;
+    const body = dataProfile;
     if (_.values(body).includes("")) return toast("Lengkapi data");
 
-    await fetch(ApiHipmi.edit_profile, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    })
-      .then((res) => res.json())
-      .then((val) => {
-        myConsole(val);
-        if (val.status == 200) {
-          toast("Data tersimpan");
-          loadDataProfile(setProfile)
-          return setTimeout(() => router.push("/dev/katalog/view"), 1000);
-        } else {
-          return toast("Gagal update !!!");
-        }
-      });
+    await funEditProfile(body).then((res) => {
+      if (res.status === 200) {
+        toast("Update berhasil");
+        setTimeout(() => router.push(`/dev/katalog/${data.Profile?.id}`), 1000);
+      } else {
+        toast("Gagal update");
+      }
+    });
   }
 
-  if(!profile) return <></>
+  if (!dataProfile)
+    return (
+      <>
+        <Loader />
+      </>
+    );
 
   return (
     <>
-      {/* {JSON.stringify(profile)} */}
       <Stack px={"sm"}>
-        <TextInput label="Username" disabled value={profile?.User.username} />
-        <TextInput label="Nomor" disabled value={profile?.User.nomor} />
+        <TextInput label="Username" disabled value={dataProfile.username} />
+        <TextInput label="Nomor" disabled value={dataProfile.nomor} />
 
         <TextInput
           label="Nama"
           placeholder="username"
-          value={profile?.name}
+          value={dataProfile.Profile?.name}
           onChange={(val) => {
-            setProfile({
-              ...profile,
-              name: val.target.value,
+            setDataProfile({
+              ...(dataProfile as any),
+              Profile: {
+                ...dataProfile.Profile,
+                name: val.target.value,
+              },
             });
           }}
         />
@@ -71,12 +67,14 @@ export default function EditProfile({ data }: { data: any }) {
         <TextInput
           label="Email"
           placeholder="email"
-          value={profile?.email}
+          value={dataProfile.Profile?.email}
           onChange={(val) => {
-            myConsole(val.target.value);
-            setProfile({
-              ...profile,
-              email: val.target.value,
+            setDataProfile({
+              ...(dataProfile as any),
+              Profile: {
+                ...dataProfile.Profile,
+                email: val.target.value,
+              },
             });
           }}
         />
@@ -84,27 +82,32 @@ export default function EditProfile({ data }: { data: any }) {
         <TextInput
           label="Alamat"
           placeholder="alamat"
-          value={profile?.alamat}
+          value={dataProfile.Profile?.alamat}
           onChange={(val) => {
-            myConsole(val.target.value);
-            setProfile({
-              ...profile,
-              alamat: val.target.value,
+            setDataProfile({
+              ...(dataProfile as any),
+              Profile: {
+                ...dataProfile.Profile,
+                alamat: val.target.value,
+              },
             });
           }}
         />
 
         <Select
           label="Jenis Kelamin"
-          value={profile?.jenisKelamin}
+          value={dataProfile.Profile?.jenisKelamin}
           data={[
             { value: "Laki-laki", label: "Laki-laki" },
             { value: "Perempuan", label: "Perempuan" },
           ]}
           onChange={(val) => {
-            setProfile({
-              ...profile,
-              jenisKelamin: val as string,
+            setDataProfile({
+              ...(dataProfile as any),
+              Profile: {
+                ...dataProfile.Profile,
+                jenisKelamin: val,
+              },
             });
           }}
         />
@@ -119,6 +122,8 @@ export default function EditProfile({ data }: { data: any }) {
           Update
         </Button>
       </Stack>
+
+      {/* <pre>{JSON.stringify(dataProfile, null, 2)}</pre> */}
     </>
   );
 }

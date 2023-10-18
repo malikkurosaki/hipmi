@@ -45,7 +45,6 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
   if (!stateUser) return <></>;
   return (
     <>
-      {/* {JSON.stringify(stateUser)} */}
       {/* Background dan foto */}
       <Box>
         <Paper bg={"gray"} p={"md"}>
@@ -67,7 +66,6 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
             }}
           >
             <Center h={101}>
-              {/* {stateUser.Profile?.ImageProfile?.url} */}
               {stateUser.Profile?.ImageProfile?.url && (
                 <Image
                   src={ApiHipmi.get_foto + stateUser.Profile?.ImageProfile?.url}
@@ -75,11 +73,6 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
                   radius={100}
                   width={100}
                   height={100}
-                  sx={
-                    {
-                      // position: "fixed",
-                    }
-                  }
                 />
               )}
             </Center>
@@ -93,7 +86,7 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
             variant="transparent"
             bg={"gray"}
             radius={50}
-            onClick={() => router.push("/dev/profile/upload")}
+            onClick={() => router.push(`/dev/profile/upload/${stateUser.Profile?.id}`)}
             sx={{ position: "relative" }}
           >
             <IconCamera color="black" size={20} />
@@ -112,7 +105,7 @@ export default function ProfileView({ user }: { user: USER_PROFILE }) {
         <ActionIcon
           variant="transparent"
           onClick={() => {
-            router.push("/dev/profile/edit");
+            router.push(`/dev/profile/edit/${stateUser.id}`);
           }}
         >
           <IconEditCircle color={Warna.hijau_muda} size={20} />

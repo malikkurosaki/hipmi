@@ -3,17 +3,19 @@
 import { myConsole } from "@/app/fun/my_console";
 import { ApiHipmi } from "@/app/lib/api";
 import { Warna } from "@/app/lib/warna";
+import { BIDANG_BISNIS } from "@/app_modules/models/portofolio";
 import { Button, Select, Stack, TextInput, Title } from "@mantine/core";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-simple-toasts";
+import funCreatePortofolio from "../fun/fun_create_portofolio";
 
 export default function CreatePortofolio({
-  data,
+  bidangBisnis,
   profileId,
 }: {
-  data: any;
+  bidangBisnis: BIDANG_BISNIS;
   profileId: any;
 }) {
   const router = useRouter();
@@ -22,7 +24,7 @@ export default function CreatePortofolio({
     bidangBisnisId: "",
     alamatKantor: "",
     tlpn: "",
-    deskripssi: "",
+    deskripsi: "",
   });
 
   async function onSubmit() {
@@ -32,32 +34,24 @@ export default function CreatePortofolio({
       masterBidangBisnisId: value.bidangBisnisId,
       alamatKantor: value.alamatKantor,
       tlpn: value.tlpn,
-      deskripssi: value.deskripssi,
+      deskripsi: value.deskripsi,
     };
 
     if (_.values(body).includes("")) return toast("Lengkapi Data");
 
-    await fetch(ApiHipmi.create_portofolio, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    })
-      .then((res) => res.json())
-      .then((val) => {
-        myConsole(val)
-        if (val.status == 201) {
-          toast("Berhasil disimpan");
-          return router.push("/dev/katalog/view");
-        } else {
-          return toast("Gagal disimpa");
-        }
-      });
+    await funCreatePortofolio(body as any).then((res) => {
+      if (res.status === 201) {
+        toast("Berhasil disimpan");
+        return setTimeout(() => router.push(`/dev/katalog/${profileId}`), 1000)
+      } else {
+        return toast("Gagal disimpan");
+      }
+    });
   }
 
   return (
     <>
+      {/* {JSON.stringify(profileId)} */}
 
       <Stack px={"sm"}>
         <TextInput
@@ -71,7 +65,10 @@ export default function CreatePortofolio({
         />
         <Select
           label="Bidang Bisnis"
-          data={_.map(data).map((e: any) => ({ label: e.name, value: e.id }))}
+          data={_.map(bidangBisnis as any).map((e: any) => ({
+            value: e.id,
+            label: e.name,
+          }))}
           onChange={(val) => {
             setValue({
               ...value,
@@ -103,7 +100,7 @@ export default function CreatePortofolio({
           onChange={(val) => {
             setValue({
               ...value,
-              deskripssi: val.target.value,
+              deskripsi: val.target.value,
             });
           }}
         />

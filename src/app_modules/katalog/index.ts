@@ -1,3 +1,3 @@
-import headerTransparent from "./component/header_transparent";
+import HeaderTransparent from "./component/header_transparent";
 
-export {headerTransparent}
+export {HeaderTransparent as headerTransparent}
