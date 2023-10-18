@@ -10,10 +10,10 @@ import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-simple-toasts";
+import funCreateNewProfile from "../fun/fun_create_profile";
 
-export default function CreateProfile() {
+export default function CreateProfile({ userId }: { userId: any }) {
   const router = useRouter();
-  const [token, setToken] = useAtom(gs_token);
 
   const [value, setValue] = useState({
     name: "",
@@ -24,7 +24,7 @@ export default function CreateProfile() {
 
   async function onSubmit() {
     const body = {
-      userId: token?.id,
+      userId: userId,
       name: value.name,
       email: value.email,
       alamat: value.alamat,
@@ -36,22 +36,14 @@ export default function CreateProfile() {
     if (_.values(value).includes("")) return toast("Lengkapi data");
     // if(_.values(value.email).includes(`${/^\S+@\S+$/.test(value.email) ? null : "Invalid email"}`)){}
 
-    await fetch(ApiHipmi.create_profile, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    })
-      .then((res) => res.json())
-      .then((val) => {
-        if (val.status == 201) {
-          toast("Data tersimpan")
-          return router.push("/dev/katalog/view");
-        } else {
-          return toast("Server Error!!!")
-        }
-      });
+   await funCreateNewProfile(body).then((res) => {
+      if (res.status === 201) {
+        toast("Data tersimpan");
+        return router.push("/dev/katalog/view");
+      } else {
+        toast("Gagal")
+      }
+    });
   }
 
   return (

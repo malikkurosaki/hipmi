@@ -11,7 +11,7 @@ import {
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
-export default function EditProfileLayout({ children }: { children: any }) {
+export default function EditProfileLayout({ children, profileId }: { children: any, profileId: any }) {
   const router = useRouter()
   return (
     <>
@@ -20,7 +20,7 @@ export default function EditProfileLayout({ children }: { children: any }) {
         header={
           <Header height={50} px={"sm"}>
             <Group position="apart" h={50}>
-              <ActionIcon variant="transparent" onClick={() => router.push("/dev/katalog/view")}>
+              <ActionIcon variant="transparent" onClick={() => router.push(`/dev/katalog/${profileId}`)}>
                 <IconArrowLeft />
               </ActionIcon>
               <Text>Edit Profile</Text>

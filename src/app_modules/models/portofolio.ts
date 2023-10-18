@@ -6,6 +6,7 @@ export interface LIST_PORTOFOLIO {
   deskripssi: string;
   masterBidangBisnisId: string;
   active: boolean;
+  profileId: string
 }
 
 export interface BIDANG_BISNIS {
@@ -14,12 +15,14 @@ export interface BIDANG_BISNIS {
   active: boolean;
 }
 
-export interface GET_ONE_PORTOFOLIO {
+export interface MODEL_PORTOFOLIO {
   id: string;
   namaBisnis: string;
   alamatKantor: string;
-  deskripssi: string;
+  deskripsi: string;
   tlpn: string;
   active: boolean;
   MasterBidangBisnis: BIDANG_BISNIS;
+  masterBidangBisnisId: string
+  profileId: string,
 }

@@ -12,7 +12,7 @@ export async function getOnePortofolio(id: string) {
       id: true,
       namaBisnis: true,
       alamatKantor: true,
-      deskripssi: true,
+      deskripsi: true,
       tlpn: true,
       active: true,
       MasterBidangBisnis: {
@@ -22,6 +22,7 @@ export async function getOnePortofolio(id: string) {
           active: true,
         },
       },
+      profileId: true,
     },
   });
 

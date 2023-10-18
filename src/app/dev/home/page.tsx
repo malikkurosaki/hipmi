@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 
 import yaml from "yaml";
 import fs from "fs";
+import { funGetUserProfile } from "@/app_modules/fun/get_user_profile";
 const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
 export default async function Page() {
@@ -18,9 +19,13 @@ export default async function Page() {
     })
   );
 
+  const dataProfile = await funGetUserProfile(usr.id)
+
+
   return (
     <>
-      <HomeView user={usr} />
+    {/* {JSON.stringify(usr)} */}
+      <HomeView user={dataProfile as any} />
     </>
   );
 }

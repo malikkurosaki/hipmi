@@ -45,6 +45,7 @@ import { myConsole } from "@/app/fun/my_console";
 import { getFotoProfile } from "../katalog/profile/api/get-foto-profile";
 import { funGetUserProfile } from "../fun/get_user_profile";
 import { USER_PROFILE } from "../models/user_profile";
+import AppNotif from "../notif";
 
 const listHalaman = [
   {
@@ -96,29 +97,8 @@ export default function HomeView({ user }: { user: USER_PROFILE }) {
   const router = useRouter();
   const [stateUser, setStateUser] = useState(user);
 
-  // const [token, setToken] = useAtom(gs_token);
-  // useShallowEffect(() => {
-  //   getUserId();
-  // }, []);
-  // async function getUserId() {
-  //   const get = await getToken();
-  //   if (!get) return myConsole("Data Kosong");
-  //   setToken(get);
-  // }
-
-  // const [profile, setProfile] = useAtom(gs_profile);
-  // useShallowEffect(() => {
-  //   loadProfile();
-  // }, []);
-  // async function loadProfile() {
-  //   const get = await getProfile();
-  //   if (!get) return myConsole("Data Kosong");
-  //   setProfile(get);
-  // }
-
   return (
     <>
-      {/* <Center><Image src={ApiHipmi.get_foto + foto ?? ""} alt="" height={100} width={100}/></Center> */}
       <Box>
         <Flex align={"center"} gap={"sm"}>
           <ActionIcon
@@ -126,9 +106,9 @@ export default function HomeView({ user }: { user: USER_PROFILE }) {
             variant="transparent"
             onClick={() => {
               if (stateUser.Profile === null) {
-                return router.push("/dev/profile/create");
+                return router.push(`/dev/profile/create/${stateUser.id}`);
               } else {
-                return router.push("/dev/katalog/view");
+                return router.push(`/dev/katalog/${stateUser.Profile.id}`);
               }
             }}
           >

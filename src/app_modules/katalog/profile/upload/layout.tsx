@@ -18,27 +18,29 @@ import { useShallowEffect } from "@mantine/hooks";
 import { loadDataProfile } from "../fun/fun_get_profile";
 import { funUploadFoto } from "../fun/upload_foto";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function UploadFotoProfileLayout({
   children,
+  profileId
 }: {
   children: any;
+  profileId: any
 }) {
   const router = useRouter()
-  const [profile, setProfile] = useAtom(gs_profile);
-  useShallowEffect(() => {
-    loadDataProfile(setProfile);
-  }, []);
+  const [profile, setProfile] = useState(profileId)
+
 
   return (
     <>
+    {JSON.stringify(profileId)}
       <AppShell
         header={
           <Header height={50} px={"sm"}>
             <Group position="apart" h={50}>
               <ActionIcon
                 variant="transparent"
-                onClick={() => router.push("/dev/katalog/view")}
+                onClick={() => router.push(`/dev/katalog/${profile}`)}
               >
                 <IconArrowLeft />
               </ActionIcon>
@@ -54,7 +56,7 @@ export default function UploadFotoProfileLayout({
                 <Flex direction={"column"} align={"center"}>
                   <FileButton
                     onChange={async (files) => {
-                      const id = profile?.id
+                      const id =  profile
 
                       if (!files) return toast("File Kosong");
                       const fd = new FormData();
@@ -63,7 +65,7 @@ export default function UploadFotoProfileLayout({
                       const upFoto = await funUploadFoto(fd, id);
                       if (upFoto.success) {
                         toast("Upload berhasil");
-                        router.push("/dev/katalog/view")
+                        router.push(`/dev/katalog/${profile}`)
                         // loadDataProfile(valUser.id, setUser, setProfile);
                       }
                     }}
