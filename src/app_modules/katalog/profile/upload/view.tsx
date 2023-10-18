@@ -12,7 +12,6 @@ import { myConsole } from "@/app/fun/my_console";
 
 export default function UploadFotoProfile({imageUrl}: {imageUrl: any}) {
   const [img, setImg] = useState(imageUrl)
-
   return (
     <>
     {/* {JSON.stringify(foto)} */}
