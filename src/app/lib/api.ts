@@ -14,4 +14,7 @@ export const ApiHipmi = {
 
   //Portofolio
   create_portofolio: "/api/portofolio/create",
+
+  //Investasi
+  get_gambar_investasi: "/api/investasi/gambar"
 };
