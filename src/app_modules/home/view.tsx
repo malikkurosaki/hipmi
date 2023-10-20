@@ -47,8 +47,6 @@ import { funGetUserProfile } from "../fun/get_user_profile";
 import { USER_PROFILE } from "../models/user_profile";
 import AppNotif from "../notif";
 
-
-
 // export const dynamic = "force-dynamic"
 // export const revalidate = 0
 
@@ -61,56 +59,49 @@ export default function HomeView({ user }: { user: USER_PROFILE }) {
       id: 1,
       name: "Forums",
       icon: <IconMessages size={50} />,
-      link: ""
+      link: "",
     },
     {
       id: 2,
       name: "Project Collaboration",
       icon: <IconAffiliate size={50} />,
-      link: ""
-      
+      link: "",
     },
     {
       id: 3,
       name: "Voting",
       icon: <IconPackageImport size={50} />,
-      link: ""
-
+      link: "",
     },
     {
       id: 4,
       name: "Event",
       icon: <IconPresentation size={50} />,
-      link: ""
-
+      link: "",
     },
     {
       id: 5,
       name: "Crowd Funding",
       icon: <IconHeartHandshake size={50} />,
-      link: `/dev/crowd/splash`
-
+      link: `/dev/crowd/splash`,
     },
     {
       id: 6,
       name: "Marketplace",
       icon: <IconShoppingBag size={50} />,
-      link: ""
-
+      link: "",
     },
     {
       id: 7,
       name: "Job Vacancy",
       icon: <IconBriefcase size={50} />,
-      link: ""
-
+      link: "",
     },
     {
       id: 8,
       name: "Business Maps",
       icon: <IconMap2 size={50} />,
-      link: ""
-
+      link: "",
     },
   ];
 
@@ -152,10 +143,14 @@ export default function HomeView({ user }: { user: USER_PROFILE }) {
                 h={100}
                 withBorder
                 onClick={() => {
-                  if(e.link === ""){
-                    toast(e.name)
+                  if (stateUser.Profile === null) {
+                    return toast("Lengkapi Profile Anda !");
                   } else {
-                    return router.push(e.link)
+                    if (e.link === "") {
+                      toast(e.name);
+                    } else {
+                      return router.push(e.link);
+                    }
                   }
                 }}
               >
