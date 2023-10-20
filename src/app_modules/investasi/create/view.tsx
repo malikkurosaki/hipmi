@@ -58,20 +58,21 @@ export default function InvestasiCreate({
       masterPembagianDevidenId: value.pembagianDevidenId,
       masterPencarianInvestorId: value.pencarianInvestorId,
     };
-    if (_.values(body).includes("")) return toast("Lengkapi data");
-    if (!fl) return toast("File Kosong");
+    // if (_.values(body).includes("")) return toast("Lengkapi data");
+    // if (!fl) return toast("File Kosong");
 
-    const fd = new FormData();
-    fd.append("file", fl);
+    // const fd = new FormData();
+    // fd.append("file", fl);
 
-    await funCreateInvestasi(fd, body as any).then((res) => {
-      if (res.status === 201) {
-        toast(res.message);
-        return router.push("/dev/investasi/main")
-      } else {
-        return toast(res.message);
-      }
-    });
+    return router.push("/dev/investasi/main");
+    // await funCreateInvestasi(fd, body as any).then((res) => {
+    //   if (res.status === 201) {
+    //     toast(res.message);
+    //     return router.push("/dev/investasi/main");
+    //   } else {
+    //     return toast(res.message);
+    //   }
+    // });
   }
 
   return (

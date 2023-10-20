@@ -1,0 +1,36 @@
+[
+  {
+    "id": "clny2l8e20002tlagig62qv50",
+    "title": "Event EO",
+    "targetDana": "20000",
+    "hargaLembar": "1000",
+    "totalLembar": "200",
+    "roi": "7",
+    "active": true,
+    "createdAt": "2023-10-20T03:47:19.610Z",
+    "updatedAt": "2023-10-20T03:47:19.610Z",
+    "authorId": "clntsruqk0002tlrfyc9vzhxx",
+    "masterPeriodeDevidenId": "Akhir Project",
+    "masterPembagianDevidenId": "3",
+    "masterPencarianInvestorId": "60",
+    "imagesId": "clny2l8dj0000tlagcpsi9dmz",
+    "persentase": 40
+  },
+  {
+    "id": "clnxyjc0r0002tlamg8fn9ubk",
+    "title": "Subway ",
+    "targetDana": "1600000000",
+    "hargaLembar": "1000",
+    "totalLembar": "1600000",
+    "roi": "6",
+    "active": true,
+    "createdAt": "2023-10-20T01:53:52.539Z",
+    "updatedAt": "2023-10-20T01:53:52.539Z",
+    "authorId": "clntxvesu0002tlnbz030gx30",
+    "masterPeriodeDevidenId": "Selamanya",
+    "masterPembagianDevidenId": "6",
+    "masterPencarianInvestorId": "30",
+    "imagesId": "clnxyjc070000tlamc5jmsqse",
+    "persentase": 60
+  }
+]

@@ -20,6 +20,8 @@ import {
   Title,
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
+import dataDummy from "../dummy/data_dummy.json"
+import moment from "moment"
 
 export default function MainInvestasi({
   listData,
@@ -35,9 +37,9 @@ export default function MainInvestasi({
   const router = useRouter();
   return (
     <>
-      <pre>{/* {JSON.stringify(listData, null, 2)} */}</pre>
-      {listData.map((e) => (
-        <Card key={e.id} p={"md"} withBorder mb={"lg"}>
+      {/* <pre>{JSON.stringify(listData, null, 2)}</pre> */}
+      {dataDummy.map((e) => (
+        <Card key={e.id}  withBorder mb={"lg"} onClick={() => router.push(`/dev/investasi/detail/${e.id}`)}>
           <CardSection p={"xs"}>
             <AspectRatio ratio={16 / 9}>
               {e.imagesId ? (
@@ -52,13 +54,14 @@ export default function MainInvestasi({
             <Box mt={"md"}>
               <Slider
                 size={10}
+                disabled
                 labelAlwaysOn
-                marks={[
-                  // { value: 25, label: '25%' },
-                  // { value: 50, label: '50%' },
-                  // { value: 75, label: '75%' },
-                  { value: 100, label: "100%" },
-                ]}
+                value={e.persentase}
+                marks={
+                  [
+                    {value: e.persentase, label: e.persentase + `%`}
+                  ]
+                }
               />
               <Title order={4}>{e.title}</Title>
             </Box>
@@ -94,7 +97,7 @@ export default function MainInvestasi({
           <Divider />
           <CardSection p={"md"}>
             <Group position="right">
-              <Text>Selesai</Text>
+              <Text>{moment(e.createdAt).fromNow()}</Text>
             </Group>
           </CardSection>
         </Card>

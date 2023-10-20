@@ -1,4 +1,4 @@
-export interface INVESTASI {
+export interface DUMMY_INVESTASI {
   id: string;
   authorId: string;
   title: string;
@@ -13,5 +13,5 @@ export interface INVESTASI {
   active: boolean;
   createdAt: Date;
   updatedAt: Date;
-  persentase: number
+  persentase: number;
 }
