@@ -47,48 +47,7 @@ import { funGetUserProfile } from "../fun/get_user_profile";
 import { USER_PROFILE } from "../models/user_profile";
 import AppNotif from "../notif";
 
-const listHalaman = [
-  {
-    id: 1,
-    name: "Forums",
-    icon: <IconMessages size={50} />,
-  },
-  {
-    id: 2,
-    name: "Project Collaboration",
-    icon: <IconAffiliate size={50} />,
-  },
-  {
-    id: 3,
-    name: "Voting",
-    icon: <IconPackageImport size={50} />,
-  },
-  {
-    id: 4,
-    name: "Event",
-    icon: <IconPresentation size={50} />,
-  },
-  {
-    id: 5,
-    name: "Crowd Funding",
-    icon: <IconHeartHandshake size={50} />,
-  },
-  {
-    id: 6,
-    name: "Marketplace",
-    icon: <IconShoppingBag size={50} />,
-  },
-  {
-    id: 7,
-    name: "Job Vacancy",
-    icon: <IconBriefcase size={50} />,
-  },
-  {
-    id: 8,
-    name: "Business Maps",
-    icon: <IconMap2 size={50} />,
-  },
-];
+
 
 // export const dynamic = "force-dynamic"
 // export const revalidate = 0
@@ -96,6 +55,64 @@ const listHalaman = [
 export default function HomeView({ user }: { user: USER_PROFILE }) {
   const router = useRouter();
   const [stateUser, setStateUser] = useState(user);
+
+  const listHalaman = [
+    {
+      id: 1,
+      name: "Forums",
+      icon: <IconMessages size={50} />,
+      link: ""
+    },
+    {
+      id: 2,
+      name: "Project Collaboration",
+      icon: <IconAffiliate size={50} />,
+      link: ""
+      
+    },
+    {
+      id: 3,
+      name: "Voting",
+      icon: <IconPackageImport size={50} />,
+      link: ""
+
+    },
+    {
+      id: 4,
+      name: "Event",
+      icon: <IconPresentation size={50} />,
+      link: ""
+
+    },
+    {
+      id: 5,
+      name: "Crowd Funding",
+      icon: <IconHeartHandshake size={50} />,
+      link: `/dev/crowd/splash`
+
+    },
+    {
+      id: 6,
+      name: "Marketplace",
+      icon: <IconShoppingBag size={50} />,
+      link: ""
+
+    },
+    {
+      id: 7,
+      name: "Job Vacancy",
+      icon: <IconBriefcase size={50} />,
+      link: ""
+
+    },
+    {
+      id: 8,
+      name: "Business Maps",
+      icon: <IconMap2 size={50} />,
+      link: ""
+
+    },
+  ];
 
   return (
     <>
@@ -134,7 +151,13 @@ export default function HomeView({ user }: { user: USER_PROFILE }) {
                 key={e.id}
                 h={100}
                 withBorder
-                onClick={() => toast(e.name)}
+                onClick={() => {
+                  if(e.link === ""){
+                    toast(e.name)
+                  } else {
+                    return router.push(e.link)
+                  }
+                }}
               >
                 <Flex
                   justify={"center"}
