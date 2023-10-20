@@ -35,7 +35,7 @@ export default function MainInvestasi({
   const router = useRouter();
   return (
     <>
-      <pre>{/* {JSON.stringify(listData, null, 2)} */}</pre>
+
       {listData.map((e) => (
         <Card key={e.id} p={"md"} withBorder mb={"lg"}>
           <CardSection p={"xs"}>
