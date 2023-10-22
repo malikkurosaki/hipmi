@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function HomePage() {
   return (
     <>
-     <Title>V.2</Title>
+     <Title>V2</Title>
     </>
   );
 }
