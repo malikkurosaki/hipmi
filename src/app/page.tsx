@@ -1,7 +1,10 @@
-import { redirect } from "next/navigation";
+import { Button, Title } from '@mantine/core';
+import Link from 'next/link';
 
-
-export default async function Page() {
-
-  return redirect("/dev/auth/splash")
+export default function HomePage() {
+  return (
+    <>
+     <Title>V.2</Title>
+    </>
+  );
 }
