@@ -1,58 +1,27 @@
-"use client";
+"use client"
 
-import { ApiHipmi } from "@/app/lib/api";
-import { INVESTASI } from "@/app_modules/models/investasi";
-import { MODEL_ALL_MASTER } from "@/app_modules/models/model_AllMaster";
-import {
-  AspectRatio,
-  Box,
-  Button,
-  Card,
-  CardSection,
-  Divider,
-  Grid,
-  Group,
-  Image,
-  Paper,
-  Slider,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import { useRouter } from "next/navigation";
-import dataDummy from "../dummy/data_dummy.json";
-import moment from "moment";
-import { IconCheck, IconCircleCheck } from "@tabler/icons-react";
+import { AspectRatio, Box, Card, CardSection, Divider, Grid, Group, Image, Slider, Stack, Text, Title } from "@mantine/core"
+import dataDummy from "../dummy/data_dummy.json"
+import moment from "moment"
+import { useRouter } from "next/navigation"
+import { IconCircleCheck } from "@tabler/icons-react"
 
-export default function MainInvestasi({
-  listData,
-  pencarianInvestor,
-  periodeDeviden,
-  pembagianDeviden,
-}: {
-  listData: INVESTASI[];
-  pencarianInvestor: MODEL_ALL_MASTER[];
-  periodeDeviden: MODEL_ALL_MASTER[];
-  pembagianDeviden: MODEL_ALL_MASTER[];
-}) {
-  const router = useRouter();
-  return (
-    <>
-      {/* <pre>{JSON.stringify(listData, null, 2)}</pre> */}
-      {dataDummy.map((e) => (
-        <Card
-          key={e.id}
-          withBorder
-          mb={"lg"}
-          onClick={() => router.push(`/dev/investasi/detail/${e.id}`)}
-        >
+
+export default  function PortofolioInvestasi() {
+    const router = useRouter()
+    return<>
+    
+     {dataDummy.map((e) => (
+        <Card key={e.id}  withBorder mb={"lg"} onClick={() => router.push(`/dev/investasi/porto_detail/${e.id}`)}>
           <CardSection p={"xs"}>
             <AspectRatio ratio={16 / 9}>
-              {e.imagesId ? (
+              {/* {e.imagesId ? (
                 <Image alt="" src={`/api/investasi/gambar/${e.imagesId}`} />
               ) : (
                 <Image alt="" src={"/aset/no-img.png"} />
-              )}
+              )} */}
+                <Image alt="" src={"/aset/no-img.png"} />
+
             </AspectRatio>
           </CardSection>
 
@@ -63,7 +32,11 @@ export default function MainInvestasi({
                 disabled
                 labelAlwaysOn
                 value={e.persentase}
-                marks={[{ value: e.persentase, label: e.persentase + `%` }]}
+                marks={
+                  [
+                    {value: e.persentase, label: e.persentase + `%`}
+                  ]
+                }
               />
               <Title order={4}>{e.title}</Title>
             </Box>
@@ -98,7 +71,7 @@ export default function MainInvestasi({
           </CardSection>
           <Divider />
           <CardSection p={"md"}>
-            {(() => {
+          {(() => {
               if (
                 e.masterPencarianInvestorId -
                   moment(new Date()).diff(new Date(e.createdAt), "days") ===
@@ -129,5 +102,4 @@ export default function MainInvestasi({
         </Card>
       ))}
     </>
-  );
 }

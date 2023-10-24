@@ -10,6 +10,14 @@ import ProsesInvestasi from "./proses_investasi/view";
 import LayoutProsesInvestasi from "./proses_investasi/layout";
 import UploadBuktiTransferInvestasi from "./upload_bukti/view";
 import LayoutBuktiTransferInvestasi from "./upload_bukti/layout";
+import KonfirmasiBuktiInvestasi from "./konfirmasi/view";
+import PortofolioInvestasi from "./portofolio/view";
+import PortofolioDetailInvestasi from "./porto_detail/view";
+import LayoutPortofolioDetailInvestasi from "./porto_detail/layout";
+import EditInvestasi from "./edit/view";
+import LayoutEditInvestasi from "./edit/layout";
+import EditIntroInvestasi from "./edit_intro/view";
+import LayoutEditIntroInvestasi from "./edit_intro/layout";
 
 export {
   MainInvestasi,
@@ -24,4 +32,12 @@ export {
   LayoutProsesInvestasi,
   UploadBuktiTransferInvestasi,
   LayoutBuktiTransferInvestasi,
+  KonfirmasiBuktiInvestasi,
+  PortofolioInvestasi,
+  PortofolioDetailInvestasi,
+  LayoutPortofolioDetailInvestasi,
+  EditInvestasi,
+  LayoutEditInvestasi,
+  EditIntroInvestasi,
+  LayoutEditIntroInvestasi,
 };

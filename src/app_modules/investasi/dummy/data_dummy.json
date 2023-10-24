@@ -11,8 +11,8 @@
     "updatedAt": "2023-10-20T03:47:19.610Z",
     "authorId": "clntsruqk0002tlrfyc9vzhxx",
     "masterPeriodeDevidenId": "Akhir Project",
-    "masterPembagianDevidenId": "3",
-    "masterPencarianInvestorId": "60",
+    "masterPembagianDevidenId": 3,
+    "masterPencarianInvestorId": 60,
     "imagesId": "clny2l8dj0000tlagcpsi9dmz",
     "persentase": 40
   },
@@ -28,8 +28,8 @@
     "updatedAt": "2023-10-20T01:53:52.539Z",
     "authorId": "clntxvesu0002tlnbz030gx30",
     "masterPeriodeDevidenId": "Selamanya",
-    "masterPembagianDevidenId": "6",
-    "masterPencarianInvestorId": "30",
+    "masterPembagianDevidenId": 6,
+    "masterPencarianInvestorId": 4,
     "imagesId": "clnxyjc070000tlamc5jmsqse",
     "persentase": 60
   }

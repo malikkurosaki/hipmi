@@ -13,7 +13,7 @@ export default function InvestasiCreateLayout({
     <>
       <AppShell
         header={
-          <HeaderTamplate route="/dev/investasi/main" title="Investasi Baru" />
+          <HeaderTamplate  title="Investasi Baru" />
         }
       >
         {children}
