@@ -48,6 +48,7 @@ export default function MainInvestasi({
           mb={"lg"}
           onClick={() => router.push(`/dev/investasi/detail/${e.id}`)}
         >
+
           <CardSection p={"xs"}>
             <AspectRatio ratio={16 / 9}>
               {e.imagesId ? (
