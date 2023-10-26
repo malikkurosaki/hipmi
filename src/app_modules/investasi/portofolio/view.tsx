@@ -151,7 +151,7 @@ function MyPortofolioInvestasi() {
         ))}
       </Carousel>
     </>
-  );
+  )
 }
 
 function SahamTerbeli() {
