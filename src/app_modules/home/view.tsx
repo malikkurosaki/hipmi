@@ -143,14 +143,19 @@ export default function HomeView({ user }: { user: USER_PROFILE }) {
                 h={100}
                 withBorder
                 onClick={() => {
-                  if (stateUser.Profile === null) {
-                    return toast("Lengkapi Profile Anda !");
+                  // if (stateUser.Profile === null) {
+                  //   return toast("Lengkapi Profile Anda !");
+                  // } else {
+                  //   if (e.link === "") {
+                  //     toast(e.name);
+                  //   } else {
+                  //     return router.push(e.link);
+                  //   }
+                  // }
+                  if (e.link === "") {
+                    toast(e.name);
                   } else {
-                    if (e.link === "") {
-                      toast(e.name);
-                    } else {
-                      return router.push(e.link);
-                    }
+                    return router.push(e.link);
                   }
                 }}
               >
