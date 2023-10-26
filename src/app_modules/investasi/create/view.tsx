@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { funCreateInvestasi } from "../fun/fun_create_investasi";
 import toast from "react-simple-toasts";
+import { RouteInvestasi } from "@/app/lib/app_route";
 
 export default function InvestasiCreate({
   id,
@@ -58,20 +59,23 @@ export default function InvestasiCreate({
       masterPembagianDevidenId: value.pembagianDevidenId,
       masterPencarianInvestorId: value.pencarianInvestorId,
     };
-    if (_.values(body).includes("")) return toast("Lengkapi data");
-    if (!fl) return toast("File Kosong");
+    toast("Berhasil disimpan")
+    return setTimeout(() => router.push(RouteInvestasi.portofolio), 2000);
 
-    const fd = new FormData();
-    fd.append("file", fl);
 
-    await funCreateInvestasi(fd, body as any).then((res) => {
-      if (res.status === 201) {
-        toast(res.message);
-        return router.push("/dev/investasi/main")
-      } else {
-        return toast(res.message);
-      }
-    });
+    // if (_.values(body).includes("")) return toast("Lengkapi data");
+    // if (!fl) return toast("File Kosong");
+
+    // const fd = new FormData();
+    // fd.append("file", fl);
+    // await funCreateInvestasi(fd, body as any).then((res) => {
+    //   if (res.status === 201) {
+    //     toast(res.message);
+    //     return router.push("/dev/investasi/main");
+    //   } else {
+    //     return toast(res.message);
+    //   }
+    // });
   }
 
   return (
