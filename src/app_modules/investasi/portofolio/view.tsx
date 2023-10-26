@@ -48,7 +48,13 @@ function MyPortofolioInvestasi() {
 
   return (
     <>
-      <Carousel showThumbs={false} infiniteLoop={true} showArrows={false} showStatus={false} swipeable={true}>
+      <Carousel
+        showThumbs={false}
+        infiniteLoop={true}
+        showArrows={false}
+        showStatus={false}
+        swipeable={true}
+      >
         {dataDummy.map((e) => (
           <Card
             key={e.id}
@@ -144,8 +150,6 @@ function MyPortofolioInvestasi() {
           </Card>
         ))}
       </Carousel>
-
-      
     </>
   );
 }
