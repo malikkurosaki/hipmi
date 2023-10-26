@@ -3,6 +3,7 @@
 import {
   AspectRatio,
   Avatar,
+  Badge,
   Box,
   Button,
   Card,
@@ -46,20 +47,14 @@ function MyPortofolioInvestasi() {
   const router = useRouter();
 
   return (
-    <Box mx="auto">
-      <Paper mb={5} onClick={toggle} bg={Warna.biru} px={"md"} h={40}>
-        <Group position="apart" align="center" h={40}>
-          <Title order={6}>Portofolio Saya</Title>
-          <IconCaretDown />
-        </Group>
-      </Paper>
-
-      <Collapse in={opened} transitionDuration={700}>
+    <>
+      <Carousel showThumbs={false} infiniteLoop={true} showArrows={false} showStatus={false} swipeable={true}>
         {dataDummy.map((e) => (
           <Card
             key={e.id}
             withBorder
-            mb={"lg"}
+            mb={40}
+            bg={"gray"}
             onClick={() => router.push(`/dev/investasi/detail_porto/${e.id}`)}
           >
             <CardSection p={"xs"}>
@@ -74,7 +69,8 @@ function MyPortofolioInvestasi() {
             </CardSection>
 
             <CardSection p={"lg"}>
-              <Box mt={"md"}>
+              <Box mb={"md"}>
+                <Title order={4}>{e.title}</Title>
                 <Slider
                   size={10}
                   disabled
@@ -82,48 +78,75 @@ function MyPortofolioInvestasi() {
                   value={e.persentase}
                   marks={[{ value: e.persentase, label: e.persentase + `%` }]}
                 />
-                <Title order={4}>{e.title}</Title>
               </Box>
             </CardSection>
             <Divider />
             <CardSection p={"md"}>
-              {(() => {
-                if (
-                  e.masterPencarianInvestorId -
-                    moment(new Date()).diff(new Date(e.createdAt), "days") ===
-                  0
-                ) {
-                  return (
-                    <>
-                      <Group position="right">
-                        <IconCircleCheck />
-                        <Text>Selesai</Text>
-                      </Group>
-                    </>
-                  );
-                } else {
-                  return (
-                    <>
-                      <Group position="right" spacing={"xs"}>
-                        <Text>Sisa waktu:</Text>
-                        <Text>
-                          {e.masterPencarianInvestorId -
-                            moment(new Date()).diff(
-                              new Date(e.createdAt),
-                              "days"
-                            )}
-                        </Text>
-                        <Text>Hari</Text>
-                      </Group>
-                    </>
-                  );
-                }
-              })()}
+              <Group position="apart">
+                {(() => {
+                  if (e.statusPorto.id === 1) {
+                    return (
+                      <Badge color="yellow" variant="filled">
+                        {e.statusPorto.status}
+                      </Badge>
+                    );
+                  } else {
+                    if (e.statusPorto.id === 2) {
+                      return (
+                        <Badge color="red" variant="filled">
+                          {e.statusPorto.status}
+                        </Badge>
+                      );
+                    } else {
+                      return (
+                        <Badge color="green" variant="filled">
+                          {e.statusPorto.status}
+                        </Badge>
+                      );
+                    }
+                  }
+                })()}
+
+                {(() => {
+                  if (
+                    e.masterPencarianInvestorId -
+                      moment(new Date()).diff(new Date(e.createdAt), "days") <=
+                    0
+                  ) {
+                    return (
+                      <>
+                        <Group position="right">
+                          <IconCircleCheck />
+                          <Text>Selesai</Text>
+                        </Group>
+                      </>
+                    );
+                  } else {
+                    return (
+                      <>
+                        <Group position="right" spacing={"xs"}>
+                          <Text>Sisa waktu:</Text>
+                          <Text>
+                            {e.masterPencarianInvestorId -
+                              moment(new Date()).diff(
+                                new Date(e.createdAt),
+                                "days"
+                              )}
+                          </Text>
+                          <Text>Hari</Text>
+                        </Group>
+                      </>
+                    );
+                  }
+                })()}
+              </Group>
             </CardSection>
           </Card>
         ))}
-      </Collapse>
-    </Box>
+      </Carousel>
+
+      
+    </>
   );
 }
 
@@ -133,7 +156,7 @@ function SahamTerbeli() {
 
   return (
     <>
-      <Box maw={400} mx="auto">
+      <Box maw={400} mx="auto" mt={"xs"}>
         <Paper mb={5} onClick={toggle} bg={Warna.hijau_tua} px={"md"} h={40}>
           <Group position="apart" align="center" h={40}>
             <Title order={6}>Saham Saya</Title>
@@ -146,6 +169,7 @@ function SahamTerbeli() {
             <Card
               key={e.id}
               withBorder
+              bg={"gray"}
               mb={"lg"}
               onClick={() =>
                 router.push(RouteInvestasi.detail_saham_terbeli + `${e.id}`)
@@ -157,7 +181,6 @@ function SahamTerbeli() {
                     <Avatar src={"/aset/avatar.png"} />
                     <Text>Username</Text>
                   </Flex>
-                 
                 </Group>
               </CardSection>
               <CardSection p={"xs"}>
@@ -172,7 +195,8 @@ function SahamTerbeli() {
               </CardSection>
 
               <CardSection p={"lg"}>
-                <Box mt={"md"}>
+                <Box>
+                  <Title order={4}>{e.title}</Title>
                   <Slider
                     size={10}
                     disabled
@@ -180,9 +204,10 @@ function SahamTerbeli() {
                     value={e.persentase}
                     marks={[{ value: e.persentase, label: e.persentase + `%` }]}
                   />
-                  <Title order={4}>{e.title}</Title>
                 </Box>
-                <Box mt={"md"}>
+              </CardSection>
+              <CardSection p={"md"}>
+                <Box>
                   <Grid>
                     <Grid.Col span={6}>
                       <Stack>
@@ -216,7 +241,7 @@ function SahamTerbeli() {
                 {(() => {
                   if (
                     e.masterPencarianInvestorId -
-                      moment(new Date()).diff(new Date(e.createdAt), "days") ===
+                      moment(new Date()).diff(new Date(e.createdAt), "days") <=
                     0
                   ) {
                     return (

@@ -1,5 +1,9 @@
 export const RouteInvestasi = {
   //INVESTASI
+// portofolio
+portofolio: "/dev/investasi/main/portofolio",
+  // proses beli saham
+  metode_transfer: "/dev/investasi/metode_transfer",
   // edit //
   edit_intro: "/dev/investasi/edit_intro/",
   edit_prospektus: "/dev/investasi/edit_prospektus/",

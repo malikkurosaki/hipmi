@@ -14,4 +14,9 @@ export interface DUMMY_INVESTASI {
   createdAt: Date;
   updatedAt: Date;
   persentase: number;
+  saham_beli: number;
+  statusPorto: {
+    id: number;
+    status: string;
+  };
 }

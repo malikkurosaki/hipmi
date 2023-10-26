@@ -12,49 +12,75 @@ import {
   Image,
   Text,
 } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
 import { IconCamera } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-simple-toasts";
 
 export default function UploadBuktiTransferInvestasi() {
-  const router = useRouter()
+  const router = useRouter();
   const [fl, setFl] = useState<File | null>(null);
   const [img, setImg] = useState<any | null>(null);
+  const [total, setTotal] = useState<any | null>(null);
+  const [bank, setBank] = useState<any | null>(null);
 
-  const totalHarga = localStorage.getItem("total_harga")
+
+  useShallowEffect(() => {
+    if (typeof window !== undefined) {
+      const totalHarga = localStorage.getItem("total_harga");
+      const pilihBank = localStorage.getItem("bank")
+      setTotal(totalHarga);
+      setBank(pilihBank)
+    }
+  }, []);
+
   return (
     <>
+      {/* Nama Rekening */}
       <Grid align="center">
-        <Grid.Col span={"auto"}>
-          <Text>Rekening</Text>
+        <Grid.Col span={5}>
+          <Text>Nama Rekening</Text>
         </Grid.Col>
-        <Grid.Col span={"auto"}>
-          <Text>908765467897654567</Text>
+        <Grid.Col span={7}>
+          <Text fw={"bold"}>Xendit</Text>
         </Grid.Col>
-        <Grid.Col span={"auto"}>
+        
+      </Grid>
+
+      {/* Nomor rekening */}
+      <Grid align="center">
+        <Grid.Col span={5}>
+          <Text>Nomor Rekening</Text>
+        </Grid.Col>
+        <Grid.Col span={7} >
+          <Text fw={"bold"}>{bank}</Text>
+        </Grid.Col>
+        {/* <Grid.Col span={"auto"}>
           <CopyButton value="908765467897654567">
             {({ copied, copy }) => (
               <Button
                 compact
                 radius={50}
-                color={copied ? "teal" : "blue"}
+                color={copied ? "teal" : "indigo"}
                 onClick={copy}
               >
                 {copied ? "Copied url" : "Copy url"}
               </Button>
             )}
           </CopyButton>
-        </Grid.Col>
+        </Grid.Col> */}
       </Grid>
+
+      {/* Total Bayar */}
       <Grid align="center">
-        <Grid.Col span={"auto"}>
-          <Text>Total Harga</Text>
+        <Grid.Col span={5}>
+          <Text>Total Bayar</Text>
         </Grid.Col>
-        <Grid.Col span={"auto"}>
-          <Text>Rp. {totalHarga}</Text>
+        <Grid.Col span={7}>
+          <Text fw={"bold"}>Rp. {total}</Text>
         </Grid.Col>
-        <Grid.Col span={"auto"}></Grid.Col>
+       
       </Grid>
 
       {/* Upload */}
@@ -93,14 +119,21 @@ export default function UploadBuktiTransferInvestasi() {
 
       <Center>
         {img === null ? (
-          <Button w={350} radius={50} bg={"gray"}
-          onClick={() => toast("Masukan Bukti Transfer")}
+          <Button
+            disabled
+            w={350}
+            radius={50}
+            bg={"gray"}
+            onClick={() => toast("Masukan Bukti Transfer")}
           >
             Selesai
           </Button>
         ) : (
-          <Button w={350} radius={50} bg={"blue"}
-          onClick={() => router.push("/dev/investasi/konfirmasi")}
+          <Button
+            w={350}
+            radius={50}
+            bg={"blue"}
+            onClick={() => router.push("/dev/investasi/konfirmasi")}
           >
             Selesai
           </Button>

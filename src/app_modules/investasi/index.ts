@@ -34,6 +34,8 @@ import DetailBeritaInvestasi from "./detail_berita/view";
 import LayoutDetailBeritaInvestasi from "./detail_berita/layout";
 import BeritaInvestasi from "./berita/view";
 import LayoutBeritaInvestasi from "./berita/layout";
+import MetodeTransferInvestasi from "./metode_transfer/view";
+import LayoutMetodeTransferInvestasi from "./metode_transfer/layout";
 
 export {
   MainInvestasi,
@@ -72,5 +74,6 @@ export {
   LayoutDetailBeritaInvestasi,
   BeritaInvestasi,
   LayoutBeritaInvestasi as LayoutBeritaInvestasi,
+  MetodeTransferInvestasi,
+  LayoutMetodeTransferInvestasi,
 };
-

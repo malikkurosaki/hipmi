@@ -20,7 +20,7 @@ export default function EditProspektusInvestasi() {
     <>
       {edit ? (
         <Link
-          href={"https://pii.or.id/uploads/dummies.pdf"}
+          href={"/aset/dummy_file.pdf"}
           target="_blank"
           style={{ textDecorationLine: "none" }}
         >

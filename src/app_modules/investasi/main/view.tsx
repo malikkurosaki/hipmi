@@ -5,6 +5,7 @@ import { INVESTASI } from "@/app_modules/models/investasi";
 import { MODEL_ALL_MASTER } from "@/app_modules/models/model_AllMaster";
 import {
   AspectRatio,
+  Badge,
   Box,
   Button,
   Card,
@@ -36,6 +37,7 @@ export default function MainInvestasi({
   pembagianDeviden: MODEL_ALL_MASTER[];
 }) {
   const router = useRouter();
+
   return (
     <>
       {/* <pre>{JSON.stringify(listData, null, 2)}</pre> */}
@@ -57,7 +59,8 @@ export default function MainInvestasi({
           </CardSection>
 
           <CardSection p={"lg"}>
-            <Box mt={"md"}>
+            <Box mb={"md"}>
+              <Title order={4}>{e.title}</Title>
               <Slider
                 size={10}
                 disabled
@@ -65,9 +68,10 @@ export default function MainInvestasi({
                 value={e.persentase}
                 marks={[{ value: e.persentase, label: e.persentase + `%` }]}
               />
-              <Title order={4}>{e.title}</Title>
             </Box>
-            <Box mt={"md"}>
+          </CardSection>
+          <CardSection  p={"md"} >
+            <Box>
               <Grid>
                 <Grid.Col span={6}>
                   <Stack>
@@ -98,33 +102,49 @@ export default function MainInvestasi({
           </CardSection>
           <Divider />
           <CardSection p={"md"}>
-            {(() => {
-              if (
-                e.masterPencarianInvestorId -
-                  moment(new Date()).diff(new Date(e.createdAt), "days") <=
-                0
-              ) {
-                return (
-                  <>
-                    <Group position="right">
-                    <IconCircleCheck/>
-                    <Text>Selesai</Text>
-                    </Group>
-                  </>
-                );
-              } else {
-                return<>
-                <Group position="right" spacing={"xs"}>
-                  <Text>Sisa waktu:</Text>
-                  <Text>
-                    {e.masterPencarianInvestorId -
-                      moment(new Date()).diff(new Date(e.createdAt), "days")}
-                  </Text>
-                  <Text>Hari</Text>
-                </Group>
-                </>
-              }
-            })()}
+            <Group position="apart" px={"sm"}>
+              <Box>
+                {e.saham_beli === 0 ? (
+                  ""
+                ) : (
+                  <Badge variant="filled" color="teal">
+                    Saham Anda
+                  </Badge>
+                )}
+              </Box>
+              {(() => {
+                if (
+                  e.masterPencarianInvestorId -
+                    moment(new Date()).diff(new Date(e.createdAt), "days") <=
+                  0
+                ) {
+                  return (
+                    <>
+                      <Group position="right">
+                        <IconCircleCheck />
+                        <Text>Selesai</Text>
+                      </Group>
+                    </>
+                  );
+                } else {
+                  return (
+                    <>
+                      <Group position="right" spacing={"xs"}>
+                        <Text>Sisa waktu:</Text>
+                        <Text>
+                          {e.masterPencarianInvestorId -
+                            moment(new Date()).diff(
+                              new Date(e.createdAt),
+                              "days"
+                            )}
+                        </Text>
+                        <Text>Hari</Text>
+                      </Group>
+                    </>
+                  );
+                }
+              })()}
+            </Group>
           </CardSection>
         </Card>
       ))}

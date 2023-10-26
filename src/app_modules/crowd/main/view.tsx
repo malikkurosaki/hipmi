@@ -1,5 +1,6 @@
 "use client";
 
+import { Warna } from "@/app/lib/warna";
 import { Button, Center, Stack, Text, Title } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import toast from "react-simple-toasts";
@@ -14,14 +15,16 @@ export default function MainCrowd() {
           <Text>HIPMI Crowd Funding</Text>
           <Button
             w={300}
-            bg={"green"}
+            radius={50}
+            bg={Warna.hijau_tua}
             onClick={() => router.push("/dev/investasi/main")}
           >
             Investasi
           </Button>
           <Button
             w={300}
-            bg={"grape"}
+            bg={Warna.biru}
+            radius={50}
             onClick={() => toast("Cooming Soon Feature...")}
           >
             Donasi
