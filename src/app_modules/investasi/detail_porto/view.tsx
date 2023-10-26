@@ -1,13 +1,10 @@
 "use client";
-
 import { RouteInvestasi } from "@/app/lib/app_route";
-import { Warna } from "@/app/lib/warna";
 import {
   ActionIcon,
   AspectRatio,
   Avatar,
   Box,
-  Button,
   Center,
   Flex,
   Grid,
@@ -26,38 +23,40 @@ import {
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
-export default function DetailInvestasi({id}: {id: string}) {
+export default function PortofolioDetailInvestasi({id}: {id: string}) {
   const router = useRouter();
   const listBox = [
     {
       id: 1,
       name: "Prospektus",
       icon: <IconBookDownload size={70} />,
-      route: RouteInvestasi.detail_prospektus,
+      route: RouteInvestasi.edit_prospektus,
     },
     {
       id: 2,
       name: "Dokumen",
       icon: <IconFileDescription size={70} />,
-      route: RouteInvestasi.detail_dokumen
+      route: RouteInvestasi.edit_dokumen,
     },
     {
       id: 3,
       name: "Berita",
       icon: <IconSpeakerphone size={70} />,
-      route: RouteInvestasi.berita,
+      route: RouteInvestasi.edit_berita,
     },
   ];
-
   return (
     <>
-      <Group position="apart" mb={"md"}>
+      {/* <Group position="apart" mb={"md"}>
         <Flex align={"center"} gap={"xs"}>
           <Avatar src={"/aset/avatar.png"} />
           <Text>Username</Text>
         </Flex>
         <Text>Sisa waktu : 20 Hari</Text>
-      </Group>
+      </Group> */}
+      <Center mb={'sm'}>
+      <Text>Sisa waktu : 20 Hari</Text>
+      </Center>
 
       <Paper withBorder mb={"md"}>
         <AspectRatio ratio={16 / 9}>
@@ -123,7 +122,7 @@ export default function DetailInvestasi({id}: {id: string}) {
       </Grid>
 
       {/* List Box */}
-      <Grid mb={"md"}>
+      {/* <Grid mb={"md"}>
         {listBox.map((e) => (
           <Grid.Col span={"auto"} key={e.id} onClick={() => router.push(e.route + `${id}`)}>
             <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
@@ -136,18 +135,7 @@ export default function DetailInvestasi({id}: {id: string}) {
             </Paper>
           </Grid.Col>
         ))}
-      </Grid>
-
-      <Center mb={"md"}>
-        <Button
-          radius={50}
-          w={350}
-          bg={Warna.biru}
-          onClick={() => router.push("/dev/investasi/proses_investasi")}
-        >
-          Investasi
-        </Button>
-      </Center>
+      </Grid> */}
     </>
   );
 }

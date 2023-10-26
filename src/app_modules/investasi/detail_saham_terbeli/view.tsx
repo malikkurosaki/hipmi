@@ -1,9 +1,15 @@
 "use client";
+
+import { RouteInvestasi } from "@/app/lib/app_route";
+import { Warna } from "@/app/lib/warna";
 import {
   ActionIcon,
   AspectRatio,
   Avatar,
   Box,
+  Button,
+  Center,
+  Divider,
   Flex,
   Grid,
   Group,
@@ -21,26 +27,26 @@ import {
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
-export default function PortofolioDetailInvestasi() {
+export default function DetailSahamTerbeli({id}: {id: string}) {
   const router = useRouter();
   const listBox = [
     {
       id: 1,
       name: "Prospektus",
       icon: <IconBookDownload size={70} />,
-      route: "",
+      route: RouteInvestasi.detail_prospektus,
     },
     {
       id: 2,
       name: "Dokumen",
       icon: <IconFileDescription size={70} />,
-      route: "",
+      route: RouteInvestasi.detail_dokumen,
     },
     {
       id: 3,
       name: "Berita",
       icon: <IconSpeakerphone size={70} />,
-      route: "",
+      route: RouteInvestasi.detail_berita,
     },
   ];
   return (
@@ -53,6 +59,7 @@ export default function PortofolioDetailInvestasi() {
         <Text>Sisa waktu : 20 Hari</Text>
       </Group>
 
+      {/* Gambar Investasi */}
       <Paper withBorder mb={"md"}>
         <AspectRatio ratio={16 / 9}>
           <Image alt="" src={"/aset/no-img.png"} />
@@ -73,7 +80,7 @@ export default function PortofolioDetailInvestasi() {
       </Box>
 
       {/* Rincian Data */}
-      <Grid p={"md"} mb={"md"}>
+      <Grid p={"md"}>
         <Grid.Col span={6}>
           <Stack>
             <Box>
@@ -116,18 +123,47 @@ export default function PortofolioDetailInvestasi() {
         </Grid.Col>
       </Grid>
 
+      <Divider my={"md"} />
+
+      {/* Saham Terbeli */}
+      <Box>
+        <Center>
+          <Title order={5}>Saham Anda</Title>
+        </Center>
+        <Grid p={"md"}>
+          <Grid.Col span={6}>
+            <Stack>
+              <Box>
+                <Text>Total Pembelian</Text>
+                <Text>Rp. 0</Text>
+              </Box>
+            </Stack>
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <Stack>
+              <Box>
+                <Text>Lembar Dibeli</Text>
+                <Text>100</Text>
+              </Box>
+            </Stack>
+          </Grid.Col>
+        </Grid>
+      </Box>
+
       {/* List Box */}
-      <Grid mb={"md"}>
+      <Grid mb={"sm"} justify="center">
         {listBox.map((e) => (
-          <Grid.Col span={"auto"} key={e.id}>
-            <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
-              <Flex direction={"column"} align={"center"} justify={"center"}>
-                <Text fz={12}>{e.name}</Text>
-                <ActionIcon variant="transparent" size={60}>
-                  {e.icon}
-                </ActionIcon>
-              </Flex>
-            </Paper>
+          <Grid.Col span={"auto"} key={e.id} onClick={() => router.push(e.route + `${id}`)}>
+            <Center>
+              <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
+                <Flex direction={"column"} align={"center"} justify={"center"}>
+                  <Text fz={12}>{e.name}</Text>
+                  <ActionIcon variant="transparent" size={60}>
+                    {e.icon}
+                  </ActionIcon>
+                </Flex>
+              </Paper>
+            </Center>
           </Grid.Col>
         ))}
       </Grid>

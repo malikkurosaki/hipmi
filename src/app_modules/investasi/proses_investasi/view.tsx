@@ -12,7 +12,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useCounter } from "@mantine/hooks";
+import { useCounter, useShallowEffect } from "@mantine/hooks";
 import {
   IconMinus,
   IconNumber10Small,
@@ -22,19 +22,21 @@ import {
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-simple-toasts";
 
 export default function ProsesInvestasi() {
-  const [count, handlers] = useCounter(0, { min: 1, max: 100 });
+  const router = useRouter();
+  const [count, handlers] = useCounter(0, { min: 1, max: 1000 });
   const [hargaLembar, setHargaLembar] = useState(1000);
-  const router = useRouter()
 
-//   const formatter = new Intl.NumberFormat("", {
-//     style: 'currency',
-//     currency: 'RP',
-  
-//   });
-  
 
+  //   const formatter = new Intl.NumberFormat("", {
+  //     style: 'currency',
+  //     currency: 'RP',
+
+  //   });
+
+  
 
   return (
     <>
@@ -49,22 +51,23 @@ export default function ProsesInvestasi() {
             <ActionIcon
               variant="filled"
               radius={50}
-              onClick={handlers.increment}
-            >
-              <IconPlus />
-            </ActionIcon>
-            <Text>{count}</Text>
-            <ActionIcon
-              variant="filled"
-              radius={50}
               onClick={handlers.decrement}
             >
               <IconMinus />
             </ActionIcon>
+            {/* Jumlah saham  */}
+            <Text>{count}</Text>
             <ActionIcon
               variant="filled"
               radius={50}
-              onClick={() => handlers.set(100)}
+              onClick={handlers.increment}
+            >
+              <IconPlus />
+            </ActionIcon>
+            <ActionIcon
+              variant="filled"
+              radius={50}
+              onClick={() => handlers.set(1000)}
             >
               <IconNumber10Small />
             </ActionIcon>
@@ -82,7 +85,22 @@ export default function ProsesInvestasi() {
           <Text fz={25}>Rp.{hargaLembar * count} </Text>
         </Group>
         <Center>
-            <Button w={350} radius={50} bg={Warna.biru} onClick={()=>router.push("/dev/investasi/upload_bukti") }>Proses</Button>
+          <Button
+            w={350}
+            radius={50}
+            bg={Warna.biru}
+            onClick={() => {
+             
+              if(hargaLembar * count === 1000){
+                return toast("Minimal pembelian 10.000")
+              } else {
+                router.push("/dev/investasi/upload_bukti");
+                localStorage.setItem("total_harga", (hargaLembar * count) as any)
+              }
+            }}
+          >
+            Proses
+          </Button>
         </Center>
       </Box>
     </>

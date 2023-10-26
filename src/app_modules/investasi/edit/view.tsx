@@ -1,5 +1,6 @@
 "use client";
 
+import { RouteInvestasi } from "@/app/lib/app_route";
 import { Center, Grid, Group, Paper, Text, Title } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
@@ -10,22 +11,22 @@ export default function EditInvestasi({id}:{id:string}) {
     {
       id: 1,
       name: "Intro",
-      route: "/dev/investasi/edit_intro/",
+      route: RouteInvestasi.edit_intro,
     },
     {
       id: 2,
       name: "Prospektus",
-      route: "",
+      route: RouteInvestasi.edit_prospektus,
     },
     {
       id: 3,
       name: "Dokumen",
-      route: "",
+      route: RouteInvestasi.edit_dokumen,
     },
     {
       id: 4,
       name: "Berita",
-      route: "",
+      route: RouteInvestasi.edit_berita,
     },
   ];
   return (

@@ -101,7 +101,7 @@ export default function MainInvestasi({
             {(() => {
               if (
                 e.masterPencarianInvestorId -
-                  moment(new Date()).diff(new Date(e.createdAt), "days") ===
+                  moment(new Date()).diff(new Date(e.createdAt), "days") <=
                 0
               ) {
                 return (

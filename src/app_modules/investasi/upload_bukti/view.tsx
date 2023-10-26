@@ -21,6 +21,8 @@ export default function UploadBuktiTransferInvestasi() {
   const router = useRouter()
   const [fl, setFl] = useState<File | null>(null);
   const [img, setImg] = useState<any | null>(null);
+
+  const totalHarga = localStorage.getItem("total_harga")
   return (
     <>
       <Grid align="center">
@@ -50,7 +52,7 @@ export default function UploadBuktiTransferInvestasi() {
           <Text>Total Harga</Text>
         </Grid.Col>
         <Grid.Col span={"auto"}>
-          <Text>Rp. 100.000</Text>
+          <Text>Rp. {totalHarga}</Text>
         </Grid.Col>
         <Grid.Col span={"auto"}></Grid.Col>
       </Grid>

@@ -1,4 +1,4 @@
-import { LayoutDetailInvestasi } from "@/app_modules/investasi";
+import { LayoutBeritaInvestasi } from "@/app_modules/investasi";
 import React from "react";
 
 export default async function Layout({
@@ -8,7 +8,7 @@ export default async function Layout({
 }) {
   return (
     <>
-      <LayoutDetailInvestasi>{children}</LayoutDetailInvestasi>
+      <LayoutBeritaInvestasi>{children}</LayoutBeritaInvestasi>
     </>
   );
 }
