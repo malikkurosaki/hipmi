@@ -3,7 +3,7 @@
 import prisma from "@/app/lib/prisma";
 
 export default async function funCreateNewProfile(data: any) {
-  console.log(data);
+  // console.log(data);
   const body = data;
 
   const res = await prisma.profile.create({

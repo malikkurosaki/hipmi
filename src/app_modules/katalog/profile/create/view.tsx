@@ -39,7 +39,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
    await funCreateNewProfile(body).then((res) => {
       if (res.status === 201) {
         toast("Data tersimpan");
-        return router.push("/dev/katalog/view");
+        return router.push(`/dev/katalog/${userId}`);
       } else {
         toast("Gagal")
       }

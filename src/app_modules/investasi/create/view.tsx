@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { funCreateInvestasi } from "../fun/fun_create_investasi";
 import toast from "react-simple-toasts";
-import { RouteInvestasi } from "@/app/lib/app_route";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 
 export default function InvestasiCreate({
   id,
@@ -60,7 +60,7 @@ export default function InvestasiCreate({
       masterPencarianInvestorId: value.pencarianInvestorId,
     };
     toast("Berhasil disimpan")
-    return setTimeout(() => router.push(RouteInvestasi.portofolio), 2000);
+    return setTimeout(() => router.push(RouterInvestasi.portofolio), 2000);
 
 
     // if (_.values(body).includes("")) return toast("Lengkapi data");

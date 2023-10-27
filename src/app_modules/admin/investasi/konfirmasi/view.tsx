@@ -3,21 +3,21 @@
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import {
-  ActionIcon,
-  AspectRatio,
-  Avatar,
-  Box,
-  Button,
-  Center,
-  Flex,
-  Grid,
   Group,
-  Image,
+  Flex,
+  Avatar,
   Paper,
-  Slider,
-  Stack,
-  Text,
+  AspectRatio,
+  Box,
   Title,
+  Slider,
+  Grid,
+  Stack,
+  ActionIcon,
+  Center,
+  Button,
+  Text,
+  Image,
 } from "@mantine/core";
 import {
   IconBookDownload,
@@ -25,9 +25,12 @@ import {
   IconSpeakerphone,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-simple-toasts";
 
-export default function DetailInvestasi({id}: {id: string}) {
+export default function Admin_KonfirmasiInvestasi({ id }: { id: string }) {
   const router = useRouter();
+  const [publish, setPublish] = useState(true);
   const listBox = [
     {
       id: 1,
@@ -39,7 +42,7 @@ export default function DetailInvestasi({id}: {id: string}) {
       id: 2,
       name: "Dokumen",
       icon: <IconFileDescription size={70} />,
-      route: RouterInvestasi.detail_dokumen
+      route: RouterInvestasi.detail_dokumen,
     },
     {
       id: 3,
@@ -48,15 +51,14 @@ export default function DetailInvestasi({id}: {id: string}) {
       route: RouterInvestasi.berita,
     },
   ];
-
   return (
     <>
-      <Group position="apart" mb={"md"}>
+      <Group position="left" mb={"md"}>
         <Flex align={"center"} gap={"xs"}>
           <Avatar src={"/aset/avatar.png"} />
           <Text>Username</Text>
         </Flex>
-        <Text>Sisa waktu : 20 Hari</Text>
+        {/* <Text>Sisa waktu : 20 Hari</Text> */}
       </Group>
 
       <Paper withBorder mb={"md"}>
@@ -125,7 +127,11 @@ export default function DetailInvestasi({id}: {id: string}) {
       {/* List Box */}
       <Grid mb={"md"}>
         {listBox.map((e) => (
-          <Grid.Col span={"auto"} key={e.id} onClick={() => router.push(e.route + `${id}`)}>
+          <Grid.Col
+            span={"auto"}
+            key={e.id}
+            onClick={() => router.push(e.route + `${id}`)}
+          >
             <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
               <Flex direction={"column"} align={"center"} justify={"center"}>
                 <Text fz={12}>{e.name}</Text>
@@ -138,15 +144,34 @@ export default function DetailInvestasi({id}: {id: string}) {
         ))}
       </Grid>
 
-      <Center mb={"md"}>
-        <Button
-          radius={50}
-          w={350}
-          bg={Warna.biru}
-          onClick={() => router.push("/dev/investasi/proses_investasi")}
-        >
-          Investasi
-        </Button>
+      <Center mb={100}>
+        {publish ? (
+          <Button
+            radius={50}
+            w={350}
+            bg={"green"}
+            color="green"
+            onClick={() => {
+                setTimeout(() => setPublish(false), 1000)
+                toast("Proyek Investasi Di Publish")
+            }}
+          >
+            Publish
+          </Button>
+        ) : (
+          <Button
+            radius={50}
+            w={350}
+            bg={"red"}
+            color="red"
+            onClick={() => {
+                setTimeout(() => setPublish(true), 1000)
+                toast("Proyek Investasi Di Non-Aktifkan")
+            }}
+          >
+            Non - aktif
+          </Button>
+        )}
       </Center>
     </>
   );

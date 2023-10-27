@@ -1,5 +1,5 @@
 "use client";
-import { RouteInvestasi } from "@/app/lib/app_route";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import {
   ActionIcon,
   AspectRatio,
@@ -30,19 +30,19 @@ export default function PortofolioDetailInvestasi({id}: {id: string}) {
       id: 1,
       name: "Prospektus",
       icon: <IconBookDownload size={70} />,
-      route: RouteInvestasi.edit_prospektus,
+      route: RouterInvestasi.edit_prospektus,
     },
     {
       id: 2,
       name: "Dokumen",
       icon: <IconFileDescription size={70} />,
-      route: RouteInvestasi.edit_dokumen,
+      route: RouterInvestasi.edit_dokumen,
     },
     {
       id: 3,
       name: "Berita",
       icon: <IconSpeakerphone size={70} />,
-      route: RouteInvestasi.edit_berita,
+      route: RouterInvestasi.edit_berita,
     },
   ];
   return (

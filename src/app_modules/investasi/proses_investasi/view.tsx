@@ -1,6 +1,6 @@
 "use client";
 
-import { RouteInvestasi } from "@/app/lib/app_route";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import {
   ActionIcon,
@@ -48,7 +48,7 @@ export default function ProsesInvestasi() {
   }
 
   async function onBeli() {
-    router.push(RouteInvestasi.metode_transfer);
+    router.push(RouterInvestasi.metode_transfer);
     localStorage.setItem("total_harga", total as any);
   }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { RouteInvestasi } from "@/app/lib/app_route";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import {
   ActionIcon,
@@ -34,19 +34,19 @@ export default function DetailSahamTerbeli({id}: {id: string}) {
       id: 1,
       name: "Prospektus",
       icon: <IconBookDownload size={70} />,
-      route: RouteInvestasi.detail_prospektus,
+      route: RouterInvestasi.detail_prospektus,
     },
     {
       id: 2,
       name: "Dokumen",
       icon: <IconFileDescription size={70} />,
-      route: RouteInvestasi.detail_dokumen,
+      route: RouterInvestasi.detail_dokumen,
     },
     {
       id: 3,
       name: "Berita",
       icon: <IconSpeakerphone size={70} />,
-      route: RouteInvestasi.detail_berita,
+      route: RouterInvestasi.detail_berita,
     },
   ];
   return (

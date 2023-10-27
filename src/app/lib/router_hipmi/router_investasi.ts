@@ -1,4 +1,4 @@
-export const RouteInvestasi = {
+export const RouterInvestasi = {
   //INVESTASI
 // portofolio
 portofolio: "/dev/investasi/main/portofolio",
