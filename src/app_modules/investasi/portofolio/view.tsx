@@ -30,7 +30,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from "react-responsive-carousel";
 import { useDisclosure } from "@mantine/hooks";
 import { Warna } from "@/app/lib/warna";
-import { RouteInvestasi } from "@/app/lib/app_route";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 
 export default function PortofolioInvestasi() {
   const router = useRouter();
@@ -176,7 +176,7 @@ function SahamTerbeli() {
               bg={"gray"}
               mb={"lg"}
               onClick={() =>
-                router.push(RouteInvestasi.detail_saham_terbeli + `${e.id}`)
+                router.push(RouterInvestasi.detail_saham_terbeli + `${e.id}`)
               }
             >
               <CardSection>
