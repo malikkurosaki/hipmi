@@ -21,6 +21,8 @@ import { useState } from "react";
 import { funCreateInvestasi } from "../fun/fun_create_investasi";
 import toast from "react-simple-toasts";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { useAtom } from "jotai";
+import { gs_investasiFooter } from "../g_state";
 
 export default function InvestasiCreate({
   id,
@@ -36,6 +38,7 @@ export default function InvestasiCreate({
   const router = useRouter();
   const [fl, setFl] = useState<File | null>(null);
   const [img, setImg] = useState<any | null>();
+  const [changeColor, setChangeColor] = useAtom(gs_investasiFooter)
   const [value, setValue] = useState({
     title: "",
     targetDana: "",
@@ -60,6 +63,7 @@ export default function InvestasiCreate({
       masterPencarianInvestorId: value.pencarianInvestorId,
     };
     toast("Berhasil disimpan")
+    setChangeColor(true)
     return setTimeout(() => router.push(RouterInvestasi.portofolio), 2000);
 
 

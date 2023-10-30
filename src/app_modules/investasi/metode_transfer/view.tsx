@@ -1,5 +1,6 @@
 "use client";
 
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import {
   Box,
@@ -54,7 +55,7 @@ export default function MetodeTransferInvestasi() {
   }, []);
 
   async function onSubmit() {
-    router.push("/dev/investasi/upload_bukti");
+    router.push(RouterInvestasi.transfer);
     localStorage.setItem("bank", bank);
   }
   return (

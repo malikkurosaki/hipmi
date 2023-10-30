@@ -1,7 +1,10 @@
 export const RouterInvestasi = {
   //INVESTASI
-// portofolio
-portofolio: "/dev/investasi/main/portofolio",
+  transfer: "/dev/investasi/transfer",
+  dialog_page: "/dev/investasi/dialog_page",
+  status_transaksi: "/dev/investasi/status_transaksi",
+  // portofolio
+  portofolio: "/dev/investasi/main/portofolio",
   // proses beli saham
   metode_transfer: "/dev/investasi/metode_transfer",
   // edit //

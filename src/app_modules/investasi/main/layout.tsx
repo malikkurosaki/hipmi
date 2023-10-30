@@ -14,11 +14,14 @@ import {
 } from "@mantine/core";
 import {
   IconChartHistogram,
+  IconChartPie,
   IconChartPieFilled,
   IconPencilPlus,
 } from "@tabler/icons-react";
+import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { gs_investasiFooter } from "../g_state";
 
 export default function LayoutMainInvestasi({
   children,
@@ -26,6 +29,7 @@ export default function LayoutMainInvestasi({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
 
   return (
     <>
@@ -41,33 +45,37 @@ export default function LayoutMainInvestasi({
         footer={
           <Footer height={70} bg={"dark"}>
             <Grid align="center" h={60} pt={"xs"}>
+              {/* Tampilan Bursa */}
               <Grid.Col
                 span={6}
                 onClick={() => {
                   router.push("/dev/investasi/main");
+                  setChangeColor(false);
                 }}
               >
                 <Center>
                   <Flex direction={"column"} align={"center"} w={"100%"}>
                     <ActionIcon variant="transparent">
-                      <IconChartHistogram />
+                      <IconChartHistogram  color={changeColor ? "white" : "green"}/>
                     </ActionIcon>
-                    <Text c={"white"}>Bursa</Text>
+                    <Text c={changeColor ? "white" : "green"}>Bursa</Text>
                   </Flex>
                 </Center>
               </Grid.Col>
+              {/* Tampilan Portofolio */}
               <Grid.Col
                 span={6}
                 onClick={() => {
                   router.push("/dev/investasi/main/portofolio");
+                  setChangeColor(true);
                 }}
               >
                 <Center>
                   <Flex direction={"column"} align={"center"} w={"100%"}>
                     <ActionIcon variant="transparent">
-                      <IconChartPieFilled />
+                      <IconChartPie  color={changeColor ?  "green" : "white"}/>
                     </ActionIcon>
-                    <Text c={"white"}>Portofolio</Text>
+                    <Text c={changeColor ? "green" : "white"}>Portofolio</Text>
                   </Flex>
                 </Center>
               </Grid.Col>

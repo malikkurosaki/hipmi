@@ -108,7 +108,7 @@ export default function MainInvestasi({
                 {e.saham_beli === 0 ? (
                   ""
                 ) : (
-                  <Badge variant="filled" color="teal">
+                  <Badge variant="dot" color="teal">
                     Saham Anda
                   </Badge>
                 )}
@@ -122,8 +122,8 @@ export default function MainInvestasi({
                   return (
                     <>
                       <Group position="right">
-                        <IconCircleCheck />
-                        <Text>Selesai</Text>
+                        <IconCircleCheck color="green"/>
+                        <Text c={"green"}>Selesai</Text>
                       </Group>
                     </>
                   );
