@@ -10,14 +10,17 @@ export default function LayoutCountDownTransaksiInvestasi({
 }: {
   children: React.ReactNode;
 }) {
-    const router = useRouter()
+  const router = useRouter();
   return (
     <>
       <AppShell
         header={
-          <Header height={50} sx={{borderStyle: "none"}} px={"md"}>
+          <Header height={50} sx={{ borderStyle: "none" }} px={"md"}>
             <Group h={50} align="center">
-              <CloseButton size={"md"} onClick={() => router.push(RouterInvestasi.portofolio)}  />
+              <CloseButton
+                size={"md"}
+                onClick={() => router.push(RouterInvestasi.portofolio)}
+              />
               <Text>Status Transfer</Text>
             </Group>
           </Header>
