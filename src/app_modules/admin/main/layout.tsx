@@ -25,6 +25,7 @@ import {
   RouterAdminInvestasi,
 } from "@/app/lib/router_hipmi/router_admin";
 import { useRouter } from "next/navigation";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 
 export default function AdminLayout({
   children,
@@ -69,7 +70,7 @@ export default function AdminLayout({
                 />
               </MediaQuery>
               <Title order={6}>Dashboard Admin</Title>
-              <ActionIcon disabled variant="transparent">
+              <ActionIcon  variant="transparent" onClick={() => router.push(RouterHome.main_home)}>
                 <IconLogout color="red" />
               </ActionIcon>
             </Group>

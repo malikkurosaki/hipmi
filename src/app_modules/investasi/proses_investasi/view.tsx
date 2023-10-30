@@ -78,52 +78,11 @@ export default function ProsesInvestasi() {
           <NumberInput
             w={100}
             value={beli}
-            onChange={(val: number) => setBeli(val)}
+            onChange={(val: number) => {
+              setTotal(val * hargaLembar);
+            }}
           />
-          {/* <Group position="center">
-            <ActionIcon variant="filled" radius={50} onClick={handlers.reset}>
-              <IconRefresh />
-            </ActionIcon>
-
-            <ActionIcon
-              variant="filled"
-              radius={50}
-              onClick={handlers.decrement}
-            >
-              <IconMinus />
-            </ActionIcon>
-
-            <Text>{count}</Text>
-            <ActionIcon
-              variant="filled"
-              radius={50}
-              onClick={handlers.increment}
-            >
-              <IconPlus />
-            </ActionIcon>
-            <ActionIcon
-              variant="filled"
-              radius={50}
-              onClick={() => handlers.set(1000)}
-            >
-              <IconNumber10Small />
-            </ActionIcon>
-          </Group> */}
         </Group>
-
-        {/* Tombol Proses  */}
-        <Center>
-          <Button
-            w={100}
-            compact
-            radius={50}
-            bg={Warna.hijau_tua}
-            color="green"
-            onClick={onProses}
-          >
-            Proses
-          </Button>
-        </Center>
 
         <Divider my={"lg"} />
 

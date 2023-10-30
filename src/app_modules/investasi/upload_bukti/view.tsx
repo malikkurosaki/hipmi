@@ -117,7 +117,7 @@ export default function UploadBuktiTransferInvestasi() {
         )}
       </AspectRatio>
 
-      <Center>
+      {/* <Center>
         {img === null ? (
           <Button
             disabled
@@ -138,7 +138,7 @@ export default function UploadBuktiTransferInvestasi() {
             Selesai
           </Button>
         )}
-      </Center>
+      </Center> */}
     </>
   );
 }

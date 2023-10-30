@@ -1,5 +1,7 @@
 "use client";
 
+import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import {
   Avatar,
   Badge,
@@ -11,8 +13,10 @@ import {
   Title,
 } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 
 export default function Admin_BuktiTransferInvestasi() {
+  const router = useRouter()
   const listUsername = [
     {
       id: 1,
@@ -37,7 +41,7 @@ export default function Admin_BuktiTransferInvestasi() {
     <>
       {/* Box Username */}
       {listUsername.map((e) => (
-        <Paper key={e.id} bg={"gray"} p={"md"} mb={"xs"}>
+        <Paper key={e.id} bg={"gray"} p={"md"} mb={"xs"} onClick={() => router.push(RouterAdminInvestasi.status_transfer)}>
           <Grid align="center">
             <Grid.Col span={6}>
               <Text>Username</Text>

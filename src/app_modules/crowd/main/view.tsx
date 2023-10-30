@@ -1,12 +1,15 @@
 "use client";
 
 import { Warna } from "@/app/lib/warna";
+import { gs_investasiFooter } from "@/app_modules/investasi/g_state";
 import { Button, Center, Stack, Text, Title } from "@mantine/core";
+import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import toast from "react-simple-toasts";
 
 export default function MainCrowd() {
   const router = useRouter();
+  const [changeColor, setChangeColor] = useAtom(gs_investasiFooter)
   return (
     <>
       <Center>
@@ -17,7 +20,10 @@ export default function MainCrowd() {
             w={300}
             radius={50}
             bg={Warna.hijau_tua}
-            onClick={() => router.push("/dev/investasi/main")}
+            onClick={() => {
+              router.push("/dev/investasi/main")
+              setChangeColor(false)
+            }}
           >
             Investasi
           </Button>

@@ -37,6 +37,7 @@ export default function PortofolioInvestasi() {
   return (
     <>
       <MyPortofolioInvestasi />
+      <Divider my={"lg"}/>
       <SahamTerbeli />
     </>
   );
@@ -48,6 +49,7 @@ function MyPortofolioInvestasi() {
 
   return (
     <>
+      <Title mb={"md"} order={4}>Portofolio Saya</Title>
       <Carousel
         showThumbs={false}
         infiniteLoop={true}
@@ -92,20 +94,20 @@ function MyPortofolioInvestasi() {
                 {(() => {
                   if (e.statusPorto.id === 1) {
                     return (
-                      <Badge color="yellow" variant="filled">
+                      <Badge color="yellow" variant="outline">
                         {e.statusPorto.status}
                       </Badge>
                     );
                   } else {
                     if (e.statusPorto.id === 2) {
                       return (
-                        <Badge color="red" variant="filled">
+                        <Badge color="red" variant="outline">
                           {e.statusPorto.status}
                         </Badge>
                       );
                     } else {
                       return (
-                        <Badge color="green" variant="filled">
+                        <Badge color="green" variant="outline">
                           {e.statusPorto.status}
                         </Badge>
                       );
@@ -151,7 +153,7 @@ function MyPortofolioInvestasi() {
         ))}
       </Carousel>
     </>
-  )
+  );
 }
 
 function SahamTerbeli() {
@@ -160,16 +162,21 @@ function SahamTerbeli() {
 
   return (
     <>
-      <Box maw={400} mx="auto" mt={"xs"}>
+      {/* <Box maw={400} mx="auto" mt={"xs"}>
         <Paper mb={5} onClick={toggle} bg={Warna.hijau_tua} px={"md"} h={40}>
           <Group position="apart" align="center" h={40}>
-            <Title order={6}>Saham Saya</Title>
+            <Title order={6} c={"white"}>
+              Saham Saya
+            </Title>
             <IconCaretDown />
           </Group>
         </Paper>
 
-        <Collapse in={opened} transitionDuration={700}>
-          {dataDummy.map((e) => (
+        <Collapse in={opened} transitionDuration={700}></Collapse>
+      </Box> */}
+
+      <Title mb={"md"} order={4}>Saham Saya</Title>
+      {dataDummy.map((e) => (
             <Card
               key={e.id}
               withBorder
@@ -277,8 +284,6 @@ function SahamTerbeli() {
               </CardSection>
             </Card>
           ))}
-        </Collapse>
-      </Box>
     </>
   );
 }

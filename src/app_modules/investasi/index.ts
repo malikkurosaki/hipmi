@@ -10,7 +10,8 @@ import ProsesInvestasi from "./proses_investasi/view";
 import LayoutProsesInvestasi from "./proses_investasi/layout";
 import UploadBuktiTransferInvestasi from "./upload_bukti/view";
 import LayoutBuktiTransferInvestasi from "./upload_bukti/layout";
-import KonfirmasiBuktiInvestasi from "./konfirmasi/view";
+import CountDownTransaksiInvestasi from "./dialog_page/transaksi_saham/view";
+import LayoutCountDownTransaksiInvestasi from "./dialog_page/transaksi_saham/layout"; 
 import PortofolioInvestasi from "./portofolio/view";
 import PortofolioDetailInvestasi from "./detail_porto/view";
 import LayoutPortofolioDetailInvestasi from "./detail_porto/layout";
@@ -36,6 +37,10 @@ import BeritaInvestasi from "./berita/view";
 import LayoutBeritaInvestasi from "./berita/layout";
 import MetodeTransferInvestasi from "./metode_transfer/view";
 import LayoutMetodeTransferInvestasi from "./metode_transfer/layout";
+import TransferInvestasi from "./transfer/view";
+import LayoutTransferInvestasi from "./transfer/layout";
+import StatusTransaksiInvestasi from "./status_transaksi/view";
+import LayoutStatusTransaksiInvestasi from "./status_transaksi/layout";
 
 export {
   MainInvestasi,
@@ -50,7 +55,8 @@ export {
   LayoutProsesInvestasi,
   UploadBuktiTransferInvestasi,
   LayoutBuktiTransferInvestasi,
-  KonfirmasiBuktiInvestasi,
+  CountDownTransaksiInvestasi as KonfirmasiBuktiInvestasi,
+  LayoutCountDownTransaksiInvestasi as LayoutKonfirmasiBuktiInvestasi,
   PortofolioInvestasi,
   PortofolioDetailInvestasi,
   LayoutPortofolioDetailInvestasi,
@@ -76,4 +82,8 @@ export {
   LayoutBeritaInvestasi as LayoutBeritaInvestasi,
   MetodeTransferInvestasi,
   LayoutMetodeTransferInvestasi,
+  TransferInvestasi,
+  LayoutTransferInvestasi,
+  StatusTransaksiInvestasi,
+  LayoutStatusTransaksiInvestasi,
 };

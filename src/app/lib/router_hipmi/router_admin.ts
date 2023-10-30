@@ -6,7 +6,8 @@ export const RouterAdminInvestasi = {
   main_investasi: "/dev/admin/main/investasi",
   halaman_aksi: "/dev/admin/investasi/halaman_aksi/",
   konfirmasi: "/dev/admin/investasi/konfirmasi",
-  bukti_transfer: "/dev/admin/investasi/bukti_transfer"
+  bukti_transfer: "/dev/admin/investasi/bukti_transfer",
+  status_transfer: "/dev/admin/investasi/status_transfer"
 };
 
 export const RouterAdminAward = {
