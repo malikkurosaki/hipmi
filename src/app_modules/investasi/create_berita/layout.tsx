@@ -1,41 +1,37 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import HeaderTamplate from "@/app_modules/component/header_tamplate";
 import { AppShell, Button, Center, Footer } from "@mantine/core";
-import { useAtom } from "jotai";
+import { IconPencilPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import React from "react";
-import { gs_investasiFooter } from "../g_state";
 
-export default function LayoutTransferInvestasi({
+import React from "react";
+import toast from "react-simple-toasts";
+
+export default function LayoutCreateBeritaInvestasi({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
-
   return (
     <>
       <AppShell
-        header={<HeaderTamplate title="Transfer " />}
+        header={<HeaderTamplate title="Buat Berita" />}
         footer={
           <Footer height={70} sx={{ borderStyle: "none" }}>
             <Center>
               <Button
-                radius={50}
                 w={300}
+                radius={50}
                 bg={Warna.biru}
                 onClick={() => {
-                  router.push(RouterInvestasi.dialog_transaksi);
-                  setChangeColor(true)
-                  // router.push(RouterInvestasi.status_transaksi);
-                  
+                    router.back()
+                    toast("Berita tersimpan")
                 }}
               >
-                Sudah Transfer
+                Simpan
               </Button>
             </Center>
           </Footer>

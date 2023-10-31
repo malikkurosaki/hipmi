@@ -1,22 +1,11 @@
-"use client";
+"use client"
 
-import {
-  AspectRatio,
-  Button,
-  Center,
-  FileInput,
-  Image,
-  Stack,
-  Text,
-  TextInput,
-  Textarea,
-} from "@mantine/core";
-import { IconUpload } from "@tabler/icons-react";
+import { AspectRatio, Button, Center, Image, Stack, TextInput, Textarea, Title } from "@mantine/core"
+import { IconUpload } from "@tabler/icons-react"
 
-export default function EditBeritaInvestasi() {
-  return (
-    <>
-      <Stack>
+export default function CreateBeritaInvestasi(){
+    return<>
+    <Stack>
         <AspectRatio ratio={16 / 9}>
           <Image alt="" src={"/aset/no-img.png"} />
         </AspectRatio>
@@ -28,6 +17,6 @@ export default function EditBeritaInvestasi() {
         <TextInput label="Judul berita" />
         <Textarea label="Deskripsi" autosize minRows={2} maxRows={6} />
       </Stack>
+    
     </>
-  );
 }

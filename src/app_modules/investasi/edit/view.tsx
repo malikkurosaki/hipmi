@@ -26,7 +26,7 @@ export default function EditInvestasi({id}:{id:string}) {
     {
       id: 4,
       name: "Berita",
-      route: RouterInvestasi.edit_berita,
+      route: RouterInvestasi.list_edit_berita,
     },
   ];
   return (

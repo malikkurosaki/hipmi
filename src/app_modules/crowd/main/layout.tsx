@@ -15,7 +15,7 @@ export default function LayoutMainCrowd({
   return (
     <>
       <AppShell
-        header={<HeaderTamplate route="/dev/home" title="Crowd Funding" />}
+        header={<HeaderTamplate route="/dev/home" title="HIPMI Crowd Funding" />}
       >
         {children}
       </AppShell>

@@ -19,4 +19,8 @@ export interface DUMMY_INVESTASI {
     id: number;
     status: string;
   };
+  statusSaham: {
+    id: number;
+    status: string;
+  };
 }

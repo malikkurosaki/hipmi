@@ -13,10 +13,11 @@ export default function SplashCrowd() {
   return (
     <>
       <Center h={"100vh"}>
-       <Stack>
-       <Text>Welcome to,</Text>
-        <Title>CrowdFunding</Title>
-       </Stack>
+        <Stack align="center" justify="center">
+          <Text>Welcome to,</Text>
+          <Title>HIPMI</Title>
+          <Title order={3}>CrowdFunding</Title>
+        </Stack>
       </Center>
     </>
   );

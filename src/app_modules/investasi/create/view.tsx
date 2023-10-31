@@ -62,9 +62,9 @@ export default function InvestasiCreate({
       masterPembagianDevidenId: value.pembagianDevidenId,
       masterPencarianInvestorId: value.pencarianInvestorId,
     };
-    toast("Berhasil disimpan")
+    // toast("Berhasil disimpan")
     setChangeColor(true)
-    return setTimeout(() => router.push(RouterInvestasi.portofolio), 2000);
+    return setTimeout(() => router.push(RouterInvestasi.dialog_create), 1000);
 
 
     // if (_.values(body).includes("")) return toast("Lengkapi data");
