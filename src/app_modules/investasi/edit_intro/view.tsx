@@ -173,7 +173,9 @@ export default function EditIntroInvestasi() {
             bg={Warna.hijau_muda}
             color="green"
             //  onClick={() => onSubmit() }
-            onClick={() => {router.back(), toast("Data terupdate")}}
+            onClick={() => {
+              router.back(), toast("Data terupdate");
+            }}
           >
             Update
           </Button>
