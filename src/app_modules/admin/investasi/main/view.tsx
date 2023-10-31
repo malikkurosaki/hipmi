@@ -3,10 +3,12 @@
 import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin";
 import {
   ActionIcon,
+  Badge,
   Box,
   Center,
   Grid,
   Paper,
+  ScrollArea,
   Stack,
   Table,
   Text,
@@ -40,23 +42,43 @@ const listBox = [
 const listTable = [
   {
     id: 1,
+    status: {
+      id: 1,
+      name: "Publish",
+    },
     name: "Subway Kuta",
   },
   {
     id: 2,
+    status: {
+      id: 2,
+      name: "Menunggu Konfirmasi",
+    },
     name: "Event MCD",
   },
   {
     id: 3,
+    status: {
+      id: 2,
+      name: " Menunggu Konfirmasi",
+    },
     name: "Villa Batubulan",
   },
   {
     id: 4,
+    status: {
+      id: 1,
+      name: "Publish",
+    },
     name: "Kost Alif Denpasar",
   },
   {
     id: 5,
-    name: "Pabrik Rokok",
+    status: {
+      id: 1,
+      name: "Publish",
+    },
+    name: "Pabrik Rokok Surya Gandum",
   },
 ];
 
@@ -66,6 +88,7 @@ export default function Admin_Investasi() {
   const tableBody = listTable.map((e) => (
     <tr key={e.id}>
       <td>{e.name}</td>
+      <td>{e.status.id === 1 ? <Badge variant="dot" color="green" >{e.status.name}</Badge> :  <Badge variant="dot" color="red">{e.status.name}</Badge> }</td>
       <td>
         <ActionIcon variant="transparent"
         onClick={() => router.push(RouterAdminInvestasi.halaman_aksi + `${e.id}`)}
@@ -101,15 +124,18 @@ export default function Admin_Investasi() {
         <Center my={"xs"}>
           <Text>List Investasi</Text>
         </Center>
-        <Table withBorder>
+        <ScrollArea w={"100%"}>
+        <Table withBorder highlightOnHover >
           <thead>
             <tr>
               <th>Nama Proyek Investasi</th>
+              <th>Status</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>{tableBody}</tbody>
         </Table>
+        </ScrollArea>
       </Box>
     </>
   );

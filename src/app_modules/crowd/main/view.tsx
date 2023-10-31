@@ -2,27 +2,41 @@
 
 import { Warna } from "@/app/lib/warna";
 import { gs_investasiFooter } from "@/app_modules/investasi/g_state";
-import { Button, Center, Stack, Text, Title } from "@mantine/core";
+import {
+  AspectRatio,
+  Button,
+  Center,
+  Image,
+  Paper,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import toast from "react-simple-toasts";
 
 export default function MainCrowd() {
   const router = useRouter();
-  const [changeColor, setChangeColor] = useAtom(gs_investasiFooter)
+  const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
   return (
     <>
-      <Center>
-        <Stack>
-          <Text>Selamat datang di</Text>
-          <Text>HIPMI Crowd Funding</Text>
+      <Stack>
+        
+        <Paper bg={"gray"}>
+          <AspectRatio ratio={16 / 9}>
+            <Image alt="" src={"/aset/logo.png"} />
+          </AspectRatio>
+        </Paper>
+        <Stack align="center">
           <Button
             w={300}
             radius={50}
             bg={Warna.hijau_tua}
+            color="green"
             onClick={() => {
-              router.push("/dev/investasi/main")
-              setChangeColor(false)
+              router.push("/dev/investasi/main");
+              setChangeColor(false);
             }}
           >
             Investasi
@@ -36,7 +50,8 @@ export default function MainCrowd() {
             Donasi
           </Button>
         </Stack>
-      </Center>
+      </Stack>
+     
     </>
   );
 }

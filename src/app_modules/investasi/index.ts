@@ -41,6 +41,12 @@ import TransferInvestasi from "./transfer/view";
 import LayoutTransferInvestasi from "./transfer/layout";
 import StatusTransaksiInvestasi from "./status_transaksi/view";
 import LayoutStatusTransaksiInvestasi from "./status_transaksi/layout";
+import DialogPageCreateInvestasi from "./dialog_page/create/view";
+import LayoutDialogPageCreateInvestasi from "./dialog_page/create/layout";
+import CreateBeritaInvestasi from "./create_berita/view";
+import LayoutCreateBeritaInvestasi from "./create_berita/layout";
+import ListEditBeritaInvestasi from "./list_edit_berita/page";
+import LayoutListEditBeritaInvestasi from "./list_edit_berita/layout";
 
 export {
   MainInvestasi,
@@ -86,4 +92,10 @@ export {
   LayoutTransferInvestasi,
   StatusTransaksiInvestasi,
   LayoutStatusTransaksiInvestasi,
+  DialogPageCreateInvestasi,
+  LayoutDialogPageCreateInvestasi,
+  CreateBeritaInvestasi,
+  LayoutCreateBeritaInvestasi,
+  ListEditBeritaInvestasi ,
+  LayoutListEditBeritaInvestasi,
 };

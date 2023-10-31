@@ -4,7 +4,10 @@ import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import {
   ActionIcon,
   AppShell,
+  Button,
+  Center,
   CloseButton,
+  Footer,
   Group,
   Header,
   Text,
@@ -13,6 +16,7 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { gs_investasiFooter } from "../g_state";
+import { Warna } from "@/app/lib/warna";
 
 export default function LayoutStatusTransaksiInvestasi({
   children,
@@ -39,6 +43,13 @@ export default function LayoutStatusTransaksiInvestasi({
               <ActionIcon variant="transparent" disabled></ActionIcon>
             </Group>
           </Header>
+        }
+        footer={
+          <Footer height={70} sx={{ borderStyle: "none" }}>
+            <Center>
+              <Button w={300} radius={50} bg={Warna.biru} onClick={() => router.push(RouterInvestasi.portofolio)}>Kembali Ke Portofolio</Button>
+            </Center>
+          </Footer>
         }
       >
         {children}

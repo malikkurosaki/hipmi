@@ -6,6 +6,7 @@ import {
   Box,
   Burger,
   Drawer,
+  Footer,
   Group,
   Header,
   MediaQuery,
@@ -57,10 +58,27 @@ export default function AdminLayout({
   return (
     <>
       <AppShell
+        // footer={
+        //   <Footer height={50}>
+        //     {/* Web View */}
+        //     <MediaQuery smallerThan={"md"}  styles={{ display: "none" }}>
+        //       <Group position="apart">
+        //         <Text>1</Text>
+        //         <Text>1</Text>
+        //         <Text>1</Text>
+        //       </Group>
+        //     </MediaQuery>
+
+        //     {/* <MediaQuery smallerThan={"md"}  styles={{ display: "none", borderStyle: "transparent" }}>
+        //      <Text>ok</Text>
+        //     </MediaQuery> */}
+        //   </Footer>
+        // }
         header={
           <Header height={50}>
-            <Group h={50} align="center" px={"md"} position="apart">
-              <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+            {/* Mobile View */}
+            <MediaQuery largerThan="md" styles={{ display: "none" }}>
+              <Group h={50} align="center" px={"md"} position="apart">
                 <Burger
                   opened={opened}
                   onClick={() => setOpened((o) => !o)}
@@ -68,19 +86,42 @@ export default function AdminLayout({
                   color={theme.colors.gray[6]}
                   mr="xl"
                 />
-              </MediaQuery>
-              <Title order={6}>Dashboard Admin</Title>
-              <ActionIcon  variant="transparent" onClick={() => router.push(RouterHome.main_home)}>
-                <IconLogout color="red" />
-              </ActionIcon>
-            </Group>
+                <Title order={6}>Dashboard Admin</Title>
+                <ActionIcon
+                  variant="transparent"
+                  onClick={() => router.push(RouterHome.main_home)}
+                >
+                  <IconLogout color="red" />
+                </ActionIcon>
+              </Group>
+            </MediaQuery>
+
+            {/* Web View */}
+            <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
+              <Group position="apart" align="center" h={50} px={"md"}>
+                <Title order={4}>Dashboard Admin</Title>
+                <Group>
+                  {listAdminPage.map((e) => (
+                    <Text key={e.id}  onClick={() => router.push(e.route)}>
+                      {e.name}
+                    </Text>
+                  ))}
+                </Group>
+                <ActionIcon
+                  variant="transparent"
+                  onClick={() => router.push(RouterHome.main_home)}
+                >
+                  <IconLogout color="red" />
+                </ActionIcon>
+              </Group>
+            </MediaQuery>
           </Header>
         }
       >
         {children}
       </AppShell>
       <Drawer opened={opened} onClose={() => setOpened(false)} size={"50%"}>
-        <Stack spacing={"lg"}>
+        <Stack spacing={"xl"}>
           {listAdminPage.map((e) => (
             <Text key={e.id} onClick={() => router.push(e.route)}>
               {e.name}

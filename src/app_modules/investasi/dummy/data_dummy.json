@@ -14,11 +14,15 @@
     "masterPembagianDevidenId": 3,
     "masterPencarianInvestorId": 60,
     "imagesId": "clny2l8dj0000tlagcpsi9dmz",
-    "persentase": 40,
+    "persentase": 30,
     "saham_beli": 1,
     "statusPorto": {
       "id": 1,
       "status": "Draft"
+    },
+    "statusSaham": {
+      "id": 2,
+      "status": "Menunggu Konfirmasi"
     }
   },
   {
@@ -41,6 +45,10 @@
     "statusPorto": {
       "id": 3,
       "status": "Accept"
+    },
+    "statusSaham": {
+      "id": 1,
+      "status": "Berhasil"
     }
   },
   {
@@ -63,6 +71,10 @@
     "statusPorto": {
       "id": 3,
       "status": "Accept"
+    },
+    "statusSaham": {
+      "id": 1,
+      "status": "Berhasil"
     }
   },
   {
@@ -85,6 +97,10 @@
     "statusPorto": {
       "id": 2,
       "status": "Review"
+    },
+    "statusSaham": {
+      "id": 1,
+      "status": "Berhasil"
     }
   },
   {
@@ -107,6 +123,10 @@
     "statusPorto": {
       "id": 3,
       "status": "Accept"
+    },
+    "statusSaham": {
+      "id": 2,
+      "status": "Menunggu Konfirmasi"
     }
   }
 ]

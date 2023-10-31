@@ -1,14 +1,31 @@
 "use client";
 
-import { Paper, Grid, Center, Text, Title, Button, Divider, AspectRatio, Box, FileButton, Group, Select, TextInput, Image } from "@mantine/core";
+import { Warna } from "@/app/lib/warna";
+import {
+  Paper,
+  Grid,
+  Center,
+  Text,
+  Title,
+  Button,
+  Divider,
+  AspectRatio,
+  Box,
+  FileButton,
+  Group,
+  Select,
+  TextInput,
+  Image,
+} from "@mantine/core";
 import { IconCamera, IconChevronRight } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
+import toast from "react-simple-toasts";
 
 export default function EditIntroInvestasi() {
-  const router = useRouter()
+  const router = useRouter();
   const [edit, setEdit] = useState(true);
   const [img, setImg] = useState<any | null>();
   const [value, setValue] = useState({
@@ -22,8 +39,9 @@ export default function EditIntroInvestasi() {
     pembagianDevidenId: "",
   });
 
-  return<>
-  <Box>
+  return (
+    <>
+      <Box>
         <AspectRatio ratio={16 / 9}>
           {img ? (
             <Image alt="" src={img} />
@@ -149,13 +167,18 @@ export default function EditIntroInvestasi() {
           </Box>
         </Center>
         <Center my={"lg"}>
-          <Button w={200} radius={50}
-          //  onClick={() => onSubmit() }
-          onClick={() => router.back()}
+          <Button
+            w={200}
+            radius={50}
+            bg={Warna.hijau_muda}
+            color="green"
+            //  onClick={() => onSubmit() }
+            onClick={() => {router.back(), toast("Data terupdate")}}
           >
             Update
           </Button>
         </Center>
       </Box>
-  </>
+    </>
+  );
 }
