@@ -20,9 +20,11 @@ import {
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { IconAlertTriangle } from "@tabler/icons-react";
+import moment from "moment";
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
+import Countdown from "react-countdown";
 
 export default function TransferInvestasi() {
   const router = useRouter();
@@ -40,16 +42,44 @@ export default function TransferInvestasi() {
     }
   }, []);
 
+  const PopupCD = () => <Text fz={"xs"} c={"white"}>Gagal</Text>;
+  const countD = ({ hours, minutes, seconds, completed }: any) => {
+    if (completed) {
+      return PopupCD();
+    } else {
+      return (
+        <>
+          {hours}:{minutes}:{seconds}
+        </>
+      );
+    }
+  };
+
   return (
     <>
-      <Stack spacing={"xl"}>
-        <Stack spacing={0} mb={"md"}>
+      <Stack spacing={"lg"}>
+        <Stack spacing={0} mb={"xs"}>
           <Title order={5}>Mohon transfer ke Xendit</Title>
           <Group align="center">
             <Text>untuk diteruskan ke </Text>
             <Title order={5}>Nama Pemilik Proyek</Title>
           </Group>
-          <Divider mt={"lg"} />
+          <Divider my={"md"} />
+          <Grid>
+            <Grid.Col span={4}>
+              <Text fz={"xs"}>Transfer sebelum</Text>
+            </Grid.Col>
+            <Grid.Col span={5}>
+              <Text fz={"xs"} fw={"bold"}>{moment().local().add(1, "day").calendar()}</Text>
+            </Grid.Col>
+            <Grid.Col span={3} fz={"xs"} >
+             <Paper bg={"red"} px={"md"}>
+             <Center>
+             <Countdown date={Date.now() + 86400000} renderer={countD} />
+             </Center>
+             </Paper>
+            </Grid.Col>
+          </Grid>
         </Stack>
 
         <Stack spacing={"xl"}>
@@ -112,40 +142,6 @@ export default function TransferInvestasi() {
           </Stack>
         </Stack>
       </Stack>
-
-      {/* Upload */}
-      {/* <Group position="center" mt="lg" mb={"md"}>
-        <FileButton
-          onChange={async (files: any) => {
-            const buffer = URL.createObjectURL(
-              new Blob([new Uint8Array(await files.arrayBuffer())])
-            );
-            setImg(buffer);
-            setFl(files);
-          }}
-          accept="image/png,image/jpeg"
-        >
-          {(props) => (
-            <Button
-              {...props}
-              // w={350}
-              compact
-              radius={50}
-              bg={Warna.biru}
-              // onClick={() => router.push("/dev/investasi/upload")}
-            >
-              Upload
-            </Button>
-          )}
-        </FileButton>
-      </Group>
-      <AspectRatio ratio={16 / 9} mb={"lg"}>
-        {img ? (
-          <Image alt="" src={img} />
-        ) : (
-          <Image alt="" src={"/aset/no-img.png"} />
-        )}
-      </AspectRatio> */}
     </>
   );
 }

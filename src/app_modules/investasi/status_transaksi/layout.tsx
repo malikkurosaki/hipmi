@@ -18,13 +18,14 @@ import React from "react";
 import { gs_investasiFooter } from "../g_state";
 import { Warna } from "@/app/lib/warna";
 
-export default function LayoutStatusTransaksiInvestasi({
+export default function LayoutStatusTransaksiInvestasi(
+  {
   children,
 }: {
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  // const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
+  const [hotMenu, setHotMenu] = useAtom(gs_investasiFooter);
 
   return (
     <>
@@ -35,8 +36,8 @@ export default function LayoutStatusTransaksiInvestasi({
               <CloseButton
                 size={"md"}
                 onClick={() => {
-                  router.push(RouterInvestasi.portofolio);
-                  // setChangeColor(true);
+                  router.push(RouterInvestasi.main_transaksi);
+                  setHotMenu(3);
                 }}
               />
               <Text>Status Transaksi</Text>
@@ -47,7 +48,16 @@ export default function LayoutStatusTransaksiInvestasi({
         footer={
           <Footer height={70} sx={{ borderStyle: "none" }}>
             <Center>
-              <Button w={300} radius={50} bg={Warna.biru} onClick={() => router.push(RouterInvestasi.portofolio)}>Kembali Ke Portofolio</Button>
+              <Button
+                w={300}
+                radius={50}
+                bg={Warna.biru}
+                onClick={() => {
+                  router.push(RouterInvestasi.main_investasi), setHotMenu(2);
+                }}
+              >
+                Kembali Ke Investasi
+              </Button>
             </Center>
           </Footer>
         }

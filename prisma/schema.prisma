@@ -22,6 +22,7 @@ model User {
   UserSession      UserSession?
   Profile          Profile?
   Investasi        Investasi[]
+  SahamTerbeli     SahamTerbeli[]
 }
 
 model MasterUserRole {
@@ -61,13 +62,14 @@ model Profile {
 }
 
 model Images {
-  id        String     @id @default(cuid())
-  url       String
-  active    Boolean    @default(true)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @default(now()) @updatedAt
-  Profile   Profile?
-  Investasi Investasi?
+  id              String            @id @default(cuid())
+  url             String
+  active          Boolean           @default(true)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now()) @updatedAt
+  Profile         Profile?
+  Investasi       Investasi?
+  BeritaInvestasi BeritaInvestasi[]
 }
 
 model Katalog {
@@ -94,6 +96,8 @@ model MasterBidangBisnis {
   Katalog   Katalog[]
 }
 
+// -------------------- INVESTASI --------------------- //
+// Table investasi / saham
 model Investasi {
   id          String   @id @default(cuid())
   title       String
@@ -105,7 +109,7 @@ model Investasi {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
   author      User?    @relation(fields: [authorId], references: [id])
-  authorId    String?  
+  authorId    String?
 
   MasterPeriodeDeviden      MasterPeriodeDeviden?    @relation(fields: [masterPeriodeDevidenId], references: [id])
   masterPeriodeDevidenId    String?
@@ -116,6 +120,16 @@ model Investasi {
 
   ImageInvestasi Images? @relation(fields: [imagesId], references: [id])
   imagesId       String? @unique
+
+  ProspektusInvestasi     ProspektusInvestasi?
+  DokumenInvestasi        DokumenInvestasi?      @relation(fields: [dokumenInvestasiId], references: [id])
+  dokumenInvestasiId      String?
+  BeritaInvestasi         BeritaInvestasi?       @relation(fields: [beritaInvestasiId], references: [id])
+  beritaInvestasiId       String?
+  SahamTerbeli            SahamTerbeli?          @relation(fields: [sahamTerbeliId], references: [id])
+  sahamTerbeliId          String?
+  MasterStatusInvestasi   MasterStatusInvestasi? @relation(fields: [masterStatusInvestasiId], references: [id])
+  masterStatusInvestasiId String?                @default("1")
 }
 
 model MasterPencarianInvestor {
@@ -142,5 +156,59 @@ model MasterPembagianDeviden {
   active    Boolean     @default(true)
   createdAt DateTime    @default(now())
   updatedAt DateTime    @default(now()) @updatedAt
+  investasi Investasi[]
+}
+
+model MasterStatusInvestasi {
+  id        String      @id @default(cuid())
+  name      String
+  color     String
+  active    Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now()) @updatedAt
+  investasi Investasi[]
+}
+
+model ProspektusInvestasi {
+  id          String    @id @default(cuid())
+  url         String
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+  investasi   Investasi @relation(fields: [investasiId], references: [id])
+  investasiId String    @unique
+}
+
+model DokumenInvestasi {
+  id        String      @id @default(cuid())
+  url       String
+  active    Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now()) @updatedAt
+  investasi Investasi[]
+}
+
+model BeritaInvestasi {
+  id          String      @id @default(cuid())
+  title       String
+  deskripsi   String
+  active      Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now()) @updatedAt
+  investasi   Investasi[]
+  ImageBerita Images?     @relation(fields: [imagesId], references: [id])
+  imagesId    String?
+}
+
+model SahamTerbeli {
+  id           String   @id @default(cuid())
+  totalBeli    String
+  jumlahLembar String
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+
+  author    User        @relation(fields: [authorId], references: [id])
+  authorId  String
   investasi Investasi[]
 }

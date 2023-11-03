@@ -3,6 +3,7 @@
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import {
+  Avatar,
   Box,
   Button,
   Center,
@@ -78,7 +79,8 @@ export default function MetodeTransferInvestasi() {
         <Flex direction={"column"} gap={"lg"} mt="xs">
           {listNoRekening.map((e) => (
             <Box key={e.id}>
-              <Radio value={e.norek} label={e.name + ":  " + e.norek} />
+             
+              <Radio value={e.norek} label={e.name}/>
             </Box>
           ))}
         </Flex>

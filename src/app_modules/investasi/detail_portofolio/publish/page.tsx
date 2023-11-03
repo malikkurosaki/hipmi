@@ -1,10 +1,13 @@
 "use client";
+
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { Warna } from "@/app/lib/warna";
 import {
   ActionIcon,
   AspectRatio,
   Avatar,
   Box,
+  Button,
   Center,
   Flex,
   Grid,
@@ -21,10 +24,13 @@ import {
   IconFileDescription,
   IconSpeakerphone,
 } from "@tabler/icons-react";
+import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
+import toast from "react-simple-toasts";
 
-export default function PortofolioDetailInvestasi({id}: {id: string}) {
+export default function DetailPublishInvestasi() {
   const router = useRouter();
+
   const listBox = [
     {
       id: 1,
@@ -45,12 +51,12 @@ export default function PortofolioDetailInvestasi({id}: {id: string}) {
       route: RouterInvestasi.edit_berita,
     },
   ];
+
   return (
     <>
-      <Center mb={'sm'}>
-      <Text>Sisa waktu : 20 Hari</Text>
+      <Center mb={"sm"}>
+        <Text>Sisa waktu : 20 Hari</Text>
       </Center>
-
       <Paper withBorder mb={"md"}>
         <AspectRatio ratio={16 / 9}>
           <Image alt="" src={"/aset/no-img.png"} />
@@ -115,9 +121,13 @@ export default function PortofolioDetailInvestasi({id}: {id: string}) {
       </Grid>
 
       {/* List Box */}
-      {/* <Grid mb={"md"}>
+      <Grid mb={"md"}>
         {listBox.map((e) => (
-          <Grid.Col span={"auto"} key={e.id} onClick={() => router.push(e.route + `${id}`)}>
+          <Grid.Col
+            span={"auto"}
+            key={e.id}
+            onClick={() => router.push(e.route + `${1}`)}
+          >
             <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
               <Flex direction={"column"} align={"center"} justify={"center"}>
                 <Text fz={12}>{e.name}</Text>
@@ -128,7 +138,7 @@ export default function PortofolioDetailInvestasi({id}: {id: string}) {
             </Paper>
           </Grid.Col>
         ))}
-      </Grid> */}
+      </Grid>
     </>
   );
 }

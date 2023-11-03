@@ -36,7 +36,7 @@ export default function MainCrowd() {
             color="green"
             onClick={() => {
               router.push("/dev/investasi/main");
-              setChangeColor(false);
+              setChangeColor(0);
             }}
           >
             Investasi

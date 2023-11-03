@@ -3,7 +3,17 @@
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import HeaderTamplate from "@/app_modules/component/header_tamplate";
-import { AppShell, Button, Center, Footer } from "@mantine/core";
+import {
+  ActionIcon,
+  AppShell,
+  Button,
+  Center,
+  CloseButton,
+  Footer,
+  Group,
+  Header,
+  Text,
+} from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -15,12 +25,25 @@ export default function LayoutTransferInvestasi({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
+  const [hotMenu, setHotMenu] = useAtom(gs_investasiFooter);
 
   return (
     <>
       <AppShell
-        header={<HeaderTamplate title="Transfer " />}
+        header={
+          <Header height={50}>
+            <Group position="apart" h={50} px={"md"}>
+              <CloseButton
+                size={"md"}
+                onClick={() => {
+                  router.push(RouterInvestasi.main_transaksi), setHotMenu(3);
+                }}
+              />
+              <Text>Transfer</Text>
+              <ActionIcon variant="transparent" disabled></ActionIcon>
+            </Group>
+          </Header>
+        }
         footer={
           <Footer height={70} sx={{ borderStyle: "none" }}>
             <Center>
@@ -30,9 +53,8 @@ export default function LayoutTransferInvestasi({
                 bg={Warna.biru}
                 onClick={() => {
                   router.push(RouterInvestasi.dialog_transaksi);
-                  setChangeColor(true)
+                  setHotMenu(1);
                   // router.push(RouterInvestasi.status_transaksi);
-                  
                 }}
               >
                 Sudah Transfer

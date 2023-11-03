@@ -18,9 +18,15 @@ import {
   Button,
   Text,
   Image,
+  Collapse,
+  Textarea,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
   IconBookDownload,
+  IconChevronDown,
+  IconChevronLeft,
+  IconChevronRight,
   IconFileDescription,
   IconSpeakerphone,
 } from "@tabler/icons-react";
@@ -31,6 +37,8 @@ import toast from "react-simple-toasts";
 export default function Admin_KonfirmasiInvestasi({ id }: { id: string }) {
   const router = useRouter();
   const [publish, setPublish] = useState(true);
+  const [opened, { toggle }] = useDisclosure(false);
+
   const listBox = [
     {
       id: 1,
@@ -125,7 +133,7 @@ export default function Admin_KonfirmasiInvestasi({ id }: { id: string }) {
       </Grid>
 
       {/* List Box */}
-      <Grid mb={"md"}>
+      <Grid mb={"xl"}>
         {listBox.map((e) => (
           <Grid.Col
             span={"auto"}
@@ -144,35 +152,85 @@ export default function Admin_KonfirmasiInvestasi({ id }: { id: string }) {
         ))}
       </Grid>
 
-      <Center mb={100}>
-        {publish ? (
-          <Button
-            radius={50}
-            w={350}
-            bg={"green"}
-            color="green"
-            onClick={() => {
-                setTimeout(() => setPublish(false), 1000)
-                toast("Proyek Investasi Di Publish")
-            }}
-          >
-            Publish
-          </Button>
-        ) : (
-          <Button
-            radius={50}
-            w={350}
-            bg={"red"}
-            color="red"
-            onClick={() => {
-                setTimeout(() => setPublish(true), 1000)
-                toast("Proyek Investasi Di Non-Aktifkan")
-            }}
-          >
-            Non - aktif
-          </Button>
-        )}
-      </Center>
+      <Stack mb={40}>
+        {/* Button publish dan reject */}
+        <Grid>
+          {/* Publish */}
+          <Grid.Col span={6}>
+            <Center>
+              {publish ? (
+                <Button
+                  radius={50}
+                  w={200}
+                  bg={"green"}
+                  color="green"
+                  onClick={() => {
+                    setTimeout(() => setPublish(false), 1000);
+                    toast("Proyek Investasi Di Publish");
+                  }}
+                >
+                  Publish
+                </Button>
+              ) : (
+                <Button
+                  radius={50}
+                  w={200}
+                  bg={"orange"}
+                  color="orange"
+                  onClick={() => {
+                    setTimeout(() => setPublish(true), 1000);
+                    toast("Proyek Investasi Di Non-Aktifkan");
+                  }}
+                >
+                  Non - aktif
+                </Button>
+              )}
+            </Center>
+          </Grid.Col>
+          {/* Reject */}
+          <Grid.Col span={6}>
+            <Center>
+              <Button
+                w={200}
+                radius={50}
+                bg={"red"}
+                color="red"
+                onClick={toggle}
+                rightIcon={!opened ? <IconChevronLeft /> : <IconChevronDown />}
+              >
+                Reject
+              </Button>
+            </Center>
+          </Grid.Col>
+        </Grid>
+
+        {/* Text area reject */}
+        <Collapse in={opened}>
+          <Paper bg={"gray.4"} p={"xs"}>
+            <Stack>
+              <Textarea
+                withAsterisk
+                label="Alasan:"
+                placeholder="Masukan alasan penolakan"
+                autosize
+                minRows={2}
+                maxRows={4}
+              />
+              <Group position="right">
+                <Button
+                  w={100}
+                  radius={50}
+                  bg={Warna.biru}
+                  compact
+                  onClick={toggle}
+                >
+                  Kirim
+                </Button>
+              </Group>
+            </Stack>
+          </Paper>
+        </Collapse>
+      </Stack>
     </>
   );
 }

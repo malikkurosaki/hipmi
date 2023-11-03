@@ -52,7 +52,7 @@ const listTable = [
     id: 2,
     status: {
       id: 2,
-      name: "Menunggu Konfirmasi",
+      name: "Review",
     },
     name: "Event MCD",
   },
@@ -60,7 +60,7 @@ const listTable = [
     id: 3,
     status: {
       id: 2,
-      name: " Menunggu Konfirmasi",
+      name: " Review",
     },
     name: "Villa Batubulan",
   },

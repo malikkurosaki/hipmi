@@ -1,10 +1,13 @@
 "use client";
+
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { Warna } from "@/app/lib/warna";
 import {
   ActionIcon,
   AspectRatio,
   Avatar,
   Box,
+  Button,
   Center,
   Flex,
   Grid,
@@ -21,10 +24,15 @@ import {
   IconFileDescription,
   IconSpeakerphone,
 } from "@tabler/icons-react";
+import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
+import { gs_TabPortoInvestasi } from "../../g_state";
+import toast from "react-simple-toasts";
 
-export default function PortofolioDetailInvestasi({id}: {id: string}) {
+export default function DetailDraftInvestasi() {
   const router = useRouter();
+  const [activeTab, setActiveTab] = useAtom(gs_TabPortoInvestasi)
+
   const listBox = [
     {
       id: 1,
@@ -45,12 +53,16 @@ export default function PortofolioDetailInvestasi({id}: {id: string}) {
       route: RouterInvestasi.edit_berita,
     },
   ];
+
+  async function onsubmit() {
+    toast("Review Berhasil Diajukan")
+    router.push(RouterInvestasi.portofolio)
+    setActiveTab("Review")
+
+  }
+
   return (
     <>
-      <Center mb={'sm'}>
-      <Text>Sisa waktu : 20 Hari</Text>
-      </Center>
-
       <Paper withBorder mb={"md"}>
         <AspectRatio ratio={16 / 9}>
           <Image alt="" src={"/aset/no-img.png"} />
@@ -74,10 +86,7 @@ export default function PortofolioDetailInvestasi({id}: {id: string}) {
       <Grid p={"md"} mb={"md"}>
         <Grid.Col span={6}>
           <Stack>
-            <Box>
-              <Text>Terkumpul</Text>
-              <Text>Rp. </Text>
-            </Box>
+           
             <Box>
               <Text>Dana Dibutuhkan</Text>
               <Text>Rp. </Text>
@@ -94,10 +103,7 @@ export default function PortofolioDetailInvestasi({id}: {id: string}) {
         </Grid.Col>
         <Grid.Col span={6}>
           <Stack>
-            <Box>
-              <Text>Investor</Text>
-              <Text>4657</Text>
-            </Box>
+            
             <Box>
               <Text>ROI</Text>
               <Text>%</Text>
@@ -113,6 +119,18 @@ export default function PortofolioDetailInvestasi({id}: {id: string}) {
           </Stack>
         </Grid.Col>
       </Grid>
+
+      <Center>
+        <Button
+          w={300}
+          radius={50}
+          bg={"yellow.7"}
+          color="yellow"
+          onClick={() => onsubmit()}
+        >
+          Ajukan Review
+        </Button>
+      </Center>
 
       {/* List Box */}
       {/* <Grid mb={"md"}>

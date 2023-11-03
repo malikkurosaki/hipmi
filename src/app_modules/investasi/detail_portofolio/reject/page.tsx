@@ -1,11 +1,15 @@
 "use client";
+
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { Warna } from "@/app/lib/warna";
 import {
   ActionIcon,
   AspectRatio,
   Avatar,
   Box,
+  Button,
   Center,
+  Divider,
   Flex,
   Grid,
   Group,
@@ -21,10 +25,15 @@ import {
   IconFileDescription,
   IconSpeakerphone,
 } from "@tabler/icons-react";
+import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
+import { gs_TabPortoInvestasi } from "../../g_state";
+import toast from "react-simple-toasts";
 
-export default function PortofolioDetailInvestasi({id}: {id: string}) {
+export default function DetailRejectInvestasi() {
   const router = useRouter();
+  const [activeTab, setActiveTab] = useAtom(gs_TabPortoInvestasi);
+
   const listBox = [
     {
       id: 1,
@@ -45,17 +54,75 @@ export default function PortofolioDetailInvestasi({id}: {id: string}) {
       route: RouterInvestasi.edit_berita,
     },
   ];
+
+  async function onAjukan() {
+    toast("Project Diajukan Kembali");
+    router.push(RouterInvestasi.portofolio);
+    setActiveTab("Review");
+  }
+
+  async function onBatal() {
+    toast("Project Dibatalkan");
+    router.push(RouterInvestasi.portofolio);
+    setActiveTab("Reject");
+    
+  }
+
   return (
     <>
-      <Center mb={'sm'}>
-      <Text>Sisa waktu : 20 Hari</Text>
-      </Center>
+      {/* Alasan */}
+      <Box mb={"sm"}>
+        <Title order={6}>Alasan :</Title>
+        <Box>
+          <Paper>
+            <Text>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
+              necessitatibus dolores, doloribus porro quis velit unde voluptatem
+              delectus, nesciunt laboriosam non quae numquam sed tenetur! Minus
+              earum odio possimus dolore?
+            </Text>
+          </Paper>
+        </Box>
+      </Box>
+
+      {/* Tombol Ajukan */}
+      <Grid>
+        <Grid.Col span={6}>
+          <Center>
+            <Button
+              mb={"xl"}
+              radius={50}
+              bg={"orange.7"}
+              color="yellow"
+              onClick={() => onAjukan()}
+            >
+              Ajukan Kembali
+            </Button>
+          </Center>
+        </Grid.Col>
+
+        <Grid.Col span={6}>
+          <Center>
+            {" "}
+            <Button
+              mb={"xl"}
+              radius={50}
+              bg={"red.7"}
+              color="yellow"
+              onClick={() => onBatal()}
+            >
+              Batalkan Project
+            </Button>
+          </Center>
+        </Grid.Col>
+      </Grid>
 
       <Paper withBorder mb={"md"}>
         <AspectRatio ratio={16 / 9}>
           <Image alt="" src={"/aset/no-img.png"} />
         </AspectRatio>
       </Paper>
+
 
       {/* Title dan Persentase */}
       <Box mb={"md"}>
@@ -75,10 +142,6 @@ export default function PortofolioDetailInvestasi({id}: {id: string}) {
         <Grid.Col span={6}>
           <Stack>
             <Box>
-              <Text>Terkumpul</Text>
-              <Text>Rp. </Text>
-            </Box>
-            <Box>
               <Text>Dana Dibutuhkan</Text>
               <Text>Rp. </Text>
             </Box>
@@ -94,10 +157,6 @@ export default function PortofolioDetailInvestasi({id}: {id: string}) {
         </Grid.Col>
         <Grid.Col span={6}>
           <Stack>
-            <Box>
-              <Text>Investor</Text>
-              <Text>4657</Text>
-            </Box>
             <Box>
               <Text>ROI</Text>
               <Text>%</Text>
@@ -115,9 +174,13 @@ export default function PortofolioDetailInvestasi({id}: {id: string}) {
       </Grid>
 
       {/* List Box */}
-      {/* <Grid mb={"md"}>
+      <Grid mb={"md"}>
         {listBox.map((e) => (
-          <Grid.Col span={"auto"} key={e.id} onClick={() => router.push(e.route + `${id}`)}>
+          <Grid.Col
+            span={"auto"}
+            key={e.id}
+            onClick={() => router.push(e.route + `${"1"}`)}
+          >
             <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
               <Flex direction={"column"} align={"center"} justify={"center"}>
                 <Text fz={12}>{e.name}</Text>
@@ -128,7 +191,9 @@ export default function PortofolioDetailInvestasi({id}: {id: string}) {
             </Paper>
           </Grid.Col>
         ))}
-      </Grid> */}
+      </Grid>
+
+      
     </>
   );
 }
