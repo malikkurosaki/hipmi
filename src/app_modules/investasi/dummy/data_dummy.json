@@ -22,7 +22,7 @@
     },
     "statusSaham": {
       "id": 2,
-      "status": "Menunggu Konfirmasi"
+      "status": "Menunggu konfirmasi"
     }
   },
   {
@@ -44,7 +44,7 @@
     "saham_beli": 0,
     "statusPorto": {
       "id": 3,
-      "status": "Accept"
+      "status": "Publish"
     },
     "statusSaham": {
       "id": 1,
@@ -69,8 +69,8 @@
     "persentase": 30,
     "saham_beli": 1,
     "statusPorto": {
-      "id": 3,
-      "status": "Accept"
+      "id": 2,
+      "status": "Review"
     },
     "statusSaham": {
       "id": 1,
@@ -121,12 +121,12 @@
     "persentase": 80,
     "saham_beli": 0,
     "statusPorto": {
-      "id": 3,
-      "status": "Accept"
+      "id": 4,
+      "status": "Reject"
     },
     "statusSaham": {
       "id": 2,
-      "status": "Menunggu Konfirmasi"
+      "status": "Menunggu konfirmasi"
     }
   }
 ]

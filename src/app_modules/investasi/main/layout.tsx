@@ -13,15 +13,19 @@ import {
   Text,
 } from "@mantine/core";
 import {
+  IconCash,
   IconChartHistogram,
   IconChartPie,
   IconChartPieFilled,
+  IconMoneybag,
+  IconNotes,
   IconPencilPlus,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { gs_investasiFooter } from "../g_state";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 
 export default function LayoutMainInvestasi({
   children,
@@ -29,7 +33,34 @@ export default function LayoutMainInvestasi({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
+  const [active, setActive] = useAtom(gs_investasiFooter);
+
+  const listFooter = [
+    {
+      id: 1,
+      name: "Bursa",
+      route: RouterInvestasi.main,
+      icon: <IconChartHistogram />,
+    },
+    {
+      id: 2,
+      name: "Portofolio",
+      route: RouterInvestasi.main_porto,
+      icon: <IconChartPie />,
+    },
+    {
+      id: 3,
+      name: "Investasi",
+      route: RouterInvestasi.main_investasi,
+      icon: <IconCash />,
+    },
+    {
+      id: 4,
+      name: "Transaksi",
+      route: RouterInvestasi.main_transaksi,
+      icon: <IconNotes />,
+    },
+  ];
 
   return (
     <>
@@ -43,42 +74,26 @@ export default function LayoutMainInvestasi({
           />
         }
         footer={
-          <Footer height={70} bg={"dark"}>
+          <Footer height={70} bg={"dark.4"}>
             <Grid align="center" h={60} pt={"xs"}>
               {/* Tampilan Bursa */}
-              <Grid.Col
-                span={6}
-                onClick={() => {
-                  router.push("/dev/investasi/main");
-                  setChangeColor(false);
-                }}
-              >
-                <Center>
-                  <Flex direction={"column"} align={"center"} w={"100%"}>
-                    <ActionIcon variant="transparent">
-                      <IconChartHistogram  color={changeColor ? "white" : "green"}/>
-                    </ActionIcon>
-                    <Text c={changeColor ? "white" : "green"}>Bursa</Text>
-                  </Flex>
-                </Center>
-              </Grid.Col>
-              {/* Tampilan Portofolio */}
-              <Grid.Col
-                span={6}
-                onClick={() => {
-                  router.push("/dev/investasi/main/portofolio");
-                  setChangeColor(true);
-                }}
-              >
-                <Center>
-                  <Flex direction={"column"} align={"center"} w={"100%"}>
-                    <ActionIcon variant="transparent">
-                      <IconChartPie  color={changeColor ?  "green" : "white"}/>
-                    </ActionIcon>
-                    <Text c={changeColor ? "green" : "white"}>Portofolio</Text>
-                  </Flex>
-                </Center>
-              </Grid.Col>
+              {listFooter.map((e, k) => (
+                <Grid.Col
+                  key={e.id}
+                  span={3}
+                  onClick={() => {
+                    router.push(e.route);
+                    setActive(k)
+                  }}
+                >
+                  <Center>
+                    <Flex direction={"column"} align={"center"} w={"100%"}>
+                      <ActionIcon variant="transparent" c={active === k ? "green" : "white"}>{e.icon}</ActionIcon>
+                      <Text c={active === k ? "green" : "white"}>{e.name}</Text>
+                    </Flex>
+                  </Center>
+                </Grid.Col>
+              ))}
             </Grid>
           </Footer>
         }

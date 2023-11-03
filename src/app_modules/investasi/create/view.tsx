@@ -22,7 +22,8 @@ import { funCreateInvestasi } from "../fun/fun_create_investasi";
 import toast from "react-simple-toasts";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { useAtom } from "jotai";
-import { gs_investasiFooter } from "../g_state";
+import { gs_TabPortoInvestasi, gs_investasiFooter } from "../g_state";
+import { useShallowEffect } from "@mantine/hooks";
 
 export default function InvestasiCreate({
   id,
@@ -38,7 +39,10 @@ export default function InvestasiCreate({
   const router = useRouter();
   const [fl, setFl] = useState<File | null>(null);
   const [img, setImg] = useState<any | null>();
-  const [changeColor, setChangeColor] = useAtom(gs_investasiFooter)
+  const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
+  const [activeTab, setActiveTab] = useAtom(gs_TabPortoInvestasi)
+
+
   const [value, setValue] = useState({
     title: "",
     targetDana: "",
@@ -63,9 +67,9 @@ export default function InvestasiCreate({
       masterPencarianInvestorId: value.pencarianInvestorId,
     };
     // toast("Berhasil disimpan")
-    setChangeColor(true)
+    setChangeColor(1);
+    setActiveTab("Draft")
     return setTimeout(() => router.push(RouterInvestasi.dialog_create), 1000);
-
 
     // if (_.values(body).includes("")) return toast("Lengkapi data");
     // if (!fl) return toast("File Kosong");
@@ -105,10 +109,11 @@ export default function InvestasiCreate({
           >
             {(props) => (
               <Button
+                compact
                 {...props}
-                w={350}
+                w={100}
                 radius={50}
-                // bg={Warna.biru}
+                bg={Warna.hijau_muda}
                 // onClick={() => router.push("/dev/investasi/upload")}
               >
                 <IconCamera />
@@ -141,16 +146,24 @@ export default function InvestasiCreate({
             <TextInput
               label="Harga Per Lember"
               type="number"
-              onChange={(val) => {
+              onChange={(val: any) => {
                 setValue({
                   ...value,
                   hargaLembar: val.target.value,
+                });
+
+                const data : any = (value.targetDana as any) / val.target.value;
+                // setTL(data);
+                setValue({
+                  ...value,
+                  totalLembar: data
                 });
               }}
             />
             <TextInput
               label="Total Lembar"
               type="number"
+              value={Math.floor(value.totalLembar as any)}
               onChange={(val) => {
                 setValue({
                   ...value,
@@ -207,7 +220,12 @@ export default function InvestasiCreate({
           </Box>
         </Center>
         <Center my={"lg"}>
-          <Button w={200} radius={50} onClick={() => onSubmit()}>
+          <Button
+            w={300}
+            radius={50}
+            bg={Warna.biru}
+            onClick={() => onSubmit()}
+          >
             Simpan
           </Button>
         </Center>

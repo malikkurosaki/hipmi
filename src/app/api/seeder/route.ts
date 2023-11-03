@@ -5,6 +5,7 @@ import bidangBisnis from "../../../bin/seeder/bidang_bisnis.json";
 import pencarianInvestor from "./../../../bin/seeder/investasi/pencarian_investor.json";
 import periodeDeviden from "./../../../bin/seeder/investasi/periode_deviden.json";
 import pembagianDeviden from "./../../../bin/seeder/investasi/pembagian_deviden.json";
+import statusInvestasi from "./../../../bin/seeder/investasi/status_investasi.json";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
@@ -88,6 +89,24 @@ export async function GET(req: Request) {
         },
       });
     }
+
+    // for (let i of statusInvestasi) {
+    //   await prisma.masterStatusInvestasi.upsert({
+    //     where: {
+    //       id: i.id,
+    //     },
+    //     create: {
+    //       id: i.id,
+    //       name: i.name,
+    //       color: i.color,
+    //     },
+    //     update: {
+    //       id: i.id,
+    //       name: i.name,
+    //       color: i.color,
+    //     },
+    //   });
+    // }
 
     return NextResponse.json({ success: true });
   }
