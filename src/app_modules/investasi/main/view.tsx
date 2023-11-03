@@ -48,7 +48,6 @@ export default function MainInvestasi({
           mb={"lg"}
           onClick={() => router.push(`/dev/investasi/detail/${e.id}`)}
         >
-
           <CardSection p={"xs"}>
             <AspectRatio ratio={16 / 9}>
               {e.imagesId ? (
@@ -71,7 +70,7 @@ export default function MainInvestasi({
               />
             </Box>
           </CardSection>
-          <CardSection  p={"md"} >
+          <CardSection p={"md"}>
             <Box>
               <Grid>
                 <Grid.Col span={6}>
@@ -122,7 +121,7 @@ export default function MainInvestasi({
                   return (
                     <>
                       <Group position="right">
-                        <IconCircleCheck color="green"/>
+                        <IconCircleCheck color="green" />
                         <Text c={"green"}>Selesai</Text>
                       </Group>
                     </>
