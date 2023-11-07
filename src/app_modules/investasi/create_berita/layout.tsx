@@ -11,31 +11,21 @@ import toast from "react-simple-toasts";
 
 export default function LayoutCreateBeritaInvestasi({
   children,
+  idInves
 }: {
   children: React.ReactNode;
+  idInves: string
 }) {
   const router = useRouter();
   return (
     <>
       <AppShell
         header={<HeaderTamplate title="Buat Berita" />}
-        footer={
-          <Footer height={70} sx={{ borderStyle: "none" }}>
-            <Center>
-              <Button
-                w={300}
-                radius={50}
-                bg={Warna.biru}
-                onClick={() => {
-                    router.back()
-                    toast("Berita tersimpan")
-                }}
-              >
-                Simpan
-              </Button>
-            </Center>
-          </Footer>
-        }
+        // footer={
+        //   <Footer height={70} sx={{ borderStyle: "none" }}>
+           
+        //   </Footer>
+        // }
       >
         {children}
       </AppShell>

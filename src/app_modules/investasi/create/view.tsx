@@ -2,16 +2,20 @@
 
 import { ApiHipmi } from "@/app/lib/api";
 import { Warna } from "@/app/lib/warna";
-import { MODEL_ALL_MASTER } from "@/app_modules/models/model_AllMaster";
+import { MODEL_DEFAULT_MASTER } from "@/app_modules/models/model_default_master";
 import {
   AspectRatio,
   Box,
   Button,
   Center,
+  Divider,
   FileButton,
   Group,
   Image,
+  NumberInput,
   Select,
+  Stack,
+  Text,
   TextInput,
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
@@ -32,23 +36,22 @@ export default function InvestasiCreate({
   pembagianDeviden,
 }: {
   id: string;
-  pencarianInvestor: MODEL_ALL_MASTER[];
-  periodeDeviden: MODEL_ALL_MASTER[];
-  pembagianDeviden: MODEL_ALL_MASTER[];
+  pencarianInvestor: MODEL_DEFAULT_MASTER[];
+  periodeDeviden: MODEL_DEFAULT_MASTER[];
+  pembagianDeviden: MODEL_DEFAULT_MASTER[];
 }) {
   const router = useRouter();
   const [fl, setFl] = useState<File | null>(null);
   const [img, setImg] = useState<any | null>();
   const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
-  const [activeTab, setActiveTab] = useAtom(gs_TabPortoInvestasi)
-
+  const [activeTab, setActiveTab] = useAtom(gs_TabPortoInvestasi);
+  const [totalLembar, setTotalLembar] = useState(0);
 
   const [value, setValue] = useState({
     title: "",
-    targetDana: "",
-    hargaLembar: "",
-    totalLembar: "",
-    roi: "",
+    targetDana: 0,
+    hargaLembar: 0,
+    roi: 0,
     pencarianInvestorId: "",
     periodeDevidenId: "",
     pembagianDevidenId: "",
@@ -60,30 +63,35 @@ export default function InvestasiCreate({
       title: value.title,
       targetDana: value.targetDana,
       hargaLembar: value.hargaLembar,
-      totalLembar: value.totalLembar,
+      totalLembar: totalLembar,
       roi: value.roi,
       masterPeriodeDevidenId: value.periodeDevidenId,
       masterPembagianDevidenId: value.pembagianDevidenId,
       masterPencarianInvestorId: value.pencarianInvestorId,
     };
     // toast("Berhasil disimpan")
-    setChangeColor(1);
-    setActiveTab("Draft")
-    return setTimeout(() => router.push(RouterInvestasi.dialog_create), 1000);
 
-    // if (_.values(body).includes("")) return toast("Lengkapi data");
-    // if (!fl) return toast("File Kosong");
 
-    // const fd = new FormData();
-    // fd.append("file", fl);
-    // await funCreateInvestasi(fd, body as any).then((res) => {
-    //   if (res.status === 201) {
-    //     toast(res.message);
-    //     return router.push("/dev/investasi/main");
-    //   } else {
-    //     return toast(res.message);
-    //   }
-    // });
+    if (_.values(body).includes("")) return toast("Lengkapi data");
+    if (!fl) return toast("File Kosong");
+
+    const fd = new FormData();
+    fd.append("file", fl);
+    await funCreateInvestasi(fd, body as any).then((res) => {
+      if (res.status === 201) {
+        // toast(res.message);
+        setChangeColor(1);
+        setActiveTab("Draft");
+        return router.push(RouterInvestasi.dialog_create)
+      } else {
+        return toast(res.message);
+      }
+    });
+  }
+
+  async function onTotalLembar(target: any, harga: any) {
+    const hasil: any = target / harga;
+    setTotalLembar(_.floor(hasil === Infinity ? 0 : hasil));
   }
 
   return (
@@ -122,103 +130,107 @@ export default function InvestasiCreate({
           </FileButton>
         </Group>
 
-        <Center>
-          <Box mt={"md"} w={350}>
-            <TextInput
-              label="Judul Proyek"
-              onChange={(val) => {
-                setValue({
-                  ...value,
-                  title: val.target.value,
-                });
-              }}
-            />
-            <TextInput
-              label="Dana Dibutuhan"
-              type="number"
-              onChange={(val) => {
-                setValue({
-                  ...value,
-                  targetDana: val.target.value,
-                });
-              }}
-            />
-            <TextInput
-              label="Harga Per Lember"
-              type="number"
-              onChange={(val: any) => {
-                setValue({
-                  ...value,
-                  hargaLembar: val.target.value,
-                });
+        <Stack spacing={"sm"} px={"md"}>
+          <TextInput
+            withAsterisk
+            label="Judul Investasi"
+            onChange={(val) => {
+              setValue({
+                ...value,
+                title: val.target.value,
+              });
+            }}
+          />
+          <NumberInput
+            withAsterisk
+            type="number"
+            label="Dana Dibutuhkan"
+            onChange={(val: any) => {
+              setValue({
+                ...value,
+                targetDana: val,
+              });
+            }}
+          />
 
-                const data : any = (value.targetDana as any) / val.target.value;
-                // setTL(data);
-                setValue({
-                  ...value,
-                  totalLembar: data
-                });
-              }}
-            />
-            <TextInput
-              label="Total Lembar"
-              type="number"
-              value={Math.floor(value.totalLembar as any)}
-              onChange={(val) => {
-                setValue({
-                  ...value,
-                  totalLembar: val.target.value,
-                });
-              }}
-            />
-            <TextInput
-              label="Rasio Keuntungan / ROI"
-              type="number"
-              onChange={(val) => {
-                setValue({
-                  ...value,
-                  roi: val.target.value,
-                });
-              }}
-            />
-            <Select
-              label="Pencarian Investor"
-              data={pencarianInvestor.map((e) => ({
-                value: e.id,
-                label: e.name,
-              }))}
-              onChange={(val) => {
-                setValue({
-                  ...(value as any),
-                  pencarianInvestorId: val,
-                });
-              }}
-            />
-            <Select
-              label="Periode Deviden"
-              data={periodeDeviden.map((e) => ({ value: e.id, label: e.name }))}
-              onChange={(val) => {
-                setValue({
-                  ...(value as any),
-                  periodeDevidenId: val,
-                });
-              }}
-            />
-            <Select
-              label="Pembagian Deviden"
-              data={pembagianDeviden.map((e) => ({
-                value: e.id,
-                label: e.name,
-              }))}
-              onChange={(val) => {
-                setValue({
-                  ...(value as any),
-                  pembagianDevidenId: val,
-                });
-              }}
-            />
-          </Box>
-        </Center>
+          <NumberInput
+            label="Harga Per Lembar"
+            type="number"
+            onChange={(val) => {
+              //console.log(val)
+              setValue({
+                ...value,
+                hargaLembar: +val,
+              });
+              onTotalLembar(value.targetDana, val);
+            }}
+          />
+
+          <Stack spacing={3}>
+            <Text fz={"sm"} fw={500}>
+              Total Lembar
+            </Text>
+            <Stack spacing={0}>
+              <Text>{totalLembar}</Text>
+              <Divider />
+            </Stack>
+            <Text c={"red"} fz={10}>
+              *Total lembar dihitung dari, Target Dana : Harga Perlembar
+            </Text>
+          </Stack>
+
+          <NumberInput
+            withAsterisk
+            type="number"
+            label="Rasio Keuntungan / ROI"
+            onChange={(val: any) => {
+              setValue({
+                ...value,
+                roi: val,
+              });
+            }}
+          />
+          <Select
+            withAsterisk
+            label="Pencarian Investor"
+            data={pencarianInvestor.map((e) => ({
+              value: e.id,
+              label: e.name + " " + "hari",
+            }))}
+            onChange={(val) => {
+              setValue({
+                ...(value as any),
+                pencarianInvestorId: val,
+              });
+            }}
+          />
+          <Select
+            withAsterisk
+            label="Periode Deviden"
+            data={periodeDeviden.map((e) => ({ value: e.id, label: e.name }))}
+            onChange={(val) => {
+              setValue({
+                ...(value as any),
+                periodeDevidenId: val,
+              });
+            }}
+          />
+          <Select
+            withAsterisk
+            label="Pembagian Deviden"
+            data={pembagianDeviden.map((e) => ({
+              value: e.id,
+              label: e.name + " " + "bulan",
+            }))}
+            onChange={(val) => {
+              setValue({
+                ...(value as any),
+                pembagianDevidenId: val,
+              });
+            }}
+          />
+        </Stack>
+
         <Center my={"lg"}>
           <Button
             w={300}

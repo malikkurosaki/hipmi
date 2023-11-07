@@ -42,165 +42,162 @@ import {
 import { atomWithStorage } from "jotai/utils";
 import { useAtom } from "jotai";
 import { gs_TabPortoInvestasi } from "../g_state";
+import {
+  MODEL_Investasi,
+  MODEL_Status_investasi,
+} from "../model/model_investasi";
+import _ from "lodash";
 
-
-export default function PortofolioInvestasi() {
+export default function PortofolioInvestasi({
+  dataInvestasi,
+  listStatusInvestasi,
+}: {
+  dataInvestasi: any
+  listStatusInvestasi: any;
+}) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useAtom(gs_TabPortoInvestasi)
-  const listButton = [
-    {
-      id: 1,
-      name: "Draft",
-      color: "yellow",
-    },
-    {
-      id: 2,
-      name: "Review",
-      color: "orange",
-    },
-    {
-      id: 3,
-      name: "Publish",
-      color: "green",
-    },
-    {
-      id: 4,
-      name: "Reject",
-      color: "red",
-    },
-  ];
+  const [activeTab, setActiveTab] = useAtom(gs_TabPortoInvestasi);
+
+  const [investasi, setInvestasi] = useState<MODEL_Investasi[]>(dataInvestasi);
+  const [status_inves, setStatus_inves] =
+    useState<MODEL_Status_investasi[]>(listStatusInvestasi);
+
   return (
     <>
-      <Tabs  variant="pills"  radius="xl" defaultValue="Draft" value={activeTab} onTabChange={setActiveTab}>
+      {/* <pre>{JSON.stringify(dataInvestasi, null, 2)}</pre> */}
+      <Tabs
+        variant="pills"
+        radius="xl"
+        defaultValue="Draft"
+        value={activeTab}
+        onTabChange={setActiveTab}
+      >
         <Tabs.List>
-          {listButton.map((e) => (
-            <Tabs.Tab key={e.id} value={e.name} color={!activeTab ? "gray" : e.color} >
+          {status_inves.map((e) => (
+            <Tabs.Tab
+              key={e.id}
+              value={e.name}
+              color={!activeTab ? "gray" : e.color}
+            >
               {e.name}
             </Tabs.Tab>
           ))}
         </Tabs.List>
-
-        <Divider my={"xs"}/>
-
-        {listButton.map((e) => (
-          <Tabs.Panel key={e.id} value={e.name} pt="xs">
-            <StatusPortofolio data={e} />
-          </Tabs.Panel>
-        ))}
+        <Divider my={"xs"} />
+        <Tabs.Panel key={"1"} value="Draft">
+          <Draft data={investasi as any} />
+        </Tabs.Panel>
+        <Tabs.Panel key={"2"} value="Review">
+          <Review status={status_inves as any} data={investasi as any} />
+        </Tabs.Panel>
+        <Tabs.Panel key={"3"} value="Publish">
+          <Publish status={status_inves as any} />
+        </Tabs.Panel>
+        <Tabs.Panel key={"4"} value="Reject">
+          <Reject status={status_inves as any} />
+        </Tabs.Panel>
       </Tabs>
-      
     </>
   );
 }
 
-function StatusPortofolio({ data }: { data: any }) {
+function Draft({ data }: { data: MODEL_Investasi[] }) {
+  const router = useRouter();
   return (
     <>
-      {(() => {
-        if (data.id === 1) {
-          return (
-            <>
-              <Draft data={data} />
-            </>
-          );
-        } else {
-          if (data.id === 2) {
-            return (
-              <>
-                <Review data={data} />
-              </>
-            );
-          } else {
-            if (data.id === 3) {
-              return (
-                <>
-                  <Publish data={data} />
-                </>
-              );
-            } else {
-              return (
-                <>
-                  <Reject data={data} />
-                </>
-              );
+      {data.map((e) =>
+        e.MasterStatusInvestasi.id === "1" ? (
+          <Card
+            key={e.id}
+            withBorder
+            mb={40}
+            bg={"gray.5"}
+            onClick={() =>
+              router.push(RouterInvestasi.detail_draft + `${e.id}`)
             }
-          }
-        }
-      })()}
+          >
+            <CardSection p={"xs"}>
+              <AspectRatio ratio={16 / 9}>
+                <Image
+                  alt=""
+                  src={RouterInvestasi.api_gambar + `${e.imagesId}`}
+                />
+              </AspectRatio>
+            </CardSection>
+
+            <CardSection p={"lg"}>
+              <Box>
+                <Title order={4}>{e.title}</Title>
+              </Box>
+            </CardSection>
+            <Divider />
+            <CardSection p={"md"}>
+              <Group position="center">
+                <Badge color="yellow" variant="dot">
+                  Draft
+                </Badge>
+              </Group>
+            </CardSection>
+          </Card>
+        ) : (
+          ""
+        )
+      )}
     </>
   );
 }
 
-function Draft({ data }: { data: any }) {
+function Review({
+  status,
+  data,
+}: {
+  status: MODEL_Status_investasi;
+  data: MODEL_Investasi[];
+}) {
   const router = useRouter();
   return (
     <>
-      <Card
-        withBorder
-        mb={40}
-        bg={"gray.5"}
-        onClick={() => router.push(RouterInvestasi.detail_draft)}
-      >
-        <CardSection p={"xs"}>
-          <AspectRatio ratio={16 / 9}>
-            <Image alt="" src={"/aset/no-img.png"} />
-          </AspectRatio>
-        </CardSection>
+      {data.map((e) =>
+        e.MasterStatusInvestasi.id === "2" ? (
+          <Card
+            key={e.id}
+            withBorder
+            mb={40}
+            bg={"gray.5"}
+            onClick={() => router.push(RouterInvestasi.detail_review + `${e.id}`)}
+          >
+            <CardSection p={"xs"}>
+              <AspectRatio ratio={16 / 9}>
+                <Image
+                  alt=""
+                  src={RouterInvestasi.api_gambar + `${e.imagesId}`}
+                />
+              </AspectRatio>
+            </CardSection>
 
-        <CardSection p={"lg"}>
-          <Box>
-            <Title order={4}>Judul Investasi</Title>
-          </Box>
-        </CardSection>
-        <Divider />
-        <CardSection p={"md"}>
-          <Group position="center">
-            <Badge color="yellow" variant="dot">
-              Draft
-            </Badge>
-          </Group>
-        </CardSection>
-      </Card>
+            <CardSection p={"lg"}>
+              <Box>
+                <Title order={4}>{e.title}</Title>
+              </Box>
+            </CardSection>
+            <Divider />
+            <CardSection p={"md"}>
+              <Group position="center">
+                <Badge color="yellow" variant="dot">
+                  Review
+                </Badge>
+              </Group>
+            </CardSection>
+          </Card>
+        ) : (
+          ""
+        )
+      )}
     </>
   );
 }
 
-function Review({ data }: { data: any }) {
-  const router = useRouter();
-  return (
-    <>
-      <Card
-        withBorder
-        mb={40}
-        bg={"gray.5"}
-        onClick={() => router.push(RouterInvestasi.detail_review)}
-      >
-        <CardSection p={"xs"}>
-          <AspectRatio ratio={16 / 9}>
-            <Image alt="" src={"/aset/no-img.png"} />
-          </AspectRatio>
-        </CardSection>
-
-        <CardSection p={"lg"}>
-          <Box >
-            <Title order={4}>Judul Investasi</Title>
-            
-          </Box>
-        </CardSection>
-        <Divider />
-        <CardSection p={"md"}>
-          <Group position="center">
-            <Badge color="orange" variant="dot">
-              {data.name}
-            </Badge>
-          </Group>
-        </CardSection>
-      </Card>
-    </>
-  );
-}
-
-function Publish({ data }: { data: any }) {
+function Publish({ status }: { status: MODEL_Status_investasi }) {
   const router = useRouter();
   return (
     <>
@@ -232,18 +229,17 @@ function Publish({ data }: { data: any }) {
         <CardSection p={"md"}>
           <Group position="apart">
             <Badge color="green" variant="dot">
-              {data.name}
+              {status.name}
             </Badge>
             <Text>Sisa Waktu : 30 Hari</Text>
           </Group>
-        
         </CardSection>
       </Card>
     </>
   );
 }
 
-function Reject({ data }: { data: any }) {
+function Reject({ status }: { status: MODEL_Status_investasi }) {
   const router = useRouter();
   return (
     <>
@@ -268,7 +264,7 @@ function Reject({ data }: { data: any }) {
         <CardSection p={"md"}>
           <Group position="center">
             <Badge color="red" variant="dot">
-              {data.name}
+              {status.name}
             </Badge>
           </Group>
         </CardSection>

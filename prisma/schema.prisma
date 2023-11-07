@@ -121,15 +121,15 @@ model Investasi {
   ImageInvestasi Images? @relation(fields: [imagesId], references: [id])
   imagesId       String? @unique
 
-  ProspektusInvestasi     ProspektusInvestasi?
-  DokumenInvestasi        DokumenInvestasi?      @relation(fields: [dokumenInvestasiId], references: [id])
-  dokumenInvestasiId      String?
-  BeritaInvestasi         BeritaInvestasi?       @relation(fields: [beritaInvestasiId], references: [id])
-  beritaInvestasiId       String?
+  ProspektusInvestasi ProspektusInvestasi?
+  DokumenInvestasi    DokumenInvestasi?    @relation(fields: [dokumenInvestasiId], references: [id])
+  dokumenInvestasiId  String?
+
   SahamTerbeli            SahamTerbeli?          @relation(fields: [sahamTerbeliId], references: [id])
   sahamTerbeliId          String?
   MasterStatusInvestasi   MasterStatusInvestasi? @relation(fields: [masterStatusInvestasiId], references: [id])
   masterStatusInvestasiId String?                @default("1")
+  BeritaInvestasi         BeritaInvestasi[]
 }
 
 model MasterPencarianInvestor {
@@ -189,15 +189,16 @@ model DokumenInvestasi {
 }
 
 model BeritaInvestasi {
-  id          String      @id @default(cuid())
+  id          String     @id @default(cuid())
   title       String
   deskripsi   String
-  active      Boolean     @default(true)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @default(now()) @updatedAt
-  investasi   Investasi[]
-  ImageBerita Images?     @relation(fields: [imagesId], references: [id])
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  ImageBerita Images?    @relation(fields: [imagesId], references: [id])
   imagesId    String?
+  investasi   Investasi @relation(fields: [investasiId], references: [id])
+  investasiId String
 }
 
 model SahamTerbeli {

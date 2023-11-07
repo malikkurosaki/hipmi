@@ -4,9 +4,10 @@ import { cookies } from "next/headers";
 import yaml from "yaml";
 import fs from "fs";
 import { funCreateInvestasi } from "@/app_modules/investasi/fun/fun_create_investasi";
-import getPencarianInvestor from "@/app_modules/investasi/fun/get_pencarian_investor";
-import getPeriodeDeviden from "@/app_modules/investasi/fun/get_periode_deviden";
-import getPembagianDeviden from "@/app_modules/investasi/fun/get_pembagian_deviden";
+import getPencarianInvestor from "@/app_modules/investasi/fun/master/get_pencarian_investor";
+import getPeriodeDeviden from "@/app_modules/investasi/fun/master/get_periode_deviden";
+import getPembagianDeviden from "@/app_modules/investasi/fun/master/get_pembagian_deviden";
+import getStatusInvestasi from "@/app_modules/investasi/fun/master/get_status_investasi";
 
 const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
@@ -21,8 +22,8 @@ export default async function Page() {
   const pencarianInvestor = await getPencarianInvestor();
   const periodeDeviden = await getPeriodeDeviden();
   const pembagianDeviden = await getPembagianDeviden();
+  const statusInvestasi = await getStatusInvestasi();
 
-  //   console.log(pembagianDeviden)
 
   return (
     <>

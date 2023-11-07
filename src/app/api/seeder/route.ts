@@ -90,23 +90,23 @@ export async function GET(req: Request) {
       });
     }
 
-    // for (let i of statusInvestasi) {
-    //   await prisma.masterStatusInvestasi.upsert({
-    //     where: {
-    //       id: i.id,
-    //     },
-    //     create: {
-    //       id: i.id,
-    //       name: i.name,
-    //       color: i.color,
-    //     },
-    //     update: {
-    //       id: i.id,
-    //       name: i.name,
-    //       color: i.color,
-    //     },
-    //   });
-    // }
+    for (let i of statusInvestasi) {
+      await prisma.masterStatusInvestasi.upsert({
+        where: {
+          id: i.id,
+        },
+        create: {
+          id: i.id,
+          name: i.name,
+          color: i.color,
+        },
+        update: {
+          id: i.id,
+          name: i.name,
+          color: i.color,
+        },
+      });
+    }
 
     return NextResponse.json({ success: true });
   }

@@ -7,8 +7,10 @@ import React from "react";
 
 export default function LayoutDetailDraftInvestasi({
   children,
+  id
 }: {
   children: React.ReactNode;
+  id: string
 }) {
   return (
     <>
@@ -17,7 +19,7 @@ export default function LayoutDetailDraftInvestasi({
           <HeaderTamplate
             title="Detail Draft"
             icon={<IconEdit />}
-            route2={`/dev/investasi/edit/${1}`}
+            route2={`/dev/investasi/edit/${id}`}
           />
         }
       >

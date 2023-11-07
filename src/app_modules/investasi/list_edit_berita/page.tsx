@@ -4,6 +4,9 @@ import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import {
   ActionIcon,
   AspectRatio,
+  Box,
+  Center,
+  Divider,
   Grid,
   Group,
   Image,
@@ -18,57 +21,104 @@ import { IconDots } from "@tabler/icons-react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import toast from "react-simple-toasts";
+import { MODEL_Investasi } from "../model/model_investasi";
+import { useState } from "react";
+import _ from "lodash";
+import deleteBeritaInvestasi from "../fun/fun_delete_berita";
+import getOneInvestasiById from "../fun/get_one_investasi_by_id";
 
-export default function ListEditBeritaInvestasi({ id }: { id: string }) {
+export default function ListEditBeritaInvestasi({
+  dataInvestasi,
+}: {
+  dataInvestasi: MODEL_Investasi;
+}) {
   const router = useRouter();
+  const [investasi, setInvestasi] = useState<MODEL_Investasi>(dataInvestasi);
+
+  async function onDelete(idBerita: string, idInvestasi: string) {
+    await deleteBeritaInvestasi(idBerita, idInvestasi).then((res) => {
+      if (res.status === 200) {
+        const data : MODEL_Investasi | any = getOneInvestasiById(idInvestasi)
+        setInvestasi(data as MODEL_Investasi);
+        toast(res.message);
+      } else {
+        toast(res.message);
+      }
+    });
+  }
+
+  if (!investasi) return <>data kosong</>;
   return (
     <>
-      <Paper w={"100%"} bg={"gray"} p={"sm"}>
-        <Stack spacing={"xs"}>
-          <Group position="apart">
-            <Title order={6}>Judul berita</Title>
-            <Menu position="left">
-              <Menu.Target>
-                <ActionIcon variant="transparent">
-                  <IconDots color="black" />
-                </ActionIcon>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item
-                  onClick={() =>
-                    router.push(RouterInvestasi.edit_berita + `${id}`)
-                  }
+      <Box>
+        {_.isEmpty(investasi.BeritaInvestasi) ? (
+          <Box>
+            <Center>
+              <Title order={6}>Berita Kosong</Title>
+            </Center>
+            <Divider />
+          </Box>
+        ) : (
+          ""
+        )}
+      </Box>
+      {investasi.BeritaInvestasi.map((v, k) => (
+        <Paper key={k} w={"100%"} bg={"gray"} p={"sm"} mb={"md"}>
+          <Stack spacing={"xs"}>
+            <Group position="apart">
+              <Box>
+                <Title order={6}>{v.title}</Title>
+                <Text fz={10}>{moment(v.createdAt).local().format("lll")}</Text>
+              </Box>
+              <Menu position="left">
+                <Menu.Target>
+                  <ActionIcon variant="transparent">
+                    <IconDots color="black" />
+                  </ActionIcon>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item
+                    onClick={() =>
+                      router.push(RouterInvestasi.edit_berita + `${v.id}`)
+                    }
+                  >
+                    Edit
+                  </Menu.Item>
+                  <Menu.Item
+                    onClick={() => {
+                      onDelete(v.id, dataInvestasi.id);
+                    }}
+                  >
+                    Hapus
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </Group>
+            <Grid pt={5}>
+              <Grid.Col span={8}>
+                <Spoiler
+                  fz={"xs"}
+                  maxHeight={55}
+                  showLabel="Selengkapnya"
+                  hideLabel="Sembunyikan"
                 >
-                  Edit
-                </Menu.Item>
-                <Menu.Item onClick={() => toast("Berita terhapus")}>
-                  Hapus
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          </Group>
-          <Grid pt={5}>
-            <Grid.Col span={8}>
-              <Spoiler
-                fz={"xs"}
-                maxHeight={50}
-                showLabel="Selengkapnya"
-                hideLabel="Sembunyikan"
-              >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
-                quaerat nulla autem rem rerum modi, saepe blanditiis delectus
-                illum sunt repudiandae inventore alias voluptas at! Nisi odio
-                eaque explicabo laudantium.
-              </Spoiler>
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <AspectRatio ratio={16 / 9} h={50} w={100}>
-                <Image alt="" src={"/aset/no-img.png"} />
-              </AspectRatio>
-            </Grid.Col>
-          </Grid>
-        </Stack>
-      </Paper>
+                  {v.deskripsi}
+                </Spoiler>
+              </Grid.Col>
+              <Grid.Col span={4}>
+                <AspectRatio ratio={16 / 9} h={50} w={100}>
+                  <Paper radius={10}>
+                    <Image
+                      alt=""
+                      src={RouterInvestasi.api_gambar + `${v.imagesId}`}
+                    />
+                  </Paper>
+                </AspectRatio>
+              </Grid.Col>
+            </Grid>
+          </Stack>
+        </Paper>
+      ))}
     </>
   );
 }

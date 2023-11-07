@@ -1,4 +1,4 @@
-export interface MODEL_ALL_MASTER {
+export interface MODEL_DEFAULT_MASTER {
     id: string,
     name: string,
     active: boolean,

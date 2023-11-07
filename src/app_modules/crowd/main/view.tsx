@@ -22,7 +22,6 @@ export default function MainCrowd() {
   return (
     <>
       <Stack>
-        
         <Paper bg={"gray"}>
           <AspectRatio ratio={16 / 9}>
             <Image alt="" src={"/aset/logo.png"} />
@@ -51,7 +50,6 @@ export default function MainCrowd() {
           </Button>
         </Stack>
       </Stack>
-     
     </>
   );
 }

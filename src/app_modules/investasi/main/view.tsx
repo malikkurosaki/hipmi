@@ -1,8 +1,7 @@
 "use client";
 
 import { ApiHipmi } from "@/app/lib/api";
-import { INVESTASI } from "@/app_modules/models/investasi";
-import { MODEL_ALL_MASTER } from "@/app_modules/models/model_AllMaster";
+import { MODEL_DEFAULT_MASTER } from "@/app_modules/models/model_default_master";
 import {
   AspectRatio,
   Badge,
@@ -24,6 +23,7 @@ import { useRouter } from "next/navigation";
 import dataDummy from "../dummy/data_dummy.json";
 import moment from "moment";
 import { IconCheck, IconCircleCheck } from "@tabler/icons-react";
+import { MODEL_Investasi } from "../model/model_investasi";
 
 export default function MainInvestasi({
   listData,
@@ -31,10 +31,10 @@ export default function MainInvestasi({
   periodeDeviden,
   pembagianDeviden,
 }: {
-  listData: INVESTASI[];
-  pencarianInvestor: MODEL_ALL_MASTER[];
-  periodeDeviden: MODEL_ALL_MASTER[];
-  pembagianDeviden: MODEL_ALL_MASTER[];
+  listData: MODEL_Investasi[]
+  pencarianInvestor: MODEL_DEFAULT_MASTER[];
+  periodeDeviden: MODEL_DEFAULT_MASTER[];
+  pembagianDeviden: MODEL_DEFAULT_MASTER[];
 }) {
   const router = useRouter();
 
