@@ -12,7 +12,7 @@ export interface MODEL_Investasi {
   imagesId: string;
   MasterStatusInvestasi: MODEL_Status_investasi;
   BeritaInvestasi: Model_Berita_Investasi[];
-  DokumenInvestasi: null;
+  DokumenInvestasi: Model_Dokumen_Investasi[];
   ProspektusInvestasi: Model_Prospektus_Investasi;
   MasterPembagianDeviden: Model_All_Master;
   MasterPencarianInvestor: Model_All_Master;
@@ -42,8 +42,18 @@ export interface Model_Berita_Investasi {
   updatedAt: Date;
 }
 
-export interface Model_Prospektus_Investasi {
+interface Model_Prospektus_Investasi {
   id: string
+  url: string
+  active: boolean;
+  createdAt: Date
+  updatedAt: Date
+  investasiId: string
+}
+
+interface Model_Dokumen_Investasi {
+  id: string
+  title: string
   url: string
   active: boolean;
   createdAt: Date

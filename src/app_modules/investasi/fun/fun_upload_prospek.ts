@@ -11,7 +11,6 @@ export default async function funUploadProspektusInvestasi(
   formData: FormData,
   idInves: string
 ) {
-  // console.log(formData)
 
   const file: any = formData.get("file");
   const fName = file.name;

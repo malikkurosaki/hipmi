@@ -38,5 +38,7 @@ export const RouterInvestasi = {
   list_edit_berita: "/dev/investasi/list_edit_berita/",
 
   //upload
-  upload_prospektus: "/dev/investasi/upload_prospektus/"
+  upload_prospektus: "/dev/investasi/upload_prospektus/",
+  upload_dokumen: "/dev/investasi/upload_dokumen/"
+
 };

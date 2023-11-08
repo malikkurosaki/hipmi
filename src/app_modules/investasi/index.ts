@@ -63,6 +63,8 @@ import StatusTransaksiInvestasi_Gagal from "./status_transaksi/gagal/view";
 import LayoutStatusTransaksiInvestasi_Gagal from "./status_transaksi/gagal/layout";
 import UploadProspektusInvestasi from "./upload_prospektus/view";
 import LayoutUploadProspektusInvestasi from "./upload_prospektus/layout";
+import UploadDokumenInvestasi from "./upload_dokumen/view";
+import LayoutUploadDokumenInvestasi from "./upload_dokumen/layout";
 
 export {
   MainInvestasi,
@@ -130,4 +132,6 @@ export {
   LayoutStatusTransaksiInvestasi_Gagal,
   UploadProspektusInvestasi,
   LayoutUploadProspektusInvestasi,
+  UploadDokumenInvestasi,
+  LayoutUploadDokumenInvestasi,
 };
