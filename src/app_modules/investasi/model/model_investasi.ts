@@ -9,14 +9,14 @@ export interface MODEL_Investasi {
   createdAt: Date;
   updatedAt: Date;
   authorId: string;
-  imagesId: string,
-  MasterStatusInvestasi: MODEL_Status_investasi
-  BeritaInvestasi: Model_Berita_Investasi[],
+  imagesId: string;
+  MasterStatusInvestasi: MODEL_Status_investasi;
+  BeritaInvestasi: Model_Berita_Investasi[];
   DokumenInvestasi: null;
-  ProspektusInvestasi: null;
-  MasterPembagianDeviden: Model_All_Master
-  MasterPencarianInvestor: Model_All_Master
-  MasterPeriodeDeviden: Model_All_Master
+  ProspektusInvestasi: Model_Prospektus_Investasi;
+  MasterPembagianDeviden: Model_All_Master;
+  MasterPencarianInvestor: Model_All_Master;
+  MasterPeriodeDeviden: Model_All_Master;
   SahamTerbeli: null;
 }
 
@@ -27,18 +27,26 @@ export interface MODEL_Status_investasi {
 }
 
 interface Model_All_Master {
-  id: string
-  name: string
-  active: boolean
+  id: string;
+  name: string;
+  active: boolean;
 }
 
 export interface Model_Berita_Investasi {
   id: string;
-  title: string,
-  deskripsi: string,
-  imagesId: string,
-  active: boolean,
+  title: string;
+  deskripsi: string;
+  imagesId: string;
+  active: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
+export interface Model_Prospektus_Investasi {
+  id: string
+  url: string
+  active: boolean;
+  createdAt: Date
+  updatedAt: Date
+  investasiId: string
+}

@@ -36,4 +36,7 @@ export const RouterInvestasi = {
   berita: "/dev/investasi/berita/",
   create_berita: "/dev/investasi/create_berita/",
   list_edit_berita: "/dev/investasi/list_edit_berita/",
+
+  //upload
+  upload_prospektus: "/dev/investasi/upload_prospektus/"
 };

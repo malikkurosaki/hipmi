@@ -26,6 +26,7 @@ import { useState } from "react";
 import _ from "lodash";
 import deleteBeritaInvestasi from "../fun/fun_delete_berita";
 import getOneInvestasiById from "../fun/get_one_investasi_by_id";
+import funLoadDataInvestasi from "../fun/fun_load_data";
 
 export default function ListEditBeritaInvestasi({
   dataInvestasi,
@@ -36,10 +37,10 @@ export default function ListEditBeritaInvestasi({
   const [investasi, setInvestasi] = useState<MODEL_Investasi>(dataInvestasi);
 
   async function onDelete(idBerita: string, idInvestasi: string) {
-    await deleteBeritaInvestasi(idBerita, idInvestasi).then((res) => {
+    await deleteBeritaInvestasi(idBerita, idInvestasi).then( async(res) => {
       if (res.status === 200) {
-        const data : MODEL_Investasi | any = getOneInvestasiById(idInvestasi)
-        setInvestasi(data as MODEL_Investasi);
+        const loadData = await funLoadDataInvestasi(idInvestasi);
+        setInvestasi(loadData as any)
         toast(res.message);
       } else {
         toast(res.message);

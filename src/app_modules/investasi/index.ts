@@ -46,7 +46,7 @@ import DialogPageCreateInvestasi from "./dialog_page/create/view";
 import LayoutDialogPageCreateInvestasi from "./dialog_page/create/layout";
 import CreateBeritaInvestasi from "./create_berita/view";
 import LayoutCreateBeritaInvestasi from "./create_berita/layout";
-import ListEditBeritaInvestasi from "./list_edit_berita/page";
+import ListEditBeritaInvestasi from "./list_edit_berita/view";
 import LayoutListEditBeritaInvestasi from "./list_edit_berita/layout";
 import InvestasiSahamTerbeli from "./main/saham_saya";
 import DetailDraftInvestasi from "./detail_portofolio/draft/page";
@@ -61,6 +61,8 @@ import TransaksiInvestasi from "./transaksi/page";
 import LayoutTransaksiInvestasi from "./transaksi/layout";
 import StatusTransaksiInvestasi_Gagal from "./status_transaksi/gagal/view";
 import LayoutStatusTransaksiInvestasi_Gagal from "./status_transaksi/gagal/layout";
+import UploadProspektusInvestasi from "./upload_prospektus/view";
+import LayoutUploadProspektusInvestasi from "./upload_prospektus/layout";
 
 export {
   MainInvestasi,
@@ -125,5 +127,7 @@ export {
   TransaksiInvestasi,
   LayoutTransaksiInvestasi,
   StatusTransaksiInvestasi_Gagal,
-  LayoutStatusTransaksiInvestasi_Gagal
+  LayoutStatusTransaksiInvestasi_Gagal,
+  UploadProspektusInvestasi,
+  LayoutUploadProspektusInvestasi,
 };
