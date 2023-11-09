@@ -1,4 +1,5 @@
 import { EditIntroInvestasi } from "@/app_modules/investasi";
+import { test_server } from "@/app_modules/investasi/edit_intro/_makuro/test_server";
 import getOneInvestasiById from "@/app_modules/investasi/fun/get_one_investasi_by_id";
 import getPembagianDeviden from "@/app_modules/investasi/fun/master/get_pembagian_deviden";
 import getPencarianInvestor from "@/app_modules/investasi/fun/master/get_pencarian_investor";
@@ -14,6 +15,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <EditIntroInvestasi 
+      onUp={test_server}
       dataInvestasi={dataInvestasi as any}
       listPencarian={listPencarian  as any}
       listPeriode={listPeriode  as any}

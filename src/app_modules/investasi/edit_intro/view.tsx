@@ -35,11 +35,13 @@ import { useDisclosure, useWindowScroll } from "@mantine/hooks";
 import { test_server } from "./_makuro/test_server";
 
 export default function EditIntroInvestasi({
+  onUp,
   dataInvestasi,
   listPencarian,
   listPeriode,
   listPembagian,
 }: {
+  onUp: () => Promise<string>;
   dataInvestasi: MODEL_Investasi;
   listPencarian: MODEL_DEFAULT_MASTER[];
   listPeriode: MODEL_DEFAULT_MASTER[];
@@ -68,7 +70,7 @@ export default function EditIntroInvestasi({
     const fd = new FormData();
     fd.append("file", fl as any);
 
-    const test = await test_server();
+    const test = await onUp();
     console.log(test);
 
     // await funEditInvestasi(fd, body).then(async (res) => {
