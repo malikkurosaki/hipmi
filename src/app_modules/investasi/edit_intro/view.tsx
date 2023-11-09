@@ -35,13 +35,11 @@ import { useDisclosure, useWindowScroll } from "@mantine/hooks";
 import { test_server } from "./_makuro/test_server";
 
 export default function EditIntroInvestasi({
-
   dataInvestasi,
   listPencarian,
   listPeriode,
   listPembagian,
 }: {
-
   dataInvestasi: MODEL_Investasi;
   listPencarian: MODEL_DEFAULT_MASTER[];
   listPeriode: MODEL_DEFAULT_MASTER[];
@@ -70,13 +68,11 @@ export default function EditIntroInvestasi({
     const fd = new FormData();
     fd.append("file", fl as any);
 
-
-
-    // await funEditInvestasi(fd, body).then(async (res) => {
-    //   res.status === 200
-    //     ? (toast(res.message), router.back())
-    //     : toast(res.message);
-    // });
+    await funEditInvestasi(fd, body).then(async (res) => {
+      res.status === 200
+        ? (toast(res.message), router.back())
+        : toast(res.message);
+    });
   }
 
   return (
