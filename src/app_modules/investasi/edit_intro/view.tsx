@@ -67,11 +67,11 @@ export default function EditIntroInvestasi({
     const fd = new FormData();
     fd.append("file", fl as any);
 
-    await funEditInvestasi(fd, body).then(async (res) => {
-      res.status === 200
-        ? (toast(res.message), router.back())
-        : toast(res.message);
-    });
+    // await funEditInvestasi(fd, body).then(async (res) => {
+    //   res.status === 200
+    //     ? (toast(res.message), router.back())
+    //     : toast(res.message);
+    // });
   }
 
   return (

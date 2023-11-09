@@ -4,7 +4,7 @@ import prisma from "@/app/lib/prisma";
 import { MODEL_Investasi } from "../model/model_investasi";
 import _ from "lodash";
 // import { v4 } from "uuid";
-import fs from "fs";
+// import fs from "fs";
 // import { revalidatePath } from "next/cache";
 // import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 
