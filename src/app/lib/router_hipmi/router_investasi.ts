@@ -1,5 +1,6 @@
 export const RouterInvestasi = {
   api_gambar: "/api/investasi/gambar/",
+  api_file_prospektus: "/api/investasi/prospektus/",
   //INVESTASI
   main: "/dev/investasi/main",
   main_porto: "/dev/investasi/main/portofolio",

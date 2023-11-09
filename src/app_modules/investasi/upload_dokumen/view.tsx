@@ -65,7 +65,7 @@ export default function UploadDokumenInvestasi({
               setFile(buffer);
               setPdf(file);
             }}
-            accept={"/pdf"}
+            accept={"application/pdf"}
           >
             {(props) => (
               <Button

@@ -21,6 +21,7 @@ import { IconChevronRight, IconFileTypePdf } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
 import { MODEL_Investasi } from "../model/model_investasi";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 
 export default function EditProspektusInvestasi({
   dataInvestasi,
@@ -36,7 +37,7 @@ export default function EditProspektusInvestasi({
       <Stack>
         {prospek.ProspektusInvestasi != null ? (
           <Link
-            href={`/file/${prospek.ProspektusInvestasi.url}`}
+            href={RouterInvestasi.api_file_prospektus + `${prospek.ProspektusInvestasi.url}`}
             target="_blank"
             style={{ textDecorationLine: "none" }}
           >

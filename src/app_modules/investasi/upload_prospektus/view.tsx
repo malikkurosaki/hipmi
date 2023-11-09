@@ -57,7 +57,7 @@ export default function UploadProspektusInvestasi({
               setFile(buffer);
               setPdf(file);
             }}
-            accept="image/pdf"
+            accept="application/pdf"
           >
             {(props) => (
               <Button
