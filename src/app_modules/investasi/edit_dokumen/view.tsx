@@ -33,15 +33,12 @@ export default function EditDokumenInvestasi({
   dataInvestasi: MODEL_Investasi;
 }) {
   const [dokumen, setDokumen] = useState(dataInvestasi);
-  const [idDel, setDel] = useState<any | null>();
-  const [opened, { open, close }] = useDisclosure(false);
 
   async function onDelete(id: string) {
-    
     await funDeleteDokumenInvestasi(id).then(async (res) => {
       if (res.status === 200) {
         toast(res.message);
-        
+
         const load = await funLoadDataInvestasi(dokumen.id);
         setDokumen(load as any);
       } else {
@@ -52,21 +49,6 @@ export default function EditDokumenInvestasi({
 
   return (
     <>
-      {/* <pre>{JSON.stringify(dokukem, null, 2)}</pre> */}
-      {/* <Modal opened={opened} onClose={close} centered title="Hapus dokumen ?">
-        <Group position="center">
-          <Button radius={50}>Batal</Button>
-          <Button
-            radius={50}
-            bg={Warna.merah}
-            color="red"
-            onClick={() => onDelete(idDel)}
-          >
-            Hapus
-          </Button>
-        </Group>
-      </Modal> */}
-
       {!_.isEmpty(dokumen.DokumenInvestasi) ? (
         dokumen.DokumenInvestasi.map((e) => (
           <Paper key={e.id} w={"100%"} h={50} bg={"gray"} mb={"md"}>
@@ -91,7 +73,7 @@ export default function EditDokumenInvestasi({
                   <ActionIcon
                     variant="transparent"
                     onClick={() => {
-                      onDelete(e.id)
+                      onDelete(e.id);
                     }}
                   >
                     <IconTrash color="red" />
