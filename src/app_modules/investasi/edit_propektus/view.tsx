@@ -37,7 +37,7 @@ export default function EditProspektusInvestasi({
       <Stack>
         {prospek.ProspektusInvestasi != null ? (
           <Link
-            href={RouterInvestasi.api_file_prospektus + `${prospek.ProspektusInvestasi.url}`}
+            href={RouterInvestasi.api_file_prospektus + `${prospek.ProspektusInvestasi.id}`}
             target="_blank"
             style={{ textDecorationLine: "none" }}
           >
