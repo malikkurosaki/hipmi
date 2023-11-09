@@ -15,34 +15,34 @@ export default async function funEditInvestasi(
   const file = formData.get("file");
 
   if (file !== "null") {
-    const editInves = await prisma.investasi.update({
-      where: {
-        id: data.id,
-      },
-      data: {
-        title: data.title,
-        targetDana: data.targetDana,
-        hargaLembar: data.hargaLembar,
-        totalLembar: data.totalLembar,
-        roi: data.roi,
-        masterPencarianInvestorId: data.MasterPencarianInvestor.id,
-        masterPembagianDevidenId: data.MasterPembagianDeviden.id,
-        masterPeriodeDevidenId: data.MasterPeriodeDeviden.id,
-      },
-    });
+    // const editInves = await prisma.investasi.update({
+    //   where: {
+    //     id: data.id,
+    //   },
+    //   data: {
+    //     title: data.title,
+    //     targetDana: data.targetDana,
+    //     hargaLembar: data.hargaLembar,
+    //     totalLembar: data.totalLembar,
+    //     roi: data.roi,
+    //     masterPencarianInvestorId: data.MasterPencarianInvestor.id,
+    //     masterPembagianDevidenId: data.MasterPembagianDeviden.id,
+    //     masterPeriodeDevidenId: data.MasterPeriodeDeviden.id,
+    //   },
+    // });
 
-    if (!editInves) {
-      return {
-        status: 400,
-        message: "Gagal update",
-      };
-    }
+    // if (!editInves) {
+    //   return {
+    //     status: 400,
+    //     message: "Gagal update",
+    //   };
+    // }
 
     const file: any = formData.get("file");
     const fName = file.name;
     const fExt =
       file && file.name ? _.lowerCase(file.name.split(".").pop()) : "";
-    const fRandomName = editInves.id + "." + fExt;
+    const fRandomName =  "file_" + _.random(100000000, 999999999999) + "." + fExt;
 
     const updateImage = await prisma.images.update({
       where: {

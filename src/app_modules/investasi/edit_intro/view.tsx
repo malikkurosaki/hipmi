@@ -63,7 +63,6 @@ export default function EditIntroInvestasi({
   async function onUpdate() {
     const body = edit_inves;
     if (_.values(edit_inves).includes("")) return toast("Lengkapi data");
-    // if (!fl) return toast("File Kosong");
 
     const fd = new FormData();
     fd.append("file", fl as any);
@@ -72,11 +71,6 @@ export default function EditIntroInvestasi({
       res.status === 200
         ? (toast(res.message), router.back())
         : toast(res.message);
-      // if (res.status === 200) {
-      //   router.back()
-      // } else {
-      //   toast(res.message);
-      // }
     });
   }
 
@@ -90,8 +84,12 @@ export default function EditIntroInvestasi({
         withCloseButton={false}
       >
         <Group position="center">
-          <Button onClick={close} bg={"red"} color="red">Batal</Button>
-          <Button onClick={onUpdate} bg={Warna.hijau_muda} color="green">Simpan</Button>
+          <Button onClick={close} bg={"red"} color="red">
+            Batal
+          </Button>
+          <Button onClick={onUpdate} bg={Warna.hijau_muda} color="green">
+            Simpan
+          </Button>
         </Group>
       </Modal>
 
@@ -249,7 +247,7 @@ export default function EditIntroInvestasi({
             bg={Warna.hijau_muda}
             color="green"
             onClick={() => {
-              scrollTo({y: 0})
+              scrollTo({ y: 0 });
               open();
             }}
           >
