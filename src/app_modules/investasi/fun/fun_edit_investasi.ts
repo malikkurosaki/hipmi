@@ -38,24 +38,24 @@ export default async function funEditInvestasi(
     //   };
     // }
 
-    const file: any = formData.get("file");
-    const fName = file.name;
-    const fExt =
-      file && file.name ? _.lowerCase(file.name.split(".").pop()) : "";
-    const fRandomName =  "file_" + _.random(100000000, 999999999999) + "." + fExt;
+    // const file: any = formData.get("file");
+    // const fName = file.name;
+    // const fExt =
+    //   file && file.name ? _.lowerCase(file.name.split(".").pop()) : "";
+    // const fRandomName =  "file_" + _.random(100000000, 999999999999) + "." + fExt;
 
-    const updateImage = await prisma.images.update({
-      where: {
-        id: data.imagesId,
-      },
-      data: {
-        url: fRandomName,
-      },
-    });
+    // const updateImage = await prisma.images.update({
+    //   where: {
+    //     id: data.imagesId,
+    //   },
+    //   data: {
+    //     url: fRandomName,
+    //   },
+    // });
 
-    if (!updateImage) return { status: 400, message: "Gagal upload gambar" };
-    const upFolder = Buffer.from(await file.arrayBuffer());
-    fs.writeFileSync(`./public/investasi/${updateImage.url}`, upFolder);
+    // if (!updateImage) return { status: 400, message: "Gagal upload gambar" };
+    // const upFolder = Buffer.from(await file.arrayBuffer());
+    // fs.writeFileSync(`./public/investasi/${updateImage.url}`, upFolder);
   }
 
   // revalidatePath(RouterInvestasi.detail_draft);
