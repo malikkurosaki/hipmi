@@ -1,8 +1,11 @@
 import prisma from "@/app/lib/prisma";
-import { NextResponse } from "next/server";
-import fs from "fs"
+import { NextRequest, NextResponse } from "next/server";
+import fs from "fs";
 
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const data = await prisma.prospektusInvestasi.findUnique({
     where: { id: params.id },
     select: {
@@ -10,10 +13,10 @@ export async function GET({ params }: { params: { id: string } }) {
     },
   });
 
-  const file = fs.readFileSync(`./public/file/${data?.url}`)
+  const file = fs.readFileSync(`./public/file/${data?.url}`);
   return new NextResponse(file, {
     headers: {
-      "Content-Type":"application/pdf"
-    }
-  })
+      "Content-Type": "application/pdf",
+    },
+  });
 }
