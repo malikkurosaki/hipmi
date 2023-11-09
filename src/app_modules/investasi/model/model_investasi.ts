@@ -42,7 +42,7 @@ export interface Model_Berita_Investasi {
   updatedAt: Date;
 }
 
-interface Model_Prospektus_Investasi {
+export interface Model_Prospektus_Investasi {
   id: string
   url: string
   active: boolean;
@@ -51,7 +51,7 @@ interface Model_Prospektus_Investasi {
   investasiId: string
 }
 
-interface Model_Dokumen_Investasi {
+export interface Model_Dokumen_Investasi {
   id: string
   title: string
   url: string

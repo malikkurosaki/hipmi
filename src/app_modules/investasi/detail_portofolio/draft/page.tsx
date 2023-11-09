@@ -111,6 +111,10 @@ export default function DetailDraftInvestasi({
               <Text>Jadwal Pembagian</Text>
               <Text>{investasi.MasterPembagianDeviden.name} bulan </Text>
             </Box>
+            <Box>
+              <Text>Pencarian Investor</Text>
+              <Text>{investasi.MasterPencarianInvestor.name} Hari </Text>
+            </Box>
           </Stack>
         </Grid.Col>
         <Grid.Col span={6}>

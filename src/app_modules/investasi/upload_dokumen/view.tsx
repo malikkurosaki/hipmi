@@ -43,7 +43,7 @@ export default function UploadDokumenInvestasi({
     fd.append("file", pdf as any);
 
     await funUploadDokumenInvestasi(fd, body).then((res) => {
-      console.log(res);
+      // console.log(res);
       if (res.status === 201) {
         toast("Berhasil upload");
         router.back();

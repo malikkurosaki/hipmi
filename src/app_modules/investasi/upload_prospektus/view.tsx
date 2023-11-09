@@ -53,7 +53,7 @@ export default function UploadProspektusInvestasi({
               const buffer = URL.createObjectURL(
                 new Blob([new Uint8Array(await file.arrayBuffer())])
               );
-              console.log(buffer);
+              // console.log(buffer);
               setFile(buffer);
               setPdf(file);
             }}

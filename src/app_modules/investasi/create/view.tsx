@@ -82,9 +82,9 @@ export default function InvestasiCreate({
         // toast(res.message);
         setChangeColor(1);
         setActiveTab("Draft");
-        return router.push(RouterInvestasi.dialog_create)
+        router.push(RouterInvestasi.dialog_create)
       } else {
-        return toast(res.message);
+        toast(res.message);
       }
     });
   }

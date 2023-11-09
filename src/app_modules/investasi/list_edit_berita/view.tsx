@@ -24,9 +24,10 @@ import toast from "react-simple-toasts";
 import { MODEL_Investasi } from "../model/model_investasi";
 import { useState } from "react";
 import _ from "lodash";
-import deleteBeritaInvestasi from "../fun/fun_delete_berita";
 import getOneInvestasiById from "../fun/get_one_investasi_by_id";
 import funLoadDataInvestasi from "../fun/fun_load_data";
+import funDeleteBeritaInvestasi from "../fun/fun_delete_berita";
+import { useShallowEffect } from "@mantine/hooks";
 
 export default function ListEditBeritaInvestasi({
   dataInvestasi,
@@ -34,14 +35,14 @@ export default function ListEditBeritaInvestasi({
   dataInvestasi: MODEL_Investasi;
 }) {
   const router = useRouter();
-  const [investasi, setInvestasi] = useState<MODEL_Investasi>(dataInvestasi);
+  const [investasi, setInvestasi] = useState(dataInvestasi);
 
-  async function onDelete(idBerita: string, idInvestasi: string) {
-    await deleteBeritaInvestasi(idBerita, idInvestasi).then( async(res) => {
+  async function onDelete(idBerita: string) {
+    await funDeleteBeritaInvestasi(idBerita).then(async (res) => {
       if (res.status === 200) {
-        const loadData = await funLoadDataInvestasi(idInvestasi);
-        setInvestasi(loadData as any)
+        const load = await funLoadDataInvestasi(investasi.id)
         toast(res.message);
+        return setInvestasi(load as any)
       } else {
         toast(res.message);
       }
@@ -57,7 +58,6 @@ export default function ListEditBeritaInvestasi({
             <Center>
               <Title order={6}>Berita Kosong</Title>
             </Center>
-            <Divider />
           </Box>
         ) : (
           ""
@@ -87,7 +87,7 @@ export default function ListEditBeritaInvestasi({
                   </Menu.Item>
                   <Menu.Item
                     onClick={() => {
-                      onDelete(v.id, dataInvestasi.id);
+                      onDelete(v.id);
                     }}
                   >
                     Hapus
@@ -120,6 +120,7 @@ export default function ListEditBeritaInvestasi({
           </Stack>
         </Paper>
       ))}
+      <Divider my={"lg"} />
     </>
   );
 }

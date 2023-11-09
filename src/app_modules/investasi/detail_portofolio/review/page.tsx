@@ -42,19 +42,19 @@ export default function DetailReviewInvestasi({dataInvestasi}:{dataInvestasi: MO
       id: 1,
       name: "Prospektus",
       icon: <IconBookDownload size={70} />,
-      route: RouterInvestasi.edit_prospektus,
+      route: RouterInvestasi.detail_prospektus,
     },
     {
       id: 2,
       name: "Dokumen",
       icon: <IconFileDescription size={70} />,
-      route: RouterInvestasi.edit_dokumen,
+      route: RouterInvestasi.detail_dokumen,
     },
     {
       id: 3,
       name: "Berita",
       icon: <IconSpeakerphone size={70} />,
-      route: RouterInvestasi.edit_berita,
+      route: RouterInvestasi.berita,
     },
   ];
 
@@ -106,6 +106,10 @@ export default function DetailReviewInvestasi({dataInvestasi}:{dataInvestasi: MO
               <Text>Jadwal Pembagian</Text>
               <Text>{investasi.MasterPembagianDeviden.name} Bulan </Text>
             </Box>
+            <Box>
+              <Text>Pencarian Investor</Text>
+              <Text>{investasi.MasterPencarianInvestor.name} Hari </Text>
+            </Box>
           </Stack>
         </Grid.Col>
         <Grid.Col span={6}>
@@ -132,7 +136,7 @@ export default function DetailReviewInvestasi({dataInvestasi}:{dataInvestasi: MO
           <Grid.Col
             span={"auto"}
             key={e.id}
-            onClick={() => router.push(e.route + `${"1"}`)}
+            onClick={() => router.push(e.route + `${investasi.id}`)}
           >
             <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
               <Flex direction={"column"} align={"center"} justify={"center"}>

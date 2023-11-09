@@ -1,6 +1,8 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { revalidatePath } from "next/cache";
 
 export default async function funLoadDataInvestasi(id: string) {
     const data = await prisma.investasi.findUnique({

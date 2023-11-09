@@ -10,6 +10,7 @@ import {
   Text,
   ActionIcon,
   Group,
+  Modal,
 } from "@mantine/core";
 import {
   IconChevronRight,
@@ -23,6 +24,8 @@ import _ from "lodash";
 import funDeleteDokumenInvestasi from "../fun/fun_delete_dokumen";
 import toast from "react-simple-toasts";
 import funLoadDataInvestasi from "../fun/fun_load_data";
+import { useDisclosure } from "@mantine/hooks";
+import { Warna } from "@/app/lib/warna";
 
 export default function EditDokumenInvestasi({
   dataInvestasi,
@@ -30,24 +33,39 @@ export default function EditDokumenInvestasi({
   dataInvestasi: MODEL_Investasi;
 }) {
   const [dokumen, setDokumen] = useState(dataInvestasi);
+  const [idDel, setDel] = useState<any | null>();
+  const [opened, { open, close }] = useDisclosure(false);
 
   async function onDelete(id: string) {
-    await funDeleteDokumenInvestasi(id)
-    .then( async (res) => {
-      if(res.status === 200){
-        toast(res.message)
-        const load = await funLoadDataInvestasi(dokumen.id)
-        setDokumen(load as any)
-
+    
+    await funDeleteDokumenInvestasi(id).then(async (res) => {
+      if (res.status === 200) {
+        toast(res.message);
+        
+        const load = await funLoadDataInvestasi(dokumen.id);
+        setDokumen(load as any);
       } else {
-        toast(res.message)
+        toast(res.message);
       }
-    })
+    });
   }
 
   return (
     <>
       {/* <pre>{JSON.stringify(dokukem, null, 2)}</pre> */}
+      {/* <Modal opened={opened} onClose={close} centered title="Hapus dokumen ?">
+        <Group position="center">
+          <Button radius={50}>Batal</Button>
+          <Button
+            radius={50}
+            bg={Warna.merah}
+            color="red"
+            onClick={() => onDelete(idDel)}
+          >
+            Hapus
+          </Button>
+        </Group>
+      </Modal> */}
 
       {!_.isEmpty(dokumen.DokumenInvestasi) ? (
         dokumen.DokumenInvestasi.map((e) => (
@@ -65,16 +83,17 @@ export default function EditDokumenInvestasi({
 
               <Grid.Col span={4}>
                 <Group position="center">
-                  <Link
-                    href={`/file/${e.url}`}
-                    target="_blank"
-
-                  >
+                  <Link href={`/file/${e.url}`} target="_blank">
                     <ActionIcon variant="transparent">
                       <IconWorldShare color="green" />
                     </ActionIcon>
                   </Link>
-                  <ActionIcon variant="transparent" onClick={() => onDelete(e.id)}>
+                  <ActionIcon
+                    variant="transparent"
+                    onClick={() => {
+                      onDelete(e.id)
+                    }}
+                  >
                     <IconTrash color="red" />
                   </ActionIcon>
                 </Group>
@@ -84,7 +103,7 @@ export default function EditDokumenInvestasi({
         ))
       ) : (
         <Center>
-          <Title order={4}>Tidak ada file</Title>
+          <Title order={5}>Tidak ada file</Title>
         </Center>
       )}
 

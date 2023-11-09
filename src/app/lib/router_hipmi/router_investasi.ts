@@ -16,12 +16,14 @@ export const RouterInvestasi = {
   status_transaksi: "/dev/investasi/status_transaksi/berhasil",
   status_transaksi_gagal: "/dev/investasi/status_transaksi/gagal",
   metode_transfer: "/dev/investasi/metode_transfer",
+
   // edit //
   edit: "/dev/investasi/edit/",
   edit_intro: "/dev/investasi/edit_intro/",
   edit_prospektus: "/dev/investasi/edit_prospektus/",
   edit_dokumen: "/dev/investasi/edit_dokumen/",
   edit_berita: "/dev/investasi/edit_berita/",
+  
   // detail //
   detail_saham_terbeli: "/dev/investasi/detail_saham_terbeli/",
   detail_prospektus: "/dev/investasi/detail_prospektus/",

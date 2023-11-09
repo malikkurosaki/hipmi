@@ -18,6 +18,7 @@ import {
   Image,
   NumberInput,
   Stack,
+  Modal,
 } from "@mantine/core";
 import { IconCamera, IconChevronRight } from "@tabler/icons-react";
 import Link from "next/link";
@@ -30,6 +31,7 @@ import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import _ from "lodash";
 import { MODEL_DEFAULT_MASTER } from "@/app_modules/models/model_default_master";
 import funEditInvestasi from "../fun/fun_edit_investasi";
+import { useDisclosure, useWindowScroll } from "@mantine/hooks";
 
 export default function EditIntroInvestasi({
   dataInvestasi,
@@ -43,6 +45,9 @@ export default function EditIntroInvestasi({
   listPembagian: MODEL_DEFAULT_MASTER[];
 }) {
   const router = useRouter();
+  const [opened, { open, close }] = useDisclosure(false);
+  const [scroll, scrollTo] = useWindowScroll();
+
   const [edit_inves, setEdit_inves] = useState(dataInvestasi);
   const [img, setImg] = useState<any | null>();
   const [fl, setFl] = useState<File | null>(null);
@@ -56,29 +61,40 @@ export default function EditIntroInvestasi({
   }
 
   async function onUpdate() {
+    const body = edit_inves;
     if (_.values(edit_inves).includes("")) return toast("Lengkapi data");
     // if (!fl) return toast("File Kosong");
 
     const fd = new FormData();
     fd.append("file", fl as any);
-    // router.back()
 
-    // await funEditInvestasi(fd, edit_inves).then((res) =>
-    //   res.status === 200 ? router.back() : toast(res.message)
-    // );
-
-    await funEditInvestasi(fd, edit_inves).then(async (res) => {
-      if (res.status === 200) {
-        toast(res.message);
-        router.replace(RouterInvestasi.edit + `${edit_inves.id}`);
-      } else {
-        toast(res.message);
-      }
+    await funEditInvestasi(fd, body).then(async (res) => {
+      res.status === 200
+        ? (toast(res.message), router.back())
+        : toast(res.message);
+      // if (res.status === 200) {
+      //   router.back()
+      // } else {
+      //   toast(res.message);
+      // }
     });
   }
 
   return (
     <>
+      <Modal
+        opened={opened}
+        onClose={close}
+        centered
+        title="Simpan perubahan data ?"
+        withCloseButton={false}
+      >
+        <Group position="center">
+          <Button onClick={close} bg={"red"} color="red">Batal</Button>
+          <Button onClick={onUpdate} bg={Warna.hijau_muda} color="green">Simpan</Button>
+        </Group>
+      </Modal>
+
       <Box>
         <AspectRatio ratio={16 / 9}>
           {img ? (
@@ -102,7 +118,7 @@ export default function EditIntroInvestasi({
             accept="image/png,image/jpeg"
           >
             {(props) => (
-              <Button {...props} w={350} radius={50}>
+              <Button {...props} radius={50}>
                 <IconCamera />
               </Button>
             )}
@@ -233,7 +249,8 @@ export default function EditIntroInvestasi({
             bg={Warna.hijau_muda}
             color="green"
             onClick={() => {
-              onUpdate();
+              scrollTo({y: 0})
+              open();
             }}
           >
             Update

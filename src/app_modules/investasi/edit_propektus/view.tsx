@@ -50,8 +50,8 @@ export default function EditProspektusInvestasi({
               >
                 <Grid.Col span={10}>
                   <Group>
-                    <IconFileTypePdf />
-                    <Text>Prospektus_{prospek.title}</Text>
+                    {/* <IconFileTypePdf /> */}
+                    <Text lineClamp={1}>Prospektus_{prospek.title}</Text>
                   </Group>
                 </Grid.Col>
                 <Grid.Col span={2}>

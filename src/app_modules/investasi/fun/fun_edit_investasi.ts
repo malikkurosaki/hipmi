@@ -8,17 +8,13 @@ import fs from "fs";
 import { revalidatePath } from "next/cache";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 
-async function up1(data: any) {}
-
-async function up2(data: any, formData: any) {}
-
 export default async function funEditInvestasi(
   formData: FormData,
   data: MODEL_Investasi
 ) {
-  const file = formData.get("file")?.length;
+  const file = formData.get("file");
 
-  if (file === undefined) {
+  if (file !== "null") {
     const file: any = formData.get("file");
     const fName = file.name;
     const fExt =
@@ -37,63 +33,34 @@ export default async function funEditInvestasi(
     if (!updateImage) return { status: 400, message: "Gagal upload gambar" };
     const upFolder = Buffer.from(await file.arrayBuffer());
     fs.writeFileSync(`./public/investasi/${updateImage.url}`, upFolder);
+  }
 
-    const editInves = await prisma.investasi.update({
-      where: {
-        id: data.id,
-      },
-      data: {
-        title: data.title,
-        targetDana: data.targetDana,
-        hargaLembar: data.hargaLembar,
-        totalLembar: data.totalLembar,
-        roi: data.roi,
-        masterPencarianInvestorId: data.MasterPencarianInvestor.id,
-        masterPembagianDevidenId: data.MasterPembagianDeviden.id,
-        masterPeriodeDevidenId: data.MasterPeriodeDeviden.id,
-      },
-    });
+  const editInves = await prisma.investasi.update({
+    where: {
+      id: data.id,
+    },
+    data: {
+      title: data.title,
+      targetDana: data.targetDana,
+      hargaLembar: data.hargaLembar,
+      totalLembar: data.totalLembar,
+      roi: data.roi,
+      masterPencarianInvestorId: data.MasterPencarianInvestor.id,
+      masterPembagianDevidenId: data.MasterPembagianDeviden.id,
+      masterPeriodeDevidenId: data.MasterPeriodeDeviden.id,
+    },
+  });
 
-    if (!editInves) {
-      return {
-        status: 400,
-        message: "Gagal update",
-      };
-    }
-
-    revalidatePath(RouterInvestasi.detail_draft);
+  if (!editInves) {
     return {
-      status: 200,
-      message: "Berhasil Disimpan",
-    };
-  } else {
-    const editInves = await prisma.investasi.update({
-      where: {
-        id: data.id,
-      },
-      data: {
-        title: data.title,
-        targetDana: data.targetDana,
-        hargaLembar: data.hargaLembar,
-        totalLembar: data.totalLembar,
-        roi: data.roi,
-        masterPencarianInvestorId: data.MasterPencarianInvestor.id,
-        masterPembagianDevidenId: data.MasterPembagianDeviden.id,
-        masterPeriodeDevidenId: data.MasterPeriodeDeviden.id,
-      },
-    });
-
-    if (!editInves) {
-      return {
-        status: 400,
-        message: "Gagal update",
-      };
-    }
-
-    revalidatePath(RouterInvestasi.detail_draft);
-    return {
-      status: 200,
-      message: "Berhasil Disimpan",
+      status: 400,
+      message: "Gagal update",
     };
   }
+
+  revalidatePath(RouterInvestasi.edit);
+  return {
+    status: 200,
+    message: "Berhasil Disimpan",
+  };
 }
