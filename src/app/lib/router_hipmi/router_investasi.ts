@@ -25,6 +25,7 @@ export const RouterInvestasi = {
   edit_berita: "/dev/investasi/edit_berita/",
   
   // detail //
+  detail_portofolio: "",
   detail_saham_terbeli: "/dev/investasi/detail_saham_terbeli/",
   detail_prospektus: "/dev/investasi/detail_prospektus/",
   detail_dokumen: "/dev/investasi/detail_dokumen/",
