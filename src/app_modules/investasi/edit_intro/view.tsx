@@ -32,6 +32,7 @@ import _ from "lodash";
 import { MODEL_DEFAULT_MASTER } from "@/app_modules/models/model_default_master";
 import funEditInvestasi from "../fun/fun_edit_investasi";
 import { useDisclosure, useWindowScroll } from "@mantine/hooks";
+import { test_server } from "./_makuro/test_server";
 
 export default function EditIntroInvestasi({
   dataInvestasi,
@@ -66,6 +67,9 @@ export default function EditIntroInvestasi({
 
     const fd = new FormData();
     fd.append("file", fl as any);
+
+    const test = await test_server();
+    console.log(test);
 
     // await funEditInvestasi(fd, body).then(async (res) => {
     //   res.status === 200
