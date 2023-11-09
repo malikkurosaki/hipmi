@@ -28,57 +28,66 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { gs_TabPortoInvestasi } from "../../g_state";
 import toast from "react-simple-toasts";
+import { MODEL_Investasi } from "../../model/model_investasi";
+import funGantiStatusInvestasi from "../../fun/fun_ganti_status";
+import { useState } from "react";
 
-export default function DetailReviewInvestasi() {
+export default function DetailReviewInvestasi({dataInvestasi}:{dataInvestasi: MODEL_Investasi}) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useAtom(gs_TabPortoInvestasi);
+  const [investasi,setInvestasi] = useState<MODEL_Investasi>(dataInvestasi)
 
   const listBox = [
     {
       id: 1,
       name: "Prospektus",
       icon: <IconBookDownload size={70} />,
-      route: RouterInvestasi.edit_prospektus,
+      route: RouterInvestasi.detail_prospektus,
     },
     {
       id: 2,
       name: "Dokumen",
       icon: <IconFileDescription size={70} />,
-      route: RouterInvestasi.edit_dokumen,
+      route: RouterInvestasi.detail_dokumen,
     },
     {
       id: 3,
       name: "Berita",
       icon: <IconSpeakerphone size={70} />,
-      route: RouterInvestasi.edit_berita,
+      route: RouterInvestasi.berita,
     },
   ];
 
   async function onsubmit() {
-    toast("Review Dibatalkan");
-    router.push(RouterInvestasi.portofolio);
-    setActiveTab("Draft");
+    await funGantiStatusInvestasi(investasi.id, "1")
+      .then((res) => res)
+      .then((val) => {
+        if (val.status === 200) {
+          toast("Review Dibatalkan");
+          router.push(RouterInvestasi.portofolio);
+          setActiveTab("Draft");
+        } else {
+          toast("Error");
+        }
+      });
   }
 
   return (
     <>
       <Paper withBorder mb={"md"}>
         <AspectRatio ratio={16 / 9}>
-          <Image alt="" src={"/aset/no-img.png"} />
+        <Image
+            alt=""
+            src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
+          />
         </AspectRatio>
       </Paper>
 
       {/* Title dan Persentase */}
       <Box mb={"md"}>
         <Title order={4} mb={"xs"}>
-          Judul Proyek
+          {investasi.title}
         </Title>
-        <Slider
-          disabled
-          size={10}
-          value={60}
-          marks={[{ value: 60, label: "60%" }]}
-        />
       </Box>
 
       {/* Rincian Data */}
@@ -87,15 +96,19 @@ export default function DetailReviewInvestasi() {
           <Stack>
             <Box>
               <Text>Dana Dibutuhkan</Text>
-              <Text>Rp. </Text>
+              <Text>Rp. {investasi.targetDana}</Text>
             </Box>
             <Box>
               <Text>Harga Per Lembar</Text>
-              <Text>Rp. </Text>
+              <Text>Rp. {investasi.hargaLembar}</Text>
             </Box>
             <Box>
               <Text>Jadwal Pembagian</Text>
-              <Text>3 Bulan </Text>
+              <Text>{investasi.MasterPembagianDeviden.name} Bulan </Text>
+            </Box>
+            <Box>
+              <Text>Pencarian Investor</Text>
+              <Text>{investasi.MasterPencarianInvestor.name} Hari </Text>
             </Box>
           </Stack>
         </Grid.Col>
@@ -103,15 +116,15 @@ export default function DetailReviewInvestasi() {
           <Stack>
             <Box>
               <Text>ROI</Text>
-              <Text>%</Text>
+              <Text>{investasi.roi} %</Text>
             </Box>
             <Box>
               <Text>Total Lembar</Text>
-              <Text>0</Text>
+              <Text>{investasi.totalLembar} lembar</Text>
             </Box>
             <Box>
               <Text>Pembagian Deviden</Text>
-              <Text>Selamanya</Text>
+              <Text>{investasi.MasterPeriodeDeviden.name}</Text>
             </Box>
           </Stack>
         </Grid.Col>
@@ -123,7 +136,7 @@ export default function DetailReviewInvestasi() {
           <Grid.Col
             span={"auto"}
             key={e.id}
-            onClick={() => router.push(e.route + `${"1"}`)}
+            onClick={() => router.push(e.route + `${investasi.id}`)}
           >
             <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
               <Flex direction={"column"} align={"center"} justify={"center"}>

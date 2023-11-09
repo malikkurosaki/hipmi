@@ -3,12 +3,14 @@ import React from "react";
 
 export default async function Layout({
   children,
+  params
 }: {
   children: React.ReactNode;
+  params: { id: string };
 }) {
   return (
     <>
-      <LayoutListEditBeritaInvestasi>{children}</LayoutListEditBeritaInvestasi>
+      <LayoutListEditBeritaInvestasi idInves={params.id}>{children}</LayoutListEditBeritaInvestasi>
     </>
   );
 }

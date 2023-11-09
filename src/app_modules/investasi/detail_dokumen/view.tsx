@@ -1,14 +1,25 @@
 "use client";
 
-import { Paper, Grid, Center, Text } from "@mantine/core";
+import { Paper, Grid, Center, Text, Title } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import Link from "next/link";
+import { MODEL_Investasi } from "../model/model_investasi";
+import { useState } from "react";
+import _ from "lodash";
 
-export default function DetailDokumenInvestasi() {
+export default function DetailDokumenInvestasi({
+  dataInvestasi,
+}: {
+  dataInvestasi: MODEL_Investasi;
+}) {
+  const [dokumen, setDokumen] = useState(dataInvestasi);
   return (
     <>
-      <Link
-        href={"/aset/dummy_file.pdf"}
+      {!_.isEmpty(dokumen.DokumenInvestasi) ? (
+       dokumen.DokumenInvestasi.map((e) => (
+        <Link 
+        key={e.id}
+        href={`/file/${e.url}`}
         target="_blank"
         style={{ textDecorationLine: "none" }}
       >
@@ -21,7 +32,7 @@ export default function DetailDokumenInvestasi() {
             onClick={() => ""}
           >
             <Grid.Col span={10}>
-              <Text>Nama File.pdf</Text>
+              <Text>{e.title}</Text>
             </Grid.Col>
             <Grid.Col span={2}>
               <Center>
@@ -31,6 +42,12 @@ export default function DetailDokumenInvestasi() {
           </Grid>
         </Paper>
       </Link>
+       ))
+      ) : (
+        <Center>
+          <Title order={6}>Tidak Ada File</Title>
+        </Center>
+      )}
     </>
   );
 }

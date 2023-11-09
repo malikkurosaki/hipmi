@@ -18,18 +18,11 @@ export default function LayoutEditBeritaInvestasi({
     <>
       <AppShell
         header={<HeaderTamplate title="Edit Berita" />}
-        footer={
-          <Footer height={70} sx={{ borderStyle: "none" }}>
-            <Center>
-              <Button w={300} radius={50} bg={Warna.hijau_muda} color="green" onClick={() => {
-                router.back()
-                toast("Berita terupdate")
-              }}>
-                Update
-              </Button>
-            </Center>
-          </Footer>
-        }
+        // footer={
+        //   <Footer height={70} sx={{ borderStyle: "none" }}>
+           
+        //   </Footer>
+        // }
       >
         {children}
       </AppShell>

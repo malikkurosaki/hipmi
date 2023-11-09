@@ -1,4 +1,5 @@
 export const RouterInvestasi = {
+  api_gambar: "/api/investasi/gambar/",
   //INVESTASI
   main: "/dev/investasi/main",
   main_porto: "/dev/investasi/main/portofolio",
@@ -15,23 +16,31 @@ export const RouterInvestasi = {
   status_transaksi: "/dev/investasi/status_transaksi/berhasil",
   status_transaksi_gagal: "/dev/investasi/status_transaksi/gagal",
   metode_transfer: "/dev/investasi/metode_transfer",
+
   // edit //
+  edit: "/dev/investasi/edit/",
   edit_intro: "/dev/investasi/edit_intro/",
   edit_prospektus: "/dev/investasi/edit_prospektus/",
   edit_dokumen: "/dev/investasi/edit_dokumen/",
   edit_berita: "/dev/investasi/edit_berita/",
+  
   // detail //
   detail_saham_terbeli: "/dev/investasi/detail_saham_terbeli/",
   detail_prospektus: "/dev/investasi/detail_prospektus/",
   detail_dokumen: "/dev/investasi/detail_dokumen/",
   detail_berita: "/dev/investasi/detail_berita/",
-  detail_draft: "/dev/investasi/detail_portofolio/draft",
+  detail_draft: "/dev/investasi/detail_portofolio/draft/",
   detail_publish: "/dev/investasi/detail_portofolio/publish",
-  detail_review: "/dev/investasi/detail_portofolio/review",
+  detail_review: "/dev/investasi/detail_portofolio/review/",
   detail_reject: "/dev/investasi/detail_portofolio/reject",
 
   // berita
   berita: "/dev/investasi/berita/",
-  create_berita: "/dev/investasi/create_berita",
+  create_berita: "/dev/investasi/create_berita/",
   list_edit_berita: "/dev/investasi/list_edit_berita/",
+
+  //upload
+  upload_prospektus: "/dev/investasi/upload_prospektus/",
+  upload_dokumen: "/dev/investasi/upload_dokumen/"
+
 };

@@ -4,12 +4,16 @@ import prisma from "@/app/lib/prisma";
 import _ from "lodash";
 import { v4 } from "uuid";
 import fs from "fs";
-import { INVESTASI } from "@/app_modules/models/investasi";
 import { revalidatePath } from "next/cache";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { MODEL_Investasi } from "../model/model_investasi";
 
-export async function funCreateInvestasi(formData: FormData, data: INVESTASI) {
+export async function funCreateInvestasi(
+  formData: FormData,
+  data: MODEL_Investasi | any
+) {
+  console.log(data)
   const file: any = formData.get("file");
-  // console.log(file)
   const fName = file.name;
   const fExt = _.lowerCase(file.name.split(".").pop());
   const fRandomName = v4(fName) + "." + fExt;
@@ -30,17 +34,6 @@ export async function funCreateInvestasi(formData: FormData, data: INVESTASI) {
       message: "File Kosong",
     };
 
-  //   if (upload) {
-  //     await prisma.investasi.update({
-  //       where: {
-  //         authorId: data.authorId,
-  //       },
-  //       data: {
-  //         imagesId: upload.id,
-  //       },
-  //     });
-  //   }
-
   const upFolder = Buffer.from(await file.arrayBuffer());
   fs.writeFileSync(`./public/investasi/${upload.url}`, upFolder);
 
@@ -48,14 +41,15 @@ export async function funCreateInvestasi(formData: FormData, data: INVESTASI) {
     data: {
       authorId: data.authorId,
       title: data.title,
-      targetDana: data.targetDana,
-      hargaLembar: data.hargaLembar,
-      totalLembar: data.totalLembar,
-      roi: data.roi,
-      masterPembagianDevidenId: data.masterPembagianDevidenId,
-      masterPeriodeDevidenId: data.masterPeriodeDevidenId,
+      targetDana: data.targetDana.toString(),
+      hargaLembar: data.hargaLembar.toString(),
+      totalLembar: data.totalLembar.toString(),
+      roi: data.roi.toString(),
+      masterPembagianDevidenId: data.masterPeriodeDevidenId,
+      masterPeriodeDevidenId: data.masterPembagianDevidenId,
       masterPencarianInvestorId: data.masterPencarianInvestorId,
       imagesId: upload.id,
+      masterStatusInvestasiId: "1",
     },
   });
 
@@ -65,7 +59,7 @@ export async function funCreateInvestasi(formData: FormData, data: INVESTASI) {
       message: "Gagal Disimpan",
     };
 
-  revalidatePath("/dev/investasi/main");
+  revalidatePath(RouterInvestasi.main_porto);
 
   return {
     status: 201,

@@ -1,21 +1,31 @@
 "use client";
 
-import { AspectRatio, Image, Stack, Text, Title } from "@mantine/core";
+import { AspectRatio, Group, Image, Stack, Text, Title } from "@mantine/core";
+import { Model_Berita_Investasi } from "../model/model_investasi";
+import { useState } from "react";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import moment from "moment";
 
-export default function DetailBeritaInvestasi() {
+export default function DetailBeritaInvestasi({
+  dataBerita,
+}: {
+  dataBerita: Model_Berita_Investasi;
+}) {
+  const [berita, setBerita] = useState(dataBerita);
   return (
     <>
-      <Stack>
-      <Title>Judul berita</Title>
-      <AspectRatio ratio={16/9}>
-        <Image src={"/aset/no-img.png"} alt=""/>
-      </AspectRatio>
-      <Text>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum eaque sint
-        consequuntur consectetur ratione nostrum quasi aspernatur quae? Facere
-        repudiandae illum laborum eum recusandae, id cumque in quaerat eveniet
-        beatae.
-      </Text>
+      <Stack spacing={"lg"}>
+        <Stack spacing={0}>
+          <Title>{berita.title}</Title>
+          <Text fz={12}>{moment(berita.createdAt).format("lll")}</Text>
+        </Stack>
+        <AspectRatio ratio={16 / 9}>
+          <Image
+            src={RouterInvestasi.api_gambar + `${berita.imagesId}`}
+            alt=""
+          />
+        </AspectRatio>
+        <Text>{berita.deskripsi}</Text>
       </Stack>
     </>
   );
