@@ -5,10 +5,10 @@ import { AppShell, Stack, Text } from "@mantine/core";
 import React from "react";
 
 export default function LayoutEditIntroInvestasi({
-  onUpdate,
+
   children,
 }: {
-  onUpdate: () => Promise<string>;
+
   children: React.ReactNode;
 }) {
   return (

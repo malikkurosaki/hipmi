@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <EditIntroInvestasi 
-      onUp={test_server}
+     
       dataInvestasi={dataInvestasi as any}
       listPencarian={listPencarian  as any}
       listPeriode={listPeriode  as any}
