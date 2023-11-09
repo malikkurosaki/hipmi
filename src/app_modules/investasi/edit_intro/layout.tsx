@@ -15,7 +15,7 @@ export default function LayoutEditIntroInvestasi({
     <>
       <AppShell header={<HeaderTamplate title="Edit Intro" />}>
         <Stack>
-          <Text>v1.0.8</Text>
+          <Text>v1.0.9</Text>
           {children}
         </Stack>
       </AppShell>
