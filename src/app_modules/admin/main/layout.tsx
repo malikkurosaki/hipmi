@@ -3,6 +3,7 @@
 import {
   ActionIcon,
   AppShell,
+  Avatar,
   Box,
   Burger,
   Drawer,
@@ -10,6 +11,7 @@ import {
   Group,
   Header,
   MediaQuery,
+  NavLink,
   Navbar,
   Stack,
   Text,
@@ -19,7 +21,7 @@ import {
 import React, { useState } from "react";
 import HeaderTamplate from "../../component/header_tamplate";
 import { useDisclosure } from "@mantine/hooks";
-import { IconLogout } from "@tabler/icons-react";
+import { IconLetterH, IconLogout } from "@tabler/icons-react";
 import {
   RouterAdminAward,
   RouterAdminDashboard,
@@ -27,6 +29,7 @@ import {
 } from "@/app/lib/router_hipmi/router_admin";
 import { useRouter } from "next/navigation";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
+import { Logout } from "@/app_modules/auth";
 
 export default function AdminLayout({
   children,
@@ -36,6 +39,7 @@ export default function AdminLayout({
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const router = useRouter();
+  // const [active, setActive] = useState(false)
 
   const listAdminPage = [
     {
@@ -58,24 +62,26 @@ export default function AdminLayout({
   return (
     <>
       <AppShell
-        // footer={
-        //   <Footer height={50}>
-        //     {/* Web View */}
-        //     <MediaQuery smallerThan={"md"}  styles={{ display: "none" }}>
-        //       <Group position="apart">
-        //         <Text>1</Text>
-        //         <Text>1</Text>
-        //         <Text>1</Text>
-        //       </Group>
-        //     </MediaQuery>
-
-        //     {/* <MediaQuery smallerThan={"md"}  styles={{ display: "none", borderStyle: "transparent" }}>
-        //      <Text>ok</Text>
-        //     </MediaQuery> */}
-        //   </Footer>
-        // }
+        padding="sm"
+        navbarOffsetBreakpoint="md"
+        asideOffsetBreakpoint="sm"
+        navbar={
+          <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
+            <Navbar width={{ lg: 200, md: 200, sm: 200, base: 200  }} hiddenBreakpoint="md" hidden={!opened}  p="xs" bg={"gray.2"}>
+              {listAdminPage.map((e) => (
+                <NavLink
+                  key={e.id}
+                  label={e.name}
+                  onClick={() => {
+                    router.push(e.route);
+                  }}
+                />
+              ))}
+            </Navbar>
+          </MediaQuery>
+        }
         header={
-          <Header height={50}>
+          <Header height={50} bg={"gray.2"}>
             {/* Mobile View */}
             <MediaQuery largerThan="md" styles={{ display: "none" }}>
               <Group h={50} align="center" px={"md"} position="apart">
@@ -99,20 +105,16 @@ export default function AdminLayout({
             {/* Web View */}
             <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
               <Group position="apart" align="center" h={50} px={"md"}>
+                <Text fw={"lighter"}>HIPMI</Text>
                 <Title order={4}>Dashboard Admin</Title>
-                <Group>
+                {/* <Group>
                   {listAdminPage.map((e) => (
                     <Text key={e.id}  onClick={() => router.push(e.route)}>
                       {e.name}
                     </Text>
                   ))}
-                </Group>
-                <ActionIcon
-                  variant="transparent"
-                  onClick={() => router.push(RouterHome.main_home)}
-                >
-                  <IconLogout color="red" />
-                </ActionIcon>
+                </Group> */}
+                <Logout />
               </Group>
             </MediaQuery>
           </Header>

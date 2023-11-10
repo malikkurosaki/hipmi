@@ -1,6 +1,7 @@
 "use client";
 
 import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin";
+import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
 import {
   ActionIcon,
   Badge,
@@ -15,6 +16,7 @@ import {
 } from "@mantine/core";
 import { IconEdit } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const listBox = [
   {
@@ -34,64 +36,40 @@ const listBox = [
   },
   {
     id: 4,
-    name: "Total Proyek INvestasi",
+    name: "Total Proyek Investasi",
     jumlah: 2,
   },
 ];
 
-const listTable = [
-  {
-    id: 1,
-    status: {
-      id: 1,
-      name: "Publish",
-    },
-    name: "Subway Kuta",
-  },
-  {
-    id: 2,
-    status: {
-      id: 2,
-      name: "Review",
-    },
-    name: "Event MCD",
-  },
-  {
-    id: 3,
-    status: {
-      id: 2,
-      name: " Review",
-    },
-    name: "Villa Batubulan",
-  },
-  {
-    id: 4,
-    status: {
-      id: 1,
-      name: "Publish",
-    },
-    name: "Kost Alif Denpasar",
-  },
-  {
-    id: 5,
-    status: {
-      id: 1,
-      name: "Publish",
-    },
-    name: "Pabrik Rokok Surya Gandum",
-  },
-];
+export default function Admin_Investasi({
+  listInvestasi,
+}: {
+  listInvestasi: MODEL_Investasi[];
+}) {
+  const [investasi, setInvestasi] = useState(listInvestasi);
 
-export default function Admin_Investasi() {
   const router = useRouter();
 
-  const tableBody = listTable.map((e) => (
+  const tableBody = investasi.map((e) => (
     <tr key={e.id}>
-      <td>{e.name}</td>
-      <td>{e.status.id === 1 ? <Badge variant="dot" color="green" >{e.status.name}</Badge> :  <Badge variant="dot" color="red">{e.status.name}</Badge> }</td>
+      <td>{e.title}</td>
       <td>
-        <ActionIcon variant="transparent"
-        onClick={() => router.push(RouterAdminInvestasi.halaman_aksi + `${e.id}`)}
+        {e.MasterStatusInvestasi.id === "3" ? (
+          <Badge variant="dot" color="green">
+            {e.MasterStatusInvestasi.name}
+          </Badge>
+        ) : (
+          <Badge variant="dot" color="red">
+            {e.MasterStatusInvestasi.name}
+          </Badge>
+        )}
+      </td>
+      <td>
+        <ActionIcon
+          variant="transparent"
+          onClick={() =>
+            router.push(RouterAdminInvestasi.halaman_aksi + `${e.id}`)
+          }
         >
           <IconEdit />
         </ActionIcon>
@@ -125,18 +103,61 @@ export default function Admin_Investasi() {
           <Text>List Investasi</Text>
         </Center>
         <ScrollArea w={"100%"}>
-        <Table withBorder highlightOnHover >
-          <thead>
-            <tr>
-              <th>Nama Proyek Investasi</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>{tableBody}</tbody>
-        </Table>
+          <Table withBorder highlightOnHover>
+            <thead>
+              <tr>
+                <th>Nama Proyek Investasi</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>{tableBody}</tbody>
+          </Table>
         </ScrollArea>
       </Box>
     </>
   );
 }
+
+// const listTable = [
+//   {
+//     id: 1,
+//     status: {
+//       id: 1,
+//       name: "Publish",
+//     },
+//     name: "Subway Kuta",
+//   },
+//   {
+//     id: 2,
+//     status: {
+//       id: 2,
+//       name: "Review",
+//     },
+//     name: "Event MCD",
+//   },
+//   {
+//     id: 3,
+//     status: {
+//       id: 2,
+//       name: " Review",
+//     },
+//     name: "Villa Batubulan",
+//   },
+//   {
+//     id: 4,
+//     status: {
+//       id: 1,
+//       name: "Publish",
+//     },
+//     name: "Kost Alif Denpasar",
+//   },
+//   {
+//     id: 5,
+//     status: {
+//       id: 1,
+//       name: "Publish",
+//     },
+//     name: "Pabrik Rokok Surya Gandum",
+//   },
+// ];

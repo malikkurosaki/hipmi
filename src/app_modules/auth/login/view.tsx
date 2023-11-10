@@ -12,6 +12,7 @@ import toast from "react-simple-toasts";
 import { useAtom } from "jotai";
 import { gs_otp, gs_nomor } from "../state/state";
 import { IconCircleLetterH } from "@tabler/icons-react";
+import { RouterAdminDashboard } from "@/app/lib/router_hipmi/router_admin";
 
 export default function Login() {
   const router = useRouter();
@@ -37,26 +38,24 @@ export default function Login() {
     })
       .then((res) => res.json())
       .then((val) => {
-        myConsole(val);
-        if (val.status == 200) {
-          toast(val.message);
-          setCode(val.body.otp);
-          setInputNumber(val.body.nomor);
-          router.push("/dev/auth/validasi");
+        console.log(val);
+        if (val.success === true) {
+          router.push(RouterAdminDashboard.splash_admin);
         } else {
-          toast(val.message);
+          if (val.status == 200) {
+            toast(val.message);
+            setCode(val.body.otp);
+            setInputNumber(val.body.nomor);
+            router.push("/dev/auth/validasi");
+          } else {
+            toast(val.message);
+          }
         }
       });
   };
 
   return (
     <>
-      {/* <pre>
-        {JSON.stringify(inputNumber, null, 2)}
-        <br />
-        {JSON.stringify(code)}
-      </pre> */}
-
       <Flex
         h={"100vh"}
         direction={"column"}
@@ -82,7 +81,6 @@ export default function Login() {
           mt={"xs"}
           h={30}
           w={250}
-
           radius={50}
           compact
           bg={Warna.hijau_muda}

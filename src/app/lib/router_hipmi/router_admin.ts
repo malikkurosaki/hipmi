@@ -1,5 +1,6 @@
 export const RouterAdminDashboard = {
   main_admin: "/dev/admin/main/dashboard",
+  splash_admin: "/dev/admin/splash",
 };
 
 export const RouterAdminInvestasi = {

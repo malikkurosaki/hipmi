@@ -32,7 +32,7 @@ import _ from "lodash";
 import { MODEL_DEFAULT_MASTER } from "@/app_modules/models/model_default_master";
 import funEditInvestasi from "../fun/fun_edit_investasi";
 import { useDisclosure, useWindowScroll } from "@mantine/hooks";
-import { test_server } from "./_makuro/test_server";
+
 
 export default function EditIntroInvestasi({
   dataInvestasi,
