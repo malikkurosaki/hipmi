@@ -39,7 +39,7 @@ export default function AdminLayout({
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const router = useRouter();
-  // const [active, setActive] = useState(false)
+  const [active, setActive] = useState(1);
 
   const listAdminPage = [
     {
@@ -67,12 +67,19 @@ export default function AdminLayout({
         asideOffsetBreakpoint="sm"
         navbar={
           <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
-            <Navbar width={{ lg: 200, md: 200, sm: 200, base: 200  }} hiddenBreakpoint="md" hidden={!opened}  p="xs" bg={"gray.2"}>
+            <Navbar
+              width={{ lg: 200, md: 200, sm: 200, base: 200 }}
+              hiddenBreakpoint="md"
+              hidden={!opened}
+              p="xs"
+              bg={"gray.2"}
+            >
               {listAdminPage.map((e) => (
                 <NavLink
                   key={e.id}
                   label={e.name}
                   onClick={() => {
+                    // setActive(e.id);
                     router.push(e.route);
                   }}
                 />
@@ -105,8 +112,8 @@ export default function AdminLayout({
             {/* Web View */}
             <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
               <Group position="apart" align="center" h={50} px={"md"}>
-                <Text fw={"lighter"}>HIPMI</Text>
-                <Title order={4}>Dashboard Admin</Title>
+                <Text fw={"lighter"}>Dashboard Admin</Text>
+                <Title order={4}> HIPMI</Title>
                 {/* <Group>
                   {listAdminPage.map((e) => (
                     <Text key={e.id}  onClick={() => router.push(e.route)}>
@@ -120,6 +127,8 @@ export default function AdminLayout({
           </Header>
         }
       >
+        {/* {JSON.stringify(active)} */}
+
         {children}
       </AppShell>
       <Drawer opened={opened} onClose={() => setOpened(false)} size={"50%"}>

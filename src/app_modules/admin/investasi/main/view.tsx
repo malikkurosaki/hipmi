@@ -7,48 +7,57 @@ import {
   Badge,
   Box,
   Center,
+  Divider,
   Grid,
   Paper,
   ScrollArea,
   Stack,
   Table,
   Text,
+  Title,
 } from "@mantine/core";
 import { IconEdit } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const listBox = [
-  {
-    id: 1,
-    name: "Investasi Baru",
-    jumlah: 12,
-  },
-  {
-    id: 2,
-    name: "Investasi Aktif",
-    jumlah: 3,
-  },
-  {
-    id: 3,
-    name: "Investasi Selesai",
-    jumlah: 5,
-  },
-  {
-    id: 4,
-    name: "Total Proyek Investasi",
-    jumlah: 2,
-  },
-];
-
 export default function Admin_Investasi({
   listInvestasi,
+  countDraft,
+  countReview,
+  countPublish,
+  countReject,
 }: {
   listInvestasi: MODEL_Investasi[];
+  countDraft: number | any;
+  countReview: number | any;
+  countPublish: number | any;
+  countReject: number | any;
 }) {
   const [investasi, setInvestasi] = useState(listInvestasi);
-
   const router = useRouter();
+
+  const listBox = [
+    {
+      id: 1,
+      name: "Draft",
+      jumlah: countDraft,
+    },
+    {
+      id: 2,
+      name: "Review",
+      jumlah: countReview,
+    },
+    {
+      id: 3,
+      name: "Publish",
+      jumlah: countPublish,
+    },
+    {
+      id: 4,
+      name: "Reject",
+      jumlah: countReject,
+    },
+  ];
 
   const tableBody = investasi.map((e) => (
     <tr key={e.id}>
@@ -79,9 +88,11 @@ export default function Admin_Investasi({
 
   return (
     <>
+      <Title>Investasi</Title>
+      <Divider mb={"md"} />
       <Grid mb={"md"}>
         {listBox.map((e) => (
-          <Grid.Col sm={12} md={6} lg={4} key={e.id}>
+          <Grid.Col sm={12} md={6} lg={3} key={e.id}>
             <Paper h={100} bg={"gray"} p={"xs"}>
               <Center>
                 <Stack spacing={0}>
@@ -98,7 +109,7 @@ export default function Admin_Investasi({
         ))}
       </Grid>
 
-      <Box>
+      <Box my={"lg"}>
         <Center my={"xs"}>
           <Text>List Investasi</Text>
         </Center>

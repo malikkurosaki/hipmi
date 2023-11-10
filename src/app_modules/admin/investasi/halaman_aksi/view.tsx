@@ -3,11 +3,13 @@
 import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin";
 import {
   Box,
+  Button,
   Center,
   Flex,
   Grid,
   Group,
   Paper,
+  SimpleGrid,
   Stack,
   Text,
   Title,
@@ -34,7 +36,38 @@ export default function Admin_HalamanAksi() {
 
   return (
     <>
-      <Grid mb={"md"} align="center">
+      <SimpleGrid
+        cols={4}
+        spacing="sm"
+        breakpoints={[
+          // { maxWidth: "lg", cols: 6, spacing: "lg" },
+          { maxWidth: "md", cols: 3, spacing: "md" },
+          { maxWidth: "sm", cols: 2, spacing: "sm" },
+          { maxWidth: "xs", cols: 1, spacing: "xs" },
+        ]}
+      >
+        {listHalamanAksi.map((e) => (
+          <Paper key={e.id} bg={"gray"} p={"sm"}>
+            <Stack>
+              <Stack spacing={0}>
+                <Title order={6}>{e.name}</Title>
+                <Text fz={"sm"}>{e.desc}</Text>
+              </Stack>
+              <Center>
+                <Button
+                  compact
+                  radius={50}
+                  w={100}
+                  onClick={() => router.push(e.route)}
+                >
+                  Lihat
+                </Button>
+              </Center>
+            </Stack>
+          </Paper>
+        ))}
+      </SimpleGrid>
+      {/* <Grid mb={"md"} align="center">
         {listHalamanAksi.map((e) => (
           <Grid.Col key={e.id} onClick={() => router.push(e.route)}>
             <Paper bg={"gray"} p={"xs"}>
@@ -54,7 +87,7 @@ export default function Admin_HalamanAksi() {
             </Paper>
           </Grid.Col>
         ))}
-      </Grid>
+      </Grid> */}
     </>
   );
 }

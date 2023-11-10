@@ -38,7 +38,7 @@ export default function Login() {
     })
       .then((res) => res.json())
       .then((val) => {
-        console.log(val);
+        // console.log(val);
         if (val.success === true) {
           router.push(RouterAdminDashboard.splash_admin);
         } else {
