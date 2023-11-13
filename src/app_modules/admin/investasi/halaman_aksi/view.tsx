@@ -17,7 +17,7 @@ import {
 import { IconChevronRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
-export default function Admin_HalamanAksi() {
+export default function Admin_HalamanAksi({idInves}: {idInves: string}) {
   const router = useRouter();
   const listHalamanAksi = [
     {
@@ -58,7 +58,7 @@ export default function Admin_HalamanAksi() {
                   compact
                   radius={50}
                   w={100}
-                  onClick={() => router.push(e.route)}
+                  onClick={() => router.push(e.route + `${idInves}`)}
                 >
                   Lihat
                 </Button>

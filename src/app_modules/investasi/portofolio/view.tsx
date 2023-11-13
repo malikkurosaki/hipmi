@@ -41,7 +41,7 @@ import {
 } from "@tabler/icons-react";
 import { atomWithStorage } from "jotai/utils";
 import { useAtom } from "jotai";
-import { gs_TabPortoInvestasi } from "../g_state";
+import { gs_StatusPortoInvestasi } from "../g_state";
 import {
   MODEL_Investasi,
   MODEL_Status_investasi,
@@ -56,7 +56,7 @@ export default function PortofolioInvestasi({
   listStatusInvestasi: any;
 }) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useAtom(gs_TabPortoInvestasi);
+  const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
 
   const [investasi, setInvestasi] = useState<MODEL_Investasi[]>(dataInvestasi);
   const [status_inves, setStatus_inves] =

@@ -77,7 +77,7 @@ export default function Admin_Investasi({
         <ActionIcon
           variant="transparent"
           onClick={() =>
-            router.push(RouterAdminInvestasi.halaman_aksi + `${e.id}`)
+            router.push(RouterAdminInvestasi.konfirmasi + `${e.id}`)
           }
         >
           <IconEdit />

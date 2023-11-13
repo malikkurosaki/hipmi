@@ -110,6 +110,7 @@ model Investasi {
   updatedAt   DateTime @default(now()) @updatedAt
   author      User?    @relation(fields: [authorId], references: [id])
   authorId    String?
+  catatan     String?
 
   MasterPeriodeDeviden      MasterPeriodeDeviden?    @relation(fields: [masterPeriodeDevidenId], references: [id])
   masterPeriodeDevidenId    String?

@@ -16,6 +16,7 @@ export default function DetailPropektus({
 }) {
   const [prospek, setProspek] = useState(dataInvestasi);
 
+
   return (
     <>
       {prospek.ProspektusInvestasi !== null ? (

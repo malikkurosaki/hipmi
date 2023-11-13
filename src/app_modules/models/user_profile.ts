@@ -1,4 +1,4 @@
-export interface USER_PROFILE {
+export interface MODEL_User_profile {
   id: string;
   username: string;
   nomor: string;

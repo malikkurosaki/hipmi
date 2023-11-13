@@ -26,7 +26,7 @@ import {
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { gs_TabPortoInvestasi } from "../../g_state";
+import { gs_StatusPortoInvestasi } from "../../g_state";
 import toast from "react-simple-toasts";
 import { MODEL_Investasi } from "../../model/model_investasi";
 import { useState } from "react";
@@ -39,7 +39,7 @@ export default function DetailDraftInvestasi({
   dataInvestasi: any;
 }) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useAtom(gs_TabPortoInvestasi);
+  const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
   const [investasi, setInvestasi] = useState<MODEL_Investasi>(dataInvestasi);
 
   const listBox = [

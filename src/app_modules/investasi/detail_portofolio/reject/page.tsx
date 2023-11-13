@@ -27,12 +27,12 @@ import {
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { gs_TabPortoInvestasi } from "../../g_state";
+import { gs_StatusPortoInvestasi } from "../../g_state";
 import toast from "react-simple-toasts";
 
 export default function DetailRejectInvestasi() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useAtom(gs_TabPortoInvestasi);
+  const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
 
   const listBox = [
     {

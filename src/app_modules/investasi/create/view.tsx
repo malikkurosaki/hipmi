@@ -26,7 +26,7 @@ import { funCreateInvestasi } from "../fun/fun_create_investasi";
 import toast from "react-simple-toasts";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { useAtom } from "jotai";
-import { gs_TabPortoInvestasi, gs_investasiFooter } from "../g_state";
+import { gs_StatusPortoInvestasi, gs_investasiFooter } from "../g_state";
 import { useShallowEffect } from "@mantine/hooks";
 
 export default function InvestasiCreate({
@@ -44,7 +44,7 @@ export default function InvestasiCreate({
   const [fl, setFl] = useState<File | null>(null);
   const [img, setImg] = useState<any | null>();
   const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
-  const [activeTab, setActiveTab] = useAtom(gs_TabPortoInvestasi);
+  const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
   const [totalLembar, setTotalLembar] = useState(0);
 
   const [value, setValue] = useState({
