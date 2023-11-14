@@ -52,6 +52,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-simple-toasts";
+import funRejectInvestasi from "../fun/fun_reject_investasi";
 
 export default function Admin_KonfirmasiInvestasi({
   dataInvestasi,
@@ -89,23 +90,33 @@ export default function Admin_KonfirmasiInvestasi({
     },
   ];
 
-  // useShallowEffect(() => {
-  //   cekStatusPublish()
-  // },[])
+  useShallowEffect(() => {
+    cekStatusPublish();
+  }, []);
 
-  // async function cekStatusPublish() {
-  //   if(investasi.MasterStatusInvestasi.id === "3")
-  //  setPublish(false)
-  // }
+  async function cekStatusPublish() {
+    if (investasi.MasterStatusInvestasi.id === "3") setPublish(false);
+  }
 
-  async function onCatatan() {
-    if (_.isEmpty(catatan)) return toast("Lengkapi alasan");
-    console.log(catatan);
-    toggle();
+  async function onReject() {
+    const body = {
+      id: investasi.id,
+      catatan: catatan,
+      status: "4",
+    };
+    if (_.isEmpty(body.catatan)) return toast("Lengkapi alasan");
+    await funRejectInvestasi(body).then((res) => {
+      if (res.status === 200) {
+        toast(res.message);
+        toggle();
+      } else {
+        toast(res.message);
+      }
+    });
   }
 
   async function onPublish() {
-    // const res = await funGantiStatusInvestasi(investasi.id, "3")
+    const res = await funGantiStatusInvestasi(investasi.id, "3");
     setTimeout(() => setPublish(false), 1000);
     toast("Proyek Investasi Di Publish");
   }
@@ -113,20 +124,28 @@ export default function Admin_KonfirmasiInvestasi({
   return (
     <>
       <Group position="apart" px={"md"}>
-        <Flex align={"center"} gap={"xs"}>
-          <Avatar
-            radius={50}
-            size={"lg"}
-            src={
-              RouterUserProfile.api_foto + `${user.Profile?.ImageProfile?.url}`
-            }
-          />
-          <Text>{user.username}</Text>
-        </Flex>
+        <Group>
+          <ActionIcon onClick={() => router.back()}>
+            <IconChevronLeft />
+          </ActionIcon>
+          <Flex align={"center"} gap={"xs"} pl={"lg"}>
+            <Avatar
+              radius={50}
+              size={"md"}
+              src={
+                RouterUserProfile.api_foto +
+                `${user.Profile?.ImageProfile?.url}`
+              }
+            />
+            <Text>{user.username}</Text>
+          </Flex>
+        </Group>
         <Group>
           {" "}
           <Center>
-            {publish ? (
+            {!publish || investasi.MasterStatusInvestasi.id === "4" ? (
+              ""
+            ) : (
               <Button
                 radius={50}
                 bg={"green"}
@@ -138,30 +157,33 @@ export default function Admin_KonfirmasiInvestasi({
               >
                 Publish
               </Button>
-            ) : (
-              <Button
-                radius={50}
-                leftIcon={<IconBan />}
-                bg={"orange"}
-                color="orange"
-                onClick={() => {
-                  setTimeout(() => setPublish(true), 1000);
-                  toast("Proyek Investasi Di Non-Aktifkan");
-                }}
-              >
-                Non - aktifkan
-              </Button>
+              // <Button
+              //   radius={50}
+              //   leftIcon={<IconBan />}
+              //   bg={"orange"}
+              //   color="orange"
+              //   onClick={() => {
+              //     setTimeout(() => setPublish(true), 1000);
+              //     toast("Proyek Investasi Di Non-Aktifkan");
+              //   }}
+              // >
+              //   Non - aktifkan
+              // </Button>
             )}
           </Center>
-          <Button
-            radius={50}
-            bg={"red"}
-            color="red"
-            onClick={toggle}
-            rightIcon={<IconAlertHexagonFilled />}
-          >
-            Reject
-          </Button>
+          {investasi.MasterStatusInvestasi.id === "3" ? (
+            ""
+          ) : (
+            <Button
+              radius={50}
+              bg={"red"}
+              color="red"
+              onClick={toggle}
+              rightIcon={<IconAlertHexagonFilled />}
+            >
+              Reject
+            </Button>
+          )}
         </Group>
       </Group>
 
@@ -286,9 +308,7 @@ export default function Admin_KonfirmasiInvestasi({
                           <Text>{e.title}</Text>
                           <Link
                             target="_blank"
-                            href={
-                              RouterInvestasi.api_file_dokumen + `${e.id}`
-                            }
+                            href={RouterInvestasi.api_file_dokumen + `${e.id}`}
                           >
                             <Button compact radius={50}>
                               Buka
@@ -319,7 +339,7 @@ export default function Admin_KonfirmasiInvestasi({
             onChange={(val) => setCatatan(val.target.value)}
           />
           <Group position="right">
-            <Button radius={50} compact onClick={() => onCatatan()}>
+            <Button radius={50} compact onClick={() => onReject()}>
               Simpan
             </Button>
           </Group>

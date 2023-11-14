@@ -21,6 +21,7 @@ export default async function Admin_funGetAllInvestasi() {
             roi: true,
             active: true,
             imagesId: true,
+            catatan: true,
             MasterStatusInvestasi: true,
             BeritaInvestasi: true,
             DokumenInvestasi: true,

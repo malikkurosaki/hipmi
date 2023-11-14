@@ -10,6 +10,7 @@ export interface MODEL_Investasi {
   updatedAt: Date;
   authorId: string;
   imagesId: string;
+  catatan: string
   MasterStatusInvestasi: MODEL_Status_investasi;
   BeritaInvestasi: Model_Berita_Investasi[];
   DokumenInvestasi: Model_Dokumen_Investasi[];

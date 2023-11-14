@@ -12,10 +12,10 @@ export default async function funEditInvestasi(
   formData: FormData,
   data: MODEL_Investasi
 ) {
-  const file = formData.get("file");
+  const file = formData?.get("file");
 
   if (file !== "null") {
-    const file: any = formData.get("file");
+    const file: any = formData?.get("file");
     const fName = file.name;
     const fExt =
       file && file.name ? _.lowerCase(file.name.split(".").pop()) : "";

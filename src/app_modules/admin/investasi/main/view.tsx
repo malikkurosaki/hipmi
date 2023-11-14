@@ -19,6 +19,9 @@ import {
 import { IconEdit } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import TablePublish from "./table_publish";
+import TableReview from "./table_review";
+import TableReject from "./table_reject";
 
 export default function Admin_Investasi({
   listInvestasi,
@@ -59,33 +62,6 @@ export default function Admin_Investasi({
     },
   ];
 
-  const tableBody = investasi.map((e) => (
-    <tr key={e.id}>
-      <td>{e.title}</td>
-      <td>
-        {e.MasterStatusInvestasi.id === "3" ? (
-          <Badge variant="dot" color="green">
-            {e.MasterStatusInvestasi.name}
-          </Badge>
-        ) : (
-          <Badge variant="dot" color="red">
-            {e.MasterStatusInvestasi.name}
-          </Badge>
-        )}
-      </td>
-      <td>
-        <ActionIcon
-          variant="transparent"
-          onClick={() =>
-            router.push(RouterAdminInvestasi.konfirmasi + `${e.id}`)
-          }
-        >
-          <IconEdit />
-        </ActionIcon>
-      </td>
-    </tr>
-  ));
-
   return (
     <>
       <Title>Investasi</Title>
@@ -108,67 +84,16 @@ export default function Admin_Investasi({
           </Grid.Col>
         ))}
       </Grid>
-
-      <Box my={"lg"}>
-        <Center my={"xs"}>
-          <Text>List Investasi</Text>
-        </Center>
-        <ScrollArea w={"100%"}>
-          <Table withBorder highlightOnHover>
-            <thead>
-              <tr>
-                <th>Nama Proyek Investasi</th>
-                <th>Status</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>{tableBody}</tbody>
-          </Table>
-        </ScrollArea>
-      </Box>
+      <TablePublish dataInvestsi={investasi as any} />
+      <TableReview dataInvestsi={investasi as any} />
+      <TableReject dataInvestsi={investasi as any} />
+      {/* <pre>{JSON.stringify(investasi, null, 2)}</pre> */}
     </>
   );
 }
 
-// const listTable = [
-//   {
-//     id: 1,
-//     status: {
-//       id: 1,
-//       name: "Publish",
-//     },
-//     name: "Subway Kuta",
-//   },
-//   {
-//     id: 2,
-//     status: {
-//       id: 2,
-//       name: "Review",
-//     },
-//     name: "Event MCD",
-//   },
-//   {
-//     id: 3,
-//     status: {
-//       id: 2,
-//       name: " Review",
-//     },
-//     name: "Villa Batubulan",
-//   },
-//   {
-//     id: 4,
-//     status: {
-//       id: 1,
-//       name: "Publish",
-//     },
-//     name: "Kost Alif Denpasar",
-//   },
-//   {
-//     id: 5,
-//     status: {
-//       id: 1,
-//       name: "Publish",
-//     },
-//     name: "Pabrik Rokok Surya Gandum",
-//   },
-// ];
+
+
+
+
+
