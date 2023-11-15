@@ -1,11 +1,21 @@
 "use server";
-import prisma from "@/app/lib/prisma";
-import { data } from "autoprefixer";
 
-export default async function getOneInvestasiById(id: string) {
-  const data = await prisma.investasi.findUnique({
+import prisma from "@/app/lib/prisma";
+
+export async function getListAllPublish() {
+  const data = await prisma.investasi.findMany({
+    orderBy: {
+      updatedAt: "desc",
+    },
     where: {
-      id: id,
+      MasterStatusInvestasi: {
+        name: {
+          equals: "Publish",
+        },
+      },
+      AND: {
+        active: true
+      }
     },
     select: {
       id: true,
@@ -18,7 +28,6 @@ export default async function getOneInvestasiById(id: string) {
       active: true,
       createdAt: true,
       updatedAt: true,
-      catatan: true,
       imagesId: true,
       MasterStatusInvestasi: true,
       BeritaInvestasi: true,

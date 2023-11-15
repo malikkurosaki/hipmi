@@ -14,6 +14,7 @@ import {
   Group,
   Image,
   Paper,
+  Progress,
   Slider,
   Stack,
   Text,
@@ -21,22 +22,32 @@ import {
 } from "@mantine/core";
 import {
   IconBookDownload,
+  IconCircleCheck,
   IconFileDescription,
   IconSpeakerphone,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import toast from "react-simple-toasts";
+import { MODEL_Investasi } from "../../model/model_investasi";
+import { useState } from "react";
+import moment from "moment";
+import _ from "lodash";
 
-export default function DetailPublishInvestasi() {
+export default function DetailPublishInvestasi({
+  dataInvestasi,
+}: {
+  dataInvestasi: MODEL_Investasi;
+}) {
   const router = useRouter();
+  const [investasi, setInvestasi] = useState(dataInvestasi);
 
   const listBox = [
     {
       id: 1,
       name: "Prospektus",
       icon: <IconBookDownload size={70} />,
-      route: RouterInvestasi.edit_prospektus,
+      route: RouterInvestasi.detail_prospektus,
     },
     {
       id: 2,
@@ -48,32 +59,48 @@ export default function DetailPublishInvestasi() {
       id: 3,
       name: "Berita",
       icon: <IconSpeakerphone size={70} />,
-      route: RouterInvestasi.edit_berita,
+      route: RouterInvestasi.list_edit_berita,
     },
   ];
 
   return (
     <>
-      <Center mb={"sm"}>
-        <Text>Sisa waktu : 20 Hari</Text>
-      </Center>
+      {Number(investasi.MasterPencarianInvestor.name) -
+        moment(new Date()).diff(new Date(investasi.updatedAt), "days") <=
+      0 ? (
+        <Group position="right">
+          <IconCircleCheck color="green" />
+          <Text c={"green"}>Selesai</Text>
+        </Group>
+      ) : (
+        <Group mb={"sm"} position="center">
+          <Text>
+            Sisa waktu :{" "}
+            {Number(investasi.MasterPencarianInvestor.name) -
+              moment(new Date()).diff(
+                new Date(investasi.updatedAt),
+                "days"
+              )}{" "}
+            hari
+          </Text>
+        </Group>
+      )}
+
       <Paper withBorder mb={"md"}>
         <AspectRatio ratio={16 / 9}>
-          <Image alt="" src={"/aset/no-img.png"} />
+          <Image
+            alt=""
+            src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
+          />
         </AspectRatio>
       </Paper>
 
       {/* Title dan Persentase */}
       <Box mb={"md"}>
         <Title order={4} mb={"xs"}>
-          Judul Proyek
+          {investasi.title}
         </Title>
-        <Slider
-          disabled
-          size={10}
-          value={60}
-          marks={[{ value: 60, label: "60%" }]}
-        />
+        <Progress color="lime" radius="xl" size="xl" value={0} label="0 %" />
       </Box>
 
       {/* Rincian Data */}
@@ -81,40 +108,32 @@ export default function DetailPublishInvestasi() {
         <Grid.Col span={6}>
           <Stack>
             <Box>
-              <Text>Terkumpul</Text>
-              <Text>Rp. </Text>
-            </Box>
-            <Box>
               <Text>Dana Dibutuhkan</Text>
-              <Text>Rp. </Text>
+              <Text>Rp. {investasi.targetDana}</Text>
             </Box>
             <Box>
               <Text>Harga Per Lembar</Text>
-              <Text>Rp. </Text>
+              <Text>Rp. {investasi.hargaLembar}</Text>
             </Box>
             <Box>
               <Text>Jadwal Pembagian</Text>
-              <Text>3 Bulan </Text>
+              <Text>{investasi.MasterPembagianDeviden.name} bulan </Text>
             </Box>
           </Stack>
         </Grid.Col>
         <Grid.Col span={6}>
           <Stack>
             <Box>
-              <Text>Investor</Text>
-              <Text>4657</Text>
-            </Box>
-            <Box>
               <Text>ROI</Text>
-              <Text>%</Text>
+              <Text>{investasi.roi}%</Text>
             </Box>
             <Box>
               <Text>Total Lembar</Text>
-              <Text>0</Text>
+              <Text>{investasi.totalLembar} lembar</Text>
             </Box>
             <Box>
               <Text>Pembagian Deviden</Text>
-              <Text>Selamanya</Text>
+              <Text>{investasi.MasterPeriodeDeviden.name}</Text>
             </Box>
           </Stack>
         </Grid.Col>
@@ -126,7 +145,7 @@ export default function DetailPublishInvestasi() {
           <Grid.Col
             span={"auto"}
             key={e.id}
-            onClick={() => router.push(e.route + `${1}`)}
+            onClick={() => router.push(e.route + `${investasi.id}`)}
           >
             <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
               <Flex direction={"column"} align={"center"} justify={"center"}>

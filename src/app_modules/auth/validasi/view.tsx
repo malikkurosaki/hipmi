@@ -2,6 +2,7 @@
 
 import { useAtom } from "jotai";
 import {
+  ActionIcon,
   Button,
   Center,
   Flex,
@@ -14,7 +15,7 @@ import { gs_nomor, gs_otp } from "../state/state";
 import { Warna } from "@/app/lib/warna";
 import { useState } from "react";
 import { myConsole } from "@/app/fun/my_console";
-import { IconCircleLetterH } from "@tabler/icons-react";
+import { IconChevronLeft, IconCircleLetterH } from "@tabler/icons-react";
 import toast from "react-simple-toasts";
 import { ApiHipmi } from "@/app/lib/api";
 import { useRouter } from "next/navigation";
@@ -62,13 +63,14 @@ export default function Validasi() {
     <>
       {/* {JSON.stringify(nomor)}
       {JSON.stringify(code)} */}
+     
 
       <Flex
         align={"center"}
         justify={"center"}
         direction={"column"}
         gap={50}
-        h={"100vh"}
+        h={"80vh"}
       >
         <Title order={4}>Validasi Kode OTP</Title>
         <IconCircleLetterH size={150} />

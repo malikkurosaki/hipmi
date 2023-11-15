@@ -2,9 +2,13 @@
 
 import prisma from "@/app/lib/prisma";
 
-export default async function getInvestasiById(id: string) {
+export default async function getInvestasiByStatusId(
+  id: string,
+) {
   const data = await prisma.user.findUnique({
-    where: { id: id },
+    where: {
+      id: id,
+    },
     select: {
       Investasi: {
         select: {

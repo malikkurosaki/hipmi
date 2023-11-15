@@ -43,7 +43,7 @@ export default function Login() {
           router.push(RouterAdminDashboard.splash_admin);
         } else {
           if (val.status == 200) {
-            toast(val.message);
+            toast("Nomor OTP terkirim");
             setCode(val.body.otp);
             setInputNumber(val.body.nomor);
             router.push("/dev/auth/validasi");

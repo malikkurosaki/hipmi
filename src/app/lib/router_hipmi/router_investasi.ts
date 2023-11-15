@@ -26,7 +26,7 @@ export const RouterInvestasi = {
   edit_prospektus: "/dev/investasi/edit_prospektus/",
   edit_dokumen: "/dev/investasi/edit_dokumen/",
   edit_berita: "/dev/investasi/edit_berita/",
-  
+
   // detail //
   detail_portofolio: "",
   detail_saham_terbeli: "/dev/investasi/detail_saham_terbeli/",
@@ -34,9 +34,9 @@ export const RouterInvestasi = {
   detail_dokumen: "/dev/investasi/detail_dokumen/",
   detail_berita: "/dev/investasi/detail_berita/",
   detail_draft: "/dev/investasi/detail_portofolio/draft/",
-  detail_publish: "/dev/investasi/detail_portofolio/publish",
+  detail_publish: "/dev/investasi/detail_portofolio/publish/",
   detail_review: "/dev/investasi/detail_portofolio/review/",
-  detail_reject: "/dev/investasi/detail_portofolio/reject",
+  detail_reject: "/dev/investasi/detail_portofolio/reject/",
 
   // berita
   berita: "/dev/investasi/berita/",
@@ -45,6 +45,5 @@ export const RouterInvestasi = {
 
   //upload
   upload_prospektus: "/dev/investasi/upload_prospektus/",
-  upload_dokumen: "/dev/investasi/upload_dokumen/"
-
+  upload_dokumen: "/dev/investasi/upload_dokumen/",
 };

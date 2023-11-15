@@ -49,13 +49,13 @@ export default function EditProspektusInvestasi({
                 px={"sm"}
                 onClick={() => ""}
               >
-                <Grid.Col span={10}>
+                <Grid.Col span={11}>
                   <Group>
                     {/* <IconFileTypePdf /> */}
                     <Text lineClamp={1}>Prospektus_{prospek.title}</Text>
                   </Group>
                 </Grid.Col>
-                <Grid.Col span={2}>
+                <Grid.Col span={1}>
                   <Center>
                     <IconChevronRight />
                   </Center>
@@ -68,7 +68,7 @@ export default function EditProspektusInvestasi({
             <Title order={4}>Tidak ada file</Title>
           </Center>
         )}
-        <Divider my={"lg"} />
+        {/* <Divider my={"lg"} /> */}
       </Stack>
     </>
   );
