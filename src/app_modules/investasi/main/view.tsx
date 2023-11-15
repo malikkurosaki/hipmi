@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   CardSection,
+  Center,
   Divider,
   Flex,
   Grid,
@@ -43,6 +44,16 @@ export default function MainInvestasi({
   const router = useRouter();
   const [investasi, setInvestasi] = useState(listData);
 
+  if (_.isEmpty(investasi))
+    return (
+      <>
+        {" "}
+        <Center h={"80vh"}>
+          <Text>BURSA KOSONG</Text>
+        </Center>
+      </>
+    );
+
   return (
     <>
       {/* <pre>{JSON.stringify(listData, null, 2)}</pre> */}
@@ -64,11 +75,18 @@ export default function MainInvestasi({
             </AspectRatio>
           </CardSection>
 
- {/* Progress dan titlr */}
+          {/* Progress dan titlr */}
           <CardSection p={"lg"}>
-            <Stack >
+            <Stack>
               <Title order={4}>{e.title}</Title>
-              <Progress label="0%" value={0} color="teal" size="xl" radius="xl"  animate/>
+              <Progress
+                label="0%"
+                value={0}
+                color="teal"
+                size="xl"
+                radius="xl"
+                animate
+              />
             </Stack>
           </CardSection>
           <CardSection p={"md"}>
@@ -103,7 +121,7 @@ export default function MainInvestasi({
           </CardSection>
           <Divider />
           <CardSection p={"md"}>
-            <Flex gap={"xl"}  align={"center"} justify={"center"}>
+            <Flex gap={"xl"} align={"center"} justify={"center"}>
               <Box>
                 {e.SahamTerbeli === null ? (
                   ""
