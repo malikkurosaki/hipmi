@@ -8,7 +8,7 @@ import funEditInvestasi from "@/app_modules/investasi/fun/fun_edit_investasi";
 import funGantiStatusInvestasi from "@/app_modules/investasi/fun/fun_ganti_status";
 import { gs_StatusPortoInvestasi } from "@/app_modules/investasi/g_state";
 import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
-import { MODEL_User_profile } from "@/app_modules/models/user_profile";
+import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
 import {
   Group,
   Flex,

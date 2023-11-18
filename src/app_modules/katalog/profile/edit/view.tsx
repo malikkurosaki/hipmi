@@ -13,7 +13,7 @@ import { useState } from "react";
 import toast from "react-simple-toasts";
 import { gs_profile } from "../state/global_state";
 import { loadDataProfile } from "../fun/fun_get_profile";
-import { MODEL_User_profile } from "@/app_modules/models/user_profile";
+import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
 import funEditProfile from "../fun/fun_edit_profile";
 
 export default function EditProfile({ data }: { data: MODEL_User_profile }) {

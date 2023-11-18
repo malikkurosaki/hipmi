@@ -1,3 +1,5 @@
+import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
+
 export interface MODEL_Investasi {
   id: string;
   title: string;
@@ -18,7 +20,19 @@ export interface MODEL_Investasi {
   MasterPembagianDeviden: Model_All_Master;
   MasterPencarianInvestor: Model_All_Master;
   MasterPeriodeDeviden: Model_All_Master;
-  SahamTerbeli: null;
+}
+
+export interface MODEL_Transaksi_Investasi {
+  id: string;
+  lembarTerbeli: string,
+  totalTransfer: string,
+  namaBank: string,
+  nomorRekening: string
+  active: true;
+  createdAt: Date;
+  updatedAt: Date;
+  Author: MODEL_User_profile,
+  Investasi: MODEL_Investasi
 }
 
 export interface MODEL_Status_investasi {
@@ -60,4 +74,13 @@ export interface Model_Dokumen_Investasi {
   createdAt: Date
   updatedAt: Date
   investasiId: string
+}
+
+export interface Model_Nama_Bank {
+  id: string,
+  name: string,
+  norek: string,
+  active: boolean,
+  createdAt: Date,
+  updatedAt: Date
 }

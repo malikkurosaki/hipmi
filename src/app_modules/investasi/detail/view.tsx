@@ -30,19 +30,24 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_Investasi } from "../model/model_investasi";
 import moment from "moment";
-import { MODEL_User_profile } from "@/app_modules/models/user_profile";
+import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
 import { RouterUserProfile } from "@/app/lib/router_hipmi/router_user_profile";
+import { gs_TransferValue } from "../g_state";
+import { useAtom } from "jotai";
 
 export default function DetailInvestasi({
   dataInvestasi,
   dataUser,
+  loginUserId,
 }: {
   dataInvestasi: MODEL_Investasi;
   dataUser: MODEL_User_profile;
+  loginUserId: string;
 }) {
   const router = useRouter();
   const [investasi, setInvestasi] = useState(dataInvestasi);
   const [user, setUser] = useState(dataUser);
+  const [transaksiValue, setTransaksiValue] = useAtom(gs_TransferValue);
 
   const listBox = [
     {
@@ -64,6 +69,18 @@ export default function DetailInvestasi({
       route: RouterInvestasi.berita,
     },
   ];
+
+  async function onSubmit() {
+    router.push(RouterInvestasi.proses_investasi + `${investasi.id}`);
+    setTransaksiValue({
+      ...transaksiValue,
+      lembarTerbeli: "",
+      namaBank: "",
+      nomorRekening: "",
+      totalTransfer: "",
+    });
+    
+  }
 
   return (
     <>
@@ -99,7 +116,10 @@ export default function DetailInvestasi({
 
       <Paper withBorder mb={"md"} p={"xs"}>
         <AspectRatio ratio={16 / 9}>
-          <Image   alt="" src={RouterInvestasi.api_gambar + `${investasi.imagesId}`} />
+          <Image
+            alt=""
+            src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
+          />
         </AspectRatio>
       </Paper>
 
@@ -108,11 +128,18 @@ export default function DetailInvestasi({
         <Title order={4} mb={"xs"}>
           {investasi.title}
         </Title>
-        <Progress label="0%" value={0} color="teal" size="xl" radius="xl"  animate/>
+        <Progress
+          label="0%"
+          value={0}
+          color="teal"
+          size="xl"
+          radius="xl"
+          animate
+        />
       </Box>
 
-     {/* Rincian Data */}
-     <Grid p={"md"} mb={"md"}>
+      {/* Rincian Data */}
+      <Grid p={"md"} mb={"md"}>
         <Grid.Col span={6}>
           <Stack>
             <Box>
@@ -167,16 +194,26 @@ export default function DetailInvestasi({
         ))}
       </Grid>
 
-      <Center mb={"md"}>
-        <Button
-          radius={50}
-          w={350}
-          bg={Warna.biru}
-          onClick={() => router.push("/dev/investasi/proses_investasi")}
-        >
-          Investasi
-        </Button>
-      </Center>
+      {loginUserId === investasi.authorId ? (
+        <Center mb={"md"}>
+          <Button disabled radius={50} w={350}>
+            Investasi Ini Milik Anda
+          </Button>
+        </Center>
+      ) : (
+        <Center mb={"md"}>
+          <Button
+            radius={50}
+            w={350}
+            bg={Warna.biru}
+            onClick={() => {
+             onSubmit()
+            }}
+          >
+            Investasi
+          </Button>
+        </Center>
+      )}
     </>
   );
 }

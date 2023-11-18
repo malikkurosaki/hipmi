@@ -14,7 +14,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useCounter, useShallowEffect } from "@mantine/hooks";
+import { useCounter, useFocusTrap, useShallowEffect } from "@mantine/hooks";
 import {
   IconMinus,
   IconNumber10Small,
@@ -25,61 +25,75 @@ import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-simple-toasts";
+import { MODEL_Investasi } from "../model/model_investasi";
+import { error } from "console";
+import { useAtom } from "jotai";
+import { gs_TransferValue } from "../g_state";
 
-export default function ProsesInvestasi() {
+export default function ProsesInvestasi({
+  dataInvestasi,
+}: {
+  dataInvestasi: MODEL_Investasi;
+}) {
   const router = useRouter();
-  // const [count, handlers] = useCounter(0, { min: 1, max: 1000 });
-  const [sisaLembar, setSisaLembar] = useState(5000);
-  const [hargaLembar, setHargaLembar] = useState(1000);
-  const [beli, setBeli] = useState(0);
+  const focusTrapRef = useFocusTrap();
+
+  const [jumlah, setJumlah] = useState(0);
+  const [hargaLembar, setHargaLembar] = useState<number>(
+    Number(dataInvestasi.hargaLembar)
+  );
   const [total, setTotal] = useState(0);
-
-  //   const formatter = new Intl.NumberFormat("", {
-  //     style: 'currency',
-  //     currency: 'RP',
-
-  //   });
-
-  async function onProses() {
-    if (beli === 0) return toast("Masukan jumlah pembelian saham");
-    if (beli < 10) return toast("Minimal pemebelian 10 Lembar");
-    const hasil = hargaLembar * beli;
-    setTotal(hasil);
-  }
+  const [investasi, setInvestasi] = useState(dataInvestasi);
+  const [maxPembelian, setMaxPembelian] = useState<number>(
+    Number(dataInvestasi.totalLembar)
+  );
+  const [transferValue, setTransferValue] = useAtom(gs_TransferValue);
 
   async function onBeli() {
-    router.push(RouterInvestasi.metode_transfer);
-    localStorage.setItem("total_harga", total as any);
+    setTransferValue({
+      ...transferValue,
+      totalTransfer: total as any,
+      lembarTerbeli: jumlah as any,
+    }); 
+    router.push(RouterInvestasi.metode_transfer + `${investasi.id}`);
   }
 
   return (
     <>
+      {/* <pre>{JSON.stringify(transferValue, null, 2)}</pre> */}
       <Box px={"md"}>
         {/* Sisa Lembar Saham */}
         <Group position="apart" mb={"md"}>
           <Text>Sisa Lembar Saham</Text>
-          <Text fz={23}>{sisaLembar} </Text>
+          <Text fz={23}>{investasi.totalLembar} </Text>
         </Group>
 
         {/* Harga perlembar saham */}
         <Group position="apart" mb={"md"}>
           <Text>Harga Perlembar</Text>
-          <Text fz={23}>Rp.{hargaLembar} </Text>
+          <Text fz={23}>Rp.{investasi.hargaLembar} </Text>
         </Group>
 
         {/* Lembar saham */}
         <Group position="apart" mb={"md"}>
           <Box>
             <Text>Jumlah Pembelian</Text>
-            <Text fs={"italic"} fz={"xs"}>
+            <Text c={"orange"} fs={"italic"} fz={10}>
               minimal pembelian 10 lembar
             </Text>
+            {/* <Text c={"red"} fs={"italic"} fz={10}>
+                maximal pembelian {maxPembelian} lembar
+              </Text> */}
           </Box>
           <NumberInput
+            type="number"
+            ref={focusTrapRef}
             w={100}
-            value={beli}
+            max={maxPembelian}
             onChange={(val: number) => {
               setTotal(val * hargaLembar);
+              setJumlah(val);
+              // console.log(val);
             }}
           />
         </Group>
@@ -92,8 +106,9 @@ export default function ProsesInvestasi() {
           </Box>
           <Text fz={25}>Rp.{total} </Text>
         </Group>
+
         <Center>
-          {total < 10000 ? (
+          {jumlah < 10 ? (
             <Button w={350} radius={50} bg={"gray"} disabled>
               Beli Saham
             </Button>
@@ -111,6 +126,8 @@ export default function ProsesInvestasi() {
           )}
         </Center>
       </Box>
+
+      {/* <pre>{JSON.stringify(investasi, null, 2)}</pre> */}
     </>
   );
 }

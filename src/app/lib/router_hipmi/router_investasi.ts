@@ -8,7 +8,7 @@ export const RouterInvestasi = {
   main_porto: "/dev/investasi/main/portofolio",
   main_investasi: "/dev/investasi/main/saham_saya",
   main_transaksi: "/dev/investasi/main/transaksi",
-  transfer: "/dev/investasi/transfer",
+  transfer: "/dev/investasi/transfer/",
   dialog_transaksi: "/dev/investasi/dialog_page/transaksi_saham",
   dialog_create: "/dev/investasi/dialog_page/create",
 
@@ -16,9 +16,10 @@ export const RouterInvestasi = {
   portofolio: "/dev/investasi/main/portofolio",
 
   // proses beli saham
+  proses_investasi: "/dev/investasi/proses_investasi/",
   status_transaksi: "/dev/investasi/status_transaksi/berhasil",
   status_transaksi_gagal: "/dev/investasi/status_transaksi/gagal",
-  metode_transfer: "/dev/investasi/metode_transfer",
+  metode_transfer: "/dev/investasi/metode_transfer/",
 
   // edit //
   edit: "/dev/investasi/edit/",

@@ -32,7 +32,7 @@ import { loadDataProfile } from "../fun/fun_get_profile";
 import { getFotoProfile } from "../api/get-foto-profile";
 import { gs_fotoProfile, gs_profile } from "../state/global_state";
 import { getProfile } from "..";
-import { MODEL_User_profile } from "@/app_modules/models/user_profile";
+import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
 import { funGetUserProfile } from "@/app_modules/fun/get_user_profile";
 
 export default function ProfileView({ user }: { user: MODEL_User_profile }) {

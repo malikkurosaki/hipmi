@@ -36,7 +36,7 @@ export async function getListAllPublish() {
       MasterPembagianDeviden: true,
       MasterPencarianInvestor: true,
       MasterPeriodeDeviden: true,
-      SahamTerbeli: true,
+     
     },
   });
 

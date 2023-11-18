@@ -28,7 +28,6 @@ export default async function getInvestasiByStatusId(
           MasterPembagianDeviden: true,
           MasterPencarianInvestor: true,
           MasterPeriodeDeviden: true,
-          SahamTerbeli: true,
         },
       },
     },

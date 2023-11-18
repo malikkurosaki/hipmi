@@ -29,7 +29,6 @@ export default async function Admin_funGetAllInvestasi() {
             MasterPembagianDeviden: true,
             MasterPencarianInvestor: true,
             MasterPeriodeDeviden: true,
-            SahamTerbeli: true,
           },
     })
     // console.log(res)

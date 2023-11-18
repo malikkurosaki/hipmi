@@ -122,7 +122,7 @@ export default function MainInvestasi({
           <Divider />
           <CardSection p={"md"}>
             <Flex gap={"xl"} align={"center"} justify={"center"}>
-              <Box>
+              {/* <Box>
                 {e.SahamTerbeli === null ? (
                   ""
                 ) : (
@@ -130,7 +130,7 @@ export default function MainInvestasi({
                     Saham Anda
                   </Badge>
                 )}
-              </Box>
+              </Box> */}
 
               {(() => {
                 if (

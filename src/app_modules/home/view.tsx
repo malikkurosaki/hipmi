@@ -44,7 +44,7 @@ import { gs_ListPortofolio } from "../katalog/portofolio/state/global_state";
 import { myConsole } from "@/app/fun/my_console";
 import { getFotoProfile } from "../katalog/profile/api/get-foto-profile";
 import { funGetUserProfile } from "../fun/get_user_profile";
-import { MODEL_User_profile } from "../models/user_profile";
+import { MODEL_User_profile } from "./models/user_profile";
 import AppNotif from "../notif";
 
 // export const dynamic = "force-dynamic"
