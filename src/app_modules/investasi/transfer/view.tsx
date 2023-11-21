@@ -32,7 +32,7 @@ import {
 } from "../model/model_investasi";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { useAtom } from "jotai";
-import { gs_investasiFooter } from "../g_state";
+import { gs_TransferValue, gs_investasiFooter } from "../g_state";
 
 export default function TransferInvestasi({
   dataTransaksi,
@@ -47,19 +47,12 @@ export default function TransferInvestasi({
     menit: "",
     detik: "",
   });
-
-  const PopupCD = () => (
-    <Text fz={"xs"} c={"white"}>
-      Gagal
-    </Text>
-  );
+  const [transferValue, setTransferValue] = useAtom(gs_TransferValue);
 
   // useShallowEffect(() => {
   //   const inter = apa_kabar("2023-11-18");
-
   //   return () => clearInterval(inter);
   // }, []);
-
   // function apa_kabar(date: string) {
   //   let d = moment.duration(moment(date).diff(new Date()));
   //   const inter = setInterval(() => {
@@ -67,7 +60,6 @@ export default function TransferInvestasi({
 
   //     console.log(d.days(), "=", d.hours(), ":", d.minutes(), ":", d.seconds());
   //   }, 1000);
-
   //   return inter;
   // }
 
@@ -84,7 +76,7 @@ export default function TransferInvestasi({
     let d = moment.duration(moment(selesai).diff(new Date()));
     const inter = setInterval(() => {
       d = moment.duration(+d - 1000, "milliseconds");
-      // console.log(d.hours(),":", d.minutes(),":", d.seconds())
+      // console.log(d.hours(), d.minutes(), d.seconds())
 
       setCountDown({
         ...countDown,
@@ -99,7 +91,8 @@ export default function TransferInvestasi({
 
   return (
     <>
-      {/* <pre>{JSON.stringify(moment(transaksi.createdAt).format("LTS"))}</pre> */}
+      {/* <pre>{JSON.stringify(transferValue, null, 2)}</pre>
+      <pre>{JSON.stringify(transaksi, null,2)}</pre> */}
       <Stack spacing={"lg"}>
         <Stack spacing={0} mb={"xs"}>
           <Text fz={12}>Mohon transfer untuk diteruskan ke :</Text>
@@ -113,13 +106,23 @@ export default function TransferInvestasi({
             </Grid.Col>
             <Grid.Col span={5}>
               <Text fz={"xs"} fw={"bold"}>
-                {moment.locale()}
+                {moment().add(1, "days").calendar()}
               </Text>
             </Grid.Col>
             <Grid.Col span={3} fz={"xs"}>
               <Paper bg={"red"} px={"md"}>
                 <Center>
-                  {countDown.jam}:{countDown.menit}:{countDown.detik}
+                  {countDown.jam === "0" &&
+                  countDown.menit === "0" &&
+                  countDown.detik === "0" ? (
+                    <Box>
+                      <Text>Waktu habis</Text>
+                    </Box>
+                  ) : (
+                    <Box>
+                      {countDown.jam}:{countDown.menit}:{countDown.detik}
+                    </Box>
+                  )}
                 </Center>
               </Paper>
             </Grid.Col>
@@ -155,6 +158,7 @@ export default function TransferInvestasi({
                           radius={50}
                           compact
                           bg={copied ? "teal" : "gray"}
+                          color="gray"
                           onClick={copy}
                         >
                           {copied ? "Tersalin" : "Salin"}
@@ -189,6 +193,7 @@ export default function TransferInvestasi({
                           radius={50}
                           compact
                           bg={copied ? "teal" : "gray"}
+                          color="gray"
                           onClick={copy}
                         >
                           {copied ? "Tersalin" : "Salin"}

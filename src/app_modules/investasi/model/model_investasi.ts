@@ -6,6 +6,8 @@ export interface MODEL_Investasi {
   targetDana: string;
   hargaLembar: string;
   totalLembar: string;
+  sisaLembar: string,
+  lembarTerbeli: string
   roi: string;
   active: true;
   createdAt: Date;
@@ -13,6 +15,7 @@ export interface MODEL_Investasi {
   authorId: string;
   imagesId: string;
   catatan: string
+  progress: string,
   MasterStatusInvestasi: MODEL_Status_investasi;
   BeritaInvestasi: Model_Berita_Investasi[];
   DokumenInvestasi: Model_Dokumen_Investasi[];

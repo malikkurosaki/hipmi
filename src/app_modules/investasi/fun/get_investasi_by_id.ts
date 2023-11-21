@@ -18,6 +18,7 @@ export default async function getInvestasiByStatusId(
           hargaLembar: true,
           targetDana: true,
           totalLembar: true,
+          sisaLembar: true,
           roi: true,
           active: true,
           imagesId: true,

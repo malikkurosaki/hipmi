@@ -24,6 +24,8 @@ export async function getListAllPublish() {
       hargaLembar: true,
       targetDana: true,
       totalLembar: true,
+      sisaLembar: true,
+      progress: true,
       roi: true,
       active: true,
       createdAt: true,

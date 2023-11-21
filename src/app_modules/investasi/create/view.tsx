@@ -57,6 +57,7 @@ export default function InvestasiCreate({
     pembagianDevidenId: "",
   });
 
+
   async function onSubmit() {
     const body = {
       authorId: id,

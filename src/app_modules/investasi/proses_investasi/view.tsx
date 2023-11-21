@@ -60,7 +60,7 @@ export default function ProsesInvestasi({
 
   return (
     <>
-      {/* <pre>{JSON.stringify(transferValue, null, 2)}</pre> */}
+      <pre>{JSON.stringify(transferValue, null, 2)}</pre>
       <Box px={"md"}>
         {/* Sisa Lembar Saham */}
         <Group position="apart" mb={"md"}>

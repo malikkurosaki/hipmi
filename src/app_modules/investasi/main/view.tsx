@@ -29,6 +29,7 @@ import { IconCheck, IconCircleCheck } from "@tabler/icons-react";
 import { MODEL_Investasi } from "../model/model_investasi";
 import _ from "lodash";
 import { useState } from "react";
+import { useShallowEffect } from "@mantine/hooks";
 
 export default function MainInvestasi({
   listData,
@@ -43,6 +44,7 @@ export default function MainInvestasi({
 }) {
   const router = useRouter();
   const [investasi, setInvestasi] = useState(listData);
+
 
   if (_.isEmpty(investasi))
     return (
@@ -80,8 +82,8 @@ export default function MainInvestasi({
             <Stack>
               <Title order={4}>{e.title}</Title>
               <Progress
-                label="0%"
-                value={0}
+                label={`${e.progress}%`}
+                value={Number(e.progress)}
                 color="teal"
                 size="xl"
                 radius="xl"

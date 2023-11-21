@@ -6,6 +6,7 @@ import yaml from "yaml";
 import fs from "fs";
 import { cookies } from "next/headers";
 import { unsealData } from "iron-session";
+import funProgressBar from "@/app_modules/investasi/fun/fun_progress_bar";
 const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -18,13 +19,19 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const loginUserId = usr.id;
   const dataInvestasi = await getOneInvestasiById(params.id);
-  const dataUser = await funGetUserProfile(dataInvestasi?.authorId as any);
+  const dataUser = await funGetUserProfile(dataInvestasi?.authorId as any)
+
+  let total = Number(dataInvestasi?.totalLembar)
+  let beli = Number(dataInvestasi?.lembarTerbeli)
+  const progress = await funProgressBar(total, beli)
+
   return (
     <>
       <DetailInvestasi
         dataInvestasi={dataInvestasi as any}
         dataUser={dataUser as any}
         loginUserId={loginUserId}
+        progress={progress}
       />
     </>
   );

@@ -5,7 +5,7 @@ import { randomOTP } from "@/app/fun/rondom_otp";
 import { ApiHipmi } from "@/app/lib/api";
 import { Warna } from "@/app/lib/warna";
 import { Button, Center, Flex, Stack, TextInput, Title } from "@mantine/core";
-import { getHotkeyHandler, useHotkeys } from "@mantine/hooks";
+import { getHotkeyHandler, useFocusTrap, useHotkeys } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-simple-toasts";
@@ -19,6 +19,7 @@ export default function Login() {
   const [nomor, setNomor] = useState("");
   const [inputNumber, setInputNumber] = useAtom(gs_nomor);
   const [code, setCode] = useAtom(gs_otp);
+  const focusTrapRef = useFocusTrap();
 
   const onLogin = async () => {
     const body = {
@@ -67,6 +68,7 @@ export default function Login() {
         <Title>Login</Title>
 
         <TextInput
+        ref={focusTrapRef}
           label="Phone Number"
           w={250}
           type="number"

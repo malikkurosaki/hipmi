@@ -11,17 +11,17 @@ datasource db {
 }
 
 model User {
-  id                String              @id @default(cuid())
-  username          String              @unique
-  nomor             String              @unique
-  active            Boolean             @default(true)
-  createdAt         DateTime?           @default(now())
-  updatedAt         DateTime?           @updatedAt
-  MasterUserRole    MasterUserRole      @relation(fields: [masterUserRoleId], references: [id])
-  masterUserRoleId  String              @default("1")
-  UserSession       UserSession?
-  Profile           Profile?
-  Investasi         Investasi[]
+  id                 String               @id @default(cuid())
+  username           String               @unique
+  nomor              String               @unique
+  active             Boolean              @default(true)
+  createdAt          DateTime?            @default(now())
+  updatedAt          DateTime?            @updatedAt
+  MasterUserRole     MasterUserRole       @relation(fields: [masterUserRoleId], references: [id])
+  masterUserRoleId   String               @default("1")
+  UserSession        UserSession?
+  Profile            Profile?
+  Investasi          Investasi[]
   // Investor          Investor[]
   TransaksiInvestasi TransaksiInvestasi[]
 }
@@ -100,18 +100,21 @@ model MasterBidangBisnis {
 // -------------------- INVESTASI --------------------- //
 // Table investasi / saham
 model Investasi {
-  id          String   @id @default(cuid())
-  title       String
-  targetDana  String
-  hargaLembar String
-  totalLembar String
-  roi         String
-  active      Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
-  author      User?    @relation(fields: [authorId], references: [id])
-  authorId    String?
-  catatan     String?
+  id            String   @id @default(cuid())
+  title         String
+  targetDana    String
+  hargaLembar   String
+  totalLembar   String
+  roi           String
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
+  author        User?    @relation(fields: [authorId], references: [id])
+  authorId      String?
+  catatan       String?
+  sisaLembar    String
+  lembarTerbeli String?  @default("0")
+  progress      String?  @default("0")
 
   MasterPeriodeDeviden      MasterPeriodeDeviden?    @relation(fields: [masterPeriodeDevidenId], references: [id])
   masterPeriodeDevidenId    String?
@@ -221,13 +224,25 @@ model TransaksiInvestasi {
   Author      User?      @relation(fields: [authorId], references: [id])
   authorId    String?
 
-  namaBank      String
-  nomorRekening String
-  lembarTerbeli String
-  totalTransfer String
-  active        Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  namaBank                         String
+  nomorRekening                    String
+  lembarTerbeli                    String
+  totalTransfer                    String
+  active                           Boolean                         @default(true)
+  createdAt                        DateTime                        @default(now())
+  updatedAt                        DateTime                        @updatedAt
+  MasterStatusTransaksiInvestasi   MasterStatusTransaksiInvestasi? @relation(fields: [masterStatusTransaksiInvestasiId], references: [id])
+  masterStatusTransaksiInvestasiId String?                         @default("1")
+}
+
+model MasterStatusTransaksiInvestasi {
+  id                 String               @id @default(cuid())
+  name               String
+  color              String?
+  active             Boolean              @default(true)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  TransaksiInvestasi TransaksiInvestasi[]
 }
 
 // model Investor {

@@ -14,8 +14,6 @@ import CountDownTransaksiInvestasi from "./dialog_page/transaksi_saham/view";
 import LayoutCountDownTransaksiInvestasi from "./dialog_page/transaksi_saham/layout";
 import PortofolioInvestasi from "./portofolio/view";
 import LayoutPortofolioInvestasi from "./portofolio/layout";
-import PortofolioDetailInvestasi from "./detail_porto/view";
-import LayoutPortofolioDetailInvestasi from "./detail_porto/layout";
 import EditInvestasi from "./edit/view";
 import LayoutEditInvestasi from "./edit/layout";
 import EditIntroInvestasi from "./edit_intro/view";
@@ -83,8 +81,6 @@ export {
   LayoutCountDownTransaksiInvestasi as LayoutKonfirmasiBuktiInvestasi,
   PortofolioInvestasi,
   LayoutPortofolioInvestasi,
-  PortofolioDetailInvestasi,
-  LayoutPortofolioDetailInvestasi,
   EditInvestasi,
   LayoutEditInvestasi,
   EditIntroInvestasi,

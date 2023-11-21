@@ -7,6 +7,7 @@ import periodeDeviden from "./../../../bin/seeder/investasi/periode_deviden.json
 import pembagianDeviden from "./../../../bin/seeder/investasi/pembagian_deviden.json";
 import statusInvestasi from "./../../../bin/seeder/investasi/status_investasi.json";
 import namaBank from "./../../../bin/seeder/investasi/nama_bank.json";
+import statusTransaksiInvestasi from "./../../../bin/seeder/investasi/status_transaksi_investasi.json";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
@@ -123,6 +124,24 @@ export async function GET(req: Request) {
           id: i.id.toString(),
           name: i.name,
           norek: i.norek.toString(),
+        },
+      });
+    }
+
+    for (let i of statusTransaksiInvestasi) {
+      await prisma.masterStatusTransaksiInvestasi.upsert({
+        where: {
+          id: i.id,
+        },
+        create: {
+          id: i.id,
+          name: i.name,
+          color: i.color,
+        },
+        update: {
+          id: i.id,
+          name: i.name,
+          color: i.color,
         },
       });
     }

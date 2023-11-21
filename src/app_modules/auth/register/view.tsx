@@ -11,11 +11,13 @@ import toast from "react-simple-toasts";
 import { ApiHipmi } from "@/app/lib/api";
 import { useRouter } from "next/navigation";
 import _ from "lodash";
+import { useFocusTrap } from "@mantine/hooks";
 
 export default function Register() {
   const route = useRouter();
   const [nomor, setNomor] = useAtom(gs_nomor);
   const [value, setValue] = useState("");
+  const focusTrapRef = useFocusTrap();
 
   const onRegister = async () => {
     myConsole(value);
@@ -61,6 +63,7 @@ export default function Register() {
         <Flex direction={"column"} gap={"xl"} align={"center"}>
           <Flex direction={"column"}>
             <TextInput
+            ref={focusTrapRef}
               w={250}
               label="Username"
               placeholder="Username"

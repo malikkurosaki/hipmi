@@ -10,6 +10,8 @@ export default async function Page() {
   const periodeDeviden = await getPeriodeDeviden();
   const pembagianDeviden = await getPembagianDeviden();
 
+  
+
   // console.log(data)
   return (
     <>

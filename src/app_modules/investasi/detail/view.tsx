@@ -39,10 +39,12 @@ export default function DetailInvestasi({
   dataInvestasi,
   dataUser,
   loginUserId,
+  progress
 }: {
   dataInvestasi: MODEL_Investasi;
   dataUser: MODEL_User_profile;
   loginUserId: string;
+  progress: number
 }) {
   const router = useRouter();
   const [investasi, setInvestasi] = useState(dataInvestasi);
@@ -129,8 +131,8 @@ export default function DetailInvestasi({
           {investasi.title}
         </Title>
         <Progress
-          label="0%"
-          value={0}
+          label={`${progress} %`}
+          value={progress}
           color="teal"
           size="xl"
           radius="xl"
@@ -154,6 +156,10 @@ export default function DetailInvestasi({
               <Text>Jadwal Pembagian</Text>
               <Text>{investasi.MasterPembagianDeviden.name} bulan </Text>
             </Box>
+            <Box>
+              <Text>Pembagian Deviden</Text>
+              <Text>{investasi.MasterPeriodeDeviden.name}</Text>
+            </Box>
           </Stack>
         </Grid.Col>
         <Grid.Col span={6}>
@@ -167,8 +173,8 @@ export default function DetailInvestasi({
               <Text>{investasi.totalLembar} lembar</Text>
             </Box>
             <Box>
-              <Text>Pembagian Deviden</Text>
-              <Text>{investasi.MasterPeriodeDeviden.name}</Text>
+              <Text>Sisa Lembar</Text>
+              <Text>{investasi.sisaLembar} lembar</Text>
             </Box>
           </Stack>
         </Grid.Col>

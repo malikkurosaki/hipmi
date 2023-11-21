@@ -19,6 +19,15 @@ import _ from "lodash";
 export default function Draft({ data }: { data: MODEL_Investasi[] }) {
   const router = useRouter();
 
+  if (_.isEmpty(data))
+  return (
+    <>
+      <Center h={"50vh"}>Tidak ada Draft</Center>
+    </>
+  );
+
+
+
   return (
     <>
       {/* <pre> {JSON.stringify(data,null, 2)}</pre> */}
