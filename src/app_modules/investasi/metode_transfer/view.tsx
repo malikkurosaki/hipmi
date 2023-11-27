@@ -77,7 +77,7 @@ export default function MetodeTransferInvestasi({
 
   return (
     <>
-      <pre>{JSON.stringify(transferValue, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(transferValue, null, 2)}</pre> */}
       {/* Box judul */}
       <Paper bg={"gray"} p={"xs"} shadow="lg" mb={"md"}>
         <Title order={5}>{investasi.title}</Title>

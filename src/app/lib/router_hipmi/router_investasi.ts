@@ -18,7 +18,7 @@ export const RouterInvestasi = {
   // proses beli saham
   proses_investasi: "/dev/investasi/proses_investasi/",
   status_transaksi: "/dev/investasi/status_transaksi/berhasil",
-  status_transaksi_gagal: "/dev/investasi/status_transaksi/gagal",
+  status_transaksi_gagal: "/dev/investasi/status_transaksi/gagal/",
   metode_transfer: "/dev/investasi/metode_transfer/",
 
   // edit //

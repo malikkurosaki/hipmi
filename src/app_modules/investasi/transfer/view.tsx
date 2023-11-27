@@ -19,10 +19,10 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useShallowEffect } from "@mantine/hooks";
+import { useInterval, useShallowEffect } from "@mantine/hooks";
 import { IconAlertTriangle } from "@tabler/icons-react";
 import moment from "moment";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 import { useState } from "react";
 import Countdown from "react-countdown";
@@ -33,6 +33,7 @@ import {
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { useAtom } from "jotai";
 import { gs_TransferValue, gs_investasiFooter } from "../g_state";
+import funGantiStatusTransaksi_Investasi from "../fun/fun_ganti_status_transaksi";
 
 export default function TransferInvestasi({
   dataTransaksi,
@@ -41,13 +42,11 @@ export default function TransferInvestasi({
 }) {
   const router = useRouter();
   const [transaksi, setTransaksi] = useState(dataTransaksi);
-  const [hotMenu, setHotMenu] = useAtom(gs_investasiFooter);
-  const [countDown, setCountDown] = useState({
-    jam: "",
-    menit: "",
-    detik: "",
+  const [countDown, setCountDown] = useState<number | any>({
+    jam: null,
+    menit: null,
+    detik: null,
   });
-  const [transferValue, setTransferValue] = useAtom(gs_TransferValue);
 
   // useShallowEffect(() => {
   //   const inter = apa_kabar("2023-11-18");
@@ -63,36 +62,45 @@ export default function TransferInvestasi({
   //   return inter;
   // }
 
-  useShallowEffect(() => {
-    const mulai = moment(transaksi.createdAt).format();
-    const selesai = moment(transaksi.createdAt).add(1, "days").format();
-    const inter = funCountDown(mulai as any, selesai as any);
+  // useShallowEffect(() => {
+  //   const mulai = moment(transaksi.createdAt).format();
+  //   const selesai = moment(transaksi.createdAt).add(1, "days").format();
+  //   const timer = funCountDown(mulai as any, selesai as any);
 
-    return () => clearInterval(inter);
-  }, []);
+  //   return () => clearInterval(timer);
+  // }, []);
 
-  function funCountDown(mulai: Date, selesai: Date) {
-    // console.log(selesai)
-    let d = moment.duration(moment(selesai).diff(new Date()));
-    const inter = setInterval(() => {
-      d = moment.duration(+d - 1000, "milliseconds");
-      // console.log(d.hours(), d.minutes(), d.seconds())
-
-      setCountDown({
-        ...countDown,
-        jam: "" + d.hours(),
-        menit: "" + d.minutes(),
-        detik: "" + d.seconds(),
+  // functionbaru ==========================//
+  const selesai = moment(transaksi.createdAt).add(1, "days").format();
+  let durasi = moment.duration(moment(selesai).diff(new Date()));
+  const interval = useInterval(() => {
+    durasi = moment.duration(+durasi - 1000, "milliseconds");
+    if (durasi.hours() <= 0 && durasi.minutes() <= 0 && durasi.seconds() <= 0) {
+      funGantiStatusTransaksi_Investasi(transaksi.id, "4").then((res) => {
+        if (res.status === 200) {
+          router.push(
+            RouterInvestasi.status_transaksi_gagal + `${transaksi.id}`
+          );
+          interval.stop();
+        }
       });
-    }, 1000);
+    }
+    setCountDown({
+      ...countDown,
+      jam: durasi.hours(),
+      menit: durasi.minutes(),
+      detik: durasi.seconds(),
+    });
+  }, 1000);
 
-    return inter;
-  }
+  useShallowEffect(() => {
+    interval.start();
+  }, []);
 
   return (
     <>
-      {/* <pre>{JSON.stringify(transferValue, null, 2)}</pre>
-      <pre>{JSON.stringify(transaksi, null,2)}</pre> */}
+      {/* <pre>{JSON.stringify(transaksi, null,2)}</pre> */}
+      {/* {countDown.jam} */}
       <Stack spacing={"lg"}>
         <Stack spacing={0} mb={"xs"}>
           <Text fz={12}>Mohon transfer untuk diteruskan ke :</Text>
@@ -106,18 +114,18 @@ export default function TransferInvestasi({
             </Grid.Col>
             <Grid.Col span={5}>
               <Text fz={"xs"} fw={"bold"}>
-                {moment().add(1, "days").calendar()}
+                {moment(transaksi.createdAt).format("lll")}
               </Text>
             </Grid.Col>
             <Grid.Col span={3} fz={"xs"}>
-              <Paper bg={"red"} px={"md"}>
+              <Paper bg={"red"} px={"xs"}>
                 <Center>
-                  {countDown.jam === "0" &&
-                  countDown.menit === "0" &&
-                  countDown.detik === "0" ? (
-                    <Box>
-                      <Text>Waktu habis</Text>
-                    </Box>
+                  {countDown.jam <= 0 &&
+                  countDown.menit <= 0 &&
+                  countDown.detik <= 0 ? (
+                    <Flex align={"center"} justify={"center"}>
+                      <Text fz={9}>Waktu Habis</Text>
+                    </Flex>
                   ) : (
                     <Box>
                       {countDown.jam}:{countDown.menit}:{countDown.detik}
@@ -220,7 +228,7 @@ export default function TransferInvestasi({
           bg={Warna.biru}
           onClick={() => {
             router.push(RouterInvestasi.dialog_transaksi);
-            setHotMenu(1);
+            // setHotMenu(1);
             // router.push(RouterInvestasi.status_transaksi);
           }}
         >
