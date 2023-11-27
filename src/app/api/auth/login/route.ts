@@ -9,7 +9,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   if (req.method === "POST") {
     const body = await req.json();
-    console.log(body);
+    // console.log(body);
 
     if (body.nomor === "1234567890") {
       return NextResponse.json({

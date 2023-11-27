@@ -16,6 +16,7 @@ export default function DetailPropektus({
 }) {
   const [prospek, setProspek] = useState(dataInvestasi);
 
+
   return (
     <>
       {prospek.ProspektusInvestasi !== null ? (
@@ -24,11 +25,11 @@ export default function DetailPropektus({
           target="_blank"
           style={{ textDecorationLine: "none" }}
         >
-          <Paper w={"100%"} h={50} bg={"gray"} mb={"md"}>
+          <Paper w={"100%"}  bg={"gray"} mb={"md"}>
             <Grid
               align="center"
               justify="center"
-              h={50}
+             
               px={"sm"}
               onClick={() => ""}
             >

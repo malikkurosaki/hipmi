@@ -34,10 +34,10 @@ import { getFotoProfile } from "../profile/api/get-foto-profile";
 import { ApiHipmi } from "@/app/lib/api";
 import { ListPortofolioView } from "../portofolio";
 import { User } from "@prisma/client";
-import { USER_PROFILE } from "@/app_modules/models/user_profile";
+import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
 import { LIST_PORTOFOLIO } from "@/app_modules/models/portofolio";
 
-export default function KatalogView({ user, listPorto }: { user: USER_PROFILE, listPorto: LIST_PORTOFOLIO }) {
+export default function KatalogView({ user, listPorto }: { user: MODEL_User_profile, listPorto: LIST_PORTOFOLIO }) {
   return (
     <>
       <ProfileView user={user} />

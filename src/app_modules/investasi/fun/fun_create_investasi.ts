@@ -12,7 +12,12 @@ export async function funCreateInvestasi(
   formData: FormData,
   data: MODEL_Investasi | any
 ) {
-  console.log(data)
+
+  // return {
+  //   status: 201,
+  //   message: "Berhasil Disimpan",
+  // };
+  
   const file: any = formData.get("file");
   const fName = file.name;
   const fExt = _.lowerCase(file.name.split(".").pop());
@@ -37,6 +42,8 @@ export async function funCreateInvestasi(
   const upFolder = Buffer.from(await file.arrayBuffer());
   fs.writeFileSync(`./public/investasi/${upload.url}`, upFolder);
 
+  // console.log(data)
+
   const createInvest = await prisma.investasi.create({
     data: {
       authorId: data.authorId,
@@ -44,6 +51,7 @@ export async function funCreateInvestasi(
       targetDana: data.targetDana.toString(),
       hargaLembar: data.hargaLembar.toString(),
       totalLembar: data.totalLembar.toString(),
+      sisaLembar: data.totalLembar.toString() ,
       roi: data.roi.toString(),
       masterPembagianDevidenId: data.masterPeriodeDevidenId,
       masterPeriodeDevidenId: data.masterPembagianDevidenId,
@@ -52,6 +60,7 @@ export async function funCreateInvestasi(
       masterStatusInvestasiId: "1",
     },
   });
+
 
   if (!createInvest)
     return {

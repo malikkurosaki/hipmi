@@ -1,9 +1,9 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { USER_PROFILE } from "@/app_modules/models/user_profile";
+import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
 
-export default async function funEditProfile(data: USER_PROFILE) {
+export default async function funEditProfile(data: MODEL_User_profile) {
   const res = await prisma.profile.update({
     where: {
       id: data.Profile?.id,

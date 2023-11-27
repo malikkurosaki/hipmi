@@ -9,11 +9,14 @@ import {
   Button,
   Card,
   CardSection,
+  Center,
   Divider,
+  Flex,
   Grid,
   Group,
   Image,
   Paper,
+  Progress,
   Slider,
   Stack,
   Text,
@@ -24,6 +27,9 @@ import dataDummy from "../dummy/data_dummy.json";
 import moment from "moment";
 import { IconCheck, IconCircleCheck } from "@tabler/icons-react";
 import { MODEL_Investasi } from "../model/model_investasi";
+import _ from "lodash";
+import { useState } from "react";
+import { useShallowEffect } from "@mantine/hooks";
 
 export default function MainInvestasi({
   listData,
@@ -31,17 +37,30 @@ export default function MainInvestasi({
   periodeDeviden,
   pembagianDeviden,
 }: {
-  listData: MODEL_Investasi[]
+  listData: MODEL_Investasi[];
   pencarianInvestor: MODEL_DEFAULT_MASTER[];
   periodeDeviden: MODEL_DEFAULT_MASTER[];
   pembagianDeviden: MODEL_DEFAULT_MASTER[];
 }) {
   const router = useRouter();
+  const [investasi, setInvestasi] = useState(listData);
+
+
+  if (_.isEmpty(investasi))
+    return (
+      <>
+        {" "}
+        <Center h={"80vh"}>
+          <Text>BURSA KOSONG</Text>
+        </Center>
+      </>
+    );
 
   return (
     <>
       {/* <pre>{JSON.stringify(listData, null, 2)}</pre> */}
-      {dataDummy.map((e) => (
+
+      {investasi.map((e) => (
         <Card
           key={e.id}
           withBorder
@@ -58,17 +77,19 @@ export default function MainInvestasi({
             </AspectRatio>
           </CardSection>
 
+          {/* Progress dan titlr */}
           <CardSection p={"lg"}>
-            <Box mb={"md"}>
+            <Stack>
               <Title order={4}>{e.title}</Title>
-              <Slider
-                size={10}
-                disabled
-                labelAlwaysOn
-                value={e.persentase}
-                marks={[{ value: e.persentase, label: e.persentase + `%` }]}
+              <Progress
+                label={`${e.progress}%`}
+                value={Number(e.progress)}
+                color="teal"
+                size="xl"
+                radius="xl"
+                animate
               />
-            </Box>
+            </Stack>
           </CardSection>
           <CardSection p={"md"}>
             <Box>
@@ -102,19 +123,20 @@ export default function MainInvestasi({
           </CardSection>
           <Divider />
           <CardSection p={"md"}>
-            <Group position="apart" px={"sm"}>
-              <Box>
-                {e.saham_beli === 0 ? (
+            <Flex gap={"xl"} align={"center"} justify={"center"}>
+              {/* <Box>
+                {e.SahamTerbeli === null ? (
                   ""
                 ) : (
                   <Badge variant="dot" color="teal">
                     Saham Anda
                   </Badge>
                 )}
-              </Box>
+              </Box> */}
+
               {(() => {
                 if (
-                  e.masterPencarianInvestorId -
+                  Number(e.MasterPencarianInvestor.name) -
                     moment(new Date()).diff(new Date(e.createdAt), "days") <=
                   0
                 ) {
@@ -132,9 +154,9 @@ export default function MainInvestasi({
                       <Group position="right" spacing={"xs"}>
                         <Text>Sisa waktu:</Text>
                         <Text>
-                          {e.masterPencarianInvestorId -
+                          {Number(e.MasterPencarianInvestor.name) -
                             moment(new Date()).diff(
-                              new Date(e.createdAt),
+                              new Date(e.updatedAt),
                               "days"
                             )}
                         </Text>
@@ -144,7 +166,7 @@ export default function MainInvestasi({
                   );
                 }
               })()}
-            </Group>
+            </Flex>
           </CardSection>
         </Card>
       ))}

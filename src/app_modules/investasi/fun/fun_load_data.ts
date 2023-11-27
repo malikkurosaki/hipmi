@@ -26,7 +26,6 @@ export default async function funLoadDataInvestasi(id: string) {
           MasterPembagianDeviden: true,
           MasterPencarianInvestor: true,
           MasterPeriodeDeviden: true,
-          SahamTerbeli: true,
         },
       });
     

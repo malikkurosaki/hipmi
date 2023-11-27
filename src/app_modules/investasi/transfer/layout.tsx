@@ -44,24 +44,11 @@ export default function LayoutTransferInvestasi({
             </Group>
           </Header>
         }
-        footer={
-          <Footer height={70} sx={{ borderStyle: "none" }}>
-            <Center>
-              <Button
-                radius={50}
-                w={300}
-                bg={Warna.biru}
-                onClick={() => {
-                  router.push(RouterInvestasi.dialog_transaksi);
-                  setHotMenu(1);
-                  // router.push(RouterInvestasi.status_transaksi);
-                }}
-              >
-                Sudah Transfer
-              </Button>
-            </Center>
-          </Footer>
-        }
+        // footer={
+        //   <Footer height={70} sx={{ borderStyle: "none" }}>
+            
+        //   </Footer>
+        // }
       >
         {children}
       </AppShell>

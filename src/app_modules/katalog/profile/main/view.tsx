@@ -32,10 +32,10 @@ import { loadDataProfile } from "../fun/fun_get_profile";
 import { getFotoProfile } from "../api/get-foto-profile";
 import { gs_fotoProfile, gs_profile } from "../state/global_state";
 import { getProfile } from "..";
-import { USER_PROFILE } from "@/app_modules/models/user_profile";
+import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
 import { funGetUserProfile } from "@/app_modules/fun/get_user_profile";
 
-export default function ProfileView({ user }: { user: USER_PROFILE }) {
+export default function ProfileView({ user }: { user: MODEL_User_profile }) {
   const router = useRouter();
   const [stateUser, setStateUser] = useState(user);
   useShallowEffect(() => {

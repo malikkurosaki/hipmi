@@ -21,6 +21,7 @@ export default async function Admin_funGetAllInvestasi() {
             roi: true,
             active: true,
             imagesId: true,
+            catatan: true,
             MasterStatusInvestasi: true,
             BeritaInvestasi: true,
             DokumenInvestasi: true,
@@ -28,7 +29,6 @@ export default async function Admin_funGetAllInvestasi() {
             MasterPembagianDeviden: true,
             MasterPencarianInvestor: true,
             MasterPeriodeDeviden: true,
-            SahamTerbeli: true,
           },
     })
     // console.log(res)

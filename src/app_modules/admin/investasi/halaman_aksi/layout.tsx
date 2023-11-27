@@ -11,7 +11,8 @@ export default function Admin_LayoutHalamanAksi({
 }) {
   return (
     <>
-      <AppShell header={<HeaderTamplate title="Pilih Aksi" />}>
+      {/* {children} */}
+      <AppShell padding={"md"} header={<HeaderTamplate title="Pilih Aksi" />}>
         {children}
       </AppShell>
     </>

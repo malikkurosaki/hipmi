@@ -14,8 +14,6 @@ import CountDownTransaksiInvestasi from "./dialog_page/transaksi_saham/view";
 import LayoutCountDownTransaksiInvestasi from "./dialog_page/transaksi_saham/layout";
 import PortofolioInvestasi from "./portofolio/view";
 import LayoutPortofolioInvestasi from "./portofolio/layout";
-import PortofolioDetailInvestasi from "./detail_porto/view";
-import LayoutPortofolioDetailInvestasi from "./detail_porto/layout";
 import EditInvestasi from "./edit/view";
 import LayoutEditInvestasi from "./edit/layout";
 import EditIntroInvestasi from "./edit_intro/view";
@@ -57,7 +55,7 @@ import DetailPublishInvestasi from "./detail_portofolio/publish/page";
 import LayoutDetailPublishInvestasi from "./detail_portofolio/publish/layout";
 import DetailRejectInvestasi from "./detail_portofolio/reject/page";
 import LayoutDetailRejectInvestasi from "./detail_portofolio/reject/layout";
-import TransaksiInvestasi from "./transaksi/page";
+import TransaksiInvestasi from "./transaksi/view";
 import LayoutTransaksiInvestasi from "./transaksi/layout";
 import StatusTransaksiInvestasi_Gagal from "./status_transaksi/gagal/view";
 import LayoutStatusTransaksiInvestasi_Gagal from "./status_transaksi/gagal/layout";
@@ -83,8 +81,6 @@ export {
   LayoutCountDownTransaksiInvestasi as LayoutKonfirmasiBuktiInvestasi,
   PortofolioInvestasi,
   LayoutPortofolioInvestasi,
-  PortofolioDetailInvestasi,
-  LayoutPortofolioDetailInvestasi,
   EditInvestasi,
   LayoutEditInvestasi,
   EditIntroInvestasi,

@@ -2,6 +2,7 @@
 
 import { useAtom } from "jotai";
 import {
+  ActionIcon,
   Button,
   Center,
   Flex,
@@ -14,11 +15,12 @@ import { gs_nomor, gs_otp } from "../state/state";
 import { Warna } from "@/app/lib/warna";
 import { useState } from "react";
 import { myConsole } from "@/app/fun/my_console";
-import { IconCircleLetterH } from "@tabler/icons-react";
+import { IconChevronLeft, IconCircleLetterH } from "@tabler/icons-react";
 import toast from "react-simple-toasts";
 import { ApiHipmi } from "@/app/lib/api";
 import { useRouter } from "next/navigation";
 import { funGetUserProfile } from "@/app_modules/fun/get_user_profile";
+import { useFocusTrap } from "@mantine/hooks";
 
 export default function Validasi() {
   const router = useRouter();
@@ -26,6 +28,7 @@ export default function Validasi() {
   const [code, setCode] = useAtom(gs_otp);
 
   const [inputCode, setInputOtp] = useState("");
+  const focusTrapRef = useFocusTrap();
 
   const onValid = async () => {
     // MyConsole(inputCode)
@@ -62,13 +65,14 @@ export default function Validasi() {
     <>
       {/* {JSON.stringify(nomor)}
       {JSON.stringify(code)} */}
+     
 
       <Flex
         align={"center"}
         justify={"center"}
         direction={"column"}
         gap={50}
-        h={"100vh"}
+        h={"80vh"}
       >
         <Title order={4}>Validasi Kode OTP</Title>
         <IconCircleLetterH size={150} />
@@ -83,6 +87,7 @@ export default function Validasi() {
             <Text>to {nomor}</Text>
           </Flex>
           <PinInput
+          ref={focusTrapRef}
             spacing={"md"}
             mt={"md"}
             onChange={(val) => {

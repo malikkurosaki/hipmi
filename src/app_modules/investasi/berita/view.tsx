@@ -34,6 +34,7 @@ export default function BeritaInvestasi({
         berita.BeritaInvestasi.map((e) => (
           <Paper
             key={e.id}
+            mb={"md"}
             w={"100%"}
             bg={"gray"}
             p={"sm"}
