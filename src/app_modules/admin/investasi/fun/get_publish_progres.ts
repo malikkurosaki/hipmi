@@ -3,20 +3,31 @@
 import prisma from "@/app/lib/prisma";
 import _ from "lodash";
 
-export default async function Admin_getTargetTerbesarInvestasi() {
+export default async function Admin_getPublishProgresInvestasi() {
   const data = await prisma.investasi.findMany({
     orderBy: {
-      targetDana: "desc",
+      updatedAt: "desc"
     },
+    where: {
+      MasterStatusInvestasi: {
+        name: "Publish",
+      },
+    },
+
     select: {
+      id: true,
+
       author: {
         select: {
           username: true,
         },
       },
+      updatedAt: true,
       targetDana: true,
+      progress: true,
     },
   });
 
-//   console.log(data)
+  //   console.log(data)
+  return data;
 }

@@ -18,12 +18,25 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { IconEdit } from "@tabler/icons-react";
+import {
+  IconArrowBadgeRight,
+  IconArrowBigRightLine,
+  IconArrowsMaximize,
+  IconCaretRight,
+  IconChevronsDownRight,
+  IconChevronsRight,
+  IconEdit,
+  IconZoomCheck,
+} from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import TablePublish from "./table_publish";
-import TableReview from "./table_review";
-import TableReject from "./table_reject";
+import Admin_TablePublishInvestasi from "./table_publish";
+import Admin_TableReviewInvestasi from "./table_review";
+import Admin_TableRejectInvestasi from "./table_reject";
+import moment from "moment";
+import _ from "lodash";
+import TableTotalInvestasi from "./table_total_investasi";
+import TablePublikasiProgresInvestasi from "./table_publikasi_progres";
 
 export default function Admin_Investasi({
   listInvestasi,
@@ -32,6 +45,7 @@ export default function Admin_Investasi({
   countPublish,
   countReject,
   totalInvestasiByUser,
+  publishProgres,
 }: {
   listInvestasi: MODEL_Investasi[];
   countDraft: number | any;
@@ -39,6 +53,7 @@ export default function Admin_Investasi({
   countPublish: number | any;
   countReject: number | any;
   totalInvestasiByUser: any[];
+  publishProgres: any[];
 }) {
   const [investasi, setInvestasi] = useState(listInvestasi);
   const router = useRouter();
@@ -48,84 +63,81 @@ export default function Admin_Investasi({
       id: 1,
       name: "Draft",
       jumlah: countDraft,
-      color: "yellow"
+      link: "",
+      color: "yellow",
     },
     {
       id: 2,
       name: "Review",
       jumlah: countReview,
-      color: "orange"
-      
+      link: RouterAdminInvestasi.table_status_review,
+      color: "orange",
     },
     {
       id: 3,
       name: "Publish",
       jumlah: countPublish,
-      color: "green"
-
+      link: RouterAdminInvestasi.table_status_publish,
+      color: "green",
     },
     {
       id: 4,
       name: "Reject",
       jumlah: countReject,
-      color: "red"
-
+      link: RouterAdminInvestasi.table_status_reject,
+      color: "red",
     },
   ];
 
   return (
     <>
-      <Title>Investasi</Title>
-      <Divider mb={"md"} />
-      <Grid mb={"md"}>
-        {listBox.map((e) => (
-          <Grid.Col sm={12} md={6} lg={3} key={e.id}>
-            <Paper 
-            h={100} 
-            p={"xs"} 
-            bg={"gray"}
-            // bg={e.color}
-            >
-              <Center>
-                <Stack spacing={0}>
-                  <Text>{e.name}</Text>
-                  <Center>
-                    <Text fw={"bold"} fz={40}>
-                      {e.jumlah}
-                    </Text>
-                  </Center>
+      <Stack spacing={"sm"}>
+        <Title>Investasi</Title>
+        <Divider mb={"md"} />
+        {/* Status box */}
+        <Grid mb={"md"}>
+          {listBox.map((e) => (
+            <Grid.Col sm={12} md={6} lg={3} key={e.id}>
+              <Paper bg={`${e.color}.1`} p={"xs"} 
+              // sx={{borderStyle: "solid", borderColor: e.color}}
+              >
+                <Stack align="center" justify="center" spacing={0} mb={-35}>
+                  <Text tt={"uppercase"}>{e.name}</Text>
+                  <Text fw={"bold"} fz={50}>
+                    {e.jumlah}
+                  </Text>
                 </Stack>
-              </Center>
-            </Paper>
-          </Grid.Col>
-        ))}
-      </Grid>
+                <Group position="right">
+                  {e.link === "" ? (
+                    <ActionIcon variant="transparent">
+                    {/* <IconChevronsRight color="black" /> */}
+                  </ActionIcon>
+                  ) : (
+                    <ActionIcon variant="transparent" onClick={() => router.push(e.link)}>
+                      <IconChevronsRight color="black" />
+                    </ActionIcon>
+                  )}
+                </Group>
+              </Paper>
+            </Grid.Col>
+          ))}
+        </Grid>
 
-      <Paper w={300}  radius={"md"} p={"sm"} sx={{borderStyle: "solid", borderColor: "teal"}} >
-       <Stack spacing={"xl"}>
-       <Title order={4}>Total Investasi Per User</Title>
-        <Table >
-          <thead>
-            <tr>
-              <th><Center>Username</Center></th>
-              <th><Center>Total</Center></th>
-            </tr>
-          </thead>
-          <tbody>
-            {totalInvestasiByUser.map((e) => (
-              <tr key={e.id}>
-                <td><Group><Avatar variant="light" radius={"xl"}/> {e.username}</Group></td>
-                <td><Center>{e._count.Investasi}</Center></td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-       </Stack>
-      </Paper>
+        {/* Table Total & Progres */}
+        <Grid>
+          <Grid.Col sm={12} md={4} lg={4}>
+            <TableTotalInvestasi totalInvestasiByUser={totalInvestasiByUser} />
+          </Grid.Col>
+          <Grid.Col sm={12} md={8} lg={8}>
+            <TablePublikasiProgresInvestasi publishProgres={publishProgres} />
+          </Grid.Col>
+        </Grid>
+      </Stack>
+
       {/* <TablePublish dataInvestsi={investasi as any} />
       <TableReview dataInvestsi={investasi as any} />
       <TableReject dataInvestsi={investasi as any} /> */}
-      {/* <pre>{JSON.stringify(totalInvestasiByUser, null, 2)}</pre> */}
+      {/* <pre>{JSON.stringify(targetTerbesar, null, 2)}</pre> */}
     </>
   );
 }

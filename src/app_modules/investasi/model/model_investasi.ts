@@ -26,6 +26,7 @@ export interface MODEL_Investasi {
   masterPeriodeDevidenId: string;
   masterPembagianDevidenId: string;
   masterPencarianInvestorId: string;
+  author: MODEL_User_profile
 }
 
 export interface MODEL_Transaksi_Investasi {
