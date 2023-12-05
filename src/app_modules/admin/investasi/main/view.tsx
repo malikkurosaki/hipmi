@@ -100,8 +100,10 @@ export default function Admin_Investasi({
           </Grid.Col>
         ))}
       </Grid>
+
       <Paper w={300}  radius={"md"} p={"sm"} sx={{borderStyle: "solid", borderColor: "teal"}} >
-        <Title order={4}>Investasi by User</Title>
+       <Stack spacing={"xl"}>
+       <Title order={4}>Total Investasi Per User</Title>
         <Table >
           <thead>
             <tr>
@@ -118,6 +120,7 @@ export default function Admin_Investasi({
             ))}
           </tbody>
         </Table>
+       </Stack>
       </Paper>
       {/* <TablePublish dataInvestsi={investasi as any} />
       <TableReview dataInvestsi={investasi as any} />
