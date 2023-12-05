@@ -91,7 +91,7 @@ export default function DetailDraftInvestasi({
       {/* Title dan Persentase */}
       <Center>
         <Title order={4} mb={"xs"}>
-          {investasi.title}
+          {_.capitalize(investasi.title)}
         </Title>
       </Center>
 
@@ -101,11 +101,15 @@ export default function DetailDraftInvestasi({
           <Stack>
             <Box>
               <Text>Dana Dibutuhkan</Text>
-              <Text>Rp. {investasi.targetDana}</Text>
+              <Text>Rp. {new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 10,
+                  }).format(+investasi.targetDana)}</Text>
             </Box>
             <Box>
               <Text>Harga Per Lembar</Text>
-              <Text>Rp. {investasi.hargaLembar}</Text>
+              <Text>Rp. {new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 10,
+                  }).format(+investasi.hargaLembar)}</Text>
             </Box>
             <Box>
               <Text>Jadwal Pembagian</Text>
@@ -121,11 +125,13 @@ export default function DetailDraftInvestasi({
           <Stack>
             <Box>
               <Text>ROI</Text>
-              <Text>{investasi.roi}%</Text>
+              <Text>{investasi.roi} %</Text>
             </Box>
             <Box>
               <Text>Total Lembar</Text>
-              <Text>{investasi.totalLembar} lembar</Text>
+              <Text>{new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 10,
+                  }).format(+investasi.totalLembar)} lembar</Text>
             </Box>
             <Box>
               <Text>Pembagian Deviden</Text>

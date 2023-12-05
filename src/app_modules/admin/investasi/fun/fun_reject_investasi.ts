@@ -5,7 +5,7 @@ import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin"
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi"
 import { revalidatePath } from "next/cache"
 
-export default async function funRejectInvestasi(data: any) {
+export default async function Admin_funRejectInvestasi(data: any) {
     // console.log(data)
 
     const res = await prisma.investasi.update({

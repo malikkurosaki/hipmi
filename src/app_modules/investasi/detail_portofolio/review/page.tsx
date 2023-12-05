@@ -31,11 +31,16 @@ import toast from "react-simple-toasts";
 import { MODEL_Investasi } from "../../model/model_investasi";
 import funGantiStatusInvestasi from "../../fun/fun_ganti_status";
 import { useState } from "react";
+import _ from "lodash";
 
-export default function DetailReviewInvestasi({dataInvestasi}:{dataInvestasi: MODEL_Investasi}) {
+export default function DetailReviewInvestasi({
+  dataInvestasi,
+}: {
+  dataInvestasi: MODEL_Investasi;
+}) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
-  const [investasi,setInvestasi] = useState<MODEL_Investasi>(dataInvestasi)
+  const [investasi, setInvestasi] = useState<MODEL_Investasi>(dataInvestasi);
 
   const listBox = [
     {
@@ -50,12 +55,12 @@ export default function DetailReviewInvestasi({dataInvestasi}:{dataInvestasi: MO
       icon: <IconFileDescription size={70} />,
       route: RouterInvestasi.detail_dokumen,
     },
-    {
-      id: 3,
-      name: "Berita",
-      icon: <IconSpeakerphone size={70} />,
-      route: RouterInvestasi.berita,
-    },
+    // {
+    //   id: 3,
+    //   name: "Berita",
+    //   icon: <IconSpeakerphone size={70} />,
+    //   route: RouterInvestasi.berita,
+    // },
   ];
 
   async function onsubmit() {
@@ -76,7 +81,7 @@ export default function DetailReviewInvestasi({dataInvestasi}:{dataInvestasi: MO
     <>
       <Paper withBorder mb={"md"}>
         <AspectRatio ratio={16 / 9}>
-        <Image
+          <Image
             alt=""
             src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
           />
@@ -84,11 +89,11 @@ export default function DetailReviewInvestasi({dataInvestasi}:{dataInvestasi: MO
       </Paper>
 
       {/* Title dan Persentase */}
-      <Box mb={"md"}>
+      <Center mb={"xs"}>
         <Title order={4} mb={"xs"}>
-          {investasi.title}
+          {_.capitalize(investasi.title)}
         </Title>
-      </Box>
+      </Center>
 
       {/* Rincian Data */}
       <Grid p={"md"} mb={"md"}>
@@ -96,11 +101,15 @@ export default function DetailReviewInvestasi({dataInvestasi}:{dataInvestasi: MO
           <Stack>
             <Box>
               <Text>Dana Dibutuhkan</Text>
-              <Text>Rp. {investasi.targetDana}</Text>
+              <Text>Rp. {new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 20,
+                  }).format(+investasi.targetDana)}</Text>
             </Box>
             <Box>
               <Text>Harga Per Lembar</Text>
-              <Text>Rp. {investasi.hargaLembar}</Text>
+              <Text>Rp. {new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 10,
+                  }).format(+investasi.hargaLembar)}</Text>
             </Box>
             <Box>
               <Text>Jadwal Pembagian</Text>
@@ -120,7 +129,9 @@ export default function DetailReviewInvestasi({dataInvestasi}:{dataInvestasi: MO
             </Box>
             <Box>
               <Text>Total Lembar</Text>
-              <Text>{investasi.totalLembar} lembar</Text>
+              <Text>{new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 10,
+                  }).format(+investasi.totalLembar)} lembar</Text>
             </Box>
             <Box>
               <Text>Pembagian Deviden</Text>
@@ -138,14 +149,16 @@ export default function DetailReviewInvestasi({dataInvestasi}:{dataInvestasi: MO
             key={e.id}
             onClick={() => router.push(e.route + `${investasi.id}`)}
           >
-            <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
-              <Flex direction={"column"} align={"center"} justify={"center"}>
-                <Text fz={12}>{e.name}</Text>
-                <ActionIcon variant="transparent" size={60}>
-                  {e.icon}
-                </ActionIcon>
-              </Flex>
-            </Paper>
+            <Center>
+              <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
+                <Flex direction={"column"} align={"center"} justify={"center"}>
+                  <Text fz={12}>{e.name}</Text>
+                  <ActionIcon variant="transparent" size={60}>
+                    {e.icon}
+                  </ActionIcon>
+                </Flex>
+              </Paper>
+            </Center>
           </Grid.Col>
         ))}
       </Grid>

@@ -146,11 +146,15 @@ export default function DetailInvestasi({
           <Stack>
             <Box>
               <Text>Dana Dibutuhkan</Text>
-              <Text>Rp. {investasi.targetDana}</Text>
+              <Text>Rp. {new Intl.NumberFormat("id-ID", {
+                  maximumSignificantDigits: 10,
+                }).format(+investasi.targetDana)}</Text>
             </Box>
             <Box>
               <Text>Harga Per Lembar</Text>
-              <Text>Rp. {investasi.hargaLembar}</Text>
+              <Text>Rp. {new Intl.NumberFormat("id-ID", {
+                  maximumSignificantDigits: 10,
+                }).format(+investasi.hargaLembar)}</Text>
             </Box>
             <Box>
               <Text>Jadwal Pembagian</Text>
@@ -170,11 +174,15 @@ export default function DetailInvestasi({
             </Box>
             <Box>
               <Text>Total Lembar</Text>
-              <Text>{investasi.totalLembar} lembar</Text>
+              <Text>{new Intl.NumberFormat("id-ID", {
+                  maximumSignificantDigits: 10,
+                }).format(+investasi.totalLembar)} lembar</Text>
             </Box>
             <Box>
               <Text>Sisa Lembar</Text>
-              <Text>{investasi.sisaLembar} lembar</Text>
+              <Text>{new Intl.NumberFormat("id-ID", {
+                  maximumSignificantDigits: 10,
+                }).format(+investasi.sisaLembar)} lembar</Text>
             </Box>
           </Stack>
         </Grid.Col>

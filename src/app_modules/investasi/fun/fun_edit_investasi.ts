@@ -41,9 +41,9 @@ export default async function funEditInvestasi(
     },
     data: {
       title: data.title,
-      targetDana: data.targetDana,
-      hargaLembar: data.hargaLembar,
-      totalLembar: data.totalLembar,
+      targetDana: "" + data.targetDana,
+      hargaLembar: "" + data.hargaLembar,
+      totalLembar: "" + data.totalLembar,
       roi: data.roi,
       masterPencarianInvestorId: data.MasterPencarianInvestor.id,
       masterPembagianDevidenId: data.MasterPembagianDeviden.id,

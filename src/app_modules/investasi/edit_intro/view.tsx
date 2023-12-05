@@ -20,7 +20,7 @@ import {
   Stack,
   Modal,
 } from "@mantine/core";
-import { IconCamera, IconChevronRight } from "@tabler/icons-react";
+import { IconCamera, IconChevronRight, IconUpload } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -32,7 +32,6 @@ import _ from "lodash";
 import { MODEL_DEFAULT_MASTER } from "@/app_modules/models/model_default_master";
 import funEditInvestasi from "../fun/fun_edit_investasi";
 import { useDisclosure, useWindowScroll } from "@mantine/hooks";
-
 
 export default function EditIntroInvestasi({
   dataInvestasi,
@@ -94,18 +93,20 @@ export default function EditIntroInvestasi({
         </Group>
       </Modal>
 
-      <Box>
+      <Stack spacing={"xs"} px={"md"}>
         <AspectRatio ratio={16 / 9}>
-          {img ? (
-            <Image alt="" src={img} />
-          ) : (
-            <Image
-              alt=""
-              src={RouterInvestasi.api_gambar + `${edit_inves.imagesId}`}
-            />
-          )}
+          <Paper withBorder radius={"md"}>
+            {img ? (
+              <Image alt="" src={img} />
+            ) : (
+              <Image
+                alt=""
+                src={RouterInvestasi.api_gambar + `${edit_inves.imagesId}`}
+              />
+            )}
+          </Paper>
         </AspectRatio>
-        <Group position="center" mt={"md"}>
+        <Group position="center" mb={"md"}>
           <FileButton
             onChange={async (files: any) => {
               const buffer = URL.createObjectURL(
@@ -117,130 +118,134 @@ export default function EditIntroInvestasi({
             accept="image/png,image/jpeg"
           >
             {(props) => (
-              <Button {...props} radius={50}>
-                <IconCamera />
+              <Button
+                {...props}
+                radius={50}
+                leftIcon={<IconUpload size={12} />}
+                compact
+                bg={Warna.hijau_muda}
+                color="green"
+              >
+                Upload Gambar
               </Button>
             )}
           </FileButton>
         </Group>
 
-        <Center>
-          <Box mt={"md"} w={350}>
-            <TextInput
-              label="Judul Proyek"
-              placeholder={"Masukan Judul"}
-              value={edit_inves.title}
-              onChange={(val) => {
-                setEdit_inves({
-                  ...edit_inves,
-                  title: val.target.value,
-                });
-              }}
-            />
+        <TextInput
+          label="Judul Proyek"
+          placeholder={"Masukan Judul"}
+          value={edit_inves.title}
+          onChange={(val) => {
+            setEdit_inves({
+              ...edit_inves,
+              title: val.target.value,
+            });
+          }}
+        />
 
-            <NumberInput
-              label="Dana Dibutuhan"
-              type="number"
-              value={+edit_inves.targetDana}
-              onChange={(val) => {
-                setEdit_inves({
-                  ...edit_inves,
-                  targetDana: val as any,
-                });
-              }}
-            />
+        <NumberInput
+          label="Dana Dibutuhan"
+          type="number"
+          value={+edit_inves.targetDana}
+          onChange={(val) => {
+            setEdit_inves({
+              ...edit_inves,
+              targetDana: val as any,
+            });
+          }}
+        />
 
-            <NumberInput
-              label="Harga Per Lember"
-              type="number"
-              value={+edit_inves.hargaLembar}
-              onChange={(val) => {
-                setEdit_inves({
-                  ...edit_inves,
-                  hargaLembar: val as any,
-                });
-                onTotalLembar(edit_inves.targetDana, val);
-              }}
-            />
+        <NumberInput
+          label="Harga Per Lember"
+          type="number"
+          value={+edit_inves.hargaLembar}
+          onChange={(val) => {
+            setEdit_inves({
+              ...edit_inves,
+              hargaLembar: val as any,
+            });
+            onTotalLembar(edit_inves.targetDana, val);
+          }}
+        />
 
-            {/* Total Lembar */}
-            <Stack spacing={3}>
-              <Text fz={"sm"} fw={500}>
-                Total Lembar
-              </Text>
-              <Stack spacing={0}>
-                <Text>{totalLembar}</Text>
-                <Divider />
-              </Stack>
-              <Text c={"red"} fz={10}>
-                *Total lembar dihitung dari, Target Dana : Harga Perlembar
-              </Text>
-            </Stack>
+        {/* Total Lembar */}
+        <Stack spacing={3}>
+          <Text fz={"sm"} fw={500}>
+            Total Lembar
+          </Text>
+          <Stack spacing={0}>
+            <Text>{totalLembar}</Text>
+            <Divider />
+          </Stack>
+          <Text c={"blue"} fz={10}>
+            *Total lembar dihitung dari, Target Dana : Harga Perlembar
+          </Text>
+        </Stack>
 
-            <NumberInput
-              label="Rasio Keuntungan / ROI"
-              type="number"
-              value={+edit_inves.roi}
-              onChange={(val) => {
-                setEdit_inves({
-                  ...edit_inves,
-                  roi: val as any,
-                });
-              }}
-            />
+        <NumberInput
+          label="Rasio Keuntungan / ROI"
+          type="number"
+          value={+edit_inves.roi}
+          onChange={(val) => {
+            setEdit_inves({
+              ...edit_inves,
+              roi: val as any,
+            });
+          }}
+        />
 
-            {/* Select Start */}
-            <Select
-              label="Pencarian Investor"
-              data={listPencarian.map((e) => ({
-                value: e.id,
-                label: e.name + " " + "hari",
-              }))}
-              value={edit_inves.MasterPencarianInvestor.id}
-              onChange={(val) => {
-                setEdit_inves({
-                  ...(edit_inves as any),
-                  MasterPencarianInvestor: {
-                    id: val,
-                  },
-                });
-              }}
-            />
-            <Select
-              label="Periode Deviden"
-              data={listPeriode.map((e) => ({
-                value: e.id,
-                label: e.name,
-              }))}
-              value={edit_inves.MasterPeriodeDeviden.id}
-              onChange={(val) => {
-                setEdit_inves({
-                  ...(edit_inves as any),
-                  MasterPeriodeDeviden: {
-                    id: val,
-                  },
-                });
-              }}
-            />
-            <Select
-              label="Pembagian Deviden"
-              data={listPembagian.map((e) => ({
-                value: e.id,
-                label: e.name + " " + `${"bulan"}`,
-              }))}
-              value={edit_inves.MasterPembagianDeviden.id}
-              onChange={(val) => {
-                setEdit_inves({
-                  ...(edit_inves as any),
-                  MasterPembagianDeviden: {
-                    id: val,
-                  },
-                });
-              }}
-            />
-            {/* Select End */}
-          </Box>
-        </Center>
+        {/* Select Start */}
+        <Select
+          label="Pencarian Investor"
+          data={listPencarian.map((e) => ({
+            value: e.id,
+            label: e.name + " " + "hari",
+          }))}
+          value={edit_inves.MasterPencarianInvestor.id}
+          onChange={(val) => {
+            setEdit_inves({
+              ...(edit_inves as any),
+              MasterPencarianInvestor: {
+                id: val,
+              },
+            });
+          }}
+        />
+        <Select
+          label="Periode Deviden"
+          data={listPeriode.map((e) => ({
+            value: e.id,
+            label: e.name,
+          }))}
+          value={edit_inves.MasterPeriodeDeviden.id}
+          onChange={(val) => {
+            setEdit_inves({
+              ...(edit_inves as any),
+              MasterPeriodeDeviden: {
+                id: val,
+              },
+            });
+          }}
+        />
+        <Select
+          label="Pembagian Deviden"
+          data={listPembagian.map((e) => ({
+            value: e.id,
+            label: e.name + " " + `${"bulan"}`,
+          }))}
+          value={edit_inves.MasterPembagianDeviden.id}
+          onChange={(val) => {
+            setEdit_inves({
+              ...(edit_inves as any),
+              MasterPembagianDeviden: {
+                id: val,
+              },
+            });
+          }}
+        />
+        {/* Select End */}
+
         <Center my={"lg"}>
           <Button
             w={200}
@@ -255,7 +260,7 @@ export default function EditIntroInvestasi({
             Update
           </Button>
         </Center>
-      </Box>
+      </Stack>
     </>
   );
 }

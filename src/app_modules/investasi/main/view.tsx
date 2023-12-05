@@ -45,7 +45,6 @@ export default function MainInvestasi({
   const router = useRouter();
   const [investasi, setInvestasi] = useState(listData);
 
-
   if (_.isEmpty(investasi))
     return (
       <>
@@ -62,9 +61,11 @@ export default function MainInvestasi({
 
       {investasi.map((e) => (
         <Card
+          // sx={{ borderStyle: "solid", borderColor: "black", borderWidth: "0.5px" }}
+
           key={e.id}
-          withBorder
           mb={"lg"}
+          bg={"teal"}
           onClick={() => router.push(`/dev/investasi/detail/${e.id}`)}
         >
           <CardSection p={"xs"}>
@@ -98,11 +99,18 @@ export default function MainInvestasi({
                   <Stack>
                     <Box>
                       <Text>Dana Dibutuhkan</Text>
-                      <Text>Rp. {e.targetDana}</Text>
+                      <Text>Rp. {new Intl.NumberFormat("id-ID", {
+                          maximumSignificantDigits: 10,
+                        }).format(+e.targetDana)}</Text>
                     </Box>
                     <Box>
                       <Text>Harga Per Lembar</Text>
-                      <Text>Rp. {e.hargaLembar}</Text>
+                      <Text>
+                        Rp. {new Intl.NumberFormat("id-ID", {
+                          maximumSignificantDigits: 10,
+                        }).format(+e.hargaLembar)}
+                        {/* {e.hargaLembar} */}
+                      </Text>
                     </Box>
                   </Stack>
                 </Grid.Col>
@@ -114,7 +122,7 @@ export default function MainInvestasi({
                     </Box>
                     <Box>
                       <Text>Total Lembar</Text>
-                      <Text>{e.totalLembar}</Text>
+                      <Text>{new Intl.NumberFormat("id-ID").format(+e.totalLembar)}</Text>
                     </Box>
                   </Stack>
                 </Grid.Col>

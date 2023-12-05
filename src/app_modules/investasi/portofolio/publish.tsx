@@ -12,6 +12,9 @@ import {
   Image,
   Text,
   Center,
+  Grid,
+  Stack,
+  Paper,
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import {
@@ -36,38 +39,43 @@ export default function Publish({ data }: { data: MODEL_Investasi[] }) {
   return (
     <>
       {data.map((e) => (
-        <Card
+        <Paper
           key={e.id}
           withBorder
-          mb={40}
-          bg={"gray.5"}
+          mb={"md"}
+          p={"xs"}
+          bg={"green.1"}
           onClick={() =>
             router.push(RouterInvestasi.detail_publish + `${e.id}`)
           }
         >
-          <CardSection p={"xs"}>
-            <AspectRatio ratio={16 / 9}>
-              <Image
-                alt=""
-                src={RouterInvestasi.api_gambar + `${e.imagesId}`}
-              />
-            </AspectRatio>
-          </CardSection>
+          <Grid>
+            <Grid.Col span={8}>
+              <Text fw={"bold"}> {_.capitalize(e.title)}</Text>
+              <Stack spacing={0}>
+                <Text fz={10}>Target Dana:</Text>
+                <Text>
+                  Rp.{" "}
+                  {new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 10,
+                  }).format(+e.targetDana)}
+                </Text>
+              </Stack>
+            </Grid.Col>
 
-          <CardSection p={"lg"}>
-            <Box mb={"md"}>
-              <Title order={4}>{e.title}</Title>
-              {/* <Slider
-                size={10}
-                disabled
-                labelAlwaysOn
-                value={60}
-                marks={[{ value: 60, label: 60 + `%` }]}
-              /> */}
-            </Box>
-          </CardSection>
-          <Divider />
-          <CardSection p={"md"}>
+            <Grid.Col span={4}>
+              <AspectRatio ratio={16 / 9}>
+                <Paper radius={"md"}>
+                  <Image
+                    alt=""
+                    src={RouterInvestasi.api_gambar + `${e.imagesId}`}
+                  />
+                </Paper>
+              </AspectRatio>
+            </Grid.Col>
+          </Grid>
+          <Divider my={"xs"}/>
+          <Group position="center">
             {Number(e.MasterPencarianInvestor.name) -
               moment(new Date()).diff(new Date(e.updatedAt), "days") <=
             0 ? (
@@ -76,10 +84,10 @@ export default function Publish({ data }: { data: MODEL_Investasi[] }) {
                 <Text c={"green"}>Selesai</Text>
               </Group>
             ) : (
-              <Group position="apart">
-                <Badge color="green" variant="dot">
+              <Group position="center">
+                {/* <Badge color="green" variant="dot">
                   Publish
-                </Badge>
+                </Badge> */}
                 <Text>
                   Sisa Waktu :{" "}
                   {Number(e.MasterPencarianInvestor.name) -
@@ -88,8 +96,8 @@ export default function Publish({ data }: { data: MODEL_Investasi[] }) {
                 </Text>
               </Group>
             )}
-          </CardSection>
-        </Card>
+          </Group>
+        </Paper>
       ))}
     </>
   );

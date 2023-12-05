@@ -5,6 +5,7 @@ export const RouterInvestasi = {
 
   //INVESTASI
   main: "/dev/investasi/main",
+  create: "/dev/investasi/create",
   main_porto: "/dev/investasi/main/portofolio",
   main_investasi: "/dev/investasi/main/saham_saya",
   main_transaksi: "/dev/investasi/main/transaksi",

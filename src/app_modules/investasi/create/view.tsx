@@ -13,12 +13,13 @@ import {
   Group,
   Image,
   NumberInput,
+  Paper,
   Select,
   Stack,
   Text,
   TextInput,
 } from "@mantine/core";
-import { IconCamera } from "@tabler/icons-react";
+import { IconCamera, IconPdf, IconUpload } from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -43,6 +44,9 @@ export default function InvestasiCreate({
   const router = useRouter();
   const [fl, setFl] = useState<File | null>(null);
   const [img, setImg] = useState<any | null>();
+  const [pdf, setPdf] = useState<File | null>(null);
+  const [filePdf, setFilePdf] = useState<any | null>(null);
+
   const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
   const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
   const [totalLembar, setTotalLembar] = useState(0);
@@ -56,7 +60,6 @@ export default function InvestasiCreate({
     periodeDevidenId: "",
     pembagianDevidenId: "",
   });
-
 
   async function onSubmit() {
     const body = {
@@ -72,18 +75,22 @@ export default function InvestasiCreate({
     };
     // toast("Berhasil disimpan")
 
+    // if (_.values(body).includes("")) return toast("Lengkapi data");
+    if (!fl) return toast("Gambar Kosong");
+    if (!pdf) return toast("File Kosong");
 
-    if (_.values(body).includes("")) return toast("Lengkapi data");
-    if (!fl) return toast("File Kosong");
+    const gmbr = new FormData();
+    gmbr.append("file", fl);
 
-    const fd = new FormData();
-    fd.append("file", fl);
-    await funCreateInvestasi(fd, body as any).then((res) => {
+    const flPdf = new FormData();
+    flPdf.append("file", pdf);
+
+    await funCreateInvestasi(gmbr, flPdf, body as any).then((res) => {
       if (res.status === 201) {
         // toast(res.message);
         setChangeColor(1);
-        setActiveTab("Draft");
-        router.push(RouterInvestasi.dialog_create)
+        setActiveTab("Review");
+        router.push(RouterInvestasi.dialog_create);
       } else {
         toast(res.message);
       }
@@ -98,40 +105,81 @@ export default function InvestasiCreate({
   return (
     <>
       <Box>
-        <AspectRatio ratio={16 / 9}>
-          {img ? (
-            <Image alt="" src={img} />
-          ) : (
-            <Image alt="" src={"/aset/no-img.png"} />
-          )}
-        </AspectRatio>
-        <Group position="center" mt={"md"}>
-          <FileButton
-            onChange={async (files: any) => {
-              const buffer = URL.createObjectURL(
-                new Blob([new Uint8Array(await files.arrayBuffer())])
-              );
-              setImg(buffer);
-              setFl(files);
-            }}
-            accept="image/png,image/jpeg"
-          >
-            {(props) => (
-              <Button
-                compact
-                {...props}
-                w={100}
-                radius={50}
-                bg={Warna.hijau_muda}
-                // onClick={() => router.push("/dev/investasi/upload")}
-              >
-                <IconCamera />
-              </Button>
-            )}
-          </FileButton>
-        </Group>
-
+        {/* Inputan Create */}
         <Stack spacing={"sm"} px={"md"}>
+          <AspectRatio ratio={16 / 9}>
+            <Paper radius={"md"} withBorder>
+              {img ? (
+                <Image alt="" src={img} />
+              ) : (
+                <Image alt="" src={"/aset/no-img.png"} />
+              )}
+            </Paper>
+          </AspectRatio>
+
+          {/* Upload Foto */}
+          <Group position="center" mb={"md"}>
+            <FileButton
+              onChange={async (files: any) => {
+                const buffer = URL.createObjectURL(
+                  new Blob([new Uint8Array(await files.arrayBuffer())])
+                );
+                // console.log(files);
+                setImg(buffer);
+                setFl(files);
+              }}
+              accept="image/png,image/jpeg"
+            >
+              {(props) => (
+                <Button
+                  {...props}
+                  leftIcon={<IconUpload size={12} />}
+                  compact
+                  radius={50}
+                  bg={Warna.hijau_muda}
+                  // onClick={() => router.push("/dev/investasi/upload")}
+                >
+                  Upload Gambar
+                </Button>
+              )}
+            </FileButton>
+          </Group>
+          {/* Upload File */}
+          <Group position="center">
+            {!pdf ? (
+              <Paper w={"100%"} bg={"gray.3"} p={"sm"}>
+                <Text opacity={"0.3"}>Upload File Prospektus</Text>
+              </Paper>
+            ) : (
+              <Paper w={"100%"} bg={"gray.6"} p={"sm"}>
+                <Text>{pdf.name}</Text>
+              </Paper>
+            )}
+            {/* {JSON.stringify(filePdf)} */}
+            <FileButton
+              accept="application/pdf"
+              onChange={async (files: any) => {
+                const buffer = URL.createObjectURL(
+                  new Blob([new Uint8Array(await files.arrayBuffer())])
+                );
+                // console.log(files.name)
+                setFilePdf(buffer);
+                setPdf(files);
+              }}
+            >
+              {(props) => (
+                <Button
+                  leftIcon={<IconUpload size={12} />}
+                  {...props}
+                  compact
+                  radius={"xl"}
+                  bg={Warna.hijau_muda}
+                >
+                  Upload File
+                </Button>
+              )}
+            </FileButton>
+          </Group>
           <TextInput
             withAsterisk
             label="Judul Investasi"
@@ -175,7 +223,7 @@ export default function InvestasiCreate({
               <Text>{totalLembar}</Text>
               <Divider />
             </Stack>
-            <Text c={"red"} fz={10}>
+            <Text c={"blue"} fz={10}>
               *Total lembar dihitung dari, Target Dana : Harga Perlembar
             </Text>
           </Stack>

@@ -20,7 +20,7 @@ export default async function getPortoByStatusId(id: string, statusId: number) {
         title: true,
         imagesId: true,
         // hargaLembar: true,
-        // targetDana: true,
+        targetDana: true,
         // totalLembar: true,
         // roi: true,
         // active: true,
@@ -53,6 +53,7 @@ export default async function getPortoByStatusId(id: string, statusId: number) {
         id: true,
         title: true,
         imagesId: true,
+        targetDana: true,
       },
     });
     return data;
@@ -75,6 +76,7 @@ export default async function getPortoByStatusId(id: string, statusId: number) {
         title: true,
         imagesId: true,
         updatedAt: true,
+        targetDana: true,
         MasterPencarianInvestor: true,
       },
     });
@@ -97,6 +99,7 @@ export default async function getPortoByStatusId(id: string, statusId: number) {
         id: true,
         title: true,
         imagesId: true,
+        targetDana: true
       },
     });
     return data;

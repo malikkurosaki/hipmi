@@ -129,7 +129,7 @@ model Investasi {
   ProspektusInvestasi ProspektusInvestasi?
 
   MasterStatusInvestasi   MasterStatusInvestasi? @relation(fields: [masterStatusInvestasiId], references: [id])
-  masterStatusInvestasiId String?                @default("1")
+  masterStatusInvestasiId String?                @default("2")
   BeritaInvestasi         BeritaInvestasi[]
   DokumenInvestasi        DokumenInvestasi[]
 
@@ -175,13 +175,13 @@ model MasterStatusInvestasi {
 }
 
 model ProspektusInvestasi {
-  id          String    @id @default(cuid())
+  id          String     @id @default(cuid())
   url         String
-  active      Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now()) @updatedAt
-  investasi   Investasi @relation(fields: [investasiId], references: [id])
-  investasiId String    @unique
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now()) @updatedAt
+  investasi   Investasi? @relation(fields: [investasiId], references: [id])
+  investasiId String?    @unique
 }
 
 model DokumenInvestasi {

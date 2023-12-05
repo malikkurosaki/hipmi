@@ -11,6 +11,9 @@ import {
   Image,
   Text,
   Center,
+  Grid,
+  Stack,
+  Paper,
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import {
@@ -35,36 +38,39 @@ export default function Reject({ data }: { data: MODEL_Investasi[] }) {
     <>
 
       {investasi.map((e) => (
-        <Card
+        <Paper
           key={e.id}
           withBorder
-          mb={40}
-          bg={"gray.5"}
+          mb={"md"}
+          p={"xs"}
+          bg={"red.1"}
           onClick={() => router.push(RouterInvestasi.detail_reject + `${e.id}`)}
         >
-          <CardSection p={"xs"}>
-            <AspectRatio ratio={16 / 9}>
-              <Image
-                alt=""
-                src={RouterInvestasi.api_gambar + `${e.imagesId}`}
-              />
-            </AspectRatio>
-          </CardSection>
+          <Grid>
+            <Grid.Col span={8}>
+              <Text fw={"bold"}> {_.capitalize(e.title)}</Text>
+              <Stack spacing={0}>
+                <Text fz={10}>Target Dana:</Text>
+              <Text>
+                Rp. {new Intl.NumberFormat("id-ID", {
+                  maximumSignificantDigits: 10,
+                }).format(+e.targetDana)}
+              </Text>
+              </Stack>
+            </Grid.Col>
 
-          <CardSection p={"lg"}>
-            <Box>
-              <Title order={4}>{e.title}</Title>
-            </Box>
-          </CardSection>
-          <Divider />
-          <CardSection p={"md"}>
-            <Group position="center">
-              <Badge color="red" variant="dot">
-                Reject
-              </Badge>
-            </Group>
-          </CardSection>
-        </Card>
+            <Grid.Col span={4}>
+              <AspectRatio ratio={16 / 9}>
+                <Paper radius={"md"}>
+                  <Image
+                    alt=""
+                    src={RouterInvestasi.api_gambar + `${e.imagesId}`}
+                  />
+                </Paper>
+              </AspectRatio>
+            </Grid.Col>
+          </Grid>
+        </Paper>
       ))}
     </>
   );

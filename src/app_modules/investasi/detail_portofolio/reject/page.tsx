@@ -22,9 +22,11 @@ import {
   Title,
 } from "@mantine/core";
 import {
+  IconArrowBackUpDouble,
   IconBookDownload,
   IconFileDescription,
   IconSpeakerphone,
+  IconTrash,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
@@ -59,20 +61,20 @@ export default function DetailRejectInvestasi({
       icon: <IconFileDescription size={70} />,
       route: RouterInvestasi.edit_dokumen,
     },
-    {
-      id: 3,
-      name: "Berita",
-      icon: <IconSpeakerphone size={70} />,
-      route: RouterInvestasi.edit_berita,
-    },
+    // {
+    //   id: 3,
+    //   name: "Berita",
+    //   icon: <IconSpeakerphone size={70} />,
+    //   route: RouterInvestasi.edit_berita,
+    // },
   ];
 
   async function onAjukan() {
-    await funGantiStatusInvestasi(investasi.id, "2").then((res) => {
+    await funGantiStatusInvestasi(investasi.id, "1").then((res) => {
       if (res.status === 200) {
         toast("Project Diajukan Kembali");
+        setActiveTab("Draft");
         router.push(RouterInvestasi.portofolio);
-        setActiveTab("Review");
       } else {
         toast("Gagal Pengajuan");
       }
@@ -110,7 +112,7 @@ export default function DetailRejectInvestasi({
       </Modal>
 
       {/* Alasan */}
-      <Box mb={"sm"}>
+      <Box mb={"xl"}>
         <Title order={6}>Alasan :</Title>
         <Box>
           <Paper>
@@ -124,6 +126,7 @@ export default function DetailRejectInvestasi({
         <Grid.Col span={6}>
           <Center>
             <Button
+            leftIcon={<IconArrowBackUpDouble/>}
               mb={"xl"}
               radius={50}
               bg={"orange.7"}
@@ -131,7 +134,7 @@ export default function DetailRejectInvestasi({
               compact
               onClick={() => onAjukan()}
             >
-              Ajukan Kembali
+              Masuk ke Draft
             </Button>
           </Center>
         </Grid.Col>
@@ -141,6 +144,7 @@ export default function DetailRejectInvestasi({
           <Center>
             {" "}
             <Button
+            leftIcon={<IconTrash size={12}/>}
               compact
               mb={"xl"}
               radius={50}
@@ -176,11 +180,15 @@ export default function DetailRejectInvestasi({
           <Stack>
             <Box>
               <Text>Dana Dibutuhkan</Text>
-              <Text>Rp. {investasi.targetDana}</Text>
+              <Text>Rp. {new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 10,
+                  }).format(+investasi.targetDana)}</Text>
             </Box>
             <Box>
               <Text>Harga Per Lembar</Text>
-              <Text>Rp. {investasi.hargaLembar}</Text>
+              <Text>Rp. {new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 10,
+                  }).format(+investasi.hargaLembar)}</Text>
             </Box>
             <Box>
               <Text>Jadwal Pembagian</Text>
@@ -200,7 +208,9 @@ export default function DetailRejectInvestasi({
             </Box>
             <Box>
               <Text>Total Lembar</Text>
-              <Text>{investasi.totalLembar} lembar</Text>
+              <Text>{new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 10,
+                  }).format(+investasi.totalLembar)} lembar</Text>
             </Box>
             <Box>
               <Text>Pembagian Deviden</Text>
@@ -211,14 +221,15 @@ export default function DetailRejectInvestasi({
       </Grid>
 
       {/* List Box */}
-      {/* <Grid mb={"md"}>
+      <Grid mb={"md"}>
         {listBox.map((e) => (
           <Grid.Col
             span={"auto"}
             key={e.id}
-            onClick={() => router.push(e.route + `${"1"}`)}
+            onClick={() => router.push(e.route + `${investasi.id}`)}
           >
-            <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
+           <Center>
+           <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
               <Flex direction={"column"} align={"center"} justify={"center"}>
                 <Text fz={12}>{e.name}</Text>
                 <ActionIcon variant="transparent" size={60}>
@@ -226,9 +237,10 @@ export default function DetailRejectInvestasi({
                 </ActionIcon>
               </Flex>
             </Paper>
+           </Center>
           </Grid.Col>
         ))}
-      </Grid> */}
+      </Grid>
     </>
   );
 }

@@ -26,7 +26,11 @@ import {
 import dataDummy from "../dummy/data_dummy.json";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import { IconCaretDown, IconCircleCheck } from "@tabler/icons-react";
+import {
+  IconCaretDown,
+  IconCircleCheck,
+  IconCirclePlus,
+} from "@tabler/icons-react";
 import { useState } from "react";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
@@ -73,38 +77,49 @@ export default function PortofolioInvestasi({
   return (
     <>
       {/* <pre>{JSON.stringify(dataInvestasi, null, 2)}</pre> */}
-      <Tabs
-        variant="pills"
-        radius="xl"
-        defaultValue="Draft"
-        value={activeTab}
-        onTabChange={setActiveTab}
-      >
-        <Tabs.List>
-          {status_inves.map((e) => (
-            <Tabs.Tab
-              key={e.id}
-              value={e.name}
-              color={!activeTab ? "gray" : e.color}
-            >
-              {e.name}
-            </Tabs.Tab>
-          ))}
-        </Tabs.List>
-        <Divider my={"xs"} />
-        <Tabs.Panel key={"1"} value="Draft">
-          <Draft data={dataDraft as any} />
-        </Tabs.Panel>
-        <Tabs.Panel key={"2"} value="Review">
-          <Review data={dataReview as any} />
-        </Tabs.Panel>
-        <Tabs.Panel key={"3"} value="Publish">
-          <Publish data={dataPublish as any} />
-        </Tabs.Panel>
-        <Tabs.Panel key={"4"} value="Reject">
-          <Reject data={dataReject as any} />
-        </Tabs.Panel>
-      </Tabs>
+      <Stack>
+        <Button
+          radius={"xl"}
+          bg={Warna.biru}
+          color="blue"
+          leftIcon={<IconCirclePlus />}
+          onClick={() => router.push(RouterInvestasi.create)}
+        >
+          Buat Proyek Invetasi
+        </Button>
+        <Tabs
+          variant="pills"
+          radius="xl"
+          defaultValue="Draft"
+          value={activeTab}
+          onTabChange={setActiveTab}
+        >
+          <Tabs.List grow>
+            {status_inves.map((e) => (
+              <Tabs.Tab
+                key={e.id}
+                value={e.name}
+                color={!activeTab ? "gray" : e.color}
+              >
+                {e.name}
+              </Tabs.Tab>
+            ))}
+          </Tabs.List>
+          <Divider my={"xs"} />
+          <Tabs.Panel key={"1"} value="Draft">
+            <Draft data={dataDraft as any} />
+          </Tabs.Panel>
+          <Tabs.Panel key={"2"} value="Review">
+            <Review data={dataReview as any} />
+          </Tabs.Panel>
+          <Tabs.Panel key={"3"} value="Publish">
+            <Publish data={dataPublish as any} />
+          </Tabs.Panel>
+          <Tabs.Panel key={"4"} value="Reject">
+            <Reject data={dataReject as any} />
+          </Tabs.Panel>
+        </Tabs>
+      </Stack>
     </>
   );
 }

@@ -83,8 +83,8 @@ export default function Validasi() {
             direction={"column"}
             align={"center"}
           >
-            <Text>Enter the 6-digit OTP , we’ve just sent</Text>
-            <Text>to {nomor}</Text>
+            <Text>Enter the 4-digit OTP , we’ve just sent</Text>
+            <Text>to  +{nomor}</Text>
           </Flex>
           <PinInput
           ref={focusTrapRef}

@@ -1,6 +1,16 @@
 "use client";
 
-import { Flex, Title } from "@mantine/core";
+import {
+  AspectRatio,
+  Box,
+  Center,
+  Flex,
+  Image,
+  Paper,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -22,9 +32,19 @@ export default function SplashScreen({ data }: { data: any }) {
   }, []);
   return (
     <>
-      <Flex justify={"center"} align={"center"} h={"100vh"}>
-        <Title order={1}>Splash Screen</Title>
-      </Flex>
+      <Center h={"100vh"}>
+        <Stack align="center" justify="center" p={"md"}>
+          {/* <Title c={"#002e59"}>Welcome to</Title> */}
+          <Paper
+            p={{ base: 50, md: 60, lg: 80 }}
+            bg={"gray.1"}
+            radius={500}
+            shadow="xl"
+          >
+            <Image alt="" src={"/aset/logo/logo-hipmi.png"} />
+          </Paper>
+        </Stack>
+      </Center>
     </>
   );
 }

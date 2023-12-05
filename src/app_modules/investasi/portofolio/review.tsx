@@ -11,6 +11,9 @@ import {
   Image,
   Center,
   Text,
+  Paper,
+  Grid,
+  Stack,
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import {
@@ -31,36 +34,41 @@ export default function Review({ data }: { data: MODEL_Investasi[] }) {
   return (
     <>
       {data.map((e) => (
-        <Card
+        <Paper
+          // sx={{ borderStyle: "solid", borderColor: "orange", borderWidth: "1px" }}
           key={e.id}
+          mb={"md"}
+          bg={"orange.1"}
+          p={"xs"}
           withBorder
-          mb={40}
-          bg={"gray.5"}
           onClick={() => router.push(RouterInvestasi.detail_review + `${e.id}`)}
         >
-          <CardSection p={"xs"}>
-            <AspectRatio ratio={16 / 9}>
-              <Image
-                alt=""
-                src={RouterInvestasi.api_gambar + `${e.imagesId}`}
-              />
-            </AspectRatio>
-          </CardSection>
+          <Grid>
+            <Grid.Col span={8}>
+              <Text fw={"bold"}> {_.capitalize(e.title)}</Text>
+              <Stack spacing={0}>
+                <Text fz={10}>Target Dana:</Text>
+                <Text>
+                  Rp.{" "}
+                  {new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 10,
+                  }).format(+e.targetDana)}
+                </Text>
+              </Stack>
+            </Grid.Col>
 
-          <CardSection p={"lg"}>
-            <Box>
-              <Title order={4}>{e.title}</Title>
-            </Box>
-          </CardSection>
-          <Divider />
-          <CardSection p={"md"}>
-            <Group position="center">
-              <Badge color="yellow" variant="dot">
-                Review
-              </Badge>
-            </Group>
-          </CardSection>
-        </Card>
+            <Grid.Col span={4}>
+              <AspectRatio ratio={16 / 9}>
+                <Paper radius={"md"}>
+                  <Image
+                    alt=""
+                    src={RouterInvestasi.api_gambar + `${e.imagesId}`}
+                  />
+                </Paper>
+              </AspectRatio>
+            </Grid.Col>
+          </Grid>
+        </Paper>
       ))}
     </>
   );

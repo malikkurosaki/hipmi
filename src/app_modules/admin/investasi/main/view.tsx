@@ -4,11 +4,13 @@ import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin";
 import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
 import {
   ActionIcon,
+  Avatar,
   Badge,
   Box,
   Center,
   Divider,
   Grid,
+  Group,
   Paper,
   ScrollArea,
   Stack,
@@ -29,12 +31,14 @@ export default function Admin_Investasi({
   countReview,
   countPublish,
   countReject,
+  totalInvestasiByUser,
 }: {
   listInvestasi: MODEL_Investasi[];
   countDraft: number | any;
   countReview: number | any;
   countPublish: number | any;
   countReject: number | any;
+  totalInvestasiByUser: any[];
 }) {
   const [investasi, setInvestasi] = useState(listInvestasi);
   const router = useRouter();
@@ -44,21 +48,28 @@ export default function Admin_Investasi({
       id: 1,
       name: "Draft",
       jumlah: countDraft,
+      color: "yellow"
     },
     {
       id: 2,
       name: "Review",
       jumlah: countReview,
+      color: "orange"
+      
     },
     {
       id: 3,
       name: "Publish",
       jumlah: countPublish,
+      color: "green"
+
     },
     {
       id: 4,
       name: "Reject",
       jumlah: countReject,
+      color: "red"
+
     },
   ];
 
@@ -69,7 +80,12 @@ export default function Admin_Investasi({
       <Grid mb={"md"}>
         {listBox.map((e) => (
           <Grid.Col sm={12} md={6} lg={3} key={e.id}>
-            <Paper h={100} bg={"gray"} p={"xs"}>
+            <Paper 
+            h={100} 
+            p={"xs"} 
+            bg={"gray"}
+            // bg={e.color}
+            >
               <Center>
                 <Stack spacing={0}>
                   <Text>{e.name}</Text>
@@ -84,16 +100,29 @@ export default function Admin_Investasi({
           </Grid.Col>
         ))}
       </Grid>
-      <TablePublish dataInvestsi={investasi as any} />
+      <Paper w={300}  radius={"md"} p={"sm"} sx={{borderStyle: "solid", borderColor: "teal"}} >
+        <Title order={4}>Investasi by User</Title>
+        <Table >
+          <thead>
+            <tr>
+              <th><Center>Username</Center></th>
+              <th><Center>Total</Center></th>
+            </tr>
+          </thead>
+          <tbody>
+            {totalInvestasiByUser.map((e) => (
+              <tr key={e.id}>
+                <td><Group><Avatar variant="light" radius={"xl"}/> {e.username}</Group></td>
+                <td><Center>{e._count.Investasi}</Center></td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Paper>
+      {/* <TablePublish dataInvestsi={investasi as any} />
       <TableReview dataInvestsi={investasi as any} />
-      <TableReject dataInvestsi={investasi as any} />
-      {/* <pre>{JSON.stringify(investasi, null, 2)}</pre> */}
+      <TableReject dataInvestsi={investasi as any} /> */}
+      {/* <pre>{JSON.stringify(totalInvestasiByUser, null, 2)}</pre> */}
     </>
   );
 }
-
-
-
-
-
-

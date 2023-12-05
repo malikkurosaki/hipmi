@@ -109,15 +109,29 @@ export default function DetailPublishInvestasi({
           <Stack>
             <Box>
               <Text>Dana Dibutuhkan</Text>
-              <Text>Rp. {investasi.targetDana}</Text>
+              <Text>
+                Rp.{" "}
+                {new Intl.NumberFormat("id-ID", {
+                  maximumSignificantDigits: 10,
+                }).format(+investasi.targetDana)}
+              </Text>
             </Box>
             <Box>
               <Text>Harga Per Lembar</Text>
-              <Text>Rp. {investasi.hargaLembar}</Text>
+              <Text>
+                Rp.{" "}
+                {new Intl.NumberFormat("id-ID", {
+                  maximumSignificantDigits: 10,
+                }).format(+investasi.hargaLembar)}
+              </Text>
             </Box>
             <Box>
               <Text>Jadwal Pembagian</Text>
               <Text>{investasi.MasterPembagianDeviden.name} bulan </Text>
+            </Box>
+            <Box>
+              <Text>Pembagian Deviden</Text>
+              <Text>{investasi.MasterPeriodeDeviden.name}</Text>
             </Box>
           </Stack>
         </Grid.Col>
@@ -129,11 +143,21 @@ export default function DetailPublishInvestasi({
             </Box>
             <Box>
               <Text>Total Lembar</Text>
-              <Text>{investasi.totalLembar} lembar</Text>
+              <Text>
+                {new Intl.NumberFormat("id-ID", {
+                  maximumSignificantDigits: 10,
+                }).format(+investasi.totalLembar)}{" "}
+                lembar
+              </Text>
             </Box>
             <Box>
-              <Text>Pembagian Deviden</Text>
-              <Text>{investasi.MasterPeriodeDeviden.name}</Text>
+              <Text>Sisa Lembar</Text>
+              <Text>
+                {new Intl.NumberFormat("id-ID", {
+                  maximumSignificantDigits: 10,
+                }).format(+investasi.sisaLembar)}{" "}
+                lembar
+              </Text>
             </Box>
           </Stack>
         </Grid.Col>

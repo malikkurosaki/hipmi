@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import { Badge, Group, Paper, Stack, Text, Title } from "@mantine/core";
+import { Badge, Center, Group, Paper, Stack, Text, Title } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import toast from "react-simple-toasts";
 import {
@@ -13,6 +13,7 @@ import moment from "moment";
 import funCountDown from "../fun/fun_countdown_investasi";
 import funGantiStatusTransaksi_Investasi from "../fun/fun_ganti_status_transaksi";
 import { useInterval, useShallowEffect } from "@mantine/hooks";
+import _ from "lodash";
 
 export default function TransaksiInvestasi({
   statusTransaksi,
@@ -45,6 +46,12 @@ export default function TransaksiInvestasi({
     }
   }
 
+  if(_.isEmpty(transaksi)) 
+  return <>
+  <Center h={"80vh"}>
+    <Title order={5}>Tidak Ada Transaksi</Title>
+  </Center>
+  </>
 
 
   return (

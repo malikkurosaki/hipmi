@@ -10,6 +10,7 @@ import {
   Paper,
   SimpleGrid,
   Text,
+  ThemeIcon,
   Title,
 } from "@mantine/core";
 import { Logout } from "../auth";
@@ -153,7 +154,7 @@ export default function HomeView({ user }: { user: MODEL_User_profile }) {
                   //   }
                   // }
                   if (e.link === "") {
-                    toast(e.name);
+                    toast("Cooming Soon !!");
                   } else {
                     return router.push(e.link);
                   }
@@ -165,8 +166,14 @@ export default function HomeView({ user }: { user: MODEL_User_profile }) {
                   direction={"column"}
                   h={100}
                 >
-                  {e.icon}
-                  {e.name}
+                  <ActionIcon
+                    size={50}
+                    variant="transparent"
+                    color={e.link === "" ? "gray" : "teal"}
+                  >
+                    {e.icon}
+                  </ActionIcon>
+                  <Text c={e.link === "" ? "gray" : "teal"}>{e.name}</Text>
                 </Flex>
               </Paper>
             ))}

@@ -18,8 +18,8 @@ export default function LayoutDetailRejecttInvestasi({
         header={
           <HeaderTamplate
             title="Detail Reject"
-            icon={<IconEdit />}
-            route2={`/dev/investasi/edit/${idInves}`}
+            // icon={<IconEdit />}
+            // route2={`/dev/investasi/edit/${idInves}`}
           />
         }
       >

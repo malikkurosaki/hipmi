@@ -69,8 +69,8 @@ export default function LayoutMainInvestasi({
           <HeaderTamplate
             route="/dev/crowd/main"
             title="Investasi"
-            icon={<IconPencilPlus />}
-            route2={"/dev/investasi/create"}
+            // icon={<IconPencilPlus />}
+            // route2={"/dev/investasi/create"}
           />
         }
         footer={

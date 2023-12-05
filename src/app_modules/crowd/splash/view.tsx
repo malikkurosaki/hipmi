@@ -1,6 +1,7 @@
 "use client";
 
-import { Center, Stack, Text, Title } from "@mantine/core";
+import { Warna } from "@/app/lib/warna";
+import { Center, Image, Stack, Text, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 
@@ -14,9 +15,8 @@ export default function SplashCrowd() {
     <>
       <Center h={"100vh"}>
         <Stack align="center" justify="center">
-          <Text>Welcome to,</Text>
-          <Title>HIPMI</Title>
-          <Title order={3}>CrowdFunding</Title>
+          <Title c={"#002e59"}>Welcome to</Title>
+          <Image alt="" src={"/aset/investasi/logo-crowd.png"} />
         </Stack>
       </Center>
     </>

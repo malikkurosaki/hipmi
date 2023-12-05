@@ -23,11 +23,11 @@ export default function EditInvestasi({id}:{id:string}) {
       name: "Dokumen",
       route: RouterInvestasi.edit_dokumen,
     },
-    {
-      id: 4,
-      name: "Berita",
-      route: RouterInvestasi.list_edit_berita,
-    },
+    // {
+    //   id: 4,
+    //   name: "Berita",
+    //   route: RouterInvestasi.list_edit_berita,
+    // },
   ];
   return (
     <>

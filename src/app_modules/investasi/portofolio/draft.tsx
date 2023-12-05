@@ -11,6 +11,10 @@ import {
   Image,
   Text,
   Center,
+  Paper,
+  Grid,
+  Flex,
+  Stack,
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { MODEL_Investasi } from "../model/model_investasi";
@@ -18,53 +22,55 @@ import _ from "lodash";
 
 export default function Draft({ data }: { data: MODEL_Investasi[] }) {
   const router = useRouter();
+  // console.log(data)
 
   if (_.isEmpty(data))
-  return (
-    <>
-      <Center h={"50vh"}>Tidak ada Draft</Center>
-    </>
-  );
-
-
+    return (
+      <>
+        <Center h={"50vh"}>Tidak ada Draft</Center>
+      </>
+    );
 
   return (
     <>
       {/* <pre> {JSON.stringify(data,null, 2)}</pre> */}
-      {data.map((e) =>
-        <Card
-        key={e.id}
-        withBorder
-        mb={40}
-        bg={"gray.5"}
-        onClick={() =>
-          router.push(RouterInvestasi.detail_draft + `${e.id}`)
-        }
-      >
-        <CardSection p={"xs"}>
-          <AspectRatio ratio={16 / 9}>
-            <Image
-              alt=""
-              src={RouterInvestasi.api_gambar + `${e.imagesId}`}
-            />
-          </AspectRatio>
-        </CardSection>
+      {data.map((e) => (
+        <Paper
+          // sx={{ borderStyle: "solid", borderColor: "yellow", borderWidth: "0.5px" }}
+          p={"xs"}
+          key={e.id}
+          mb={"md"}
+          bg={"yellow.1"}
+          withBorder
+          onClick={() => router.push(RouterInvestasi.detail_draft + `${e.id}`)}
+        >
+          <Grid>
+            <Grid.Col span={8}>
+              <Text fw={"bold"}> {_.capitalize(e.title)}</Text>
+              <Stack spacing={0}>
+                <Text fz={10}>Target Dana:</Text>
+                <Text>
+                  Rp.{" "}
+                  {new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 10,
+                  }).format(+e.targetDana)}
+                </Text>
+              </Stack>
+            </Grid.Col>
 
-        <CardSection p={"lg"}>
-          <Box>
-            <Title order={4}>{e.title}</Title>
-          </Box>
-        </CardSection>
-        <Divider />
-        <CardSection p={"md"}>
-          <Group position="center">
-            <Badge color="yellow" variant="dot">
-              Draft
-            </Badge>
-          </Group>
-        </CardSection>
-      </Card>
-      )}
+            <Grid.Col span={4}>
+              <AspectRatio ratio={16 / 9}>
+                <Paper radius={"md"}>
+                  <Image
+                    alt=""
+                    src={RouterInvestasi.api_gambar + `${e.imagesId}`}
+                  />
+                </Paper>
+              </AspectRatio>
+            </Grid.Col>
+          </Grid>
+        </Paper>
+      ))}
     </>
   );
 }

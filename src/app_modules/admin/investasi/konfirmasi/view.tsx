@@ -52,7 +52,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-simple-toasts";
-import funRejectInvestasi from "../fun/fun_reject_investasi";
+import Admin_funRejectInvestasi from "../fun/fun_reject_investasi";
 
 export default function Admin_KonfirmasiInvestasi({
   dataInvestasi,
@@ -105,7 +105,7 @@ export default function Admin_KonfirmasiInvestasi({
       status: "4",
     };
     if (_.isEmpty(body.catatan)) return toast("Lengkapi alasan");
-    await funRejectInvestasi(body).then((res) => {
+    await Admin_funRejectInvestasi(body).then((res) => {
       if (res.status === 200) {
         toast(res.message);
         toggle();
