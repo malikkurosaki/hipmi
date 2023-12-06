@@ -62,19 +62,21 @@ export default function MainInvestasi({
       {investasi.map((e) => (
         <Card
           // sx={{ borderStyle: "solid", borderColor: "black", borderWidth: "0.5px" }}
-
+          radius={"md"}
           key={e.id}
           mb={"lg"}
-          bg={"teal"}
+          bg={"teal.4"}
           onClick={() => router.push(`/dev/investasi/detail/${e.id}`)}
         >
-          <CardSection p={"xs"}>
+          <CardSection p={"md"}>
             <AspectRatio ratio={16 / 9}>
-              {e.imagesId ? (
-                <Image alt="" src={`/api/investasi/gambar/${e.imagesId}`} />
-              ) : (
-                <Image alt="" src={"/aset/no-img.png"} />
-              )}
+              <Paper radius={"md"}>
+                {e.imagesId ? (
+                  <Image alt="" src={`/api/investasi/gambar/${e.imagesId}`} />
+                ) : (
+                  <Image alt="" src={"/aset/no-img.png"} />
+                )}
+              </Paper>
             </AspectRatio>
           </CardSection>
 
@@ -99,14 +101,18 @@ export default function MainInvestasi({
                   <Stack>
                     <Box>
                       <Text>Dana Dibutuhkan</Text>
-                      <Text>Rp. {new Intl.NumberFormat("id-ID", {
+                      <Text>
+                        Rp.{" "}
+                        {new Intl.NumberFormat("id-ID", {
                           maximumSignificantDigits: 10,
-                        }).format(+e.targetDana)}</Text>
+                        }).format(+e.targetDana)}
+                      </Text>
                     </Box>
                     <Box>
                       <Text>Harga Per Lembar</Text>
                       <Text>
-                        Rp. {new Intl.NumberFormat("id-ID", {
+                        Rp.{" "}
+                        {new Intl.NumberFormat("id-ID", {
                           maximumSignificantDigits: 10,
                         }).format(+e.hargaLembar)}
                         {/* {e.hargaLembar} */}
@@ -122,14 +128,16 @@ export default function MainInvestasi({
                     </Box>
                     <Box>
                       <Text>Total Lembar</Text>
-                      <Text>{new Intl.NumberFormat("id-ID").format(+e.totalLembar)}</Text>
+                      <Text>
+                        {new Intl.NumberFormat("id-ID").format(+e.totalLembar)}
+                      </Text>
                     </Box>
                   </Stack>
                 </Grid.Col>
               </Grid>
             </Box>
           </CardSection>
-          <Divider />
+          <Divider color="dark.4" />
           <CardSection p={"md"}>
             <Flex gap={"xl"} align={"center"} justify={"center"}>
               {/* <Box>
