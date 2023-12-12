@@ -1,7 +1,16 @@
 "use client";
 
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import { Badge, Center, Group, Paper, Stack, Text, Title } from "@mantine/core";
+import {
+  Badge,
+  Box,
+  Center,
+  Group,
+  Paper,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useRouter } from "next/navigation";
 import toast from "react-simple-toasts";
 import {
@@ -14,6 +23,7 @@ import funCountDown from "../fun/fun_countdown_investasi";
 import funGantiStatusTransaksi_Investasi from "../fun/fun_ganti_status_transaksi";
 import { useInterval, useShallowEffect } from "@mantine/hooks";
 import _ from "lodash";
+import Link from "next/link";
 
 export default function TransaksiInvestasi({
   statusTransaksi,
@@ -25,7 +35,6 @@ export default function TransaksiInvestasi({
   const router = useRouter();
   const [status, setStatus] = useState(statusTransaksi);
   const [transaksi, setTransaksi] = useState(listTransaksi);
-  
 
   async function onKlik(statusId: string, transaksiId: string) {
     // console.log(id)
@@ -46,34 +55,38 @@ export default function TransaksiInvestasi({
     }
   }
 
-  if(_.isEmpty(transaksi)) 
-  return <>
-  <Center h={"80vh"}>
-    <Title order={5}>Tidak Ada Transaksi</Title>
-  </Center>
-  </>
-
+  if (_.isEmpty(transaksi))
+    return (
+      <>
+        <Center h={"80vh"}>
+          <Title order={5}>Tidak Ada Transaksi</Title>
+        </Center>
+      </>
+    );
 
   return (
     <>
       <Stack>
         {transaksi.map((e) => (
-          <Paper
-            key={e.id}
-            p="xs"
-            bg={"gray"}
-            onClick={() => onKlik(e.masterStatusTransaksiInvestasiId, e.id)}
-          >
-            <Group position="apart">
-              <Title order={6}>{e.Investasi.title}</Title>
-              <Title order={5}>Rp.{e.totalTransfer}</Title>
-            </Group>
-            <Group position="apart">
-              <Stack spacing={0}>
-                <Text fz={"xs"}>Bank {e.namaBank}</Text>
-                <Text fz={"xs"}>{moment(e.createdAt).format("ll")}</Text>
-              </Stack>
-              {(() => {
+          <Box key={e.id}>
+            <Link href={e.redirect_url} style={{textDecorationLine: "none"}}>
+              <Paper p="xs" bg={"gray"}>
+                <Group position="apart">
+                  <Title order={6}>{e.Investasi.title}</Title>
+                  <Title order={5}>
+                    Rp.
+                    {new Intl.NumberFormat("id-ID", {
+                      maximumFractionDigits: 10,
+                    }).format(+e.gross_amount)}
+                  </Title>
+                </Group>
+                <Group position="apart">
+                  <Stack spacing={0}>
+                    {/* <Text fz={"xs"}>Bank {e.namaBank}</Text> */}
+                    <Text fz={"xs"}>{moment(e.createdAt).format("ll")}</Text>
+                  </Stack>
+                  <Text>{e.quantity} Lembar</Text>
+                  {/* {(() => {
                 if (e.masterStatusTransaksiInvestasiId === "1") {
                   return (
                     <>
@@ -125,9 +138,11 @@ export default function TransaksiInvestasi({
                     }
                   }
                 }
-              })()}
-            </Group>
-          </Paper>
+              })()} */}
+                </Group>
+              </Paper>
+            </Link>
+          </Box>
         ))}
       </Stack>
       {/* <pre>{JSON.stringify(transaksi, null, 2)}</pre> */}

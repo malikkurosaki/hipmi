@@ -1,13 +1,18 @@
 "use client";
 
-import { Title } from "@mantine/core";
+import { Center, Divider, Stack, Title } from "@mantine/core";
 import Admin_Investasi from "../investasi/main/view";
-
 
 export default function AdminMain() {
   return (
     <>
-      <Title>Main Dashboard</Title>
+      <Stack spacing={"sm"}>
+        <Title>Main Dashboard</Title>
+        <Divider mb={"md"} />
+        <Stack align="center" justify="center" h={"80vh"}>
+          <Title>Cooming Soon !!</Title>
+        </Stack>
+      </Stack>
     </>
   );
 }

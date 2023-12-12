@@ -1,9 +1,15 @@
 "use client"
 
-import { Title } from "@mantine/core"
+import { Divider, Stack, Title } from "@mantine/core"
 
 export default function Admin_Award(){
     return<>
-    <Title>halaman award</Title>
+    <Stack spacing={"sm"}>
+        <Title>Award</Title>
+        <Divider mb={"md"} />
+        <Stack align="center" justify="center" h={"80vh"}>
+          <Title>Cooming Soon !!</Title>
+        </Stack>
+      </Stack>
     </>
 }

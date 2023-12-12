@@ -24,11 +24,12 @@ import {
 import _ from "lodash";
 import moment from "moment";
 import { useState } from "react";
-import { IconCircleCheck } from "@tabler/icons-react";
+import { IconChecklist, IconCircleCheck } from "@tabler/icons-react";
 
 export default function Publish({ data }: { data: MODEL_Investasi[] }) {
   const router = useRouter();
   const [sisaWaktu, setSisaWaktu] = useState();
+
   if (_.isEmpty(data))
     return (
       <>
@@ -74,7 +75,7 @@ export default function Publish({ data }: { data: MODEL_Investasi[] }) {
               </AspectRatio>
             </Grid.Col>
           </Grid>
-          <Divider my={"xs"}/>
+          <Divider my={"xs"} />
           <Group position="center">
             {Number(e.MasterPencarianInvestor.name) -
               moment(new Date()).diff(new Date(e.updatedAt), "days") <=
@@ -88,12 +89,22 @@ export default function Publish({ data }: { data: MODEL_Investasi[] }) {
                 {/* <Badge color="green" variant="dot">
                   Publish
                 </Badge> */}
-                <Text>
-                  Sisa Waktu :{" "}
+                <Group>
                   {Number(e.MasterPencarianInvestor.name) -
-                    moment(new Date()).diff(new Date(e.updatedAt), "days")}{" "}
-                  hari
-                </Text>
+                    moment(new Date()).diff(new Date(e.countDown), "days") <=
+                  0 ? (
+                    <Group>
+                      <IconChecklist />
+                      <Text>Selesai</Text>
+                    </Group>
+                  ) : (
+                    <Box>
+                      Sisa Waktu : {}
+                      {Number(e.MasterPencarianInvestor.name) -
+                        moment(new Date()).diff(new Date(e.countDown), "days")} hari
+                    </Box>
+                  )} 
+                </Group>
               </Group>
             )}
           </Group>

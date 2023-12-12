@@ -131,7 +131,7 @@ export default function HomeView({ user }: { user: MODEL_User_profile }) {
         </Flex>
 
         <Paper bg={"dark"} radius={5} my={"xs"}>
-          <Image alt="logo" src={"/aset/logo.png"} />
+          <Image alt="logo" src={"/aset/investasi/home-hipmi.png"} />
         </Paper>
 
         {/* <pre>{JSON.stringify(stateUser, null, 2)}</pre> */}

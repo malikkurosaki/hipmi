@@ -18,6 +18,7 @@ export const RouterInvestasi = {
 
   // proses beli saham
   proses_investasi: "/dev/investasi/proses_investasi/",
+  proses_transaksi: "/dev/investasi/proses_transaksi/",
   status_transaksi: "/dev/investasi/status_transaksi/berhasil",
   status_transaksi_gagal: "/dev/investasi/status_transaksi/gagal/",
   metode_transfer: "/dev/investasi/metode_transfer/",
@@ -30,6 +31,7 @@ export const RouterInvestasi = {
   edit_berita: "/dev/investasi/edit_berita/",
 
   // detail //
+  detail: "/dev/investasi/detail/",
   detail_portofolio: "",
   detail_saham_terbeli: "/dev/investasi/detail_saham_terbeli/",
   detail_prospektus: "/dev/investasi/detail_prospektus/",

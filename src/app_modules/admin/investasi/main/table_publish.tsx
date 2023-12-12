@@ -72,10 +72,8 @@ export default function Admin_TablePublishInvestasi({
   return (
     <>
       <Stack>
-        <ActionIcon
-          variant="outline"
-          onClick={() => router.push(RouterAdminInvestasi.main_investasi)}
-        >
+      <ActionIcon variant="outline" onClick={() => router.push(RouterAdminInvestasi.main_investasi)}>
+
           <IconChevronLeft />
         </ActionIcon>
         <Box>

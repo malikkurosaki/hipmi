@@ -20,6 +20,7 @@ export default async function Page() {
   const userId = tkn.id;
   const statusTransaksi = await getMaster_StatusTransaksiInvestasi();
   const listTransaksi = await getListAllTransaksiById_Investasi(userId);
+  // console.log(listTransaksi)
   
   return (
     <>

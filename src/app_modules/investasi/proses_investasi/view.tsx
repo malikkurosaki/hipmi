@@ -49,29 +49,64 @@ export default function ProsesInvestasi({
   );
   const [transferValue, setTransferValue] = useAtom(gs_TransferValue);
 
-  async function onBeli() {
-    setTransferValue({
-      ...transferValue,
-      totalTransfer: total as any,
-      lembarTerbeli: jumlah as any,
-    }); 
-    router.push(RouterInvestasi.metode_transfer + `${investasi.id}`);
+  // async function onBeli() {
+  //   setTransferValue({
+  //     ...transferValue,
+  //     totalTransfer: total as any,
+  //     lembarTerbeli: jumlah as any,
+  //   });
+  //   router.push(RouterInvestasi.metode_transfer + `${investasi.id}`);
+  // }
+  const date = new Date();
+  const randomId = date.getTime();
+
+  async function onProses() {
+
+    const body = {
+      transaction_details: {
+        order_id: "hipmi_" + `${randomId}`,
+        gross_amount: total,
+      },
+      item_details: [
+        {
+          id: "item_"+ `${randomId}`,
+          name: investasi.title,
+          price: Number(investasi.hargaLembar),
+          quantity: transferValue.lembarTerbeli,
+          merchant_name: "Transaksi Saham",
+        },
+      ],
+      customer_details: {
+        first_name: "",
+        email: "test@midtrans.com",
+        phone: "+628123456",
+      },
+    };
   }
 
   return (
     <>
-      {/* <pre>{JSON.stringify(transferValue, null, 2)}</pre> */}
+      {/* <pre>{JSON.stringify(investasi, null, 2)}</pre> */}
       <Box px={"md"}>
         {/* Sisa Lembar Saham */}
         <Group position="apart" mb={"md"}>
           <Text>Sisa Lembar Saham</Text>
-          <Text fz={23}>{investasi.totalLembar} </Text>
+          <Text fz={23}>
+            {new Intl.NumberFormat("id-ID", {
+              maximumFractionDigits: 10,
+            }).format(+investasi.totalLembar)}{" "}
+          </Text>
         </Group>
 
         {/* Harga perlembar saham */}
         <Group position="apart" mb={"md"}>
           <Text>Harga Perlembar</Text>
-          <Text fz={23}>Rp.{investasi.hargaLembar} </Text>
+          <Text fz={23}>
+            Rp.{" "}
+            {new Intl.NumberFormat("id-ID", {
+              maximumFractionDigits: 10,
+            }).format(+investasi.hargaLembar)}{" "}
+          </Text>
         </Group>
 
         {/* Lembar saham */}
@@ -118,7 +153,8 @@ export default function ProsesInvestasi({
               radius={50}
               bg={Warna.biru}
               onClick={() => {
-                onBeli();
+                // onBeli();
+                onProses();
               }}
             >
               Beli Saham

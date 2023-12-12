@@ -55,11 +55,11 @@ export default function StatusTransaksiInvestasi_Gagal({
             </Group>
             <Group position="apart">
               <Text>Jumlah Transfer</Text>
-              <Text fw={"bold"}>Rp. {transaksi.totalTransfer}</Text>
+              {/* <Text fw={"bold"}>Rp. {transaksi.totalTransfer}</Text> */}
             </Group>
             <Group position="apart">
               <Text>Jumlah Lembar</Text>
-              <Text fw={"bold"}>{transaksi.lembarTerbeli}</Text>
+              {/* <Text fw={"bold"}>{transaksi.lembarTerbeli}</Text> */}
             </Group>
           </Stack>
         </Stack>

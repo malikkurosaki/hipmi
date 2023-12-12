@@ -14,8 +14,8 @@ export async function getListAllPublish() {
         },
       },
       AND: {
-        active: true
-      }
+        active: true,
+      },
     },
     select: {
       id: true,
@@ -38,7 +38,7 @@ export async function getListAllPublish() {
       MasterPembagianDeviden: true,
       MasterPencarianInvestor: true,
       MasterPeriodeDeviden: true,
-     
+      countDown: true,
     },
   });
 

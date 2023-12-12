@@ -12,10 +12,12 @@ export default async function funCreateTransaksiInvestasi(
     data: {
       namaBank: data.namaBank,
       nomorRekening: data.nomorRekening,
-      lembarTerbeli: "" + data.lembarTerbeli,
-      totalTransfer: "" + data.totalTransfer,
       investasiId: invesId,
       authorId: authorId,
+      gross_amount: "",
+      merchant_name:"",
+      price: "",
+      quantity: ""
     },
   });
   if (!res) return { status: 400, message: "Gagal disimpan" };

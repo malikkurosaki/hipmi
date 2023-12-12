@@ -26,22 +26,27 @@ export interface MODEL_Investasi {
   masterPeriodeDevidenId: string;
   masterPembagianDevidenId: string;
   masterPencarianInvestorId: string;
-  author: MODEL_User_profile
+  author: MODEL_User_profile;
+  countDown: Date
 }
 
 export interface MODEL_Transaksi_Investasi {
   id: string;
   namaBank: string;
   nomorRekening: string;
-  totalTransfer: string;
-  lembarTerbeli: string;
   active: boolean;
   createdAt: Date;
   updatedAt: Date;
-  investasiId: string;
   authorId: string;
+  quantity: string;
+  price: string;
+  gross_amount: string;
+  merchant_name: string;
+  redirect_url: string;
+  token: string;
+  Author: MODEL_User_profile;
   masterStatusTransaksiInvestasiId: string;
-  MasterStatusTransaksiInvestasi: Model_Status_Transaksi_Investasi;
+  investasiId: string;
   Investasi: MODEL_Investasi;
 }
 

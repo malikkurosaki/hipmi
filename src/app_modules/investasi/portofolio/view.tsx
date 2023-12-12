@@ -80,8 +80,8 @@ export default function PortofolioInvestasi({
       <Stack>
         <Button
           radius={"xl"}
-          bg={Warna.biru}
-          color="blue"
+          bg={Warna.hijau_muda}
+          color="green"
           leftIcon={<IconCirclePlus />}
           onClick={() => router.push(RouterInvestasi.create)}
         >

@@ -19,7 +19,6 @@ export default async function funGantiStatusTransaksi_Investasi(
     select: {
       id: true,
       namaBank: true,
-      totalTransfer: true,
       Investasi: true,
       MasterStatusTransaksiInvestasi: true
     }

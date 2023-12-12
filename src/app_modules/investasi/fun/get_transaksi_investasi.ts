@@ -11,8 +11,6 @@ export default async function getTransaksiByIdInvestasi(id: string) {
             id: true,
             namaBank: true,
             nomorRekening: true,
-            lembarTerbeli: true,
-            totalTransfer: true,
             active: true,
             createdAt: true,
             updatedAt: true,

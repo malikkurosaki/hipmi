@@ -55,6 +55,7 @@ import toast, { toastConfig } from "react-simple-toasts";
 import Admin_funRejectInvestasi from "../fun/fun_reject_investasi";
 import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin";
 import "react-simple-toasts/dist/theme/dark.css";
+import { BeritaInvestasi } from "@/app_modules/investasi";
 
 toastConfig({ theme: "dark" });
 
@@ -112,7 +113,7 @@ export default function Admin_KonfirmasiInvestasi({
     await Admin_funRejectInvestasi(body).then((res) => {
       if (res.status === 200) {
         toast(res.message);
-        router.back()
+        router.back();
         toggle();
       } else {
         toast(res.message);
@@ -292,6 +293,13 @@ export default function Admin_KonfirmasiInvestasi({
                 </Text>
               </Stack>
             )}
+            {publish &&
+            investasi.MasterStatusInvestasi.id === "3" &&
+            _.isEmpty(investasi.BeritaInvestasi) ? (
+              <BeritaInvestasi dataInvestasi={investasi} />
+            ) : (
+              ""
+            )}
           </Grid.Col>
           {/* Note dan dokumen */}
           <Grid.Col span={6}>
@@ -370,10 +378,10 @@ export default function Admin_KonfirmasiInvestasi({
             minRows={2}
             maxRows={4}
             value={investasi.catatan === null ? [] : investasi.catatan}
-            onChange={(val) => 
+            onChange={(val) =>
               setInvestasi({
                 ...investasi,
-                catatan: val.target.value
+                catatan: val.target.value,
               })
             }
           />

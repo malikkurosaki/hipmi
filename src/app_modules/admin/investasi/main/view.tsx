@@ -98,8 +98,10 @@ export default function Admin_Investasi({
         <Grid mb={"md"}>
           {listBox.map((e) => (
             <Grid.Col sm={12} md={6} lg={3} key={e.id}>
-              <Paper bg={`${e.color}.1`} p={"xs"} 
-              // sx={{borderStyle: "solid", borderColor: e.color}}
+              <Paper
+                bg={`${e.color}.1`}
+                p={"xs"}
+                // sx={{borderStyle: "solid", borderColor: e.color}}
               >
                 <Stack align="center" justify="center" spacing={0} mb={-35}>
                   <Text tt={"uppercase"}>{e.name}</Text>
@@ -110,10 +112,13 @@ export default function Admin_Investasi({
                 <Group position="right">
                   {e.link === "" ? (
                     <ActionIcon variant="transparent">
-                    {/* <IconChevronsRight color="black" /> */}
-                  </ActionIcon>
+                      {/* <IconChevronsRight color="black" /> */}
+                    </ActionIcon>
                   ) : (
-                    <ActionIcon variant="transparent" onClick={() => router.push(e.link)}>
+                    <ActionIcon
+                      variant="transparent"
+                      onClick={() => router.push(e.link)}
+                    >
                       <IconChevronsRight color="black" />
                     </ActionIcon>
                   )}
@@ -124,20 +129,15 @@ export default function Admin_Investasi({
         </Grid>
 
         {/* Table Total & Progres */}
-        <Grid>
+        {/* <Grid>
           <Grid.Col sm={12} md={4} lg={4}>
             <TableTotalInvestasi totalInvestasiByUser={totalInvestasiByUser} />
           </Grid.Col>
           <Grid.Col sm={12} md={8} lg={8}>
             <TablePublikasiProgresInvestasi publishProgres={publishProgres} />
           </Grid.Col>
-        </Grid>
+        </Grid> */}
       </Stack>
-
-      {/* <TablePublish dataInvestsi={investasi as any} />
-      <TableReview dataInvestsi={investasi as any} />
-      <TableReject dataInvestsi={investasi as any} /> */}
-      {/* <pre>{JSON.stringify(targetTerbesar, null, 2)}</pre> */}
     </>
   );
 }

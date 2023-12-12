@@ -71,7 +71,7 @@ export default function Admin_TableReviewInvestasi({
   return (
     <>
       <Stack>
-        <ActionIcon variant="outline" onClick={() => router.back()}>
+        <ActionIcon variant="outline" onClick={() => router.push(RouterAdminInvestasi.main_investasi)}>
           <IconChevronLeft />
         </ActionIcon>
         <Box>

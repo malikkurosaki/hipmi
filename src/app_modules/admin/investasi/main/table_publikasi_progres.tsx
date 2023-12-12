@@ -23,6 +23,7 @@ export default function TablePublikasiProgresInvestasi({
         radius={"md"}
         bg={"gray.4"}
         p={"sm"}
+        h={400}
         // sx={{ borderStyle: "solid", borderColor: "teal" }}
       >
         <Stack spacing={"xl"}>

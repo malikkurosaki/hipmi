@@ -30,6 +30,8 @@ export default async function getOneInvestasiById(id: string) {
       MasterPembagianDeviden: true,
       MasterPencarianInvestor: true,
       MasterPeriodeDeviden: true,
+      author: true,
+      countDown: true
     },
   });
 

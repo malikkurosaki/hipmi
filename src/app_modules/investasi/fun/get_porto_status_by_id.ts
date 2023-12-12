@@ -78,6 +78,7 @@ export default async function getPortoByStatusId(id: string, statusId: number) {
         updatedAt: true,
         targetDana: true,
         MasterPencarianInvestor: true,
+        countDown: true,
       },
     });
     return data;

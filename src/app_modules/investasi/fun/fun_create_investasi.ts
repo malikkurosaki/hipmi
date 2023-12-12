@@ -11,7 +11,7 @@ import { MODEL_Investasi } from "../model/model_investasi";
 export async function funCreateInvestasi(
   gamabar: FormData,
   filePdf: FormData,
-  data: MODEL_Investasi | any
+  data: MODEL_Investasi 
 ) {
   // Function upload gambar
   const file: any = gamabar.get("file");
@@ -32,7 +32,7 @@ export async function funCreateInvestasi(
   if (!uploadImage)
     return {
       status: 400,
-      message: "File Kosong",
+      message: "Gambar Kosong",
     };
 
   const upFolder = Buffer.from(await file.arrayBuffer());
@@ -67,23 +67,21 @@ export async function funCreateInvestasi(
   const pdfExt = _.lowerCase(dataPdf.name.split(".").pop());
   const pdfRandomName = v4(pdfName) + "." + pdfExt;
 
-  const uploadFile = await prisma.prospektusInvestasi.upsert({
-    where: {
-      investasiId: createInvest.id,
-    },
-    update: {
-      url: pdfRandomName,
-    },
-    create: {
+  const uploadFile = await prisma.prospektusInvestasi.create({
+    data: {
       investasiId: createInvest.id,
       url: pdfRandomName,
+    },
+    select: {
+      id: true,
+      url: true,
     },
   });
 
-  if(!uploadFile) return {status: 400, message: "Gagal Upload"}
-  const upPdfFolder = Buffer.from(await file.arrayBuffer())
-  fs.writeFileSync(`./public/file/${uploadFile.url}`, upPdfFolder)
 
+  if (!uploadFile) return { status: 400, message: "File Kosong" };
+  const upPdfFolder = Buffer.from(await file.arrayBuffer());
+  fs.writeFileSync(`./public/file/${uploadFile.url}`, upPdfFolder);
 
   revalidatePath(RouterInvestasi.main_porto);
 

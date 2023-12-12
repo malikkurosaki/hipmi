@@ -20,15 +20,15 @@ export default function TableTotalInvestasi({
       <Paper
         radius={"md"}
         bg={"gray.4"}
-
         p={"sm"}
+        h={400}
         // sx={{ borderStyle: "solid", borderColor: "teal" }}
       >
         <Stack spacing={"xl"}>
           <Center>
             <Title order={4}>Total Investasi Pengguna</Title>
           </Center>
-          <Table bg={"gray.2"} sx={{borderRadius: "10px"}}>
+          <Table bg={"gray.2"} sx={{ borderRadius: "10px" }}>
             <thead>
               <tr>
                 <th>

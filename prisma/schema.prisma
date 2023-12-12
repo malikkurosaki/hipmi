@@ -100,21 +100,23 @@ model MasterBidangBisnis {
 // -------------------- INVESTASI --------------------- //
 // Table investasi / saham
 model Investasi {
-  id            String   @id @default(cuid())
-  title         String
-  targetDana    String
-  hargaLembar   String
-  totalLembar   String
-  roi           String
-  active        Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(now()) @updatedAt
-  author        User?    @relation(fields: [authorId], references: [id])
+  id          String  @id @default(cuid())
+  title       String
+  targetDana  String
+  hargaLembar String
+  totalLembar String
+  roi         String
+  active      Boolean @default(true)
+
+  countDown     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  author        User?     @relation(fields: [authorId], references: [id])
   authorId      String?
   catatan       String?
   sisaLembar    String
-  lembarTerbeli String?  @default("0")
-  progress      String?  @default("0")
+  lembarTerbeli String?   @default("0")
+  progress      String?   @default("0")
 
   MasterPeriodeDeviden      MasterPeriodeDeviden?    @relation(fields: [masterPeriodeDevidenId], references: [id])
   masterPeriodeDevidenId    String?
@@ -218,16 +220,31 @@ model MasterBank {
 }
 
 model TransaksiInvestasi {
-  id          String     @id @default(cuid())
-  Investasi   Investasi? @relation(fields: [investasiId], references: [id])
-  investasiId String?
-  Author      User?      @relation(fields: [authorId], references: [id])
-  authorId    String?
+  id          String    @id @default(cuid())
+  Investasi   Investasi @relation(fields: [investasiId], references: [id])
+  investasiId String
+  Author      User      @relation(fields: [authorId], references: [id])
+  authorId    String
 
-  namaBank                         String
-  nomorRekening                    String
-  lembarTerbeli                    String
-  totalTransfer                    String
+  namaBank            String?
+  nomorRekening       String?
+  token               String?
+  redirect_url        String?
+  quantity            String
+  price               String
+  gross_amount        String
+  merchant_name       String
+  status_code         String?
+  status_message      String?
+  transaction_id      String?
+  order_id            String?
+  payment_type        String?
+  transaction_time    String?
+  transaction_status  String?
+  fraud_status        String?
+  pdf_url             String?
+  finish_redirect_url String?
+
   active                           Boolean                         @default(true)
   createdAt                        DateTime                        @default(now())
   updatedAt                        DateTime                        @updatedAt

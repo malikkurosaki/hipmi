@@ -152,7 +152,7 @@ export default function InvestasiCreate({
               </Paper>
             ) : (
               <Paper w={"100%"} bg={"gray.6"} p={"sm"}>
-                <Text>{pdf.name}</Text>
+                <Text truncate>{pdf.name}</Text>
               </Paper>
             )}
             {/* {JSON.stringify(filePdf)} */}
