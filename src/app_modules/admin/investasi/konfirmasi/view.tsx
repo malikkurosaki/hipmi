@@ -51,8 +51,13 @@ import _ from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
+import toast, { toastConfig } from "react-simple-toasts";
 import Admin_funRejectInvestasi from "../fun/fun_reject_investasi";
+import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin";
+import "react-simple-toasts/dist/theme/dark.css";
+import { BeritaInvestasi } from "@/app_modules/investasi";
+
+toastConfig({ theme: "dark" });
 
 export default function Admin_KonfirmasiInvestasi({
   dataInvestasi,
@@ -101,13 +106,14 @@ export default function Admin_KonfirmasiInvestasi({
   async function onReject() {
     const body = {
       id: investasi.id,
-      catatan: catatan,
+      catatan: investasi.catatan,
       status: "4",
     };
     if (_.isEmpty(body.catatan)) return toast("Lengkapi alasan");
     await Admin_funRejectInvestasi(body).then((res) => {
       if (res.status === 200) {
         toast(res.message);
+        router.back();
         toggle();
       } else {
         toast(res.message);
@@ -116,9 +122,13 @@ export default function Admin_KonfirmasiInvestasi({
   }
 
   async function onPublish() {
-    const res = await funGantiStatusInvestasi(investasi.id, "3");
-    setTimeout(() => setPublish(false), 1000);
-    toast("Proyek Investasi Di Publish");
+    await funGantiStatusInvestasi(investasi.id, "3").then((res) => {
+      if (res.status === 200) {
+        setTimeout(() => setPublish(false), 1000);
+        router.push(RouterAdminInvestasi.table_status_review);
+        toast("Proyek Investasi Di Publish");
+      }
+    });
   }
 
   return (
@@ -146,6 +156,18 @@ export default function Admin_KonfirmasiInvestasi({
             {!publish || investasi.MasterStatusInvestasi.id === "4" ? (
               ""
             ) : (
+              //    <Button
+              //    radius={50}
+              //    leftIcon={<IconBan />}
+              //    bg={"orange"}
+              //    color="orange"
+              //    onClick={() => {
+              //      setTimeout(() => setPublish(true), 1000);
+              //      toast("Proyek Investasi Di Non-Aktifkan");
+              //    }}
+              //  >
+              //    Non - aktifkan
+              //  </Button>
               <Button
                 radius={50}
                 bg={"green"}
@@ -157,18 +179,6 @@ export default function Admin_KonfirmasiInvestasi({
               >
                 Publish
               </Button>
-              // <Button
-              //   radius={50}
-              //   leftIcon={<IconBan />}
-              //   bg={"orange"}
-              //   color="orange"
-              //   onClick={() => {
-              //     setTimeout(() => setPublish(true), 1000);
-              //     toast("Proyek Investasi Di Non-Aktifkan");
-              //   }}
-              // >
-              //   Non - aktifkan
-              // </Button>
             )}
           </Center>
           {investasi.MasterStatusInvestasi.id === "3" ? (
@@ -191,7 +201,7 @@ export default function Admin_KonfirmasiInvestasi({
 
       <Stack spacing={"lg"}>
         <Grid>
-          <Grid.Col span={4}>
+          <Grid.Col span={6}>
             {/* Title  */}
             <Center my={"sm"}>
               <Title order={4} mb={"xs"}>
@@ -209,17 +219,27 @@ export default function Admin_KonfirmasiInvestasi({
           </Grid.Col>
 
           {/* Rincian Data */}
-          <Grid.Col span={4}>
-            <Grid p={"md"} mb={"md"}>
+          <Grid.Col span={6}>
+            <Grid mt={"md"}>
               <Grid.Col span={6}>
                 <Stack>
                   <Box>
                     <Text>Dana Dibutuhkan</Text>
-                    <Text>Rp. {investasi.targetDana}</Text>
+                    <Text>
+                      Rp.{" "}
+                      {new Intl.NumberFormat("id-ID", {
+                        maximumFractionDigits: 10,
+                      }).format(+investasi.targetDana)}
+                    </Text>
                   </Box>
                   <Box>
                     <Text>Harga Per Lembar</Text>
-                    <Text>Rp.{investasi.hargaLembar} </Text>
+                    <Text>
+                      Rp.{" "}
+                      {new Intl.NumberFormat("id-ID", {
+                        maximumFractionDigits: 10,
+                      }).format(+investasi.hargaLembar)}{" "}
+                    </Text>
                   </Box>
                   <Box>
                     <Text>Jadwal Pembagian</Text>
@@ -239,7 +259,13 @@ export default function Admin_KonfirmasiInvestasi({
                   </Box>
                   <Box>
                     <Text>Total Lembar</Text>
-                    <Text> {investasi.totalLembar} lembar</Text>
+                    <Text>
+                      {" "}
+                      {new Intl.NumberFormat("id-ID", {
+                        maximumFractionDigits: 10,
+                      }).format(+investasi.totalLembar)}{" "}
+                      lembar
+                    </Text>
                   </Box>
                   <Box>
                     <Text>Pembagian Deviden</Text>
@@ -249,11 +275,14 @@ export default function Admin_KonfirmasiInvestasi({
               </Grid.Col>
             </Grid>
           </Grid.Col>
+        </Grid>
 
-          {/* Note dan dokumen */}
-          <Grid.Col span={4}>
-            <Stack>
-              {/* Note */}
+        <Grid>
+          <Grid.Col span={6}>
+            {/* Note */}
+            {!publish || investasi.MasterStatusInvestasi.id === "4" ? (
+              ""
+            ) : (
               <Stack spacing={0}>
                 <Text fw={"bold"}>Note :</Text>
                 <Text fw={"lighter"} fs={"italic"}>
@@ -263,6 +292,18 @@ export default function Admin_KonfirmasiInvestasi({
                   kekurangnya.
                 </Text>
               </Stack>
+            )}
+            {publish &&
+            investasi.MasterStatusInvestasi.id === "3" &&
+            _.isEmpty(investasi.BeritaInvestasi) ? (
+              <BeritaInvestasi dataInvestasi={investasi} />
+            ) : (
+              ""
+            )}
+          </Grid.Col>
+          {/* Note dan dokumen */}
+          <Grid.Col span={6}>
+            <Stack>
               {/* File file */}
               <Stack>
                 {/* Prospektus */}
@@ -336,7 +377,13 @@ export default function Admin_KonfirmasiInvestasi({
             autosize
             minRows={2}
             maxRows={4}
-            onChange={(val) => setCatatan(val.target.value)}
+            value={investasi.catatan === null ? [] : investasi.catatan}
+            onChange={(val) =>
+              setInvestasi({
+                ...investasi,
+                catatan: val.target.value,
+              })
+            }
           />
           <Group position="right">
             <Button radius={50} compact onClick={() => onReject()}>

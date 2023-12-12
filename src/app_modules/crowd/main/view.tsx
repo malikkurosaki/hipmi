@@ -57,7 +57,7 @@ export default function MainCrowd() {
             </Grid>
           </Paper>
           <Paper
-            bg={Warna.biru}
+            bg={"blue.4"}
             radius={"md"}
             p={"xs"}
             onClick={() => toast("Cooming Soon Feature...")}

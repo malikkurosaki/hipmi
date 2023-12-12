@@ -17,135 +17,136 @@ import {
   Badge,
   Image,
   Text,
+  Button,
+  Paper,
+  Progress,
+  Center,
 } from "@mantine/core";
 import { IconCircleCheck } from "@tabler/icons-react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import dataDummy from "../dummy/data_dummy.json";
+import { MODEL_Transaksi_Investasi } from "../model/model_investasi";
+import { useState } from "react";
+import { Warna } from "@/app/lib/warna";
 
-export default function InvestasiSahamTerbeli() {
+export default function InvestasiSahamTerbeli({
+  listTransaksi,
+}: {
+  listTransaksi: MODEL_Transaksi_Investasi[];
+}) {
   const router = useRouter();
+  const [investasi, setInvestasi] = useState(listTransaksi);
+
   return (
     <>
-
-      {dataDummy.map((e) => (
+      {/* {investasi.map((e) => (
         <Card
+          // sx={{ borderStyle: "solid", borderColor: "black", borderWidth: "0.5px" }}
+          radius={"md"}
           key={e.id}
-          withBorder
-          bg={"gray.5"}
           mb={"lg"}
-          onClick={() =>
-            router.push(RouterInvestasi.detail_saham_terbeli + `${e.id}`)
-          }
+          bg={"green.3"}
         >
-          <CardSection>
-            <Group position="left" mt={"sm"} px={"md"}>
-              <Flex align={"center"} gap={"xs"}>
-                <Avatar src={"/aset/avatar.png"} />
-                <Text>Username</Text>
-              </Flex>
-            </Group>
-          </CardSection>
-          <CardSection p={"xs"}>
+          <CardSection p={"md"}>
             <AspectRatio ratio={16 / 9}>
-              {/* {e.imagesId ? (
-                        <Image alt="" src={`/api/investasi/gambar/${e.imagesId}`} />
-                      ) : (
-                        <Image alt="" src={"/aset/no-img.png"} />
-                      )} */}
-              <Image alt="" src={"/aset/no-img.png"} />
+              <Paper radius={"md"}>
+                {e.Investasi.imagesId ? (
+                  <Image
+                    alt=""
+                    src={`/api/investasi/gambar/${e.Investasi.imagesId}`}
+                  />
+                ) : (
+                  <Image alt="" src={"/aset/no-img.png"} />
+                )}
+              </Paper>
             </AspectRatio>
           </CardSection>
 
-          <CardSection p={"lg"}>
-            <Box mb={"md"}>
-              <Title order={4}>{e.title}</Title>
-              <Slider
-                size={10}
-                disabled
-                labelAlwaysOn
-                value={e.persentase}
-                marks={[{ value: e.persentase, label: e.persentase + `%` }]}
-              />
-            </Box>
-          </CardSection>
-          <CardSection p={"md"}>
-            <Box>
-              <Grid>
-                <Grid.Col span={6}>
-                  <Stack>
-                    <Box>
-                      <Text>Dana Dibutuhkan</Text>
-                      <Text>Rp. {e.targetDana}</Text>
-                    </Box>
-                    <Box>
-                      <Text>Harga Per Lembar</Text>
-                      <Text>Rp. {e.hargaLembar}</Text>
-                    </Box>
-                  </Stack>
-                </Grid.Col>
-                <Grid.Col span={6}>
-                  <Stack>
-                    <Box>
-                      <Text>ROI</Text>
-                      <Text>{e.roi}%</Text>
-                    </Box>
-                    <Box>
-                      <Text>Total Lembar</Text>
-                      <Text>{e.totalLembar}</Text>
-                    </Box>
-                  </Stack>
-                </Grid.Col>
-              </Grid>
-            </Box>
-          </CardSection>
-          <Divider />
-          <CardSection p={"md"}>
-            <Group position="apart">
-              {e.statusSaham.id === 1 ? (
-                <Badge variant="dot">{e.statusSaham.status}</Badge>
-              ) : (
-                <Badge variant="dot" color="red">
-                  {e.statusSaham.status}
-                </Badge>
-              )}
 
-              {(() => {
-                if (
-                  e.masterPencarianInvestorId -
-                    moment(new Date()).diff(new Date(e.createdAt), "days") <=
-                  0
-                ) {
-                  return (
-                    <>
-                      <Group position="center">
-                        <IconCircleCheck color="green" />
-                        <Text>Selesai</Text>
-                      </Group>
-                    </>
-                  );
-                } else {
-                  return (
-                    <>
-                      <Group position="right" spacing={"xs"}>
-                        <Text>Sisa waktu:</Text>
-                        <Text>
-                          {e.masterPencarianInvestorId -
-                            moment(new Date()).diff(
-                              new Date(e.createdAt),
-                              "days"
-                            )}
-                        </Text>
-                        <Text>Hari</Text>
-                      </Group>
-                    </>
-                  );
+          <CardSection p={"lg"}>
+            <Stack>
+              <Center>
+                <Title order={4}>{e.Investasi.title}</Title>
+              </Center>
+              <Progress
+                label={
+                  "" +
+                  (
+                    ((+e.Investasi.totalLembar - +e.Investasi.sisaLembar) /
+                      +e.Investasi.totalLembar) *
+                    100
+                  ).toFixed(1) +
+                  "%"
                 }
-              })()}
-            </Group>
+                value={
+                  +(
+                    ((+e.Investasi.totalLembar - +e.Investasi.sisaLembar) /
+                      +e.Investasi.totalLembar) *
+                    100
+                  ).toFixed(2)
+                }
+                color="teal"
+                size="xl"
+                radius="xl"
+              />
+            </Stack>
           </CardSection>
+
+          <Stack>
+            <CardSection px={"md"}>
+              <Group>
+                <Text>Saham Terbeli :</Text>
+                <Text fz={"xl"} >{new Intl.NumberFormat("id-ID", {maximumFractionDigits: 10}).format(+ e.quantity)} Lembar</Text>
+              </Group>
+              <Group>
+                <Text> Total Pembelian :</Text>
+                <Text fz={"xl"} >Rp. {new Intl.NumberFormat("id-ID", {maximumFractionDigits: 10}).format(+ e.gross_amount)}</Text>
+              </Group>
+            </CardSection>
+
+            <CardSection py={"sm"}>
+              <Group position="center">
+                <Button
+                  radius={"xl"}
+                  compact
+                  bg={Warna.hijau_muda}
+                  color="green"
+                  onClick={() =>
+                    router.push(
+                      RouterInvestasi.detail_saham_terbeli + `${e.id}`
+                    )
+                  }
+                >
+                  Details
+                </Button>
+              </Group>
+            </CardSection>
+          </Stack>
         </Card>
-      ))}
+      ))} */}
+
+      <Paper bg={"gray.4"} p={"md"}>
+        <Group position="apart">
+          <Group>
+            <Avatar radius={"xl"} />
+            <Text>Username</Text>
+          </Group>
+          <Button bg={"green.5"} radius={"xl"}>
+            Detail
+          </Button>
+        </Group>
+        <Divider color="black.3" my={"md"} />
+        <Stack>
+          <Center>
+            <Title order={4}>Judul Investasi</Title>
+          </Center>
+          <Progress size={"xl"} value={40} label="40 %" radius={"xl"} />
+          <Image alt="" src={"/aset/no-img.png"} radius={"md"}/>
+        </Stack>
+
+       
+      </Paper>
     </>
   );
 }

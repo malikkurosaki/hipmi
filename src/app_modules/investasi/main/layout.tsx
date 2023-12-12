@@ -50,7 +50,7 @@ export default function LayoutMainInvestasi({
     },
     {
       id: 3,
-      name: "Investasi",
+      name: "Saham Saya",
       route: RouterInvestasi.main_investasi,
       icon: <IconCash />,
     },
@@ -75,7 +75,7 @@ export default function LayoutMainInvestasi({
         }
         footer={
           <Footer height={70} bg={"dark.4"}>
-            <Grid align="center" h={60} pt={"xs"}>
+            <Grid align="center" h={60} pt={"xs"} grow>
               {/* Tampilan Bursa */}
               {listFooter.map((e, k) => (
                 <Grid.Col

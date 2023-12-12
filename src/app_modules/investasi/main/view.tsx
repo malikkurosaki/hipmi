@@ -30,6 +30,8 @@ import { MODEL_Investasi } from "../model/model_investasi";
 import _ from "lodash";
 import { useState } from "react";
 import { useShallowEffect } from "@mantine/hooks";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { Warna } from "@/app/lib/warna";
 
 export default function MainInvestasi({
   listData,
@@ -44,6 +46,18 @@ export default function MainInvestasi({
 }) {
   const router = useRouter();
   const [investasi, setInvestasi] = useState(listData);
+  const [progres, setProgres] = useState(0);
+
+  async function onProgres(data: MODEL_Investasi) {
+    // console.log(data)
+    const total = Number(data.totalLembar);
+    const sisa = Number(data.sisaLembar);
+    const beli = total - sisa;
+    const hasil = (beli / total) * 100;
+    const progres = Math.round(hasil).toFixed(2);
+    // console.log(progres)
+    return progres;
+  }
 
   if (_.isEmpty(investasi))
     return (
@@ -62,19 +76,20 @@ export default function MainInvestasi({
       {investasi.map((e) => (
         <Card
           // sx={{ borderStyle: "solid", borderColor: "black", borderWidth: "0.5px" }}
-
+          radius={"md"}
           key={e.id}
           mb={"lg"}
-          bg={"teal"}
-          onClick={() => router.push(`/dev/investasi/detail/${e.id}`)}
+          bg={"dark.1"}
         >
-          <CardSection p={"xs"}>
+          <CardSection p={"md"}>
             <AspectRatio ratio={16 / 9}>
-              {e.imagesId ? (
-                <Image alt="" src={`/api/investasi/gambar/${e.imagesId}`} />
-              ) : (
-                <Image alt="" src={"/aset/no-img.png"} />
-              )}
+              <Paper radius={"md"}>
+                {e.imagesId ? (
+                  <Image alt="" src={`/api/investasi/gambar/${e.imagesId}`} />
+                ) : (
+                  <Image alt="" src={"/aset/no-img.png"} />
+                )}
+              </Paper>
             </AspectRatio>
           </CardSection>
 
@@ -83,12 +98,23 @@ export default function MainInvestasi({
             <Stack>
               <Title order={4}>{e.title}</Title>
               <Progress
-                label={`${e.progress}%`}
-                value={Number(e.progress)}
+                label={
+                  "" +
+                  (
+                    ((+e.totalLembar - +e.sisaLembar) / +e.totalLembar) *
+                    100
+                  ).toFixed(1) +
+                  "%"
+                }
+                value={
+                  +(
+                    ((+e.totalLembar - +e.sisaLembar) / +e.totalLembar) *
+                    100
+                  ).toFixed(2)
+                }
                 color="teal"
                 size="xl"
                 radius="xl"
-                animate
               />
             </Stack>
           </CardSection>
@@ -99,14 +125,18 @@ export default function MainInvestasi({
                   <Stack>
                     <Box>
                       <Text>Dana Dibutuhkan</Text>
-                      <Text>Rp. {new Intl.NumberFormat("id-ID", {
+                      <Text>
+                        Rp.{" "}
+                        {new Intl.NumberFormat("id-ID", {
                           maximumSignificantDigits: 10,
-                        }).format(+e.targetDana)}</Text>
+                        }).format(+e.targetDana)}
+                      </Text>
                     </Box>
                     <Box>
                       <Text>Harga Per Lembar</Text>
                       <Text>
-                        Rp. {new Intl.NumberFormat("id-ID", {
+                        Rp.{" "}
+                        {new Intl.NumberFormat("id-ID", {
                           maximumSignificantDigits: 10,
                         }).format(+e.hargaLembar)}
                         {/* {e.hargaLembar} */}
@@ -121,17 +151,19 @@ export default function MainInvestasi({
                       <Text>{e.roi}%</Text>
                     </Box>
                     <Box>
-                      <Text>Total Lembar</Text>
-                      <Text>{new Intl.NumberFormat("id-ID").format(+e.totalLembar)}</Text>
+                      <Text>Sisa Lembar</Text>
+                      <Text>
+                        {new Intl.NumberFormat("id-ID").format(+e.sisaLembar)}
+                      </Text>
                     </Box>
                   </Stack>
                 </Grid.Col>
               </Grid>
             </Box>
           </CardSection>
-          <Divider />
+          <Divider color="dark.4" />
           <CardSection p={"md"}>
-            <Flex gap={"xl"} align={"center"} justify={"center"}>
+            <Group position="apart">
               {/* <Box>
                 {e.SahamTerbeli === null ? (
                   ""
@@ -141,18 +173,36 @@ export default function MainInvestasi({
                   </Badge>
                 )}
               </Box> */}
+              <Button
+                radius={"xl"}
+                compact
+                bg={Warna.hijau_muda}
+                color="green"
+                onClick={() => router.push(RouterInvestasi.detail + `${e.id}`)}
+              >
+                Details
+              </Button>
 
               {(() => {
                 if (
                   Number(e.MasterPencarianInvestor.name) -
-                    moment(new Date()).diff(new Date(e.createdAt), "days") <=
+                    moment(new Date()).diff(new Date(e.countDown), "days") <=
                   0
                 ) {
                   return (
                     <>
-                      <Group position="right">
+                      <Group position="right" spacing={"xs"}>
                         <IconCircleCheck color="green" />
-                        <Text c={"green"}>Selesai</Text>
+                        <Text
+                          variant="text"
+                          c={Warna.hijau_tua}
+                          sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+                          ta="center"
+                          fz="md"
+                          fw={700}
+                        >
+                          Waktu Habis
+                        </Text>
                       </Group>
                     </>
                   );
@@ -164,7 +214,7 @@ export default function MainInvestasi({
                         <Text>
                           {Number(e.MasterPencarianInvestor.name) -
                             moment(new Date()).diff(
-                              new Date(e.updatedAt),
+                              new Date(e.countDown),
                               "days"
                             )}
                         </Text>
@@ -174,7 +224,7 @@ export default function MainInvestasi({
                   );
                 }
               })()}
-            </Flex>
+            </Group>
           </CardSection>
         </Card>
       ))}

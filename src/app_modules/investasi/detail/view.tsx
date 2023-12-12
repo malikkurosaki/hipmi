@@ -73,7 +73,7 @@ export default function DetailInvestasi({
   ];
 
   async function onSubmit() {
-    router.push(RouterInvestasi.proses_investasi + `${investasi.id}`);
+    router.push(RouterInvestasi.proses_transaksi + `${investasi.id}`);
     setTransaksiValue({
       ...transaksiValue,
       lembarTerbeli: "",
@@ -224,7 +224,7 @@ export default function DetailInvestasi({
              onSubmit()
             }}
           >
-            Investasi
+            Beli Saham
           </Button>
         </Center>
       )}

@@ -190,11 +190,11 @@ export default function TransferInvestasi({
             >
               <Grid align="center">
                 <Grid.Col span={8}>
-                  <Text fw={"bold"}>Rp. {transaksi.totalTransfer}</Text>
+                  {/* <Text fw={"bold"}>Rp. {transaksi.totalTransfer}</Text> */}
                 </Grid.Col>
                 <Grid.Col span={4}>
                   <Center>
-                    <CopyButton value={transaksi.totalTransfer}>
+                    {/* <CopyButton value={transaksi.totalTransfer}>
                       {({ copied, copy }) => (
                         <Button
                           variant="filled"
@@ -207,7 +207,7 @@ export default function TransferInvestasi({
                           {copied ? "Tersalin" : "Salin"}
                         </Button>
                       )}
-                    </CopyButton>
+                    </CopyButton> */}
                   </Center>
                 </Grid.Col>
               </Grid>
