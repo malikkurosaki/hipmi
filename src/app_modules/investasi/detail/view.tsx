@@ -34,17 +34,20 @@ import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
 import { RouterUserProfile } from "@/app/lib/router_hipmi/router_user_profile";
 import { gs_TransferValue } from "../g_state";
 import { useAtom } from "jotai";
+import _ from "lodash";
 
 export default function DetailInvestasi({
   dataInvestasi,
   dataUser,
   loginUserId,
-  progress
+  progress,
+  totalInvestor
 }: {
   dataInvestasi: MODEL_Investasi;
   dataUser: MODEL_User_profile;
   loginUserId: string;
-  progress: number
+  progress: number;
+  totalInvestor: number
 }) {
   const router = useRouter();
   const [investasi, setInvestasi] = useState(dataInvestasi);
@@ -81,7 +84,6 @@ export default function DetailInvestasi({
       nomorRekening: "",
       totalTransfer: "",
     });
-    
   }
 
   return (
@@ -89,16 +91,19 @@ export default function DetailInvestasi({
       {/* Foto username dan sisa waktu */}
       <Group position="apart" mb={"md"}>
         <Flex align={"center"} gap={"xs"}>
-          <Avatar
-            radius={50}
-            src={
-              RouterUserProfile.api_foto + `${user.Profile?.ImageProfile?.url}`
-            }
-          />
+          <Avatar radius={"xl"} bg={"gray"}>
+            {(() => {
+              const usr = investasi.author.username;
+              const splt = usr.split("");
+              const Up = _.upperCase(splt[0]);
+
+              return Up;
+            })()}
+          </Avatar>
           <Text>{user.username}</Text>
         </Flex>
         {Number(investasi.MasterPencarianInvestor.name) -
-          moment(new Date()).diff(new Date(investasi.updatedAt), "days") <=
+          moment(new Date()).diff(new Date(investasi.countDown), "days") <=
         0 ? (
           <Group position="right">
             <IconCircleCheck color="green" />
@@ -109,7 +114,7 @@ export default function DetailInvestasi({
             <Text>Sisa waktu:</Text>
             <Text>
               {Number(investasi.MasterPencarianInvestor.name) -
-                moment(new Date()).diff(new Date(investasi.updatedAt), "days")}
+                moment(new Date()).diff(new Date(investasi.countDown), "days")}
             </Text>
             <Text>Hari</Text>
           </Group>
@@ -131,12 +136,25 @@ export default function DetailInvestasi({
           {investasi.title}
         </Title>
         <Progress
-          label={`${progress} %`}
-          value={progress}
+          label={
+            "" +
+            (
+              ((+investasi.totalLembar - +investasi.sisaLembar) /
+                +investasi.totalLembar) *
+              100
+            ).toFixed(1) +
+            "%"
+          }
+          value={
+            +(
+              ((+investasi.totalLembar - +investasi.sisaLembar) /
+                +investasi.totalLembar) *
+              100
+            ).toFixed(1)
+          }
           color="teal"
           size="xl"
           radius="xl"
-          animate
         />
       </Box>
 
@@ -146,15 +164,21 @@ export default function DetailInvestasi({
           <Stack>
             <Box>
               <Text>Dana Dibutuhkan</Text>
-              <Text>Rp. {new Intl.NumberFormat("id-ID", {
+              <Text>
+                Rp.{" "}
+                {new Intl.NumberFormat("id-ID", {
                   maximumSignificantDigits: 10,
-                }).format(+investasi.targetDana)}</Text>
+                }).format(+investasi.targetDana)}
+              </Text>
             </Box>
             <Box>
               <Text>Harga Per Lembar</Text>
-              <Text>Rp. {new Intl.NumberFormat("id-ID", {
+              <Text>
+                Rp.{" "}
+                {new Intl.NumberFormat("id-ID", {
                   maximumSignificantDigits: 10,
-                }).format(+investasi.hargaLembar)}</Text>
+                }).format(+investasi.hargaLembar)}
+              </Text>
             </Box>
             <Box>
               <Text>Jadwal Pembagian</Text>
@@ -168,21 +192,31 @@ export default function DetailInvestasi({
         </Grid.Col>
         <Grid.Col span={6}>
           <Stack>
+          <Box>
+              <Text>Investor</Text>
+              <Text>{new Intl.NumberFormat("id-ID", {maximumSignificantDigits: 10}).format(totalInvestor)}</Text>
+            </Box>
             <Box>
               <Text>ROI</Text>
               <Text>{investasi.roi}%</Text>
             </Box>
             <Box>
               <Text>Total Lembar</Text>
-              <Text>{new Intl.NumberFormat("id-ID", {
+              <Text>
+                {new Intl.NumberFormat("id-ID", {
                   maximumSignificantDigits: 10,
-                }).format(+investasi.totalLembar)} lembar</Text>
+                }).format(+investasi.totalLembar)}{" "}
+                lembar
+              </Text>
             </Box>
             <Box>
               <Text>Sisa Lembar</Text>
-              <Text>{new Intl.NumberFormat("id-ID", {
+              <Text>
+                {new Intl.NumberFormat("id-ID", {
                   maximumSignificantDigits: 10,
-                }).format(+investasi.sisaLembar)} lembar</Text>
+                }).format(+investasi.sisaLembar)}{" "}
+                lembar
+              </Text>
             </Box>
           </Stack>
         </Grid.Col>
@@ -221,7 +255,7 @@ export default function DetailInvestasi({
             w={350}
             bg={Warna.biru}
             onClick={() => {
-             onSubmit()
+              onSubmit();
             }}
           >
             Beli Saham

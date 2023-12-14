@@ -5,7 +5,7 @@ import prisma from "@/app/lib/prisma";
 export async function getListAllPublish() {
   const data = await prisma.investasi.findMany({
     orderBy: {
-      updatedAt: "desc",
+      countDown: "asc",
     },
     where: {
       MasterStatusInvestasi: {

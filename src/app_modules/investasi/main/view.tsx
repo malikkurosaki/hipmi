@@ -46,7 +46,7 @@ export default function MainInvestasi({
 }) {
   const router = useRouter();
   const [investasi, setInvestasi] = useState(listData);
-  const [progres, setProgres] = useState(0);
+  const [statusPublish, setStatusPublish] = useState(false);
 
   async function onProgres(data: MODEL_Investasi) {
     // console.log(data)
@@ -58,6 +58,14 @@ export default function MainInvestasi({
     // console.log(progres)
     return progres;
   }
+
+  // useShallowEffect(() => {
+  //   onStatusPublish(investasi)
+  // },[investasi])
+
+  // async function onStatusPublish(investasi : MODEL_Investasi[]) {
+
+  // }
 
   if (_.isEmpty(investasi))
     return (
@@ -85,7 +93,10 @@ export default function MainInvestasi({
             <AspectRatio ratio={16 / 9}>
               <Paper radius={"md"}>
                 {e.imagesId ? (
-                  <Image alt="" src={`/api/investasi/gambar/${e.imagesId}`} />
+                  <Image
+                    alt=""
+                    src={RouterInvestasi.api_gambar + `${e.imagesId}`}
+                  />
                 ) : (
                   <Image alt="" src={"/aset/no-img.png"} />
                 )}
@@ -110,7 +121,7 @@ export default function MainInvestasi({
                   +(
                     ((+e.totalLembar - +e.sisaLembar) / +e.totalLembar) *
                     100
-                  ).toFixed(2)
+                  ).toFixed(1)
                 }
                 color="teal"
                 size="xl"
@@ -122,41 +133,45 @@ export default function MainInvestasi({
             <Box>
               <Grid>
                 <Grid.Col span={6}>
-                  <Stack>
-                    <Box>
-                      <Text>Dana Dibutuhkan</Text>
-                      <Text>
-                        Rp.{" "}
-                        {new Intl.NumberFormat("id-ID", {
-                          maximumSignificantDigits: 10,
-                        }).format(+e.targetDana)}
-                      </Text>
-                    </Box>
-                    <Box>
-                      <Text>Harga Per Lembar</Text>
-                      <Text>
-                        Rp.{" "}
-                        {new Intl.NumberFormat("id-ID", {
-                          maximumSignificantDigits: 10,
-                        }).format(+e.hargaLembar)}
-                        {/* {e.hargaLembar} */}
-                      </Text>
-                    </Box>
-                  </Stack>
+                  <Center>
+                    <Stack>
+                      <Box>
+                        <Text truncate>Dana Dibutuhkan</Text>
+                        <Text truncate>
+                          Rp.{" "}
+                          {new Intl.NumberFormat("id-ID", {
+                            maximumSignificantDigits: 10,
+                          }).format(+e.targetDana)}
+                        </Text>
+                      </Box>
+                      <Box>
+                        <Text truncate>Harga Per Lembar</Text>
+                        <Text truncate>
+                          Rp.{" "}
+                          {new Intl.NumberFormat("id-ID", {
+                            maximumSignificantDigits: 10,
+                          }).format(+e.hargaLembar)}
+                          {/* {e.hargaLembar} */}
+                        </Text>
+                      </Box>
+                    </Stack>
+                  </Center>
                 </Grid.Col>
                 <Grid.Col span={6}>
-                  <Stack>
-                    <Box>
-                      <Text>ROI</Text>
-                      <Text>{e.roi}%</Text>
-                    </Box>
-                    <Box>
-                      <Text>Sisa Lembar</Text>
-                      <Text>
-                        {new Intl.NumberFormat("id-ID").format(+e.sisaLembar)}
-                      </Text>
-                    </Box>
-                  </Stack>
+                  <Center>
+                    <Stack>
+                      <Box>
+                        <Text truncate>ROI</Text>
+                        <Text truncate>{e.roi}%</Text>
+                      </Box>
+                      <Box>
+                        <Text truncate>Sisa Lembar</Text>
+                        <Text truncate>
+                          {new Intl.NumberFormat("id-ID").format(+e.sisaLembar)}
+                        </Text>
+                      </Box>
+                    </Stack>
+                  </Center>
                 </Grid.Col>
               </Grid>
             </Box>
@@ -194,6 +209,7 @@ export default function MainInvestasi({
                       <Group position="right" spacing={"xs"}>
                         <IconCircleCheck color="green" />
                         <Text
+                          truncate
                           variant="text"
                           c={Warna.hijau_tua}
                           sx={{ fontFamily: "Greycliff CF, sans-serif" }}
@@ -210,15 +226,15 @@ export default function MainInvestasi({
                   return (
                     <>
                       <Group position="right" spacing={"xs"}>
-                        <Text>Sisa waktu:</Text>
-                        <Text>
+                        <Text truncate>Sisa waktu:</Text>
+                        <Text truncate>
                           {Number(e.MasterPencarianInvestor.name) -
                             moment(new Date()).diff(
                               new Date(e.countDown),
                               "days"
                             )}
                         </Text>
-                        <Text>Hari</Text>
+                        <Text truncate>Hari</Text>
                       </Group>
                     </>
                   );

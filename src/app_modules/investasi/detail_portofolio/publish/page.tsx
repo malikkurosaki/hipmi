@@ -66,9 +66,9 @@ export default function DetailPublishInvestasi({
   return (
     <>
       {Number(investasi.MasterPencarianInvestor.name) -
-        moment(new Date()).diff(new Date(investasi.updatedAt), "days") <=
+        moment(new Date()).diff(new Date(investasi.countDown), "days") <=
       0 ? (
-        <Group position="right">
+        <Group position="center" mb={"sm"}>
           <IconCircleCheck color="green" />
           <Text c={"green"}>Selesai</Text>
         </Group>
@@ -78,7 +78,7 @@ export default function DetailPublishInvestasi({
             Sisa waktu :{" "}
             {Number(investasi.MasterPencarianInvestor.name) -
               moment(new Date()).diff(
-                new Date(investasi.updatedAt),
+                new Date(investasi.countDown),
                 "days"
               )}{" "}
             hari
@@ -100,7 +100,27 @@ export default function DetailPublishInvestasi({
         <Title order={4} mb={"xs"}>
           {investasi.title}
         </Title>
-        <Progress color="lime" radius="xl" size="xl" value={0} label="0 %" />
+        <Progress
+          label={
+            "" +
+            (
+              ((+investasi.totalLembar - +investasi.sisaLembar) /
+                +investasi.totalLembar) *
+              100
+            ).toFixed(1) +
+            "%"
+          }
+          value={
+            +(
+              ((+investasi.totalLembar - +investasi.sisaLembar) /
+                +investasi.totalLembar) *
+              100
+            ).toFixed(1)
+          }
+          color="teal"
+          size="xl"
+          radius="xl"
+        />
       </Box>
 
       {/* Rincian Data */}

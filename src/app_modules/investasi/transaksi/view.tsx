@@ -59,7 +59,7 @@ export default function TransaksiInvestasi({
     return (
       <>
         <Center h={"80vh"}>
-          <Title order={5}>Tidak Ada Transaksi</Title>
+          <Text >Tidak Ada Transaksi</Text>
         </Center>
       </>
     );

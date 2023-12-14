@@ -3,14 +3,6 @@
 import prisma from "@/app/lib/prisma";
 import MidTrans from "midtrans-client";
 
-// const midtransClient = require("midtrans-client");
-
-// const snap = new midtransClient.Snap({
-//     isProduction: false,
-//     serverKey: process.env.Server_KEY,
-//     clientKey: process.env.Client_KEY,
-//   });
-
 const snap = new MidTrans.Snap({
   isProduction: false,
   serverKey: process.env.Server_KEY,
@@ -58,14 +50,14 @@ export default async function getTokenTransaksi(data) {
       free_text: {
         inquiry: [
           {
-            en: "text in English",
-            id: "text in Bahasa Indonesia",
+            en: "Pay according to the invoice",
+            id: "Bayar sesuai faktur",
           },
         ],
         payment: [
           {
-            en: "text in English",
-            id: "text in Bahasa Indonesia",
+            en: "Pay according to the invoice",
+            id: "Bayar sesuai faktur",
           },
         ],
       },
