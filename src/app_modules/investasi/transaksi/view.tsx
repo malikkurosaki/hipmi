@@ -68,8 +68,8 @@ export default function TransaksiInvestasi({
     <>
       <Stack>
         {transaksi.map((e) => (
-          <Box key={e.id}>
-            <Link href={e.redirect_url} style={{textDecorationLine: "none"}}>
+          <Box key={e.id} onClick={() => router.push(RouterInvestasi.status_pesanan + `${e.id}`)}>
+
               <Paper p="xs" bg={"gray"}>
                 <Group position="apart">
                   <Title order={6}>{e.Investasi.title}</Title>
@@ -86,62 +86,8 @@ export default function TransaksiInvestasi({
                     <Text fz={"xs"}>{moment(e.createdAt).format("ll")}</Text>
                   </Stack>
                   <Text>{e.quantity} Lembar</Text>
-                  {/* {(() => {
-                if (e.masterStatusTransaksiInvestasiId === "1") {
-                  return (
-                    <>
-                      <Title
-                        order={5}
-                        c={e.MasterStatusTransaksiInvestasi.color}
-                      >
-                        {e.MasterStatusTransaksiInvestasi.name}
-                      </Title>
-                    </>
-                  );
-                } else {
-                  if (e.masterStatusTransaksiInvestasiId === "2") {
-                    return (
-                      <>
-                        <Title
-                          order={5}
-                          c={e.MasterStatusTransaksiInvestasi.color}
-                        >
-                          {e.MasterStatusTransaksiInvestasi.name}
-                        </Title>
-                      </>
-                    );
-                  } else {
-                    if (e.masterStatusTransaksiInvestasiId === "3") {
-                      return (
-                        <>
-                          <>
-                            <Title
-                              order={5}
-                              c={e.MasterStatusTransaksiInvestasi.color}
-                            >
-                              {e.MasterStatusTransaksiInvestasi.name}
-                            </Title>
-                          </>
-                        </>
-                      );
-                    } else {
-                      return (
-                        <>
-                          <Title
-                            order={5}
-                            c={e.MasterStatusTransaksiInvestasi.color}
-                          >
-                            {e.MasterStatusTransaksiInvestasi.name}
-                          </Title>
-                        </>
-                      );
-                    }
-                  }
-                }
-              })()} */}
                 </Group>
               </Paper>
-            </Link>
           </Box>
         ))}
       </Stack>

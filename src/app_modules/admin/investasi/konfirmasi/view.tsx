@@ -122,7 +122,7 @@ export default function Admin_KonfirmasiInvestasi({
   }
 
   async function onPublish() {
-    await funGantiStatusInvestasi(investasi.id, "3").then((res) => {
+    await funGantiStatusInvestasi(investasi.id, "3", "1").then((res) => {
       if (res.status === 200) {
         setTimeout(() => setPublish(false), 1000);
         router.push(RouterAdminInvestasi.table_status_review);

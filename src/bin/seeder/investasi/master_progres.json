@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "name": "Dalam Proses"
+  },
+  {
+    "id": "2",
+    "name": "Selesai"
+  },
+  {
+    "id": "3",
+    "name": "Waktu Habis"
+  }
+]

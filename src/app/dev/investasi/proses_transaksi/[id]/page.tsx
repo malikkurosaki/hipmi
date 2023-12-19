@@ -17,7 +17,8 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const userLogin = await funGetUserProfile(user.id);
   const dataInvestasi = await getOneInvestasiById(params.id);
-  // console.log(userLogin);
+
+  // console.log(dataInvestasi);
   return (
     <>
       <ProsesTransaksiInvestasi

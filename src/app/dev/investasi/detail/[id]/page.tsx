@@ -28,6 +28,8 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const totalInvestor = await funTotalInvestorByIdInvestasi(dataInvestasi?.id)
 
+  // console.log(dataInvestasi?.MasterProgresInvestasi?.name)
+
   return (
     <>
       <DetailInvestasi

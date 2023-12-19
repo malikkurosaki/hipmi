@@ -7,11 +7,12 @@ import fs from "fs";
 import { revalidatePath } from "next/cache";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { MODEL_Investasi } from "../model/model_investasi";
+import funUploadProspektusInvestasi from "./fun_upload_prospek";
 
 export async function funCreateInvestasi(
   gamabar: FormData,
   filePdf: FormData,
-  data: MODEL_Investasi 
+  data: MODEL_Investasi
 ) {
   // Function upload gambar
   const file: any = gamabar.get("file");
@@ -47,8 +48,8 @@ export async function funCreateInvestasi(
       totalLembar: data.totalLembar.toString(),
       sisaLembar: data.totalLembar.toString(),
       roi: data.roi.toString(),
-      masterPembagianDevidenId: data.masterPeriodeDevidenId,
-      masterPeriodeDevidenId: data.masterPembagianDevidenId,
+      masterPembagianDevidenId: data.masterPembagianDevidenId,
+      masterPeriodeDevidenId: data.masterPeriodeDevidenId,
       masterPencarianInvestorId: data.masterPencarianInvestorId,
       imagesId: uploadImage.id,
       masterStatusInvestasiId: "2",
@@ -62,26 +63,31 @@ export async function funCreateInvestasi(
     };
 
   // File upload function
-  const dataPdf: any = filePdf.get("file");
-  const pdfName = dataPdf.name;
-  const pdfExt = _.lowerCase(dataPdf.name.split(".").pop());
-  const pdfRandomName = v4(pdfName) + "." + pdfExt;
+  // const dataPdf: any = filePdf.get("file");
+  // const pdfName = dataPdf.name;
+  // const pdfExt = _.lowerCase(dataPdf.name.split(".").pop());
+  // const pdfRandomName = v4(pdfName) + "." + pdfExt;
 
-  const uploadFile = await prisma.prospektusInvestasi.create({
-    data: {
-      investasiId: createInvest.id,
-      url: pdfRandomName,
-    },
-    select: {
-      id: true,
-      url: true,
-    },
-  });
+  // const uploadFile = await prisma.prospektusInvestasi.create({
+  //   data: {
+  //     investasiId: createInvest.id,
+  //     url: pdfRandomName,
+  //   },
+  //   select: {
+  //     id: true,
+  //     url: true,
+  //   },
+  // });
 
+  // if (!uploadFile) return { status: 400, message: "File Kosong" };
+  // const upPdfFolder = Buffer.from(await file.arrayBuffer());
+  // fs.writeFileSync(`./public/file/${uploadFile.url}`, upPdfFolder);
 
-  if (!uploadFile) return { status: 400, message: "File Kosong" };
-  const upPdfFolder = Buffer.from(await file.arrayBuffer());
-  fs.writeFileSync(`./public/file/${uploadFile.url}`, upPdfFolder);
+  const updloadPDF = await funUploadProspektusInvestasi(
+    filePdf,
+    createInvest.id
+  );
+  // console.log(updloadPDF);
 
   revalidatePath(RouterInvestasi.main_porto);
 

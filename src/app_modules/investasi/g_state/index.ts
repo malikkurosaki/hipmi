@@ -13,3 +13,5 @@ export const gs_TransferValue = atomWithStorage("gs_TransferValue", {
   namaBank: "",
   nomorRekening: "",
 });
+
+export const gs_midtrans_snap= atomWithStorage("gs_midtrans_snapssssssssss", false)

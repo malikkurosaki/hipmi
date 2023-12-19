@@ -1,24 +1,44 @@
 import { MainInvestasi } from "@/app_modules/investasi";
-import funTotalInvestorByIdInvestasi from "@/app_modules/investasi/fun/fun_total_investor_by_id";
+import funUpadteProgresPersenInvestasi from "@/app_modules/investasi/fun/fun_update_progres_persen";
+import funUpadteProgresWaktuInvestasi from "@/app_modules/investasi/fun/fun_update_progres_waktu";
+import getAllDataPublishInvestasi from "@/app_modules/investasi/fun/get_list_all_investasi";
 import { getListAllPublish } from "@/app_modules/investasi/fun/get_list_all_publish";
-import getPembagianDeviden from "@/app_modules/investasi/fun/master/get_pembagian_deviden";
-import getPencarianInvestor from "@/app_modules/investasi/fun/master/get_pencarian_investor";
-import getPeriodeDeviden from "@/app_modules/investasi/fun/master/get_periode_deviden";
+import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
+
+import _ from "lodash";
 
 export default async function Page() {
-  const data = await getListAllPublish();
-  const pencarianInvestor = await getPencarianInvestor();
-  const periodeDeviden = await getPeriodeDeviden();
-  const pembagianDeviden = await getPembagianDeviden();
+  const dataOnProgres = await getListAllPublish("1");
+  const dataSelesai = await getListAllPublish("2");
+  const dataWaktuHabis = await getListAllPublish("3");
+  const allData = await getAllDataPublishInvestasi();
+  // console.log(allData)
 
-  // console.log(data)
+  // const dataInves: MODEL_Investasi[] = [];
+
+  // for (let i of allData as any) {
+  //   await funUpadteProgresWaktuInvestasi(i).then(
+  //     async () =>
+  //       await funUpadteProgresPersenInvestasi(i).then(
+  //         async () =>
+  //           await getAllDataPublishInvestasi().then((val: any) =>
+  //             dataInves.push(val)
+  //           )
+  //       )
+  //   );
+  // }
+
+  // const realData = dataInves.map((e) => e)
+  // console.log(allData)
+ 
+ 
+
   return (
     <>
       <MainInvestasi
-        listData={data as any}
-        pencarianInvestor={pencarianInvestor as any}
-        periodeDeviden={periodeDeviden as any}
-        pembagianDeviden={pembagianDeviden as any}
+        listData={allData as any}
+        dataSelesai={dataSelesai as any}
+        dataWaktuHabis={dataWaktuHabis as any}
       />
     </>
   );

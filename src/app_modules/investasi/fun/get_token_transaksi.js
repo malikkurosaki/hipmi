@@ -33,7 +33,6 @@ export default async function getTokenTransaksi(data) {
     customer_details: {
       first_name: body.customer_name,
       phone: body.phone,
-      // email: "test@midtrans.com",
     },
     enabled_payments: [
       "permata_va",
@@ -45,7 +44,7 @@ export default async function getTokenTransaksi(data) {
       "shopeepay",
     ],
     bca_va: {
-      va_number: "82340374411111",
+      va_number: "7725699636222",
       sub_company_code: "00000",
       free_text: {
         inquiry: [
@@ -81,25 +80,15 @@ export default async function getTokenTransaksi(data) {
     }
   });
 
+  // console.log(token)
+
   if (token.status === 400) {
     return { token: token };
   }
 
-  const newTransaksi = await prisma.transaksiInvestasi.create({
-    data: {
-      gross_amount: "" + data.gross_amount,
-      merchant_name: data.merchant_name,
-      price: "" + data.price,
-      quantity: "" + data.quantity,
-      token: token.value.token,
-      redirect_url: token.value.redirect_url,
-      authorId: data.authorId,
-      investasiId: data.investasiId,
-    },
-  });
 
   return {
     token: token,
-    dataTransaksi: newTransaksi,
+    // dataTransaksi: newTransaksi,
   };
 }

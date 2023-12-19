@@ -6,7 +6,7 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  console.log(params.id)
+  // console.log(params.id)
   const data = await prisma.prospektusInvestasi.findUnique({
     where: { id: params.id },
     select: {

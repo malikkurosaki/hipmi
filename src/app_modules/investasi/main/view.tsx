@@ -25,7 +25,7 @@ import {
 import { useRouter } from "next/navigation";
 import dataDummy from "../dummy/data_dummy.json";
 import moment from "moment";
-import { IconCheck, IconCircleCheck } from "@tabler/icons-react";
+import { IconCheck, IconCircleCheck, IconXboxX } from "@tabler/icons-react";
 import { MODEL_Investasi } from "../model/model_investasi";
 import _ from "lodash";
 import { useState } from "react";
@@ -35,39 +35,23 @@ import { Warna } from "@/app/lib/warna";
 
 export default function MainInvestasi({
   listData,
-  pencarianInvestor,
-  periodeDeviden,
-  pembagianDeviden,
+  dataSelesai,
+  dataWaktuHabis,
 }: {
   listData: MODEL_Investasi[];
-  pencarianInvestor: MODEL_DEFAULT_MASTER[];
-  periodeDeviden: MODEL_DEFAULT_MASTER[];
-  pembagianDeviden: MODEL_DEFAULT_MASTER[];
+  dataSelesai: MODEL_Investasi[];
+  dataWaktuHabis: MODEL_Investasi[];
 }) {
+  // console.log(listData)
   const router = useRouter();
   const [investasi, setInvestasi] = useState(listData);
+  const [invesDone, setInvesDone] = useState(dataSelesai);
+  const [invesFail, setInvesFail] = useState(dataWaktuHabis);
   const [statusPublish, setStatusPublish] = useState(false);
 
-  async function onProgres(data: MODEL_Investasi) {
-    // console.log(data)
-    const total = Number(data.totalLembar);
-    const sisa = Number(data.sisaLembar);
-    const beli = total - sisa;
-    const hasil = (beli / total) * 100;
-    const progres = Math.round(hasil).toFixed(2);
-    // console.log(progres)
-    return progres;
-  }
+  //  console.log(dataWaktuHabis)
 
-  // useShallowEffect(() => {
-  //   onStatusPublish(investasi)
-  // },[investasi])
-
-  // async function onStatusPublish(investasi : MODEL_Investasi[]) {
-
-  // }
-
-  if (_.isEmpty(investasi))
+  if (_.isEmpty(investasi) && _.isEmpty(invesDone) && _.isEmpty(invesFail))
     return (
       <>
         {" "}
@@ -79,7 +63,6 @@ export default function MainInvestasi({
 
   return (
     <>
-      {/* <pre>{JSON.stringify(listData, null, 2)}</pre> */}
 
       {investasi.map((e) => (
         <Card
@@ -104,25 +87,12 @@ export default function MainInvestasi({
             </AspectRatio>
           </CardSection>
 
-          {/* Progress dan titlr */}
           <CardSection p={"lg"}>
             <Stack>
               <Title order={4}>{e.title}</Title>
               <Progress
-                label={
-                  "" +
-                  (
-                    ((+e.totalLembar - +e.sisaLembar) / +e.totalLembar) *
-                    100
-                  ).toFixed(1) +
-                  "%"
-                }
-                value={
-                  +(
-                    ((+e.totalLembar - +e.sisaLembar) / +e.totalLembar) *
-                    100
-                  ).toFixed(1)
-                }
+                label={(+e.progress).toFixed(2) + " %"}
+                value={+e.progress}
                 color="teal"
                 size="xl"
                 radius="xl"
@@ -151,7 +121,6 @@ export default function MainInvestasi({
                           {new Intl.NumberFormat("id-ID", {
                             maximumSignificantDigits: 10,
                           }).format(+e.hargaLembar)}
-                          {/* {e.hargaLembar} */}
                         </Text>
                       </Box>
                     </Stack>
@@ -179,15 +148,6 @@ export default function MainInvestasi({
           <Divider color="dark.4" />
           <CardSection p={"md"}>
             <Group position="apart">
-              {/* <Box>
-                {e.SahamTerbeli === null ? (
-                  ""
-                ) : (
-                  <Badge variant="dot" color="teal">
-                    Saham Anda
-                  </Badge>
-                )}
-              </Box> */}
               <Button
                 radius={"xl"}
                 compact
@@ -198,48 +158,55 @@ export default function MainInvestasi({
                 Details
               </Button>
 
-              {(() => {
-                if (
-                  Number(e.MasterPencarianInvestor.name) -
+              {e.progress === "100" ? (
+                <Group position="right" spacing={"xs"}>
+                  <IconCircleCheck color="green" />
+                  <Text
+                    truncate
+                    variant="text"
+                    c={Warna.hijau_tua}
+                    sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+                    ta="center"
+                    fz="md"
+                    fw={700}
+                  >
+                    Selesai
+                  </Text>
+                </Group>
+              ) : (
+                <Box>
+                  {+e.MasterPencarianInvestor.name -
                     moment(new Date()).diff(new Date(e.countDown), "days") <=
-                  0
-                ) {
-                  return (
-                    <>
-                      <Group position="right" spacing={"xs"}>
-                        <IconCircleCheck color="green" />
-                        <Text
-                          truncate
-                          variant="text"
-                          c={Warna.hijau_tua}
-                          sx={{ fontFamily: "Greycliff CF, sans-serif" }}
-                          ta="center"
-                          fz="md"
-                          fw={700}
-                        >
-                          Waktu Habis
-                        </Text>
-                      </Group>
-                    </>
-                  );
-                } else {
-                  return (
-                    <>
-                      <Group position="right" spacing={"xs"}>
-                        <Text truncate>Sisa waktu:</Text>
-                        <Text truncate>
-                          {Number(e.MasterPencarianInvestor.name) -
-                            moment(new Date()).diff(
-                              new Date(e.countDown),
-                              "days"
-                            )}
-                        </Text>
-                        <Text truncate>Hari</Text>
-                      </Group>
-                    </>
-                  );
-                }
-              })()}
+                  0 ? (
+                    <Group position="right" spacing={"xs"}>
+                      <IconXboxX color="red" />
+                      <Text
+                        truncate
+                        variant="text"
+                        c={Warna.merah}
+                        sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+                        ta="center"
+                        fz="md"
+                        fw={700}
+                      >
+                        Waktu Habis
+                      </Text>
+                    </Group>
+                  ) : (
+                    <Group position="right" spacing={"xs"}>
+                      <Text truncate>Sisa waktu:</Text>
+                      <Text truncate>
+                        {Number(e.MasterPencarianInvestor.name) -
+                          moment(new Date()).diff(
+                            new Date(e.countDown),
+                            "days"
+                          )}
+                      </Text>
+                      <Text truncate>Hari</Text>
+                    </Group>
+                  )}
+                </Box>
+              )}
             </Group>
           </CardSection>
         </Card>

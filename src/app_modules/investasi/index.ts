@@ -65,6 +65,8 @@ import UploadDokumenInvestasi from "./upload_dokumen/view";
 import LayoutUploadDokumenInvestasi from "./upload_dokumen/layout";
 import ProsesTransaksiInvestasi from "./proses_transaksi/view";
 import LayoutProsesTransaksiInvestasi from "./proses_transaksi/layout";
+import StatusPesananInvetsatsi from "./status_pesanan/view";
+import LayoutStatusPesananInvestasi from "./status_pesanan/layout";
 
 export {
   MainInvestasi,
@@ -134,4 +136,6 @@ export {
   LayoutUploadDokumenInvestasi,
   ProsesTransaksiInvestasi,
   LayoutProsesTransaksiInvestasi,
+  StatusPesananInvetsatsi,
+  LayoutStatusPesananInvestasi,
 };

@@ -12,7 +12,7 @@ import {
   Container,
   Flex,
 } from "@mantine/core";
-import { useFocusTrap } from "@mantine/hooks";
+import { useFocusTrap, useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { MODEL_Investasi } from "../model/model_investasi";
 import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
@@ -22,7 +22,7 @@ import toast from "react-simple-toasts";
 import funUpdatePaymentInvestasi from "../fun/fun_update_payment";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { useAtom } from "jotai";
-import { gs_investasiFooter } from "../g_state";
+import { gs_investasiFooter, gs_midtrans_snap } from "../g_state";
 import funUpdateInvestasi from "../fun/fun_update_investasi";
 
 export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
@@ -37,6 +37,11 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
   const [jumlah, setJumlah] = useState(0);
   const [hotmenu, setHotmenu] = useAtom(gs_investasiFooter);
   const [snapShow, setSnapShow] = useState(false);
+
+  useShallowEffect(() => {
+    setJumlah(0)
+    setTotal(0)
+  },[])
 
   // console.log(userLogin.id);
   // console.log(investasi);
@@ -61,28 +66,29 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
     await getTokenTransaksi(body).then(async (res) => {
       if (res.token.status === 200) {
         // console.log(res.token.value.token)
-        setSnapShow(true);
-        snap.embed(res.token.value.token, {
-          embedId: "embedId",
+        // setSnapShow(true);
+        snap.pay(res.token.value.token, {
+          // embedId: "embedId",
           onSuccess: async function (result) {
-            console.log(result);
-            // console.log("success");
-            setSnapShow(false);
+            // setSnapShow(false);
 
-            await funUpdatePaymentInvestasi(result, res.dataTransaksi.id).then(
+            await funUpdatePaymentInvestasi(result, body, res.token.value).then(
               async (resUpdate) => {
                 if (resUpdate.status === 200) {
-                  const hasil =
-                    investasi.sisaLembar - res.dataTransaksi.quantity;
+                  // console.log(resUpdate.message)
+                  const lembarTersisa = investasi.sisaLembar - resUpdate.data.quantity;
 
-                  const body = {
+                  const body2 = {
                     id: investasi.id,
-                    sisaLembar: hasil,
+                    sisaLembar: lembarTersisa,
                   };
 
-                  await funUpdateInvestasi(body);
+                  await funUpdateInvestasi(body2, investasi);
                   toast(res.message);
-                  router.push(RouterInvestasi.main_transaksi);
+                  router.push(
+                    RouterInvestasi.status_pesanan + `${resUpdate.data.id}`
+                  );
+
                   setHotmenu(3);
                 } else {
                   toast(res.message);
@@ -91,32 +97,30 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
             );
           },
           onPending: async function (result) {
-            await funUpdatePaymentInvestasi(result, res.dataTransaksi.id);
-            router.push(RouterInvestasi.proses_transaksi + `${investasi.id}`);
-            setSnapShow(false);
-
-            console.log("pending");
-            console.log(result);
-          },
-          onError: async function (result) {
-            await funUpdatePaymentInvestasi(result, res.dataTransaksi.id);
-            router.push(RouterInvestasi.main_transaksi);
-            setSnapShow(false);
-
-            console.log("error");
-            console.log(result);
+            // console.log("pending");
+            // console.log(result);
+            // await funUpdatePaymentInvestasi(result, res.dataTransaksi.id);
+            // toast(res.message);
+            // router.push(
+            //   RouterInvestasi.status_pesanan + `${res.dataTransaksi.id}`
+            // );
+            // router.push(RouterInvestasi.detail + `${investasi.id}`)
+            await router.push(RouterInvestasi.detail + `${investasi.id}`);
+            setJumlah(0); 
           },
           onClose: async function (result) {
-            if (result === undefined) {
-              const data = {
-                status_code: "400",
-              };
-              await funUpdatePaymentInvestasi(data, res.dataTransaksi.id);
-              router.push(RouterInvestasi.main_transaksi);
-              setSnapShow(false);
-              // router.push(RouterPay.home);
-              console.log(data);
-            }
+            await router.push(RouterInvestasi.detail + `${investasi.id}`);
+
+            // if (result === undefined) {
+            //   const data = {
+            //     status_code: "400",
+            //   };
+            //   // await funUpdatePaymentInvestasi(data, res.dataTransaksi.id);
+            //   router.push(RouterInvestasi.main_transaksi);
+            //   setSnapShow(false);
+            //   // router.push(RouterPay.home);
+            //   console.log(data);
+            // }
           },
         });
       } else {
@@ -143,89 +147,90 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
 
   return (
     <>
-      {!snapShow && (
-        <Box px={"md"}>
-          {/* Sisa Lembar Saham */}
-          <Group position="apart" mb={"md"}>
-            <Text>Sisa Lembar Saham</Text>
-            <Text fz={23}>
-              {new Intl.NumberFormat("id-ID", {
-                maximumFractionDigits: 10,
-              }).format(+investasi.sisaLembar)}{" "}
-            </Text>
-          </Group>
+      {/* {!snapShow && (
+        
+      )} */}
+      <Box>
+        {/* Sisa Lembar Saham */}
+        <Group position="apart" mb={"md"}>
+          <Text>Sisa Lembar Saham</Text>
+          <Text fz={23}>
+            {new Intl.NumberFormat("id-ID", {
+              maximumFractionDigits: 10,
+            }).format(+investasi.sisaLembar)}{" "}
+          </Text>
+        </Group>
 
-          {/* Harga perlembar saham */}
-          <Group position="apart" mb={"md"}>
-            <Text>Harga Perlembar</Text>
-            <Text fz={23}>
-              Rp.{" "}
-              {new Intl.NumberFormat("id-ID", {
-                maximumFractionDigits: 10,
-              }).format(+investasi.hargaLembar)}{" "}
-            </Text>
-          </Group>
+        {/* Harga perlembar saham */}
+        <Group position="apart" mb={"md"}>
+          <Text>Harga Perlembar</Text>
+          <Text fz={23}>
+            Rp.{" "}
+            {new Intl.NumberFormat("id-ID", {
+              maximumFractionDigits: 10,
+            }).format(+investasi.hargaLembar)}{" "}
+          </Text>
+        </Group>
 
-          {/* Lembar saham */}
-          <Group position="apart" mb={"md"}>
-            <Box>
-              <Text>Jumlah Pembelian</Text>
-              <Text c={"blue"} fs={"italic"} fz={10}>
-                minimal pembelian 10 lembar
-              </Text>
-              {/* <Text c={"red"} fs={"italic"} fz={10}>
+        {/* Lembar saham */}
+        <Group position="apart" mb={"md"}>
+          <Box>
+            <Text>Jumlah Pembelian</Text>
+            <Text c={"blue"} fs={"italic"} fz={10}>
+              minimal pembelian 10 lembar
+            </Text>
+            {/* <Text c={"red"} fs={"italic"} fz={10}>
                maximal pembelian {maxPembelian} lembar
              </Text> */}
-            </Box>
-            <NumberInput
-              type="number"
-              ref={focusTrapRef}
-              w={100}
-              max={maxPembelian}
-              onChange={(val) => {
-                setTotal(val * +investasi.hargaLembar);
-                setJumlah(val);
-                // console.log(val);
+          </Box>
+          <NumberInput
+            type="number"
+            ref={focusTrapRef}
+            w={100}
+            max={maxPembelian}
+            onChange={(val) => {
+              setTotal(val * +investasi.hargaLembar);
+              setJumlah(val);
+              // console.log(val);
+            }}
+          />
+        </Group>
+
+        <Divider my={"lg"} />
+
+        <Group position="apart" mb={"md"}>
+          <Box>
+            <Text>Total Harga</Text>
+          </Box>
+          <Text fz={25}>
+            Rp.{" "}
+            {new Intl.NumberFormat("id-ID", {
+              maximumFractionDigits: 10,
+            }).format(total)}
+          </Text>
+        </Group>
+
+        <Center>
+          {jumlah < 10 ? (
+            <Button w={350} radius={50} bg={"gray"} disabled>
+              Beli 
+            </Button>
+          ) : (
+            <Button
+              w={350}
+              radius={50}
+              bg={Warna.biru}
+              onClick={() => {
+                onProses();
               }}
-            />
-          </Group>
+            >
+              Beli 
+            </Button>
+          )}
+        </Center>
+      </Box>
 
-          <Divider my={"lg"} />
-
-          <Group position="apart" mb={"md"}>
-            <Box>
-              <Text>Total Harga</Text>
-            </Box>
-            <Text fz={25}>
-              Rp.{" "}
-              {new Intl.NumberFormat("id-ID", {
-                maximumFractionDigits: 10,
-              }).format(total)}
-            </Text>
-          </Group>
-
-          <Center>
-            {jumlah < 10 ? (
-              <Button w={350} radius={50} bg={"gray"} disabled>
-                Beli Saham
-              </Button>
-            ) : (
-              <Button
-                w={350}
-                radius={50}
-                bg={Warna.biru}
-                onClick={() => {
-                  onProses();
-                }}
-              >
-                Beli Saham
-              </Button>
-            )}
-          </Center>
-        </Box>
-      )}
-
-      <Flex align={"center"} justify={"center"} id="embedId" />
+      {/* <Flex align={"center"} justify={"center"} id="embedId" /> */}
     </>
   );
 }

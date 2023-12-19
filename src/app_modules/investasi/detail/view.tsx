@@ -25,6 +25,7 @@ import {
   IconCircleCheck,
   IconFileDescription,
   IconSpeakerphone,
+  IconXboxX,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -41,13 +42,13 @@ export default function DetailInvestasi({
   dataUser,
   loginUserId,
   progress,
-  totalInvestor
+  totalInvestor,
 }: {
   dataInvestasi: MODEL_Investasi;
   dataUser: MODEL_User_profile;
   loginUserId: string;
   progress: number;
-  totalInvestor: number
+  totalInvestor: number;
 }) {
   const router = useRouter();
   const [investasi, setInvestasi] = useState(dataInvestasi);
@@ -102,22 +103,54 @@ export default function DetailInvestasi({
           </Avatar>
           <Text>{user.username}</Text>
         </Flex>
-        {Number(investasi.MasterPencarianInvestor.name) -
-          moment(new Date()).diff(new Date(investasi.countDown), "days") <=
-        0 ? (
-          <Group position="right">
-            <IconCircleCheck color="green" />
-            <Text c={"green"}>Selesai</Text>
-          </Group>
+        {investasi.MasterProgresInvestasi.id === "1" ? (
+          <Box>
+            <Group position="right" spacing={"xs"}>
+              <Text>Sisa waktu:</Text>
+              <Text>
+                {Number(investasi.MasterPencarianInvestor.name) -
+                  moment(new Date()).diff(
+                    new Date(investasi.countDown),
+                    "days"
+                  )}
+              </Text>
+              <Text>Hari</Text>
+            </Group>
+          </Box>
         ) : (
-          <Group position="right" spacing={"xs"}>
-            <Text>Sisa waktu:</Text>
-            <Text>
-              {Number(investasi.MasterPencarianInvestor.name) -
-                moment(new Date()).diff(new Date(investasi.countDown), "days")}
-            </Text>
-            <Text>Hari</Text>
-          </Group>
+          <Box>
+            {investasi.MasterProgresInvestasi.id === "2" ? (
+              <Group position="right" spacing={"xs"}>
+                <IconCircleCheck color="green" />
+                <Text
+                  truncate
+                  variant="text"
+                  c={Warna.hijau_tua}
+                  sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+                  ta="center"
+                  fz="md"
+                  fw={700}
+                >
+                  Selesai
+                </Text>
+              </Group>
+            ) : (
+              <Group position="right" spacing={"xs"}>
+                <IconXboxX color="red" />
+                <Text
+                  truncate
+                  variant="text"
+                  c={Warna.merah}
+                  sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+                  ta="center"
+                  fz="md"
+                  fw={700}
+                >
+                  Waktu Habis
+                </Text>
+              </Group>
+            )}
+          </Box>
         )}
       </Group>
 
@@ -192,9 +225,13 @@ export default function DetailInvestasi({
         </Grid.Col>
         <Grid.Col span={6}>
           <Stack>
-          <Box>
+            <Box>
               <Text>Investor</Text>
-              <Text>{new Intl.NumberFormat("id-ID", {maximumSignificantDigits: 10}).format(totalInvestor)}</Text>
+              <Text>
+                {new Intl.NumberFormat("id-ID", {
+                  maximumSignificantDigits: 10,
+                }).format(totalInvestor)}
+              </Text>
             </Box>
             <Box>
               <Text>ROI</Text>
@@ -242,25 +279,38 @@ export default function DetailInvestasi({
         ))}
       </Grid>
 
-      {loginUserId === investasi.authorId ? (
+      {investasi.sisaLembar === "0" ||
+      Number(investasi.MasterPencarianInvestor.name) -
+        moment(new Date()).diff(new Date(investasi.countDown), "days") <=
+        0 ? (
         <Center mb={"md"}>
-          <Button disabled radius={50} w={350}>
-            Investasi Ini Milik Anda
+          <Button disabled radius={50} w={350} variant="transparent">
+            Investasi Telah Ditutup
           </Button>
         </Center>
       ) : (
-        <Center mb={"md"}>
-          <Button
-            radius={50}
-            w={350}
-            bg={Warna.biru}
-            onClick={() => {
-              onSubmit();
-            }}
-          >
-            Beli Saham
-          </Button>
-        </Center>
+        <Box>
+          {loginUserId === investasi.authorId ? (
+            <Center mb={"md"}>
+              <Button disabled radius={50} w={350}>
+                Investasi Ini Milik Anda
+              </Button>
+            </Center>
+          ) : (
+            <Center mb={"md"}>
+              <Button
+                radius={50}
+                w={350}
+                bg={Warna.biru}
+                onClick={() => {
+                  onSubmit();
+                }}
+              >
+                Beli Saham
+              </Button>
+            </Center>
+          )}
+        </Box>
       )}
     </>
   );
