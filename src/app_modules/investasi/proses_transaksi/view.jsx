@@ -9,8 +9,10 @@ import {
   Center,
   Button,
   Text,
+  Container,
+  Flex,
 } from "@mantine/core";
-import { useFocusTrap } from "@mantine/hooks";
+import { useFocusTrap, useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { MODEL_Investasi } from "../model/model_investasi";
 import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
@@ -20,7 +22,7 @@ import toast from "react-simple-toasts";
 import funUpdatePaymentInvestasi from "../fun/fun_update_payment";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { useAtom } from "jotai";
-import { gs_investasiFooter } from "../g_state";
+import { gs_investasiFooter, gs_midtrans_snap } from "../g_state";
 import funUpdateInvestasi from "../fun/fun_update_investasi";
 
 export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
@@ -34,6 +36,12 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
   const [total, setTotal] = useState(0);
   const [jumlah, setJumlah] = useState(0);
   const [hotmenu, setHotmenu] = useAtom(gs_investasiFooter);
+  const [snapShow, setSnapShow] = useState(false);
+
+  useShallowEffect(() => {
+    setJumlah(0)
+    setTotal(0)
+  },[])
 
   // console.log(userLogin.id);
   // console.log(investasi);
@@ -58,24 +66,29 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
     await getTokenTransaksi(body).then(async (res) => {
       if (res.token.status === 200) {
         // console.log(res.token.value.token)
+        // setSnapShow(true);
         snap.pay(res.token.value.token, {
+          // embedId: "embedId",
           onSuccess: async function (result) {
-            console.log(result);
-            // console.log("success");
-            await funUpdatePaymentInvestasi(result, res.dataTransaksi.id).then(
-              async (resUp) => {
-                if (resUp.status === 200) {
-                  const hasil =
-                    investasi.sisaLembar - res.dataTransaksi.quantity;
+            // setSnapShow(false);
 
-                  const body = {
+            await funUpdatePaymentInvestasi(result, body, res.token.value).then(
+              async (resUpdate) => {
+                if (resUpdate.status === 200) {
+                  // console.log(resUpdate.message)
+                  const lembarTersisa = investasi.sisaLembar - resUpdate.data.quantity;
+
+                  const body2 = {
                     id: investasi.id,
-                    sisaLembar: hasil,
+                    sisaLembar: lembarTersisa,
                   };
 
-                  await funUpdateInvestasi(body);
+                  await funUpdateInvestasi(body2, investasi);
                   toast(res.message);
-                  router.push(RouterInvestasi.main_transaksi);
+                  router.push(
+                    RouterInvestasi.status_pesanan + `${resUpdate.data.id}`
+                  );
+
                   setHotmenu(3);
                 } else {
                   toast(res.message);
@@ -84,30 +97,30 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
             );
           },
           onPending: async function (result) {
-            await funUpdatePaymentInvestasi(result, res.dataTransaksi.id);
-            router.push(RouterInvestasi.main_transaksi);
-
-            console.log("pending");
-            console.log(result);
-          },
-          onError: async function (result) {
-            await funUpdatePaymentInvestasi(result, res.dataTransaksi.id);
-            router.push(RouterInvestasi.main_transaksi);
-
-            console.log("error");
-            console.log(result);
+            // console.log("pending");
+            // console.log(result);
+            // await funUpdatePaymentInvestasi(result, res.dataTransaksi.id);
+            // toast(res.message);
+            // router.push(
+            //   RouterInvestasi.status_pesanan + `${res.dataTransaksi.id}`
+            // );
+            // router.push(RouterInvestasi.detail + `${investasi.id}`)
+            await router.push(RouterInvestasi.detail + `${investasi.id}`);
+            setJumlah(0); 
           },
           onClose: async function (result) {
-            if (result === undefined) {
-              const data = {
-                status_code: "400",
-              };
-              await funUpdatePaymentInvestasi(data, res.dataTransaksi.id);
-              router.push(RouterInvestasi.main_transaksi);
+            await router.push(RouterInvestasi.detail + `${investasi.id}`);
 
-              // router.push(RouterPay.home);
-              console.log(data);
-            }
+            // if (result === undefined) {
+            //   const data = {
+            //     status_code: "400",
+            //   };
+            //   // await funUpdatePaymentInvestasi(data, res.dataTransaksi.id);
+            //   router.push(RouterInvestasi.main_transaksi);
+            //   setSnapShow(false);
+            //   // router.push(RouterPay.home);
+            //   console.log(data);
+            // }
           },
         });
       } else {
@@ -134,7 +147,10 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
 
   return (
     <>
-      <Box px={"md"}>
+      {/* {!snapShow && (
+        
+      )} */}
+      <Box>
         {/* Sisa Lembar Saham */}
         <Group position="apart" mb={"md"}>
           <Text>Sisa Lembar Saham</Text>
@@ -164,8 +180,8 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
               minimal pembelian 10 lembar
             </Text>
             {/* <Text c={"red"} fs={"italic"} fz={10}>
-                maximal pembelian {maxPembelian} lembar
-              </Text> */}
+               maximal pembelian {maxPembelian} lembar
+             </Text> */}
           </Box>
           <NumberInput
             type="number"
@@ -197,7 +213,7 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
         <Center>
           {jumlah < 10 ? (
             <Button w={350} radius={50} bg={"gray"} disabled>
-              Beli Saham
+              Beli 
             </Button>
           ) : (
             <Button
@@ -208,11 +224,13 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
                 onProses();
               }}
             >
-              Beli Saham
+              Beli 
             </Button>
           )}
         </Center>
       </Box>
+
+      {/* <Flex align={"center"} justify={"center"} id="embedId" /> */}
     </>
   );
 }

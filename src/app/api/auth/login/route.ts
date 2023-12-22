@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     } else {
       try {
         await fetch(
-          `https://wa.wibudev.com/code?nom=${body.nomor}&text=${body.otp}`
+          `https://wa.wibudev.com/code?nom=${body.nomor}&text=Masukan Kode OTP:${body.otp}`
         );
         return NextResponse.json({
           body,

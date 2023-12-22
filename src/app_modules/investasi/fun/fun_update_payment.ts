@@ -20,17 +20,39 @@ export interface Model_Midtrans_Success {
   finish_redirect_url: string;
 }
 
+interface Model_Body {
+  authorId: string;
+  customer_name: string;
+  phone: string;
+  gross_amount: number;
+  item_name: string;
+  price: number;
+  quantity: number;
+  merchant_name: string;
+  investasiId: string;
+}
+
+interface Model_Token {
+  token: string;
+  redirect_url: string;
+}
+
 export default async function funUpdatePaymentInvestasi(
   data: Model_Midtrans_Success,
-  idPay: any,
+  body: Model_Body,
+  token: Model_Token
 ) {
-  console.log(data)
   if (data.status_code === "200") {
-    const res = await prisma.transaksiInvestasi.update({
-      where: {
-        id: idPay,
-      },
+    const res = await prisma.transaksiInvestasi.create({
       data: {
+        gross_amount: "" + body.gross_amount,
+        merchant_name: body.merchant_name,
+        price: "" + body.price,
+        quantity: "" + body.quantity,
+        token: token.token,
+        redirect_url: token.redirect_url,
+        authorId: body.authorId,
+        investasiId: body.investasiId,
         status_code: data.status_code,
         status_message: data.status_message,
         order_id: data.order_id,
@@ -48,49 +70,12 @@ export default async function funUpdatePaymentInvestasi(
 
     if (!res) return { status: 400, message: "Gagal update transaksi" };
 
-    // const jumlah = Number(res.quantity);
-    // const sisa = Number(investasi?.sisaLembar);
-    // const hasil = sisa - jumlah;
-
-    // const updateTransaksi = await prisma.investasi.update({
-    //   where: {
-    //     id: investasi?.id,
-    //   },
-    //   data: {
-    //     sisaLembar: hasil.toString(),
-    //   },
-    // });
-
-    // console.log(updateTransaksi);
-    // if (!updateTransaksi)
-    //   return { status: 400, message: "Gagal update investasi" };
-
-    revalidatePath(RouterInvestasi.main_transaksi)
+    revalidatePath(RouterInvestasi.main_transaksi);
 
     return {
       status: 200,
-      message: "Process",
+      message: "Berhasil",
+      data: res,
     };
-  } else {
-    if (data.status_code === "201") {
-      const res = await prisma.transaksiInvestasi.update({
-        where: {
-          id: idPay,
-        },
-        data: {
-          status_code: "201",
-        },
-      });
-      return {
-        message: "Success",
-      };
-    } else {
-      if ((!data.status_code as any) === "400")
-        return { status: 400, message: "Update Gagal" };
-      return {
-        status: 200,
-        message: "Berhasil Update",
-      };
-    }
   }
 }

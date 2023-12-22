@@ -20,19 +20,20 @@ export default function LayoutDialogPageCreateInvestasi({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter()
+  const router = useRouter();
   useShallowEffect(() => {
-    setTimeout(() => router.push(RouterInvestasi.portofolio), 3000)
-  },[])
+    setTimeout(() => router.push(RouterInvestasi.portofolio), 3000);
+  }, []);
   return (
     <>
       <AppShell
         footer={
-          <Footer height={70} sx={{ borderStyle: "none" }}>
+          <Footer height={80} sx={{ borderStyle: "none" }}>
             <Group spacing={4} position="center">
               <IconAlertTriangle color="orange" size={20} />
-              <Text fz={"sm"}>Proyek Investasi anda akan berstatus DRAFT</Text>
+              <Text fz={"sm"}>Mohon menunggu validasi Admin</Text>
             </Group>
+          
           </Footer>
         }
       >

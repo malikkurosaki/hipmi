@@ -2,6 +2,7 @@ export const RouterInvestasi = {
   api_gambar: "/api/investasi/gambar/",
   api_file_prospektus: "/api/investasi/prospektus/",
   api_file_dokumen: "/api/investasi/dokumen/",
+  api_get_notif_midtrans: "/api/investasi/midtrans",
 
   //INVESTASI
   main: "/dev/investasi/main",
@@ -20,6 +21,7 @@ export const RouterInvestasi = {
   proses_investasi: "/dev/investasi/proses_investasi/",
   proses_transaksi: "/dev/investasi/proses_transaksi/",
   status_transaksi: "/dev/investasi/status_transaksi/berhasil",
+  status_pesanan:"/dev/investasi/status_pesanan/",
   status_transaksi_gagal: "/dev/investasi/status_transaksi/gagal/",
   metode_transfer: "/dev/investasi/metode_transfer/",
 

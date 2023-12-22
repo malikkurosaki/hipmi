@@ -31,13 +31,14 @@ import { useRouter } from "next/navigation";
 import { MODEL_Transaksi_Investasi } from "../model/model_investasi";
 import { useState } from "react";
 import moment from "moment";
+import _ from "lodash";
 
 export default function DetailSahamTerbeli({
   dataTransaksi,
-  investor
+  investor,
 }: {
   dataTransaksi: MODEL_Transaksi_Investasi;
-  investor: number
+  investor: number;
 }) {
   const router = useRouter();
   const [investasi, setINvestasi] = useState(dataTransaksi);
@@ -61,11 +62,20 @@ export default function DetailSahamTerbeli({
       route: RouterInvestasi.berita,
     },
   ];
+
   return (
     <>
       <Group position="apart" mb={"md"}>
         <Flex align={"center"} gap={"xs"}>
-          <Avatar src={"/aset/avatar.png"} />
+          <Avatar radius={"xl"} bg={"gray"}>
+            {(() => {
+              const usr = investasi.Investasi.author.username;
+              const splt = usr.split("");
+              const Up = _.upperCase(splt[0]);
+
+              return Up;
+            })()}
+          </Avatar>
           <Text>{investasi.Investasi.author.username}</Text>
         </Flex>
         {(() => {
@@ -86,15 +96,53 @@ export default function DetailSahamTerbeli({
             return (
               <>
                 <Group position="right" spacing={"xs"}>
-                  <Text>Sisa waktu:</Text>
-                  <Text>
-                    {Number(investasi.Investasi.MasterPencarianInvestor.name) -
-                      moment(new Date()).diff(
-                        new Date(investasi.Investasi.countDown),
-                        "days"
-                      )}{" "}
-                    Hari
-                  </Text>
+                  {(() => {
+                    if (
+                      Number(investasi.Investasi.MasterPencarianInvestor.name) -
+                        moment(new Date()).diff(
+                          new Date(investasi.Investasi.countDown),
+                          "days"
+                        ) <=
+                      0
+                    ) {
+                      return (
+                        <>
+                          <Group position="right" spacing={"xs"}>
+                            <IconCircleCheck color="green" />
+                            <Text
+                              truncate
+                              variant="text"
+                              c={Warna.hijau_tua}
+                              sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+                              ta="center"
+                              fz="md"
+                              fw={700}
+                            >
+                              Waktu Habis
+                            </Text>
+                          </Group>
+                        </>
+                      );
+                    } else {
+                      return (
+                        <>
+                          <Group position="right" spacing={"xs"}>
+                            <Text>Sisa waktu:</Text>
+                            <Text truncate>
+                              {Number(
+                                investasi.Investasi.MasterPencarianInvestor.name
+                              ) -
+                                moment(new Date()).diff(
+                                  new Date(investasi.Investasi.countDown),
+                                  "days"
+                                )}
+                            </Text>
+                            <Text truncate>Hari</Text>
+                          </Group>
+                        </>
+                      );
+                    }
+                  })()}
                 </Group>
               </>
             );
@@ -105,7 +153,10 @@ export default function DetailSahamTerbeli({
       {/* Gambar Investasi */}
       <Paper withBorder mb={"md"}>
         <AspectRatio ratio={16 / 9}>
-          <Image alt="" src={RouterInvestasi.api_gambar + `${investasi.Investasi.imagesId}`} />
+          <Image
+            alt=""
+            src={RouterInvestasi.api_gambar + `${investasi.Investasi.imagesId}`}
+          />
         </AspectRatio>
       </Paper>
 
@@ -115,26 +166,28 @@ export default function DetailSahamTerbeli({
           {investasi.Investasi.title}
         </Title>
         <Progress
-                label={
-                  "" +
-                  (
-                    ((+investasi.Investasi.totalLembar - +investasi.Investasi.sisaLembar) /
-                      +investasi.Investasi.totalLembar) *
-                    100
-                  ).toFixed(1) +
-                  "%"
-                }
-                value={
-                  +(
-                    ((+investasi.Investasi.totalLembar - +investasi.Investasi.sisaLembar) /
-                    +investasi.Investasi.totalLembar) *
-                  100
-                  ).toFixed(2)
-                }
-                color="teal"
-                size="xl"
-                radius="xl"
-              />
+          label={
+            "" +
+            (
+              ((+investasi.Investasi.totalLembar -
+                +investasi.Investasi.sisaLembar) /
+                +investasi.Investasi.totalLembar) *
+              100
+            ).toFixed(1) +
+            "%"
+          }
+          value={
+            +(
+              ((+investasi.Investasi.totalLembar -
+                +investasi.Investasi.sisaLembar) /
+                +investasi.Investasi.totalLembar) *
+              100
+            ).toFixed(2)
+          }
+          color="teal"
+          size="xl"
+          radius="xl"
+        />
       </Box>
 
       {/* Rincian Data */}
@@ -147,19 +200,27 @@ export default function DetailSahamTerbeli({
             </Box> */}
             <Box>
               <Text>Dana Dibutuhkan</Text>
-              <Text>Rp. {new Intl.NumberFormat("id-ID", {
+              <Text>
+                Rp.{" "}
+                {new Intl.NumberFormat("id-ID", {
                   maximumSignificantDigits: 10,
-                }).format(+investasi.Investasi.targetDana)}</Text>
+                }).format(+investasi.Investasi.targetDana)}
+              </Text>
             </Box>
             <Box>
               <Text>Harga Per Lembar</Text>
-              <Text>Rp. {new Intl.NumberFormat("id-ID", {
+              <Text>
+                Rp.{" "}
+                {new Intl.NumberFormat("id-ID", {
                   maximumSignificantDigits: 10,
-                }).format(+investasi.Investasi.hargaLembar)}</Text>
+                }).format(+investasi.Investasi.hargaLembar)}
+              </Text>
             </Box>
             <Box>
               <Text>Jadwal Pembagian</Text>
-              <Text>{investasi.Investasi.MasterPembagianDeviden.name} bulan </Text>
+              <Text>
+                {investasi.Investasi.MasterPembagianDeviden.name} bulan{" "}
+              </Text>
             </Box>
             <Box>
               <Text>Pembagian Deviden</Text>
@@ -171,7 +232,7 @@ export default function DetailSahamTerbeli({
           <Stack>
             <Box>
               <Text>Investor</Text>
-              <Text>{investor} pengguna</Text>
+              <Text>{new Intl.NumberFormat("id-ID", {maximumSignificantDigits: 10}).format(investor)} </Text>
             </Box>
             <Box>
               <Text>ROI</Text>
@@ -179,15 +240,21 @@ export default function DetailSahamTerbeli({
             </Box>
             <Box>
               <Text>Total Lembar</Text>
-              <Text>{new Intl.NumberFormat("id-ID", {
+              <Text>
+                {new Intl.NumberFormat("id-ID", {
                   maximumSignificantDigits: 10,
-                }).format(+investasi.Investasi.totalLembar)} lembar</Text>
+                }).format(+investasi.Investasi.totalLembar)}{" "}
+                lembar
+              </Text>
             </Box>
             <Box>
               <Text>Sisa Lembar</Text>
-              <Text>{new Intl.NumberFormat("id-ID", {
+              <Text>
+                {new Intl.NumberFormat("id-ID", {
                   maximumSignificantDigits: 10,
-                }).format(+investasi.Investasi.sisaLembar)} lembar</Text>
+                }).format(+investasi.Investasi.sisaLembar)}{" "}
+                lembar
+              </Text>
             </Box>
           </Stack>
         </Grid.Col>
@@ -205,9 +272,12 @@ export default function DetailSahamTerbeli({
             <Stack>
               <Box>
                 <Text>Total Pembelian</Text>
-                <Text>Rp. {new Intl.NumberFormat("id-ID", {
-                  maximumSignificantDigits: 10,
-                }).format(+investasi.gross_amount)}</Text>
+                <Text>
+                  Rp.{" "}
+                  {new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 10,
+                  }).format(+investasi.gross_amount)}
+                </Text>
               </Box>
             </Stack>
           </Grid.Col>
@@ -215,9 +285,12 @@ export default function DetailSahamTerbeli({
             <Stack>
               <Box>
                 <Text>Lembar Dibeli</Text>
-                <Text>{new Intl.NumberFormat("id-ID", {
-                  maximumSignificantDigits: 10,
-                }).format(+investasi.quantity)} lembar</Text>
+                <Text>
+                  {new Intl.NumberFormat("id-ID", {
+                    maximumSignificantDigits: 10,
+                  }).format(+investasi.quantity)}{" "}
+                  lembar
+                </Text>
               </Box>
             </Stack>
           </Grid.Col>

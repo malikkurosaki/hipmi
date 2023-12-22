@@ -3,14 +3,6 @@
 import prisma from "@/app/lib/prisma";
 import MidTrans from "midtrans-client";
 
-// const midtransClient = require("midtrans-client");
-
-// const snap = new midtransClient.Snap({
-//     isProduction: false,
-//     serverKey: process.env.Server_KEY,
-//     clientKey: process.env.Client_KEY,
-//   });
-
 const snap = new MidTrans.Snap({
   isProduction: false,
   serverKey: process.env.Server_KEY,
@@ -41,7 +33,6 @@ export default async function getTokenTransaksi(data) {
     customer_details: {
       first_name: body.customer_name,
       phone: body.phone,
-      // email: "test@midtrans.com",
     },
     enabled_payments: [
       "permata_va",
@@ -53,19 +44,19 @@ export default async function getTokenTransaksi(data) {
       "shopeepay",
     ],
     bca_va: {
-      va_number: "82340374411111",
+      va_number: "7725699636222",
       sub_company_code: "00000",
       free_text: {
         inquiry: [
           {
-            en: "text in English",
-            id: "text in Bahasa Indonesia",
+            en: "Pay according to the invoice",
+            id: "Bayar sesuai faktur",
           },
         ],
         payment: [
           {
-            en: "text in English",
-            id: "text in Bahasa Indonesia",
+            en: "Pay according to the invoice",
+            id: "Bayar sesuai faktur",
           },
         ],
       },
@@ -89,25 +80,15 @@ export default async function getTokenTransaksi(data) {
     }
   });
 
+  // console.log(token)
+
   if (token.status === 400) {
     return { token: token };
   }
 
-  const newTransaksi = await prisma.transaksiInvestasi.create({
-    data: {
-      gross_amount: "" + data.gross_amount,
-      merchant_name: data.merchant_name,
-      price: "" + data.price,
-      quantity: "" + data.quantity,
-      token: token.value.token,
-      redirect_url: token.value.redirect_url,
-      authorId: data.authorId,
-      investasiId: data.investasiId,
-    },
-  });
 
   return {
     token: token,
-    dataTransaksi: newTransaksi,
+    // dataTransaksi: newTransaksi,
   };
 }

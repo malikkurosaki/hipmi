@@ -14,6 +14,11 @@ export const RouterAdminInvestasi = {
   table_status_reject: "/dev/admin/investasi/table_status/reject",
 };
 
+export const RouterAdminDonasi = {
+  main_donasi: "/dev/admin/donasi/main",
+  table_donasi: "/dev/admin/donasi/table/publish"
+}
+
 export const RouterAdminAward = {
   main_award: "/dev/admin/award/main",
 };

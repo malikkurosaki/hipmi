@@ -7,6 +7,7 @@ import fs from "fs";
 import { cookies } from "next/headers";
 import { unsealData } from "iron-session";
 import funProgressBar from "@/app_modules/investasi/fun/fun_progress_bar";
+import funTotalInvestorByIdInvestasi from "@/app_modules/investasi/fun/fun_total_investor_by_id";
 const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -25,6 +26,10 @@ export default async function Page({ params }: { params: { id: string } }) {
   let beli = Number(dataInvestasi?.lembarTerbeli)
   const progress = await funProgressBar(total, beli)
 
+  const totalInvestor = await funTotalInvestorByIdInvestasi(dataInvestasi?.id)
+
+  // console.log(dataInvestasi?.MasterProgresInvestasi?.name)
+
   return (
     <>
       <DetailInvestasi
@@ -32,6 +37,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         dataUser={dataUser as any}
         loginUserId={loginUserId}
         progress={progress}
+        totalInvestor={totalInvestor}
       />
     </>
   );

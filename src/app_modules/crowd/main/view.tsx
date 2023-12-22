@@ -1,6 +1,8 @@
 "use client";
 
+import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
 import { Warna } from "@/app/lib/warna";
+import { gs_donasi_hot_menu } from "@/app_modules/donasi/global_state";
 import { gs_investasiFooter } from "@/app_modules/investasi/g_state";
 import {
   AspectRatio,
@@ -22,6 +24,7 @@ import toast from "react-simple-toasts";
 export default function MainCrowd() {
   const router = useRouter();
   const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
+  const [donasiHotMenu, setDonasiHotMenu] = useAtom(gs_donasi_hot_menu)
   return (
     <>
       <Stack>
@@ -38,7 +41,7 @@ export default function MainCrowd() {
             radius={"md"}
             bg={"teal"}
             onClick={() => {
-              router.push("/dev/investasi/main");
+              router.push(RouterCrowd.investasi);
               setChangeColor(0);
             }}
           >
@@ -60,7 +63,10 @@ export default function MainCrowd() {
             bg={"blue.4"}
             radius={"md"}
             p={"xs"}
-            onClick={() => toast("Cooming Soon Feature...")}
+            onClick={() => {
+              router.push(RouterCrowd.donasi)
+              setDonasiHotMenu(0)
+            }}
           >
            <Grid>
               <Grid.Col span={10}>

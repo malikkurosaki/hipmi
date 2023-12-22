@@ -8,6 +8,8 @@ import pembagianDeviden from "./../../../bin/seeder/investasi/pembagian_deviden.
 import statusInvestasi from "./../../../bin/seeder/investasi/status_investasi.json";
 import namaBank from "./../../../bin/seeder/investasi/nama_bank.json";
 import statusTransaksiInvestasi from "./../../../bin/seeder/investasi/status_transaksi_investasi.json";
+import jenisProgres from "../../../bin/seeder/investasi/master_progres.json";
+import userSeeder from "../../../bin/seeder/user_seeder.json";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
@@ -24,6 +26,24 @@ export async function GET(req: Request) {
         create: {
           id: i.id.toString(),
           name: i.name,
+        },
+      });
+    }
+
+    for (let i of userSeeder) {
+      await prisma.user.upsert({
+        where: {
+          nomor: i.nomor,
+        },
+        create: {
+          nomor: i.nomor,
+          username: i.name,
+          masterUserRoleId: i.masterUserRoleId,
+        },
+        update: {
+          nomor: i.nomor,
+          username: i.name,
+          masterUserRoleId: i.masterUserRoleId,
         },
       });
     }
@@ -142,6 +162,21 @@ export async function GET(req: Request) {
           id: i.id,
           name: i.name,
           color: i.color,
+        },
+      });
+    }
+
+    for (let i of jenisProgres) {
+      await prisma.masterProgresInvestasi.upsert({
+        where: {
+          id: i.id,
+        },
+        create: {
+          id: i.id,
+          name: i.name,
+        },
+        update: {
+          name: i.name,
         },
       });
     }

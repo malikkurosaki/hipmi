@@ -7,7 +7,7 @@ export default async function getListTransaksiBerhasilInvestasi(
 ) {
   const data = await prisma.transaksiInvestasi.findMany({
     orderBy: {
-      createdAt: "desc"
+      createdAt: "desc",
     },
     where: {
       authorId: idAuthor,
@@ -15,7 +15,16 @@ export default async function getListTransaksiBerhasilInvestasi(
     },
     select: {
       id: true,
-      Investasi: true,
+      Investasi: {
+        select: {
+          author: true,
+          imagesId: true,
+          title: true,
+          totalLembar: true,
+          sisaLembar: true,
+          
+        },
+      },
       Author: true,
       gross_amount: true,
       quantity: true,

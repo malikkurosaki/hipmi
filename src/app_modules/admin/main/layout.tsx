@@ -25,6 +25,7 @@ import { IconLetterH, IconLogout } from "@tabler/icons-react";
 import {
   RouterAdminAward,
   RouterAdminDashboard,
+  RouterAdminDonasi,
   RouterAdminInvestasi,
 } from "@/app/lib/router_hipmi/router_admin";
 import { useRouter } from "next/navigation";
@@ -54,8 +55,8 @@ export default function AdminLayout({
     },
     {
       id: 3,
-      name: "Award",
-      route: RouterAdminAward.main_award,
+      name: "Donasi",
+      route: RouterAdminDonasi.main_donasi,
     },
   ];
 

@@ -6,6 +6,7 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  
   const data = await prisma.images.findUnique({
     where: {
       id: params.id,

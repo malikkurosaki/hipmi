@@ -75,26 +75,26 @@ export default function InvestasiCreate({
     };
     // toast("Berhasil disimpan")
 
-    // if (_.values(body).includes("")) return toast("Lengkapi data");
-    if (!fl) return toast("Gambar Kosong");
-    if (!pdf) return toast("File Kosong");
+   // if (_.values(body).includes("")) return toast("Lengkapi data");
+   if (!fl) return toast("Gambar Kosong");
+   if (!pdf) return toast("File Kosong");
 
-    const gmbr = new FormData();
-    gmbr.append("file", fl);
+   const gmbr = new FormData();
+   gmbr.append("file", fl);
 
-    const flPdf = new FormData();
-    flPdf.append("file", pdf);
+   const flPdf = new FormData();
+   flPdf.append("file", pdf as any);
 
-    await funCreateInvestasi(gmbr, flPdf, body as any).then((res) => {
-      if (res.status === 201) {
-        // toast(res.message);
-        setChangeColor(1);
-        setActiveTab("Review");
-        router.push(RouterInvestasi.dialog_create);
-      } else {
-        toast(res.message);
-      }
-    });
+   await funCreateInvestasi(gmbr, flPdf, body as any).then((res) => {
+     if (res.status === 201) {
+       // toast(res.message);
+       setChangeColor(1);
+       setActiveTab("Review");
+       router.push(RouterInvestasi.dialog_create);
+     } else {
+       toast(res.message);
+     }
+   });
   }
 
   async function onTotalLembar(target: any, harga: any) {

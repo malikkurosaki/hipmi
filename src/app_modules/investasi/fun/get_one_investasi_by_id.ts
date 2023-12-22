@@ -30,6 +30,7 @@ export default async function getOneInvestasiById(id: string) {
       MasterPembagianDeviden: true,
       MasterPencarianInvestor: true,
       MasterPeriodeDeviden: true,
+      MasterProgresInvestasi: true,
       author: true,
       countDown: true
     },
