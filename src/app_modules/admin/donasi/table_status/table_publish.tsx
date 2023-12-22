@@ -11,6 +11,6 @@ export default function AdminDonasi_TablePublish() {
     </ActionIcon>
     <Text>Kembali</Text>
    </Group>
-    table publish
+    table publish 
     </>
 }
