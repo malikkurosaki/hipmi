@@ -6,7 +6,7 @@ export const RouterDonasi = {
 
   // create
   create: "/dev/donasi/create",
-  create_cerita_penggalang: "/dev/donasi/create/cerita_penggalang",
+  create_cerita_penggalang: "/dev/donasi/create/cerita_penggalang/",
 
   // edit
   update_kabar: "/dev/donasi/edit/update_kabar",

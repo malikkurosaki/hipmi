@@ -10,6 +10,9 @@ import namaBank from "./../../../bin/seeder/investasi/nama_bank.json";
 import statusTransaksiInvestasi from "./../../../bin/seeder/investasi/status_transaksi_investasi.json";
 import jenisProgres from "../../../bin/seeder/investasi/master_progres.json";
 import userSeeder from "../../../bin/seeder/user_seeder.json";
+import donasi_status from "../../../bin/seeder/donasi/master_status.json";
+import donasi_kategori from "../../../bin/seeder/donasi/master_kategori.json";
+import donasi_durasi from "../../../bin/seeder/donasi/master_durasi.json";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
@@ -177,6 +180,51 @@ export async function GET(req: Request) {
         },
         update: {
           name: i.name,
+        },
+      });
+    }
+
+    for (let d of donasi_status) {
+      await prisma.donasiMaster_StatusDonasi.upsert({
+        where: {
+          id: d.id,
+        },
+        create: {
+          id: d.id,
+          name: d.name,
+        },
+        update: {
+          name: d.name,
+        },
+      });
+    }
+
+    for (let d of donasi_kategori) {
+      await prisma.donasiMaster_Kategori.upsert({
+        where: {
+          id: d.id,
+        },
+        create: {
+          id: d.id,
+          name: d.name,
+        },
+        update: {
+          name: d.name,
+        },
+      });
+    }
+
+    for (let d of donasi_durasi) {
+      await prisma.donasiMaster_Durasi.upsert({
+        where: {
+          id: d.id,
+        },
+        create: {
+          id: d.id,
+          name: d.name,
+        },
+        update: {
+          name: d.name,
         },
       });
     }

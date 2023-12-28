@@ -2,7 +2,7 @@ import MainDonasi from "./main/beranda";
 import LayoutDonasi from "./main/layout";
 import GalangDanaDonasi from "./main/galang_dana";
 import DonasiSayaDonasi from "./main/donasi_saya";
-import CreateDonasi from "./create";
+import CreateDonasi from "./create/create_donasi";
 import LayoutCreateDonasi from "./create/layout";
 import PagePopUpCreateDonasi from "./page_pop_up/create";
 import DetailMainDonasi from "./detail/detail_main";

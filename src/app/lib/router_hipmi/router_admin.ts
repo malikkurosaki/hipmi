@@ -16,8 +16,15 @@ export const RouterAdminInvestasi = {
 
 export const RouterAdminDonasi = {
   main_donasi: "/dev/admin/donasi/main",
-  table_donasi: "/dev/admin/donasi/table/publish"
-}
+  // table
+  table_publish: "/dev/admin/donasi/table/publish",
+  table_review: "/dev/admin/donasi/table/review",
+  table_reject: "/dev/admin/donasi/table/reject",
+
+
+  // detail
+  detail_publish: "/dev/admin/donasi/detail/publish",
+};
 
 export const RouterAdminAward = {
   main_award: "/dev/admin/award/main",

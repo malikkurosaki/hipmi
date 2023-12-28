@@ -23,14 +23,14 @@ export default function AdminDonasi_Main() {
       id: 1,
       name: "Publish",
       //   jumlah: countDraft,
-      link: RouterAdminDonasi.table_donasi,
+      link: RouterAdminDonasi.table_publish,
       color: "green",
     },
     {
       id: 2,
       name: "Review",
       //   jumlah: countReview,
-      link: "",
+      link: RouterAdminDonasi.table_review,
       color: "orange",
     },
     {
@@ -44,7 +44,7 @@ export default function AdminDonasi_Main() {
       id: 4,
       name: "Reject",
       //   jumlah: countReject,
-      link: "",
+      link: RouterAdminDonasi.table_reject,
       color: "red",
     },
   ];

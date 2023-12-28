@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Group,
+  Modal,
   Stack,
   Table,
   Text,
@@ -14,8 +15,10 @@ import {
 import { IconChevronLeft, IconEyeCheck } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import AdminDonasi_TombolKembali from "../component/tombol_kembali";
+import { useDisclosure } from "@mantine/hooks";
+import AdminDonasi_DetailReview from "../detail_table/detail_review";
 
-export default function AdminDonasi_TablePublish() {
+export default function AdminDonasi_TableReview() {
   return (
     <>
       <Stack>
@@ -28,8 +31,10 @@ export default function AdminDonasi_TablePublish() {
 
 function TableStatus() {
   const router = useRouter();
+  const [opened, { open, close }] = useDisclosure(false);
+
   async function onClick() {
-    router.push(RouterAdminDonasi.detail_publish);
+    // router.push(RouterAdminDonasi.detail_publish);
   }
 
   const TableRows = Array(5)
@@ -41,11 +46,11 @@ function TableStatus() {
         <td>
           <Button
             compact
-            color={"green"}
+            color={"orange"}
             leftIcon={<IconEyeCheck />}
             radius={"xl"}
             variant="outline"
-            onClick={onClick}
+            onClick={open}
           >
             Tampilkan
           </Button>
@@ -56,9 +61,9 @@ function TableStatus() {
   return (
     <>
       <Box>
-        <Box bg={"green.1"} p={"xs"}>
-          <Title order={6} c={"green"}>
-            PUBLISH
+        <Box bg={"orange.1"} p={"xs"}>
+          <Title order={6} c={"orange"}>
+            REVIEW
           </Title>
         </Box>
         <Table
@@ -79,6 +84,10 @@ function TableStatus() {
           <tbody>{TableRows}</tbody>
         </Table>
       </Box>
+
+      <Modal opened={opened} onClose={close}>
+        <AdminDonasi_DetailReview closeModal={close}/>
+      </Modal>
     </>
   );
 }

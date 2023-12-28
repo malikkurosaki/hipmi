@@ -23,6 +23,7 @@ model User {
   Profile            Profile?
   Investasi          Investasi[]
   TransaksiInvestasi TransaksiInvestasi[]
+  Donasi             Donasi[]
 }
 
 model MasterUserRole {
@@ -62,14 +63,17 @@ model Profile {
 }
 
 model Images {
-  id              String            @id @default(cuid())
-  url             String
-  active          Boolean           @default(true)
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @default(now()) @updatedAt
-  Profile         Profile?
-  Investasi       Investasi?
-  BeritaInvestasi BeritaInvestasi[]
+  id                     String                   @id @default(cuid())
+  url                    String
+  active                 Boolean                  @default(true)
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @default(now()) @updatedAt
+  Profile                Profile?
+  Investasi              Investasi?
+  BeritaInvestasi        BeritaInvestasi[]
+  Donasi                 Donasi?
+  CeritaDonasi           Donasi_Cerita[]
+  Donasi_TemporaryCreate Donasi_TemporaryCreate[]
 }
 
 model Katalog {
@@ -123,17 +127,17 @@ model Investasi {
   masterPembagianDevidenId  String?
   MasterPencarianInvestor   MasterPencarianInvestor? @relation(fields: [masterPencarianInvestorId], references: [id])
   masterPencarianInvestorId String?
-  ImageInvestasi Images? @relation(fields: [imagesId], references: [id])
-  imagesId       String? @unique
+  ImageInvestasi            Images?                  @relation(fields: [imagesId], references: [id])
+  imagesId                  String?                  @unique
 
-  MasterStatusInvestasi   MasterStatusInvestasi? @relation(fields: [masterStatusInvestasiId], references: [id])
-  masterStatusInvestasiId String?                @default("2")
-  ProspektusInvestasi ProspektusInvestasi?
-  BeritaInvestasi         BeritaInvestasi[]
-  DokumenInvestasi        DokumenInvestasi[]
+  MasterStatusInvestasi    MasterStatusInvestasi?  @relation(fields: [masterStatusInvestasiId], references: [id])
+  masterStatusInvestasiId  String?                 @default("2")
+  ProspektusInvestasi      ProspektusInvestasi?
+  BeritaInvestasi          BeritaInvestasi[]
+  DokumenInvestasi         DokumenInvestasi[]
   TransaksiInvestasi       TransaksiInvestasi[]
   MasterProgresInvestasi   MasterProgresInvestasi? @relation(fields: [masterProgresInvestasiId], references: [id])
-  masterProgresInvestasiId String? 
+  masterProgresInvestasiId String?
 }
 
 model MasterPencarianInvestor {
@@ -268,3 +272,83 @@ model MasterStatusTransaksiInvestasi {
   TransaksiInvestasi TransaksiInvestasi[]
 }
 
+// -------------------- DONASI --------------------- //
+model Donasi {
+  id          String    @id @default(cuid())
+  title       String
+  target      String
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishTime DateTime?
+
+  Author                      User?                      @relation(fields: [authorId], references: [id])
+  authorId                    String?                    @unique
+  imageDonasi                 Images?                    @relation(fields: [imagesId], references: [id])
+  imagesId                    String?                    @unique
+  CeritaDonasi                Donasi_Cerita?
+  DonasiMaster_Ketegori       DonasiMaster_Kategori?     @relation(fields: [donasiMaster_KategoriId], references: [id])
+  donasiMaster_KategoriId     String?
+  DonasiMaster_Durasi         DonasiMaster_Durasi?       @relation(fields: [donasiMaster_DurasiId], references: [id])
+  donasiMaster_DurasiId       String?
+  DonasiMaster_Status         DonasiMaster_StatusDonasi? @relation(fields: [donasiMaster_StatusDonasiId], references: [id])
+  donasiMaster_StatusDonasiId String?                    @default("2")
+}
+
+model Donasi_TemporaryCreate {
+  id                      String                 @id @default(cuid())
+  title                   String
+  target                  String
+  active                  Boolean                @default(true)
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime               @updatedAt
+  imageDonasiTemporary    Images?                @relation(fields: [imagesId], references: [id])
+  imagesId                String?                @unique
+  kategori                DonasiMaster_Kategori? @relation(fields: [donasiMaster_KategoriId], references: [id])
+  donasiMaster_KategoriId String?
+  durasi                  DonasiMaster_Durasi?   @relation(fields: [donasiMaster_DurasiId], references: [id])
+  donasiMaster_DurasiId   String?
+}
+
+model DonasiMaster_Kategori {
+  id                     String                   @id @default(cuid())
+  name                   String
+  active                 Boolean                  @default(true)
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  Donasi                 Donasi[]
+  Donasi_TemporaryCreate Donasi_TemporaryCreate[]
+}
+
+model DonasiMaster_Durasi {
+  id                     String                   @id @default(cuid())
+  name                   String
+  active                 Boolean                  @default(true)
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  Donasi                 Donasi[]
+  Donasi_TemporaryCreate Donasi_TemporaryCreate[]
+}
+
+model Donasi_Cerita {
+  id        String   @id @default(cuid())
+  pembukaan String
+  cerita    String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  imageCeritaDonasi Images? @relation(fields: [imagesId], references: [id])
+  imagesId          String? @unique
+  Donasi            Donasi? @relation(fields: [donasiId], references: [id])
+  donasiId          String? @unique
+}
+
+model DonasiMaster_StatusDonasi {
+  id        String   @id @default(cuid())
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Donasi    Donasi[]
+}
