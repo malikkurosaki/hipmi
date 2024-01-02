@@ -1,0 +1,132 @@
+[
+  {
+    "id": "clny2l8e20002tlagig62qv50",
+    "title": "Event EO",
+    "targetDana": "20000",
+    "hargaLembar": "1000",
+    "totalLembar": "200",
+    "roi": "7",
+    "active": true,
+    "createdAt": "2023-10-20T03:47:19.610Z",
+    "updatedAt": "2023-10-20T03:47:19.610Z",
+    "authorId": "clntsruqk0002tlrfyc9vzhxx",
+    "masterPeriodeDevidenId": "Akhir Project",
+    "masterPembagianDevidenId": 3,
+    "masterPencarianInvestorId": 60,
+    "imagesId": "clny2l8dj0000tlagcpsi9dmz",
+    "persentase": 30,
+    "saham_beli": 1,
+    "statusPorto": {
+      "id": 1,
+      "status": "Draft"
+    },
+    "statusSaham": {
+      "id": 2,
+      "status": "Menunggu konfirmasi"
+    }
+  },
+  {
+    "id": "clnxyjc0r0002tlamg8fn9ubk",
+    "title": "Subway ",
+    "targetDana": "1600000000",
+    "hargaLembar": "1000",
+    "totalLembar": "1600000",
+    "roi": "6",
+    "active": true,
+    "createdAt": "2023-10-20T01:53:52.539Z",
+    "updatedAt": "2023-10-20T01:53:52.539Z",
+    "authorId": "clntxvesu0002tlnbz030gx30",
+    "masterPeriodeDevidenId": "Selamanya",
+    "masterPembagianDevidenId": 6,
+    "masterPencarianInvestorId": 4,
+    "imagesId": "clnxyjc070000tlamc5jmsqse",
+    "persentase": 60,
+    "saham_beli": 0,
+    "statusPorto": {
+      "id": 3,
+      "status": "Publish"
+    },
+    "statusSaham": {
+      "id": 1,
+      "status": "Berhasil"
+    }
+  },
+  {
+    "id": "clnwzrcqz0002tlqlrb3b8kif",
+    "title": "Weeding EO",
+    "targetDana": "300000",
+    "hargaLembar": "1000",
+    "totalLembar": "3000",
+    "roi": "6",
+    "active": true,
+    "createdAt": "2023-10-19T09:40:20.171Z",
+    "updatedAt": "2023-10-19T09:40:20.171Z",
+    "authorId": "clntxvesu0002tlnbz030gx30",
+    "masterPeriodeDevidenId": "Selamanya",
+    "masterPembagianDevidenId": 6,
+    "masterPencarianInvestorId": 30,
+    "imagesId": "clnwzrcqs0000tlqlfr2cmbo5",
+    "persentase": 30,
+    "saham_beli": 1,
+    "statusPorto": {
+      "id": 2,
+      "status": "Review"
+    },
+    "statusSaham": {
+      "id": 1,
+      "status": "Berhasil"
+    }
+  },
+  {
+    "id": "clnwzmah00005tlwdn1h7htp6",
+    "title": "Exi EO",
+    "targetDana": "100000",
+    "hargaLembar": "1000",
+    "totalLembar": "1000",
+    "roi": "3",
+    "active": true,
+    "createdAt": "2023-10-19T09:36:23.940Z",
+    "updatedAt": "2023-10-19T09:36:23.940Z",
+    "authorId": "clntxvesu0002tlnbz030gx30",
+    "masterPeriodeDevidenId": "Selamanya",
+    "masterPembagianDevidenId": 3,
+    "masterPencarianInvestorId": 60,
+    "imagesId": "clnwzmagq0003tlwd2gldlzgb",
+    "persentase": 50,
+    "saham_beli": 1,
+    "statusPorto": {
+      "id": 2,
+      "status": "Review"
+    },
+    "statusSaham": {
+      "id": 1,
+      "status": "Berhasil"
+    }
+  },
+  {
+    "id": "clnwyvtlx0002tlfopdvez4yr",
+    "title": "Party EO",
+    "targetDana": "30000",
+    "hargaLembar": "1000",
+    "totalLembar": "30",
+    "roi": "1",
+    "active": true,
+    "createdAt": "2023-10-19T09:15:49.030Z",
+    "updatedAt": "2023-10-19T09:15:49.030Z",
+    "authorId": "clntxvesu0002tlnbz030gx30",
+    "masterPeriodeDevidenId": "Selamanya",
+    "masterPembagianDevidenId": 3,
+    "masterPencarianInvestorId": 90,
+    "imagesId": "clnwyvtlh0000tlfof0ec1x9k",
+    "persentase": 80,
+    "saham_beli": 0,
+    "statusPorto": {
+      "id": 4,
+      "status": "Reject"
+    },
+    "statusSaham": {
+      "id": 2,
+      "status": "Menunggu konfirmasi"
+    }
+  }
+]

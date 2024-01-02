@@ -9,5 +9,347 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-  
 
+model User {
+  id                 String               @id @default(cuid())
+  username           String               @unique
+  nomor              String               @unique
+  active             Boolean              @default(true)
+  createdAt          DateTime?            @default(now())
+  updatedAt          DateTime?            @updatedAt
+  MasterUserRole     MasterUserRole       @relation(fields: [masterUserRoleId], references: [id])
+  masterUserRoleId   String               @default("1")
+  UserSession        UserSession?
+  Profile            Profile?
+  Investasi          Investasi[]
+  TransaksiInvestasi TransaksiInvestasi[]
+  Donasi             Donasi[]
+}
+
+model MasterUserRole {
+  id        String    @id
+  name      String
+  active    Boolean   @default(true)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  User      User[]
+}
+
+model UserSession {
+  id        String   @id @default(cuid())
+  token     String
+  expires   DateTime
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+}
+
+model Profile {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  alamat       String
+  jenisKelamin String
+  active       Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now()) @updatedAt
+  User         User?     @relation(fields: [userId], references: [id])
+  userId       String?   @unique
+  ImageProfile Images?   @relation(fields: [imagesId], references: [id])
+  imagesId     String?   @unique
+  Katalog      Katalog[]
+}
+
+model Images {
+  id                     String                   @id @default(cuid())
+  url                    String
+  active                 Boolean                  @default(true)
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @default(now()) @updatedAt
+  Profile                Profile?
+  Investasi              Investasi?
+  BeritaInvestasi        BeritaInvestasi[]
+  Donasi                 Donasi?
+  CeritaDonasi           Donasi_Cerita[]
+  Donasi_TemporaryCreate Donasi_TemporaryCreate[]
+}
+
+model Katalog {
+  id                   String             @id @default(cuid())
+  namaBisnis           String
+  alamatKantor         String
+  tlpn                 String
+  deskripsi            String
+  active               Boolean            @default(true)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @default(now()) @updatedAt
+  Profile              Profile?           @relation(fields: [profileId], references: [id])
+  profileId            String?
+  MasterBidangBisnis   MasterBidangBisnis @relation(fields: [masterBidangBisnisId], references: [id])
+  masterBidangBisnisId String
+}
+
+model MasterBidangBisnis {
+  id        String    @id
+  name      String
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  Katalog   Katalog[]
+}
+
+// -------------------- INVESTASI --------------------- //
+// Table investasi / saham
+model Investasi {
+  id          String  @id @default(cuid())
+  title       String
+  targetDana  String
+  hargaLembar String
+  totalLembar String
+  roi         String
+  active      Boolean @default(true)
+
+  countDown     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  author        User?     @relation(fields: [authorId], references: [id])
+  authorId      String?
+  catatan       String?
+  sisaLembar    String
+  lembarTerbeli String?   @default("0")
+  progress      String?   @default("0")
+
+  MasterPeriodeDeviden      MasterPeriodeDeviden?    @relation(fields: [masterPeriodeDevidenId], references: [id])
+  masterPeriodeDevidenId    String?
+  MasterPembagianDeviden    MasterPembagianDeviden?  @relation(fields: [masterPembagianDevidenId], references: [id])
+  masterPembagianDevidenId  String?
+  MasterPencarianInvestor   MasterPencarianInvestor? @relation(fields: [masterPencarianInvestorId], references: [id])
+  masterPencarianInvestorId String?
+  ImageInvestasi            Images?                  @relation(fields: [imagesId], references: [id])
+  imagesId                  String?                  @unique
+
+  MasterStatusInvestasi    MasterStatusInvestasi?  @relation(fields: [masterStatusInvestasiId], references: [id])
+  masterStatusInvestasiId  String?                 @default("2")
+  ProspektusInvestasi      ProspektusInvestasi?
+  BeritaInvestasi          BeritaInvestasi[]
+  DokumenInvestasi         DokumenInvestasi[]
+  TransaksiInvestasi       TransaksiInvestasi[]
+  MasterProgresInvestasi   MasterProgresInvestasi? @relation(fields: [masterProgresInvestasiId], references: [id])
+  masterProgresInvestasiId String?
+}
+
+model MasterPencarianInvestor {
+  id        String      @id @default(cuid())
+  name      String
+  active    Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now()) @updatedAt
+  investasi Investasi[]
+}
+
+model MasterPeriodeDeviden {
+  id        String      @id @default(cuid())
+  name      String
+  active    Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now()) @updatedAt
+  investasi Investasi[]
+}
+
+model MasterPembagianDeviden {
+  id        String      @id @default(cuid())
+  name      String
+  active    Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now()) @updatedAt
+  investasi Investasi[]
+}
+
+model MasterStatusInvestasi {
+  id        String      @id @default(cuid())
+  name      String
+  color     String
+  active    Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now()) @updatedAt
+  investasi Investasi[]
+}
+
+model ProspektusInvestasi {
+  id          String     @id @default(cuid())
+  url         String
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now()) @updatedAt
+  investasi   Investasi? @relation(fields: [investasiId], references: [id])
+  investasiId String?    @unique
+}
+
+model DokumenInvestasi {
+  id          String     @id @default(cuid())
+  title       String
+  url         String
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now()) @updatedAt
+  investasi   Investasi? @relation(fields: [investasiId], references: [id])
+  investasiId String?
+}
+
+model BeritaInvestasi {
+  id          String    @id @default(cuid())
+  title       String
+  deskripsi   String
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  ImageBerita Images?   @relation(fields: [imagesId], references: [id])
+  imagesId    String?
+  investasi   Investasi @relation(fields: [investasiId], references: [id])
+  investasiId String
+}
+
+model MasterBank {
+  id        String   @id @default(cuid())
+  name      String
+  norek     String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MasterProgresInvestasi {
+  id        String      @id @default(cuid())
+  name      String
+  active    Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  Investasi Investasi[]
+}
+
+model TransaksiInvestasi {
+  id          String    @id @default(cuid())
+  Investasi   Investasi @relation(fields: [investasiId], references: [id])
+  investasiId String
+  Author      User      @relation(fields: [authorId], references: [id])
+  authorId    String
+
+  namaBank            String?
+  nomorRekening       String?
+  token               String?
+  redirect_url        String?
+  quantity            String
+  price               String
+  gross_amount        String
+  merchant_name       String
+  status_code         String?
+  status_message      String?
+  transaction_id      String?
+  order_id            String?
+  payment_type        String?
+  transaction_time    String?
+  transaction_status  String?
+  fraud_status        String?
+  pdf_url             String?
+  finish_redirect_url String?
+
+  active                           Boolean                         @default(true)
+  createdAt                        DateTime                        @default(now())
+  updatedAt                        DateTime                        @updatedAt
+  MasterStatusTransaksiInvestasi   MasterStatusTransaksiInvestasi? @relation(fields: [masterStatusTransaksiInvestasiId], references: [id])
+  masterStatusTransaksiInvestasiId String?                         @default("1")
+}
+
+model MasterStatusTransaksiInvestasi {
+  id                 String               @id @default(cuid())
+  name               String
+  color              String?
+  active             Boolean              @default(true)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  TransaksiInvestasi TransaksiInvestasi[]
+}
+
+// -------------------- DONASI --------------------- //
+model Donasi {
+  id          String    @id @default(cuid())
+  title       String
+  target      String
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishTime DateTime?
+  catatan     String?
+
+  Author                      User?                      @relation(fields: [authorId], references: [id])
+  authorId                    String?
+  imageDonasi                 Images?                    @relation(fields: [imagesId], references: [id])
+  imagesId                    String?                    @unique
+  CeritaDonasi                Donasi_Cerita?
+  DonasiMaster_Ketegori       DonasiMaster_Kategori?     @relation(fields: [donasiMaster_KategoriId], references: [id])
+  donasiMaster_KategoriId     String?
+  DonasiMaster_Durasi         DonasiMaster_Durasi?       @relation(fields: [donasiMaster_DurasiId], references: [id])
+  donasiMaster_DurasiId       String?
+  DonasiMaster_Status         DonasiMaster_StatusDonasi? @relation(fields: [donasiMaster_StatusDonasiId], references: [id])
+  donasiMaster_StatusDonasiId String?                    @default("2")
+}
+
+model Donasi_TemporaryCreate {
+  id                      String                 @id @default(cuid())
+  title                   String
+  target                  String
+  active                  Boolean                @default(true)
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime               @updatedAt
+  imageDonasiTemporary    Images?                @relation(fields: [imagesId], references: [id])
+  imagesId                String?                @unique
+  kategori                DonasiMaster_Kategori? @relation(fields: [donasiMaster_KategoriId], references: [id])
+  donasiMaster_KategoriId String?
+  durasi                  DonasiMaster_Durasi?   @relation(fields: [donasiMaster_DurasiId], references: [id])
+  donasiMaster_DurasiId   String?
+}
+
+model DonasiMaster_Kategori {
+  id                     String                   @id @default(cuid())
+  name                   String
+  active                 Boolean                  @default(true)
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  Donasi                 Donasi[]
+  Donasi_TemporaryCreate Donasi_TemporaryCreate[]
+}
+
+model DonasiMaster_Durasi {
+  id                     String                   @id @default(cuid())
+  name                   String
+  active                 Boolean                  @default(true)
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  Donasi                 Donasi[]
+  Donasi_TemporaryCreate Donasi_TemporaryCreate[]
+}
+
+model Donasi_Cerita {
+  id        String   @id @default(cuid())
+  pembukaan String
+  cerita    String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  imageCeritaDonasi Images? @relation(fields: [imagesId], references: [id])
+  imagesId          String? @unique
+  Donasi            Donasi? @relation(fields: [donasiId], references: [id])
+  donasiId          String? @unique
+}
+
+model DonasiMaster_StatusDonasi {
+  id        String   @id @default(cuid())
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Donasi    Donasi[]
+}
