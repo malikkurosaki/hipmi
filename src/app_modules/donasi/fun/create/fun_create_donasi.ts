@@ -6,6 +6,7 @@ import { MODEL_DONASI } from "../../model/interface";
 import { Donasi_funDeleteTemporaryCreate } from "../delete/fun_delete_temporary_create";
 import { v4 } from "uuid";
 import _ from "lodash";
+import { revalidatePath } from "next/cache";
 
 export async function Donasi_funCreate(req: MODEL_DONASI, file: FormData) {
   const body = req;
@@ -17,7 +18,7 @@ export async function Donasi_funCreate(req: MODEL_DONASI, file: FormData) {
       donasiMaster_DurasiId: body.donasiMaster_DurasiId,
       donasiMaster_KategoriId: body.donasiMaster_KategoriId,
       imagesId: body.imagesId,
-      authorId: body.authorId
+      authorId: body.authorId,
     },
   });
 
@@ -63,6 +64,7 @@ export async function Donasi_funCreate(req: MODEL_DONASI, file: FormData) {
   });
 
   if (!dataCerita) return { status: 400, message: "Gagal simpan data cerita" };
+  revalidatePath("/dev/donasi/main/galang_dana");
   return {
     status: 201,
     message: "Data donasi tersimpan",

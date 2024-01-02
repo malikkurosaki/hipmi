@@ -16,34 +16,44 @@ import {
 import { IconChevronsRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
-export default function AdminDonasi_Main() {
+export default function AdminDonasi_Main({
+  countPublish,
+  countReview,
+  countDraft,
+  countReject,
+}: {
+  countPublish: number;
+  countReview: number;
+  countDraft: number;
+  countReject: number;
+}) {
   const router = useRouter();
   const listBox = [
     {
       id: 1,
       name: "Publish",
-      //   jumlah: countDraft,
+      jumlah: countPublish,
       link: RouterAdminDonasi.table_publish,
       color: "green",
     },
     {
       id: 2,
       name: "Review",
-      //   jumlah: countReview,
+      jumlah: countReview,
       link: RouterAdminDonasi.table_review,
       color: "orange",
     },
     {
       id: 3,
       name: "Draft",
-      //   jumlah: countPublish,
+      jumlah: countDraft,
       link: "",
       color: "yellow",
     },
     {
       id: 4,
       name: "Reject",
-      //   jumlah: countReject,
+      jumlah: countReject,
       link: RouterAdminDonasi.table_reject,
       color: "red",
     },
@@ -75,7 +85,7 @@ export default function AdminDonasi_Main() {
                 <IconChevronsRight color={`${e.color}.2`} />
                 <Stack align="center" spacing={0}>
                   <Text>{e.name}</Text>
-                  <Title>10</Title>
+                  <Title>{e.jumlah}</Title>
                 </Stack>
                 {e.link !== "" ? (
                   <ActionIcon radius={"xl"} onClick={() => router.push(e.link)}>

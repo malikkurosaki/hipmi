@@ -27,6 +27,8 @@ import { useShallowEffect } from "@mantine/hooks";
 import Donasi_funCreateTemporary from "../fun/create/fun_create_donasi_temporary";
 import toast from "react-simple-toasts";
 import _ from "lodash";
+import { notifications } from "@mantine/notifications";
+import { NotifPeringatan } from "../component/notifikasi/notif_peringatan";
 
 export default function CreateDonasi({
   masterKategori,
@@ -48,13 +50,20 @@ export default function CreateDonasi({
   const [imageDonasi, setImageDonasi] = useState<any | null>();
 
   async function onCreate() {
-    if (_.values(create).includes("")) return toast("Lengkapi Data");
-    if (!file) return toast("Lengkapi Gambar");
+    const body = {
+      donasiMaster_KategoriId: create.kategoriId,
+      donasiMaster_DurasiId: create.durasiId,
+      title: create.title,
+      target: create.target,
+    };
+
+    if (_.values(body).includes("")) return NotifPeringatan("Lengkapin Data");
+    if (!file) return NotifPeringatan("Lengkapi Gambar");
 
     const gambar = new FormData();
     gambar.append("file", file as any);
 
-    await Donasi_funCreateTemporary(create as any, gambar).then((res) => {
+    await Donasi_funCreateTemporary(body as any, gambar).then((res) => {
       if (res.status === 201) {
         router.push(RouterDonasi.create_cerita_penggalang + `${res.donasiId}`);
       } else {
@@ -146,7 +155,7 @@ export default function CreateDonasi({
             withAsterisk
             data={durasi.map((e) => ({
               value: e.id,
-              label: e.name + " " + `bulan`,
+              label: e.name + " " + `hari`,
             }))}
             onChange={(val: string) => setCreate({ ...create, durasiId: val })}
           />

@@ -8,17 +8,28 @@ import React from "react";
 
 export default function LayoutCeritaPenggalangDonasi({
   children,
+  statusDonasiId,
 }: {
   children: React.ReactNode;
+  statusDonasiId: string;
 }) {
+  if (statusDonasiId !== "1") {
+    return (
+      <>
+        <AppShell
+          header={<HeaderTamplateDonasi title="Cerita Penggalang Dana" />}
+        >
+          {children}
+        </AppShell>
+      </>
+    );
+  }
   return (
-    <>
-      <AppShell
-        header={<HeaderTamplateDonasi title="Cerita Penggalang Dana" />}
-        footer={<ButtonDonasi />}
-      >
-        {children}
-      </AppShell>
-    </>
+    <AppShell
+      header={<HeaderTamplateDonasi title="Cerita Penggalang Dana" />}
+      footer={<ButtonDonasi />}
+    >
+      {children}
+    </AppShell>
   );
 }

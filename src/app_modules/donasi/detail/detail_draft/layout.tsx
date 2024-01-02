@@ -23,11 +23,14 @@ import { useDisclosure } from "@mantine/hooks";
 import router from "next/router";
 import { title } from "process";
 import { useRouter } from "next/navigation";
+import { data } from "autoprefixer";
 
 export default function LayoutDetailDraftDonasi({
   children,
+  donasiId
 }: {
   children: React.ReactNode;
+  donasiId: string
 }) {
   const [opened, { open, close }] = useDisclosure(false);
   const router = useRouter();
@@ -62,7 +65,7 @@ export default function LayoutDetailDraftDonasi({
             radius={"xl"}
             w={"100%"}
             color="blue"
-            onClick={() => router.push(RouterDonasi.edit_donasi)}
+            onClick={() => router.push(RouterDonasi.edit_donasi + `${donasiId}`)}
           >
             Edit Donasi
           </Button>
@@ -71,7 +74,7 @@ export default function LayoutDetailDraftDonasi({
             radius={"xl"}
             w={"100%"}
             color="teal"
-            onClick={() => router.push(RouterDonasi.edit_cerita_penggalang)}
+            onClick={() => router.push(RouterDonasi.edit_cerita_penggalang + `${donasiId}`)}
           >
             Edit Cerita
           </Button>

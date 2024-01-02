@@ -3,12 +3,14 @@ import React from "react";
 
 export default async function Layout({
   children,
+  params
 }: {
   children: React.ReactNode;
+  params: {id: string}
 }) {
   return (
     <>
-      <LayoutDetailDraftDonasi>{children}</LayoutDetailDraftDonasi>
+      <LayoutDetailDraftDonasi donasiId={params.id} >{children}</LayoutDetailDraftDonasi>
     </>
   );
 }

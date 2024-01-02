@@ -23,7 +23,7 @@ import { Warna } from "@/app/lib/warna";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import PostingDraftDonasi from "./galang_dana/draft";
 
-export default function GalangDanaDonasi() {
+export default function GalangDanaDonasi({listReview, listDraft}: {listReview: any, listDraft: any}) {
   const router = useRouter();
   const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
     gs_donasi_tabs_posting
@@ -39,13 +39,13 @@ export default function GalangDanaDonasi() {
     {
       id: 2,
       value: "Review",
-      path: <PostingReviewDonasi data={"2"} />,
+      path: <PostingReviewDonasi listReview={listReview} />,
       color: "yellow",
     },
     {
       id: 3,
       value: "Draft",
-      path: <PostingDraftDonasi data={"3"} />,
+      path: <PostingDraftDonasi listDraft={listDraft} />,
       color: "red",
     },
     {

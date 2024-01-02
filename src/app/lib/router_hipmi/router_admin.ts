@@ -24,6 +24,9 @@ export const RouterAdminDonasi = {
 
   // detail
   detail_publish: "/dev/admin/donasi/detail/publish",
+  detail_review: "/dev/admin/donasi/detail/review/",
+
+
 };
 
 export const RouterAdminAward = {

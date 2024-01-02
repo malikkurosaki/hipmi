@@ -7,7 +7,7 @@ import { unsealData } from "iron-session";
 import { redirect } from "next/navigation";
 const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
-export async function funGetUserToken() {
+export async function getToken_UserId() {
   const c = cookies().get("ssn");
   if (!c?.value) return redirect("/dev/auth/login");
 
@@ -17,5 +17,5 @@ export async function funGetUserToken() {
     })
   );
 
-  return token;
+  return token.id
 }

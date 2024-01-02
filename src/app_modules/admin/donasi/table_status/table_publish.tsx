@@ -5,6 +5,7 @@ import {
   ActionIcon,
   Box,
   Button,
+  Center,
   Group,
   Stack,
   Table,
@@ -14,44 +15,56 @@ import {
 import { IconChevronLeft, IconEyeCheck } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import AdminDonasi_TombolKembali from "../component/tombol_kembali";
+import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
+import { useState } from "react";
+import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 
-export default function AdminDonasi_TablePublish() {
+export default function AdminDonasi_TablePublish({
+  listPublish,
+}: {
+  listPublish: MODEL_DONASI;
+}) {
   return (
     <>
       <Stack>
         <AdminDonasi_TombolKembali />
-        <TableStatus />
+        <TableStatus listPublish={listPublish as any} />
       </Stack>
     </>
   );
 }
 
-function TableStatus() {
+function TableStatus({ listPublish }: { listPublish: MODEL_DONASI[] }) {
   const router = useRouter();
+  const [donasi, setDonasi] = useState(listPublish);
   async function onClick() {
     router.push(RouterAdminDonasi.detail_publish);
   }
 
-  const TableRows = Array(5)
-    .fill(0)
-    .map((e, i) => (
-      <tr key={i}>
-        <td>{`User ${i + 1}`}</td>
-        <td>{`Judul ${i + 1}`}</td>
-        <td>
-          <Button
-            compact
-            color={"green"}
-            leftIcon={<IconEyeCheck />}
-            radius={"xl"}
-            variant="outline"
-            onClick={onClick}
-          >
-            Tampilkan
-          </Button>
-        </td>
-      </tr>
-    ));
+  const TableRows = donasi.map((e, i) => (
+    <tr key={i}>
+      <td>{e.title}</td>
+      <td>
+        <TampilanRupiahDonasi nominal={+e.target} />
+      </td>
+      <td>{e.DonasiMaster_Ketegori.name}</td>
+      <td>{e.DonasiMaster_Durasi.name} hari</td>
+      <td>
+       <Center>
+       <Button
+          compact
+          color={"green"}
+          leftIcon={<IconEyeCheck />}
+          radius={"xl"}
+          variant="outline"
+          onClick={onClick}
+        >
+          Tampilkan
+        </Button>
+       </Center>
+      </td>
+    </tr>
+  ));
 
   return (
     <>
@@ -71,9 +84,11 @@ function TableStatus() {
         >
           <thead>
             <tr>
-              <th>Name</th>
               <th>Judul</th>
-              <th>Aksi</th>
+              <th>Target</th>
+              <th>Ketegori</th>
+              <th>Durasi</th>
+              <th><Center>Aksi</Center></th>
             </tr>
           </thead>
           <tbody>{TableRows}</tbody>

@@ -5,6 +5,7 @@ import {
   ActionIcon,
   Box,
   Button,
+  Center,
   Group,
   Modal,
   Stack,
@@ -17,46 +18,69 @@ import { useRouter } from "next/navigation";
 import AdminDonasi_TombolKembali from "../component/tombol_kembali";
 import { useDisclosure } from "@mantine/hooks";
 import AdminDonasi_DetailReview from "../detail_table/detail_review";
+import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
+import { useState } from "react";
+import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 
-export default function AdminDonasi_TableReject() {
+export default function AdminDonasi_TableReject({
+  dataReject,
+}: {
+  dataReject: MODEL_DONASI[];
+}) {
   return (
     <>
       <Stack>
         <AdminDonasi_TombolKembali />
-        <TableStatus />
+        <TableStatus dataReject={dataReject} />
       </Stack>
     </>
   );
 }
 
-function TableStatus() {
+function TableStatus({ dataReject }: { dataReject: MODEL_DONASI[] }) {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
+  const [donasi, setDonasi] = useState(dataReject);
 
-  async function onClick() {
-    // router.push(RouterAdminDonasi.detail_publish);
+  function onClick() {
+    return (
+      <Modal opened={opened} onClose={close} centered withCloseButton={false}>
+        <Stack>
+          <Title order={6}>Alasan penolakan</Title>
+          <Text>{"test"}</Text>
+        </Stack>
+      </Modal>
+    );
   }
 
-  const TableRows = Array(5)
-    .fill(0)
-    .map((e, i) => (
-      <tr key={i}>
-        <td>{`User ${i + 1}`}</td>
-        <td>{`Judul ${i + 1}`}</td>
-        <td>
+  const TableRows = donasi.map((e, i) => (
+    <tr key={i}>
+      <td>{e.title}</td>
+      <td>
+        <TampilanRupiahDonasi nominal={+e.target} />
+      </td>
+      <td>{e.DonasiMaster_Ketegori.name}</td>
+      <td>{e.DonasiMaster_Durasi.name} hari</td>
+      <td>{e.catatan}</td>
+      <td>
+        <Center>
           <Button
             compact
             color={"red"}
             leftIcon={<IconEyeCheck />}
             radius={"xl"}
             variant="outline"
-            onClick={open}
+            onClick={() => {
+             onClick()
+              // onClick(e.catatan);
+            }}
           >
             Tampilkan
           </Button>
-        </td>
-      </tr>
-    ));
+        </Center>
+      </td>
+    </tr>
+  ));
 
   return (
     <>
@@ -76,18 +100,19 @@ function TableStatus() {
         >
           <thead>
             <tr>
-              <th>Name</th>
               <th>Judul</th>
-              <th>Aksi</th>
+              <th>Target</th>
+              <th>Ketegori</th>
+              <th>Durasi</th>
+              <th>Catatan</th>
+              <th>
+                <Center>Lihat alasan</Center>
+              </th>
             </tr>
           </thead>
           <tbody>{TableRows}</tbody>
         </Table>
       </Box>
-
-      <Modal opened={opened} onClose={close}>
-        <AdminDonasi_DetailReview closeModal={close}/>
-      </Modal>
     </>
   );
 }

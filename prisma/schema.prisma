@@ -281,9 +281,10 @@ model Donasi {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   publishTime DateTime?
+  catatan     String?
 
   Author                      User?                      @relation(fields: [authorId], references: [id])
-  authorId                    String?                    @unique
+  authorId                    String?
   imageDonasi                 Images?                    @relation(fields: [imagesId], references: [id])
   imagesId                    String?                    @unique
   CeritaDonasi                Donasi_Cerita?

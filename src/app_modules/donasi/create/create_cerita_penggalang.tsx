@@ -21,13 +21,15 @@ import { MODEL_DONASI_TEMPORARY } from "../model/interface";
 import _ from "lodash";
 import toast from "react-simple-toasts";
 import { Donasi_funCreate } from "../fun/create/fun_create_donasi";
+import { notifications } from "@mantine/notifications";
+import { NotifPeringatan } from "../component/notifikasi/notif_peringatan";
 
 export default function CreateCeritaPenggalangDonasi({
   dataTemporary,
-  userId
+  userId,
 }: {
   dataTemporary: MODEL_DONASI_TEMPORARY;
-  userId: string
+  userId: string;
 }) {
   const router = useRouter();
   const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
@@ -42,8 +44,8 @@ export default function CreateCeritaPenggalangDonasi({
   const [imageCerita, setImageCerita] = useState<any | null>();
 
   async function onCreate() {
-    if (_.values(create).includes("")) return toast("Lengkapi Data");
-    if (!file) return toast("Lengkapi Gambar");
+    if (_.values(create).includes("")) return NotifPeringatan("Lengkapin Data");
+    if (!file) return NotifPeringatan("Lengkapi Gambar");
 
     const gambar = new FormData();
     gambar.append("file", file as any);
@@ -67,7 +69,7 @@ export default function CreateCeritaPenggalangDonasi({
         router.push(RouterDonasi.page_pop_up_create);
         setTabsPostingDonasi("Review");
       } else {
-        toast(res.message)
+        toast(res.message);
       }
     });
   }
