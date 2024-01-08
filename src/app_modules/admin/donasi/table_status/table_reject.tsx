@@ -42,17 +42,6 @@ function TableStatus({ dataReject }: { dataReject: MODEL_DONASI[] }) {
   const [opened, { open, close }] = useDisclosure(false);
   const [donasi, setDonasi] = useState(dataReject);
 
-  function onClick() {
-    return (
-      <Modal opened={opened} onClose={close} centered withCloseButton={false}>
-        <Stack>
-          <Title order={6}>Alasan penolakan</Title>
-          <Text>{"test"}</Text>
-        </Stack>
-      </Modal>
-    );
-  }
-
   const TableRows = donasi.map((e, i) => (
     <tr key={i}>
       <td>{e.title}</td>
@@ -61,7 +50,6 @@ function TableStatus({ dataReject }: { dataReject: MODEL_DONASI[] }) {
       </td>
       <td>{e.DonasiMaster_Ketegori.name}</td>
       <td>{e.DonasiMaster_Durasi.name} hari</td>
-      <td>{e.catatan}</td>
       <td>
         <Center>
           <Button
@@ -70,20 +58,33 @@ function TableStatus({ dataReject }: { dataReject: MODEL_DONASI[] }) {
             leftIcon={<IconEyeCheck />}
             radius={"xl"}
             variant="outline"
-            onClick={() => {
-             onClick()
-              // onClick(e.catatan);
-            }}
+            onClick={() => router.push(RouterAdminDonasi.detail_reject + `${e.id}`)}
           >
             Tampilkan
           </Button>
         </Center>
+
+        {/* <ModalReject opened={opened} close={close} /> */}
       </td>
     </tr>
   ));
 
   return (
     <>
+      {donasi.map((e,i) => (
+        <Modal
+          key={e.id}
+          opened={opened}
+          onClose={close}
+          centered
+          withCloseButton={false}
+        >
+          <Stack>
+            <Title order={6}>Alasan penolakan</Title>
+            <Text>{i}</Text>
+          </Stack>
+        </Modal>
+      ))}
       <Box>
         <Box bg={"red.1"} p={"xs"}>
           <Title order={6} c={"red"}>
@@ -104,7 +105,6 @@ function TableStatus({ dataReject }: { dataReject: MODEL_DONASI[] }) {
               <th>Target</th>
               <th>Ketegori</th>
               <th>Durasi</th>
-              <th>Catatan</th>
               <th>
                 <Center>Lihat alasan</Center>
               </th>
@@ -113,6 +113,19 @@ function TableStatus({ dataReject }: { dataReject: MODEL_DONASI[] }) {
           <tbody>{TableRows}</tbody>
         </Table>
       </Box>
+    </>
+  );
+}
+
+async function ModalReject(opened: any, close: any) {
+  return (
+    <>
+      <Modal opened={opened} onClose={close} centered withCloseButton={false}>
+        <Stack>
+          <Title order={6}>Alasan penolakan</Title>
+          <Text>{"test"}</Text>
+        </Stack>
+      </Modal>
     </>
   );
 }

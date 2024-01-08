@@ -7,8 +7,8 @@ import LayoutCreateDonasi from "./create/layout";
 import PagePopUpCreateDonasi from "./page_pop_up/create";
 import DetailMainDonasi from "./detail/detail_main";
 import LayoutDetailMainDonasi from "./detail/detail_main/layout";
-import MasukanDonasi from "./detail/detail_main/masukan_donasi";
-import LayoutMasukanDonasi from "./detail/detail_main/masukan_donasi/layout";
+import MasukanDonasi from "./proses_donasi/masukan_donasi";
+import LayoutMasukanDonasi from "./proses_donasi/masukan_donasi/layout";
 import DonaturDonasi from "./detail/detail_main/donatur";
 import LayoutDonaturDonasi from "./detail/detail_main/donatur/layout";
 import KabarDonasi from "./detail/detail_main/kabar";
@@ -40,6 +40,12 @@ import EditCeritaPenggalangDonasi from "./edit/edit_cerita_penggalang";
 import LayoutEditCeritaPenggalangDonasi from "./edit/edit_cerita_penggalang/layout";
 import DetailDonasiSaya from "./detail/detail_donasi_saya";
 import LayoutDetailDonasiSaya from "./detail/detail_donasi_saya/layout";
+import Donasi_MetodePembayaran from "./proses_donasi/metode_pembayaran";
+import LayoutDonasi_MetodePembayaran from "./proses_donasi/metode_pembayaran/layout";
+import Donasi_InvoiceProses from "./proses_donasi/invoice";
+import LayoutDonasi_InvoiceProses from "./proses_donasi/invoice/layout";
+import Donasi_ProsesTransaksi from "./proses_donasi/proses_transaksi";
+import LayoutDonasi_ProsesTransaksi from "./proses_donasi/proses_transaksi/layout";
 
 export {
   MainDonasi,
@@ -84,4 +90,10 @@ export {
   LayoutEditCeritaPenggalangDonasi,
   DetailDonasiSaya,
   LayoutDetailDonasiSaya,
+  Donasi_MetodePembayaran,
+  LayoutDonasi_MetodePembayaran,
+  Donasi_InvoiceProses,
+  LayoutDonasi_InvoiceProses,
+  Donasi_ProsesTransaksi,
+  LayoutDonasi_ProsesTransaksi,
 };

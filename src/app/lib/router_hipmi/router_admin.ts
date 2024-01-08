@@ -23,8 +23,13 @@ export const RouterAdminDonasi = {
 
 
   // detail
-  detail_publish: "/dev/admin/donasi/detail/publish",
+  detail_publish: "/dev/admin/donasi/detail/publish/",
   detail_review: "/dev/admin/donasi/detail/review/",
+  detail_reject: "/dev/admin/donasi/detail/reject/",
+
+  // proses
+  proses_transaksi: "/dev/admin/donasi/proses_transaksi/"
+
 
 
 };

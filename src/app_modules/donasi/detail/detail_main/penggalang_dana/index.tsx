@@ -1,6 +1,13 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import ComponentDonasi_BoxPublish from "@/app_modules/donasi/component/box_publish";
+import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
+import {
+  MODEL_DONASI,
+  MODEL_DONASI_INFO_PENGGALANG,
+} from "@/app_modules/donasi/model/interface";
+import { MODEL_AUTHOR } from "@/app_modules/home/models/interface";
 import {
   AspectRatio,
   Avatar,
@@ -27,23 +34,38 @@ import {
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import router from "next/router";
+import { useState } from "react";
 
-export default function PenggalangDanaDonasi() {
+export default function PenggalangDanaDonasi({
+  dataPenggalang,
+}: {
+  dataPenggalang: MODEL_DONASI_INFO_PENGGALANG;
+}) {
+  const [value, setValue] = useState(dataPenggalang);
+
   return (
     <>
       <Stack>
-        <InformasiPenggalang />
-        <DataPengganganDana />
+        <InformasiPenggalang value={value as any} />
+        <ComponentDonasi_BoxPublish
+          dataDonasi={value.Donasi}
+          path={RouterDonasi.detail_publish}
+        />
       </Stack>
     </>
   );
 }
 
-function InformasiPenggalang() {
+function InformasiPenggalang({ value }: { value: MODEL_AUTHOR }) {
   return (
     <>
       <Paper radius={"md"}>
-        <Stack bg={"gray.1"} p={"md"} spacing={"xl"} sx={{borderRadius: "10px"}}>
+        <Stack
+          bg={"gray.1"}
+          p={"md"}
+          spacing={"xl"}
+          sx={{ borderRadius: "10px" }}
+        >
           <Stack align="center" spacing={0}>
             <Paper
               radius={"100%"}
@@ -60,7 +82,7 @@ function InformasiPenggalang() {
                 />
               </Center>
             </Paper>
-            <Title order={3}>@Username</Title>
+            <Title order={3}>@{value.username}</Title>
           </Stack>
           <Stack>
             <Group>
@@ -69,7 +91,7 @@ function InformasiPenggalang() {
             </Group>
             <Group>
               <IconPhone />
-              <Text>+62 81x xxx xxx</Text>
+              <Text>+{value.nomor}</Text>
             </Group>
             <Group>
               <IconBrandGmail />
@@ -82,13 +104,12 @@ function InformasiPenggalang() {
   );
 }
 
-function DataPengganganDana() {
+function DataPengganganDana({ donasi }: { donasi: MODEL_DONASI[] }) {
   const router = useRouter();
   const { height, width } = useViewportSize();
   return (
     <>
       <Title order={5}>Peggalangan Dana Yang Dilakukan</Title>
-
       <SimpleGrid
         cols={4}
         spacing="lg"
@@ -98,42 +119,43 @@ function DataPengganganDana() {
           { maxWidth: "36rem", cols: 1, spacing: "sm" },
         ]}
       >
-        {Array(5)
-          .fill(0)
-          .map((e, i) => (
-            <Box key={i} onClick={() => router.push(RouterDonasi.detail_main)}>
-              <Stack>
-                <Grid>
-                  <Grid.Col span={7}>
-                    <AspectRatio ratio={16 / 9}>
-                      <Paper radius={"md"}>
-                        <Image
-                          alt="Foto"
-                          src={"/aset/no-img.png"}
-                          radius={"md"}
-                        />
-                      </Paper>
-                    </AspectRatio>
-                  </Grid.Col>
-                  <Grid.Col span={5}>
-                    <Stack spacing={"xs"}>
-                      <Text fz={"sm"} fw={"bold"} lineClamp={2}>
-                        Judul Donasi Bisa Dilihat Disini Untuk Contoh
+        {donasi.map((e, i) => (
+          <Box
+            key={i}
+            onClick={() => router.push(RouterDonasi.detail_main + `${e.id}`)}
+          >
+            <Stack>
+              <Grid>
+                <Grid.Col span={7}>
+                  <AspectRatio ratio={16 / 9}>
+                    <Paper radius={"md"}>
+                      <Image
+                        alt="Foto"
+                        src={RouterDonasi.api_gambar + `${e.imagesId}`}
+                        radius={"md"}
+                      />
+                    </Paper>
+                  </AspectRatio>
+                </Grid.Col>
+                <Grid.Col span={5}>
+                  <Stack spacing={"xs"}>
+                    <Text fz={"sm"} fw={"bold"} lineClamp={2}>
+                      {e.title}
+                    </Text>
+                    <Progress value={50} color="orange" />
+                    <Stack spacing={0}>
+                      <Text fz={"sm"}>Terkumpul</Text>
+                      <Text fz={"sm"} fw={"bold"} c={"orange"} truncate>
+                        <TampilanRupiahDonasi nominal={+e.target} />
                       </Text>
-                      <Progress value={50} color="orange" />
-                      <Stack spacing={0}>
-                        <Text fz={"sm"}>Terkumpul</Text>
-                        <Text fz={"sm"} fw={"bold"} c={"orange"} truncate>
-                          Rp. 100.000.000
-                        </Text>
-                      </Stack>
                     </Stack>
-                  </Grid.Col>
-                </Grid>
-                {width > 575 ? "" : <Divider />}
-              </Stack>
-            </Box>
-          ))}
+                  </Stack>
+                </Grid.Col>
+              </Grid>
+              {width > 575 ? "" : <Divider />}
+            </Stack>
+          </Box>
+        ))}
       </SimpleGrid>
     </>
   );

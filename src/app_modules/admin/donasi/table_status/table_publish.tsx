@@ -37,9 +37,7 @@ export default function AdminDonasi_TablePublish({
 function TableStatus({ listPublish }: { listPublish: MODEL_DONASI[] }) {
   const router = useRouter();
   const [donasi, setDonasi] = useState(listPublish);
-  async function onClick() {
-    router.push(RouterAdminDonasi.detail_publish);
-  }
+
 
   const TableRows = donasi.map((e, i) => (
     <tr key={i}>
@@ -57,7 +55,7 @@ function TableStatus({ listPublish }: { listPublish: MODEL_DONASI[] }) {
           leftIcon={<IconEyeCheck />}
           radius={"xl"}
           variant="outline"
-          onClick={onClick}
+          onClick={() => router.push(RouterAdminDonasi.detail_publish + `${e.id}`)}
         >
           Tampilkan
         </Button>

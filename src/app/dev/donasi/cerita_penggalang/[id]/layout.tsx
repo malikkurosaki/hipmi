@@ -13,7 +13,7 @@ export default async function Layout({
   const statusDonasiId = dataDonasi?.donasiMaster_StatusDonasiId;
   return (
     <>
-      <LayoutCeritaPenggalangDonasi statusDonasiId={statusDonasiId as string}>
+      <LayoutCeritaPenggalangDonasi statusDonasiId={statusDonasiId as string} donasiId={dataDonasi?.id as string}>
         {children}
       </LayoutCeritaPenggalangDonasi>
     </>

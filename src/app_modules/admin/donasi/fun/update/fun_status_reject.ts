@@ -10,19 +10,18 @@ export async function AdminDonasi_funUpdateStatusReject(
   statusId: string,
   catatan: string
 ) {
-
   const data = await prisma.donasi.update({
     where: {
       id: donasiId,
     },
     data: {
       donasiMaster_StatusDonasiId: statusId,
-      catatan: catatan
+      catatan: catatan,
     },
   });
 
   if (!data) return { status: 400, message: "Data tidak ditemukan" };
-  revalidatePath(RouterAdminDonasi.table_review);
+  revalidatePath("/dev/admin/donasi/table/review");
   return {
     status: 200,
     message: "Status berhasil diganti",

@@ -24,6 +24,7 @@ model User {
   Investasi          Investasi[]
   TransaksiInvestasi TransaksiInvestasi[]
   Donasi             Donasi[]
+  Donasi_Invoice     Donasi_Invoice[]
 }
 
 model MasterUserRole {
@@ -74,6 +75,7 @@ model Images {
   Donasi                 Donasi?
   CeritaDonasi           Donasi_Cerita[]
   Donasi_TemporaryCreate Donasi_TemporaryCreate[]
+  Donasi_Kabar           Donasi_Kabar[]
 }
 
 model Katalog {
@@ -282,6 +284,8 @@ model Donasi {
   updatedAt   DateTime  @updatedAt
   publishTime DateTime?
   catatan     String?
+  progres     String?   @default("0")
+  terkumpul   String?   @default("0")
 
   Author                      User?                      @relation(fields: [authorId], references: [id])
   authorId                    String?
@@ -294,6 +298,8 @@ model Donasi {
   donasiMaster_DurasiId       String?
   DonasiMaster_Status         DonasiMaster_StatusDonasi? @relation(fields: [donasiMaster_StatusDonasiId], references: [id])
   donasiMaster_StatusDonasiId String?                    @default("2")
+  Donasi_Invoice              Donasi_Invoice[]
+  Donasi_Kabar                Donasi_Kabar[]
 }
 
 model Donasi_TemporaryCreate {
@@ -353,3 +359,55 @@ model DonasiMaster_StatusDonasi {
   updatedAt DateTime @updatedAt
   Donasi    Donasi[]
 }
+
+model DonasiMaster_Bank {
+  id             String           @id @default(cuid())
+  name           String
+  norek          String
+  active         Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Donasi_Invoice Donasi_Invoice[]
+}
+
+model DonasiMaster_StatusInvoice {
+  id             String           @id @default(cuid())
+  name           String
+  active         Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Donasi_Invoice Donasi_Invoice[]
+}
+
+model Donasi_Invoice {
+  id        String   @id @default(cuid())
+  nominal   String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Donasi                       Donasi?                     @relation(fields: [donasiId], references: [id])
+  donasiId                     String?
+  DonasiMaster_Bank            DonasiMaster_Bank?          @relation(fields: [donasiMaster_BankId], references: [id])
+  donasiMaster_BankId          String?
+  DonasiMaster_StatusInvoice   DonasiMaster_StatusInvoice? @relation(fields: [donasiMaster_StatusInvoiceId], references: [id])
+  donasiMaster_StatusInvoiceId String?                     @default("3")
+  Author                       User?                       @relation(fields: [authorId], references: [id])
+  authorId                     String?
+}
+
+model Donasi_Kabar {
+  id        String   @id @default(cuid())
+  title     String
+  deskripsi String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Donasi      Donasi? @relation(fields: [donasiId], references: [id])
+  donasiId    String?
+  ImagesKabar Images? @relation(fields: [imagesId], references: [id])
+  imagesId    String?
+}
+
+

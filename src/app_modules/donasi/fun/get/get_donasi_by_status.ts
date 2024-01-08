@@ -18,6 +18,16 @@ export default async function Donasi_getByStatus(
         authorId: authorId,
         donasiMaster_StatusDonasiId: "1",
       },
+      select: {
+        id: true,
+        title: true,
+        imagesId: true,
+        target: true,
+        publishTime: true,
+        DonasiMaster_Durasi: true,
+        terkumpul: true,
+
+      }
     });
     return getReview;
   }
@@ -48,7 +58,19 @@ export default async function Donasi_getByStatus(
         authorId: authorId,
         donasiMaster_StatusDonasiId: "4",
       },
+      select: {
+        id: true,
+        title: true,
+        imagesId: true,
+        target: true,
+        publishTime: true,
+        DonasiMaster_Durasi: true,
+        catatan: true,
+
+      }
+
     });
+
     return getReview;
   }
 

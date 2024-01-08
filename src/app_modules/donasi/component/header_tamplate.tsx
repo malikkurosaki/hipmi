@@ -7,6 +7,7 @@ import { useState } from "react";
 
 export default function HeaderTamplateDonasi({
   hideBack,
+  changeIconBack,
   route,
   route2,
   title,
@@ -14,6 +15,7 @@ export default function HeaderTamplateDonasi({
   bg,
 }: {
   hideBack?: boolean;
+  changeIconBack?: any
   route?: any;
   route2?: any;
   title: string;
@@ -42,7 +44,7 @@ export default function HeaderTamplateDonasi({
                 }
               }}
             >
-              <IconChevronLeft />
+             {changeIconBack ? changeIconBack:  <IconChevronLeft />}
             </ActionIcon>
           )}
           <Title order={5}>{title}</Title>

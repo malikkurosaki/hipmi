@@ -16,7 +16,7 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { gs_donasi_tabs_posting } from "../global_state";
-import BoxInformasiDonasi from "../component/box_informasi";
+import ComponentDonasi_NotedBox from "../component/noted_box";
 import { MODEL_DONASI_TEMPORARY } from "../model/interface";
 import _ from "lodash";
 import toast from "react-simple-toasts";
@@ -77,7 +77,7 @@ export default function CreateCeritaPenggalangDonasi({
     <>
       <Stack spacing={"md"} px={"md"}>
         {/* <pre>{JSON.stringify(dataTempo, null, 2)}</pre> */}
-        <BoxInformasiDonasi informasi="Ceritakan dengan jujur & benar mengapa Penggalanagn Dana ini harus diadakan!" />
+        <ComponentDonasi_NotedBox informasi="Ceritakan dengan jujur & benar mengapa Penggalanagn Dana ini harus diadakan!" />
         <Textarea
           autosize
           minRows={2}

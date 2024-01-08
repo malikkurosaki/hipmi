@@ -9,9 +9,11 @@ import React from "react";
 export default function LayoutCeritaPenggalangDonasi({
   children,
   statusDonasiId,
+  donasiId
 }: {
   children: React.ReactNode;
   statusDonasiId: string;
+  donasiId: string
 }) {
   if (statusDonasiId !== "1") {
     return (
@@ -27,7 +29,7 @@ export default function LayoutCeritaPenggalangDonasi({
   return (
     <AppShell
       header={<HeaderTamplateDonasi title="Cerita Penggalang Dana" />}
-      footer={<ButtonDonasi />}
+      footer={<ButtonDonasi donasiId={donasiId}/>}
     >
       {children}
     </AppShell>

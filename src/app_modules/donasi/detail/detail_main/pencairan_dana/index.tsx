@@ -1,6 +1,6 @@
 "use client";
 
-import BoxInformasiDonasi from "@/app_modules/donasi/component/box_informasi";
+import ComponentDonasi_NotedBox from "@/app_modules/donasi/component/noted_box";
 import {
   Avatar,
   Button,
@@ -45,7 +45,7 @@ function BoxDanaDicarikan() {
             <Text fz={"xs"}>Pencairan dana</Text>
           </Grid.Col>
         </Grid>
-        <BoxInformasiDonasi informasi=" Pencairan dana akan dilakukan oleh Admin HIPMI tanpa campur tangan
+        <ComponentDonasi_NotedBox informasi=" Pencairan dana akan dilakukan oleh Admin HIPMI tanpa campur tangan
             pihak manapun, jika berita pencairan dana dibawah tidak sesuai
             dengan kabar yang diberikan oleh PENGGALANG DANA. Maka pegguna lain
             dapat melaporkannya pada Admin HIPMI !"/>

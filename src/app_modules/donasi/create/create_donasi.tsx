@@ -20,7 +20,7 @@ import { IconCamera } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 
-import BoxInformasiDonasi from "../component/box_informasi";
+import ComponentDonasi_NotedBox from "../component/noted_box";
 import { MODEL_DONASI_ALL_MASTER } from "../model/interface";
 import { useState } from "react";
 import { useShallowEffect } from "@mantine/hooks";
@@ -75,7 +75,7 @@ export default function CreateDonasi({
   return (
     <>
       <Stack spacing={"md"} px={"md"}>
-        <BoxInformasiDonasi informasi="Lengkapi semua data di bawah untuk selanjutnya mengisi cerita Penggalangan Dana!" />
+        <ComponentDonasi_NotedBox informasi="Lengkapi semua data di bawah untuk selanjutnya mengisi cerita Penggalangan Dana!" />
         <Select
           label="Kategori"
           placeholder="Pilih kategori penggalangan dana"

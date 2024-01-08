@@ -84,7 +84,7 @@ function ButtonOnHeader({ donasi }: { donasi: MODEL_DONASI }) {
       (res) => {
         if (res.status === 200) {
           NotifBerhasil(res.message);
-          router.back()
+          router.back();
         } else {
           NotifGagal(res.message);
         }

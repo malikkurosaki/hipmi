@@ -23,20 +23,28 @@ export const RouterDonasi = {
   page_pop_up_create: "/dev/donasi/page_pop_up/create",
 
   //detail
-  detail_main: "/dev/donasi/detail/detail_main",
+  detail_main: "/dev/donasi/detail/detail_main/",
   detail_kabar: "/dev/donasi/detail/detail_kabar",
-  detail_publish: "/dev/donasi/detail/detail_publish",
+  detail_publish: "/dev/donasi/detail/detail_publish/",
   detail_review: "/dev/donasi/detail/detail_review/",
   detail_draft: "/dev/donasi/detail/detail_draft/",
-  detail_reject: "/dev/donasi/detail/detail_reject",
-  detail_donasi_saya: "/dev/donasi/detail/detail_donasi_saya",
+  detail_reject: "/dev/donasi/detail/detail_reject/",
+  detail_donasi_saya: "/dev/donasi/detail/detail_donasi_saya/",
 
   //alur donasi
-  masukan_donasi: "/dev/donasi/masukan_donasi",
   donatur: "/dev/donasi/donatur",
   kabar: "/dev/donasi/kabar",
   pencairan_dana: "/dev/donasi/pencairan_dana",
-  penggalang_dana: "/dev/donasi/penggalang_dana",
+  penggalang_dana: "/dev/donasi/penggalang_dana/",
   cerita_penggalang: "/dev/donasi/cerita_penggalang/",
   list_kabar: "/dev/donasi/list_kabar",
+  
+  // proses donasi
+  masukan_donasi: "/dev/donasi/proses_donasi/masukan_donasi/",
+  metode_pembayaran: "/dev/donasi/proses_donasi/metode_pembayaran/",
+  invoice: "/dev/donasi/proses_donasi/invoice/",
+  proses_transaksi: "/dev/donasi/proses_donasi/proses_transaksi/",
+
+
+
 };

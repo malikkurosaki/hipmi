@@ -12,7 +12,7 @@ export default function LayoutPenggalangDanaDonasi({
   return (
     <>
       <AppShell
-        header={<HeaderTamplateDonasi title="Informasu Penggalangan Dana" />}
+        header={<HeaderTamplateDonasi title="Informasi Penggalangan Dana" />}
         //   footer={<FooterDonasi />}
       >
         {children}

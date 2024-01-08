@@ -1,0 +1,153 @@
+"use client";
+
+import {
+  ActionIcon,
+  Box,
+  Button,
+  Center,
+  Group,
+  HoverCard,
+  Paper,
+  Stack,
+  Table,
+  Text,
+  Title,
+} from "@mantine/core";
+import AdminDonasi_TombolKembali from "../../component/tombol_kembali";
+import { MODEL_DONASI_INVOICE } from "@/app_modules/donasi/model/interface";
+import { useState } from "react";
+import moment from "moment";
+import { IconQuestionMark } from "@tabler/icons-react";
+import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
+import { AdminDonasi_funUpdateStatusInvoice } from "../../fun/update/fun_update_status_invoice";
+import { NotifBerhasil } from "@/app_modules/donasi/component/notifikasi/notif_berhasil";
+import { NotifGagal } from "@/app_modules/donasi/component/notifikasi/notif_gagal";
+import { AdminDonasi_getListStatusInvoiceProses } from "../../fun/get/get_list_status_invoice_proses";
+import { AdminDonasi_funUpdateProgresDanTerkumpul } from "../../fun/update/fun_update_progres_dan_terkumpul";
+
+export default function AdminDonasi_ProsesTransaksi({
+  listProses,
+}: {
+  listProses: MODEL_DONASI_INVOICE[];
+}) {
+  const [invoice, setInvoice] = useState<MODEL_DONASI_INVOICE[] | any[]>(
+    listProses
+  );
+
+  async function onClick(invoice: MODEL_DONASI_INVOICE) {
+    let nominal: number = +invoice.nominal;
+    let terkumpulSementaras: number = +invoice.Donasi.terkumpul;
+    const totalTerkumpul = terkumpulSementaras + nominal;
+
+    await AdminDonasi_funUpdateStatusInvoice(invoice.id, "1").then(
+      async (res) => {
+        if (res.status === 200) {
+          NotifBerhasil(res.message);
+          await AdminDonasi_funUpdateProgresDanTerkumpul(
+            invoice.Donasi.id,
+            totalTerkumpul
+          ).then(async (res) => {
+            if (res.status === 200) {
+              await AdminDonasi_getListStatusInvoiceProses(
+                invoice.Donasi.id
+              ).then((res) => {
+                setInvoice(res);
+              });
+            } else {
+              NotifGagal(res.message);
+            }
+          });
+        } else {
+          NotifGagal(res.message);
+        }
+      }
+    );
+  }
+
+  const rowTable = invoice.map((e) => (
+    <tr key={e.id}>
+      <td>{e.Author.username}</td>
+      <td>
+        <TampilanRupiahDonasi nominal={+e.nominal} />
+      </td>
+      <td>
+        <Center>{e.DonasiMaster_Bank.name}</Center>
+      </td>
+      <td>{`${moment(e.createdAt).format("ll")}`}</td>
+      <td>
+        <Center>
+          <Button
+            radius={"xl"}
+            variant="outline"
+            color="green"
+            onClick={() => onClick(e)}
+          >
+            Accept
+          </Button>
+        </Center>{" "}
+      </td>
+    </tr>
+  ));
+
+  return (
+    <>
+      {/* <pre>{JSON.stringify(invoice, null, 2)}</pre>  */}
+      <Stack>
+        <AdminDonasi_TombolKembali />
+        <Stack>
+          <HeaderPage />
+
+          <Paper p={"md"} withBorder>
+            <Table>
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Nominal</th>
+                  <th>
+                    <Center>Metode Pembayaran</Center>
+                  </th>
+                  <th>Tanggal</th>
+                  <th>
+                    <Center>Aksi</Center>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>{rowTable}</tbody>
+            </Table>
+          </Paper>
+        </Stack>
+      </Stack>
+    </>
+  );
+}
+
+function HeaderPage() {
+  return (
+    <>
+      <Group position="apart" px={"md"}>
+        <Title order={5}>Update Status Donatur</Title>
+        <Group position="left">
+          <HoverCard width={280} shadow="md">
+            <HoverCard.Target>
+              <ActionIcon bg={"gray.3"} radius={"xl"}>
+                <IconQuestionMark color="black" />
+              </ActionIcon>
+            </HoverCard.Target>
+            <HoverCard.Dropdown>
+              <Group spacing={4}>
+                <Text fz="sm">Sebelum melakukan aksi</Text>
+                <Text fz="sm" fw={"bold"} c={"green"}>
+                  ACCEPT
+                </Text>
+                <Text fz={"sm"}>
+                  Pastikan kembali transaksi donatur sesuai dengan mutasi pada
+                  Bank tertuju
+                </Text>
+              </Group>
+            </HoverCard.Dropdown>
+          </HoverCard>
+        </Group>
+      </Group>
+    </>
+  );
+}

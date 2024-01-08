@@ -15,3 +15,9 @@ export const gs_donasi_tabs_posting = atomWithStorage<string | null>(
   "gs_donasi_tabs_posting",
   "Publish"
 );
+
+export const gs_proses_donasi = atomWithStorage("gs_nomi", {
+  nominal: "",
+  bank: "",
+  norek: "",
+});
