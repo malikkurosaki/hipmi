@@ -5,6 +5,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   let authorId = params.id;
   const dataPenggalang = await Donasi_getAuthorById(authorId);
 
+
   return (
     <>
       <PenggalangDanaDonasi dataPenggalang={dataPenggalang as any} />

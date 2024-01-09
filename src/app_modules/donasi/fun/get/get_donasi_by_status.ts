@@ -23,6 +23,7 @@ export default async function Donasi_getByStatus(
         title: true,
         imagesId: true,
         target: true,
+        progres: true,
         publishTime: true,
         DonasiMaster_Durasi: true,
         terkumpul: true,

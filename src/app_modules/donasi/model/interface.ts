@@ -13,7 +13,7 @@ export interface MODEL_DONASI {
   publishTime: Date;
   catatan: string;
   progres: string;
-  terkumpul: string
+  terkumpul: string;
   authorId: string;
   donasiMaster_KategoriId: string;
   donasiMaster_DurasiId: string;
@@ -72,8 +72,8 @@ export interface MODEL_DONASI_INVOICE {
   active: boolean;
   createdAt: Date;
   updatedAt: Date;
-  Author: MODEL_AUTHOR
-  authorId: string
+  Author: MODEL_AUTHOR;
+  authorId: string;
   donasiMaster_BankId: string;
   donasiMaster_StatusInvoiceId: string;
   Donasi: MODEL_DONASI;
@@ -96,4 +96,17 @@ export interface MODEL_DONASI_ALL_MASTER {
   active: boolean;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface MODEL_DONASI_KABAR {
+  id: string;
+  title: string;
+  deskripsi: string;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  donasiId: string;
+  imagesId: string;
+  Donasi: MODEL_DONASI;
+  ImagesKabar: MODEL_IMAGES;
 }

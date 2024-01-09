@@ -74,7 +74,7 @@ export default function GalangDanaDonasi({
           bg={"orange"}
           color="orange"
           leftIcon={<IconCirclePlus />}
-          onClick={() => router.push(RouterDonasi.create)}
+          onClick={() => router.push(RouterDonasi.create_donasi)}
         >
           Galang Dana
         </Button>

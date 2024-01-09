@@ -7,12 +7,18 @@ import {
   Flex,
   Footer,
   Grid,
+  Group,
+  Header,
+  Indicator,
   Text,
+  Title,
 } from "@mantine/core";
 import React, { useState } from "react";
 import HeaderTamplateDonasi from "../component/header_tamplate";
 
 import {
+  IconBell,
+  IconChevronLeft,
   IconCurrencyDollar,
   IconGift,
   IconGiftCardFilled,
@@ -26,6 +32,7 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { gs_donasi_hot_menu } from "../global_state";
 import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
+import { title } from "process";
 
 export default function LayoutDonasi({
   children,
@@ -59,7 +66,19 @@ export default function LayoutDonasi({
     <>
       <AppShell
         header={
-          <HeaderTamplateDonasi title="Donasi" route={RouterCrowd.main} />
+          <Header height={50} sx={{ borderStyle: "none" }}>
+            <Group h={50} position="apart" px={"md"}>
+              <ActionIcon onClick={() => router.push(RouterCrowd.main)}>
+                <IconChevronLeft />
+              </ActionIcon>
+              <Title order={5}>Donasi</Title>
+              <ActionIcon radius={"md"}  variant="transparent" onClick={() => router.push(RouterDonasi.notif_page + `${"123"}`)}>
+                <Indicator processing color="orange" >
+                  <IconBell />
+                </Indicator>
+              </ActionIcon>
+            </Group>
+          </Header>
         }
         footer={
           <Footer height={70} bg={"dark"}>

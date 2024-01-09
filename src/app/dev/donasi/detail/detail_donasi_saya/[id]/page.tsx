@@ -7,6 +7,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   let invoiceId = params.id;
   const dataDonasi = await Donasi_getOneInvoiceById(invoiceId);
   const countDonatur= await Donasi_getCountDonatur(dataDonasi?.donasiId as any)
+  console.log(dataDonasi?.Donasi?.progres)
 
 
   return (

@@ -66,6 +66,7 @@ model Profile {
 model Images {
   id                     String                   @id @default(cuid())
   url                    String
+  label                  String                   @default("null")
   active                 Boolean                  @default(true)
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @default(now()) @updatedAt
@@ -409,5 +410,3 @@ model Donasi_Kabar {
   ImagesKabar Images? @relation(fields: [imagesId], references: [id])
   imagesId    String?
 }
-
-

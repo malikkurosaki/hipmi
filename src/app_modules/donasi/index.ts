@@ -46,6 +46,10 @@ import Donasi_InvoiceProses from "./proses_donasi/invoice";
 import LayoutDonasi_InvoiceProses from "./proses_donasi/invoice/layout";
 import Donasi_ProsesTransaksi from "./proses_donasi/proses_transaksi";
 import LayoutDonasi_ProsesTransaksi from "./proses_donasi/proses_transaksi/layout";
+import Donasi_CreateKabar from "./create/create_kabar";
+import LayoutDonasi_CreateKabar from "./create/create_kabar/layout";
+import Donasi_NotifPage from "./main/notif/notif_page";
+import LayoutDonasi_NotifPage from "./main/notif/layout";
 
 export {
   MainDonasi,
@@ -96,4 +100,8 @@ export {
   LayoutDonasi_InvoiceProses,
   Donasi_ProsesTransaksi,
   LayoutDonasi_ProsesTransaksi,
+  Donasi_CreateKabar,
+  LayoutDonasi_CreateKabar,
+  Donasi_NotifPage,
+  LayoutDonasi_NotifPage,
 };

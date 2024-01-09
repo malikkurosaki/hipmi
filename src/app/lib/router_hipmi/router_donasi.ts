@@ -4,6 +4,8 @@ export const RouterDonasi = {
   api_gambar_cerita: "/api/donasi/gambar_cerita/",
   api_image: "/api/donasi/image/",
   api_image_cerita: "/api/donasi/image_cerita/",
+  api_gambar_kabar: "/api/donasi/gambar_kabar/",
+
 
   //main
   main_beranda: "/dev/donasi/main/beranda",
@@ -11,11 +13,12 @@ export const RouterDonasi = {
   main_donasi_saya: "/dev/donasi/main/donasi_saya",
 
   // create
-  create: "/dev/donasi/create",
+  create_donasi: "/dev/donasi/create_donasi",
   create_cerita_penggalang: "/dev/donasi/create/cerita_penggalang/",
+  create_kabar: "/dev/donasi/create/create_kabar/",
 
   // edit
-  update_kabar: "/dev/donasi/edit/update_kabar",
+  update_kabar: "/dev/donasi/edit/update_kabar/",
   edit_donasi: "/dev/donasi/edit/edit_donasi/",
   edit_cerita_penggalang: "/dev/donasi/edit/edit_cerita/",
 
@@ -32,12 +35,13 @@ export const RouterDonasi = {
   detail_donasi_saya: "/dev/donasi/detail/detail_donasi_saya/",
 
   //alur donasi
-  donatur: "/dev/donasi/donatur",
-  kabar: "/dev/donasi/kabar",
+  donatur: "/dev/donasi/donatur/",
+  kabar: "/dev/donasi/kabar/",
   pencairan_dana: "/dev/donasi/pencairan_dana",
   penggalang_dana: "/dev/donasi/penggalang_dana/",
   cerita_penggalang: "/dev/donasi/cerita_penggalang/",
-  list_kabar: "/dev/donasi/list_kabar",
+  list_kabar: "/dev/donasi/list_kabar/",
+  notif_page:"/dev/donasi/notif_page/",
   
   // proses donasi
   masukan_donasi: "/dev/donasi/proses_donasi/masukan_donasi/",

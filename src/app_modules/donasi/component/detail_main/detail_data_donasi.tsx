@@ -78,7 +78,7 @@ export function ComponentDonasi_DetailDataMain({
           <Grid>
             <Grid.Col
               span={"auto"}
-              onClick={() => router.push(RouterDonasi.donatur)}
+              onClick={() => router.push(RouterDonasi.donatur + `${donasi.id}`)}
             >
               <Stack align="center" spacing={"xs"}>
                 <Group>
@@ -93,7 +93,7 @@ export function ComponentDonasi_DetailDataMain({
             <Divider orientation="vertical" />
             <Grid.Col
               span={"auto"}
-              onClick={() => router.push(RouterDonasi.kabar)}
+              onClick={() => router.push(RouterDonasi.kabar + `${donasi.id}`)}
             >
               <Stack spacing={"sm"} align="center">
                 <IconMessageChatbot color="skyblue" />
