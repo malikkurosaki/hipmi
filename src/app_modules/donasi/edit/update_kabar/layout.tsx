@@ -12,7 +12,7 @@ import {
 import { useRouter } from "next/navigation";
 import React from "react";
 import FooterDonasi from "../../component/footer_close_donasi";
-import HeaderTamplateDonasi from "../../component/header_tamplate";
+import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Donasi_funDeleteKabar } from "../../fun/delete/fun_delete.kabar";
 import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
@@ -30,7 +30,7 @@ export default function LayoutUpdateKabarDonasi({
   return (
     <>
       <AppShell
-        header={<HeaderTamplateDonasi title="Update Kabar" />}
+        header={<ComponentDonasi_HeaderTamplate title="Update Kabar" />}
         footer={
           <Footer height={70}>
             <Group align="center" h={"100%"} position="center" spacing={"xl"}>

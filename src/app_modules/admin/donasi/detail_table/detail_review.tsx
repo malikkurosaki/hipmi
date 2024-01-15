@@ -16,7 +16,7 @@ import {
   Textarea,
   Title,
 } from "@mantine/core";
-import AdminDonasi_TombolKembali from "../component/tombol_kembali";
+import ComponentAdminDonasi_TombolKembali from "../component/tombol_kembali";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import {
@@ -95,7 +95,7 @@ function ButtonOnHeader({ donasi }: { donasi: MODEL_DONASI }) {
   return (
     <>
       <Group position="apart">
-        <AdminDonasi_TombolKembali />
+        <ComponentAdminDonasi_TombolKembali />
         <Group>
           <Button
             radius={"xl"}

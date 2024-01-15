@@ -2,7 +2,7 @@
 
 import { AppShell } from "@mantine/core";
 import React from "react";
-import HeaderTamplateDonasi from "../../component/header_tamplate";
+import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
 
 export default function LayoutMasukanDonasi({
   children,
@@ -12,7 +12,7 @@ export default function LayoutMasukanDonasi({
   return (
     <>
       <AppShell
-        header={<HeaderTamplateDonasi title="Masukan Nominal Donasi" />}
+        header={<ComponentDonasi_HeaderTamplate title="Masukan Nominal Donasi" />}
       >
         {children}
       </AppShell>

@@ -15,6 +15,7 @@ export async function AdminDonasi_getListStatusInvoiceProses(donasiId: string) {
       nominal: true,
       createdAt: true,
       Author: true,
+      imagesId: true,
       Donasi: {
         select: {
             id: true,
@@ -26,8 +27,6 @@ export async function AdminDonasi_getListStatusInvoiceProses(donasiId: string) {
             publishTime: true,
             catatan: true,
             terkumpul: true,
-            authorId: true,
-            imagesId: true,
             donasiMaster_KategoriId: true,
             donasiMaster_DurasiId: true,
             donasiMaster_StatusDonasiId: true,

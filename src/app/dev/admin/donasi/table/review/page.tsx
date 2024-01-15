@@ -1,5 +1,5 @@
 import { AdminDonasi_TableReview } from "@/app_modules/admin/donasi";
-import { AdminDonasi_getByStatus } from "@/app_modules/admin/donasi/fun/get/get_donasi_by_status";
+import { AdminDonasi_getByStatus } from "@/app_modules/admin/donasi/fun/get/get_list_donasi_by_status";
 import { getToken_UserId } from "@/app_modules/fun/get_user_token";
 
 export default async function Page() {

@@ -20,6 +20,8 @@ export async function Donasi_getOneById(donasiId: string) {
       progres: true,
       terkumpul: true,
       imagesId: true,
+      namaBank: true,
+      rekening: true,
       donasiMaster_KategoriId: true,
       donasiMaster_DurasiId: true,
       donasiMaster_StatusDonasiId: true,

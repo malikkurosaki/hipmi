@@ -14,6 +14,11 @@ export interface MODEL_DONASI {
   catatan: string;
   progres: string;
   terkumpul: string;
+  namaBank: string;
+  rekening: string;
+  akumulasiPencairan: number;
+  totalPencairan: number;
+
   authorId: string;
   donasiMaster_KategoriId: string;
   donasiMaster_DurasiId: string;
@@ -69,6 +74,7 @@ export interface MODEL_DONASI_INVOICE {
   id: string;
   nominal: string;
   donasiId: string;
+  imagesId: string
   active: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -109,4 +115,28 @@ export interface MODEL_DONASI_KABAR {
   imagesId: string;
   Donasi: MODEL_DONASI;
   ImagesKabar: MODEL_IMAGES;
+}
+
+export interface MODEL_DONASI_NOTIF {
+  id: string;
+  isRead: boolean;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  donasi_KabarId: string;
+  Donasi_Kabar: MODEL_DONASI_KABAR;
+}
+
+export interface MODEL_DONASI_PENCAIRAN_DANA {
+  id: string;
+  nominalCair: number;
+  title: string;
+  deskripsi: string;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  donasiId: string;
+  imagesId: string
+  Donasi: MODEL_DONASI;
 }

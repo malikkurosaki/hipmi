@@ -19,6 +19,8 @@ export async function Donasi_funCreate(req: MODEL_DONASI, file: FormData) {
       donasiMaster_KategoriId: body.donasiMaster_KategoriId,
       imagesId: body.imagesId,
       authorId: body.authorId,
+      namaBank: body.namaBank,
+      rekening: body.rekening
     },
   });
 

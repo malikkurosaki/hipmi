@@ -55,7 +55,7 @@ export default function ListKabarDonasi({
         >
           {kabar.map((e, i) => (
            <Box key={i}>
-            <ComponentDonasi_ListKabar kabar={e}/>
+            <ComponentDonasi_ListKabar kabar={e} route={RouterDonasi.update_kabar}/>
            </Box>
           ))}
         </SimpleGrid>

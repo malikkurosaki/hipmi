@@ -21,6 +21,8 @@ import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
 import { NotifGagal } from "../../component/notifikasi/notif_gagal";
 import _ from "lodash";
 import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
+import ComponentDonasi_NotedBox from "../../component/noted_box";
+import { Donasi_funCreateNotif } from "../../fun/create/fun_create_notif";
 
 export default function Donasi_CreateKabar({ donasiId }: { donasiId: string }) {
   const router = useRouter();
@@ -33,6 +35,8 @@ export default function Donasi_CreateKabar({ donasiId }: { donasiId: string }) {
   return (
     <>
       <Stack>
+        <ComponentDonasi_NotedBox informasi="Gambar tidak wajib di isi ! Hanya upload jika di butuhkan." />
+
         <TextInput
           label="Judul"
           withAsterisk
@@ -88,6 +92,7 @@ export default function Donasi_CreateKabar({ donasiId }: { donasiId: string }) {
                   variant="outline"
                   w={150}
                   leftIcon={<IconCamera />}
+                  compact
                 >
                   Upload
                 </Button>
@@ -125,15 +130,19 @@ async function onSave(
   };
 
   if (_.values(body).includes("")) return NotifPeringatan("Lengkapi Data");
-  if (!file) return NotifPeringatan("Lengkapi Gambar");
+  // if (!file) return NotifPeringatan("Lengkapi Gambar");
 
   const gambar = new FormData();
   gambar.append("file", file as any);
 
-  await Donasi_funCreateKabar(body as any, gambar).then((res) => {
+  await Donasi_funCreateKabar(body as any, gambar).then(async (res) => {
     if (res.status === 200) {
-      NotifBerhasil(res.message);
-      router.back()
+      await Donasi_funCreateNotif(body.donasiId, res.kabarId as any).then((val) => {
+        if (val.status === 200) {
+          NotifBerhasil(res.message);
+          router.back();
+        }
+      });
     } else {
       NotifGagal(res.message);
     }

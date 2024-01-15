@@ -50,6 +50,10 @@ import Donasi_CreateKabar from "./create/create_kabar";
 import LayoutDonasi_CreateKabar from "./create/create_kabar/layout";
 import Donasi_NotifPage from "./main/notif/notif_page";
 import LayoutDonasi_NotifPage from "./main/notif/layout";
+import Donasi_DetailNotif from "./detail/deail_notif";
+import LayoutDonasi_DetailNotif from "./detail/deail_notif/layout";
+import Donasi_EditRekening from "./edit/edit_rekening";
+import LayoutDonasi_EditRekening from "./edit/edit_rekening/layout";
 
 export {
   MainDonasi,
@@ -104,4 +108,8 @@ export {
   LayoutDonasi_CreateKabar,
   Donasi_NotifPage,
   LayoutDonasi_NotifPage,
+  Donasi_DetailNotif,
+  LayoutDonasi_DetailNotif,
+  Donasi_EditRekening,
+  LayoutDonasi_EditRekening,
 };

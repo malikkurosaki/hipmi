@@ -31,17 +31,19 @@ import ComponentDonasi_InformasiPenggalangMain from "../../component/detail_main
 
 export default function DetailPublishDonasi({
   dataPublish,
-  countDonatur
+  countDonatur,
+  userLoginId
 }: {
   dataPublish: MODEL_DONASI;
-  countDonatur: number
+  countDonatur: number,
+  userLoginId: string
 }) {
   const [donasi, setDonasi] = useState(dataPublish);
   return (
     <>
       {/* <pre>{JSON.stringify(donasi,null,2)}</pre> */}
       <Stack spacing={40}>
-        <ComponentDonasi_DetailDataMain donasi={donasi} countDonatur={countDonatur} />
+        <ComponentDonasi_DetailDataMain donasi={donasi} countDonatur={countDonatur} userLoginId={userLoginId}/>
         <ComponentDonasi_InformasiPenggalangMain author={donasi.Author}/>
         <ComponentDonasi_CeritaPenggalangMain donasi={donasi} />
       </Stack>

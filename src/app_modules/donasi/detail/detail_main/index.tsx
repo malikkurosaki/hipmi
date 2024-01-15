@@ -35,15 +35,21 @@ import ComponentDonasi_InformasiPenggalangMain from "../../component/detail_main
 
 export default function DetailMainDonasi({
   dataDonasi,
-  countDonatur
+  countDonatur,
+  userLoginId,
 }: {
   dataDonasi: MODEL_DONASI;
-  countDonatur: number
+  countDonatur: number;
+  userLoginId: string;
 }) {
   return (
     <>
       <Stack spacing={40}>
-        <ComponentDonasi_DetailDataMain donasi={dataDonasi} countDonatur={countDonatur} />
+        <ComponentDonasi_DetailDataMain
+          donasi={dataDonasi}
+          countDonatur={countDonatur}
+          userLoginId={userLoginId}
+        />
         <ComponentDonasi_InformasiPenggalangMain author={dataDonasi.Author} />
         <ComponentDonasi_CeritaPenggalangMain donasi={dataDonasi} />
       </Stack>

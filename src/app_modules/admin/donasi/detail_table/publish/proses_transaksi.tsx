@@ -2,18 +2,21 @@
 
 import {
   ActionIcon,
+  AspectRatio,
   Box,
   Button,
   Center,
   Group,
   HoverCard,
+  Image,
+  Modal,
   Paper,
   Stack,
   Table,
   Text,
   Title,
 } from "@mantine/core";
-import AdminDonasi_TombolKembali from "../../component/tombol_kembali";
+import ComponentAdminDonasi_TombolKembali from "../../component/tombol_kembali";
 import { MODEL_DONASI_INVOICE } from "@/app_modules/donasi/model/interface";
 import { useState } from "react";
 import moment from "moment";
@@ -24,15 +27,17 @@ import { NotifBerhasil } from "@/app_modules/donasi/component/notifikasi/notif_b
 import { NotifGagal } from "@/app_modules/donasi/component/notifikasi/notif_gagal";
 import { AdminDonasi_getListStatusInvoiceProses } from "../../fun/get/get_list_status_invoice_proses";
 import { AdminDonasi_funUpdateProgresDanTerkumpul } from "../../fun/update/fun_update_progres_dan_terkumpul";
+import { useDisclosure } from "@mantine/hooks";
+import { RouterAdminDonasi } from "@/app/lib/router_hipmi/router_admin";
 
 export default function AdminDonasi_ProsesTransaksi({
   listProses,
 }: {
   listProses: MODEL_DONASI_INVOICE[];
 }) {
-  const [invoice, setInvoice] = useState<MODEL_DONASI_INVOICE[] | any[]>(
-    listProses
-  );
+  const [invoice, setInvoice] = useState<MODEL_DONASI_INVOICE[]>(listProses);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [imageId, setImageId] = useState("");
 
   async function onClick(invoice: MODEL_DONASI_INVOICE) {
     let nominal: number = +invoice.nominal;
@@ -50,7 +55,7 @@ export default function AdminDonasi_ProsesTransaksi({
             if (res.status === 200) {
               await AdminDonasi_getListStatusInvoiceProses(
                 invoice.Donasi.id
-              ).then((res) => {
+              ).then((res: any) => {
                 setInvoice(res);
               });
             } else {
@@ -79,6 +84,20 @@ export default function AdminDonasi_ProsesTransaksi({
           <Button
             radius={"xl"}
             variant="outline"
+            onClick={() => {
+              open();
+              setImageId(e.imagesId);
+            }}
+          >
+            Lihat
+          </Button>
+        </Center>
+      </td>
+      <td>
+        <Center>
+          <Button
+            radius={"xl"}
+            variant="filled"
             color="green"
             onClick={() => onClick(e)}
           >
@@ -91,9 +110,12 @@ export default function AdminDonasi_ProsesTransaksi({
 
   return (
     <>
+      <Modal opened={opened} onClose={close} centered>
+        <ModalBuktiTransfer imageId={imageId} />
+      </Modal>
       {/* <pre>{JSON.stringify(invoice, null, 2)}</pre>  */}
       <Stack>
-        <AdminDonasi_TombolKembali />
+        <ComponentAdminDonasi_TombolKembali />
         <Stack>
           <HeaderPage />
 
@@ -107,6 +129,9 @@ export default function AdminDonasi_ProsesTransaksi({
                     <Center>Metode Pembayaran</Center>
                   </th>
                   <th>Tanggal</th>
+                  <th>
+                    <Center>Bukti Transfer</Center>
+                  </th>
                   <th>
                     <Center>Aksi</Center>
                   </th>
@@ -148,6 +173,19 @@ function HeaderPage() {
           </HoverCard>
         </Group>
       </Group>
+    </>
+  );
+}
+
+function ModalBuktiTransfer({ imageId }: { imageId: string }) {
+  return (
+    <>
+      <AspectRatio ratio={9 / 16}>
+        <Image
+          alt="Foto"
+          src={RouterAdminDonasi.api_gambar_bukti_transfer + `${imageId}`}
+        />
+      </AspectRatio>
     </>
   );
 }

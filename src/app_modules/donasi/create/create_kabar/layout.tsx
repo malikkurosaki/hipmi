@@ -2,7 +2,7 @@
 
 import { AppShell } from "@mantine/core";
 import React from "react";
-import HeaderTamplateDonasi from "../../component/header_tamplate";
+import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
 
 export default function LayoutDonasi_CreateKabar({
   children,
@@ -11,7 +11,7 @@ export default function LayoutDonasi_CreateKabar({
 }) {
   return (
     <>
-      <AppShell header={<HeaderTamplateDonasi title="Buat Kabar" />}>
+      <AppShell header={<ComponentDonasi_HeaderTamplate title="Buat Kabar" />}>
         {children}
       </AppShell>
     </>

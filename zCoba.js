@@ -27,8 +27,8 @@ var fs = require("fs");
 // console.log('File deleted!');
 
 function CobaProgress() {
-  const t = 550000000;
-  const b = 250000000 + 275000000 * 2;
+  const t = 560000000;
+  const b = 180000000
 
   const progress = (b / t) * 100;
   const pembulatan = Math.round(progress);

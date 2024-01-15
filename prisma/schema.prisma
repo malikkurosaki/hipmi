@@ -25,6 +25,7 @@ model User {
   TransaksiInvestasi TransaksiInvestasi[]
   Donasi             Donasi[]
   Donasi_Invoice     Donasi_Invoice[]
+  Donasi_Notif       Donasi_Notif[]
 }
 
 model MasterUserRole {
@@ -77,6 +78,8 @@ model Images {
   CeritaDonasi           Donasi_Cerita[]
   Donasi_TemporaryCreate Donasi_TemporaryCreate[]
   Donasi_Kabar           Donasi_Kabar[]
+  Donasi_PencairanDana   Donasi_PencairanDana[]
+  Donasi_Invoice         Donasi_Invoice[]
 }
 
 model Katalog {
@@ -275,18 +278,22 @@ model MasterStatusTransaksiInvestasi {
   TransaksiInvestasi TransaksiInvestasi[]
 }
 
-// -------------------- DONASI --------------------- //
+/// ---------------------------------------- DONASI ----------------------------------------- //
 model Donasi {
-  id          String    @id @default(cuid())
-  title       String
-  target      String
-  active      Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  publishTime DateTime?
-  catatan     String?
-  progres     String?   @default("0")
-  terkumpul   String?   @default("0")
+  id                 String    @id @default(cuid())
+  title              String
+  target             String
+  active             Boolean   @default(true)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  publishTime        DateTime?
+  catatan            String?
+  progres            String?   @default("0")
+  terkumpul          String?   @default("0")
+  namaBank           String?
+  rekening           String?
+  akumulasiPencairan Int?      @default(0)
+  totalPencairan     Int?      @default(0)
 
   Author                      User?                      @relation(fields: [authorId], references: [id])
   authorId                    String?
@@ -301,6 +308,7 @@ model Donasi {
   donasiMaster_StatusDonasiId String?                    @default("2")
   Donasi_Invoice              Donasi_Invoice[]
   Donasi_Kabar                Donasi_Kabar[]
+  Donasi_PencairanDana        Donasi_PencairanDana[]
 }
 
 model Donasi_TemporaryCreate {
@@ -395,6 +403,8 @@ model Donasi_Invoice {
   donasiMaster_StatusInvoiceId String?                     @default("3")
   Author                       User?                       @relation(fields: [authorId], references: [id])
   authorId                     String?
+  Images                       Images?                     @relation(fields: [imagesId], references: [id])
+  imagesId                     String?
 }
 
 model Donasi_Kabar {
@@ -405,8 +415,36 @@ model Donasi_Kabar {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Donasi      Donasi? @relation(fields: [donasiId], references: [id])
+  Donasi       Donasi?        @relation(fields: [donasiId], references: [id])
+  donasiId     String?
+  ImagesKabar  Images?        @relation(fields: [imagesId], references: [id])
+  imagesId     String?
+  Donasi_Notif Donasi_Notif[]
+}
+
+model Donasi_Notif {
+  id        String   @id @default(cuid())
+  isRead    Boolean  @default(false)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User           User?         @relation(fields: [userId], references: [id])
+  userId         String?
+  Donasi_Kabar   Donasi_Kabar? @relation(fields: [donasi_KabarId], references: [id])
+  donasi_KabarId String?
+}
+
+model Donasi_PencairanDana {
+  id          String   @id @default(cuid())
+  nominalCair Int
+  title       String
+  deskripsi   String
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Donasi      Donasi?  @relation(fields: [donasiId], references: [id])
   donasiId    String?
-  ImagesKabar Images? @relation(fields: [imagesId], references: [id])
+  Images      Images?  @relation(fields: [imagesId], references: [id])
   imagesId    String?
 }

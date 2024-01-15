@@ -6,6 +6,7 @@ import {
   Avatar,
   Box,
   Burger,
+  Divider,
   Drawer,
   Footer,
   Group,
@@ -31,6 +32,8 @@ import {
 import { useRouter } from "next/navigation";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { Logout } from "@/app_modules/auth";
+import { useAtom } from "jotai";
+import { gs_adminDonasi_hotMenu } from "../donasi/global_state";
 
 export default function AdminLayout({
   children,
@@ -40,7 +43,7 @@ export default function AdminLayout({
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const router = useRouter();
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useAtom(gs_adminDonasi_hotMenu);
 
   const listAdminPage = [
     {
@@ -75,15 +78,24 @@ export default function AdminLayout({
               p="xs"
               bg={"gray.2"}
             >
-              {listAdminPage.map((e) => (
-                <NavLink
-                  key={e.id}
-                  label={e.name}
-                  onClick={() => {
-                    // setActive(e.id);
-                    router.push(e.route);
-                  }}
-                />
+              {listAdminPage.map((e, i) => (
+                <Box key={i}>
+                  <NavLink
+                    sx={{
+                      ":hover": {
+                        backgroundColor: "transparent",
+                      },
+                    }}
+                    fw={active === i ? "bold" : "normal"}
+                    // key={e.id}
+                    label={e.name}
+                    onClick={() => {
+                      setActive(i);
+                      router.push(e.route);
+                    }}
+                  />
+                  {active === i ? <Divider size={"lg"} color="gray" /> : ""}
+                </Box>
               ))}
             </Navbar>
           </MediaQuery>

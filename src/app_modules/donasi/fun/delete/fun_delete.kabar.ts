@@ -5,7 +5,7 @@ import fs from "fs";
 import { revalidatePath } from "next/cache";
 
 export async function Donasi_funDeleteKabar(kabarId: string) {
-  const del = await prisma.donasi_Kabar.delete({
+  const dataKabar = await prisma.donasi_Kabar.findFirst({
     where: {
       id: kabarId,
     },
@@ -13,21 +13,37 @@ export async function Donasi_funDeleteKabar(kabarId: string) {
       imagesId: true,
     },
   });
-  if (!del) return { status: 400, message: "Gagal hapus data" };
 
-  const delImg = await prisma.images.delete({
+  if (dataKabar?.imagesId !== null) {
+    const delImg = await prisma.images.delete({
+      where: {
+        id: dataKabar?.imagesId,
+      },
+      select: {
+        url: true,
+      },
+    });
+
+    if (!delImg) return { status: 400, message: "Gagal hapus gambar" };
+    if (delImg) fs.unlinkSync(`./public/donasi/kabar/${delImg.url}`);
+    revalidatePath("/dev/donasi/list_kabar");
+  }
+
+  const delNotif = await prisma.donasi_Notif.deleteMany({
     where: {
-      id: del.imagesId as any,
-    },
-    select: {
-      url: true,
+      donasi_KabarId: kabarId,
     },
   });
+  if (!delNotif) return { status: 400, message: "Gagal hapus notif" };
 
-  if (!delImg) return { status: 400, message: "Gagal hapus gambar" };
-  if (delImg) fs.unlinkSync(`./public/donasi/kabar/${delImg.url}`);
-  revalidatePath("/dev/donasi/list_kabar");
+  const del = await prisma.donasi_Kabar.delete({
+    where: {
+      id: kabarId,
+    },
+  });
+  if (!del) return { status: 400, message: "Gagal hapus data" };
 
+  revalidatePath("/dev/donasi/notif_page");
   return {
     status: 200,
     message: "Berhasl hapus",

@@ -25,23 +25,21 @@ export default function UpdateKabarDonasi({
   return (
     <>
       <Stack>
-        {/* <Group>
-          <Avatar variant="filled" radius={"xl"} />
-          <Stack spacing={0}>
-            <Text>Username</Text>
-          </Stack>
-        </Group> */}
         <Stack>
           <Text fz={"xs"}>{moment(Date.now()).format("ll")}</Text>
           <Title order={5}>{kabar.title}</Title>
-          <AspectRatio ratio={16 / 9}>
-            <Paper radius={"md"}>
-              <Image
-                alt="Foro"
-                src={RouterDonasi.api_gambar_kabar + `${kabar.imagesId}`}
-              />
-            </Paper>
-          </AspectRatio>
+          {kabar.imagesId === null ? (
+            ""
+          ) : (
+            <AspectRatio ratio={16 / 9}>
+              <Paper radius={"md"}>
+                <Image
+                  alt="Foro"
+                  src={RouterDonasi.api_gambar_kabar + `${kabar.imagesId}`}
+                />
+              </Paper>
+            </AspectRatio>
+          )}
           <Text>{kabar.deskripsi}</Text>
         </Stack>
       </Stack>

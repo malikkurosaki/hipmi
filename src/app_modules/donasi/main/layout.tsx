@@ -14,7 +14,7 @@ import {
   Title,
 } from "@mantine/core";
 import React, { useState } from "react";
-import HeaderTamplateDonasi from "../component/header_tamplate";
+import ComponentDonasi_HeaderTamplate from "../component/header_tamplate";
 
 import {
   IconBell,
@@ -33,11 +33,16 @@ import { useAtom } from "jotai";
 import { gs_donasi_hot_menu } from "../global_state";
 import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
 import { title } from "process";
+import _ from "lodash";
 
 export default function LayoutDonasi({
   children,
+  userId,
+  isRead,
 }: {
   children: React.ReactNode;
+  userId: string;
+  isRead: boolean[];
 }) {
   const router = useRouter();
   const [active, setActive] = useAtom(gs_donasi_hot_menu);
@@ -72,10 +77,22 @@ export default function LayoutDonasi({
                 <IconChevronLeft />
               </ActionIcon>
               <Title order={5}>Donasi</Title>
-              <ActionIcon radius={"md"}  variant="transparent" onClick={() => router.push(RouterDonasi.notif_page + `${"123"}`)}>
-                <Indicator processing color="orange" >
+              <ActionIcon
+                radius={"md"}
+                variant="transparent"
+                onClick={() =>
+                  router.push(RouterDonasi.notif_page + `${userId}`)
+                }
+              >
+                {_.isEmpty(isRead) ? (
                   <IconBell />
-                </Indicator>
+                ) : isRead.includes(false) ? (
+                  <Indicator processing color="orange">
+                    <IconBell />
+                  </Indicator>
+                ) : (
+                  <IconBell />
+                )}
               </ActionIcon>
             </Group>
           </Header>
@@ -112,6 +129,7 @@ export default function LayoutDonasi({
           </Footer>
         }
       >
+        {/* {JSON.stringify(isRead)} */}
         {children}
       </AppShell>
     </>

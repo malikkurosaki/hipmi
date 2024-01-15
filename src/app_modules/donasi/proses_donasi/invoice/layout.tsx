@@ -2,7 +2,7 @@
 
 import { ActionIcon, AppShell, Group, Header, Title } from "@mantine/core";
 import React from "react";
-import HeaderTamplateDonasi from "../../component/header_tamplate";
+import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
 import { IconChevronLeft, IconX } from "@tabler/icons-react";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { gs_donasi_hot_menu } from "../../global_state";

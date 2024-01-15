@@ -22,13 +22,19 @@ import {
 } from "@tabler/icons-react";
 import TampilanRupiahDonasi from "../tampilan_rupiah";
 import ComponentDonasi_TampilanHitungMundur from "../tampilan_hitung_mundur";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { NotifPeringatan } from "../notifikasi/notif_peringatan";
+import { NotifBerhasil } from "../notifikasi/notif_berhasil";
+import { Donasi_findDonaturByTokenId } from "../../fun/get/get_donatur_by_token_id";
 
 export function ComponentDonasi_DetailDataMain({
   donasi,
   countDonatur,
+  userLoginId,
 }: {
   donasi: MODEL_DONASI;
   countDonatur: number;
+  userLoginId?: string | any;
 }) {
   const router = useRouter();
   return (
@@ -103,7 +109,7 @@ export function ComponentDonasi_DetailDataMain({
             <Divider orientation="vertical" />
             <Grid.Col
               span={"auto"}
-              onClick={() => router.push(RouterDonasi.pencairan_dana)}
+              onClick={() => onPencairanDana(router, donasi, userLoginId)}
             >
               <Stack spacing={"sm"} align="center">
                 <IconMoneybag color="skyblue" />
@@ -115,4 +121,24 @@ export function ComponentDonasi_DetailDataMain({
       </Stack>
     </>
   );
+}
+
+async function onPencairanDana(
+  router: AppRouterInstance,
+  donasi: MODEL_DONASI,
+  userLoginId: string
+) {
+  // console.log(userLoginId)
+  // console.log(donasi.authorId)
+  const cek = await Donasi_findDonaturByTokenId(donasi.id, userLoginId);
+
+  if(userLoginId == donasi.authorId)
+   return router.push(RouterDonasi.pencairan_dana + `${donasi.id}`);
+
+  if (!cek ) return NotifPeringatan("Halaman khusus donatur");
+  router.push(RouterDonasi.pencairan_dana + `${donasi.id}`);
+
+  // if (userLoginId != donasi.authorId)
+  //   return NotifPeringatan("Halaman khusus donatur");
+  // router.push(RouterDonasi.pencairan_dana + `${donasi.id}`);
 }

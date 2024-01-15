@@ -12,6 +12,7 @@ export async function Donasi_getOneInvoiceById(invoiceId: string) {
       id: true,
       nominal: true,
       donasiId: true,
+      createdAt: true,
       donasiMaster_BankId: true,
       donasiMaster_StatusInvoiceId: true,
       Donasi: {

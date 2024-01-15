@@ -121,7 +121,7 @@ export default function EditCeritaPenggalangDonasi({
           radius={"xl"}
           onClick={() => onUpdate(router, value, file as any)}
         >
-          Simpan
+          Update
         </Button>
       </Stack>
       {/* <pre> {JSON.stringify(value.pembukaan, null, 2)}</pre> */}

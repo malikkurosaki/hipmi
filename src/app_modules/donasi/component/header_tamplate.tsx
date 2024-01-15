@@ -5,7 +5,7 @@ import { IconArrowLeft, IconChevronLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function HeaderTamplateDonasi({
+export default function ComponentDonasi_HeaderTamplate({
   hideBack,
   changeIconBack,
   route,

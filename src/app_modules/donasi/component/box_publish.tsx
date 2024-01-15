@@ -45,10 +45,9 @@ export default function ComponentDonasi_BoxPublish({
         {donasi.map((e, i) => (
           <Box
             key={i}
-            onClick={
-              () => router.push(path + `${e.id}`)
-              // toast("Cooming soon")
-            }
+            onClick={() => {
+              router.push(path + `${e.id}`);
+            }}
           >
             <Stack>
               <Grid>

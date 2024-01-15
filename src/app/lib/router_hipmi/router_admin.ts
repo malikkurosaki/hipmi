@@ -15,6 +15,10 @@ export const RouterAdminInvestasi = {
 };
 
 export const RouterAdminDonasi = {
+
+  api_gambar_bukti_transfer: "/api/donasi/gambar_bukti_transfer/",
+
+
   main_donasi: "/dev/admin/donasi/main",
   // table
   table_publish: "/dev/admin/donasi/table/publish",
@@ -28,7 +32,10 @@ export const RouterAdminDonasi = {
   detail_reject: "/dev/admin/donasi/detail/reject/",
 
   // proses
-  proses_transaksi: "/dev/admin/donasi/proses_transaksi/"
+  proses_transaksi: "/dev/admin/donasi/proses_transaksi/",
+  pencairan_dana :"/dev/admin/donasi/pencairan_dana/",
+
+
 
 
 

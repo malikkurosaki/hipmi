@@ -37,6 +37,7 @@ import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
 import { NotifGagal } from "../../component/notifikasi/notif_gagal";
 import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
 import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_dana/detail_data_donasi";
+import { Donasi_funDeleteDonasiById } from "../../fun/delete/fin_delete_donasi_by_id";
 
 export default function DetailRejectDonasi({
   dataReject,
@@ -92,8 +93,15 @@ function ButtonAction({ donasiId }: { donasiId: string }) {
     setTabsPostingDonasi("Draft");
   }
   async function onDelete() {
-    router.push(RouterDonasi.main_galang_dana);
-    setTabsPostingDonasi("Reject");
+    await Donasi_funDeleteDonasiById(donasiId).then((res) => {
+      if (res.status === 200) {
+        router.push(RouterDonasi.main_galang_dana);
+        setTabsPostingDonasi("Reject");
+        NotifBerhasil(res.message);
+      } else {
+        NotifGagal(res.message);
+      }
+    });
   }
   return (
     <>

@@ -15,7 +15,7 @@ import {
 } from "@mantine/core";
 import { IconChevronLeft, IconEyeCheck } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import AdminDonasi_TombolKembali from "../component/tombol_kembali";
+import ComponentAdminDonasi_TombolKembali from "../component/tombol_kembali";
 import { useDisclosure } from "@mantine/hooks";
 import AdminDonasi_DetailReview from "../detail_table/detail_review";
 import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
@@ -30,7 +30,7 @@ export default function AdminDonasi_TableReject({
   return (
     <>
       <Stack>
-        <AdminDonasi_TombolKembali />
+        <ComponentAdminDonasi_TombolKembali />
         <TableStatus dataReject={dataReject} />
       </Stack>
     </>

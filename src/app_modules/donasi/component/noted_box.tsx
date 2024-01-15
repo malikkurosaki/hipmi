@@ -7,9 +7,9 @@ export default function ComponentDonasi_NotedBox({
 }) {
   return (
     <>
-      <Paper bg={"blue.3"} p={"sm"}>
+      <Paper bg={"blue.3"} p={10}>
         <Group>
-          <Text fz={"xs"} fs={"italic"}>
+          <Text fz={10} fs={"italic"}>
             <Text span inherit c={"red"}>
               *{" "}
             </Text>
