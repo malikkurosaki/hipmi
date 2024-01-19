@@ -2,13 +2,13 @@
 
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import { RouterUserProfile } from "@/app/lib/router_hipmi/router_user_profile";
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { Warna } from "@/app/lib/warna";
 import funEditInvestasi from "@/app_modules/investasi/fun/fun_edit_investasi";
 import funGantiStatusInvestasi from "@/app_modules/investasi/fun/fun_ganti_status";
 import { gs_StatusPortoInvestasi } from "@/app_modules/investasi/g_state";
 import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
-import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
+import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 import {
   Group,
   Flex,
@@ -64,7 +64,7 @@ export default function Admin_KonfirmasiInvestasi({
   dataUser,
 }: {
   dataInvestasi: MODEL_Investasi;
-  dataUser: MODEL_User_profile;
+  dataUser: MODEL_PROFILE_OLD;
 }) {
   const router = useRouter();
   const [investasi, setInvestasi] = useState(dataInvestasi);
@@ -139,14 +139,14 @@ export default function Admin_KonfirmasiInvestasi({
             <IconChevronLeft />
           </ActionIcon>
           <Flex align={"center"} gap={"xs"} pl={"lg"}>
-            <Avatar
+            {/* <Avatar
               radius={50}
               size={"md"}
               src={
-                RouterUserProfile.api_foto +
+                RouterProfile.api_foto +
                 `${user.Profile?.ImageProfile?.url}`
               }
-            />
+            /> */}
             <Text>{user.username}</Text>
           </Flex>
         </Group>

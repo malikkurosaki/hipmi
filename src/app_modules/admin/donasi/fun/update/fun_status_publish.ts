@@ -22,7 +22,7 @@ export async function AdminDonasi_funUpdateStatusPublish(
   });
 
   if (!data) return { status: 400, message: "Data tidak ditemukan" };
-  revalidatePath(RouterAdminDonasi.table_review);
+  revalidatePath("/dev/admin/donasi/table/review");
   return {
     status: 200,
     message: "Status berhasil diganti",

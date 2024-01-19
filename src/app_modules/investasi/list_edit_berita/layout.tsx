@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import HeaderTamplate from "@/app_modules/component/header_tamplate";
+import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
 import { AppShell } from "@mantine/core";
 import { IconPencilPlus } from "@tabler/icons-react";
 import React from "react";
@@ -18,7 +18,7 @@ export default function LayoutListEditBeritaInvestasi({
     <>
       <AppShell
         header={
-          <HeaderTamplate
+          <ComponentGlobal_HeaderTamplate
             title="List Berita"
             icon={<IconPencilPlus />}
             route2={RouterInvestasi.create_berita + `${idInves}`}

@@ -4,7 +4,7 @@ import { Group, Button } from "@mantine/core";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
-export default function AdminDonasi_TombolKembali() {
+export default function ComponentAdminDonasi_TombolKembali() {
   const router = useRouter();
   return (
     <>

@@ -20,7 +20,7 @@ import { IconCamera } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 
-import BoxInformasiDonasi from "../component/box_informasi";
+import ComponentDonasi_NotedBox from "../component/noted_box";
 import { MODEL_DONASI_ALL_MASTER } from "../model/interface";
 import { useState } from "react";
 import { useShallowEffect } from "@mantine/hooks";
@@ -75,7 +75,7 @@ export default function CreateDonasi({
   return (
     <>
       <Stack spacing={"md"} px={"md"}>
-        <BoxInformasiDonasi informasi="Lengkapi semua data di bawah untuk selanjutnya mengisi cerita Penggalangan Dana!" />
+        <ComponentDonasi_NotedBox informasi="Lengkapi semua data di bawah untuk selanjutnya mengisi cerita Penggalangan Dana!" />
         <Select
           label="Kategori"
           placeholder="Pilih kategori penggalangan dana"
@@ -91,46 +91,7 @@ export default function CreateDonasi({
             })
           }
         />
-        <Stack>
-          <AspectRatio ratio={16 / 9}>
-            <Paper radius={"md"}>
-              <Image
-                alt="Foto"
-                src={imageDonasi ? imageDonasi : "/aset/no-img.png"}
-              />
-            </Paper>
-          </AspectRatio>
-          <Center>
-            <FileButton
-              onChange={async (files: any | null) => {
-                try {
-                  const buffer = URL.createObjectURL(
-                    new Blob([new Uint8Array(await files.arrayBuffer())])
-                  );
-                  // console.log(buffer, "ini buffer");
-                  // console.log(files, " ini file");
-                  setImageDonasi(buffer);
-                  setFile(files);
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-              accept="image/png,image/jpeg"
-            >
-              {(props) => (
-                <Button
-                  {...props}
-                  radius={"xl"}
-                  variant="outline"
-                  w={150}
-                  leftIcon={<IconCamera />}
-                >
-                  Upload
-                </Button>
-              )}
-            </FileButton>
-          </Center>
-        </Stack>
+
         <Stack>
           <TextInput
             withAsterisk
@@ -159,6 +120,56 @@ export default function CreateDonasi({
             }))}
             onChange={(val: string) => setCreate({ ...create, durasiId: val })}
           />
+        </Stack>
+
+        <Stack>
+          <Center>
+            <FileButton
+              onChange={async (files: any | null) => {
+                try {
+                  const buffer = URL.createObjectURL(
+                    new Blob([new Uint8Array(await files.arrayBuffer())])
+                  );
+                  // console.log(buffer, "ini buffer");
+                  // console.log(files, " ini file");
+                  setImageDonasi(buffer);
+                  setFile(files);
+                } catch (error) {
+                  console.log(error);
+                }
+              }}
+              accept="image/png,image/jpeg"
+            >
+              {(props) => (
+                <Button
+                compact
+                  {...props}
+                  radius={"xl"}
+                  variant="outline"
+                  w={150}
+                  leftIcon={<IconCamera />}
+                >
+                  Upload
+                </Button>
+              )}
+            </FileButton>
+          </Center>
+          {imageDonasi ? (
+            <AspectRatio ratio={16 / 9}>
+              <Paper radius={"md"}>
+                <Image
+                  alt="Foto"
+                  src={imageDonasi ? imageDonasi : "/aset/no-img.png"}
+                />
+              </Paper>
+            </AspectRatio>
+          ) : (
+            <Center>
+              <Text fs={"italic"} fz={10}>
+                Upload poster atau gambar penggalangan !
+              </Text>
+            </Center>
+          )}
         </Stack>
         <Button my={"lg"} radius={"xl"} onClick={() => onCreate()}>
           Selanjutnya

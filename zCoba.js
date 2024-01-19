@@ -1,5 +1,5 @@
 const moment = require("moment");
-var fs = require('fs');
+var fs = require("fs");
 
 // function Coba() {
 //   let total = 100;
@@ -21,7 +21,20 @@ var fs = require('fs');
 // Coba1();
 
 // include node fs module
- 
+
 // delete file named 'sample.txt' Synchronously
-fs.unlinkSync('coba.sh');
-console.log('File deleted!');
+// fs.unlinkSync('coba.sh');
+// console.log('File deleted!');
+
+function CobaProgress() {
+  const t = 560000000;
+  const b = 180000000
+
+  const progress = (b / t) * 100;
+  const pembulatan = Math.round(progress);
+  console.log(progress, "progres");
+  console.log(pembulatan, "pembulatan");
+  // console.log(t/2)
+}
+
+CobaProgress();

@@ -1,6 +1,6 @@
 "use client";
 
-import HeaderTamplateDonasi from "@/app_modules/donasi/component/header_tamplate";
+import ComponentDonasi_HeaderTamplate from "@/app_modules/donasi/component/header_tamplate";
 import { AppShell } from "@mantine/core";
 import React from "react";
 
@@ -12,7 +12,7 @@ export default function LayoutPenggalangDanaDonasi({
   return (
     <>
       <AppShell
-        header={<HeaderTamplateDonasi title="Informasu Penggalangan Dana" />}
+        header={<ComponentDonasi_HeaderTamplate title="Informasi Penggalangan Dana" />}
         //   footer={<FooterDonasi />}
       >
         {children}

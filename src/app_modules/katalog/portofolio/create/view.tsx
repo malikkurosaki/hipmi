@@ -3,107 +3,227 @@
 import { myConsole } from "@/app/fun/my_console";
 import { ApiHipmi } from "@/app/lib/api";
 import { Warna } from "@/app/lib/warna";
-import { BIDANG_BISNIS } from "@/app_modules/models/portofolio";
-import { Button, Select, Stack, TextInput, Title } from "@mantine/core";
+import {
+  BIDANG_BISNIS_OLD,
+  MODEL_PORTOFOLIO_OLD,
+} from "@/app_modules/models/portofolio";
+import {
+  AspectRatio,
+  Button,
+  Center,
+  FileButton,
+  Image,
+  Paper,
+  Select,
+  Stack,
+  TextInput,
+  Textarea,
+  Title,
+} from "@mantine/core";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-simple-toasts";
 import funCreatePortofolio from "../fun/fun_create_portofolio";
+import { IconCamera } from "@tabler/icons-react";
+import ComponentKatalog_NotedBox from "../../component/noted_box";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { NotifPeringatan } from "@/app_modules/donasi/component/notifikasi/notif_peringatan";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 
 export default function CreatePortofolio({
   bidangBisnis,
   profileId,
 }: {
-  bidangBisnis: BIDANG_BISNIS;
+  bidangBisnis: BIDANG_BISNIS_OLD;
   profileId: any;
 }) {
   const router = useRouter();
   const [value, setValue] = useState({
     namaBisnis: "",
-    bidangBisnisId: "",
+    masterBidangBisnisId: "",
     alamatKantor: "",
     tlpn: "",
     deskripsi: "",
   });
 
-  async function onSubmit() {
-    const body = {
-      profileId: profileId,
-      namaBisnis: value.namaBisnis,
-      masterBidangBisnisId: value.bidangBisnisId,
-      alamatKantor: value.alamatKantor,
-      tlpn: value.tlpn,
-      deskripsi: value.deskripsi,
-    };
+  const [medsos, setMedsos] = useState({
+    facebook: "",
+    twitter: "",
+    instagram: "",
+    youtube: "",
+    tiktok: "",
+  });
 
-    if (_.values(body).includes("")) return toast("Lengkapi Data");
-
-    await funCreatePortofolio(body as any).then((res) => {
-      if (res.status === 201) {
-        toast("Berhasil disimpan");
-        return setTimeout(() => router.push(`/dev/katalog/${profileId}`), 1000)
-      } else {
-        return toast("Gagal disimpan");
-      }
-    });
-  }
+  const [file, setFile] = useState<File | any>(null);
+  const [img, setImg] = useState<any | null>(null);
 
   return (
     <>
       {/* {JSON.stringify(profileId)} */}
 
-      <Stack px={"sm"}>
-        <TextInput
-          label="Nama Bisnis"
-          onChange={(val) => {
-            setValue({
-              ...value,
-              namaBisnis: val.target.value,
-            });
-          }}
-        />
-        <Select
-          label="Bidang Bisnis"
-          data={_.map(bidangBisnis as any).map((e: any) => ({
-            value: e.id,
-            label: e.name,
-          }))}
-          onChange={(val) => {
-            setValue({
-              ...value,
-              bidangBisnisId: val as any,
-            });
-          }}
-        />
-        <TextInput
-          label="Alamat Kantor"
-          onChange={(val) => {
-            setValue({
-              ...value,
-              alamatKantor: val.target.value,
-            });
-          }}
-        />
-        <TextInput
-          label="Nomor Telepon"
-          type="number"
-          onChange={(val) => {
-            setValue({
-              ...value,
-              tlpn: val.target.value,
-            });
-          }}
-        />
-        <TextInput
-          label="Deskripsi"
-          onChange={(val) => {
-            setValue({
-              ...value,
-              deskripsi: val.target.value,
-            });
-          }}
-        />
+      <Stack px={"sm"} spacing={50}>
+        <Stack spacing={"sm"}>
+          <ComponentKatalog_NotedBox informasi="Lengkapi Data Bisnis" />
+          <TextInput
+            withAsterisk
+            label="Nama Bisnis"
+            placeholder="Nama bisnis"
+            onChange={(val) => {
+              setValue({
+                ...value,
+                namaBisnis: val.target.value,
+              });
+            }}
+          />
+          <Select
+            withAsterisk
+            label="Bidang Bisnis"
+            placeholder="Pilih salah satu bidang bisnis"
+            data={_.map(bidangBisnis as any).map((e: any) => ({
+              value: e.id,
+              label: e.name,
+            }))}
+            onChange={(val) => {
+              setValue({
+                ...value,
+                masterBidangBisnisId: val as any,
+              });
+            }}
+          />
+          <TextInput
+            withAsterisk
+            label="Alamat Kantor"
+            placeholder="Alamat kantor"
+            onChange={(val) => {
+              setValue({
+                ...value,
+                alamatKantor: val.target.value,
+              });
+            }}
+          />
+          <TextInput
+            withAsterisk
+            label="Nomor Telepon Kantor"
+            placeholder="62 xxx xxx xxx"
+            type="number"
+            onChange={(val) => {
+              setValue({
+                ...value,
+                tlpn: val.target.value,
+              });
+            }}
+          />
+          <Textarea
+            autosize
+            minRows={2}
+            maxRows={5}
+            withAsterisk
+            label="Deskripsi"
+            placeholder="Deskripsi singkat mengenai usaha"
+            onChange={(val) => {
+              setValue({
+                ...value,
+                deskripsi: val.target.value,
+              });
+            }}
+          />
+        </Stack>
+
+        <Stack>
+          <ComponentKatalog_NotedBox informasi="Upload Logo Bisnis Anda!" />
+          <AspectRatio ratio={16 / 9}>
+            <Paper radius={"md"} withBorder>
+              <Image alt="Foto" src={img ? img : "/aset/no-img.png"} />
+            </Paper>
+          </AspectRatio>
+          <Center>
+            <FileButton
+              onChange={async (files: any | null) => {
+                try {
+                  const buffer = URL.createObjectURL(
+                    new Blob([new Uint8Array(await files.arrayBuffer())])
+                  );
+                  // console.log(buffer, "ini buffer");
+                  // console.log(files, " ini file");
+                  setImg(buffer);
+                  setFile(files);
+                } catch (error) {
+                  console.log(error);
+                }
+              }}
+              accept="image/png,image/jpeg"
+            >
+              {(props) => (
+                <Button
+                  {...props}
+                  radius={"xl"}
+                  variant="outline"
+                  w={150}
+                  leftIcon={<IconCamera />}
+                  compact
+                >
+                  Upload
+                </Button>
+              )}
+            </FileButton>
+          </Center>
+        </Stack>
+
+        <Stack>
+          <ComponentKatalog_NotedBox informasi="Isi hanya pada sosial media yang anda miliki" />
+          <TextInput
+            label="Facebook"
+            placeholder="Facebook"
+            onChange={(val) => {
+              setMedsos({
+                ...medsos,
+                facebook: val.target.value,
+              });
+            }}
+          />
+          <TextInput
+            label="Instagram"
+            placeholder="Instagram"
+            onChange={(val) => {
+              setMedsos({
+                ...medsos,
+                instagram: val.target.value,
+              });
+            }}
+          />
+          <TextInput
+            label="Tiktok"
+            placeholder="Tiktok"
+            onChange={(val) => {
+              setMedsos({
+                ...medsos,
+                tiktok: val.target.value,
+              });
+            }}
+          />
+          <TextInput
+            label="Twitter"
+            placeholder="Twitter"
+            onChange={(val) => {
+              setMedsos({
+                ...medsos,
+                twitter: val.target.value,
+              });
+            }}
+          />
+          <TextInput
+            label="Youtube"
+            placeholder="Youtube"
+            onChange={(val) => {
+              setMedsos({
+                ...medsos,
+                youtube: val.target.value,
+              });
+            }}
+          />
+        </Stack>
 
         <Button
           mt={"md"}
@@ -111,14 +231,46 @@ export default function CreatePortofolio({
           bg={Warna.hijau_muda}
           color="green"
           onClick={() => {
-            onSubmit();
+            onSubmit(router, profileId, value as any, file, medsos);
           }}
         >
           Simpan
         </Button>
       </Stack>
 
-      {/* <pre> {JSON.stringify(data, null, 2)}</pre> */}
+      {/* <pre> {JSON.stringify(bidangBisnis, null, 2)}</pre> */}
     </>
+  );
+}
+
+async function onSubmit(
+  router: AppRouterInstance,
+  profileId: string,
+  dataPorto: MODEL_PORTOFOLIO_OLD,
+  file: FormData,
+  dataMedsos: any
+) {
+  const porto = {
+    namaBisnis: dataPorto.namaBisnis,
+    masterBidangBisnisId: dataPorto.masterBidangBisnisId,
+    alamatKantor: dataPorto.alamatKantor,
+    tlpn: dataPorto.tlpn,
+    deskripsi: dataPorto.deskripsi,
+  };
+  if (_.values(porto).includes("")) return toast("Lengkapi Data");
+  if (!file) return NotifPeringatan("Lengkapi logo binnis");
+
+  const gambar = new FormData
+  gambar.append("file",file as any)
+
+  await funCreatePortofolio(profileId, porto as any, gambar, dataMedsos).then(
+    (res) => {
+      if (res.status === 201) {
+        ComponentGlobal_NotifikasiBerhasil("Berhasil disimpan");
+        router.back();
+      } else {
+        ComponentGlobal_NotifikasiGagal("Gagal disimpan");
+      }
+    }
   );
 }

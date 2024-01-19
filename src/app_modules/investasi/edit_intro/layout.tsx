@@ -1,6 +1,6 @@
 "use client";
 
-import HeaderTamplate from "@/app_modules/component/header_tamplate";
+import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
 import { AppShell, Stack, Text } from "@mantine/core";
 import React from "react";
 
@@ -13,7 +13,7 @@ export default function LayoutEditIntroInvestasi({
 }) {
   return (
     <>
-      <AppShell header={<HeaderTamplate title="Edit Intro" />}>
+      <AppShell header={<ComponentGlobal_HeaderTamplate title="Edit Intro" />}>
         <Stack>
           {children}
         </Stack>

@@ -4,6 +4,7 @@ import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
   ActionIcon,
   Avatar,
+  Box,
   Button,
   Group,
   Paper,
@@ -20,13 +21,27 @@ import {
 } from "@tabler/icons-react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
+import { MODEL_DONASI_KABAR } from "../../model/interface";
+import { useState } from "react";
+import ComponentDonasi_ListKabar from "../../component/detail_main/list_kabar";
 
-export default function ListKabarDonasi() {
+export default function ListKabarDonasi({
+  donasiId,
+  listKabar,
+}: {
+  donasiId: string;
+  listKabar: MODEL_DONASI_KABAR[];
+}) {
   const router = useRouter();
+  const [kabar, setKabar] = useState(listKabar);
   return (
     <>
       <Stack>
-        <Button leftIcon={<IconCirclePlus />} radius={"xl"}>
+        <Button
+          leftIcon={<IconCirclePlus />}
+          radius={"xl"}
+          onClick={() => router.push(RouterDonasi.create_kabar + `${donasiId}`)}
+        >
           Tambah Kabar
         </Button>
         <SimpleGrid
@@ -38,40 +53,11 @@ export default function ListKabarDonasi() {
             { maxWidth: "36rem", cols: 1, spacing: "sm" },
           ]}
         >
-          {Array(4)
-            .fill(0)
-            .map((e, i) => (
-              <Paper key={i} bg={"gray.1"} p={"md"}>
-                <Stack>
-                <Group>
-                      <Avatar variant="filled" radius={"xl"} />
-                      <Stack spacing={0}>
-                        <Text>Username</Text>
-                        <Text fz={"xs"}>{moment(Date.now()).format("ll")}</Text>
-                      </Stack>
-                    </Group>
-                    
-                  <Stack>
-                    <Title order={5}>Judul Kabar</Title>
-                    <Stack spacing={0}>
-                      <Text lineClamp={2}>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit. Aliquam nostrum vitae eum facilis similique minus
-                        exercitationem assumenda, quidem dolores illum ducimus
-                        fuga rem molestias? Numquam id praesentium dolor qui
-                        amet.
-                      </Text>
-                      <Text
-                        c={"blue"}
-                        onClick={() => router.push(RouterDonasi.update_kabar)}
-                      >
-                        Buka Kabar
-                      </Text>
-                    </Stack>
-                  </Stack>
-                </Stack>
-              </Paper>
-            ))}
+          {kabar.map((e, i) => (
+           <Box key={i}>
+            <ComponentDonasi_ListKabar kabar={e} route={RouterDonasi.update_kabar}/>
+           </Box>
+          ))}
         </SimpleGrid>
       </Stack>
     </>

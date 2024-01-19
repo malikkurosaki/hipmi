@@ -1,6 +1,6 @@
 "use client";
 
-import HeaderTamplate from "@/app_modules/component/header_tamplate";
+import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
 import {
   ActionIcon,
   AppShell,
@@ -66,7 +66,7 @@ export default function LayoutMainInvestasi({
     <>
       <AppShell
         header={
-          <HeaderTamplate
+          <ComponentGlobal_HeaderTamplate
             route="/dev/crowd/main"
             title="Investasi"
             // icon={<IconPencilPlus />}

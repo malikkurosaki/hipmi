@@ -10,24 +10,20 @@ import {
 } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import ComponentKatalog_HeaderTamplate from "../../component/header_tamplate";
 
-export default function EditProfileLayout({ children, profileId }: { children: any, profileId: any }) {
-  const router = useRouter()
+export default function EditProfileLayout({
+  children,
+  profileId,
+}: {
+  children: any;
+  profileId: any;
+}) {
+  const router = useRouter();
   return (
     <>
       <AppShell
-
-        header={
-          <Header height={50} px={"sm"}>
-            <Group position="apart" h={50}>
-              <ActionIcon variant="transparent" onClick={() => router.push(`/dev/katalog/${profileId}`)}>
-                <IconArrowLeft />
-              </ActionIcon>
-              <Text>Edit Profile</Text>
-              <ActionIcon variant="transparent"></ActionIcon>
-            </Group>
-          </Header>
-        }
+        header={<ComponentKatalog_HeaderTamplate title="Edit Profile" />}
       >
         {children}
       </AppShell>

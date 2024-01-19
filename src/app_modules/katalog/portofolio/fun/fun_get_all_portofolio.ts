@@ -1,5 +1,5 @@
 import toast from "react-simple-toasts";
-import { funGetListPortofolio } from "./get_list_portofolio";
+import { funGetListPortofolio } from "./get/get_list_portofolio";
 
 /**
  * 

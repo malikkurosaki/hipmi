@@ -2,7 +2,7 @@
 
 import prisma from "@/app/lib/prisma";
 
-export async function AdminDonasi_getById(id: string) {
+export async function AdminDonasi_getOneById(id: string) {
   const res = await prisma.donasi.findFirst({
     where: {
       id: id,
@@ -15,7 +15,14 @@ export async function AdminDonasi_getById(id: string) {
       createdAt: true,
       updatedAt: true,
       publishTime: true,
+      catatan: true,
+      progres: true,
+      terkumpul: true,
       authorId: true,
+      namaBank: true,
+      rekening: true,
+      totalPencairan: true,
+      akumulasiPencairan: true,
       imagesId: true,
       donasiMaster_KategoriId: true,
       donasiMaster_DurasiId: true,
@@ -28,5 +35,6 @@ export async function AdminDonasi_getById(id: string) {
       DonasiMaster_Status: true,
     },
   });
+  // console.log(res)
   return res;
 }

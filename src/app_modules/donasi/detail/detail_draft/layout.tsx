@@ -12,7 +12,7 @@ import {
   Title,
 } from "@mantine/core";
 import React from "react";
-import HeaderTamplateDonasi from "../../component/header_tamplate";
+import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
 import {
   IconChevronLeft,
   IconEdit,
@@ -77,6 +77,15 @@ export default function LayoutDetailDraftDonasi({
             onClick={() => router.push(RouterDonasi.edit_cerita_penggalang + `${donasiId}`)}
           >
             Edit Cerita
+          </Button>
+          <Button
+            variant="outline"
+            radius={"xl"}
+            w={"100%"}
+            color="orange"
+            onClick={() => router.push(RouterDonasi.edit_rekening + `${donasiId}`)}
+          >
+            Edit Rekening
           </Button>
         </Stack>
       </Modal>
