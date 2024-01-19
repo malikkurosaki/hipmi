@@ -10,7 +10,9 @@ export default async function Layout({
 }) {
   const userId = await User_getUserId();
   // const dataDonasi = await DOnasi_getList
-  const isRead = await Donasi_getNotifByUserId(userId).then((res) => res.map((val) => val.isRead))
+  const isRead = await Donasi_getNotifByUserId(userId).then((res) =>
+    res.map((val: any) => val.isRead)
+  );
   // console.log(isRead)
 
   return (
