@@ -1,6 +1,6 @@
 "use client";
 
-import HeaderTamplate from "@/app_modules/component/header_tamplate";
+import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
 import { ActionIcon, AppShell, Box, Group, Header, Text } from "@mantine/core";
 import { useAtom } from "jotai";
 import React, { useState } from "react";

@@ -13,11 +13,6 @@ import {
   ThemeIcon,
   Title,
 } from "@mantine/core";
-import { Logout } from "../auth";
-import { useState } from "react";
-import { ApiHipmi } from "@/app/lib/api";
-import { useShallowEffect } from "@mantine/hooks";
-import { getToken } from "./api/api-get-token";
 
 import {
   IconAffiliate,
@@ -32,40 +27,28 @@ import {
 } from "@tabler/icons-react";
 
 import toast from "react-simple-toasts";
-import { getProfile } from "../katalog/profile";
 import { useRouter } from "next/navigation";
-import { useAtom } from "jotai";
-import { gs_token } from "./state/global_state";
-import { loadDataProfile } from "../katalog/profile/fun/fun_get_profile";
-import {
-  gs_fotoProfile,
-  gs_profile,
-} from "../katalog/profile/state/global_state";
-import { gs_ListPortofolio } from "../katalog/portofolio/state/global_state";
-import { myConsole } from "@/app/fun/my_console";
-import { getFotoProfile } from "../katalog/profile/api/get-foto-profile";
-import { funGetUserProfile } from "../fun/get_user_profile";
-import { MODEL_User_profile } from "./models/user_profile";
+import { MODEL_PROFILE_OLD } from "./model/user_profile";
 import AppNotif from "../notif";
 
 // export const dynamic = "force-dynamic"
 // export const revalidate = 0
 
-export default function HomeView({ user }: { user: MODEL_User_profile }) {
+export default function HomeView() {
   const router = useRouter();
-  const [stateUser, setStateUser] = useState(user);
+  // const [stateUser, setStateUser] = useState(user);
 
   const listHalaman = [
     {
       id: 1,
-      name: "Forums",
-      icon: <IconMessages size={50} />,
-      link: "",
+      name: "Crowd Funding",
+      icon: <IconHeartHandshake size={50} />,
+      link: `/dev/crowd/splash`,
     },
     {
       id: 2,
-      name: "Project Collaboration",
-      icon: <IconAffiliate size={50} />,
+      name: "Event",
+      icon: <IconPresentation size={50} />,
       link: "",
     },
     {
@@ -76,15 +59,15 @@ export default function HomeView({ user }: { user: MODEL_User_profile }) {
     },
     {
       id: 4,
-      name: "Event",
-      icon: <IconPresentation size={50} />,
+      name: "Project Collaboration",
+      icon: <IconAffiliate size={50} />,
       link: "",
     },
     {
       id: 5,
-      name: "Crowd Funding",
-      icon: <IconHeartHandshake size={50} />,
-      link: `/dev/crowd/splash`,
+      name: "Forums",
+      icon: <IconMessages size={50} />,
+      link: "",
     },
     {
       id: 6,
@@ -109,7 +92,7 @@ export default function HomeView({ user }: { user: MODEL_User_profile }) {
   return (
     <>
       <Box>
-        <Flex align={"center"} gap={"sm"}>
+        {/* <Flex align={"center"} gap={"sm"}>
           <ActionIcon
             size={30}
             variant="transparent"
@@ -128,7 +111,7 @@ export default function HomeView({ user }: { user: MODEL_User_profile }) {
             Welcome to ,{" "}
             {stateUser.username ? stateUser.username : <Loader size={"xs"} />}
           </Text>
-        </Flex>
+        </Flex> */}
 
         <Paper bg={"dark"} radius={5} my={"xs"}>
           <Image alt="logo" src={"/aset/investasi/home-hipmi.png"} />

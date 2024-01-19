@@ -1,4 +1,4 @@
-import { MODEL_AUTHOR } from "@/app_modules/home/models/interface";
+import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { Model_Nama_Bank } from "@/app_modules/investasi/model/model_investasi";
 import { MODEL_IMAGES } from "@/app_modules/models/interface";
 
@@ -24,7 +24,7 @@ export interface MODEL_DONASI {
   donasiMaster_DurasiId: string;
   donasiMaster_StatusDonasiId: string;
   CeritaDonasi: MODEL_CERITA_DONASI;
-  Author: MODEL_AUTHOR;
+  Author: MODEL_USER;
   imageDonasi: MODEL_IMAGES;
   DonasiMaster_Ketegori: MODEL_DONASI_ALL_MASTER;
   DonasiMaster_Durasi: MODEL_DONASI_ALL_MASTER;
@@ -78,7 +78,7 @@ export interface MODEL_DONASI_INVOICE {
   active: boolean;
   createdAt: Date;
   updatedAt: Date;
-  Author: MODEL_AUTHOR;
+  Author: MODEL_USER;
   authorId: string;
   donasiMaster_BankId: string;
   donasiMaster_StatusInvoiceId: string;

@@ -7,7 +7,7 @@ import {
   MODEL_DONASI,
   MODEL_DONASI_INFO_PENGGALANG,
 } from "@/app_modules/donasi/model/interface";
-import { MODEL_AUTHOR } from "@/app_modules/home/models/interface";
+import { MODEL_USER } from "@/app_modules/home/model/interface";
 import {
   AspectRatio,
   Avatar,
@@ -56,7 +56,7 @@ export default function PenggalangDanaDonasi({
   );
 }
 
-function InformasiPenggalang({ value }: { value: MODEL_AUTHOR }) {
+function InformasiPenggalang({ value }: { value: MODEL_USER }) {
   return (
     <>
       <Paper radius={"md"}>

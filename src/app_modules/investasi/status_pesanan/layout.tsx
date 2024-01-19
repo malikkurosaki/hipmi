@@ -1,6 +1,6 @@
 "use client";
 
-import HeaderTamplate from "@/app_modules/component/header_tamplate";
+import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
 import { ActionIcon, AppShell, Group, Header, Text } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import router from "next/router";

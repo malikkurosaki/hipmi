@@ -49,19 +49,21 @@ model UserSession {
 }
 
 model Profile {
-  id           String    @id @default(cuid())
-  name         String
-  email        String    @unique
-  alamat       String
-  jenisKelamin String
-  active       Boolean   @default(true)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @default(now()) @updatedAt
-  User         User?     @relation(fields: [userId], references: [id])
-  userId       String?   @unique
-  ImageProfile Images?   @relation(fields: [imagesId], references: [id])
-  imagesId     String?   @unique
-  Katalog      Katalog[]
+  id                 String            @id @default(cuid())
+  name               String
+  email              String            @unique
+  alamat             String
+  jenisKelamin       String
+  active             Boolean           @default(true)
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @default(now()) @updatedAt
+  User               User?             @relation(fields: [userId], references: [id])
+  userId             String?           @unique
+  ImageProfile       Images?           @relation(fields: [imagesId], references: [id])
+  imagesId           String?           @unique
+  Portofolio         Portofolio[]
+  ImagesBackground   ImagesBackground? @relation(fields: [imagesBackgroundId], references: [id])
+  imagesBackgroundId String?           @unique
 }
 
 model Images {
@@ -80,30 +82,58 @@ model Images {
   Donasi_Kabar           Donasi_Kabar[]
   Donasi_PencairanDana   Donasi_PencairanDana[]
   Donasi_Invoice         Donasi_Invoice[]
+  Portofolio             Portofolio[]
 }
 
-model Katalog {
-  id                   String             @id @default(cuid())
-  namaBisnis           String
-  alamatKantor         String
-  tlpn                 String
-  deskripsi            String
-  active               Boolean            @default(true)
-  createdAt            DateTime           @default(now())
-  updatedAt            DateTime           @default(now()) @updatedAt
-  Profile              Profile?           @relation(fields: [profileId], references: [id])
-  profileId            String?
-  MasterBidangBisnis   MasterBidangBisnis @relation(fields: [masterBidangBisnisId], references: [id])
-  masterBidangBisnisId String
+model ImagesBackground {
+  id        String   @id @default(cuid())
+  url       String
+  label     String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Profile   Profile?
+}
+
+model Portofolio {
+  id                     String                  @id @default(cuid())
+  namaBisnis             String
+  alamatKantor           String
+  tlpn                   String
+  deskripsi              String
+  active                 Boolean                 @default(true)
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @default(now()) @updatedAt
+  Profile                Profile?                @relation(fields: [profileId], references: [id])
+  profileId              String?
+  MasterBidangBisnis     MasterBidangBisnis      @relation(fields: [masterBidangBisnisId], references: [id])
+  masterBidangBisnisId   String
+  Logo                   Images?                 @relation(fields: [logoId], references: [id])
+  logoId                 String?
+  Portofolio_MediaSosial Portofolio_MediaSosial?
+}
+
+model Portofolio_MediaSosial {
+  id           String      @id @default(cuid())
+  facebook     String?
+  twitter      String?
+  instagram    String?
+  tiktok       String?
+  youtube      String?
+  active       Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  Portofolio   Portofolio? @relation(fields: [portofolioId], references: [id])
+  portofolioId String?     @unique
 }
 
 model MasterBidangBisnis {
-  id        String    @id
-  name      String
-  active    Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now()) @updatedAt
-  Katalog   Katalog[]
+  id         String       @id
+  name       String
+  active     Boolean      @default(true)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now()) @updatedAt
+  Portofolio Portofolio[]
 }
 
 // -------------------- INVESTASI --------------------- //

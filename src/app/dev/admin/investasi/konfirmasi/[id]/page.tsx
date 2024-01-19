@@ -1,5 +1,5 @@
 import { Admin_KonfirmasiInvestasi } from "@/app_modules/admin/investasi";
-import { funGetUserProfile } from "@/app_modules/fun/get_user_profile";
+import { funGetUserProfile } from "@/app_modules/fun_global/get_user_profile";
 import getOneInvestasiById from "@/app_modules/investasi/fun/get_one_investasi_by_id";
 
 

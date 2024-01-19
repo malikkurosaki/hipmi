@@ -15,7 +15,7 @@ import {
 import { useFocusTrap, useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { MODEL_Investasi } from "../model/model_investasi";
-import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
+import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 import { useEffect, useState } from "react";
 import getTokenTransaksi from "../fun/get_token_transaksi";
 import toast from "react-simple-toasts";

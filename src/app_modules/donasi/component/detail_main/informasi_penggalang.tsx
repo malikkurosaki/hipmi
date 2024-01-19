@@ -1,14 +1,14 @@
 "use client"
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { MODEL_AUTHOR } from "@/app_modules/home/models/interface";
+import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { Stack, Title, Paper, Group, ActionIcon, Avatar, Text } from "@mantine/core";
 import { IconCircleChevronRight } from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import ComponentDonasi_NotedBox from "../noted_box";
 
-export default function ComponentDonasi_InformasiPenggalangMain({ author }: { author: MODEL_AUTHOR}) {
+export default function ComponentDonasi_InformasiPenggalangMain({ author }: { author: MODEL_USER}) {
     const router = useRouter();
     return (
       <>

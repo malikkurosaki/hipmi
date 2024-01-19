@@ -14,5 +14,13 @@
   {
     "id": 4,
     "name": "Mesin Mobil"
+  },
+  {
+    "id": 5,
+    "name": "Rental Kendaraan"
+  },
+  {
+    "id": 6,
+    "name": "Kedokteran"
   }
 ]

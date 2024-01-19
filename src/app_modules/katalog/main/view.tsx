@@ -11,37 +11,38 @@ import {
   Group,
   Image,
   Paper,
+  Stack,
   Text,
 } from "@mantine/core";
-import { useShallowEffect } from "@mantine/hooks";
-import {
-  IconAddressBook,
-  IconCamera,
-  IconEditCircle,
-  IconGenderFemale,
-  IconGenderMale,
-  IconHome,
-  IconMail,
-} from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { ProfileView, getProfile } from "../profile";
-import { gs_profile } from "../profile/state/global_state";
-import { myConsole } from "@/app/fun/my_console";
-import { useAtom } from "jotai";
-import { loadDataProfile } from "../profile/fun/fun_get_profile";
-import { getFotoProfile } from "../profile/api/get-foto-profile";
-import { ApiHipmi } from "@/app/lib/api";
+import { ProfileView } from "../profile";
 import { ListPortofolioView } from "../portofolio";
-import { User } from "@prisma/client";
-import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
+import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 import { LIST_PORTOFOLIO } from "@/app_modules/models/portofolio";
+import User_Logout from "@/app_modules/auth/logout/view";
+import { MODEL_PORTOFOLIO } from "../portofolio/model/interface";
+import { MODEL_PROFILE } from "../profile/model/interface";
 
-export default function KatalogView({ user, listPorto }: { user: MODEL_User_profile, listPorto: LIST_PORTOFOLIO }) {
+export default function KatalogView({
+  profile,
+  listPorto,
+  userLoginId,
+}: {
+  profile: MODEL_PROFILE;
+  listPorto: LIST_PORTOFOLIO;
+  userLoginId: string;
+}) {
+
   return (
     <>
-      <ProfileView user={user} />
-      <ListPortofolioView listPorto={listPorto} />
+      <Stack>
+        <ProfileView profile={profile as any} userLoginId={userLoginId} />
+        <ListPortofolioView
+          listPorto={listPorto as any}
+          profile={profile}
+          userLoginId={userLoginId}
+        />
+        {profile.User.id === userLoginId ? <User_Logout /> : ""}
+      </Stack>
     </>
   );
 }

@@ -6,26 +6,15 @@ import { redirect } from "next/navigation";
 
 import yaml from "yaml";
 import fs from "fs";
-import { funGetUserProfile } from "@/app_modules/fun/get_user_profile";
+import { funGetUserProfile } from "@/app_modules/fun_global/get_user_profile";
+import { User_getUserId } from "@/app_modules/fun_global/get_user_token";
+import { User_getOneById } from "@/app_modules/home/fun/get/get_one_user_by_id";
 const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
 export default async function Page() {
-  const c = cookies().get("ssn");
-
-  if (!c?.value) return redirect("/dev/auth/login");
-  const usr = JSON.parse(
-    await unsealData(c?.value as string, {
-      password: config.server.password,
-    })
-  );
-
-  const dataProfile = await funGetUserProfile(usr.id)
-
-
   return (
     <>
-    {/* {JSON.stringify(usr)} */}
-      <HomeView user={dataProfile as any} />
+      <HomeView />
     </>
   );
 }

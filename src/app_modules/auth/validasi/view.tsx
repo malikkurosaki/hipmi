@@ -19,7 +19,7 @@ import { IconChevronLeft, IconCircleLetterH } from "@tabler/icons-react";
 import toast from "react-simple-toasts";
 import { ApiHipmi } from "@/app/lib/api";
 import { useRouter } from "next/navigation";
-import { funGetUserProfile } from "@/app_modules/fun/get_user_profile";
+import { funGetUserProfile } from "@/app_modules/fun_global/get_user_profile";
 import { useFocusTrap } from "@mantine/hooks";
 import { NotifBerhasil } from "@/app_modules/donasi/component/notifikasi/notif_berhasil";
 import { NotifGagal } from "@/app_modules/donasi/component/notifikasi/notif_gagal";

@@ -20,7 +20,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import React, { useState } from "react";
-import HeaderTamplate from "../../component/header_tamplate";
+import ComponentGlobal_HeaderTamplate from "../../component_global/header_tamplate";
 import { useDisclosure } from "@mantine/hooks";
 import { IconLetterH, IconLogout } from "@tabler/icons-react";
 import {

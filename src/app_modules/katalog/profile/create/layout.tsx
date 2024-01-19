@@ -18,7 +18,7 @@ export default function ProfileLayout({ children }: { children: any }) {
       <AppShell
 
         header={
-          <Header height={50} px={"sm"}>
+          <Header height={50} px={"sm"} sx={{borderBlockStyle: "none"}}>
             <Group position="apart" h={50}>
               <ActionIcon variant="transparent" onClick={() => router.push("/dev/home")}>
                 <IconArrowLeft />

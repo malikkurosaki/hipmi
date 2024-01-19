@@ -3,6 +3,8 @@
 import { Warna } from "@/app/lib/warna";
 import {
   ActionIcon,
+  AspectRatio,
+  Avatar,
   BackgroundImage,
   Box,
   Center,
@@ -25,158 +27,207 @@ import {
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { myConsole } from "@/app/fun/my_console";
-import { useAtom } from "jotai";
-import { ApiHipmi } from "@/app/lib/api";
-import { loadDataProfile } from "../fun/fun_get_profile";
-import { getFotoProfile } from "../api/get-foto-profile";
-import { gs_fotoProfile, gs_profile } from "../state/global_state";
-import { getProfile } from "..";
-import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
-import { funGetUserProfile } from "@/app_modules/fun/get_user_profile";
+import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { MODEL_PROFILE } from "../model/interface";
 
-export default function ProfileView({ user }: { user: MODEL_User_profile }) {
+export default function ProfileView({
+  profile,
+  userLoginId,
+}: {
+  profile: MODEL_PROFILE;
+  userLoginId: string;
+}) {
   const router = useRouter();
-  const [stateUser, setStateUser] = useState(user);
-  useShallowEffect(() => {
-    funGetUserProfile(user.id ?? "").then(setStateUser as any);
-  }, []);
+  // const [data, setData] = useState(profile);
+  // useShallowEffect(() => {
+  //   funGetUserProfile(user.id ?? "").then(setProfile as any);
+  // }, []);
 
-  if (!stateUser) return <></>;
+  // if (!profile) return <></>;
   return (
     <>
-      {/* Background dan foto */}
-      <Box>
-        <Paper bg={"gray"} p={"md"}>
-          <Image alt="" src={"/aset/logo.png"} />
-        </Paper>
-        <Center>
-          <Paper
-            radius={100}
-            h={105}
-            w={105}
-            sx={{
-              borderStyle: "solid",
-              borderRadius: "100%",
-              borderWidth: 2,
-              marginBottom: 10,
-              paddingBottom: 10,
-              position: "absolute",
-              zIndex: 0,
-            }}
-          >
-            <Center h={101}>
-              {stateUser.Profile?.ImageProfile?.url && (
-                <Image
-                  src={ApiHipmi.get_foto + stateUser.Profile?.ImageProfile?.url}
-                  alt=""
-                  radius={100}
-                  width={100}
-                  height={100}
-                />
-              )}
+      {/* <pre>{JSON.stringify(profile, null,2)}</pre> */}
+      <Paper p={"sm"} bg={"gray.1"} shadow="lg" withBorder>
+        {/* Background dan foto */}
+        <Box>
+          <AspectRatio ratio={16 / 9}>
+            <Paper radius={"sm"} shadow="md">
+              <Image
+                radius={"sm"}
+                height={210}
+                alt=""
+                src={
+                  RouterProfile.api_url_background +
+                  `${profile.ImagesBackground.url}`
+                }
+              />
+            </Paper>
+          </AspectRatio>
+          {profile.User.id === userLoginId ? (
+            <ActionIcon
+              ml={325}
+              mt={-10}
+              bg={"gray.5"}
+              variant="transparent"
+              radius={50}
+              onClick={() =>
+                router.push(
+                  RouterProfile.update_foto_background + `${profile.id}`
+                )
+              }
+              sx={{
+                position: "absolute",
+                zIndex: 2,
+                border: "1px",
+                borderStyle: "solid",
+              }}
+            >
+              <IconCamera color="black" size={20} />
+            </ActionIcon>
+          ) : (
+            ""
+          )}
+
+          <Center>
+            <Box
+              sx={{
+                marginBottom: 10,
+                paddingBottom: 10,
+                position: "absolute",
+                zIndex: 0,
+              }}
+            >
+              <Avatar
+                bg={"gray.2"}
+                sx={{
+                  borderStyle: "solid",
+                  borderColor: "black",
+                  borderWidth: "1px",
+                }}
+                src={RouterProfile.api_url_foto + `${profile.ImageProfile.url}`}
+                size={100}
+                radius={"100%"}
+              />
+            </Box>
+          </Center>
+
+          {profile.User.id === userLoginId ? (
+            <Center>
+              <ActionIcon
+                mr={-70}
+                mt={15}
+                variant="transparent"
+                bg={"gray.5"}
+                radius={50}
+                onClick={() =>
+                  router.push(
+                    RouterProfile.update_foto_profile + `${profile.id}`
+                  )
+                }
+                sx={{
+                  position: "relative",
+                  border: "1px",
+                  borderStyle: "solid",
+                }}
+              >
+                <IconCamera color="black" size={20} />
+              </ActionIcon>
             </Center>
-          </Paper>
-        </Center>
+          ) : (
+            ""
+          )}
+        </Box>
 
-        <Center>
-          <ActionIcon
-            mr={-70}
-            mt={15}
-            variant="transparent"
-            bg={"gray"}
-            radius={50}
-            onClick={() => router.push(`/dev/profile/upload/${stateUser.Profile?.id}`)}
-            sx={{ position: "relative" }}
-          >
-            <IconCamera color="black" size={20} />
-          </ActionIcon>
-        </Center>
-      </Box>
+        {/* Username dan Nama */}
 
-      {/* Username dan Nama */}
-      <Group position="apart">
-        <Flex direction={"column"} mt={"lg"}>
-          <Text fz={"lg"} fw={"bold"}>
-            {stateUser.Profile?.name}
-          </Text>
-          <Text fz={"xs"}>@{stateUser.username}</Text>
+        <Group position="apart">
+          <Flex direction={"column"} mt={"lg"}>
+            <Text fz={"lg"} fw={"bold"}>
+              {profile.name}
+            </Text>
+            <Text fz={"xs"}>@{profile.User.username}</Text>
+          </Flex>
+          {profile.User.id === userLoginId ? (
+            <ActionIcon
+              variant="transparent"
+              onClick={() => {
+                router.push(RouterProfile.edit + `${profile.id}`);
+              }}
+            >
+              <IconEditCircle color={Warna.hijau_muda} />
+            </ActionIcon>
+          ) : (
+            ""
+          )}
+        </Group>
+
+        {/* Info user: nomor, email dll */}
+        <Flex direction={"column"} pt={"lg"}>
+          <Grid>
+            <Grid.Col span={"content"}>
+              <IconAddressBook />
+            </Grid.Col>
+            <Grid.Col span={"auto"}>
+              <Text>
+                {" "}
+                <Text>+{profile.User.nomor}</Text>
+              </Text>
+            </Grid.Col>
+          </Grid>
+
+          <Grid>
+            <Grid.Col span={"content"}>
+              <IconMail />
+            </Grid.Col>
+            <Grid.Col span={"auto"}>
+              <Text>
+                {" "}
+                <Text> {profile.email}</Text>
+              </Text>
+            </Grid.Col>
+          </Grid>
+
+          <Grid>
+            <Grid.Col span={"content"}>
+              <IconHome />
+            </Grid.Col>
+            <Grid.Col span={"auto"}>
+              <Text> {profile.alamat}</Text>
+            </Grid.Col>
+          </Grid>
+
+          {(() => {
+            if (profile.jenisKelamin === "Laki - laki") {
+              return (
+                <>
+                  <Grid>
+                    <Grid.Col span={"content"}>
+                      <IconGenderMale />
+                    </Grid.Col>
+                    <Grid.Col span={"auto"}>
+                      <Text> {profile.jenisKelamin}</Text>
+                    </Grid.Col>
+                  </Grid>
+                </>
+              );
+            } else {
+              return (
+                <>
+                  <Grid>
+                    <Grid.Col span={"content"}>
+                      <IconGenderFemale />
+                    </Grid.Col>
+                    <Grid.Col span={"auto"}>
+                      <Text> {profile.jenisKelamin}</Text>
+                    </Grid.Col>
+                  </Grid>
+                </>
+              );
+            }
+          })()}
         </Flex>
-        <ActionIcon
-          variant="transparent"
-          onClick={() => {
-            router.push(`/dev/profile/edit/${stateUser.id}`);
-          }}
-        >
-          <IconEditCircle color={Warna.hijau_muda} size={20} />
-        </ActionIcon>
-      </Group>
-
-      {/* Info user: nomor, email dll */}
-      <Flex direction={"column"} pt={"lg"}>
-        <Grid>
-          <Grid.Col span={"content"}>
-            <IconAddressBook />
-          </Grid.Col>
-          <Grid.Col span={"auto"}>
-            <Text>
-              {" "}
-              <Text>+{stateUser.nomor}</Text>
-            </Text>
-          </Grid.Col>
-        </Grid>
-
-        <Grid>
-          <Grid.Col span={"content"}>
-            <IconMail />
-          </Grid.Col>
-          <Grid.Col span={"auto"}>
-            <Text>
-              {" "}
-              <Text> {stateUser.Profile?.email}</Text>
-            </Text>
-          </Grid.Col>
-        </Grid>
-
-        <Grid>
-          <Grid.Col span={"content"}>
-            <IconHome />
-          </Grid.Col>
-          <Grid.Col span={"auto"}>
-            <Text> {stateUser.Profile?.alamat}</Text>
-          </Grid.Col>
-        </Grid>
-
-        {(() => {
-          if (stateUser.Profile?.jenisKelamin === "Laki - laki") {
-            return (
-              <>
-                <Grid>
-                  <Grid.Col span={"content"}>
-                    <IconGenderMale />
-                  </Grid.Col>
-                  <Grid.Col span={"auto"}>
-                    <Text> {stateUser.Profile?.jenisKelamin}</Text>
-                  </Grid.Col>
-                </Grid>
-              </>
-            );
-          } else {
-            return (
-              <>
-                <Grid>
-                  <Grid.Col span={"content"}>
-                    <IconGenderFemale />
-                  </Grid.Col>
-                  <Grid.Col span={"auto"}>
-                    <Text> {stateUser.Profile?.jenisKelamin}</Text>
-                  </Grid.Col>
-                </Grid>
-              </>
-            );
-          }
-        })()}
-      </Flex>
+      </Paper>
 
       {/* <pre>{JSON.stringify(profile, null, 2)}</pre> */}
     </>

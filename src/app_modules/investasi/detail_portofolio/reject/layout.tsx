@@ -1,6 +1,6 @@
 "use client";
 
-import HeaderTamplate from "@/app_modules/component/header_tamplate";
+import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
 import { AppShell } from "@mantine/core";
 import { IconEdit } from "@tabler/icons-react";
 import React from "react";
@@ -16,7 +16,7 @@ export default function LayoutDetailRejecttInvestasi({
     <>
       <AppShell
         header={
-          <HeaderTamplate
+          <ComponentGlobal_HeaderTamplate
             title="Detail Reject"
             // icon={<IconEdit />}
             // route2={`/dev/investasi/edit/${idInves}`}
