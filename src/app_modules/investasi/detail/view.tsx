@@ -31,8 +31,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_Investasi } from "../model/model_investasi";
 import moment from "moment";
-import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
-import { RouterUserProfile } from "@/app/lib/router_hipmi/router_user_profile";
+import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { gs_TransferValue } from "../g_state";
 import { useAtom } from "jotai";
 import _ from "lodash";
@@ -45,7 +45,7 @@ export default function DetailInvestasi({
   totalInvestor,
 }: {
   dataInvestasi: MODEL_Investasi;
-  dataUser: MODEL_User_profile;
+  dataUser: MODEL_PROFILE_OLD;
   loginUserId: string;
   progress: number;
   totalInvestor: number;

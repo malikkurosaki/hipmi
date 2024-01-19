@@ -1,13 +1,14 @@
 import { PortofolioLayout } from "@/app_modules/katalog/portofolio";
-import { getOnePortofolio } from "@/app_modules/katalog/portofolio/fun/get_one_portofolio";
+import { Portofolio_getOneById } from "@/app_modules/katalog/portofolio/fun/get/get_one_portofolio";
 
 export default async function Layout({ children, params }: { children: any, params: {id: string} }) {
-  const getPorto = await getOnePortofolio(params.id)
+  let portoId = params.id
+  const getPorto = await Portofolio_getOneById(portoId)
 
 
   return (
     <>
-      <PortofolioLayout profileId={getPorto?.profileId}>{children}</PortofolioLayout>
+      <PortofolioLayout portoId={portoId}>{children}</PortofolioLayout>
     </>
   );
 }

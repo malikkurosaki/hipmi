@@ -1,16 +1,16 @@
 import ProfileLayout from "./create/layout";
 import CreateProfile from "./create/view";
-import { getProfile } from "./api/get-profile";
 import EditProfileLayout from "./edit/layout";
 import EditProfileView from "./edit/view";
-import UploadFotoProfile from "./upload/view";
-import UploadFotoProfileLayout from "./upload/layout"
+import UploadFotoProfile from "./upload/foto_profile/view";
+import UploadFotoProfileLayout from "./upload/foto_profile/layout"
 import ProfileView from "./main/view";
+import Profile_UpdateFotoBackground from "./upload/foto_background";
+import LayoutProfile_UpdateFotoBackground from "./upload/foto_background/layout";
 
 export {
   ProfileLayout,
   CreateProfile,
-  getProfile,
   EditProfileView,
   EditProfileLayout,
   UploadFotoProfile,

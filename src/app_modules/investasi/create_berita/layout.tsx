@@ -1,7 +1,7 @@
 "use client";
 
 import { Warna } from "@/app/lib/warna";
-import HeaderTamplate from "@/app_modules/component/header_tamplate";
+import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
 import { AppShell, Button, Center, Footer } from "@mantine/core";
 import { IconPencilPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
@@ -20,7 +20,7 @@ export default function LayoutCreateBeritaInvestasi({
   return (
     <>
       <AppShell
-        header={<HeaderTamplate title="Buat Berita" />}
+        header={<ComponentGlobal_HeaderTamplate title="Buat Berita" />}
         // footer={
         //   <Footer height={70} sx={{ borderStyle: "none" }}>
            

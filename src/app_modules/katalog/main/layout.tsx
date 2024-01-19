@@ -2,36 +2,37 @@
 
 import { Logout } from "@/app_modules/auth";
 import { ActionIcon, AppShell, Group, Header, Text } from "@mantine/core";
-import { IconUserSearch, IconAward, IconQrcode, IconArrowLeft, IconPencilPlus } from "@tabler/icons-react";
+import {
+  IconUserSearch,
+  IconAward,
+  IconQrcode,
+  IconArrowLeft,
+  IconPencilPlus,
+  IconChevronLeft,
+} from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import ComponentKatalog_HeaderTamplate from "../component/header_tamplate";
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 
-export default function KatalogLayout({ children, profileId }: { children: any, profileId: any }) {
-    const router = useRouter()
+export default function KatalogLayout({
+  children,
+  profileId,
+}: {
+  children: any;
+  profileId: any;
+}) {
+  const router = useRouter();
   return (
     <>
       <AppShell
         header={
-          <Header height={50} bg={"dark"}>
-            <Group position="apart" align="center" h={50} p={"sm"}>
-              <Group spacing={"sm"}>
-                <ActionIcon variant="transparent" onClick={() => router.push("/dev/home")}>
-                  <IconArrowLeft/>
-                </ActionIcon>
-                {/* <ActionIcon>
-                  <IconAward />
-                </ActionIcon> */}
-              </Group>
-              <Text color="white" fw={"bold"}>
-               Katalog
-              </Text>
-              <Group spacing={"sm"}>
-                <ActionIcon variant="transparent" onClick={() => router.push(`/dev/portofolio/create/${profileId}`)}>
-                  <IconPencilPlus />
-                </ActionIcon>
-                {/* <Logout /> */}
-              </Group>
-            </Group>
-          </Header>
+          <ComponentKatalog_HeaderTamplate
+            title="Katalog"
+            bg={"black"}
+            titleColor="white"
+            // route={RouterHome.main_home}
+          />
         }
       >
         {children}

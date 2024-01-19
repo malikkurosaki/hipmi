@@ -1,6 +1,6 @@
 "use client"
 
-import HeaderTamplate from "@/app_modules/component/header_tamplate"
+import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate"
 import { AppShell } from "@mantine/core"
 import React from "react"
 
@@ -9,7 +9,7 @@ export default function LayoutDetailPublishInvestasi({children}: {children: Reac
 
     <AppShell
     header={
-        <HeaderTamplate title="Detail Publish"/>
+        <ComponentGlobal_HeaderTamplate title="Detail Publish"/>
     }
     >
         {children}

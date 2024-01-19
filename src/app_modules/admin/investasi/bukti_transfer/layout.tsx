@@ -1,6 +1,6 @@
 "use client";
 
-import HeaderTamplate from "@/app_modules/component/header_tamplate";
+import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
 import { AppShell } from "@mantine/core";
 import React from "react";
 
@@ -11,7 +11,7 @@ export default function Admin_LayoutBuktiTransferInvestasi({
 }) {
   return (
     <>
-      <AppShell header={<HeaderTamplate title="Bukti Transfer" />}>
+      <AppShell header={<ComponentGlobal_HeaderTamplate title="Bukti Transfer" />}>
         {children}
       </AppShell>
     </>

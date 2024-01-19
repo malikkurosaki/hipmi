@@ -3,6 +3,7 @@ import AppNotif from "@/app_modules/notif";
 // import './globals.css'
 import { CacheProvider } from "@emotion/react";
 import { MantineProvider, useEmotionCache } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import { useServerInsertedHTML } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,9 +30,10 @@ export default function RootStyleRegistry({
       <body suppressHydrationWarning={true}>
         <CacheProvider value={cache}>
           <MantineProvider withGlobalStyles withNormalizeCSS>
+            <Notifications position="top-center" containerWidth="250px"  />
             {children}
-            <ToastContainer position="bottom-center" />
-            <AppNotif />
+            {/* <ToastContainer position="bottom-center" />
+            <AppNotif /> */}
           </MantineProvider>
         </CacheProvider>
       </body>

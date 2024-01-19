@@ -13,6 +13,8 @@ import { useAtom } from "jotai";
 import { gs_otp, gs_nomor } from "../state/state";
 import { IconCircleLetterH } from "@tabler/icons-react";
 import { RouterAdminDashboard } from "@/app/lib/router_hipmi/router_admin";
+import { NotifBerhasil } from "@/app_modules/donasi/component/notifikasi/notif_berhasil";
+import { NotifGagal } from "@/app_modules/donasi/component/notifikasi/notif_gagal";
 
 export default function Login() {
   const router = useRouter();
@@ -44,12 +46,12 @@ export default function Login() {
           router.push(RouterAdminDashboard.splash_admin);
         } else {
           if (val.status == 200) {
-            toast("Nomor OTP terkirim");
             setCode(val.body.otp);
             setInputNumber(val.body.nomor);
             router.push("/dev/auth/validasi");
+           return NotifBerhasil("Nomor OTP terkirim");
           } else {
-            toast(val.message);
+            NotifGagal(val.message);
           }
         }
       });

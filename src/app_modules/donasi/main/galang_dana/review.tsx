@@ -21,8 +21,13 @@ import { useViewportSize } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 
 import toast from "react-simple-toasts";
+import { MODEL_DONASI } from "../../model/interface";
 
-export default function PostingReviewDonasi({ data }: { data: any }) {
+export default function PostingReviewDonasi({
+  listReview,
+}: {
+  listReview: MODEL_DONASI[];
+}) {
   const { height, width } = useViewportSize();
   const router = useRouter();
   return (
@@ -36,44 +41,42 @@ export default function PostingReviewDonasi({ data }: { data: any }) {
           { maxWidth: "36rem", cols: 1, spacing: "sm" },
         ]}
       >
-        {Array(5)
-          .fill(0)
-          .map((e, i) => (
-            <Box
-              key={i}
-              onClick={() => router.push(RouterDonasi.detail_review)}
-            >
-              <Stack>
-                <Grid>
-                  <Grid.Col span={7}>
-                    <AspectRatio ratio={16 / 9}>
-                      <Paper radius={"md"}>
-                        <Image
-                          alt="Foto"
-                          src={"/aset/no-img.png"}
-                          radius={"md"}
-                        />
-                      </Paper>
-                    </AspectRatio>
-                  </Grid.Col>
-                  <Grid.Col span={5}>
-                    <Stack spacing={"xs"}>
-                      <Text fz={"sm"} fw={"bold"} lineClamp={2}>
-                        Judul Donasi Bisa Dilihat Disini Untuk Contoh
+        {listReview.map((e, i) => (
+          <Box key={i} onClick={() => router.push(RouterDonasi.detail_review + `${e.id}`)}>
+            <Stack>
+              <Grid>
+                <Grid.Col span={7}>
+                  <AspectRatio ratio={16 / 9}>
+                    <Paper radius={"md"} bg={"gray.1"}>
+                      <Image
+                        alt="Foto"
+                        src={RouterDonasi.api_gambar + `${e.imagesId}`}
+                        radius={"md"}
+                      />
+                    </Paper>
+                  </AspectRatio>
+                </Grid.Col>
+                <Grid.Col span={5}>
+                  <Stack spacing={"xs"}>
+                    <Text fz={"sm"} fw={"bold"} lineClamp={2}>
+                      {e.title}
+                    </Text>
+                    <Stack spacing={0}>
+                      <Text fz={"sm"}>Terget Dana</Text>
+                      <Text fz={"sm"} fw={"bold"} c={"orange"} truncate>
+                        Rp.{" "}
+                        {new Intl.NumberFormat("id-ID", {
+                          maximumFractionDigits: 10,
+                        }).format(+e.target)}
                       </Text>
-                      <Stack spacing={0}>
-                        <Text fz={"sm"}>Terget Dana</Text>
-                        <Text fz={"sm"} fw={"bold"} c={"orange"} truncate>
-                          Rp. 100.000.000
-                        </Text>
-                      </Stack>
                     </Stack>
-                  </Grid.Col>
-                </Grid>
-                {width > 575 ? "" : <Divider />}
-              </Stack>
-            </Box>
-          ))}
+                  </Stack>
+                </Grid.Col>
+              </Grid>
+              {width > 575 ? "" : <Divider />}
+            </Stack>
+          </Box>
+        ))}
       </SimpleGrid>
     </>
   );

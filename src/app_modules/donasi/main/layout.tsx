@@ -7,12 +7,18 @@ import {
   Flex,
   Footer,
   Grid,
+  Group,
+  Header,
+  Indicator,
   Text,
+  Title,
 } from "@mantine/core";
 import React, { useState } from "react";
-import HeaderTamplateDonasi from "../component/header_tamplate";
+import ComponentDonasi_HeaderTamplate from "../component/header_tamplate";
 
 import {
+  IconBell,
+  IconChevronLeft,
   IconCurrencyDollar,
   IconGift,
   IconGiftCardFilled,
@@ -26,11 +32,17 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { gs_donasi_hot_menu } from "../global_state";
 import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
+import { title } from "process";
+import _ from "lodash";
 
 export default function LayoutDonasi({
   children,
+  userId,
+  isRead,
 }: {
   children: React.ReactNode;
+  userId: string;
+  isRead: boolean[];
 }) {
   const router = useRouter();
   const [active, setActive] = useAtom(gs_donasi_hot_menu);
@@ -59,7 +71,31 @@ export default function LayoutDonasi({
     <>
       <AppShell
         header={
-          <HeaderTamplateDonasi title="Donasi" route={RouterCrowd.main} />
+          <Header height={50} sx={{ borderStyle: "none" }}>
+            <Group h={50} position="apart" px={"md"}>
+              <ActionIcon onClick={() => router.push(RouterCrowd.main)}>
+                <IconChevronLeft />
+              </ActionIcon>
+              <Title order={5}>Donasi</Title>
+              <ActionIcon
+                radius={"md"}
+                variant="transparent"
+                onClick={() =>
+                  router.push(RouterDonasi.notif_page + `${userId}`)
+                }
+              >
+                {_.isEmpty(isRead) ? (
+                  <IconBell />
+                ) : isRead.includes(false) ? (
+                  <Indicator processing color="orange">
+                    <IconBell />
+                  </Indicator>
+                ) : (
+                  <IconBell />
+                )}
+              </ActionIcon>
+            </Group>
+          </Header>
         }
         footer={
           <Footer height={70} bg={"dark"}>
@@ -93,6 +129,7 @@ export default function LayoutDonasi({
           </Footer>
         }
       >
+        {/* {JSON.stringify(isRead)} */}
         {children}
       </AppShell>
     </>

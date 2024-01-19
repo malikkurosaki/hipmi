@@ -23,7 +23,17 @@ import { Warna } from "@/app/lib/warna";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import PostingDraftDonasi from "./galang_dana/draft";
 
-export default function GalangDanaDonasi() {
+export default function GalangDanaDonasi({
+  listPublish,
+  listReview,
+  listDraft,
+  listReject
+}: {
+  listPublish: any;
+  listReview: any;
+  listDraft: any;
+  listReject: any
+}) {
   const router = useRouter();
   const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
     gs_donasi_tabs_posting
@@ -33,25 +43,25 @@ export default function GalangDanaDonasi() {
     {
       id: 1,
       value: "Publish",
-      path: <PostingPublishDonasi data={"1"} />,
+      path: <PostingPublishDonasi listPublish={listPublish} />,
       color: "green",
     },
     {
       id: 2,
       value: "Review",
-      path: <PostingReviewDonasi data={"2"} />,
+      path: <PostingReviewDonasi listReview={listReview} />,
       color: "yellow",
     },
     {
       id: 3,
       value: "Draft",
-      path: <PostingDraftDonasi data={"3"} />,
+      path: <PostingDraftDonasi listDraft={listDraft} />,
       color: "red",
     },
     {
       id: 4,
       value: "Reject",
-      path: <PostingRejectDonasi data={"4"} />,
+      path: <PostingRejectDonasi listReject={listReject} />,
       color: "red",
     },
   ];
@@ -64,12 +74,12 @@ export default function GalangDanaDonasi() {
           bg={"orange"}
           color="orange"
           leftIcon={<IconCirclePlus />}
-          onClick={() => router.push(RouterDonasi.create)}
+          onClick={() => router.push(RouterDonasi.create_donasi)}
         >
           Galang Dana
         </Button>
       </Affix>
-      <Stack  >
+      <Stack>
         <Tabs
           color="orange"
           variant="pills"
@@ -79,27 +89,27 @@ export default function GalangDanaDonasi() {
           onTabChange={setTabsPostingDonasi}
         >
           <Stack>
-          <Tabs.List grow>
-            {listPosting.map((e, i) => (
-              <Tabs.Tab
-                key={e.id}
-                value={e.value}
-                bg={tabsPostingDonasi === e.value ? e.color : "gray.1"}
-              >
-                <Text
-                  c={tabsPostingDonasi === e.value ? "white" : "gray"}
-                  fw={tabsPostingDonasi === e.value ? 900 : "normal"}
+            <Tabs.List grow>
+              {listPosting.map((e, i) => (
+                <Tabs.Tab
+                  key={e.id}
+                  value={e.value}
+                  bg={tabsPostingDonasi === e.value ? e.color : "gray.1"}
                 >
-                  {e.value}
-                </Text>
-              </Tabs.Tab>
+                  <Text
+                    c={tabsPostingDonasi === e.value ? "white" : "gray"}
+                    fw={tabsPostingDonasi === e.value ? 900 : "normal"}
+                  >
+                    {e.value}
+                  </Text>
+                </Tabs.Tab>
+              ))}
+            </Tabs.List>
+            {listPosting.map((e, i) => (
+              <Tabs.Panel key={e.id} value={e.value} pt="xs">
+                {e.path}
+              </Tabs.Panel>
             ))}
-          </Tabs.List>
-          {listPosting.map((e, i) => (
-            <Tabs.Panel key={e.id} value={e.value} pt="xs">
-              {e.path}
-            </Tabs.Panel>
-          ))}
           </Stack>
         </Tabs>
       </Stack>

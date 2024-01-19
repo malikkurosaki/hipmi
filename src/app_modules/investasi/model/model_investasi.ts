@@ -1,4 +1,4 @@
-import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
+import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 
 export interface MODEL_Investasi {
   id: string;
@@ -27,7 +27,7 @@ export interface MODEL_Investasi {
   masterPeriodeDevidenId: string;
   masterPembagianDevidenId: string;
   masterPencarianInvestorId: string;
-  author: MODEL_User_profile;
+  author: MODEL_PROFILE_OLD;
   countDown: Date
 }
 
@@ -48,7 +48,7 @@ export interface MODEL_Transaksi_Investasi {
   merchant_name: string;
   redirect_url: string;
   token: string;
-  Author: MODEL_User_profile;
+  Author: MODEL_PROFILE_OLD;
   masterStatusTransaksiInvestasiId: string;
   investasiId: string;
   Investasi: MODEL_Investasi;

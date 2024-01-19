@@ -1,9 +1,17 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
+import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 
-export default async function funEditProfile(data: MODEL_User_profile) {
+export default async function funEditProfile(data: MODEL_PROFILE_OLD) {
+  // const cekEmail = await prisma.profile.findMany({
+  //   where: {
+  //     email: data.Profile.email
+  //   }
+  // })
+
+  // if(cekEmail) return {status: 400, message: "Email sudah di gunakan"}
+
   const res = await prisma.profile.update({
     where: {
       id: data.Profile?.id,
@@ -16,10 +24,10 @@ export default async function funEditProfile(data: MODEL_User_profile) {
     },
   });
 
-  if (!res) return { status: 400 };
+  if (!res) return { status: 400, message: "Gagal update" };
 
   return {
     status: 200,
-    success: true,
+    message: "Berhasil update",
   };
 }

@@ -1,5 +1,10 @@
-import { AdminMain } from "@/app_modules/admin/main";
+import { AdminMain } from "@/app_modules/admin/main_dashboard";
+import { AdminMainDashboard_CountPOrtofolio } from "@/app_modules/admin/main_dashboard/fun/count/fun_count_portofolio";
+import { AdminMainDashboard_CountUser } from "@/app_modules/admin/main_dashboard/fun/count/fun_count_user";
 
 export default async function Page() {
-  return <AdminMain />;
+  const countUser = await AdminMainDashboard_CountUser();
+  const countPorto = await AdminMainDashboard_CountPOrtofolio();
+
+  return <AdminMain countUser={countUser} countPorto={countPorto} />;
 }

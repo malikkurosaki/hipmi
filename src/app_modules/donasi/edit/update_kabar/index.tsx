@@ -13,37 +13,34 @@ import {
   Divider,
 } from "@mantine/core";
 import moment from "moment";
+import { MODEL_DONASI_KABAR } from "../../model/interface";
+import { useState } from "react";
 
-export default function UpdateKabarDonasi() {
+export default function UpdateKabarDonasi({
+  dataKabar,
+}: {
+  dataKabar: MODEL_DONASI_KABAR;
+}) {
+  const [kabar, setKabar] = useState(dataKabar);
   return (
     <>
       <Stack>
-        <Group>
-          <Avatar variant="filled" radius={"xl"} />
-          <Stack spacing={0}>
-            <Text>Username</Text>
-            <Text fz={"xs"}>{moment(Date.now()).format("ll")}</Text>
-          </Stack>
-        </Group>
         <Stack>
-          <Title order={5}>Judul Berita</Title>
-
-          <Text>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquam
-            nostrum vitae eum facilis similique minus exercitationem assumenda,
-            quidem dolores illum ducimus fuga rem molestias? Numquam id
-            praesentium dolor qui amet.
-          </Text>
-
-          <AspectRatio ratio={16 / 9}>
-            <Image alt="Foro" src={"/aset/no-img.png"} />
-          </AspectRatio>
-          <Text>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquam
-            nostrum vitae eum facilis similique minus exercitationem assumenda,
-            quidem dolores illum ducimus fuga rem molestias? Numquam id
-            praesentium dolor qui amet.
-          </Text>
+          <Text fz={"xs"}>{moment(Date.now()).format("ll")}</Text>
+          <Title order={5}>{kabar.title}</Title>
+          {kabar.imagesId === null ? (
+            ""
+          ) : (
+            <AspectRatio ratio={16 / 9}>
+              <Paper radius={"md"}>
+                <Image
+                  alt="Foro"
+                  src={RouterDonasi.api_gambar_kabar + `${kabar.imagesId}`}
+                />
+              </Paper>
+            </AspectRatio>
+          )}
+          <Text>{kabar.deskripsi}</Text>
         </Stack>
       </Stack>
     </>

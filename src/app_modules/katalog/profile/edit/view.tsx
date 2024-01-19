@@ -3,7 +3,6 @@
 import { myConsole } from "@/app/fun/my_console";
 import { ApiHipmi } from "@/app/lib/api";
 import { Warna } from "@/app/lib/warna";
-import { gs_token } from "@/app_modules/home/state/global_state";
 import { Button, Loader, Select, Stack, TextInput } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useAtom } from "jotai";
@@ -11,12 +10,15 @@ import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-simple-toasts";
-import { gs_profile } from "../state/global_state";
-import { loadDataProfile } from "../fun/fun_get_profile";
-import { MODEL_User_profile } from "@/app_modules/home/models/user_profile";
-import funEditProfile from "../fun/fun_edit_profile";
 
-export default function EditProfile({ data }: { data: MODEL_User_profile }) {
+import funEditProfile from "../fun/fun_edit_profile";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { MODEL_PROFILE } from "../model/interface";
+import { Profile_funEditById } from "../fun/update/fun_edit_profile_by_id";
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+
+export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
   const router = useRouter();
 
   //Get data profile
@@ -26,12 +28,12 @@ export default function EditProfile({ data }: { data: MODEL_User_profile }) {
     const body = dataProfile;
     if (_.values(body).includes("")) return toast("Lengkapi data");
 
-    await funEditProfile(body).then((res) => {
+    await Profile_funEditById(body).then((res) => {
       if (res.status === 200) {
-        toast("Update berhasil");
-        setTimeout(() => router.push(`/dev/katalog/${data.Profile?.id}`), 1000);
+        ComponentGlobal_NotifikasiBerhasil(res.message);
+        setTimeout(() => router.back(), 1000)
       } else {
-        toast("Gagal update");
+        ComponentGlobal_NotifikasiGagal(res.message);
       }
     });
   }
@@ -46,20 +48,21 @@ export default function EditProfile({ data }: { data: MODEL_User_profile }) {
   return (
     <>
       <Stack px={"sm"}>
-        <TextInput label="Username" disabled value={dataProfile.username} />
-        <TextInput label="Nomor" disabled value={dataProfile.nomor} />
+        <TextInput
+          label="Username"
+          disabled
+          value={dataProfile.User.username}
+        />
+        <TextInput label="Nomor" disabled value={dataProfile.User.nomor} />
 
         <TextInput
           label="Nama"
-          placeholder="username"
-          value={dataProfile.Profile?.name}
+          placeholder="Nama"
+          value={dataProfile.name}
           onChange={(val) => {
             setDataProfile({
-              ...(dataProfile as any),
-              Profile: {
-                ...dataProfile.Profile,
-                name: val.target.value,
-              },
+              ...dataProfile,
+              name: val.target.value,
             });
           }}
         />
@@ -67,14 +70,11 @@ export default function EditProfile({ data }: { data: MODEL_User_profile }) {
         <TextInput
           label="Email"
           placeholder="email"
-          value={dataProfile.Profile?.email}
+          value={dataProfile.email}
           onChange={(val) => {
             setDataProfile({
-              ...(dataProfile as any),
-              Profile: {
-                ...dataProfile.Profile,
-                email: val.target.value,
-              },
+              ...dataProfile,
+              email: val.target.value,
             });
           }}
         />
@@ -82,32 +82,26 @@ export default function EditProfile({ data }: { data: MODEL_User_profile }) {
         <TextInput
           label="Alamat"
           placeholder="alamat"
-          value={dataProfile.Profile?.alamat}
+          value={dataProfile.alamat}
           onChange={(val) => {
             setDataProfile({
-              ...(dataProfile as any),
-              Profile: {
-                ...dataProfile.Profile,
-                alamat: val.target.value,
-              },
+              ...dataProfile,
+              alamat: val.target.value,
             });
           }}
         />
 
         <Select
           label="Jenis Kelamin"
-          value={dataProfile.Profile?.jenisKelamin}
+          value={dataProfile.jenisKelamin}
           data={[
             { value: "Laki-laki", label: "Laki-laki" },
             { value: "Perempuan", label: "Perempuan" },
           ]}
-          onChange={(val) => {
+          onChange={(val: any) => {
             setDataProfile({
-              ...(dataProfile as any),
-              Profile: {
-                ...dataProfile.Profile,
-                jenisKelamin: val,
-              },
+              ...dataProfile,
+              jenisKelamin: val
             });
           }}
         />

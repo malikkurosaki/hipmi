@@ -9,20 +9,20 @@ export interface LIST_PORTOFOLIO {
   profileId: string
 }
 
-export interface BIDANG_BISNIS {
+export interface BIDANG_BISNIS_OLD {
   id: string;
   name: string;
   active: boolean;
 }
 
-export interface MODEL_PORTOFOLIO {
+export interface MODEL_PORTOFOLIO_OLD {
   id: string;
   namaBisnis: string;
   alamatKantor: string;
   deskripsi: string;
   tlpn: string;
   active: boolean;
-  MasterBidangBisnis: BIDANG_BISNIS;
+  MasterBidangBisnis: BIDANG_BISNIS_OLD;
   masterBidangBisnisId: string
   profileId: string,
 }

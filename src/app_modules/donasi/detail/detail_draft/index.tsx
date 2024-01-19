@@ -24,134 +24,110 @@ import {
   IconMessageChatbot,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import BoxInformasiDonasi from "../../component/box_informasi";
+import ComponentDonasi_NotedBox from "../../component/noted_box";
 import { useAtom } from "jotai";
 import { gs_donasi_tabs_posting } from "../../global_state";
+import { MODEL_DONASI } from "../../model/interface";
+import { useState } from "react";
+import TampilanRupiahDonasi from "../../component/tampilan_rupiah";
+import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
+import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
+import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
+import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
+import { useShallowEffect } from "@mantine/hooks";
+import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_dana/detail_data_donasi";
 
-export default function DetailDraftDonasi() {
-  const router = useRouter()
-  const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
-    gs_donasi_tabs_posting
-  );
-  async function onClick() {
-    router.push(RouterDonasi.main_galang_dana)
-    setTabsPostingDonasi("Review")
-    
-  }
+export default function DetailDraftDonasi({
+  dataDonasi,
+}: {
+  dataDonasi: MODEL_DONASI;
+}) {
   return (
     <>
       <Stack spacing={"xl"}>
-        <DetailDonasi />
-        {/* <InformasiPenggalangDana /> */}
-        <CeritaPenggalangDana />
-        <Button
-          radius={"xl"}
-          bg={"orange"}
-          color="orange"
-          onClick={() => onClick()}
-        >
-          Ajukan Penggalangan Dana
-        </Button>
+        <ComponentDonasi_DetailDataGalangDana donasi={dataDonasi} />
+        <ComponentDonasi_CeritaPenggalangMain donasi={dataDonasi} />
+        <ButtonAjukanPenggalangan dataDonasi={dataDonasi} />
       </Stack>
     </>
   );
 }
 
-function DetailDonasi() {
+function ButtonAjukanPenggalangan({
+  dataDonasi,
+}: {
+  dataDonasi: MODEL_DONASI;
+}) {
   const router = useRouter();
+  const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
+    gs_donasi_tabs_posting
+  );
+  async function onCLick() {
+    await Donasi_funGantiStatus(dataDonasi.id, "2").then((res) => {
+      if (res.status === 200) {
+        router.push(RouterDonasi.main_galang_dana);
+        setTabsPostingDonasi("Review");
+        NotifBerhasil("Berhasil Diajukan");
+      } else {
+        NotifPeringatan(res.message);
+      }
+    });
+  }
   return (
     <>
-      <Stack>
-        <Stack>
-          <AspectRatio ratio={16 / 9}>
-            <Paper radius={"md"}>
-              <Image alt="Foto" src={"/aset/no-img.png"} />
-            </Paper>
-          </AspectRatio>
-          <Title order={4}>Judul Donasi</Title>
-          <Stack spacing={0}>
-            <Group position="apart">
-              <Stack spacing={0}>
-                <Text fz={12}>Dana dibutuhkan</Text>
-                <Title order={4} c="blue">
-                  Rp. 50.000.000
-                </Title>
-              </Stack>
-              <Stack spacing={0}>
-                <Text fz={12}>Kategori</Text>
-                <Title order={4} c="blue">
-                  Kesehatan
-                </Title>
-              </Stack>
-            </Group>
-          </Stack>
-        </Stack>
-      </Stack>
+      <Button
+        radius={"xl"}
+        bg={"orange"}
+        color="orange"
+        onClick={() => onCLick()}
+      >
+        Ajukan Penggalangan Dana
+      </Button>
     </>
   );
 }
 
-function InformasiPenggalangDana() {
-  const router = useRouter();
-  return (
-    <>
-      <Stack spacing={"xs"}>
-        <Title order={4}>Informasi Penggalang Dana</Title>
-        <Paper p={"sm"} withBorder>
-          <Stack>
-            <Group position="apart">
-              <Title order={5}>Penggalang Dana</Title>
-              <ActionIcon
-                variant="transparent"
-                onClick={() => router.push(RouterDonasi.penggalang_dana)}
-              >
-                <IconCircleChevronRight />
-              </ActionIcon>
-            </Group>
-            <Group>
-              <Avatar radius={"xl"} variant="filled" bg={"blue"}>
-                U
-              </Avatar>
-              <Text>Username</Text>
-            </Group>
-            <BoxInformasiDonasi
-              informasi="Semua dana yang terkumpul akan disalurkan ke penggalang dana,
-                kabar penyaluran dapat dilihat di halaman kabar terbaru."
-            />
-          </Stack>
-        </Paper>
-      </Stack>
-    </>
-  );
-}
-
-function CeritaPenggalangDana() {
-  const router = useRouter();
-  return (
-    <>
-      <Stack spacing={"xs"}>
-        <Title order={4}>Cerita Penggalang Dana</Title>
-        <Paper p={"sm"} withBorder>
-          <Stack>
-            <Group position="apart">
-              <Text>1 Des 2023</Text>
-              <ActionIcon
-                variant="transparent"
-                onClick={() => router.push(RouterDonasi.cerita_penggalang)}
-              >
-                <IconCircleChevronRight />
-              </ActionIcon>
-            </Group>
-            <Text lineClamp={4}>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat
-              doloremque perferendis laborum? Cupiditate sed consequatur quasi
-              doloremque, consequuntur libero? Vel nam esse fuga, sed et
-              repellat commodi nemo quia dignissimos?
-            </Text>
-            {/* <Text c={"blue"}>Baca selengkapnya</Text> */}
-          </Stack>
-        </Paper>
-      </Stack>
-    </>
-  );
-}
+// function DetailDonasi({ dataDonasi }: { dataDonasi: MODEL_DONASI }) {
+//   const [donasi, setDonasi] = useState(dataDonasi);
+//   useShallowEffect(() => {
+//     setDonasi(dataDonasi);
+//   }, [dataDonasi]);
+//   return (
+//     <>
+//       <Stack>
+//         <Stack>
+//           <AspectRatio ratio={16 / 9}>
+//             <Paper radius={"md"}>
+//               <Image
+//                 alt="Foto"
+//                 src={RouterDonasi.api_image + `${donasi.imageDonasi.url}`}
+//               />
+//             </Paper>
+//           </AspectRatio>
+//           <Stack spacing={0}>
+//             <Title order={4}>{donasi.title}</Title>
+//             <Text fz={"xs"}>
+//               Durasi: {donasi.DonasiMaster_Durasi.name} hari
+//             </Text>
+//           </Stack>
+//           <Stack spacing={0}>
+//             <Group position="apart">
+//               <Stack spacing={0}>
+//                 <Text fz={12}>Dana dibutuhkan</Text>
+//                 <Title order={4} c="blue">
+//                   <TampilanRupiahDonasi nominal={+donasi.target} />
+//                 </Title>
+//               </Stack>
+//               <Stack spacing={0}>
+//                 <Text fz={12}>Kategori</Text>
+//                 <Title order={4} c="blue">
+//                   {donasi.DonasiMaster_Ketegori.name}
+//                 </Title>
+//               </Stack>
+//             </Group>
+//           </Stack>
+//         </Stack>
+//       </Stack>
+//     </>
+//   );
+// }

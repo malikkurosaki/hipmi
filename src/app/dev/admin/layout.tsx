@@ -1,4 +1,4 @@
-import { AdminLayout } from "@/app_modules/admin/main";
+import { AdminLayout } from "@/app_modules/admin/main_dashboard";
 import React from "react";
 
 export default async function Layout({

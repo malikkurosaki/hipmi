@@ -2,7 +2,7 @@
 
 import { AppShell } from "@mantine/core";
 import React from "react";
-import HeaderTamplateDonasi from "../../component/header_tamplate";
+import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
 
 export default function LayoutEditCeritaPenggalangDonasi({
   children,
@@ -11,7 +11,7 @@ export default function LayoutEditCeritaPenggalangDonasi({
 }) {
   return (
     <>
-      <AppShell header={<HeaderTamplateDonasi title="Update Cerita Penggalang" />}>
+      <AppShell header={<ComponentDonasi_HeaderTamplate title="Update Cerita Penggalang" />}>
         {children}
       </AppShell>
     </>
