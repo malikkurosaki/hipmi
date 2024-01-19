@@ -20,7 +20,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import React, { useState } from "react";
-import ComponentGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentGlobal_HeaderTamplate from "../../../component_global/header_tamplate";
 import { useDisclosure } from "@mantine/hooks";
 import { IconLetterH, IconLogout } from "@tabler/icons-react";
 import {
@@ -33,7 +33,8 @@ import { useRouter } from "next/navigation";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { Logout } from "@/app_modules/auth";
 import { useAtom } from "jotai";
-import { gs_adminDonasi_hotMenu } from "../donasi/global_state";
+import { gs_adminDonasi_hotMenu } from "../../donasi/global_state";
+import Admin_Logout from "../../component/logout";
 
 export default function AdminLayout({
   children,
@@ -134,7 +135,7 @@ export default function AdminLayout({
                     </Text>
                   ))}
                 </Group> */}
-                <Logout />
+                <Admin_Logout/>
               </Group>
             </MediaQuery>
           </Header>
