@@ -109,9 +109,9 @@ export default function HomeLayout({
                   }
                 }}
               >
-                <Stack align="center" spacing={0}>
+                <Stack align="center" spacing={2}>
                   <ActionIcon variant={"transparent"}>
-                    {user.Profile === null ? <IconUserCircle color="white" /> : <Avatar radius={"xl"} size={20} src={RouterProfile.api_foto_profile + `${user.Profile.imagesId}`}/>} 
+                    {user.Profile === null ? <IconUserCircle color="white" /> : <Avatar radius={"xl"} size={30} src={RouterProfile.api_foto_profile + `${user.Profile.imagesId}`}/>} 
                   </ActionIcon>
                   <Text fz={"xs"} c={"white"}>
                     Profile
