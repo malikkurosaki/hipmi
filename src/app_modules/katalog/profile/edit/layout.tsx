@@ -12,13 +12,7 @@ import { IconArrowLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import ComponentKatalog_HeaderTamplate from "../../component/header_tamplate";
 
-export default function EditProfileLayout({
-  children,
-  profileId,
-}: {
-  children: any;
-  profileId: any;
-}) {
+export default function EditProfileLayout({ children }: { children: any }) {
   const router = useRouter();
   return (
     <>

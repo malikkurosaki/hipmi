@@ -41,7 +41,9 @@ export default function KatalogView({
           profile={profile}
           userLoginId={userLoginId}
         />
-        {profile.User.id === userLoginId ? <User_Logout /> : ""}
+       <Stack my={"lg"} w={"100%"}>
+       {profile.User.id === userLoginId ? <User_Logout /> : ""}
+       </Stack>
       </Stack>
     </>
   );
