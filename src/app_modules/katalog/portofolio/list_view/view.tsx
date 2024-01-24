@@ -39,8 +39,8 @@ export default function ListPortofolioView({
   return (
     <>
       {/* <pre>{JSON.stringify(porto, null, 2)}</pre> */}
-      <Paper p={"sm"} shadow="lg" withBorder bg={"gray.1"}>
-        <Stack spacing={"md"}>
+      <Paper p={"md"} shadow="lg" withBorder bg={"gray.1"}>
+        <Stack spacing={"lg"}>
           <Group position="apart">
             <ActionIcon variant="transparent" disabled></ActionIcon>
             <Title order={4}>Portofolio</Title>
@@ -72,7 +72,7 @@ export default function ListPortofolioView({
                     h={50}
                     bg={"gray"}
                     mb={"lg"}
-                    radius={"md"}
+                    radius={"xl"}
                     onClick={() => router.push(`/dev/portofolio/main/${e.id}/`)}
                   >
                     <Grid h={50} align="center" px={"md"}>
