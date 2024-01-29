@@ -8,13 +8,15 @@ import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 
 export default function LayoutEvent_DetailDraft({
   children,
+  eventId
 }: {
   children: React.ReactNode;
+  eventId: string
 }) {
   return (
     <>
       <AppShell
-        header={<ComponentEvent_HeaderTamplate title="Detail Draft" icon={<IconEdit/>} route2={RouterEvent.edit}/>}
+        header={<ComponentEvent_HeaderTamplate title="Detail Draft" icon={<IconEdit/>} route2={RouterEvent.edit + eventId}/>}
       >
         {children}
       </AppShell>

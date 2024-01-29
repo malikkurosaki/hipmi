@@ -1,5 +1,5 @@
 import { MODEL_USER } from "@/app_modules/home/model/interface";
-import { MODEL_IMAGES } from "@/app_modules/models/interface";
+import { MODEL_IMAGES } from "@/app_modules/model_global/interface";
 
 export interface MODEL_PROFILE {
   userId: string;

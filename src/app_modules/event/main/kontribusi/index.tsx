@@ -1,14 +1,32 @@
 "use client";
 
-import { Avatar, Box, Card, Group, Stack, Tabs, Text } from "@mantine/core";
+import {
+  Avatar,
+  Box,
+  Card,
+  Flex,
+  Grid,
+  Group,
+  Stack,
+  Tabs,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useState } from "react";
 import Event_KontribusiPanitia from "./panitia";
 import Event_KontribusiPeserta from "./peserta";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
+import { MODEL_EVENT_PESERTA } from "../../model/interface";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 
-export default function Event_Kontribusi() {
+export default function Event_Kontribusi({
+  listKontribusi,
+}: {
+  listKontribusi: MODEL_EVENT_PESERTA[];
+}) {
   const router = useRouter();
   const [tabsKontribusi, setTabsKontribusi] = useState<string | any>("Panitia");
   const listTabs = [
@@ -26,45 +44,56 @@ export default function Event_Kontribusi() {
 
   return (
     <>
-      {Array(5)
-        .fill(0)
-        .map((e, i) => (
-          <Card
-            key={i}
-            shadow="sm"
-            padding="md"
-            radius="md"
-            withBorder
-            mb={"md"}
-            onClick={() => router.push(RouterEvent.detail_kontribusi)}
+      {/* <pre>{JSON.stringify(listKontribusi, null,2)}</pre> */}
+      {listKontribusi.map((e, i) => (
+        <Card key={e.id} shadow="lg" radius={"md"} withBorder mb={"sm"}>
+          <Card.Section px={"sm"} pt={"sm"}>
+            <ComponentGlobal_AuthorNameOnHeader
+              profileId={e.Event.Author.Profile.id}
+              imagesId={e.Event.Author.Profile.imagesId}
+              authorName={e.Event.Author.Profile.name}
+            />
+          </Card.Section>
+          <Card.Section
+            p={"sm"}
+            onClick={() => router.push(RouterEvent.detail_kontribusi + e.Event.id)}
           >
-            {/* <Card.Section p={"xs"}>
-                  <Skeleton visible={loading} h={200}></Skeleton>
-                </Card.Section> */}
-
             <Stack>
-              <Group position="apart" mt="md" mb="xs">
-                <Text weight={500}>Nama Event</Text>
-                <Text fz={"sm"}>{moment(new Date()).format("ll")}</Text>
-              </Group>
+              <Grid>
+                <Grid.Col span={8}>
+                  <Title order={6} truncate>
+                    {e.Event.title}
+                  </Title>
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <Text fz={"sm"} truncate>
+                    {moment(e.Event.tanggal).format("ll")}
+                  </Text>
+                </Grid.Col>
+              </Grid>
 
-              {/* <Text size="sm" color="dimmed" lineClamp={2}>
-              Deskripsi: Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Nisi non ducimus voluptatibus vel, officiis assumenda
-              explicabo reiciendis consequatur consequuntur expedita maiores
-              fugit natus est rem sapiente iusto earum dicta labore.
-            </Text> */}
+              {/* <Text fz={"sm"} lineClamp={2}>
+                {e.Event.deskripsi}
+              </Text> */}
 
-              <Group position="apart">
-                {Array(6)
-                  .fill(0)
-                  .map((e, i) => (
-                    <Avatar key={i} bg="blue" radius={"xl"} />
-                  ))}
+              <Group position="center">
+              {e.Event.Event_Peserta.map((val) => (
+               <Box key={val.id}>
+                 <Avatar
+                 size={"lg"}
+                 radius={"xl"}
+                 sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
+                 src={
+                   RouterProfile.api_foto_profile + val.User.Profile.imagesId
+                 }
+               />
+               </Box>
+              ))}
               </Group>
             </Stack>
-          </Card>
-        ))}
+          </Card.Section>
+        </Card>
+      ))}
     </>
   );
 

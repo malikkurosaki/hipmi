@@ -11,29 +11,40 @@ import Event_StatusPublish from "./publish";
 import Event_StatusReview from "./review";
 import Event_StatusDraft from "./draft";
 import Event_StatusReject from "./reject";
+import { MODEL_EVENT } from "../../model/interface";
 
-export default function Event_StatusPage() {
+export default function Event_StatusPage({
+  listPublish,
+  listReview,
+  listDraft,
+  listReject,
+}: {
+  listPublish: any;
+  listReview: any;
+  listDraft: any;
+  listReject: any;
+}) {
   const router = useRouter();
   const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
   const listTabs = [
     {
       id: 1,
-      path: <Event_StatusPublish/>,
+      path: <Event_StatusPublish listPublish={listPublish} />,
       value: "Publish",
     },
     {
       id: 2,
-      path: <Event_StatusReview/>,
+      path: <Event_StatusReview listReview={listReview} />,
       value: "Review",
     },
     {
       id: 3,
-      path: <Event_StatusDraft/>,
+      path: <Event_StatusDraft listDraft={listDraft} />,
       value: "Draft",
     },
     {
       id: 4,
-      path: <Event_StatusReject/>,
+      path: <Event_StatusReject listReject={listReject} />,
       value: "Reject",
     },
   ];
@@ -65,6 +76,7 @@ export default function Event_StatusPage() {
                 key={e.id}
                 value={e.value}
                 bg={tabsStatus === e.value ? "blue" : "gray.1"}
+                fw={tabsStatus === e.value ? "bold" : "normal"}
               >
                 {e.value}
               </Tabs.Tab>

@@ -4,62 +4,70 @@ import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import {
   Avatar,
   Badge,
+  Box,
   Button,
   Card,
+  Center,
+  Divider,
+  Grid,
   Group,
   Image,
   Paper,
   Skeleton,
   Stack,
   Text,
+  Title,
 } from "@mantine/core";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { MODEL_EVENT } from "../model/interface";
+import ComponentEvent_BoxListStatus from "../component/box_list_status";
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
 
-export default function Event_Beranda() {
+export default function Event_Beranda({
+  dataEvent,
+}: {
+  dataEvent: MODEL_EVENT[];
+}) {
   const router = useRouter();
   return (
     <>
-      {Array(5)
-        .fill(0)
-        .map((e, i) => (
-          <Card
-            key={i}
-            shadow="sm"
-            padding="md"
-            radius="md"
-            withBorder
-            mb={"md"}
-            onClick={() => router.push(RouterEvent.detail_main)}
+      {dataEvent.map((e, i) => (
+        <Card key={e.id} shadow="lg" radius={"md"} withBorder mb={"sm"}>
+          <Card.Section px={"sm"} pt={"sm"}>
+            <ComponentGlobal_AuthorNameOnHeader
+              profileId={e.Author.Profile.id}
+              imagesId={e.Author.Profile.imagesId}
+              authorName={e.Author.Profile.name}
+            />
+          </Card.Section>
+          <Card.Section
+            p={"sm"}
+            onClick={() => router.push(RouterEvent.detail_main + e.id)}
           >
-            {/* <Card.Section p={"xs"}>
-                  <Skeleton visible={loading} h={200}></Skeleton>
-                </Card.Section> */}
-
             <Stack>
-              <Group position="apart" mt="md" mb="xs">
-                <Text weight={500}>Nama Event</Text>
-                <Text fz={"sm"}>{moment(new Date()).format("ll")}</Text>
-              </Group>
+              <Grid>
+                <Grid.Col span={8}>
+                  <Title order={6} truncate>
+                    {e.title}
+                  </Title>
+                </Grid.Col>
+                <Grid.Col span={4}>
+                  <Text fz={"sm"} truncate>
+                    {moment(e.tanggal).format("ll")}
+                  </Text>
+                </Grid.Col>
+              </Grid>
 
-              <Text size="sm" color="dimmed" lineClamp={2}>
-                Deskripsi: Lorem ipsum dolor sit amet consectetur adipisicing
-                elit. Nisi non ducimus voluptatibus vel, officiis assumenda
-                explicabo reiciendis consequatur consequuntur expedita maiores
-                fugit natus est rem sapiente iusto earum dicta labore.
+              <Text fz={"sm"} lineClamp={2}>
+                {e.deskripsi}
               </Text>
-
-              {/* <Group position="apart">
-                {Array(6)
-                  .fill(0)
-                  .map((e, i) => (
-                    <Avatar key={i} bg="blue" radius={"xl"} />
-                  ))}
-              </Group> */}
             </Stack>
-          </Card>
-        ))}
+          </Card.Section>
+        </Card>
+      ))}
     </>
   );
 }

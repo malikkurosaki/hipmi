@@ -16,6 +16,8 @@ import ComponentEvent_HeaderTamplate from "../component/header_tamplate";
 import {
   IconCalendarEvent,
   IconCirclePlus,
+  IconHistory,
+  IconHome,
   IconTimelineEvent,
   IconTimelineEventText,
 } from "@tabler/icons-react";
@@ -36,12 +38,12 @@ export default function LayoutEvent_Main({
       id: "1",
       name: "Beranda",
       path: RouterEvent.beranda,
-      icon: <IconTimelineEvent />,
+      icon: <IconHome />,
     },
 
     {
       id: "2",
-      name: "Status event",
+      name: "Status Event",
       path: RouterEvent.status_page,
       icon: <IconTimelineEventText />,
     },
@@ -51,28 +53,24 @@ export default function LayoutEvent_Main({
       path: RouterEvent.kontribusi,
       icon: <IconCalendarEvent />,
     },
+    {
+      id: "4",
+      name: "History",
+      path: RouterEvent.history,
+      icon: <IconHistory />,
+    }
   ];
   return (
     <>
       <AppShell
-        header={<ComponentEvent_HeaderTamplate title="Event" route={RouterHome.main_home}/>}
+        header={
+          <ComponentEvent_HeaderTamplate
+            title="Event"
+            route={RouterHome.main_home}
+          />
+        }
         footer={
           <Footer height={70} bg={"dark"} sx={{ borderTop: "px solid blue" }}>
-            {/* <Center>
-              <ActionIcon
-                sx={{
-                  zIndex: 1,
-                  position: "absolute",
-                }}
-                variant="transparent"
-                bg={"blue"}
-                radius={"xl"}
-                size={"lg"}
-                onClick={() => router.push(RouterEvent.create)}
-              >
-                <IconCirclePlus color="white" size={30} />
-              </ActionIcon>
-            </Center> */}
             <Grid>
               {listFooter.map((e, i) => (
                 <Grid.Col
@@ -82,7 +80,6 @@ export default function LayoutEvent_Main({
                   onClick={() => {
                     router.replace(e.path);
                     setHotMenu(i);
-                    
                   }}
                 >
                   <Center>

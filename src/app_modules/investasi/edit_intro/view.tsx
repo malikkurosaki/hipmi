@@ -29,7 +29,7 @@ import toast from "react-simple-toasts";
 import { MODEL_Investasi } from "../model/model_investasi";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import _ from "lodash";
-import { MODEL_DEFAULT_MASTER } from "@/app_modules/models/model_default_master";
+import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/model_default_master";
 import funEditInvestasi from "../fun/fun_edit_investasi";
 import { useDisclosure, useWindowScroll } from "@mantine/hooks";
 
@@ -40,9 +40,9 @@ export default function EditIntroInvestasi({
   listPembagian,
 }: {
   dataInvestasi: MODEL_Investasi;
-  listPencarian: MODEL_DEFAULT_MASTER[];
-  listPeriode: MODEL_DEFAULT_MASTER[];
-  listPembagian: MODEL_DEFAULT_MASTER[];
+  listPencarian: MODEL_DEFAULT_MASTER_OLD[];
+  listPeriode: MODEL_DEFAULT_MASTER_OLD[];
+  listPembagian: MODEL_DEFAULT_MASTER_OLD[];
 }) {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);

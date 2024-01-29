@@ -19,6 +19,7 @@ import Event_DetailMain from "./detail/main_detail";
 import LayoutEvent_DetailMain from "./detail/main_detail/layout";
 import Event_DetailKontribusi from "./detail/kontribusi";
 import LayoutEvent_DetailKontribusi from "./detail/kontribusi/layout";
+import Event_History from "./main/history";
 
 export {
   Event_SplashScreen,
@@ -42,4 +43,5 @@ export {
   LayoutEvent_DetailMain,
   Event_DetailKontribusi,
   LayoutEvent_DetailKontribusi,
+  Event_History,
 };

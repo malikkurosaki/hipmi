@@ -6,6 +6,7 @@ import {
   Grid,
   Group,
   Paper,
+  SimpleGrid,
   Stack,
   Text,
   Title,
@@ -14,12 +15,15 @@ import { useShallowEffect } from "@mantine/hooks";
 import { useState } from "react";
 import _ from "lodash";
 import {
+  IconCaretRight,
   IconCaretRightFilled,
+  IconChevronRight,
   IconCirclePlus,
+  IconEyeCheck,
   IconPencilPlus,
 } from "@tabler/icons-react";
 
-import { LIST_PORTOFOLIO } from "@/app_modules/models/portofolio";
+import { LIST_PORTOFOLIO } from "@/app_modules/model_global/portofolio";
 import { useRouter } from "next/navigation";
 import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
 import { Warna } from "@/app/lib/warna";
@@ -65,31 +69,43 @@ export default function ListPortofolioView({
                 </Text>
               </Center>
             ) : (
-              <Box>
-                {porto.map((e: any) => (
-                  <Paper
-                    key={e.id}
-                    h={50}
-                    bg={"gray"}
-                    mb={"lg"}
-                    radius={"xl"}
-                    onClick={() => router.push(`/dev/portofolio/main/${e.id}/`)}
-                  >
-                    <Grid h={50} align="center" px={"md"}>
-                      <Grid.Col span={10}>
-                        <Text fw={"bold"}>{e.namaBisnis}</Text>
-                      </Grid.Col>
-                      <Grid.Col span={"auto"} h={50}>
-                        <IconCaretRightFilled size={35} />
-                      </Grid.Col>
-                    </Grid>
-                  </Paper>
-                ))}
-              </Box>
+              <SimpleGrid
+              cols={4}
+              spacing="md"
+              breakpoints={[
+                { maxWidth: "md", cols: 3, spacing: "md" },
+                { maxWidth: "sm", cols: 2, spacing: "sm" },
+                { maxWidth: "xs", cols: 1, spacing: "sm" },
+              ]}
+            >
+              {porto.map((e: any) => (
+                <Paper
+                  key={e.id}
+                  bg={"gray.5"}
+                  radius={"md"}
+                  onClick={() => router.push(`/dev/portofolio/main/${e.id}/`)}
+                >
+                  <Grid align="center" p={"sm"}>
+                    <Grid.Col span={"auto"}>
+                      <Text fw={"bold"} truncate>
+                        {e.namaBisnis}
+                      </Text>
+                    </Grid.Col>
+                    <Grid.Col span={2}>
+                      <Stack>
+                        <IconCaretRight color="black" size={35} />
+                      </Stack>
+                    </Grid.Col>
+                  </Grid>
+                </Paper>
+              ))}
+            </SimpleGrid>
             )}
           </Box>
         </Stack>
       </Paper>
+
+    
     </>
   );
 }

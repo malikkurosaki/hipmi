@@ -35,6 +35,7 @@ import { Logout } from "@/app_modules/auth";
 import { useAtom } from "jotai";
 import { gs_adminDonasi_hotMenu } from "../../donasi/global_state";
 import Admin_Logout from "../../component/logout";
+import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
 
 export default function AdminLayout({
   children,
@@ -61,6 +62,11 @@ export default function AdminLayout({
       id: 3,
       name: "Donasi",
       route: RouterAdminDonasi.main_donasi,
+    },
+    {
+      id: 4,
+      name: "Event",
+      route: RouterAdminEvent.main_event,
     },
   ];
 
