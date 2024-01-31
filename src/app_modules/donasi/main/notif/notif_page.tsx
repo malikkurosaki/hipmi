@@ -50,16 +50,16 @@ export default function Donasi_NotifPage({
                 <Stack>
                   <Group position="apart">
                     <Text fw={"bold"} truncate>
-                      {e.Donasi_Kabar.title}
+                      {e.Donasi_Kabar?.title}
                     </Text>
                     <Text fz={"xs"}>{moment(e.createdAt).format("ll")}</Text>
                   </Group>
                   <Stack spacing={0}>
-                    <Text lineClamp={2}>{e.Donasi_Kabar.deskripsi}</Text>
+                    <Text lineClamp={2}>{e.Donasi_Kabar?.deskripsi}</Text>
                     <Text
                       c={"blue"}
                       onClick={() =>
-                        onClick(router as any, e.Donasi_Kabar.id, e.id)
+                        onClick(router as any, e.Donasi_Kabar?.id, e.id)
                       }
                     >
                       Buka Kabar

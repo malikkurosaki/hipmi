@@ -11,6 +11,7 @@ export default async function Page() {
 
   return (
     <Event_StatusPage
+      authorId={authorId}
       listPublish={listPublish}
       listReview={listReview}
       listDraft={listDraft}

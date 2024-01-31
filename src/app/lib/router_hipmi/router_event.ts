@@ -4,7 +4,7 @@ export const RouterEvent = {
   beranda: "/dev/event/main/beranda",
   status_page: "/dev/event/main/status_page",
   kontribusi: "/dev/event/main/kontribusi",
-  history: "/dev/event/main/history",
+  riwayat: "/dev/event/main/riwayat",
 
   // status
   status_publish: "/dev/event/main/status_page/publish",
@@ -25,4 +25,5 @@ export const RouterEvent = {
   detail_review: "/dev/event/detail/review/",
   detail_draft: "/dev/event/detail/draft/",
   detail_reject: "/dev/event/detail/reject/",
+  detail_riwayat: "/dev/event/detail/riwayat/",
 };

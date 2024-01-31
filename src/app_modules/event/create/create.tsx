@@ -25,7 +25,7 @@ import { useAtom } from "jotai";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { gs_event_status } from "../global_state";
+import { gs_event_hotMenu, gs_event_status } from "../global_state";
 import { MODEL_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
 import { Event_funCreate } from "../fun/create/fun_create";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
@@ -41,6 +41,8 @@ export default function Event_Create({
   const router = useRouter();
   const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
   const [listTipe, setListTipe] = useState(listTipeAcara);
+  const [hotMenu, setHotMenu] = useAtom(gs_event_hotMenu);
+
 
   const [value, setValue] = useState({
     title: "",
@@ -120,7 +122,7 @@ export default function Event_Create({
         <Button
           radius={"xl"}
           mt={"xl"}
-          onClick={() => onSave(router, setTabsStatus, value)}
+          onClick={() => onSave(router, setTabsStatus, value, setHotMenu)}
         >
           Simpan
         </Button>
@@ -132,12 +134,14 @@ export default function Event_Create({
 async function onSave(
   router: AppRouterInstance,
   setTabsStatus: any,
-  value: any
+  value: any,
+  setHotMenu: any
 ) {
   await Event_funCreate(value).then((res) => {
     if (res.status === 201) {
       ComponentGlobal_NotifikasiBerhasil(res.message);
       setTabsStatus("Review");
+      setHotMenu(1)
       router.push(RouterEvent.status_page);
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);

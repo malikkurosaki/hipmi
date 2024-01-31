@@ -28,7 +28,6 @@ export default function Event_StatusPublish({
         .map((e, i) => (
          <Box key={e.id}>
           <ComponentEvent_BoxListStatus data={e} path={RouterEvent.detail_publish}/>
-
          </Box>
         ))}
     </>

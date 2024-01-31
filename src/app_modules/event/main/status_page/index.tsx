@@ -14,11 +14,13 @@ import Event_StatusReject from "./reject";
 import { MODEL_EVENT } from "../../model/interface";
 
 export default function Event_StatusPage({
+  authorId,
   listPublish,
   listReview,
   listDraft,
   listReject,
 }: {
+  authorId: string
   listPublish: any;
   listReview: any;
   listDraft: any;
@@ -34,7 +36,7 @@ export default function Event_StatusPage({
     },
     {
       id: 2,
-      path: <Event_StatusReview listReview={listReview} />,
+      path: <Event_StatusReview listReview={listReview} authorId={authorId} />,
       value: "Review",
     },
     {
@@ -50,16 +52,7 @@ export default function Event_StatusPage({
   ];
   return (
     <>
-      <Affix position={{ bottom: rem(100), right: rem(20) }}>
-        <Button
-          radius={"xl"}
-          color="blue"
-          leftIcon={<IconCirclePlus />}
-          onClick={() => router.push(RouterEvent.create)}
-        >
-          Tambah Event
-        </Button>
-      </Affix>
+      
 
       <Tabs
         color="blue"

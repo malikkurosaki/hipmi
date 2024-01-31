@@ -4,6 +4,7 @@ import {
   Avatar,
   Box,
   Card,
+  Center,
   Flex,
   Grid,
   Group,
@@ -21,6 +22,7 @@ import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import { MODEL_EVENT_PESERTA } from "../../model/interface";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import _ from "lodash";
 
 export default function Event_Kontribusi({
   listKontribusi,
@@ -42,6 +44,15 @@ export default function Event_Kontribusi({
     },
   ];
 
+  if (_.isEmpty(listKontribusi))
+    return (
+      <Center h={"80vh"}>
+        <Text fw={"bold"} fz={"sm"}>
+          Tidak Ada Kontribusi
+        </Text>
+      </Center>
+    );
+
   return (
     <>
       {/* <pre>{JSON.stringify(listKontribusi, null,2)}</pre> */}
@@ -56,7 +67,9 @@ export default function Event_Kontribusi({
           </Card.Section>
           <Card.Section
             p={"sm"}
-            onClick={() => router.push(RouterEvent.detail_kontribusi + e.Event.id)}
+            onClick={() =>
+              router.push(RouterEvent.detail_kontribusi + e.Event.id)
+            }
           >
             <Stack>
               <Grid>
@@ -77,18 +90,19 @@ export default function Event_Kontribusi({
               </Text> */}
 
               <Group position="center">
-              {e.Event.Event_Peserta.map((val) => (
-               <Box key={val.id}>
-                 <Avatar
-                 size={"lg"}
-                 radius={"xl"}
-                 sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-                 src={
-                   RouterProfile.api_foto_profile + val.User.Profile.imagesId
-                 }
-               />
-               </Box>
-              ))}
+                {e.Event.Event_Peserta.map((val) => (
+                  <Box key={val.id}>
+                    <Avatar
+                      size={"lg"}
+                      radius={"xl"}
+                      sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
+                      src={
+                        RouterProfile.api_foto_profile +
+                        val.User.Profile.imagesId
+                      }
+                    />
+                  </Box>
+                ))}
               </Group>
             </Stack>
           </Card.Section>

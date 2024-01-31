@@ -5,9 +5,15 @@ import prisma from "@/app/lib/prisma";
 export async function Event_getByStatusId(statusId: string, authorId: string) {
   if (statusId === "1") {
     const data = await prisma.event.findMany({
+      orderBy: {
+        tanggal: "desc",
+      },
       where: {
         eventMaster_StatusId: "1",
         authorId: authorId,
+        tanggal: {
+          gte: new Date(),
+        },
       },
       select: {
         id: true,
@@ -20,6 +26,9 @@ export async function Event_getByStatusId(statusId: string, authorId: string) {
   }
   if (statusId === "2") {
     const data = await prisma.event.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
       where: {
         eventMaster_StatusId: "2",
         authorId: authorId,

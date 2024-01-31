@@ -7,3 +7,4 @@ export const gs_event_hotMenu = atomWithStorage("gs_event_hotMenu", 0)
  * @type string
  */
 export const gs_event_status = atomWithStorage<string | any>("gs_status_event", "Publish")
+export const gs_event_riwayat = atomWithStorage<string | any>("gs_event_riwayat", "Semua")

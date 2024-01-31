@@ -6,10 +6,14 @@ export async function AdminEvent_getListTableByStatusId(statudId: string) {
   if (statudId === "1") {
     const getPublish = await prisma.event.findMany({
       orderBy: {
-        updatedAt: "desc",
+        tanggal: "desc",
       },
       where: {
         eventMaster_StatusId: "1",
+        tanggal: {
+          gte: new Date
+        }
+
       },
       select: {
         id: true,

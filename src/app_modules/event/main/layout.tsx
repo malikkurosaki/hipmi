@@ -55,10 +55,10 @@ export default function LayoutEvent_Main({
     },
     {
       id: "4",
-      name: "History",
-      path: RouterEvent.history,
+      name: "Riwayat",
+      path: RouterEvent.riwayat,
       icon: <IconHistory />,
-    }
+    },
   ];
   return (
     <>
@@ -71,6 +71,19 @@ export default function LayoutEvent_Main({
         }
         footer={
           <Footer height={70} bg={"dark"} sx={{ borderTop: "px solid blue" }}>
+           <Center>
+           <ActionIcon
+              sx={{ zIndex: 1, position: "absolute" }}
+              mt={-5}
+              size={"xl"}
+              radius={"xl"}
+              variant="transparent"
+              bg={"white"}
+              onClick={() => router.push(RouterEvent.create)}
+            >
+              <IconCirclePlus color="#347aeb" size={40} />
+            </ActionIcon>
+           </Center>
             <Grid>
               {listFooter.map((e, i) => (
                 <Grid.Col

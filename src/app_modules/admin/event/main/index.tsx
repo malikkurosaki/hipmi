@@ -18,20 +18,22 @@ import { IconChevronsRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
 
-
 export default function AdminEvent_Main({
   countPublish,
   countReview,
   countDraft,
   countReject,
+  countTipeAcara,
 }: {
   countPublish: number;
   countReview: number;
   countDraft: number;
   countReject: number;
+  countTipeAcara: number;
 }) {
   const router = useRouter();
-  const listBox = [
+
+  const listStatus = [
     {
       id: 1,
       name: "Publish",
@@ -61,10 +63,29 @@ export default function AdminEvent_Main({
       color: "red",
     },
   ];
+
+  const listBox2 = [
+    {
+      id: 1,
+      name: "Riwayat Event",
+      // jumlah: countPublish,
+      path: RouterAdminEvent.table_publish,
+      color: "gray",
+    },
+    {
+      id: 2,
+      name: "Kategori",
+      // jumlah: countPublish,
+      path: RouterAdminEvent.table_publish,
+      color: "green",
+    },
+  ];
+
   return (
     <>
       <Stack spacing={"xl"}>
-        <ComponentAdminGlobal_HeaderTamplate name="Event"/>
+        <ComponentAdminGlobal_HeaderTamplate name="Event" />
+
         <SimpleGrid
           cols={4}
           spacing="lg"
@@ -74,7 +95,7 @@ export default function AdminEvent_Main({
             { maxWidth: "36rem", cols: 1, spacing: "sm" },
           ]}
         >
-          {listBox.map((e, i) => (
+          {listStatus.map((e, i) => (
             <Paper
               key={i}
               bg={`${e.color}.2`}
@@ -101,6 +122,25 @@ export default function AdminEvent_Main({
             </Paper>
           ))}
         </SimpleGrid>
+        <Paper
+          shadow="md"
+          radius="md"
+          p="md"
+          bg={"gray.3"}
+          // w={{ lg: "62rem", md: "48rem", sm: "36rem" }}
+          w={300}
+        >
+          <Group position="apart">
+            <ActionIcon disabled variant="transparent"></ActionIcon>
+            <Stack align="center" spacing={0}>
+              <Text>Tipe Acara</Text>
+              <Title>{countTipeAcara}</Title>
+            </Stack>
+            <ActionIcon radius={"xl"} onClick={() => router.push("")}>
+              <IconChevronsRight color="gray" />
+            </ActionIcon>
+          </Group>
+        </Paper>
       </Stack>
     </>
   );

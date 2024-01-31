@@ -22,7 +22,7 @@ export default function ComponentEvent_DetailData({
     <>
       <Paper withBorder p={"md"} shadow="lg">
         <Stack px={"sm"}>
-          <Title order={4}>{data ? data.title : null}</Title>
+          <Title order={4}>{data ? data?.title : null}</Title>
           <Grid>
             <Grid.Col span={4}>
               <Text fw={"bold"} fz={"sm"}>
@@ -31,7 +31,7 @@ export default function ComponentEvent_DetailData({
             </Grid.Col>
             <Grid.Col span={1}>:</Grid.Col>
             <Grid.Col span={"auto"}>
-              <Text>{data ? data.lokasi : null}</Text>
+              <Text>{data ? data?.lokasi : null}</Text>
             </Grid.Col>
           </Grid>
           <Grid>
@@ -42,7 +42,7 @@ export default function ComponentEvent_DetailData({
             </Grid.Col>
             <Grid.Col span={1}>:</Grid.Col>
             <Grid.Col span={"auto"}>
-              <Text>{data ? data.EventMaster_TipeAcara.name : null}</Text>
+              <Text>{data ? data.EventMaster_TipeAcara?.name : null}</Text>
             </Grid.Col>
           </Grid>
           <Grid>
@@ -72,7 +72,7 @@ export default function ComponentEvent_DetailData({
               maxHeight={50}
               showLabel="Lihat banyak"
             >
-              {data ? data.deskripsi : null}
+              {data ? data?.deskripsi : null}
             </Spoiler>
           </Stack>
         </Stack>

@@ -8,15 +8,29 @@ import { MODEL_EVENT } from "../../model/interface";
 import { useState } from "react";
 import ComponentEvent_BoxListStatus from "../../component/box_list_status";
 import _ from "lodash";
+import { useShallowEffect } from "@mantine/hooks";
+import { Event_getByStatusId } from "../../fun/get/get_event_by_status_id";
 
 export default function Event_StatusReview({
   listReview,
+  authorId,
 }: {
   listReview: MODEL_EVENT[];
+  authorId: string;
 }) {
   const router = useRouter();
+  const [data, setData] = useState(listReview);
 
-  if (_.isEmpty(listReview))
+  useShallowEffect(() => {
+   setTimeout(() =>  loadData(authorId), 1000)
+  }, []);
+
+  async function loadData(authorId: string) {
+    const res : any = await Event_getByStatusId("2", authorId);
+    setData(res);
+  }
+
+  if (_.isEmpty(data))
     return (
       <Center h={"50vh"} fz={"sm"} fw={"bold"}>
         Tidak Ada Event
@@ -24,7 +38,7 @@ export default function Event_StatusReview({
     );
   return (
     <>
-      {listReview.map((e, i) => (
+      {data.map((e, i) => (
         <Box key={e.id}>
           <ComponentEvent_BoxListStatus
             data={e}
