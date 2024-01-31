@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { MODEL_PORTOFOLIO_OLD } from "@/app_modules/models/portofolio";
+import { MODEL_PORTOFOLIO_OLD } from "@/app_modules/model_global/portofolio";
 import { revalidatePath } from "next/cache";
 import { MODEL_PORTOFOLIO, MODEL_PORTOFOLIO_MEDSOS } from "../model/interface";
 import _ from "lodash";

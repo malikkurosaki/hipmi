@@ -6,3 +6,9 @@ export interface MODEL_IMAGES {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface MODEL_DEFAULT_MASTER {
+  id: string,
+  name: string,
+  active: boolean,
+}

@@ -13,8 +13,10 @@ import userSeeder from "../../../bin/seeder/user_seeder.json";
 import donasi_status from "../../../bin/seeder/donasi/master_status.json";
 import donasi_kategori from "../../../bin/seeder/donasi/master_kategori.json";
 import donasi_durasi from "../../../bin/seeder/donasi/master_durasi.json";
-import donasi_namaBank from "../../../bin/seeder/donasi/master_bank.json"
-import donasi_status_invoice from "../../../bin/seeder/donasi/master_status_invoice.json"
+import donasi_namaBank from "../../../bin/seeder/donasi/master_bank.json";
+import donasi_status_invoice from "../../../bin/seeder/donasi/master_status_invoice.json";
+import event_status from "../../../bin/seeder/event/master_status.json";
+import event_tipe_acara from "../../../bin/seeder/event/master_tipe_acara.json";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
@@ -260,6 +262,36 @@ export async function GET(req: Request) {
         },
         update: {
           name: d.name,
+        },
+      });
+    }
+
+    for (let e of event_status) {
+      await prisma.eventMaster_Status.upsert({
+        where: {
+          id: e.id,
+        },
+        create: {
+          id: e.id,
+          name: e.name,
+        },
+        update: {
+          name: e.name,
+        },
+      });
+    }
+
+    for (let e of event_tipe_acara) {
+      await prisma.eventMaster_TipeAcara.upsert({
+        where: {
+          id: e.id,
+        },
+        create: {
+          id: e.id,
+          name: e.name,
+        },
+        update: {
+          name: e.name,
         },
       });
     }

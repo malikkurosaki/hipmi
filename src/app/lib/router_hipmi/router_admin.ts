@@ -15,16 +15,13 @@ export const RouterAdminInvestasi = {
 };
 
 export const RouterAdminDonasi = {
-
   api_gambar_bukti_transfer: "/api/donasi/gambar_bukti_transfer/",
-
 
   main_donasi: "/dev/admin/donasi/main",
   // table
   table_publish: "/dev/admin/donasi/table/publish",
   table_review: "/dev/admin/donasi/table/review",
   table_reject: "/dev/admin/donasi/table/reject",
-
 
   // detail
   detail_publish: "/dev/admin/donasi/detail/publish/",
@@ -33,13 +30,10 @@ export const RouterAdminDonasi = {
 
   // proses
   proses_transaksi: "/dev/admin/donasi/proses_transaksi/",
-  pencairan_dana :"/dev/admin/donasi/pencairan_dana/",
-
-
-
-
-
+  pencairan_dana: "/dev/admin/donasi/pencairan_dana/",
 };
+
+
 
 export const RouterAdminAward = {
   main_award: "/dev/admin/award/main",

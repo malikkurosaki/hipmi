@@ -3,12 +3,6 @@
 import prisma from "@/app/lib/prisma";
 
 export async function Donasi_getNotifByUserId(userId: string) {
-  const dataInvoice = await prisma.donasi_Invoice.findFirst({
-    where: {
-      authorId: userId
-    }
-  })
-
   // console.log(dataInvoice)
 
   // return null
@@ -22,10 +16,10 @@ export async function Donasi_getNotifByUserId(userId: string) {
     select: {
       id: true,
       isRead: true,
-      active: true,
-      createdAt: true,
-      donasi_KabarId: true,
-      Donasi_Kabar: true,
+      // active: true,
+      // createdAt: true,
+      // donasi_KabarId: true,
+      // Donasi_Kabar: true,
     },
   });
   return dataNotif;

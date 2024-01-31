@@ -6,7 +6,7 @@ import { Warna } from "@/app/lib/warna";
 import {
   BIDANG_BISNIS_OLD,
   MODEL_PORTOFOLIO_OLD,
-} from "@/app_modules/models/portofolio";
+} from "@/app_modules/model_global/portofolio";
 import {
   AspectRatio,
   Button,

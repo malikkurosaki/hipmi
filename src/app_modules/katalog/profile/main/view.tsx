@@ -13,6 +13,7 @@ import {
   Group,
   Image,
   Paper,
+  Stack,
   Text,
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
@@ -50,6 +51,8 @@ export default function ProfileView({
       {/* <pre>{JSON.stringify(profile, null,2)}</pre> */}
       <Paper p={"sm"} bg={"gray.1"} shadow="lg" withBorder>
         {/* Background dan foto */}
+
+        {/* Upload Background Profile */}
         <Box>
           <AspectRatio ratio={16 / 9}>
             <Paper radius={"sm"} shadow="md">
@@ -64,31 +67,36 @@ export default function ProfileView({
               />
             </Paper>
           </AspectRatio>
+
+          {/* Upload Background Profile */}
           {profile.User.id === userLoginId ? (
-            <ActionIcon
-              ml={325}
-              mt={-10}
-              bg={"gray.5"}
-              variant="transparent"
-              radius={50}
-              onClick={() =>
-                router.push(
-                  RouterProfile.update_foto_background + `${profile.id}`
-                )
-              }
-              sx={{
-                position: "absolute",
-                zIndex: 2,
-                border: "1px",
-                borderStyle: "solid",
-              }}
-            >
-              <IconCamera color="black" size={20} />
-            </ActionIcon>
+            <Center>
+              <ActionIcon
+                ml={{base: 300, sm: 500, md: 900, lg: 1000}}
+                mt={-10}
+                bg={"gray.5"}
+                variant="transparent"
+                radius={50}
+                onClick={() =>
+                  router.push(
+                    RouterProfile.update_foto_background + `${profile.id}`
+                  )
+                }
+                sx={{
+                  position: "relative",
+                  // zIndex: 2,
+                  border: "1px",
+                  borderStyle: "solid",
+                }}
+              >
+                <IconCamera color="black" size={20} />
+              </ActionIcon>
+            </Center>
           ) : (
             ""
           )}
 
+          {/* Foto Profile */}
           <Center>
             <Box
               sx={{
@@ -112,6 +120,7 @@ export default function ProfileView({
             </Box>
           </Center>
 
+          {/* Upload Foto Profile */}
           {profile.User.id === userLoginId ? (
             <Center>
               <ActionIcon
@@ -141,7 +150,8 @@ export default function ProfileView({
 
         {/* Username dan Nama */}
 
-        <Group position="apart">
+       
+        <Group position="apart" pt={profile.User.id === userLoginId ? 0 : "xl" }>
           <Flex direction={"column"} mt={"lg"}>
             <Text fz={"lg"} fw={"bold"}>
               {profile.name}
@@ -163,7 +173,7 @@ export default function ProfileView({
         </Group>
 
         {/* Info user: nomor, email dll */}
-        <Flex direction={"column"} pt={"lg"}>
+        <Stack spacing={"xs"}  pt={"lg"}>
           <Grid>
             <Grid.Col span={"content"}>
               <IconAddressBook />
@@ -226,7 +236,7 @@ export default function ProfileView({
               );
             }
           })()}
-        </Flex>
+        </Stack>
       </Paper>
 
       {/* <pre>{JSON.stringify(profile, null, 2)}</pre> */}

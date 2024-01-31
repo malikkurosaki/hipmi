@@ -17,7 +17,7 @@ import {
 import { ProfileView } from "../profile";
 import { ListPortofolioView } from "../portofolio";
 import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
-import { LIST_PORTOFOLIO } from "@/app_modules/models/portofolio";
+import { LIST_PORTOFOLIO } from "@/app_modules/model_global/portofolio";
 import User_Logout from "@/app_modules/auth/logout/view";
 import { MODEL_PORTOFOLIO } from "../portofolio/model/interface";
 import { MODEL_PROFILE } from "../profile/model/interface";

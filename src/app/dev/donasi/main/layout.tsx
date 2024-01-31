@@ -9,9 +9,9 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   const userId = await User_getUserId();
-  // const dataDonasi = await DOnasi_getList
-  const isRead = await Donasi_getNotifByUserId(userId).then((res) =>
-    res.map((val: any) => val.isRead)
+  // console.log(userId)
+  const isRead = await Donasi_getNotifByUserId(userId).then((res: any) =>
+  res.map((val: any) => val.isRead)
   );
   // console.log(isRead)
 

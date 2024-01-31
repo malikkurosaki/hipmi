@@ -8,6 +8,7 @@ import { gs_nomor, gs_otp } from "../state/state";
 import { IconLogout } from "@tabler/icons-react";
 import { Warna } from "@/app/lib/warna";
 import { useDisclosure } from "@mantine/hooks";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 
 export default function User_Logout() {
   const router = useRouter();
@@ -24,6 +25,7 @@ export default function User_Logout() {
           setnomor(null);
           setCode(null);
 
+          ComponentGlobal_NotifikasiBerhasil("Anda Berhasil Logout")
           return router.push("/dev/auth/login");
         }
       });

@@ -30,6 +30,7 @@ import toast from "react-simple-toasts";
 import { useRouter } from "next/navigation";
 import { MODEL_PROFILE_OLD } from "./model/user_profile";
 import AppNotif from "../notif";
+import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 
 // export const dynamic = "force-dynamic"
 // export const revalidate = 0
@@ -49,7 +50,7 @@ export default function HomeView() {
       id: 2,
       name: "Event",
       icon: <IconPresentation size={50} />,
-      link: "",
+      link: RouterEvent.splash,
     },
     {
       id: 3,
@@ -92,26 +93,6 @@ export default function HomeView() {
   return (
     <>
       <Box>
-        {/* <Flex align={"center"} gap={"sm"}>
-          <ActionIcon
-            size={30}
-            variant="transparent"
-            onClick={() => {
-              if (stateUser.Profile === null) {
-                return router.push(`/dev/profile/create/${stateUser.id}`);
-              } else {
-                return router.push(`/dev/katalog/${stateUser.Profile.id}`);
-              }
-            }}
-          >
-            <IconUserCircle size={50} color="black" />
-          </ActionIcon>
-
-          <Text>
-            Welcome to ,{" "}
-            {stateUser.username ? stateUser.username : <Loader size={"xs"} />}
-          </Text>
-        </Flex> */}
 
         <Paper bg={"dark"} radius={5} my={"xs"}>
           <Image alt="logo" src={"/aset/investasi/home-hipmi.png"} />
@@ -120,22 +101,21 @@ export default function HomeView() {
         {/* <pre>{JSON.stringify(stateUser, null, 2)}</pre> */}
 
         <Box my={"sm"}>
-          <SimpleGrid cols={2}>
+          <SimpleGrid 
+          cols={2}
+          spacing="md"
+          // breakpoints={[
+          //   { maxWidth: 'md', cols: 2, spacing: 'md' },
+          //   { maxWidth: 'sm', cols: 2, spacing: 'sm' },
+          //   { maxWidth: 'xs', cols: 1, spacing: 'xs' },
+          // ]}
+          >
             {listHalaman.map((e, i) => (
               <Paper
                 key={e.id}
                 h={100}
                 withBorder
                 onClick={() => {
-                  // if (stateUser.Profile === null) {
-                  //   return toast("Lengkapi Profile Anda !");
-                  // } else {
-                  //   if (e.link === "") {
-                  //     toast(e.name);
-                  //   } else {
-                  //     return router.push(e.link);
-                  //   }
-                  // }
                   if (e.link === "") {
                     toast("Cooming Soon !!");
                   } else {

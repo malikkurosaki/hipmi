@@ -1,14 +1,23 @@
 import { Center, Text } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { IconAlertTriangle, IconChecklist, IconCircleCheck } from "@tabler/icons-react";
+import {
+  IconAlertTriangle,
+  IconChecklist,
+  IconCircleCheck,
+} from "@tabler/icons-react";
 
 /**
- * 
+ *
  * @param text | masukan text untuk peringatan
  * @type string
- * @returns notifikasi peringatan
+ * @param durasi | durasi autoClose
+ * @type number
+ * @returns notifikasi berhasil warna hijau
  */
-export async function ComponentGlobal_NotifikasiBerhasil(text: string) {
+export async function ComponentGlobal_NotifikasiBerhasil(
+  text: string,
+  durasi?: number
+) {
   return notifications.show({
     message: (
       <Center>
@@ -17,7 +26,7 @@ export async function ComponentGlobal_NotifikasiBerhasil(text: string) {
     ),
     color: "green",
     radius: "md",
-    autoClose: 1000,
+    autoClose: durasi ? durasi : 1000,
     icon: <IconCircleCheck color="white" />,
     withCloseButton: false,
 

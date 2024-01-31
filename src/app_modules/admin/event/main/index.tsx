@@ -1,0 +1,147 @@
+"use client";
+
+import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
+
+import {
+  Stack,
+  Title,
+  Divider,
+  SimpleGrid,
+  Paper,
+  Center,
+  Text,
+  Box,
+  Group,
+  ActionIcon,
+} from "@mantine/core";
+import { IconChevronsRight } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
+
+export default function AdminEvent_Main({
+  countPublish,
+  countReview,
+  countDraft,
+  countReject,
+  countTipeAcara,
+}: {
+  countPublish: number;
+  countReview: number;
+  countDraft: number;
+  countReject: number;
+  countTipeAcara: number;
+}) {
+  const router = useRouter();
+
+  const listStatus = [
+    {
+      id: 1,
+      name: "Publish",
+      jumlah: countPublish,
+      path: RouterAdminEvent.table_publish,
+      color: "green",
+    },
+    {
+      id: 2,
+      name: "Review",
+      jumlah: countReview,
+      path: RouterAdminEvent.table_review,
+      color: "orange",
+    },
+    {
+      id: 3,
+      name: "Draft",
+      jumlah: countDraft,
+      path: "",
+      color: "yellow",
+    },
+    {
+      id: 4,
+      name: "Reject",
+      jumlah: countReject,
+      path: RouterAdminEvent.table_reject,
+      color: "red",
+    },
+  ];
+
+  const listBox2 = [
+    {
+      id: 1,
+      name: "Riwayat Event",
+      // jumlah: countPublish,
+      path: RouterAdminEvent.table_publish,
+      color: "gray",
+    },
+    {
+      id: 2,
+      name: "Kategori",
+      // jumlah: countPublish,
+      path: RouterAdminEvent.table_publish,
+      color: "green",
+    },
+  ];
+
+  return (
+    <>
+      <Stack spacing={"xl"}>
+        <ComponentAdminGlobal_HeaderTamplate name="Event" />
+
+        <SimpleGrid
+          cols={4}
+          spacing="lg"
+          breakpoints={[
+            { maxWidth: "62rem", cols: 4, spacing: "lg" },
+            { maxWidth: "48rem", cols: 2, spacing: "sm" },
+            { maxWidth: "36rem", cols: 1, spacing: "sm" },
+          ]}
+        >
+          {listStatus.map((e, i) => (
+            <Paper
+              key={i}
+              bg={`${e.color}.2`}
+              shadow="md"
+              radius="md"
+              p="md"
+              //   sx={{ borderColor: e.color, borderStyle: "solid" }}
+            >
+              <Group position="apart">
+                <IconChevronsRight color={`${e.color}.2`} />
+                <Stack align="center" spacing={0}>
+                  <Text>{e.name}</Text>
+                  <Title>{e.jumlah}</Title>
+                </Stack>
+                {e.path !== "" ? (
+                  <ActionIcon radius={"xl"} onClick={() => router.push(e.path)}>
+                    {" "}
+                    <IconChevronsRight />
+                  </ActionIcon>
+                ) : (
+                  <ActionIcon variant="transparent" disabled></ActionIcon>
+                )}
+              </Group>
+            </Paper>
+          ))}
+        </SimpleGrid>
+        <Paper
+          shadow="md"
+          radius="md"
+          p="md"
+          bg={"gray.3"}
+          // w={{ lg: "62rem", md: "48rem", sm: "36rem" }}
+          w={300}
+        >
+          <Group position="apart">
+            <ActionIcon disabled variant="transparent"></ActionIcon>
+            <Stack align="center" spacing={0}>
+              <Text>Tipe Acara</Text>
+              <Title>{countTipeAcara}</Title>
+            </Stack>
+            <ActionIcon radius={"xl"} onClick={() => router.push("")}>
+              <IconChevronsRight color="gray" />
+            </ActionIcon>
+          </Group>
+        </Paper>
+      </Stack>
+    </>
+  );
+}

@@ -26,6 +26,8 @@ model User {
   Donasi             Donasi[]
   Donasi_Invoice     Donasi_Invoice[]
   Donasi_Notif       Donasi_Notif[]
+  Event              Event[]
+  Event_Peserta      Event_Peserta[]
 }
 
 model MasterUserRole {
@@ -477,4 +479,56 @@ model Donasi_PencairanDana {
   donasiId    String?
   Images      Images?  @relation(fields: [imagesId], references: [id])
   imagesId    String?
+}
+
+// ========================================= EVENT ========================================= //
+
+model Event {
+  id        String   @id @default(cuid())
+  title     String
+  lokasi    String
+  tanggal   DateTime
+  deskripsi String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  catatan   String?
+
+  Author                  User?                  @relation(fields: [authorId], references: [id])
+  authorId                String?
+  EventMaster_Status      EventMaster_Status?    @relation(fields: [eventMaster_StatusId], references: [id])
+  eventMaster_StatusId    String?                @default("2")
+  Event_Peserta           Event_Peserta[]
+  EventMaster_TipeAcara   EventMaster_TipeAcara? @relation(fields: [eventMaster_TipeAcaraId], references: [id])
+  eventMaster_TipeAcaraId Int?
+}
+
+model EventMaster_TipeAcara {
+  id        Int      @id @default(autoincrement())
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Event     Event[]
+}
+
+model EventMaster_Status {
+  id        String   @id @default(cuid())
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Event     Event[]
+}
+
+model Event_Peserta {
+  id        String   @id @default(cuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Event   Event?  @relation(fields: [eventId], references: [id])
+  eventId String?
+  User    User?   @relation(fields: [userId], references: [id])
+  userId  String?
 }
