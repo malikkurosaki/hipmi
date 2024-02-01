@@ -50,8 +50,7 @@ export default function AdminEvent_TableReview({
   return (
     <>
       <Stack>
-        <ComponentAdminGlobal_HeaderTamplate name="Event" />
-        <ComponentAdminDonasi_TombolKembali />
+        <ComponentAdminGlobal_HeaderTamplate name="Event: Table Review" />
         <TableStatus listReview={listReview} />
       </Stack>
     </>
@@ -71,10 +70,14 @@ function TableStatus({ listReview }: { listReview: MODEL_EVENT[] }) {
       <td>{e.title}</td>
       <td>{e.lokasi}</td>
       <td>{e.EventMaster_TipeAcara.name}</td>
+      <td>{e.tanggal.toLocaleString("id-ID", { dateStyle: "full" })}</td>
       <td>
-        {moment(e.tanggal).format("dddd")}, {moment(e.tanggal).format("ll")}
+        {e.tanggal.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })}
       </td>
-      <td>{moment(e.tanggal).format("LT")}</td>
       <td>
         <Spoiler hideLabel="sembunyikan" maxHeight={50} showLabel="tampilkan">
           {e.deskripsi}
@@ -133,7 +136,7 @@ function TableStatus({ listReview }: { listReview: MODEL_EVENT[] }) {
               radius={"xl"}
               onClick={() => {
                 onReject(eventId, catatan, setData, close);
-                
+
                 // console.log("hehe")
               }}
             >
@@ -204,7 +207,12 @@ async function onPublish(eventId: string, setData: any) {
   });
 }
 
-async function onReject(eventId: string, catatan: string, setData: any, close: any) {
+async function onReject(
+  eventId: string,
+  catatan: string,
+  setData: any,
+  close: any
+) {
   if (catatan === "")
     return ComponentGlobal_NotifikasiPeringatan("Lengkapi Catatan");
   const body = {
@@ -217,7 +225,7 @@ async function onReject(eventId: string, catatan: string, setData: any, close: a
       await AdminEvent_getListTableByStatusId("2").then((val) => {
         setData(val);
         ComponentGlobal_NotifikasiBerhasil(res.message);
-        close()
+        close();
       });
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);

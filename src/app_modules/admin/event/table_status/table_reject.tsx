@@ -52,8 +52,7 @@ export default function AdminEvent_TableReject({
   return (
     <>
       <Stack>
-        <ComponentAdminGlobal_HeaderTamplate name="Event" />
-        <ComponentAdminDonasi_TombolKembali />
+        <ComponentAdminGlobal_HeaderTamplate name="Event: Table Reject" />
         <TableStatus listReject={listReject} />
       </Stack>
     </>
@@ -83,11 +82,17 @@ function TableStatus({ listReject }: { listReject: MODEL_EVENT[] }) {
       </td>
       <td>
         <Box w={200}>
-          {moment(e.tanggal).format("dddd")}, {moment(e.tanggal).format("ll")}
+          {e.tanggal.toLocaleString("id-ID", { dateStyle: "full" })}
         </Box>
       </td>
       <td>
-        <Box w={100}>{moment(e.tanggal).format("LT")}</Box>
+        <Box w={100}>
+          {e.tanggal.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })}
+        </Box>
       </td>
       <td>
         <Box w={500}>

@@ -33,9 +33,11 @@ import { useRouter } from "next/navigation";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { Logout } from "@/app_modules/auth";
 import { useAtom } from "jotai";
-import { gs_adminDonasi_hotMenu } from "../../donasi/global_state";
+import { gs_admin_hotMenu, gs_admin_subMenu } from "../../global_state";
 import Admin_Logout from "../../component/logout";
 import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
+import _ from "lodash";
+import { listAdminPage } from "./list_page";
 
 export default function AdminLayout({
   children,
@@ -45,30 +47,54 @@ export default function AdminLayout({
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const router = useRouter();
-  const [active, setActive] = useAtom(gs_adminDonasi_hotMenu);
+  const [active, setActive] = useAtom(gs_admin_hotMenu);
+  const [activeChild, setActiveChild] = useAtom(gs_admin_subMenu)
 
-  const listAdminPage = [
-    {
-      id: 1,
-      name: "Dashboard",
-      route: RouterAdminDashboard.main_admin,
-    },
-    {
-      id: 2,
-      name: "Investasi",
-      route: RouterAdminInvestasi.main_investasi,
-    },
-    {
-      id: 3,
-      name: "Donasi",
-      route: RouterAdminDonasi.main_donasi,
-    },
-    {
-      id: 4,
-      name: "Event",
-      route: RouterAdminEvent.main_event,
-    },
-  ];
+  const navbarItems = listAdminPage.map((e, i) => (
+    <Box key={i}>
+      <NavLink
+        sx={{
+          ":hover": {
+            backgroundColor: "transparent",
+          },
+        }}
+        
+        fw={active === i ? "bold" : "normal"}
+        label={<Text size={"md"}>{e.name}</Text>}
+        onClick={() => {
+          setActive(i);
+          setActiveChild(null);
+          e.path === "" ? router.push(e.child[0].path) : router.push(e.path);
+          e.path === "" ? setActiveChild(0) : ""
+        }}
+      >
+        {_.isEmpty(e.child) ? (
+          ""
+        ) : (
+          <Box>
+            {e.child.map((v, ii) => (
+              <Box key={ii}>
+                <NavLink
+                  sx={{
+                    ":hover": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                  fw={activeChild === ii ? "bold" : "normal"}
+                  label={<Text>{v.name}</Text>}
+                  onClick={() => {
+                    setActive(i);
+                    setActiveChild(ii)
+                    router.push(v.path);
+                  }}
+                />
+              </Box>
+            ))}
+          </Box>
+        )}
+      </NavLink>
+    </Box>
+  ));
 
   return (
     <>
@@ -85,25 +111,7 @@ export default function AdminLayout({
               p="xs"
               bg={"gray.2"}
             >
-              {listAdminPage.map((e, i) => (
-                <Box key={i}>
-                  <NavLink
-                    sx={{
-                      ":hover": {
-                        backgroundColor: "transparent",
-                      },
-                    }}
-                    fw={active === i ? "bold" : "normal"}
-                    // key={e.id}
-                    label={e.name}
-                    onClick={() => {
-                      setActive(i);
-                      router.push(e.route);
-                    }}
-                  />
-                  {active === i ? <Divider size={"lg"} color="gray" /> : ""}
-                </Box>
-              ))}
+              {navbarItems}
             </Navbar>
           </MediaQuery>
         }
@@ -141,7 +149,7 @@ export default function AdminLayout({
                     </Text>
                   ))}
                 </Group> */}
-                <Admin_Logout/>
+                <Admin_Logout />
               </Group>
             </MediaQuery>
           </Header>
@@ -154,7 +162,7 @@ export default function AdminLayout({
       <Drawer opened={opened} onClose={() => setOpened(false)} size={"50%"}>
         <Stack spacing={"xl"}>
           {listAdminPage.map((e) => (
-            <Text key={e.id} onClick={() => router.push(e.route)}>
+            <Text key={e.id} onClick={() => router.push(e.path)}>
               {e.name}
             </Text>
           ))}

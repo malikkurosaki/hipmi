@@ -21,14 +21,6 @@ export default function Event_StatusReview({
   const router = useRouter();
   const [data, setData] = useState(listReview);
 
-  useShallowEffect(() => {
-   setTimeout(() =>  loadData(authorId), 1000)
-  }, []);
-
-  async function loadData(authorId: string) {
-    const res : any = await Event_getByStatusId("2", authorId);
-    setData(res);
-  }
 
   if (_.isEmpty(data))
     return (

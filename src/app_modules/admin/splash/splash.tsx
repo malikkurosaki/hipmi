@@ -5,11 +5,11 @@ import { AspectRatio, Center, Image, Stack, Text, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { gs_adminDonasi_hotMenu } from "../donasi/global_state";
+import { gs_admin_hotMenu } from "../global_state";
 
 export default function SplashDashboardAdmin() {
   const router = useRouter();
-  const [active, setActive] = useAtom(gs_adminDonasi_hotMenu);
+  const [active, setActive] = useAtom(gs_admin_hotMenu);
 
   useShallowEffect(() => {
     setTimeout(() => {
