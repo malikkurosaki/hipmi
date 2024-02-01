@@ -24,12 +24,14 @@ export default function AdminEvent_Main({
   countDraft,
   countReject,
   countTipeAcara,
+  countRiwayat,
 }: {
   countPublish: number;
   countReview: number;
   countDraft: number;
   countReject: number;
   countTipeAcara: number;
+  countRiwayat: number
 }) {
   const router = useRouter();
 
@@ -68,16 +70,16 @@ export default function AdminEvent_Main({
     {
       id: 1,
       name: "Riwayat Event",
-      // jumlah: countPublish,
+      jumlah: countRiwayat,
       path: RouterAdminEvent.table_publish,
       color: "gray",
     },
     {
       id: 2,
-      name: "Kategori",
-      // jumlah: countPublish,
+      name: "Tipe Acara",
+      jumlah: countTipeAcara,
       path: RouterAdminEvent.table_publish,
-      color: "green",
+      color: "gray",
     },
   ];
 
@@ -102,45 +104,44 @@ export default function AdminEvent_Main({
               shadow="md"
               radius="md"
               p="md"
-              //   sx={{ borderColor: e.color, borderStyle: "solid" }}
+              // sx={{ borderColor: e.color, borderStyle: "solid" }}
             >
-              <Group position="apart">
-                <IconChevronsRight color={`${e.color}.2`} />
+              <Group position="center">
                 <Stack align="center" spacing={0}>
                   <Text>{e.name}</Text>
                   <Title>{e.jumlah}</Title>
                 </Stack>
-                {e.path !== "" ? (
-                  <ActionIcon radius={"xl"} onClick={() => router.push(e.path)}>
-                    {" "}
-                    <IconChevronsRight />
-                  </ActionIcon>
-                ) : (
-                  <ActionIcon variant="transparent" disabled></ActionIcon>
-                )}
               </Group>
             </Paper>
           ))}
         </SimpleGrid>
-        <Paper
-          shadow="md"
-          radius="md"
-          p="md"
-          bg={"gray.3"}
-          // w={{ lg: "62rem", md: "48rem", sm: "36rem" }}
-          w={300}
+        <SimpleGrid
+          cols={4}
+          spacing="lg"
+          breakpoints={[
+            { maxWidth: "62rem", cols: 4, spacing: "lg" },
+            { maxWidth: "48rem", cols: 2, spacing: "sm" },
+            { maxWidth: "36rem", cols: 1, spacing: "sm" },
+          ]}
         >
-          <Group position="apart">
-            <ActionIcon disabled variant="transparent"></ActionIcon>
-            <Stack align="center" spacing={0}>
-              <Text>Tipe Acara</Text>
-              <Title>{countTipeAcara}</Title>
-            </Stack>
-            <ActionIcon radius={"xl"} onClick={() => router.push("")}>
-              <IconChevronsRight color="gray" />
-            </ActionIcon>
-          </Group>
-        </Paper>
+          {listBox2.map((e, i) => (
+            <Paper
+              key={i}
+              bg={`${e.color}.2`}
+              shadow="md"
+              radius="md"
+              p="md"
+              // sx={{ borderColor: e.color, borderStyle: "solid" }}
+            >
+              <Group position="center">
+                <Stack align="center" spacing={0}>
+                  <Text>{e.name}</Text>
+                  <Title>{e.jumlah}</Title>
+                </Stack>
+              </Group>
+            </Paper>
+          ))}
+        </SimpleGrid>
       </Stack>
     </>
   );

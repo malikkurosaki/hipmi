@@ -10,6 +10,9 @@ import { useState } from "react";
 import { MODEL_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
 import { Event_funEditById } from "../fun/edit/fun_edit_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import moment from "moment";
+import _ from "lodash";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 
 export default function Event_Edit({
   dataEvent,
@@ -69,6 +72,9 @@ export default function Event_Edit({
           }}
         />
         <DateTimePicker
+          excludeDate={(date) => {
+            return moment(date).diff(Date.now(), "days") < 0;
+          }}
           withAsterisk
           label="Tanggal & Waktu "
           placeholder="Masukan tangal dan waktu acara"
@@ -104,6 +110,8 @@ export default function Event_Edit({
 }
 
 async function onUpdate(router: AppRouterInstance, value: MODEL_EVENT) {
+  if (_.values(value).includes("")) return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+
   await Event_funEditById(value).then((res) => {
     if (res.status === 200) {
       ComponentGlobal_NotifikasiBerhasil(res.message);

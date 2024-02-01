@@ -30,6 +30,10 @@ import { MODEL_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
 import { Event_funCreate } from "../fun/create/fun_create";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { kMaxLength } from "buffer";
+import _ from "lodash";
+import toast from "react-simple-toasts";
+import moment from "moment";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 
 export default function Event_Create({
   listTipeAcara,
@@ -42,7 +46,6 @@ export default function Event_Create({
   const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
   const [listTipe, setListTipe] = useState(listTipeAcara);
   const [hotMenu, setHotMenu] = useAtom(gs_event_hotMenu);
-
 
   const [value, setValue] = useState({
     title: "",
@@ -95,6 +98,12 @@ export default function Event_Create({
           }
         />
         <DateTimePicker
+          // onClick={() => {
+          //   console.log(moment().diff(moment("2024-02-01"), "days"));
+          // }}
+          excludeDate={(date) => {
+            return moment(date).diff(Date.now(), "days") < 0;
+          }}
           withAsterisk
           label="Tanggal & Waktu "
           placeholder="Masukan tangal dan waktu acara"
@@ -137,6 +146,10 @@ async function onSave(
   value: any,
   setHotMenu: any
 ) {
+  if (_.values(value).includes("")) return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+  if (value.eventMaster_TipeAcaraId === 0) return ComponentGlobal_NotifikasiPeringatan("Pilih Tipe Acara");
+  if (moment(value.tanggal).format() === "Invalid date") return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
+
   await Event_funCreate(value).then((res) => {
     if (res.status === 201) {
       ComponentGlobal_NotifikasiBerhasil(res.message);
