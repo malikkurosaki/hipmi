@@ -19,10 +19,9 @@ export default function Event_StatusReview({
   authorId: string;
 }) {
   const router = useRouter();
-  const [data, setData] = useState(listReview);
 
 
-  if (_.isEmpty(data))
+  if (_.isEmpty(listReview))
     return (
       <Center h={"50vh"} fz={"sm"} fw={"bold"}>
         Tidak Ada Event
@@ -30,7 +29,7 @@ export default function Event_StatusReview({
     );
   return (
     <>
-      {data.map((e, i) => (
+      {listReview.map((e, i) => (
         <Box key={e.id}>
           <ComponentEvent_BoxListStatus
             data={e}

@@ -63,7 +63,7 @@ function DetailTipeAcara({ listTipe }: { listTipe: MODEL_DEFAULT_MASTER[] }) {
               <TextInput
                 value={name ? name : ""}
                 label="Masukan Tipe"
-                placeholder="Contoh: Ramah Tamah, dll"
+                placeholder="Contoh: Seminar, Workshop, dll."
                 onChange={(val) => {
                   setName(val.target.value);
                 }}

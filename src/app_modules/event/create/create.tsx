@@ -15,6 +15,7 @@ import {
   Paper,
   Select,
   Stack,
+  Text,
   TextInput,
   Textarea,
 } from "@mantine/core";
@@ -34,6 +35,7 @@ import _ from "lodash";
 import toast from "react-simple-toasts";
 import moment from "moment";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import ComponentEvent_ErrorMaximalInput from "../component/error_maksimal_input";
 
 export default function Event_Create({
   listTipeAcara,
@@ -46,6 +48,11 @@ export default function Event_Create({
   const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
   const [listTipe, setListTipe] = useState(listTipeAcara);
   const [hotMenu, setHotMenu] = useAtom(gs_event_hotMenu);
+
+  // Masimal karakter state
+  const [maxTitle, setMaxTitle] = useState("");
+  const [maxLokasi, setMaxLokasi] = useState("");
+  const [maxDeskripsi, setMaxDeskripsi] = useState("");
 
   const [value, setValue] = useState({
     title: "",
@@ -63,15 +70,25 @@ export default function Event_Create({
           label="Judul"
           placeholder="Masukan judul"
           withAsterisk
-          onChange={(val) =>
+          maxLength={100}
+          error={
+            maxTitle.length >= 100 ? (
+              <ComponentEvent_ErrorMaximalInput max={100} />
+            ) : (
+              ""
+            )
+          }
+          onChange={(val) => {
+            setMaxTitle(val.target.value);
             setValue({
               ...value,
               title: val.target.value,
-            })
-          }
+            });
+          }}
         />
 
         <Select
+          withAsterisk
           label="Tipe Acara"
           placeholder="Pilih Tipe Acara"
           data={listTipe.map((e) => ({
@@ -90,12 +107,21 @@ export default function Event_Create({
           label="Lokasi"
           placeholder="Masukan lokasi acara"
           withAsterisk
-          onChange={(val) =>
+          maxLength={200}
+          error={
+            maxLokasi.length >= 200 ? (
+              <ComponentEvent_ErrorMaximalInput max={200} />
+            ) : (
+              ""
+            )
+          }
+          onChange={(val) => {
+            setMaxLokasi(val.target.value);
             setValue({
               ...value,
               lokasi: val.target.value,
-            })
-          }
+            });
+          }}
         />
         <DateTimePicker
           // onClick={() => {
@@ -118,14 +144,22 @@ export default function Event_Create({
           label="Deskripsi"
           placeholder="Deskripsikan acara yang akan di selenggarakan"
           withAsterisk
-          maxLength={500}
           autosize
-          onChange={(val) =>
+          maxLength={500}
+          error={
+            maxDeskripsi.length >= 500 ? (
+              <ComponentEvent_ErrorMaximalInput max={500} />
+            ) : (
+              ""
+            )
+          }
+          onChange={(val) => {
+            setMaxDeskripsi(val.target.value);
             setValue({
               ...value,
               deskripsi: val.target.value,
-            })
-          }
+            });
+          }}
         />
 
         <Button
@@ -146,15 +180,17 @@ async function onSave(
   value: any,
   setHotMenu: any
 ) {
-  if (_.values(value).includes("")) return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
-  if (value.eventMaster_TipeAcaraId === 0) return ComponentGlobal_NotifikasiPeringatan("Pilih Tipe Acara");
-  if (moment(value.tanggal).format() === "Invalid date") return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
-
+  if (_.values(value).includes(""))
+    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+  if (value.eventMaster_TipeAcaraId === 0)
+    return ComponentGlobal_NotifikasiPeringatan("Pilih Tipe Acara");
+  if (moment(value.tanggal).format() === "Invalid date")
+    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
   await Event_funCreate(value).then((res) => {
     if (res.status === 201) {
       ComponentGlobal_NotifikasiBerhasil(res.message);
       setTabsStatus("Review");
-      setHotMenu(1)
+      setHotMenu(1);
       router.push(RouterEvent.status_page);
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);

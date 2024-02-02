@@ -2,6 +2,7 @@
 
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import {
+  ActionIcon,
   Affix,
   Avatar,
   Badge,
@@ -47,16 +48,17 @@ export default function Event_Beranda({
   //   );
   return (
     <>
-      {/* <Affix position={{ bottom: rem(100), right: rem(20) }}>
-        <Button 
+      <Affix position={{ bottom: rem(100), right: rem(30) }}>
+        <ActionIcon
+          size={"xl"}
           radius={"xl"}
-          color="blue"
-          leftIcon={<IconCirclePlus />}
+          variant="transparent"
+          bg={"blue"}
           onClick={() => router.push(RouterEvent.create)}
         >
-         <Text fz={"sm"}> Tambah Event</Text>
-        </Button>
-      </Affix> */}
+          <IconCirclePlus color="white" size={40} />
+        </ActionIcon>
+      </Affix>
 
       {_.isEmpty(dataEvent) ? (
         <Center h={"80vh"}>

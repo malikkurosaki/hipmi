@@ -1,7 +1,15 @@
 "use client";
 
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { Stack, TextInput, Textarea, Button, Select } from "@mantine/core";
+import {
+  Stack,
+  TextInput,
+  Textarea,
+  Button,
+  Select,
+  Text,
+  Group,
+} from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
@@ -13,6 +21,8 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/
 import moment from "moment";
 import _ from "lodash";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { IconAlertTriangle } from "@tabler/icons-react";
+import ComponentEvent_ErrorMaximalInput from "../component/error_maksimal_input";
 
 export default function Event_Edit({
   dataEvent,
@@ -24,6 +34,11 @@ export default function Event_Edit({
   const router = useRouter();
   const [value, setValue] = useState(dataEvent);
   const [tipe, setTipe] = useState(listTipeAcara);
+
+  // Masimal karakter state
+  const [maxTitle, setMaxTitle] = useState("");
+  const [maxLokasi, setMaxLokasi] = useState("");
+  const [maxDeskripsi, setMaxDeskripsi] = useState("");
   return (
     <>
       {/* <pre>{JSON.stringify(value, null, 2)}</pre> */}
@@ -33,7 +48,16 @@ export default function Event_Edit({
           placeholder="Masukan judul"
           withAsterisk
           value={value.title}
+          maxLength={100}
+          error={
+            maxTitle.length >= 100 ? (
+              <ComponentEvent_ErrorMaximalInput max={100} />
+            ) : (
+              ""
+            )
+          }
           onChange={(val) => {
+            setMaxTitle(val.target.value);
             setValue({
               ...value,
               title: val.target.value,
@@ -42,6 +66,7 @@ export default function Event_Edit({
         />
 
         <Select
+          withAsterisk
           label="Tipe Acara"
           placeholder="Pilih Tipe Acara"
           data={tipe.map((e) => ({
@@ -64,7 +89,16 @@ export default function Event_Edit({
           placeholder="Masukan lokasi acara"
           withAsterisk
           value={value.lokasi}
+          maxLength={200}
+          error={
+            maxLokasi.length >= 200 ? (
+              <ComponentEvent_ErrorMaximalInput max={200} />
+            ) : (
+              ""
+            )
+          }
           onChange={(val) => {
+            setMaxLokasi(val.target.value);
             setValue({
               ...value,
               lokasi: val.target.value,
@@ -91,9 +125,17 @@ export default function Event_Edit({
           placeholder="Deskripsikan acara yang akan di selenggarakan"
           withAsterisk
           autosize
-          maxLength={500}
           value={value.deskripsi}
+          maxLength={500}
+          error={
+            maxDeskripsi.length >= 500 ? (
+              <ComponentEvent_ErrorMaximalInput max={500} />
+            ) : (
+              ""
+            )
+          }
           onChange={(val) => {
+            setMaxDeskripsi(val.target.value);
             setValue({
               ...value,
               deskripsi: val.target.value,
@@ -110,7 +152,8 @@ export default function Event_Edit({
 }
 
 async function onUpdate(router: AppRouterInstance, value: MODEL_EVENT) {
-  if (_.values(value).includes("")) return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+  if (_.values(value).includes(""))
+    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
 
   await Event_funEditById(value).then((res) => {
     if (res.status === 200) {
