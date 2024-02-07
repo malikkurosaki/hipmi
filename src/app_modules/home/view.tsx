@@ -31,6 +31,7 @@ import { useRouter } from "next/navigation";
 import { MODEL_PROFILE_OLD } from "./model/user_profile";
 import AppNotif from "../notif";
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
+import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
 
 // export const dynamic = "force-dynamic"
 // export const revalidate = 0
@@ -56,7 +57,7 @@ export default function HomeView() {
       id: 3,
       name: "Voting",
       icon: <IconPackageImport size={50} />,
-      link: "",
+      link: RouterVote.splash,
     },
     {
       id: 4,
@@ -93,7 +94,6 @@ export default function HomeView() {
   return (
     <>
       <Box>
-
         <Paper bg={"dark"} radius={5} my={"xs"}>
           <Image alt="logo" src={"/aset/investasi/home-hipmi.png"} />
         </Paper>
@@ -101,14 +101,14 @@ export default function HomeView() {
         {/* <pre>{JSON.stringify(stateUser, null, 2)}</pre> */}
 
         <Box my={"sm"}>
-          <SimpleGrid 
-          cols={2}
-          spacing="md"
-          // breakpoints={[
-          //   { maxWidth: 'md', cols: 2, spacing: 'md' },
-          //   { maxWidth: 'sm', cols: 2, spacing: 'sm' },
-          //   { maxWidth: 'xs', cols: 1, spacing: 'xs' },
-          // ]}
+          <SimpleGrid
+            cols={2}
+            spacing="md"
+            // breakpoints={[
+            //   { maxWidth: 'md', cols: 2, spacing: 'md' },
+            //   { maxWidth: 'sm', cols: 2, spacing: 'sm' },
+            //   { maxWidth: 'xs', cols: 1, spacing: 'xs' },
+            // ]}
           >
             {listHalaman.map((e, i) => (
               <Paper
