@@ -17,6 +17,7 @@ import donasi_namaBank from "../../../bin/seeder/donasi/master_bank.json";
 import donasi_status_invoice from "../../../bin/seeder/donasi/master_status_invoice.json";
 import event_status from "../../../bin/seeder/event/master_status.json";
 import event_tipe_acara from "../../../bin/seeder/event/master_tipe_acara.json";
+import voting_status from "../../../bin/seeder/voting/master_status.json";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
@@ -292,6 +293,21 @@ export async function GET(req: Request) {
         },
         update: {
           name: e.name,
+        },
+      });
+    }
+
+    for (let v of voting_status) {
+      await prisma.voting_Status.upsert({
+        where: {
+          id: v.id,
+        },
+        create: {
+          id: v.id,
+          name: v.name,
+        },
+        update: {
+          name: v.name,
         },
       });
     }

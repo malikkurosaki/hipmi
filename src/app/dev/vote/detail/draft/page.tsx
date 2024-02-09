@@ -1,4 +1,4 @@
-import { Vote_DetailDraft } from "@/app_modules/vote";
+import { Vote_DetailDraft } from "@/app_modules/voting";
 
 export default function Page() {
   return (

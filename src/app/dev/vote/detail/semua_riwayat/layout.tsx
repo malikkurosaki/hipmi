@@ -1,4 +1,4 @@
-import { LayoutVote_DetailSemuaRiwayat } from "@/app_modules/vote";
+import { LayoutVote_DetailSemuaRiwayat } from "@/app_modules/voting";
 import React from "react";
 
 export default async function Layout({

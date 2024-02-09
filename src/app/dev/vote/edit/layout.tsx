@@ -1,4 +1,4 @@
-import { LayoutVote_Edit } from "@/app_modules/vote";
+import { LayoutVote_Edit } from "@/app_modules/voting";
 import React from "react";
 
 export default async function Layout({

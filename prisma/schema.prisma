@@ -28,6 +28,7 @@ model User {
   Donasi_Notif       Donasi_Notif[]
   Event              Event[]
   Event_Peserta      Event_Peserta[]
+  Voting             Voting[]
 }
 
 model MasterUserRole {
@@ -531,4 +532,45 @@ model Event_Peserta {
   eventId String?
   User    User?   @relation(fields: [userId], references: [id])
   userId  String?
+}
+
+// ========================================= VOTING ========================================= //
+
+model Voting {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title     String
+  deskripsi String
+  awalVote  DateTime
+  akhirVote DateTime
+  catatan   String?
+
+  Author                User                    @relation(fields: [authorId], references: [id])
+  authorId              String
+  Voting_Status         Voting_Status?          @relation(fields: [voting_StatusId], references: [id])
+  voting_StatusId       String?                 @default("2")
+  Voting_DaftarNamaVote Voting_DaftarNamaVote[]
+}
+
+model Voting_Status {
+  id        String   @id @default(cuid())
+  name      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Voting    Voting[]
+}
+
+model Voting_DaftarNamaVote {
+  id        String   @id @default(cuid())
+  value     String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Voting   Voting? @relation(fields: [votingId], references: [id])
+  votingId String?
 }

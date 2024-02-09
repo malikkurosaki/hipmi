@@ -15,7 +15,7 @@ export const RouterVote = {
   //detail
   main_detail: "/dev/vote/detail/main",
   detail_publish: "/dev/vote/detail/publish",
-  detail_review: "/dev/vote/detail/review",
+  detail_review: "/dev/vote/detail/review/",
   detail_draft: "/dev/vote/detail/draft",
   detail_reject: "/dev/vote/detail/reject",
   detail_kontribusi: "/dev/vote/detail/kontribusi",
