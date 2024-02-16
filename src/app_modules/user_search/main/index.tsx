@@ -30,53 +30,55 @@ export default function UserSearch_MainView({
   async function onSearch(name: string) {
     await UserSearch_searchByName(name).then((res) => setUser(res as any));
   }
-  return (
-    <>
-      <Box>
-        {/* <pre>{JSON.stringify(user, null,2)}</pre>r */}
-        <Stack spacing={"md"}>
-          <TextInput
-            icon={<IconSearch size={20} />}
-            placeholder="Masukan nama pegguna"
-            onChange={(val) => onSearch(val.target.value)}
-          />
-          {user.map((e) => (
-            <Stack key={e.id} spacing={"xs"}>
-              <Grid>
-                <Grid.Col span={2}>
-                  {/* <Avatar
-                    radius={"xl"}
-                    size={"lg"}
-                    src={
-                      RouterProfile.api_foto_profile + `${e?.Profile.imagesId}`
-                    }
-                  /> */}
-                </Grid.Col>
-                <Grid.Col span={"auto"}>
-                  <Stack spacing={0}>
-                    <Text fw={"bold"} truncate>
-                      {e.Profile.name}
-                    </Text>
-                    <Text fz={"sm"} fs={"italic"}>
-                      +{e.nomor}
-                    </Text>
-                  </Stack>
-                </Grid.Col>
-                <Grid.Col span={2}>
-                  <Center h={"100%"}>
-                    <ActionIcon variant="transparent"
-                    onClick={() => router.push(RouterProfile.katalog + `${e.Profile.id}`)}
-                    >
-                    <IconChevronRight />
-                    </ActionIcon>
-                  </Center>
-                </Grid.Col>
-              </Grid>
-              <Divider />
-            </Stack>
-          ))}
-        </Stack>
-      </Box>
-    </>
-  );
+
+  return<></>
+  // return (
+  //   <>
+  //     <Box>
+  //       {/* <pre>{JSON.stringify(user, null,2)}</pre>r */}
+  //       <Stack spacing={"md"}>
+  //         <TextInput
+  //           icon={<IconSearch size={20} />}
+  //           placeholder="Masukan nama pegguna"
+  //           onChange={(val) => onSearch(val.target.value)}
+  //         />
+  //         {user.map((e) => (
+  //           <Stack key={e.id} spacing={"xs"}>
+  //             <Grid>
+  //               <Grid.Col span={2}>
+  //                 {/* <Avatar
+  //                   radius={"xl"}
+  //                   size={"lg"}
+  //                   src={
+  //                     RouterProfile.api_foto_profile + `${e?.Profile.imagesId}`
+  //                   }
+  //                 /> */}
+  //               </Grid.Col>
+  //               <Grid.Col span={"auto"}>
+  //                 <Stack spacing={0}>
+  //                   <Text fw={"bold"} truncate>
+  //                     {e.Profile.name}
+  //                   </Text>
+  //                   <Text fz={"sm"} fs={"italic"}>
+  //                     +{e.nomor}
+  //                   </Text>
+  //                 </Stack>
+  //               </Grid.Col>
+  //               <Grid.Col span={2}>
+  //                 <Center h={"100%"}>
+  //                   <ActionIcon variant="transparent"
+  //                   onClick={() => router.push(RouterProfile.katalog + `${e.Profile.id}`)}
+  //                   >
+  //                   <IconChevronRight />
+  //                   </ActionIcon>
+  //                 </Center>
+  //               </Grid.Col>
+  //             </Grid>
+  //             <Divider />
+  //           </Stack>
+  //         ))}
+  //       </Stack>
+  //     </Box>
+  //   </>
+  // );
 }
