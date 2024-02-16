@@ -44,13 +44,13 @@ export default function UserSearch_MainView({
             <Stack key={e.id} spacing={"xs"}>
               <Grid>
                 <Grid.Col span={2}>
-                  <Avatar
+                  {/* <Avatar
                     radius={"xl"}
                     size={"lg"}
                     src={
-                      RouterProfile.api_foto_profile + `${e.Profile.imagesId}`
+                      RouterProfile.api_foto_profile + `${e?.Profile.imagesId}`
                     }
-                  />
+                  /> */}
                 </Grid.Col>
                 <Grid.Col span={"auto"}>
                   <Stack spacing={0}>
