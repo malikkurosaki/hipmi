@@ -59,20 +59,20 @@ export default function HomeLayout({
       <AppShell
         header={
           <Header height={50} bg={"dark"}>
-            <Group position="apart" align="center" h={50} p={"sm"}>
-              <Group spacing={"sm"}>
+            <Group position="center" align="center" h={50} p={"sm"}>
+              {/* <Group spacing={"sm"}>
                 <ActionIcon>
                   <IconAward />
                 </ActionIcon>
-              </Group>
+              </Group> */}
               <Text color="white" fw={"bold"}>
                 HIPMI
               </Text>
-              <Group spacing={"sm"}>
+              {/* <Group spacing={"sm"}>
                 <ActionIcon>
                   <IconQrcode />
                 </ActionIcon>
-              </Group>
+              </Group> */}
             </Group>
           </Header>
         }

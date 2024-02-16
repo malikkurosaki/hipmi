@@ -29,6 +29,7 @@ model User {
   Event              Event[]
   Event_Peserta      Event_Peserta[]
   Voting             Voting[]
+  Voting_Kontributor  Voting_Kontributor[]
 }
 
 model MasterUserRole {
@@ -553,6 +554,7 @@ model Voting {
   Voting_Status         Voting_Status?          @relation(fields: [voting_StatusId], references: [id])
   voting_StatusId       String?                 @default("2")
   Voting_DaftarNamaVote Voting_DaftarNamaVote[]
+  Voting_Kontributor     Voting_Kontributor[]
 }
 
 model Voting_Status {
@@ -567,10 +569,27 @@ model Voting_Status {
 model Voting_DaftarNamaVote {
   id        String   @id @default(cuid())
   value     String
+  jumlah    Int      @default(0)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Voting   Voting? @relation(fields: [votingId], references: [id])
-  votingId String?
+  Voting            Voting?             @relation(fields: [votingId], references: [id])
+  votingId          String?
+  Voting_Kontributor Voting_Kontributor[]
+}
+
+model Voting_Kontributor {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Voting                  Voting?                @relation(fields: [votingId], references: [id])
+  votingId                String?
+  Author                  User?                  @relation(fields: [authorId], references: [id])
+  authorId                String?
+  Voting_DaftarNamaVote   Voting_DaftarNamaVote? @relation(fields: [voting_DaftarNamaVoteId], references: [id])
+  voting_DaftarNamaVoteId String?
+
 }

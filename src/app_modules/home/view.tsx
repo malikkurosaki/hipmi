@@ -61,10 +61,11 @@ export default function HomeView() {
     },
     {
       id: 4,
-      name: "Project Collaboration",
-      icon: <IconAffiliate size={50} />,
+      name: "Job Vacancy",
+      icon: <IconBriefcase size={50} />,
       link: "",
     },
+
     {
       id: 5,
       name: "Forums",
@@ -79,8 +80,8 @@ export default function HomeView() {
     },
     {
       id: 7,
-      name: "Job Vacancy",
-      icon: <IconBriefcase size={50} />,
+      name: "Project Collaboration",
+      icon: <IconAffiliate size={50} />,
       link: "",
     },
     {

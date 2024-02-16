@@ -1,5 +1,5 @@
-import { Vote_DetailReview } from "@/app_modules/voting";
-import { Vote_getOnebyId } from "@/app_modules/voting/fun/get/get_one_by_id";
+import { Vote_DetailReview } from "@/app_modules/vote";
+import { Vote_getOnebyId } from "@/app_modules/vote/fun/get/get_one_by_id";
 
 export default async function Page({ params }: { params: { id: string } }) {
   let voteId = params.id;

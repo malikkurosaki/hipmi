@@ -1,4 +1,4 @@
-import { LayoutVote_DetailReview } from "@/app_modules/voting";
+import { LayoutVote_DetailReview } from "@/app_modules/vote";
 import React from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
