@@ -1,7 +1,7 @@
 "use client";
 
 import { ApiHipmi } from "@/app/lib/api";
-import { MODEL_DEFAULT_MASTER } from "@/app_modules/models/model_default_master";
+import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/model_default_master";
 import {
   AspectRatio,
   Badge,

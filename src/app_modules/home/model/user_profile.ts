@@ -1,4 +1,4 @@
-import { MODEL_IMAGES } from "@/app_modules/models/interface";
+import { MODEL_IMAGES } from "@/app_modules/model_global/interface";
 
 export interface MODEL_PROFILE_OLD {
   id: string;

@@ -2,7 +2,7 @@
 
 import { ApiHipmi } from "@/app/lib/api";
 import { Warna } from "@/app/lib/warna";
-import { MODEL_DEFAULT_MASTER } from "@/app_modules/models/model_default_master";
+import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/model_default_master";
 import {
   AspectRatio,
   Box,
@@ -37,9 +37,9 @@ export default function InvestasiCreate({
   pembagianDeviden,
 }: {
   id: string;
-  pencarianInvestor: MODEL_DEFAULT_MASTER[];
-  periodeDeviden: MODEL_DEFAULT_MASTER[];
-  pembagianDeviden: MODEL_DEFAULT_MASTER[];
+  pencarianInvestor: MODEL_DEFAULT_MASTER_OLD[];
+  periodeDeviden: MODEL_DEFAULT_MASTER_OLD[];
+  pembagianDeviden: MODEL_DEFAULT_MASTER_OLD[];
 }) {
   const router = useRouter();
   const [fl, setFl] = useState<File | null>(null);

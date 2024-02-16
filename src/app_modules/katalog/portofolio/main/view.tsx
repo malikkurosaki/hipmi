@@ -5,7 +5,7 @@ import {
   RouterProfile,
 } from "@/app/lib/router_hipmi/router_katalog";
 import { Warna } from "@/app/lib/warna";
-import { MODEL_PORTOFOLIO_OLD } from "@/app_modules/models/portofolio";
+import { MODEL_PORTOFOLIO_OLD } from "@/app_modules/model_global/portofolio";
 import {
   AspectRatio,
   Box,
