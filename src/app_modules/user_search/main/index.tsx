@@ -64,7 +64,7 @@ export default function UserSearch_MainView({
                           size={"md"}
                           src={
                             RouterProfile.api_foto_profile +
-                            `${e?.Profile.imagesId}`
+                            `${e?.Profile?.imagesId}`
                           }
                         />
                       </Center>
