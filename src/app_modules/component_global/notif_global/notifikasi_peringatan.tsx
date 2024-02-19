@@ -8,7 +8,10 @@ import { IconAlertTriangle } from "@tabler/icons-react";
  * @type string
  * @returns notifikasi peringatan
  */
-export async function ComponentGlobal_NotifikasiPeringatan(text: string) {
+export async function ComponentGlobal_NotifikasiPeringatan(
+  text: string,
+  durasi?: number
+) {
   return notifications.show({
     message: (
       <Center>
@@ -17,8 +20,13 @@ export async function ComponentGlobal_NotifikasiPeringatan(text: string) {
     ),
     color: "yellow.3",
     radius: "md",
-    autoClose: 1000,
-    icon: <ActionIcon radius={"xl"} bg={"white"} p={3}><IconAlertTriangle color="red" /></ActionIcon>,
+    autoClose: durasi ? durasi : 1000,
+
+    icon: (
+      <ActionIcon radius={"xl"} bg={"white"} p={3}>
+        <IconAlertTriangle color="red" />
+      </ActionIcon>
+    ),
     withCloseButton: false,
 
     styles: (theme) => ({

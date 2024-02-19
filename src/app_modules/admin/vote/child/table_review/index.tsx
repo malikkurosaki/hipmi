@@ -35,6 +35,7 @@ import { AdminVote_getListTableByStatusId } from "../../fun/get/get_list_table_b
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { AdminEvent_funEditCatatanById } from "../../fun/edit/fun_edit_status_reject_by_id";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 
 export default function AdminVote_TableReview({
   listVote,
@@ -102,7 +103,7 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
             color={"green"}
             leftIcon={<IconEyeShare />}
             radius={"xl"}
-            onClick={() => onPublish(e.id, setData)}
+            onClick={() => onPublish(e.id, setData, e.awalVote)}
           >
             Publish
           </Button>
@@ -216,7 +217,14 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
   );
 }
 
-async function onPublish(voteId: string, setData: any) {
+async function onPublish(voteId: string, setData: any, awalVote: Date) {
+  const hariIni = new Date();
+  if (awalVote < hariIni)
+    return ComponentGlobal_NotifikasiPeringatan(
+      "Tanggal Mulai Votig Lewat, Edit Kembali",
+      1500
+    );
+
   await AdminVote_funEditStatusPublishById(voteId).then(async (res) => {
     if (res.status === 200) {
       await AdminVote_getListTableByStatusId("2").then((val) => {
