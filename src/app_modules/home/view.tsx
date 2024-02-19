@@ -32,11 +32,10 @@ import { MODEL_PROFILE_OLD } from "./model/user_profile";
 import AppNotif from "../notif";
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
+import { MODEL_USER } from "./model/interface";
+import { ComponentGlobal_NotifikasiPeringatan } from "../component_global/notif_global/notifikasi_peringatan";
 
-// export const dynamic = "force-dynamic"
-// export const revalidate = 0
-
-export default function HomeView() {
+export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
   const router = useRouter();
   // const [stateUser, setStateUser] = useState(user);
 
@@ -117,10 +116,18 @@ export default function HomeView() {
                 h={100}
                 withBorder
                 onClick={() => {
-                  if (e.link === "") {
-                    toast("Cooming Soon !!");
+                  if (dataUser.Profile === null) {
+                    return ComponentGlobal_NotifikasiPeringatan(
+                      "Lengkapi Data Profile"
+                    );
                   } else {
-                    return router.push(e.link);
+                    if (e.link === "") {
+                      return ComponentGlobal_NotifikasiPeringatan(
+                        "Cooming Soon !!"
+                      );
+                    } else {
+                      return router.push(e.link);
+                    }
                   }
                 }}
               >

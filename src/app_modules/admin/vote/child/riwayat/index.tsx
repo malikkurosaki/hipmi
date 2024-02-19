@@ -28,6 +28,9 @@ import _ from "lodash";
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
+import ComponentAdminVote_DetailHasil from "../../component/detail_hasil";
+import { AdminVote_getHasilById } from "../../fun/get/get_hasil_by_id";
+import { AdminVote_getListKontributorById } from "../../fun/get/get_list_kontributor_by_id";
 
 export default function AdminVote_Riwayat({
   dataVote,
@@ -48,8 +51,9 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
   const [data, setData] = useState(listPublish);
-  const [peserta, setPeserta] = useState<any[]>();
-  const [eventId, setEventId] = useState("");
+  const [hasil, setHasil] = useState<any[]>();
+  const [kontributor, setKontributor] = useState<any[]>();
+  const [voteId, setVoteId] = useState("");
   const [loading, setLoading] = useState(false);
 
   const TableRows = data.map((e, i) => (
@@ -57,10 +61,18 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
       <td>
         <Center>
           <Button
+            loading={
+              e.id === voteId ? (loading === true ? true : false) : false
+            }
             radius={"xl"}
             color="green"
             leftIcon={<IconEyeCheck />}
-            onClick={() => ComponentGlobal_NotifikasiPeringatan("On Process")}
+            onClick={async () => {
+              setVoteId(e.id);
+              setLoading(true);
+              await new Promise((r) => setTimeout(r, 500));
+              onList(e.id, setHasil, setKontributor, setLoading, open);
+            }}
           >
             Hasil Voting
           </Button>
@@ -105,38 +117,16 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
 
   return (
     <>
-      <Modal opened={opened} onClose={close}>
-        <Paper>
-          <Stack>
-            <Center>
-              <Title order={3}>Daftar Peserta</Title>
-            </Center>
-            <Stack>
-              {peserta?.map((e) => (
-                <Stack key={e.id} spacing={"xs"}>
-                  <Grid>
-                    <Grid.Col span={"content"}>
-                      <Avatar
-                        sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-                        radius={"xl"}
-                        src={
-                          RouterProfile.api_foto_profile +
-                          e.User.Profile.imagesId
-                        }
-                      />
-                    </Grid.Col>
-                    <Grid.Col span={"auto"}>
-                      <Group align="center" h={"100%"}>
-                        <Text>{e.User.Profile.name}</Text>
-                      </Group>
-                    </Grid.Col>
-                  </Grid>
-                  <Divider />
-                </Stack>
-              ))}
-            </Stack>
-          </Stack>
-        </Paper>
+      <Modal
+        opened={opened}
+        onClose={close}
+        size={"xl"}
+        withCloseButton={false}
+      >
+        <ComponentAdminVote_DetailHasil
+          hasil={hasil}
+          kontributor={kontributor}
+        />
       </Modal>
       <Box>
         <Box bg={"gray.1"} p={"xs"}>
@@ -188,4 +178,24 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
       </Box>
     </>
   );
+}
+
+async function onList(
+  voteId: string,
+  setHasil: any,
+  setKontributor: any,
+  setLoading: any,
+  open: any
+) {
+  await AdminVote_getHasilById(voteId).then((res) => {
+    setHasil(res);
+    setLoading(false);
+  });
+
+  await AdminVote_getListKontributorById(voteId).then((res) => {
+    setKontributor(res);
+    setLoading(false);
+  });
+
+  open();
 }
