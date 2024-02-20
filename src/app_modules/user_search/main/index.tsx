@@ -72,10 +72,10 @@ export default function UserSearch_MainView({
                     <Grid.Col span={"auto"}>
                       <Stack spacing={0}>
                         <Text fw={"bold"} truncate>
-                          {e.Profile.name}
+                          {e?.Profile?.name}
                         </Text>
                         <Text fz={"sm"} fs={"italic"}>
-                          +{e.nomor}
+                          +{e?.nomor}
                         </Text>
                       </Stack>
                     </Grid.Col>
@@ -85,7 +85,7 @@ export default function UserSearch_MainView({
                           variant="transparent"
                           onClick={() =>
                             router.push(
-                              RouterProfile.katalog + `${e.Profile.id}`
+                              RouterProfile.katalog + `${e?.Profile?.id}`
                             )
                           }
                         >
