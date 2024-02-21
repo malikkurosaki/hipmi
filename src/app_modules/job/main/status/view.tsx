@@ -1,16 +1,16 @@
 "use client";
 
 import { Stack, Tabs } from "@mantine/core";
-import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { gs_vote_status } from "../../global_state";
-import Vote_StatusPublish from "./publish";
-import Vote_StatusReview from "./review";
-import Vote_StatusDraft from "./draft";
-import Vote_StatusReject from "./reject";
+import Job_Publish from "./publish";
+import Job_Review from "./review";
+import Job_Draft from "./draft";
+import Job_Reject from "./reject";
+import { useAtom } from "jotai";
+import { gs_job_status } from "../../global_state";
 
-export default function Vote_Status({
+export default function Job_Status({
   listPublish,
   listReview,
   listDraft,
@@ -22,30 +22,29 @@ export default function Vote_Status({
   listReject: any[];
 }) {
   const router = useRouter();
-  const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
+  const [tabsStatus, setTabsStatus] = useAtom(gs_job_status);
   const listTabs = [
     {
       id: 1,
-      path: <Vote_StatusPublish listPublish={listPublish} />,
+      path: <Job_Publish />,
       value: "Publish",
     },
     {
       id: 2,
-      path: <Vote_StatusReview listReview={listReview} />,
+      path: <Job_Review />,
       value: "Review",
     },
     {
       id: 3,
-      path: <Vote_StatusDraft listDraft={listDraft} />,
+      path: <Job_Draft />,
       value: "Draft",
     },
     {
       id: 4,
-      path: <Vote_StatusReject listReject={listReject} />,
+      path: <Job_Reject />,
       value: "Reject",
     },
   ];
-  
   return (
     <>
       <Tabs

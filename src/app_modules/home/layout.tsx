@@ -86,7 +86,7 @@ export default function HomeLayout({
                     ComponentGlobal_NotifikasiPeringatan("Lengkapi Profile");
                   } else {
                     // router.push(RouterProfile.katalog + `${user.Profile.id}`);
-                    router.push(RouterUserSearch.main)
+                    router.push(RouterUserSearch.main);
                   }
                 }}
               >
@@ -111,7 +111,23 @@ export default function HomeLayout({
               >
                 <Stack align="center" spacing={2}>
                   <ActionIcon variant={"transparent"}>
-                    {user.Profile === null ? <IconUserCircle color="white" /> : <Avatar radius={"xl"} size={30} src={RouterProfile.api_foto_profile + `${user.Profile.imagesId}`}/>} 
+                    {user.Profile === null ? (
+                      <IconUserCircle color="white" />
+                    ) : (
+                      <Avatar
+                        radius={"xl"}
+                        size={30}
+                        sx={{
+                          borderStyle: "solid",
+                          borderWidth: "0.5px",
+                          borderColor: "white",
+                        }}
+                        src={
+                          RouterProfile.api_foto_profile +
+                          `${user.Profile.imagesId}`
+                        }
+                      />
+                    )}
                   </ActionIcon>
                   <Text fz={"xs"} c={"white"}>
                     Profile
@@ -122,7 +138,6 @@ export default function HomeLayout({
           </Footer>
         }
       >
-
         {children}
       </AppShell>
     </>

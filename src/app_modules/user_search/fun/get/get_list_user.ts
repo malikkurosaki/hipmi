@@ -4,7 +4,6 @@ import prisma from "@/app/lib/prisma";
 
 export async function UserSearch_getListUser() {
   const data = await prisma.user.findMany({
-  
     select: {
       id: true,
       username: true,
