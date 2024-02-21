@@ -27,14 +27,14 @@ export default function Job_Create() {
 
   return (
     <>
-      <Stack px={"sm"}>
+      {/* <Stack px={"sm"}>
         <Stack align="center">
           <Image alt="" src={"/aset/no-file.png"} mah={500} maw={200} />
           <Button radius={"xl"} w={100}>
             <IconCamera />
           </Button>
         </Stack>
-        {/* <Stack>
+        <Stack>
           {ambil.map((v, k) => (
             <Text key={k}> {v}</Text>
           ))}
@@ -59,19 +59,16 @@ export default function Job_Create() {
             }}
           />
           <Textarea
-          minRows={5}
+            minRows={5}
             withAsterisk
             label="Deskripsi"
             placeholder="Lokasi, Alamat Email, Nomor yang dapat dihubungi"
             onChange={(val) => {}}
           />
-        </Stack> */}
+        </Stack>
 
-
-
-
-        {/* <ButtonAction /> */}
-      </Stack>
+        <ButtonAction />
+      </Stack> */}
     </>
   );
 }
