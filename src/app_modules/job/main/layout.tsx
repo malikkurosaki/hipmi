@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { useAtom } from "jotai";
 import { gs_job_hot_menu } from "../global_state";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 
 export default function LayoutJob_Main({
   children,
@@ -50,7 +51,12 @@ export default function LayoutJob_Main({
   return (
     <>
       <AppShell
-        header={<ComponentJob_HeaderTamplate title="Job Vacancy" />}
+        header={
+          <ComponentJob_HeaderTamplate
+            title="Job Vacancy"
+            route={RouterHome.main_home}
+          />
+        }
         footer={
           <Footer height={70} bg={"dark"}>
             <Grid>
@@ -62,7 +68,6 @@ export default function LayoutJob_Main({
                   onClick={() => {
                     router.replace(e.path);
                     setHotMenu(e.id);
-
                   }}
                 >
                   <Center>

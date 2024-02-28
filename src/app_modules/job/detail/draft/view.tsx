@@ -9,33 +9,55 @@ import ComponentJob_DetailData from "../../component/detail/detail_data";
 import { gs_job_status } from "../../global_state";
 import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
+import { Job_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_status_id";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { Job_funDeleteById } from "../../fun/delete/fun_delete_by_id";
+import ComponentJob_NotedBox from "../../component/detail/noted_box";
+import { MODEL_JOB } from "../../model/interface";
 
-export default function Job_DetailDraft() {
+export default function Job_DetailDraft({ dataJob }: { dataJob: MODEL_JOB }) {
   return (
     <>
       <Stack>
-        <ComponentJob_DetailData />
-        <ButtonAction />
+        {dataJob.catatan ? (
+          <ComponentJob_NotedBox informasi={dataJob.catatan} />
+        ) : (
+          ""
+        )}
+        <ComponentJob_DetailData data={dataJob} />
+        <ButtonAction jobId={dataJob.id} />
       </Stack>
     </>
   );
 }
 
-function ButtonAction() {
+function ButtonAction({ jobId }: { jobId: string }) {
   const router = useRouter();
   const [status, setStatus] = useAtom(gs_job_status);
   const [opened, { open, close }] = useDisclosure();
 
   async function onAction() {
-    router.push(RouterJob.status);
-    setStatus("Review");
-    ComponentGlobal_NotifikasiBerhasil("Berhasil Diajukan");
+    await Job_funEditStatusByStatusId(jobId, "2").then((res) => {
+      if (res.status === 200) {
+        setStatus("Review");
+        ComponentGlobal_NotifikasiBerhasil("Berhasil Diajukan");
+        router.push(RouterJob.status);
+      } else {
+        ComponentGlobal_NotifikasiGagal(res.message);
+      }
+    });
   }
 
   async function onDelete() {
-    router.push(RouterJob.status);
-    setStatus("Draft");
-    ComponentGlobal_NotifikasiBerhasil("Berhasil Hapus Draft");
+    await Job_funDeleteById(jobId).then((res) => {
+      if (res.status === 200) {
+        setStatus("Draft");
+        ComponentGlobal_NotifikasiBerhasil(res.message);
+        router.push(RouterJob.status);
+      } else {
+        ComponentGlobal_NotifikasiGagal(res.message);
+      }
+    });
   }
 
   return (
@@ -67,7 +89,7 @@ function ButtonAction() {
         </Paper>
       </Modal>
 
-      <Group grow mb={50} >
+      <Group grow mb={50}>
         <Button
           radius={"xl"}
           color="yellow"

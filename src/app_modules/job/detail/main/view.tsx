@@ -9,22 +9,21 @@ import { useAtom } from "jotai";
 import { gs_job_status, gs_job_hot_menu } from "../../global_state";
 import Link from "next/link";
 import { IconBrandWhatsapp } from "@tabler/icons-react";
+import { MODEL_JOB } from "../../model/interface";
 
-export default function Job_MainDetail() {
+export default function Job_MainDetail({ dataJob }: { dataJob: MODEL_JOB }) {
   return (
     <>
       <Stack>
-        <ComponentJob_DetailData />
-        <ButtonAction />
+        <ComponentJob_DetailData data={dataJob} />
+        <ButtonAction jobId={dataJob.id} />
       </Stack>
     </>
   );
 }
 
-function ButtonAction() {
+function ButtonAction({ jobId }: { jobId: string }) {
   const router = useRouter();
-  const [status, setStatus] = useAtom(gs_job_status);
-  const [hotMenu, setHotMenu] = useAtom(gs_job_hot_menu);
 
   async function onAction() {
     // router.push(RouterJob.arsip);
@@ -41,13 +40,15 @@ function ButtonAction() {
           color="teal"
           mb={30}
           leftIcon={<IconBrandWhatsapp />}
-          onClick={() => {
-            onAction();
-          }}
+          // onClick={() => {
+          //   onAction();
+          // }}
         >
           <Link
             style={{ textDecoration: "none", color: "white" }}
-            href={`whatsapp://send?text=Job Vacancy HIPMI BADUNG : http://localhost:3000/dev/job/non_user_view`}
+            href={`whatsapp://send?text=Job Vacancy HIPMI BADUNG : http://localhost:3000${
+              RouterJob.non_user_view + jobId
+            }`}
             // href={`https://t.me/share/url?url={${"http://localhost:3000/dev/job/non_user_view"}}&text={Lowongan Kerja Ini}`}
           >
             Bagikan ke WhatsApp

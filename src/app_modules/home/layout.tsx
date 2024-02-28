@@ -82,7 +82,7 @@ export default function HomeLayout({
               <Grid.Col
                 span={"auto"}
                 onClick={() => {
-                  if (user.Profile === null) {
+                  if (user?.Profile === null) {
                     ComponentGlobal_NotifikasiPeringatan("Lengkapi Profile");
                   } else {
                     // router.push(RouterProfile.katalog + `${user.Profile.id}`);
@@ -102,7 +102,7 @@ export default function HomeLayout({
               <Grid.Col
                 span={"auto"}
                 onClick={() => {
-                  if (user.Profile === null) {
+                  if (user?.Profile === null) {
                     router.push(RouterProfile.create + `${user.id}`);
                   } else {
                     router.push(RouterProfile.katalog + `${user.Profile.id}`);
@@ -111,7 +111,7 @@ export default function HomeLayout({
               >
                 <Stack align="center" spacing={2}>
                   <ActionIcon variant={"transparent"}>
-                    {user.Profile === null ? (
+                    {user?.Profile === null ? (
                       <IconUserCircle color="white" />
                     ) : (
                       <Avatar
@@ -124,7 +124,7 @@ export default function HomeLayout({
                         }}
                         src={
                           RouterProfile.api_foto_profile +
-                          `${user.Profile.imagesId}`
+                          `${user?.Profile.imagesId}`
                         }
                       />
                     )}

@@ -8,8 +8,10 @@ import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 
 export default function LayoutJob_DetailDraft({
   children,
+  jobId,
 }: {
   children: React.ReactNode;
+  jobId: string
 }) {
   return (
     <>
@@ -18,7 +20,7 @@ export default function LayoutJob_DetailDraft({
           <ComponentJob_HeaderTamplate
             title="Detail Draft"
             icon={<IconEdit />}
-            route2={RouterJob.edit}
+            route2={RouterJob.edit + jobId}
           />
         }
       >

@@ -26,22 +26,22 @@ export default function Job_Status({
   const listTabs = [
     {
       id: 1,
-      path: <Job_Publish />,
+      path: <Job_Publish listPublish={listPublish} />,
       value: "Publish",
     },
     {
       id: 2,
-      path: <Job_Review />,
+      path: <Job_Review listReview={listReview} />,
       value: "Review",
     },
     {
       id: 3,
-      path: <Job_Draft />,
+      path: <Job_Draft listDraft={listDraft} />,
       value: "Draft",
     },
     {
       id: 4,
-      path: <Job_Reject />,
+      path: <Job_Reject listReject={listReject}/>,
       value: "Reject",
     },
   ];
@@ -59,6 +59,14 @@ export default function Job_Status({
           <Tabs.List grow>
             {listTabs.map((e) => (
               <Tabs.Tab
+                sx={
+                  tabsStatus === e.value
+                    ? {
+                        boxShadow:
+                          "0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 6px 0 rgba(0, 0, 0, 0.2)",
+                      }
+                    : {}
+                }
                 key={e.id}
                 value={e.value}
                 bg={tabsStatus === e.value ? "blue" : "gray.1"}

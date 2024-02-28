@@ -5,15 +5,23 @@ import { Center, Image, Paper, Stack, Text } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { gs_vote_hotMenu } from "../global_state";
+import {
+  gs_vote_hotMenu,
+  gs_vote_riwayat,
+  gs_vote_status,
+} from "../global_state";
 
 export default function Vote_Splash() {
   const router = useRouter();
   const [hotMenu, setHotMenu] = useAtom(gs_vote_hotMenu);
+  const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
+  const [tabsRiwayat, setTabsRiwayat] = useAtom(gs_vote_riwayat);
 
   useShallowEffect(() => {
     setTimeout(() => {
-      setHotMenu(0)
+      setHotMenu(0);
+      setTabsStatus("Publish");
+      setTabsRiwayat("Semua");
       router.replace(RouterVote.beranda);
     }, 2000);
   }, []);

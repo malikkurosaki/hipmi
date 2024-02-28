@@ -48,7 +48,7 @@ export default function ListPortofolioView({
           <Group position="apart">
             <ActionIcon variant="transparent" disabled></ActionIcon>
             <Title order={4}>Portofolio</Title>
-            {profile.User.id === userLoginId ? (
+            {profile?.User.id === userLoginId ? (
               <ActionIcon
                 variant="transparent"
                 onClick={() =>

@@ -1,11 +1,55 @@
-"use client"
+"use client";
 
-import { Card, Stack, Skeleton, Image, Text } from "@mantine/core";
+import { Card, Stack, Skeleton, Image, Text, Center } from "@mantine/core";
+import { MODEL_JOB } from "../../model/interface";
+import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 
+export default function ComponentJob_DetailData({
+  data,
+}: {
+  data?: MODEL_JOB;
+}) {
+  return (
+    <>
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+      {data ? (
+        <Card shadow="lg" withBorder p={30}>
+          <Card.Section px={"xs"} pb={"lg"}>
+            <Stack spacing={"xl"}>
+              {data.imagesId ? (
+                <Stack align="center">
+                  <Image
+                    alt=""
+                    src={
+                      data.imagesId ? RouterJob.api_gambar + data.imagesId : ""
+                    }
+                    height={300}
+                    width={200}
+                  />
+                </Stack>
+              ) : (
+                ""
+              )}
 
-export default function ComponentJob_DetailData(){
-    return (
-      <>
+              <Stack>
+                <Center>
+                  <Text fz={20} fw={"bold"}>
+                    {data.title}
+                  </Text>
+                </Center>
+                <Stack spacing={0}>
+                  <Text>
+                    <div dangerouslySetInnerHTML={{ __html: data.content }} />
+                  </Text>
+                  <Text>
+                    <div dangerouslySetInnerHTML={{ __html: data.deskripsi }} />
+                  </Text>
+                </Stack>
+              </Stack>
+            </Stack>
+          </Card.Section>
+        </Card>
+      ) : (
         <Card shadow="lg" withBorder p={30}>
           <Card.Section px={"xs"} pb={"lg"}>
             <Stack spacing={"xl"}>
@@ -44,6 +88,7 @@ export default function ComponentJob_DetailData(){
             </Stack>
           </Card.Section>
         </Card>
-      </>
-    );
+      )}
+    </>
+  );
 }

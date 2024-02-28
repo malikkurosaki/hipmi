@@ -8,6 +8,7 @@ import {
   ActionIcon,
   Affix,
   Card,
+  Center,
   Grid,
   Image,
   Stack,
@@ -17,8 +18,13 @@ import {
 } from "@mantine/core";
 import { IconCirclePlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { MODEL_JOB } from "../model/interface";
+import ComponentJob_DetailData from "../component/detail/detail_data";
+import ComponentJob_CardViewStatus from "../component/card_view_status";
+import _ from "lodash";
+import ComponentJob_IsEmptyData from "../component/is_empty_data";
 
-export default function Job_Beranda() {
+export default function Job_Beranda({ listJob }: { listJob: MODEL_JOB[] }) {
   const router = useRouter();
   return (
     <>
@@ -36,38 +42,37 @@ export default function Job_Beranda() {
         </ActionIcon>
       </Affix>
 
-      <Stack>
-        {Array(5)
-          .fill(0)
-          .map((e, i) => (
+      {_.isEmpty(listJob) ? (
+        <ComponentJob_IsEmptyData text="Data tidak ada" />
+      ) : (
+        <Stack>
+          {listJob.map((e, i) => (
             <Card key={i} shadow="lg" withBorder p={30} radius={"md"}>
               <Card.Section>
-                <ComponentGlobal_AuthorNameOnHeader />
+                <ComponentGlobal_AuthorNameOnHeader
+                  authorName={e.Author.Profile.name}
+                  imagesId={e.Author.Profile.imagesId}
+                  profileId={e.Author.Profile.id}
+                />
               </Card.Section>
-              <Card.Section onClick={() => router.push(RouterJob.main_detail)}>
+              <Card.Section
+                onClick={() => router.push(RouterJob.main_detail + e.id)}
+                mt={"lg"}
+              >
                 <Grid>
-                  <Grid.Col span={6}>
-                    <Image alt="foto" src={"/aset/no-file.png"} />
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <Stack justify="center" h={"100%"}>
-                      <Text fw={"bold"} fz={20} truncate>
-                        Judul Lowongan Kerja
+                  <Grid.Col span={"auto"}>
+                    <Center h={"100%"}>
+                      <Text fw={"bold"} fz={"xl"} lineClamp={1}>
+                        {e.title}
                       </Text>
-                      <Text lineClamp={3}>
-                        Lorem ipsum dolor sit amet consectetur, adipisicing
-                        elit. Laboriosam est id neque iste voluptatem
-                        consequuntur veritatis dolorem illo et, repellat
-                        praesentium maiores amet omnis voluptas aliquid tenetur
-                        nam sint obcaecati.
-                      </Text>
-                    </Stack>
+                    </Center>
                   </Grid.Col>
                 </Grid>
               </Card.Section>
             </Card>
           ))}
-      </Stack>
+        </Stack>
+      )}
     </>
   );
 }
