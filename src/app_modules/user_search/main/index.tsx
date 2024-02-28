@@ -13,23 +13,34 @@ import {
   Stack,
   Text,
   TextInput,
+  Title,
 } from "@mantine/core";
 import { IconChevronRight, IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 import { UserSearch_searchByName } from "../fun/search/fun_search_by_name";
 import { useRouter } from "next/navigation";
+import ComponentGlobal_MaintenanceInformation from "@/app_modules/component_global/maintenance_information";
 
 export default function UserSearch_MainView({
   listUser,
 }: {
   listUser: MODEL_USER[];
 }) {
-  const router = useRouter()
+  const router = useRouter();
   const [user, setUser] = useState(listUser);
 
   async function onSearch(name: string) {
     await UserSearch_searchByName(name).then((res) => setUser(res as any));
   }
+
+  // return (
+  //   <>
+  //     <Center h={"50vh"}>
+  //      <ComponentGlobal_MaintenanceInformation/>
+  //     </Center>
+  //   </>
+  // );
+
   return (
     <>
       <Box>
@@ -40,41 +51,60 @@ export default function UserSearch_MainView({
             placeholder="Masukan nama pegguna"
             onChange={(val) => onSearch(val.target.value)}
           />
-          {user.map((e) => (
-            <Stack key={e.id} spacing={"xs"}>
-              <Grid>
-                <Grid.Col span={2}>
-                  <Avatar
-                    radius={"xl"}
-                    size={"lg"}
-                    src={
-                      RouterProfile.api_foto_profile + `${e.Profile.imagesId}`
-                    }
-                  />
-                </Grid.Col>
-                <Grid.Col span={"auto"}>
-                  <Stack spacing={0}>
-                    <Text fw={"bold"} truncate>
-                      {e.Profile.name}
-                    </Text>
-                    <Text fz={"sm"} fs={"italic"}>
-                      +{e.nomor}
-                    </Text>
+          {!user ? (
+            ""
+          ) : (
+            <Box>
+              {user?.map((e) =>
+                e.Profile === null ? (
+                  ""
+                ) : (
+                  <Stack key={e.id} spacing={"xs"} mt={"xs"}>
+                    <Grid >
+                      <Grid.Col span={2}>
+                        <Center h={"100%"}>
+                          <Avatar
+                          sx={{borderStyle: "solid", borderWidth: "0.5px"}}
+                            radius={"xl"}
+                            size={"md"}
+                            src={
+                              RouterProfile.api_foto_profile +
+                              `${e?.Profile?.imagesId}`
+                            }
+                          />
+                        </Center>
+                      </Grid.Col>
+                      <Grid.Col span={"auto"}>
+                        <Stack spacing={0}>
+                          <Text fw={"bold"} truncate>
+                            {e?.Profile?.name}
+                          </Text>
+                          <Text fz={"sm"} fs={"italic"}>
+                            +{e?.nomor}
+                          </Text>
+                        </Stack>
+                      </Grid.Col>
+                      <Grid.Col span={2}>
+                        <Center h={"100%"}>
+                          <ActionIcon
+                            variant="transparent"
+                            onClick={() =>
+                              router.push(
+                                RouterProfile.katalog + `${e?.Profile?.id}`
+                              )
+                            }
+                          >
+                            <IconChevronRight />
+                          </ActionIcon>
+                        </Center>
+                      </Grid.Col>
+                    </Grid>
+                    <Divider />
                   </Stack>
-                </Grid.Col>
-                <Grid.Col span={2}>
-                  <Center h={"100%"}>
-                    <ActionIcon variant="transparent"
-                    onClick={() => router.push(RouterProfile.katalog + `${e.Profile.id}`)}
-                    >
-                    <IconChevronRight />
-                    </ActionIcon>
-                  </Center>
-                </Grid.Col>
-              </Grid>
-              <Divider />
-            </Stack>
-          ))}
+                )
+              )}
+            </Box>
+          )}
         </Stack>
       </Box>
     </>

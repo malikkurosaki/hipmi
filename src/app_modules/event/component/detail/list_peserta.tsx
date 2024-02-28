@@ -12,9 +12,10 @@ import {
   Text,
 } from "@mantine/core";
 import _ from "lodash";
-import router from "next/router";
+
 import peserta from "../../main/kontribusi/peserta";
 import { MODEL_EVENT_PESERTA } from "../../model/interface";
+import { useRouter } from "next/navigation";
 
 export default function ComponentEvent_ListPeserta({
   listPeserta,
@@ -23,6 +24,7 @@ export default function ComponentEvent_ListPeserta({
   listPeserta: MODEL_EVENT_PESERTA[];
   total: number;
 }) {
+  const router = useRouter()
   return (
     <>
       <Paper withBorder mt={"lg"}>

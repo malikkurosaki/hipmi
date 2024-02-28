@@ -12,3 +12,12 @@ export interface MODEL_DEFAULT_MASTER {
   name: string,
   active: boolean,
 }
+
+export interface MODEL_NEW_DEFAULT_MASTER {
+  id: string,
+  name: string,
+  active: boolean,
+  createdAt: Date;
+  updatedAt: Date;
+}
+

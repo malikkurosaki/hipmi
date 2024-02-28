@@ -59,20 +59,20 @@ export default function HomeLayout({
       <AppShell
         header={
           <Header height={50} bg={"dark"}>
-            <Group position="apart" align="center" h={50} p={"sm"}>
-              <Group spacing={"sm"}>
+            <Group position="center" align="center" h={50} p={"sm"}>
+              {/* <Group spacing={"sm"}>
                 <ActionIcon>
                   <IconAward />
                 </ActionIcon>
-              </Group>
+              </Group> */}
               <Text color="white" fw={"bold"}>
                 HIPMI
               </Text>
-              <Group spacing={"sm"}>
+              {/* <Group spacing={"sm"}>
                 <ActionIcon>
                   <IconQrcode />
                 </ActionIcon>
-              </Group>
+              </Group> */}
             </Group>
           </Header>
         }
@@ -82,11 +82,11 @@ export default function HomeLayout({
               <Grid.Col
                 span={"auto"}
                 onClick={() => {
-                  if (user.Profile === null) {
+                  if (user?.Profile === null) {
                     ComponentGlobal_NotifikasiPeringatan("Lengkapi Profile");
                   } else {
                     // router.push(RouterProfile.katalog + `${user.Profile.id}`);
-                    router.push(RouterUserSearch.main)
+                    router.push(RouterUserSearch.main);
                   }
                 }}
               >
@@ -102,7 +102,7 @@ export default function HomeLayout({
               <Grid.Col
                 span={"auto"}
                 onClick={() => {
-                  if (user.Profile === null) {
+                  if (user?.Profile === null) {
                     router.push(RouterProfile.create + `${user.id}`);
                   } else {
                     router.push(RouterProfile.katalog + `${user.Profile.id}`);
@@ -111,7 +111,23 @@ export default function HomeLayout({
               >
                 <Stack align="center" spacing={2}>
                   <ActionIcon variant={"transparent"}>
-                    {user.Profile === null ? <IconUserCircle color="white" /> : <Avatar radius={"xl"} size={30} src={RouterProfile.api_foto_profile + `${user.Profile.imagesId}`}/>} 
+                    {user?.Profile === null ? (
+                      <IconUserCircle color="white" />
+                    ) : (
+                      <Avatar
+                        radius={"xl"}
+                        size={30}
+                        sx={{
+                          borderStyle: "solid",
+                          borderWidth: "0.5px",
+                          borderColor: "white",
+                        }}
+                        src={
+                          RouterProfile.api_foto_profile +
+                          `${user?.Profile.imagesId}`
+                        }
+                      />
+                    )}
                   </ActionIcon>
                   <Text fz={"xs"} c={"white"}>
                     Profile
@@ -122,7 +138,6 @@ export default function HomeLayout({
           </Footer>
         }
       >
-
         {children}
       </AppShell>
     </>

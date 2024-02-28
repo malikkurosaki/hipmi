@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
+  engineType = "binary"
 }
 
 datasource db {
@@ -28,6 +29,9 @@ model User {
   Donasi_Notif       Donasi_Notif[]
   Event              Event[]
   Event_Peserta      Event_Peserta[]
+  Voting             Voting[]
+  Voting_Kontributor Voting_Kontributor[]
+  Job                Job[]
 }
 
 model MasterUserRole {
@@ -85,6 +89,7 @@ model Images {
   Donasi_PencairanDana   Donasi_PencairanDana[]
   Donasi_Invoice         Donasi_Invoice[]
   Portofolio             Portofolio[]
+  Job                    Job[]
 }
 
 model ImagesBackground {
@@ -136,6 +141,15 @@ model MasterBidangBisnis {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @default(now()) @updatedAt
   Portofolio Portofolio[]
+}
+
+model MasterStatus {
+  id        String   @id @default(cuid())
+  name      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Job       Job[]
 }
 
 // -------------------- INVESTASI --------------------- //
@@ -531,4 +545,83 @@ model Event_Peserta {
   eventId String?
   User    User?   @relation(fields: [userId], references: [id])
   userId  String?
+}
+
+// ========================================= VOTING ========================================= //
+
+model Voting {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title     String
+  deskripsi String
+  awalVote  DateTime
+  akhirVote DateTime
+  catatan   String?
+
+  Author                User                    @relation(fields: [authorId], references: [id])
+  authorId              String
+  Voting_Status         Voting_Status?          @relation(fields: [voting_StatusId], references: [id])
+  voting_StatusId       String?                 @default("2")
+  Voting_DaftarNamaVote Voting_DaftarNamaVote[]
+  Voting_Kontributor    Voting_Kontributor[]
+}
+
+model Voting_Status {
+  id        String   @id @default(cuid())
+  name      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Voting    Voting[]
+}
+
+model Voting_DaftarNamaVote {
+  id        String   @id @default(cuid())
+  value     String
+  jumlah    Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Voting             Voting?              @relation(fields: [votingId], references: [id])
+  votingId           String?
+  Voting_Kontributor Voting_Kontributor[]
+}
+
+model Voting_Kontributor {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Voting                  Voting?                @relation(fields: [votingId], references: [id])
+  votingId                String?
+  Author                  User?                  @relation(fields: [authorId], references: [id])
+  authorId                String?
+  Voting_DaftarNamaVote   Voting_DaftarNamaVote? @relation(fields: [voting_DaftarNamaVoteId], references: [id])
+  voting_DaftarNamaVoteId String?
+}
+
+// ========================================= JOB ========================================= //
+
+model Job {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isArsip   Boolean  @default(false)
+  catatan   String?
+
+  title          String
+  content        String        @db.Text
+  deskripsi      String        @db.Text
+  Images         Images?       @relation(fields: [imagesId], references: [id])
+  imagesId       String?
+  Author         User?         @relation(fields: [authorId], references: [id])
+  authorId       String?
+  MasterStatus   MasterStatus? @relation(fields: [masterStatusId], references: [id])
+  masterStatusId String?       @default("2")
 }

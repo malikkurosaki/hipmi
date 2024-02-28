@@ -30,6 +30,7 @@ import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_gl
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 
 export default function CreateProfile({ userId }: { userId: any }) {
   const router = useRouter();
@@ -233,7 +234,7 @@ async function onSubmit(
   await funCreateNewProfile(body as any, gambarPP, gambarBG).then((res) => {
     if (res.status === 201) {
       ComponentGlobal_NotifikasiBerhasil("Berhasil Membuat Profile")
-      router.push(RouterProfile.katalog + `${userId}`);
+      router.push(RouterHome.main_home);
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);
     }
