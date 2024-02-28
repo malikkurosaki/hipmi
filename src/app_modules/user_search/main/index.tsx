@@ -40,6 +40,7 @@ export default function UserSearch_MainView({
   //     </Center>
   //   </>
   // );
+
   return (
     <>
       <Box>
@@ -54,49 +55,54 @@ export default function UserSearch_MainView({
             ""
           ) : (
             <Box>
-              {user?.map((e) => (
-                <Stack key={e.id} spacing={"xs"}>
-                  <Grid>
-                    <Grid.Col span={2}>
-                      <Center h={"100%"}>
-                        <Avatar
-                          radius={"xl"}
-                          size={"md"}
-                          src={
-                            RouterProfile.api_foto_profile +
-                            `${e?.Profile?.imagesId}`
-                          }
-                        />
-                      </Center>
-                    </Grid.Col>
-                    <Grid.Col span={"auto"}>
-                      <Stack spacing={0}>
-                        <Text fw={"bold"} truncate>
-                          {e?.Profile?.name}
-                        </Text>
-                        <Text fz={"sm"} fs={"italic"}>
-                          +{e?.nomor}
-                        </Text>
-                      </Stack>
-                    </Grid.Col>
-                    <Grid.Col span={2}>
-                      <Center h={"100%"}>
-                        <ActionIcon
-                          variant="transparent"
-                          onClick={() =>
-                            router.push(
-                              RouterProfile.katalog + `${e?.Profile?.id}`
-                            )
-                          }
-                        >
-                          <IconChevronRight />
-                        </ActionIcon>
-                      </Center>
-                    </Grid.Col>
-                  </Grid>
-                  <Divider />
-                </Stack>
-              ))}
+              {user?.map((e) =>
+                e.Profile === null ? (
+                  ""
+                ) : (
+                  <Stack key={e.id} spacing={"xs"} mt={"xs"}>
+                    <Grid >
+                      <Grid.Col span={2}>
+                        <Center h={"100%"}>
+                          <Avatar
+                          sx={{borderStyle: "solid", borderWidth: "0.5px"}}
+                            radius={"xl"}
+                            size={"md"}
+                            src={
+                              RouterProfile.api_foto_profile +
+                              `${e?.Profile?.imagesId}`
+                            }
+                          />
+                        </Center>
+                      </Grid.Col>
+                      <Grid.Col span={"auto"}>
+                        <Stack spacing={0}>
+                          <Text fw={"bold"} truncate>
+                            {e?.Profile?.name}
+                          </Text>
+                          <Text fz={"sm"} fs={"italic"}>
+                            +{e?.nomor}
+                          </Text>
+                        </Stack>
+                      </Grid.Col>
+                      <Grid.Col span={2}>
+                        <Center h={"100%"}>
+                          <ActionIcon
+                            variant="transparent"
+                            onClick={() =>
+                              router.push(
+                                RouterProfile.katalog + `${e?.Profile?.id}`
+                              )
+                            }
+                          >
+                            <IconChevronRight />
+                          </ActionIcon>
+                        </Center>
+                      </Grid.Col>
+                    </Grid>
+                    <Divider />
+                  </Stack>
+                )
+              )}
             </Box>
           )}
         </Stack>

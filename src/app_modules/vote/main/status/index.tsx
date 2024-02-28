@@ -45,6 +45,7 @@ export default function Vote_Status({
       value: "Reject",
     },
   ];
+  
   return (
     <>
       <Tabs

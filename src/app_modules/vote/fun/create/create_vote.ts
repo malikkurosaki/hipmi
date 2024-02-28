@@ -23,7 +23,7 @@ export async function Vote_funCreate(req: MODEL_VOTING, listVote: any[]) {
   for (let v of listVote) {
     const val = v.value;
 
-    const namaVote = await prisma.voting_DaftarNamaVote.createMany({
+    const namaVote = await prisma.voting_DaftarNamaVote.create({
       data: {
         value: val,
         votingId: create.id,

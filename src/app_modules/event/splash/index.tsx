@@ -22,12 +22,9 @@ export default function Event_SplashScreen() {
   return (
     <>
       <Center h={"100vh"}>
-        <Stack align="center" justify="center" p={"md"}>
-          <Title c={"#002e59"}>Welcome to</Title>
-          <Paper p={{ base: 50, md: 60, lg: 80 }}>
-            <Image alt="event" src={"/aset/event/splash-event.png"} />
-          </Paper>
-        </Stack>
+        <Paper p={{ base: 50, md: 60, lg: 80 }}>
+          <Image alt="event" src={"/aset/event/splash-event.png"} />
+        </Paper>
       </Center>
     </>
   );

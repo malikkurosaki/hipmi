@@ -18,6 +18,7 @@ import donasi_status_invoice from "../../../bin/seeder/donasi/master_status_invo
 import event_status from "../../../bin/seeder/event/master_status.json";
 import event_tipe_acara from "../../../bin/seeder/event/master_tipe_acara.json";
 import voting_status from "../../../bin/seeder/voting/master_status.json";
+import master_status from "../../../bin/seeder/master_status.json";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
@@ -308,6 +309,21 @@ export async function GET(req: Request) {
         },
         update: {
           name: v.name,
+        },
+      });
+    }
+
+    for (let m of master_status) {
+      await prisma.masterStatus.upsert({
+        where: {
+          id: m.id,
+        },
+        create: {
+          id: m.id,
+          name: m.name,
+        },
+        update: {
+          name: m.name,
         },
       });
     }

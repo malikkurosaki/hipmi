@@ -34,6 +34,7 @@ import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
 import { MODEL_USER } from "./model/interface";
 import { ComponentGlobal_NotifikasiPeringatan } from "../component_global/notif_global/notifikasi_peringatan";
+import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 
 export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
   const router = useRouter();
@@ -62,7 +63,7 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
       id: 4,
       name: "Job Vacancy",
       icon: <IconBriefcase size={50} />,
-      link: "",
+      link: RouterJob.spalsh,
     },
 
     {

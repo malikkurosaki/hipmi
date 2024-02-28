@@ -19,6 +19,8 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import ComponentVote_CardViewPublish from "../../component/card_view_publish";
 import { MODEL_VOTING } from "../../model/interface";
+import _ from "lodash";
+import ComponentVote_IsEmptyData from "../../component/is_empty_data";
 
 export default function Vote_RiwayatSaya({
   listRiwayatSaya,
@@ -28,6 +30,9 @@ export default function Vote_RiwayatSaya({
   const router = useRouter();
   return (
     <>
+    {_.isEmpty(listRiwayatSaya) ? (
+        <ComponentVote_IsEmptyData text="Tidak ada data"/>
+      ) : (
       <Stack>
         {listRiwayatSaya.map((e, i) => (
           <Box key={i}>
@@ -39,6 +44,7 @@ export default function Vote_RiwayatSaya({
           </Box>
         ))}
       </Stack>
+      )}
     </>
   );
 }

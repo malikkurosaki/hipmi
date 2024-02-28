@@ -22,7 +22,7 @@ import {
 import React, { useState } from "react";
 import ComponentGlobal_HeaderTamplate from "../component_global/header_tamplate";
 import { useDisclosure } from "@mantine/hooks";
-import { IconLetterH, IconLogout } from "@tabler/icons-react";
+import { IconCircleDot, IconCircleDotFilled, IconHome, IconLetterH, IconLogout } from "@tabler/icons-react";
 import {
   RouterAdminAward,
   RouterAdminDashboard,
@@ -38,6 +38,8 @@ import Admin_Logout from "./component/logout";
 import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
 import _ from "lodash";
 import { listAdminPage } from "./list_page";
+import { RouterAdminVote } from "@/app/lib/router_admin/router_admin_vote";
+import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
 
 export default function AdminLayout({
   children,
@@ -50,6 +52,8 @@ export default function AdminLayout({
   const [active, setActive] = useAtom(gs_admin_hotMenu);
   const [activeChild, setActiveChild] = useAtom(gs_admin_subMenu);
 
+
+
   const navbarItems = listAdminPage.map((e, i) => (
     <Box key={e.id}>
       <NavLink
@@ -59,7 +63,8 @@ export default function AdminLayout({
           },
         }}
         fw={active === e.id ? "bold" : "normal"}
-        label={<Text size={"md"}>{e.name}</Text>}
+        icon={e.icon}
+        label={<Text size={"sm"}>{e.name}</Text>}
         onClick={() => {
           setActive(e.id);
           setActiveChild(null);
@@ -81,6 +86,7 @@ export default function AdminLayout({
                   }}
                   fw={activeChild === v.id ? "bold" : "normal"}
                   label={<Text>{v.name}</Text>}
+                  icon={activeChild === v.id ? <IconCircleDotFilled size={10}/> : <IconCircleDot size={10}/> }
                   onClick={() => {
                     setActive(e.id);
                     setActiveChild(v.id);
@@ -98,9 +104,10 @@ export default function AdminLayout({
   return (
     <>
       <AppShell
-        padding="sm"
+        padding="md"
         navbarOffsetBreakpoint="md"
         asideOffsetBreakpoint="sm"
+        
         navbar={
           <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
             <Navbar

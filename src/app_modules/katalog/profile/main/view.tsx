@@ -62,14 +62,14 @@ export default function ProfileView({
                 alt=""
                 src={
                   RouterProfile.api_url_background +
-                  `${profile.ImagesBackground.url}`
+                  `${profile?.ImagesBackground.url}`
                 }
               />
             </Paper>
           </AspectRatio>
 
           {/* Upload Background Profile */}
-          {profile.User.id === userLoginId ? (
+          {profile?.User.id === userLoginId ? (
             <Center>
               <ActionIcon
                 ml={{base: 300, sm: 500, md: 900, lg: 1000}}
@@ -113,7 +113,7 @@ export default function ProfileView({
                   borderColor: "black",
                   borderWidth: "1px",
                 }}
-                src={RouterProfile.api_url_foto + `${profile.ImageProfile.url}`}
+                src={RouterProfile.api_url_foto + `${profile?.ImageProfile.url}`}
                 size={100}
                 radius={"100%"}
               />
@@ -121,7 +121,7 @@ export default function ProfileView({
           </Center>
 
           {/* Upload Foto Profile */}
-          {profile.User.id === userLoginId ? (
+          {profile?.User.id === userLoginId ? (
             <Center>
               <ActionIcon
                 mr={-70}
@@ -151,14 +151,14 @@ export default function ProfileView({
         {/* Username dan Nama */}
 
        
-        <Group position="apart" pt={profile.User.id === userLoginId ? 0 : "xl" }>
+        <Group position="apart" pt={profile?.User.id === userLoginId ? 0 : "xl" }>
           <Flex direction={"column"} mt={"lg"}>
             <Text fz={"lg"} fw={"bold"}>
-              {profile.name}
+              {profile?.name}
             </Text>
-            <Text fz={"xs"}>@{profile.User.username}</Text>
+            <Text fz={"xs"}>@{profile?.User?.username}</Text>
           </Flex>
-          {profile.User.id === userLoginId ? (
+          {profile?.User.id === userLoginId ? (
             <ActionIcon
               variant="transparent"
               onClick={() => {
@@ -181,7 +181,7 @@ export default function ProfileView({
             <Grid.Col span={"auto"}>
               <Text>
                 {" "}
-                <Text>+{profile.User.nomor}</Text>
+                <Text>+{profile?.User.nomor}</Text>
               </Text>
             </Grid.Col>
           </Grid>
@@ -193,7 +193,7 @@ export default function ProfileView({
             <Grid.Col span={"auto"}>
               <Text>
                 {" "}
-                <Text> {profile.email}</Text>
+                <Text> {profile?.email}</Text>
               </Text>
             </Grid.Col>
           </Grid>
@@ -203,12 +203,12 @@ export default function ProfileView({
               <IconHome />
             </Grid.Col>
             <Grid.Col span={"auto"}>
-              <Text> {profile.alamat}</Text>
+              <Text> {profile?.alamat}</Text>
             </Grid.Col>
           </Grid>
 
           {(() => {
-            if (profile.jenisKelamin === "Laki - laki") {
+            if (profile?.jenisKelamin === "Laki - laki") {
               return (
                 <>
                   <Grid>
@@ -216,7 +216,7 @@ export default function ProfileView({
                       <IconGenderMale />
                     </Grid.Col>
                     <Grid.Col span={"auto"}>
-                      <Text> {profile.jenisKelamin}</Text>
+                      <Text> {profile?.jenisKelamin}</Text>
                     </Grid.Col>
                   </Grid>
                 </>
@@ -229,7 +229,7 @@ export default function ProfileView({
                       <IconGenderFemale />
                     </Grid.Col>
                     <Grid.Col span={"auto"}>
-                      <Text> {profile.jenisKelamin}</Text>
+                      <Text> {profile?.jenisKelamin}</Text>
                     </Grid.Col>
                   </Grid>
                 </>

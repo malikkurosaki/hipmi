@@ -33,7 +33,7 @@ export default function Vote_StatusPublish({
   if (_.isEmpty(listPublish))
     return (
       <>
-        <ComponentVote_IsEmptyData text="Tidak ada voting" />
+        <ComponentVote_IsEmptyData text="Tidak ada data" />
       </>
     );
 
