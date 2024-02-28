@@ -13,7 +13,8 @@ export default function Vote_StatusReview({
   listReview: MODEL_VOTING[];
 }) {
   if (_.isEmpty(listReview))
-    return <ComponentVote_IsEmptyData text="Tidak ada review" />;
+    return <ComponentVote_IsEmptyData text="Tidak ada data" />;
+
 
   return (
     <>

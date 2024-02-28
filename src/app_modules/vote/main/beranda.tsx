@@ -25,6 +25,8 @@ import { useRouter } from "next/navigation";
 import ComponentVote_CardViewPublish from "../component/card_view_publish";
 import { MODEL_VOTING } from "../model/interface";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import _ from "lodash";
+import ComponentVote_IsEmptyData from "../component/is_empty_data";
 
 export default function Vote_Beranda({
   dataVote,
@@ -49,17 +51,21 @@ export default function Vote_Beranda({
         </ActionIcon>
       </Affix>
 
-      <Stack>
-        {dataVote.map((e, i) => (
-          <Box key={i}>
-            <ComponentVote_CardViewPublish
-              path={RouterVote.main_detail}
-              data={e}
-              authorName={true}
-            />
-          </Box>
-        ))}
-      </Stack>
+      {_.isEmpty(dataVote) ? (
+        <ComponentVote_IsEmptyData text="Tidak ada data"/>
+      ) : (
+        <Stack>
+          {dataVote.map((e, i) => (
+            <Box key={i}>
+              <ComponentVote_CardViewPublish
+                path={RouterVote.main_detail}
+                data={e}
+                authorName={true}
+              />
+            </Box>
+          ))}
+        </Stack>
+      )}
     </>
   );
 }

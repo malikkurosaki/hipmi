@@ -28,7 +28,7 @@ export default function Vote_Splash() {
   return (
     <>
       <Center h={"100vh"}>
-        <Paper>
+        <Paper p={{ base: 50, md: 60, lg: 80 }}>
           <Image alt="logo" src={"/aset/vote/logo.png"} />
         </Paper>
       </Center>

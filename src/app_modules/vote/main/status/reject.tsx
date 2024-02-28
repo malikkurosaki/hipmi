@@ -13,7 +13,8 @@ export default function Vote_StatusReject({
   listReject: MODEL_VOTING[];
 }) {
   if (_.isEmpty(listReject))
-    return <ComponentVote_IsEmptyData text="Tidak ada review" />;
+    return <ComponentVote_IsEmptyData text="Tidak ada data" />;
+
   return (
     <>
       <Stack>

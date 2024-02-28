@@ -13,7 +13,8 @@ export default function Vote_StatusDraft({
   listDraft: MODEL_VOTING[];
 }) {
   if (_.isEmpty(listDraft))
-    return <ComponentVote_IsEmptyData text="Tidak ada draft" />;
+    return <ComponentVote_IsEmptyData text="Tidak ada data" />;
+
   return (
     <>
       <Stack>

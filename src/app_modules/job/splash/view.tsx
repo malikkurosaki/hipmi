@@ -24,7 +24,7 @@ export default function Job_Splash() {
   return (
     <>
       <Center h={"100vh"}>
-        <Paper>
+        <Paper p={{ base: 50, md: 60, lg: 80 }}>
           <Image alt="logo" src={"/aset/job/logo.png"} />
         </Paper>
       </Center>
