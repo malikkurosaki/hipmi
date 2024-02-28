@@ -16,7 +16,6 @@ export default function Vote_Splash() {
   const [hotMenu, setHotMenu] = useAtom(gs_vote_hotMenu);
   const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
   const [tabsRiwayat, setTabsRiwayat] = useAtom(gs_vote_riwayat);
-
   useShallowEffect(() => {
     setTimeout(() => {
       setHotMenu(0);
