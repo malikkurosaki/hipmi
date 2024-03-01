@@ -52,8 +52,6 @@ export default function AdminLayout({
   const [active, setActive] = useAtom(gs_admin_hotMenu);
   const [activeChild, setActiveChild] = useAtom(gs_admin_subMenu);
 
-
-
   const navbarItems = listAdminPage.map((e, i) => (
     <Box key={e.id}>
       <NavLink

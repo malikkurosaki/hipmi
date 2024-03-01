@@ -4,9 +4,9 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { sealData, unsealData } from "iron-session";
 import { getConfig } from "@/bin/config";
-import yaml from "yaml";
-import fs from "fs";
 import { revalidatePath } from "next/cache";
+import fs from "fs";
+import yaml from "yaml";
 const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
 export async function POST(req: Request) {

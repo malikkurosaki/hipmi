@@ -68,6 +68,7 @@ export default function HomeLayout({
               <Text color="white" fw={"bold"}>
                 HIPMI
               </Text>
+              <Logout/>
               {/* <Group spacing={"sm"}>
                 <ActionIcon>
                   <IconQrcode />

@@ -54,6 +54,15 @@ model UserSession {
   userId    String   @unique
 }
 
+model KodeOtp {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  nomor     String
+  otp       Int
+}
+
 model Profile {
   id                 String            @id @default(cuid())
   name               String

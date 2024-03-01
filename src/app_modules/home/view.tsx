@@ -96,7 +96,7 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
     <>
       <Box>
         <Paper bg={"dark"} radius={5} my={"xs"}>
-          <Image alt="logo" src={"/aset/investasi/home-hipmi.png"} />
+          <Image alt="logo" src={"/aset/home/home-hipmi.png"} />
         </Paper>
 
         {/* <pre>{JSON.stringify(stateUser, null, 2)}</pre> */}
