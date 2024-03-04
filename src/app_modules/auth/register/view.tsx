@@ -33,6 +33,7 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
   const [nomor, setNomor] = useState(dataOtp.nomor);
   const [value, setValue] = useState("");
   const focusTrapRef = useFocusTrap();
+  const [loading, setLoading] = useState(false);
 
   // const onRegister = async () => {
   //   myConsole(value);
@@ -169,12 +170,15 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
 
             <Stack>
               <Button
+                loading={loading ? true : false}
+                loaderPosition="center"
                 radius={"md"}
                 compact
                 h={40}
                 color={"teal"}
                 onClick={() => {
                   onRegistarsi();
+                  setLoading(true);
                 }}
               >
                 <Text>DAFTAR</Text>

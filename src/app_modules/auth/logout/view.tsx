@@ -10,11 +10,15 @@ import { useDisclosure } from "@mantine/hooks";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { auth_Logout } from "../fun/fun_logout";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
+import { useState } from "react";
 
 export default function User_Logout() {
   const router = useRouter();
   const [opened, { toggle }] = useDisclosure(false);
   const [kodeId, setKodeId] = useAtom(gs_kodeId);
+  const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
 
   const onLogout = async () => {
     // await fetch(ApiHipmi.logout)
@@ -34,6 +38,7 @@ export default function User_Logout() {
       if (res.status === 200) {
         setKodeId("");
         ComponentGlobal_NotifikasiBerhasil(res.message);
+        router.push(RouterAuth.login)
       } else {
         ComponentGlobal_NotifikasiPeringatan(res.message);
       }
@@ -46,15 +51,25 @@ export default function User_Logout() {
         <Stack>
           <Title order={6}>Anda yakin ingin keluar ?</Title>
           <Group align="center" position="center">
-            <Button compact onClick={toggle} radius={50}>
+            <Button
+              onClick={() => {
+                setLoading(false);
+                toggle();
+              }}
+              radius={50}
+            >
               Batal
             </Button>
             <Button
-              compact
+              loaderPosition="center"
+              loading={loading2 ? true : false}
               radius={50}
               bg={Warna.merah}
               color="red"
-              onClick={() => onClickLogout()}
+              onClick={() => {
+                setLoading2(true);
+                onClickLogout();
+              }}
             >
               Keluar
             </Button>
@@ -64,7 +79,16 @@ export default function User_Logout() {
       {/* <ActionIcon variant="transparent">
         <IconLogout color={Warna.merah} onClick={toggle} />
       </ActionIcon> */}
-      <Button radius={"xl"} color={"red"} onClick={toggle}>
+      <Button
+        loading={loading ? true : false}
+        loaderPosition="center"
+        radius={"xl"}
+        color={"red"}
+        onClick={() => {
+          setLoading(true);
+          toggle();
+        }}
+      >
         Logout
       </Button>
     </>

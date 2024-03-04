@@ -12,6 +12,7 @@ export async function User_getUserId() {
   const c = cookies().get("ssn");
   if (!c?.value) return redirect(RouterAuth.login);
 
+
   const token = JSON.parse(
     await unsealData(c?.value as string, {
       password: config.server.password,

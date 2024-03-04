@@ -42,6 +42,7 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
   const [code, setCode] = useState(dataOtp.otp);
   const [inputCode, setInputOtp] = useState("");
   const focusTrapRef = useFocusTrap();
+  const [loading, setLoading] = useState(false);
 
   const onValid = async () => {
     // MyConsole(inputCode)
@@ -174,12 +175,15 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
             </Center>
             <Stack>
               <Button
+                loading={loading ? true : false}
+                loaderPosition="center"
                 radius={"md"}
                 compact
                 h={40}
                 color={"teal"}
                 onClick={() => {
                   onVerifikasi();
+                  setLoading(true)
                 }}
               >
                 <Text>VERIFIKASI</Text>

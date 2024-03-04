@@ -1,10 +1,7 @@
 "use client";
 
-import { myConsole } from "@/app/fun/my_console";
-import { randomOTP } from "@/app_modules/auth/fun/rondom_otp";
-import { ApiHipmi } from "@/app/lib/api";
-import { Warna } from "@/app/lib/warna";
 import {
+  Box,
   Button,
   Center,
   Flex,
@@ -16,33 +13,34 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { getHotkeyHandler, useFocusTrap, useHotkeys } from "@mantine/hooks";
+import { useFocusTrap } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAtom } from "jotai";
-import { gs_otp, gs_nomor, gs_kodeId } from "../state/state";
-import { RouterAdminDashboard } from "@/app/lib/router_hipmi/router_admin";
-import { NotifBerhasil } from "@/app_modules/donasi/component/notifikasi/notif_berhasil";
-import { NotifGagal } from "@/app_modules/donasi/component/notifikasi/notif_gagal";
+import { gs_kodeId } from "../state/state";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import { auth_funLogin } from "@/app_modules/auth/fun/fun_login";
 import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 
 export default function Login() {
   const router = useRouter();
-  const [nomor, setNomor] = useState("");
   const [kodeId, setKodeId] = useAtom(gs_kodeId);
   const focusTrapRef = useFocusTrap();
+  const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function onLogin() {
-    if (nomor.length < 10)
-      return ComponentGlobal_NotifikasiPeringatan("Nomor minimal 10 digit");
-    if (nomor.length > 13)
-      return ComponentGlobal_NotifikasiPeringatan("Nomor maximal 13 digit");
+    // if (nomor.length < 10)
+    //   return ComponentGlobal_NotifikasiPeringatan("Nomor minimal 10 digit");
+    // if (nomor.length > 13)
+    //   return ComponentGlobal_NotifikasiPeringatan("Nomor maximal 13 digit");
 
+    const nomorHp = phone.substring(1);
 
-    await auth_funLogin(nomor).then((res) => {
+    await auth_funLogin(nomorHp).then((res) => {
       if (res.status === 200) {
         ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
         setKodeId(res.kodeOtpId);
@@ -79,7 +77,6 @@ export default function Login() {
 
   return (
     <>
-
       <Center h={"80%"}>
         <Stack px={"lg"} spacing={"xl"} w={{ base: 400 }} justify="center">
           <Center h={"100%"}>
@@ -98,7 +95,7 @@ export default function Login() {
             </Text>
           </Stack>
 
-          <Grid>
+          {/* <Grid>
             <Grid.Col span={"content"}>
               <Center h={"100%"}>
                 <Text fw={"bold"}>+62</Text>
@@ -115,7 +112,16 @@ export default function Login() {
                 }}
               />
             </Grid.Col>
-          </Grid>
+          </Grid> */}
+
+          <PhoneInput
+            // ref={focusTrapRef}
+            inputStyle={{ width: "100%" }}
+            defaultCountry="id"
+            onChange={(val) => {
+              setPhone(val);
+            }}
+          />
 
           <Button
             radius={"md"}
@@ -124,7 +130,10 @@ export default function Login() {
             color={"teal"}
             onClick={() => {
               onLogin();
+              setLoading(true);
             }}
+            loading={loading ? true : false}
+            loaderPosition="center"
           >
             <Text>LOGIN</Text>
           </Button>

@@ -8,6 +8,9 @@ import { User_getOneById } from "@/app_modules/home/fun/get/get_one_user_by_id";
 export default async function Page() {
   const userId = await User_getUserId();
   const dataUser = await User_getOneById(userId);
+  // await new Promise((a, b) => {
+  //   setTimeout(a, 1000);
+  // });
 
   return (
     <>

@@ -9,6 +9,7 @@ import {
   Grid,
   Group,
   Header,
+  Loader,
   SimpleGrid,
   Stack,
   Text,
@@ -39,6 +40,7 @@ export default function HomeLayout({
 }) {
   const router = useRouter();
   const [user, setUser] = useState(dataUser);
+  const [loading, setLoading] = useState(false);
   const listFooter = [
     {
       id: 1,
@@ -68,7 +70,7 @@ export default function HomeLayout({
               <Text color="white" fw={"bold"}>
                 HIPMI
               </Text>
-              <Logout/>
+              {/* <Logout/> */}
               {/* <Group spacing={"sm"}>
                 <ActionIcon>
                   <IconQrcode />
@@ -103,6 +105,7 @@ export default function HomeLayout({
               <Grid.Col
                 span={"auto"}
                 onClick={() => {
+                  setLoading(true);
                   if (user?.Profile === null) {
                     router.push(RouterProfile.create + `${user.id}`);
                   } else {
@@ -114,6 +117,8 @@ export default function HomeLayout({
                   <ActionIcon variant={"transparent"}>
                     {user?.Profile === null ? (
                       <IconUserCircle color="white" />
+                    ) : loading ? (
+                      <Loader />
                     ) : (
                       <Avatar
                         radius={"xl"}

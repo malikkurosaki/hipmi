@@ -7,6 +7,7 @@ import {
   Flex,
   Image,
   Loader,
+  LoadingOverlay,
   Paper,
   SimpleGrid,
   Text,
@@ -35,18 +36,24 @@ import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
 import { MODEL_USER } from "./model/interface";
 import { ComponentGlobal_NotifikasiPeringatan } from "../component_global/notif_global/notifikasi_peringatan";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
+import { useState } from "react";
+import { useDisclosure } from "@mantine/hooks";
+import ComponentGlobal_LoadingPage from "../component_global/loading_page";
 
 export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
   const router = useRouter();
   // const [stateUser, setStateUser] = useState(user);
+  const [loading, setLoading] = useState(false);
+  const [visible, { toggle }] = useDisclosure(false);
 
   const listHalaman = [
     {
       id: 1,
-      name: "Crowd Funding",
-      icon: <IconHeartHandshake size={50} />,
-      link: `/dev/crowd/splash`,
+      name: "Forums",
+      icon: <IconMessages size={50} />,
+      link: "",
     },
+
     {
       id: 2,
       name: "Event",
@@ -55,45 +62,56 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
     },
     {
       id: 3,
+      name: "Business Maps",
+      icon: <IconMap2 size={50} />,
+      link: "",
+    },
+    {
+      id: 4,
       name: "Voting",
       icon: <IconPackageImport size={50} />,
       link: RouterVote.splash,
     },
     {
-      id: 4,
+      id: 5,
+      name: "Project Collaboration",
+      icon: <IconAffiliate size={50} />,
+      link: "",
+    },
+    {
+      id: 6,
+      name: "Crowd Funding",
+      icon: <IconHeartHandshake size={50} />,
+      link: `/dev/crowd/splash`,
+    },
+    {
+      id: 7,
       name: "Job Vacancy",
       icon: <IconBriefcase size={50} />,
       link: RouterJob.spalsh,
     },
 
     {
-      id: 5,
-      name: "Forums",
-      icon: <IconMessages size={50} />,
-      link: "",
-    },
-    {
-      id: 6,
+      id: 8,
       name: "Marketplace",
       icon: <IconShoppingBag size={50} />,
-      link: "",
-    },
-    {
-      id: 7,
-      name: "Project Collaboration",
-      icon: <IconAffiliate size={50} />,
-      link: "",
-    },
-    {
-      id: 8,
-      name: "Business Maps",
-      icon: <IconMap2 size={50} />,
       link: "",
     },
   ];
 
   return (
     <>
+      {visible ? (
+        <Box h={"100%"} pos="relative">
+          <LoadingOverlay
+            visible={visible}
+            loader={<ComponentGlobal_LoadingPage height="100%" />}
+          />
+        </Box>
+      ) : (
+        ""
+      )}
+
       <Box>
         <Paper bg={"dark"} radius={5} my={"xs"}>
           <Image alt="logo" src={"/aset/home/home-hipmi.png"} />
@@ -127,6 +145,7 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
                         "Cooming Soon !!"
                       );
                     } else {
+                      toggle();
                       return router.push(e.link);
                     }
                   }

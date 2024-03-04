@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export async function auth_Logout(kodeId: string) {
@@ -8,6 +9,7 @@ export async function auth_Logout(kodeId: string) {
     name: "ssn",
     value: "",
     maxAge: 0,
+    path: "/dev/auth/login",
   });
 
   const c = cookies().get("ssn");
@@ -19,7 +21,7 @@ export async function auth_Logout(kodeId: string) {
     },
   });
 
-  if (!del) return { status: 400, message: "Gagal Hapus Kode OTP Id" };
-  
+  if (!del) return { status: 400, message: "Gagal Hapus Kode OTP Id"};
+  revalidatePath("/dev/katalog")
   return { status: 200, message: "Logout Berhasil" };
 }

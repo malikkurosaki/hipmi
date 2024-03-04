@@ -31,8 +31,8 @@ export async function Auth_funRegister(data: any) {
 
   const seal = await sealData(
     JSON.stringify({
-      id: data.id,
-      username: data.username,
+      id: create.id,
+      username: create.username,
     }),
     {
       password: await config.server.password,
