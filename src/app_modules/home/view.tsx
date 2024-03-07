@@ -38,7 +38,8 @@ import { ComponentGlobal_NotifikasiPeringatan } from "../component_global/notif_
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import ComponentGlobal_LoadingPage from "../component_global/loading_page";
+import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
+import ComponentGlobal_V2_LoadingPage from "../component_global/loading_page_v2";
 
 export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
   const router = useRouter();
@@ -51,7 +52,7 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
       id: 1,
       name: "Forums",
       icon: <IconMessages size={50} />,
-      link: "",
+      link: RouterForum.splash,
     },
 
     {
@@ -101,16 +102,7 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
 
   return (
     <>
-      {visible ? (
-        <Box h={"100%"} pos="relative">
-          <LoadingOverlay
-            visible={visible}
-            loader={<ComponentGlobal_LoadingPage height="100%" />}
-          />
-        </Box>
-      ) : (
-        ""
-      )}
+      {visible ? <ComponentGlobal_V2_LoadingPage /> : ""}
 
       <Box>
         <Paper bg={"dark"} radius={5} my={"xs"}>

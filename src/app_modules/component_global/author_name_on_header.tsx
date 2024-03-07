@@ -1,20 +1,26 @@
 "use client";
 
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import { Stack, Grid, Avatar, Divider, Text } from "@mantine/core";
+import { Stack, Grid, Avatar, Divider, Text, Group } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { ComponentGlobal_NotifikasiPeringatan } from "./notif_global/notifikasi_peringatan";
+import moment from "moment";
 
 export default function ComponentGlobal_AuthorNameOnHeader({
   profileId,
   imagesId,
   authorName,
+  tglPublish,
+  isPembatas,
 }: {
   profileId?: string;
   imagesId?: string;
   authorName?: string;
+  tglPublish?: Date;
+  isPembatas?: boolean;
 }) {
   const router = useRouter();
+  const skrng = new Date();
   return (
     <>
       <Stack spacing={"xs"}>
@@ -43,13 +49,28 @@ export default function ComponentGlobal_AuthorNameOnHeader({
           </Grid.Col>
           <Grid.Col span={"auto"}>
             <Stack justify="center" h={"100%"}>
-              <Text truncate fz={"sm"} fw={"bold"}>
-                {authorName ? authorName : "Nama author"}
-              </Text>
+              <Group position="apart">
+                <Stack justify="center" h={"100%"}>
+                  <Text lineClamp={1} fz={"sm"} fw={"bold"}>
+                    {authorName ? authorName : "Nama author"}
+                  </Text>
+                </Stack>
+                <Stack justify="center" h={"100%"}>
+                  {tglPublish ? (
+                    <Text c={"gray"} fz={"xs"}>
+                      {skrng.toLocaleDateString(["id-ID"], {
+                        dateStyle: "medium",
+                      })}
+                    </Text>
+                  ) : (
+                    ""
+                  )}
+                </Stack>
+              </Group>
             </Stack>
           </Grid.Col>
         </Grid>
-        <Divider />
+        {isPembatas ? <Divider /> : ""}
       </Stack>
     </>
   );
