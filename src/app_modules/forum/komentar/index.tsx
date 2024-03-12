@@ -59,10 +59,10 @@ export default function Forum_Komentar({ forumId }: { forumId: string }) {
               }}
             />
           </Paper>
-          <Group position="apart">
-            <ActionIcon>
+          <Group position="right">
+            {/* <ActionIcon>
               <IconPhotoUp />
-            </ActionIcon>
+            </ActionIcon> */}
             <ButtonAction forumId={forumId} />
           </Group>
         </Stack>

@@ -41,6 +41,7 @@ export default function HomeLayout({
   const router = useRouter();
   const [user, setUser] = useState(dataUser);
   const [loading, setLoading] = useState(false);
+  const [loadingUS, setLoadingUS] = useState(false);
   const listFooter = [
     {
       id: 1,
@@ -88,19 +89,26 @@ export default function HomeLayout({
                   if (user?.Profile === null) {
                     ComponentGlobal_NotifikasiPeringatan("Lengkapi Profile");
                   } else {
+                    setLoadingUS(true);
                     // router.push(RouterProfile.katalog + `${user.Profile.id}`);
                     router.push(RouterUserSearch.main);
                   }
                 }}
               >
-                <Stack align="center" spacing={0}>
-                  <ActionIcon variant={"transparent"}>
-                    <IconUserSearch color="white" />
-                  </ActionIcon>
-                  <Text fz={"xs"} c={"white"}>
-                    Temukan pengguna
-                  </Text>
-                </Stack>
+                {loadingUS ? (
+                  <Center>
+                    <Loader />
+                  </Center>
+                ) : (
+                  <Stack align="center" spacing={0}>
+                    <ActionIcon variant={"transparent"}>
+                      <IconUserSearch color="white" />
+                    </ActionIcon>
+                    <Text fz={"xs"} c={"white"}>
+                      Temukan pengguna
+                    </Text>
+                  </Stack>
+                )}
               </Grid.Col>
               <Grid.Col
                 span={"auto"}
@@ -113,32 +121,36 @@ export default function HomeLayout({
                   }
                 }}
               >
-                <Stack align="center" spacing={2}>
-                  <ActionIcon variant={"transparent"}>
-                    {user?.Profile === null ? (
-                      <IconUserCircle color="white" />
-                    ) : loading ? (
-                      <Loader />
-                    ) : (
-                      <Avatar
-                        radius={"xl"}
-                        size={30}
-                        sx={{
-                          borderStyle: "solid",
-                          borderWidth: "0.5px",
-                          borderColor: "white",
-                        }}
-                        src={
-                          RouterProfile.api_foto_profile +
-                          `${user?.Profile.imagesId}`
-                        }
-                      />
-                    )}
-                  </ActionIcon>
-                  <Text fz={"xs"} c={"white"}>
-                    Profile
-                  </Text>
-                </Stack>
+                {loading ? (
+                  <Center>
+                    <Loader />
+                  </Center>
+                ) : (
+                  <Stack align="center" spacing={2}>
+                    <ActionIcon variant={"transparent"}>
+                      {user?.Profile === null ? (
+                        <IconUserCircle color="white" />
+                      ) : (
+                        <Avatar
+                          radius={"xl"}
+                          size={30}
+                          sx={{
+                            borderStyle: "solid",
+                            borderWidth: "0.5px",
+                            borderColor: "white",
+                          }}
+                          src={
+                            RouterProfile.api_foto_profile +
+                            `${user?.Profile.imagesId}`
+                          }
+                        />
+                      )}
+                    </ActionIcon>
+                    <Text fz={"xs"} c={"white"}>
+                      Profile
+                    </Text>
+                  </Stack>
+                )}
               </Grid.Col>
             </Grid>
           </Footer>

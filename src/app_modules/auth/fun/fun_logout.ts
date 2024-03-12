@@ -9,9 +9,8 @@ export async function auth_Logout(kodeId: string) {
     name: "ssn",
     value: "",
     maxAge: 0,
-    path: "/dev/auth/login",
   });
-
+  
   const c = cookies().get("ssn");
   if (c?.value !== "") return { status: 400, message: "Gagal Logout" };
 

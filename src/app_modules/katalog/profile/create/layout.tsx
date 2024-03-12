@@ -1,5 +1,6 @@
 "use client";
 
+import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
 import {
   ActionIcon,
   AppShell,
@@ -18,15 +19,16 @@ export default function ProfileLayout({ children }: { children: any }) {
       <AppShell
 
         header={
-          <Header height={50} px={"sm"} sx={{borderBlockStyle: "none"}}>
-            <Group position="apart" h={50}>
-              <ActionIcon variant="transparent" onClick={() => router.push("/dev/home")}>
-                <IconArrowLeft />
-              </ActionIcon>
-              <Text>Create Profile</Text>
-              <ActionIcon variant="transparent"></ActionIcon>
-            </Group>
-          </Header>
+          // <Header height={50} px={"sm"} sx={{borderBlockStyle: "none"}}>
+          //   <Group position="apart" h={50}>
+          //     <ActionIcon variant="transparent" onClick={() => router.push("/dev/home")}>
+          //       <IconArrowLeft />
+          //     </ActionIcon>
+          //     <Text>Create Profile</Text>
+          //     <ActionIcon variant="transparent"></ActionIcon>
+          //   </Group>
+          // </Header>
+          <ComponentGlobal_HeaderTamplate title="Buat Profile"/>
         }
       >
         {children}

@@ -9,7 +9,7 @@ export default async function Page() {
   const userId = await User_getUserId();
   const dataUser = await user_getOneById(userId);
   // await new Promise((a, b) => {
-  //   setTimeout(a, 1000);
+  //   setTimeout(a, 4000);
   // });
 
   return (

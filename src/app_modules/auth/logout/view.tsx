@@ -20,25 +20,14 @@ export default function User_Logout() {
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
 
-  const onLogout = async () => {
-    // await fetch(ApiHipmi.logout)
-    //   .then((res) => res.json())
-    //   .then((val) => {
-    //     if (val.status == 200) {
-    //       setnomor(null);
-    //       setCode(null);
-    //       ComponentGlobal_NotifikasiBerhasil("Anda Berhasil Logout")
-    //       return router.push("/dev/auth/login");
-    //     }
-    //   });
-  };
-
   async function onClickLogout() {
+    // await auth_Logout(kodeId).then((res) => {
+    //   ComponentGlobal_NotifikasiBerhasil("Berhasil Logout");
+    // });
     await auth_Logout(kodeId).then((res) => {
       if (res.status === 200) {
-        setKodeId("");
         ComponentGlobal_NotifikasiBerhasil(res.message);
-        router.push(RouterAuth.login)
+        setKodeId("");
       } else {
         ComponentGlobal_NotifikasiPeringatan(res.message);
       }

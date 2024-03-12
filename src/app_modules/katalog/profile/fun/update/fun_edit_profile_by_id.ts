@@ -5,6 +5,17 @@ import { MODEL_PROFILE } from "../../model/interface";
 import { revalidatePath } from "next/cache";
 
 export async function Profile_funEditById(data: MODEL_PROFILE) {
+  // console.log(data);
+
+  const cekEmail = await prisma.profile.findUnique({
+    where: {
+      email: data.email,
+    },
+  });
+
+  if (cekEmail && cekEmail.id != data.id)
+    return { status: 400, message: "Email sudah digunakan" };
+
   const updt = await prisma.profile.update({
     where: {
       id: data.id,

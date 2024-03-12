@@ -23,9 +23,9 @@ export default async function Page({ params }: { params: { id: string } }) {
   const dataProfile = await Profile_getOneProfileAndUserById(profileId);
   // console.log(dataProfile)
 
-  await new Promise((a, b) => {
-    setTimeout(a, 1000);
-  });
+  // await new Promise((a, b) => {
+  //   setTimeout(a, 1000);
+  // });
 
   return (
     <>
