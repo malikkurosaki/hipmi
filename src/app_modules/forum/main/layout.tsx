@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { title } from "process";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
 
 export default function LayoutForum_Main({
   children,
@@ -34,6 +35,8 @@ export default function LayoutForum_Main({
   const router = useRouter();
   const [hotMenu, setHotMenu] = useState(1);
   const [loading, setLoading] = useState(false);
+
+  if (loading) return <ComponentGlobal_V2_LoadingPage />;
 
   const listFooter = [
     {
@@ -60,6 +63,7 @@ export default function LayoutForum_Main({
               <ActionIcon
                 variant="transparent"
                 onClick={() => {
+                  setLoading(true);
                   return router.push(RouterHome.main_home);
                 }}
               >

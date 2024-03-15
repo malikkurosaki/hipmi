@@ -12,26 +12,30 @@ datasource db {
 }
 
 model User {
-  id                 String               @id @default(cuid())
-  username           String               @unique
-  nomor              String               @unique
-  active             Boolean              @default(true)
-  createdAt          DateTime?            @default(now())
-  updatedAt          DateTime?            @updatedAt
-  MasterUserRole     MasterUserRole       @relation(fields: [masterUserRoleId], references: [id])
-  masterUserRoleId   String               @default("1")
-  UserSession        UserSession?
-  Profile            Profile?
-  Investasi          Investasi[]
-  TransaksiInvestasi TransaksiInvestasi[]
-  Donasi             Donasi[]
-  Donasi_Invoice     Donasi_Invoice[]
-  Donasi_Notif       Donasi_Notif[]
-  Event              Event[]
-  Event_Peserta      Event_Peserta[]
-  Voting             Voting[]
-  Voting_Kontributor Voting_Kontributor[]
-  Job                Job[]
+  id                   String                 @id @default(cuid())
+  username             String                 @unique
+  nomor                String                 @unique
+  active               Boolean                @default(true)
+  createdAt            DateTime?              @default(now())
+  updatedAt            DateTime?              @updatedAt
+  MasterUserRole       MasterUserRole         @relation(fields: [masterUserRoleId], references: [id])
+  masterUserRoleId     String                 @default("1")
+  UserSession          UserSession?
+  Profile              Profile?
+  Investasi            Investasi[]
+  TransaksiInvestasi   TransaksiInvestasi[]
+  Donasi               Donasi[]
+  Donasi_Invoice       Donasi_Invoice[]
+  Donasi_Notif         Donasi_Notif[]
+  Event                Event[]
+  Event_Peserta        Event_Peserta[]
+  Voting               Voting[]
+  Voting_Kontributor   Voting_Kontributor[]
+  Job                  Job[]
+  Forum_Posting        Forum_Posting[]
+  Forum_Komentar       Forum_Komentar[]
+  Forum_ReportPosting  Forum_ReportPosting[]
+  Forum_ReportKomentar Forum_ReportKomentar[]
 }
 
 model MasterUserRole {
@@ -113,6 +117,7 @@ model ImagesBackground {
 
 model Portofolio {
   id                     String                  @id @default(cuid())
+  id_Portofolio          String                  @unique
   namaBisnis             String
   alamatKantor           String
   tlpn                   String
@@ -633,4 +638,71 @@ model Job {
   authorId       String?
   MasterStatus   MasterStatus? @relation(fields: [masterStatusId], references: [id])
   masterStatusId String?       @default("2")
+}
+
+model Forum_Posting {
+  id                  String                @id @default(cuid())
+  isActive            Boolean               @default(true)
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  publishAt           DateTime?
+  diskusi             String                @db.Text
+  Forum_Komentar      Forum_Komentar[]
+  Forum_ReportPosting Forum_ReportPosting[]
+  Author              User?                 @relation(fields: [authorId], references: [id])
+  authorId            String?
+}
+
+model Forum_Komentar {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  komentar  String   @db.Text
+
+  Forum_Posting        Forum_Posting?         @relation(fields: [forum_PostingId], references: [id])
+  forum_PostingId      String?
+  Forum_ReportKomentar Forum_ReportKomentar[]
+  Author               User?                  @relation(fields: [authorId], references: [id])
+  authorId             String?
+}
+
+model ForumMaster_KategoriReport {
+  id                   String                 @id @default(cuid())
+  isActive             Boolean                @default(true)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  kategori             String
+  Forum_ReportPosting  Forum_ReportPosting[]
+  Forum_ReportKomentar Forum_ReportKomentar[]
+}
+
+model Forum_ReportPosting {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ForumMaster_KategoriReport   ForumMaster_KategoriReport? @relation(fields: [forumMaster_KategoriReportId], references: [id])
+  forumMaster_KategoriReportId String?
+  Forum_Posting                Forum_Posting?              @relation(fields: [forum_PostingId], references: [id])
+  forum_PostingId              String?
+  deskripsi                    String?
+  User                         User?                       @relation(fields: [userId], references: [id])
+  userId                       String?
+}
+
+model Forum_ReportKomentar {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ForumMaster_KategoriReport   ForumMaster_KategoriReport? @relation(fields: [forumMaster_KategoriReportId], references: [id])
+  forumMaster_KategoriReportId String?
+  Forum_Komentar               Forum_Komentar?             @relation(fields: [forum_KomentarId], references: [id])
+  forum_KomentarId             String?
+  deskripsi                    String?
+  User                         User?                       @relation(fields: [userId], references: [id])
+  userId                       String?
 }

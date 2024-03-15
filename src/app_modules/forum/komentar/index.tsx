@@ -10,7 +10,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import ComponentForum_AuthorNameOnHeader from "../component/author_header_name";
+import ComponentForum_PostingAuthorNameOnHeader from "../component/header/posting_author_header_name";
 
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
@@ -23,64 +23,91 @@ const ReactQuill = dynamic(
 import "react-quill/dist/quill.bubble.css";
 import { IconPhotoUp } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { MODEL_FORUM_POSTING } from "../model/interface";
+import { forum_funCreateKomentar } from "../fun/create/fun_create_komentra";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 
-export default function Forum_Komentar({ forumId }: { forumId: string }) {
-  const [value, setValue] = useState("");
-
+export default function Forum_Komentar({
+  dataPosting,
+}: {
+  dataPosting: MODEL_FORUM_POSTING;
+}) {
   return (
     <>
       <Stack px={"sm"}>
         <Card>
           <Card.Section>
-            <ComponentForum_AuthorNameOnHeader
-              forumId={forumId}
-              tipe="komentar"
+            <ComponentForum_PostingAuthorNameOnHeader
+              authorId={dataPosting?.Author?.id}
+              authorName={dataPosting?.Author?.Profile?.name}
+              imagesId={dataPosting?.Author?.Profile?.imagesId}
+              postingId={dataPosting?.id}
+              tglPublish={dataPosting?.createdAt}
             />
           </Card.Section>
           <Card.Section sx={{ zIndex: 0 }} p={"sm"}>
             <Stack spacing={"xs"}>
               <Text fz={"sm"}>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad,
-                vitae. Quisquam aspernatur, eius consequatur dicta repellendus
-                facere vero recusandae deleniti voluptas quod architecto,
-                tenetur totam excepturi rem nam iusto earum.
+                {dataPosting?.diskusi ? (
+                  <div
+                    dangerouslySetInnerHTML={{ __html: dataPosting?.diskusi }}
+                  />
+                ) : (
+                  ""
+                )}
               </Text>
             </Stack>
           </Card.Section>
         </Card>
-        <Stack>
-          <Paper withBorder shadow="lg">
-            <ReactQuill
-              theme="bubble"
-              placeholder="Posting balasan anda?"
-              //   style={{ height: 150 }}
-              onChange={(val) => {
-                setValue(val);
-              }}
-            />
-          </Paper>
-          <Group position="right">
-            {/* <ActionIcon>
-              <IconPhotoUp />
-            </ActionIcon> */}
-            <ButtonAction forumId={forumId} />
-          </Group>
-        </Stack>
+        <CreateKomentar postingId={dataPosting?.id} />
       </Stack>
     </>
   );
 }
 
-function ButtonAction({ forumId }: { forumId: string }) {
+function CreateKomentar({ postingId }: { postingId: string }) {
   const router = useRouter();
+  const [value, setValue] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function onComment() {
+    await forum_funCreateKomentar(postingId, value).then((res) => {
+      if (res.status === 201) {
+        setLoading(true);
+        ComponentGlobal_NotifikasiBerhasil(res.message);
+        router.replace(RouterForum.main_detail + postingId, {scroll: false});
+        router.refresh()
+      } else {
+        ComponentGlobal_NotifikasiGagal(res.message);
+      }
+    });
+  }
+
   return (
     <>
-      <Button
-        radius={"xl"}
-        onClick={() => router.replace(RouterForum.main_detail + forumId)}
-      >
-        Balas
-      </Button>
+      <Stack>
+        <Paper withBorder shadow="lg">
+          <ReactQuill
+            theme="bubble"
+            placeholder="Ketik komentar anda?"
+            //   style={{ height: 150 }}
+            onChange={(val) => {
+              setValue(val);
+            }}
+          />
+        </Paper>
+        <Group position="right">
+          <Button
+            loaderPosition="center"
+            loading={loading ? true : false}
+            radius={"xl"}
+            onClick={() => onComment()}
+          >
+            Balas
+          </Button>
+        </Group>
+      </Stack>
     </>
   );
 }

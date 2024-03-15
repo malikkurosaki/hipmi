@@ -1,6 +1,15 @@
 "use client";
 
-import { Header, Group, ActionIcon, Text, Title } from "@mantine/core";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import {
+  Header,
+  Group,
+  ActionIcon,
+  Text,
+  Title,
+  Center,
+  Loader,
+} from "@mantine/core";
 import { IconArrowLeft, IconChevronLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -23,6 +32,9 @@ export default function ComponentForum_HeaderTamplate({
   bg?: any;
 }) {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  if (loading) return <ComponentGlobal_V2_LoadingPage />;
+  
   return (
     <>
       <Header
@@ -37,6 +49,7 @@ export default function ComponentForum_HeaderTamplate({
             <ActionIcon
               variant="transparent"
               onClick={() => {
+                setLoading(true);
                 if (route === null || route === undefined) {
                   return router.back();
                 } else {

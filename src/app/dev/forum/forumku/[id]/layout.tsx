@@ -5,10 +5,12 @@ import React from "react";
 
 export default async function Layout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: { id: string };
 }) {
-  const authorId = await User_getUserId();
+  const authorId = params.id;
   const dataAuthor = await user_getOneById(authorId);
 
   return (

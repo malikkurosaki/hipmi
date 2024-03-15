@@ -21,27 +21,27 @@ import {
   IconMessageCircle,
 } from "@tabler/icons-react";
 import { IconCircle } from "@tabler/icons-react";
-import ButtonMore from "./button_more";
+import ComponentForum_PostingButtonMore from "../more_button/posting_button_more";
+import ComponentForum_DetailMoreButton from "../more_button/detail_more_button";
 
-export default function ComponentForum_AuthorNameOnDetail({
-  forumId,
+export default function ComponentForum_DetailOnHeaderAuthorName({
+  authorId,
+  postingId,
   imagesId,
   authorName,
   username,
-  tglPublish,
   isPembatas,
-  tipe,
 }: {
-  forumId?: string;
+  authorId?: string
+  postingId?: string;
   imagesId?: string;
   authorName?: string;
   username?: string;
   tglPublish?: Date;
   isPembatas?: boolean;
-  tipe: string
 }) {
   const router = useRouter();
-  const skrng = new Date();
+
   return (
     <>
       <Stack spacing={"xs"}>
@@ -49,8 +49,8 @@ export default function ComponentForum_AuthorNameOnDetail({
           <Grid.Col
             span={"content"}
             onClick={() => {
-              if (forumId) {
-                router.push(RouterForum.forumku + forumId);
+              if (authorId) {
+                router.push(RouterForum.forumku + authorId);
               } else {
                 ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
               }
@@ -74,7 +74,7 @@ export default function ComponentForum_AuthorNameOnDetail({
                 {authorName ? authorName : "Nama author "}
               </Text>
               <Text lineClamp={1} fz={"xs"} c={"gray"}>
-                {username ? username : "@username "}
+                {username ? `@${username}` : "@username "}
               </Text>
             </Stack>
 
@@ -104,7 +104,10 @@ export default function ComponentForum_AuthorNameOnDetail({
             </Stack> */}
           </Grid.Col>
           <Grid.Col span={"content"}>
-           <ButtonMore id={forumId} tipe="posting"/>
+            <ComponentForum_DetailMoreButton
+              postingId={postingId}
+              authorId={authorId}
+            />
           </Grid.Col>
         </Grid>
         {isPembatas ? <Divider /> : ""}

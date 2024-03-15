@@ -1,21 +1,7 @@
 "use client";
 
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import {
-  Stack,
-  Grid,
-  Avatar,
-  Divider,
-  Text,
-  Group,
-  ThemeIcon,
-  ActionIcon,
-  Drawer,
-  Paper,
-  Button,
-  Modal,
-  Title,
-} from "@mantine/core";
+import { Stack, Grid, Avatar, Divider, Text, Group } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import moment from "moment";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
@@ -32,29 +18,26 @@ import { IconCircle } from "@tabler/icons-react";
 import { IoIosMore } from "react-icons/io";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
-import ButtonMore from "./button_more";
+import ComponentForum_PostingButtonMore from "../more_button/posting_button_more";
 
-export default function ComponentForum_AuthorNameOnHeader({
-  forumId,
+export default function ComponentForum_PostingAuthorNameOnHeader({
+  authorId,
+  postingId,
   imagesId,
   authorName,
-  username,
   tglPublish,
   isPembatas,
-  tipe,
   isMoreButton,
 }: {
-  forumId?: string;
+  authorId?: string;
+  postingId?: string;
   imagesId?: string;
   authorName?: string;
-  username?: string;
   tglPublish?: Date;
   isPembatas?: boolean;
-  tipe: string;
   isMoreButton?: boolean;
 }) {
   const router = useRouter();
-  const skrng = new Date();
   return (
     <>
       <Stack spacing={"xs"}>
@@ -62,8 +45,8 @@ export default function ComponentForum_AuthorNameOnHeader({
           <Grid.Col
             span={"content"}
             onClick={() => {
-              if (forumId) {
-                router.push(RouterForum.forumku + forumId);
+              if (authorId) {
+                router.push(RouterForum.forumku + authorId);
               } else {
                 ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
               }
@@ -104,11 +87,15 @@ export default function ComponentForum_AuthorNameOnHeader({
             <Group position="center" spacing={"xs"}>
               <Group spacing={3}>
                 <Text c={"gray"} fz={"sm"}>
-                  {skrng.toLocaleDateString(["id-ID"], {
-                    // dateStyle: "medium",
-                    day: "numeric",
-                    month: "short",
-                  })}
+                  {tglPublish
+                    ? tglPublish.toLocaleDateString(["id-ID"], {
+                        day: "numeric",
+                        month: "short",
+                      })
+                    : new Date().toLocaleDateString(["id-ID"], {
+                        day: "numeric",
+                        month: "short",
+                      })}
                   <IconCircle
                     size={5}
                     color="gray"
@@ -118,7 +105,10 @@ export default function ComponentForum_AuthorNameOnHeader({
               </Group>
               {isMoreButton ? (
                 <Group position="right">
-                  <ButtonMore id={forumId} tipe={tipe} />
+                  <ComponentForum_PostingButtonMore
+                    authorId={authorId}
+                    postingId={postingId as any}
+                  />
                 </Group>
               ) : (
                 ""

@@ -1,17 +1,24 @@
 "use client";
 
 import { ActionIcon, AppShell, Group, Header, Title } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 import ComponentForum_HeaderTamplate from "../component/header/header_tamplate";
 import { useRouter } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import { revalidatePath } from "next/cache";
 
+export const dynamic = "force-dynamic";
 export default function LayoutForum_Detail({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  if (loading) return <ComponentGlobal_V2_LoadingPage />;
+
   return (
     <>
       <AppShell
@@ -19,8 +26,11 @@ export default function LayoutForum_Detail({
           <Header height={50} sx={{ borderStyle: "none" }}>
             <Group h={50} px={"md"}>
               <ActionIcon
+                loading={loading ? true : false}
                 variant="transparent"
                 onClick={() => {
+                  setLoading(true);
+                  // revalidatePath("/dev/forum/main");
                   router.back();
                 }}
               >
