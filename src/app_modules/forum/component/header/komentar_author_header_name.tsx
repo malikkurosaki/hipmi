@@ -31,6 +31,7 @@ export default function ComponentForum_KomentarAuthorNameOnHeader({
   isMoreButton,
   setKomentar,
   postingId,
+  userLoginId,
 }: {
   userId?: string;
   komentarId?: string;
@@ -40,7 +41,8 @@ export default function ComponentForum_KomentarAuthorNameOnHeader({
   isPembatas?: boolean;
   isMoreButton?: boolean;
   setKomentar?: any;
-  postingId?: string
+  postingId?: string;
+  userLoginId: string
 }) {
   const router = useRouter();
 
@@ -117,6 +119,7 @@ export default function ComponentForum_KomentarAuthorNameOnHeader({
                     komentarId={komentarId}
                     setKomentar={setKomentar}
                     postingId={postingId}
+                    userLoginId={userLoginId}
                   />
                 </Group>
               ) : (

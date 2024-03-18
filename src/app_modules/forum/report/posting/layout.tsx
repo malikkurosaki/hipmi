@@ -16,7 +16,7 @@ export default function LayoutForum_ReportPosting({
     <>
       <AppShell
         header={
-          <ComponentForum_HeaderRataKiri title="Mengumpulkan Informasi Posting"/>
+          <ComponentForum_HeaderRataKiri title="Mengumpulkan Informasi Posting" />
         }
       >
         {children}

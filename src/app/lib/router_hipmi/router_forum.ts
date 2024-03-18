@@ -21,4 +21,6 @@ export const RouterForum = {
   //report
   report_posting: "/dev/forum/report/posting/",
   report_komentar: "/dev/forum/report/komentar/",
+  report_posting_lainnya: "/dev/forum/report/posting-lainnya/",
+  report_komentar_lainnya: "/dev/forum/report/komentar-lainnya/",
 };

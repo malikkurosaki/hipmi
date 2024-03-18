@@ -25,7 +25,7 @@ import dynamic from "next/dynamic";
 import React, { useState } from "react";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { forum_funCreateKomentar } from "../fun/create/fun_create_komentra";
+import { forum_funCreateKomentar } from "../fun/create/fun_create_komentar";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");
@@ -39,10 +39,12 @@ export default function Forum_Detail({
   dataPosting,
   listKomentar,
   totalKomentar,
+  userLoginId,
 }: {
   dataPosting: MODEL_FORUM_POSTING;
   listKomentar: MODEL_FORUM_KOMENTAR[];
-  totalKomentar: number
+  totalKomentar: number;
+  userLoginId: string
 }) {
   const [komentar, setKomentar] = useState(listKomentar);
 
@@ -55,6 +57,7 @@ export default function Forum_Detail({
           listKomentar={komentar}
           setKomentar={setKomentar}
           postingId={dataPosting?.id}
+          userLoginId={userLoginId}
         />
       </Stack>
     </>
@@ -194,10 +197,12 @@ function KomentarView({
   listKomentar,
   setKomentar,
   postingId,
+  userLoginId,
 }: {
   listKomentar: MODEL_FORUM_KOMENTAR[];
   setKomentar: any;
-  postingId: string
+  postingId: string;
+  userLoginId: string
 }) {
   return (
     <>
@@ -221,6 +226,7 @@ function KomentarView({
                   isMoreButton={true}
                   setKomentar={setKomentar}
                   postingId={postingId}
+                  userLoginId={userLoginId}
                 />
               </Card.Section>
               <Card.Section sx={{ zIndex: 0 }} p={"sm"}>

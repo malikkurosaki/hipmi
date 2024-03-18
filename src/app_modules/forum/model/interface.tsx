@@ -9,7 +9,7 @@ export interface MODEL_FORUM_POSTING {
   diskusi: string;
   authorId: string;
   Author: MODEL_USER;
-  _count: number
+  _count: number;
 }
 
 export interface MODEL_FORUM_KOMENTAR {
@@ -20,5 +20,14 @@ export interface MODEL_FORUM_KOMENTAR {
   komentar: string;
   forum_PostingId: string;
   authorId: string;
-  Author: MODEL_USER
+  Author: MODEL_USER;
+}
+
+export interface MODEL_FORUM_REPORT {
+  id: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  title: string;
+  deskripsi: string;
 }

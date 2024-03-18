@@ -24,7 +24,7 @@ import "react-quill/dist/quill.bubble.css";
 import { IconPhotoUp } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { MODEL_FORUM_POSTING } from "../model/interface";
-import { forum_funCreateKomentar } from "../fun/create/fun_create_komentra";
+import { forum_funCreateKomentar } from "../fun/create/fun_create_komentar";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 

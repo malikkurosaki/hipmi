@@ -37,16 +37,17 @@ export default function ComponentForum_KomentarButtonMore({
   komentarId,
   setKomentar,
   postingId,
+  userLoginId,
 }: {
   userId: any;
   komentarId: any;
   setKomentar?: any;
   postingId?: string;
+  userLoginId: string
 }) {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
   const [openDel, setOpenDel] = useState(false);
-  const [userLoginId, setUserLoginId] = useState("");
 
   // loading
   const [loadingEdit, setLoadingEdit] = useState(false);
@@ -54,14 +55,7 @@ export default function ComponentForum_KomentarButtonMore({
 
   //   if (loadingEdit) return <ComponentGlobal_V2_LoadingPage />;
 
-  useShallowEffect(() => {
-    getUserLoginId();
-  }, []);
-
-  async function getUserLoginId() {
-    const getUserLoginId = await User_getUserId();
-    setUserLoginId(getUserLoginId);
-  }
+ 
 
   return (
     <>

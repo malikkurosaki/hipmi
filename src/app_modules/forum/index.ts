@@ -17,6 +17,8 @@ import Forum_EditKomentar from "./edit/komentar";
 import LayoutForum_EditKomentar from "./edit/komentar/layout";
 import Forum_ReportKomentar from "./report/komentar";
 import LayoutForum_ReportKomentar from "./report/komentar/layout";
+import Forum_ReportPostingLainnya from "./report/posting/lainnya";
+import Forum_ReportKomentarLainnya from "./report/komentar/lainnya";
 
 export {
   Forum_Splash,
@@ -38,4 +40,6 @@ export {
   LayoutForum_EditKomentar as LaoyoutForum_EditKomentar,
   Forum_ReportKomentar,
   LayoutForum_ReportKomentar,
+  Forum_ReportPostingLainnya,
+  Forum_ReportKomentarLainnya,
 };

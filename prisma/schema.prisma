@@ -668,11 +668,12 @@ model Forum_Komentar {
 }
 
 model ForumMaster_KategoriReport {
-  id                   String                 @id @default(cuid())
+  id                   Int                    @id @default(autoincrement())
   isActive             Boolean                @default(true)
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
-  kategori             String
+  title                String
+  deskripsi            String                 @db.Text
   Forum_ReportPosting  Forum_ReportPosting[]
   Forum_ReportKomentar Forum_ReportKomentar[]
 }
@@ -682,12 +683,12 @@ model Forum_ReportPosting {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deskripsi String?  @db.Text
 
   ForumMaster_KategoriReport   ForumMaster_KategoriReport? @relation(fields: [forumMaster_KategoriReportId], references: [id])
-  forumMaster_KategoriReportId String?
+  forumMaster_KategoriReportId Int?
   Forum_Posting                Forum_Posting?              @relation(fields: [forum_PostingId], references: [id])
   forum_PostingId              String?
-  deskripsi                    String?
   User                         User?                       @relation(fields: [userId], references: [id])
   userId                       String?
 }
@@ -697,12 +698,12 @@ model Forum_ReportKomentar {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deskripsi String?  @db.Text
 
   ForumMaster_KategoriReport   ForumMaster_KategoriReport? @relation(fields: [forumMaster_KategoriReportId], references: [id])
-  forumMaster_KategoriReportId String?
+  forumMaster_KategoriReportId Int?
   Forum_Komentar               Forum_Komentar?             @relation(fields: [forum_KomentarId], references: [id])
   forum_KomentarId             String?
-  deskripsi                    String?
   User                         User?                       @relation(fields: [userId], references: [id])
   userId                       String?
 }
