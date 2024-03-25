@@ -30,6 +30,7 @@ export async function forum_getListPostingByAuhtorId(authorId: string) {
           isActive: true,
         },
       },
+     ForumMaster_StatusPosting: true 
     },
   });
 

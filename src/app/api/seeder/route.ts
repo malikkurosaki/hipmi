@@ -20,6 +20,7 @@ import event_tipe_acara from "../../../bin/seeder/event/master_tipe_acara.json";
 import voting_status from "../../../bin/seeder/voting/master_status.json";
 import master_status from "../../../bin/seeder/master_status.json";
 import forum_kategori_report from "../../../bin/seeder/forum/master_report.json";
+import forum_status_posting from "../../../bin/seeder/forum/master_status.json";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
@@ -341,6 +342,20 @@ export async function GET(req: Request) {
         update: {
           title: m.title,
           deskripsi: m.deskripsi,
+        },
+      });
+    }
+
+    for (let s of forum_status_posting) {
+      await prisma.forumMaster_StatusPosting.upsert({
+        where: {
+          id: s.id,
+        },
+        create: {
+          status: s.status,
+        },
+        update: {
+          status: s.status,
         },
       });
     }

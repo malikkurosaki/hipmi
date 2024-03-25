@@ -14,12 +14,16 @@ import {
   Divider,
   Group,
   Box,
+  TextInput,
+  Center,
 } from "@mantine/core";
 import { useShallowEffect, useTimeout, useWindowScroll } from "@mantine/hooks";
 import {
   IconCirclePlus,
   IconMessageCircle,
   IconPencilPlus,
+  IconSearch,
+  IconSearchOff,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import ComponentForum_PostingAuthorNameOnHeader from "../component/header/posting_author_header_name";
@@ -29,13 +33,19 @@ import { useAtom } from "jotai";
 import { gs_forum_loading_edit_posting } from "../global_state";
 import { MODEL_FORUM_POSTING } from "../model/interface";
 import ComponentForum_MainCardView from "../component/main_card_view";
+import { forum_getListAllPosting } from "../fun/get/get_list_all_posting";
+import { forum_funSearchListPosting } from "../fun/search/fun_search_list_posting";
+import _ from "lodash";
 
 export default function Forum_Beranda({
   listForum,
+  userLoginId,
 }: {
   listForum: MODEL_FORUM_POSTING[];
+  userLoginId: string;
 }) {
   const router = useRouter();
+  const [data, setData] = useState(listForum);
   const [scroll, scrollTo] = useWindowScroll();
 
   const [loadingCreate, setLoadingCreate] = useState(false);
@@ -45,9 +55,15 @@ export default function Forum_Beranda({
   if (loadingDetail) return <ComponentGlobal_V2_LoadingPage />;
   if (loadingKomen) return <ComponentGlobal_V2_LoadingPage />;
 
+  async function onSearch(text: string) {
+    await forum_funSearchListPosting(text).then((res: any) => {
+      setData(res);
+    });
+  }
+
   return (
     <>
-    {/* <pre>{JSON.stringify(listForum, null, 2)}</pre> */}
+      {/* <pre>{JSON.stringify(listForum, null, 2)}</pre> */}
       <Affix position={{ bottom: rem(100), right: rem(30) }}>
         <ActionIcon
           loading={loadingCreate ? true : false}
@@ -68,67 +84,35 @@ export default function Forum_Beranda({
         </ActionIcon>
       </Affix>
 
-      <Box px={"sm"}>
-        <ComponentForum_MainCardView
-          data={listForum}
-          setLoadingKomen={setLoadingKomen}
-          setLoadingDetail={setLoadingDetail}
+      <Stack px={"sm"} spacing={"xl"}>
+        <TextInput
+          radius={"xl"}
+          placeholder="Topik forum apa yang anda cari hari ini ?"
+          onChange={(val) => {
+            onSearch(val.currentTarget.value);
+          }}
         />
-      </Box>
-
-      {/* <Stack px={"sm"}>
-        {listForum.map((e, i) => (
-          <Card key={i}>
-            <Card.Section>
-              <ComponentForum_PostingAuthorNameOnHeader
-                authorName={e?.Author?.Profile?.name}
-                imagesId={e?.Author?.Profile?.imagesId}
-                tglPublish={e?.createdAt}
-                isMoreButton={true}
-                authorId={e?.Author?.id}
-                postingId={e?.id}
-              />
-            </Card.Section>
-            <Card.Section
-              sx={{ zIndex: 0 }}
-              p={"sm"}
-              onClick={() => {
-                // console.log("halaman forum");
-                setLoadingDetail(true);
-                router.push(RouterForum.main_detail + e.id);
-              }}
-            >
-              <Stack spacing={"xs"}>
-                <Text fz={"sm"} lineClamp={4}>
-                  <div dangerouslySetInnerHTML={{ __html: e.diskusi }} />
-                </Text>
-              </Stack>
-            </Card.Section>
-            <Card.Section>
-              <Stack>
-                <Group spacing={"xs"} px={"sm"}>
-                  <ActionIcon
-                    // loading={loadingKomen ? true : false}
-                    variant="transparent"
-                    sx={{ zIndex: 1 }}
-                    onClick={() => {
-                      setLoadingKomen(true);
-                      router.push(RouterForum.komentar + e.id);
-                    }}
-                  >
-                    <IconMessageCircle color="gray" size={25} />
-                  </ActionIcon>
-
-                  <TotalKomentar postingId={e?.id} />
-                </Group>
-                <Divider />
-              </Stack>
-            </Card.Section>
-          </Card>
-        ))}
-      </Stack> */}
+        {_.isEmpty(data) ? (
+          <Stack align="center" justify="center" h={"80vh"}>
+            <IconSearchOff size={80} color="gray" />
+            <Stack spacing={0} align="center">
+              <Text c={"gray"} fw={"bold"} fz={"xs"}>
+                Forum tidak ditemukan
+              </Text>
+              <Text c={"gray"} fw={"bold"} fz={"xs"}>
+                Coba masukan kata yang bebeda
+              </Text>
+            </Stack>
+          </Stack>
+        ) : (
+          <ComponentForum_MainCardView
+            data={data}
+            setLoadingKomen={setLoadingKomen}
+            setLoadingDetail={setLoadingDetail}
+            userLoginId={userLoginId}
+          />
+        )}
+      </Stack>
     </>
   );
 }
-
-

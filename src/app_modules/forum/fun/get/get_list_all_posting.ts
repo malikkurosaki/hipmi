@@ -7,11 +7,17 @@ import { forum_countTotalKomenById } from "../count/count_total_komentar_by_id";
 
 export async function forum_getListAllPosting() {
   const get = await prisma.forum_Posting.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy: [
+      // {
+      //   forumMaster_StatusPostingId: "asc",
+      // },
+      {
+        createdAt: "desc",
+      },
+    ],
     where: {
       isActive: true,
+      // forumMaster_StatusPostingId: 1
     },
     select: {
       id: true,
@@ -30,6 +36,7 @@ export async function forum_getListAllPosting() {
           isActive: true,
         },
       },
+      ForumMaster_StatusPosting: true,
       // _count: {
       //   select: {
       //     Forum_Komentar: true,
@@ -38,17 +45,10 @@ export async function forum_getListAllPosting() {
     },
   });
 
-  // const data = get.map((v) => ({
-  //   ..._.omit(v, ['Forum_Komentar']),
-  //   total_coment: v.Forum_Komentar.filter((v) => v.isActive).length,
-  // }));
-
   const data = get.map((val) => ({
     ..._.omit(val, ["Forum_Komentar"]),
     _count: val.Forum_Komentar.length,
   }));
-
-  // console.log(JSON.stringify(data, null, 2));
 
   return data;
 }

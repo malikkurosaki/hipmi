@@ -640,26 +640,38 @@ model Job {
   masterStatusId String?       @default("2")
 }
 
+// ========================================= FORUM ========================================= //
+
+model ForumMaster_StatusPosting {
+  id            Int             @id @default(autoincrement())
+  isActive      Boolean         @default(true)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  status        String
+  Forum_Posting Forum_Posting[]
+}
+
 model Forum_Posting {
-  id                  String                @id @default(cuid())
-  isActive            Boolean               @default(true)
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
-  publishAt           DateTime?
-  diskusi             String                @db.Text
-  Forum_Komentar      Forum_Komentar[]
-  Forum_ReportPosting Forum_ReportPosting[]
-  Author              User?                 @relation(fields: [authorId], references: [id])
-  authorId            String?
+  id                          String                     @id @default(cuid())
+  isActive                    Boolean                    @default(true)
+  createdAt                   DateTime                   @default(now())
+  updatedAt                   DateTime                   @updatedAt
+  publishAt                   DateTime?
+  diskusi                     String                     @db.Text
+  Forum_Komentar              Forum_Komentar[]
+  Forum_ReportPosting         Forum_ReportPosting[]
+  Author                      User?                      @relation(fields: [authorId], references: [id])
+  authorId                    String?
+  ForumMaster_StatusPosting   ForumMaster_StatusPosting? @relation(fields: [forumMaster_StatusPostingId], references: [id])
+  forumMaster_StatusPostingId Int?
 }
 
 model Forum_Komentar {
-  id        String   @id @default(cuid())
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  komentar  String   @db.Text
-
+  id                   String                 @id @default(cuid())
+  isActive             Boolean                @default(true)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  komentar             String                 @db.Text
   Forum_Posting        Forum_Posting?         @relation(fields: [forum_PostingId], references: [id])
   forum_PostingId      String?
   Forum_ReportKomentar Forum_ReportKomentar[]

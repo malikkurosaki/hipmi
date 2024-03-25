@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Button, Paper, Radio, Stack, Text, Title } from "@mantine/core";
-import { MODEL_FORUM_REPORT } from "../../model/interface";
+import { MODEL_FORUM_MASTER_REPORT } from "../../model/interface";
 import { useState } from "react";
 import { forum_funCreateReportPosting } from "../../fun/create/fun_create_report_posting";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
@@ -15,7 +15,7 @@ export default function Forum_ReportKomentar({
   listReport,
 }: {
   komentarId: string;
-  listReport: MODEL_FORUM_REPORT[];
+  listReport: MODEL_FORUM_MASTER_REPORT[];
 }) {
   const [reportValue, setReportValue] = useState("Kebencian");
 

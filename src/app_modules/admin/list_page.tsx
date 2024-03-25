@@ -1,4 +1,5 @@
 import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
+import { RouterAdminForum } from "@/app/lib/router_admin/router_admin_forum";
 import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
 import { RouterAdminVote } from "@/app/lib/router_admin/router_admin_vote";
 import {
@@ -6,7 +7,7 @@ import {
   RouterAdminDonasi,
   RouterAdminInvestasi,
 } from "@/app/lib/router_hipmi/router_admin";
-import { IconBriefcase } from "@tabler/icons-react";
+import { IconBriefcase, IconMessages } from "@tabler/icons-react";
 import {
   IconHeartHandshake,
   IconHome,
@@ -139,6 +140,34 @@ export const listAdminPage = [
         id: 65,
         name: "Arsip",
         path: RouterAdminJob.arsip,
+      },
+    ],
+  },
+  {
+    id: 7,
+    name: "Forum",
+    path: "",
+    icon: <IconMessages />,
+    child: [
+      {
+        id: 71,
+        name: "Dashboard",
+        path: RouterAdminForum.main,
+      },
+      {
+        id: 72,
+        name: "Table Posting",
+        path: RouterAdminForum.publish,
+      },
+      {
+        id: 73,
+        name: "Laporan Posting",
+        path: RouterAdminForum.report_posting,
+      },
+      {
+        id: 74,
+        name: "Laporan Komentar",
+        path: RouterAdminForum.report_komentar,
       },
     ],
   },

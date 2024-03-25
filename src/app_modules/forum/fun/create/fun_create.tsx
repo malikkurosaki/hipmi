@@ -11,6 +11,7 @@ export async function forum_funCreate(value: string) {
     data: {
       diskusi: value,
       authorId: AuthorId,
+      forumMaster_StatusPostingId: 1
     },
   });
 

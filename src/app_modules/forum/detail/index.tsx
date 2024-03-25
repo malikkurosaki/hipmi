@@ -44,15 +44,26 @@ export default function Forum_Detail({
   dataPosting: MODEL_FORUM_POSTING;
   listKomentar: MODEL_FORUM_KOMENTAR[];
   totalKomentar: number;
-  userLoginId: string
+  userLoginId: string;
 }) {
   const [komentar, setKomentar] = useState(listKomentar);
 
   return (
     <>
       <Stack px={"xs"}>
-        <ForumView dataPosting={dataPosting} totalKomentar={totalKomentar} />
-        <CreateKomentar postingId={dataPosting?.id} setKomentar={setKomentar} />
+        <ForumView
+          dataPosting={dataPosting}
+          totalKomentar={totalKomentar}
+          userLoginId={userLoginId}
+        />
+        {(dataPosting?.ForumMaster_StatusPosting?.id as any) === 1 ? (
+          <CreateKomentar
+            postingId={dataPosting?.id}
+            setKomentar={setKomentar}
+          />
+        ) : (
+          ""
+        )}
         <KomentarView
           listKomentar={komentar}
           setKomentar={setKomentar}
@@ -67,15 +78,17 @@ export default function Forum_Detail({
 function ForumView({
   dataPosting,
   totalKomentar,
+  userLoginId,
 }: {
   dataPosting: MODEL_FORUM_POSTING;
-  totalKomentar: number
+  totalKomentar: number;
+  userLoginId: string;
 }) {
-
   return (
     <>
       <Card style={{ position: "relative", width: "100%" }}>
         <Card.Section>
+          {/* <pre>{JSON.stringify(dataPosting, null, 2)}</pre> */}
           <ComponentForum_DetailOnHeaderAuthorName
             authorId={dataPosting?.Author?.id}
             authorName={dataPosting?.Author?.Profile?.name}
@@ -83,6 +96,8 @@ function ForumView({
             imagesId={dataPosting?.Author?.Profile?.imagesId}
             postingId={dataPosting?.id}
             tglPublish={dataPosting?.createdAt}
+            userLoginId={userLoginId}
+            statusId={dataPosting?.ForumMaster_StatusPosting?.id}
           />
         </Card.Section>
         <Card.Section sx={{ zIndex: 0 }} py={"sm"}>
@@ -202,7 +217,7 @@ function KomentarView({
   listKomentar: MODEL_FORUM_KOMENTAR[];
   setKomentar: any;
   postingId: string;
-  userLoginId: string
+  userLoginId: string;
 }) {
   return (
     <>

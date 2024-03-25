@@ -30,20 +30,25 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/
 
 export default function Forum_Komentar({
   dataPosting,
+  userLoginId,
 }: {
   dataPosting: MODEL_FORUM_POSTING;
+  userLoginId: any
 }) {
   return (
     <>
       <Stack px={"sm"}>
         <Card>
           <Card.Section>
+            {/* <pre>{JSON.stringify(dataPosting, null, 2)}</pre> */}
             <ComponentForum_PostingAuthorNameOnHeader
               authorId={dataPosting?.Author?.id}
               authorName={dataPosting?.Author?.Profile?.name}
               imagesId={dataPosting?.Author?.Profile?.imagesId}
               postingId={dataPosting?.id}
               tglPublish={dataPosting?.createdAt}
+              statusId={dataPosting?.ForumMaster_StatusPosting?.id}
+              userLoginId={userLoginId}
             />
           </Card.Section>
           <Card.Section sx={{ zIndex: 0 }} p={"sm"}>
@@ -76,8 +81,8 @@ function CreateKomentar({ postingId }: { postingId: string }) {
       if (res.status === 201) {
         setLoading(true);
         ComponentGlobal_NotifikasiBerhasil(res.message);
-        router.replace(RouterForum.main_detail + postingId, {scroll: false});
-        router.refresh()
+        router.replace(RouterForum.main_detail + postingId, { scroll: false });
+        router.refresh();
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }

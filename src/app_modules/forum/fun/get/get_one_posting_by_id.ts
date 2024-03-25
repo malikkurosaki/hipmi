@@ -25,6 +25,8 @@ export async function forum_getOnePostingById(postingId: string) {
           Forum_Komentar: true,
         },
       },
+      ForumMaster_StatusPosting: true
+    
     },
   });
 

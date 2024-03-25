@@ -17,7 +17,14 @@ import {
   Loader,
 } from "@mantine/core";
 import { useDisclosure, useShallowEffect } from "@mantine/hooks";
-import { IconTrash, IconEdit, IconFlag3, IconDots } from "@tabler/icons-react";
+import {
+  IconTrash,
+  IconEdit,
+  IconFlag3,
+  IconDots,
+  IconSquareRoundedX,
+  IconSquareCheck,
+} from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -29,33 +36,31 @@ import ComponentForum_LoadingDrawer from "../loading_drawer";
 import { User_getUserId } from "@/app_modules/fun_global/get_user_token";
 import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { forum_funEditStatusPostingById } from "../../fun/edit/fun_edit_status_posting_by_id";
 
 export default function ComponentForum_PostingButtonMore({
   authorId,
   postingId,
+  statusId,
+  userLoginId,
 }: {
   authorId: any;
   postingId?: any;
+  statusId?: any;
+  userLoginId: any;
 }) {
   const router = useRouter();
+
+  // modal & drawer
   const [opened, { open, close }] = useDisclosure(false);
   const [openDel, setOpenDel] = useState(false);
-  const [userLoginId, setUserLoginId] = useState("");
+  const [openStatusClose, setOpenStatusClose] = useState(false);
 
   // loading
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [loadingReport, setLoadingReport] = useState(false);
 
   //   if (loadingEdit) return <ComponentGlobal_V2_LoadingPage />;
-
-  useShallowEffect(() => {
-    getUserLoginId();
-  }, []);
-
-  async function getUserLoginId() {
-    const getUserLoginId = await User_getUserId();
-    setUserLoginId(getUserLoginId);
-  }
 
   return (
     <>
@@ -73,6 +78,28 @@ export default function ComponentForum_PostingButtonMore({
             ""
           ) : (
             <Stack>
+              <Grid
+                onClick={() => {
+                  close();
+                  setOpenStatusClose(true);
+                }}
+              >
+                <Grid.Col span={"content"}>
+                  {statusId === 1 ? (
+                    <IconSquareRoundedX color="red" />
+                  ) : (
+                    <IconSquareCheck />
+                  )}
+                </Grid.Col>
+                <Grid.Col span={"auto"}>
+                  {statusId === 1 ? (
+                    <Text c={"red"}>Tutup forum</Text>
+                  ) : (
+                    <Text>Buka forum</Text>
+                  )}
+                </Grid.Col>
+              </Grid>
+
               <Grid
                 onClick={() => {
                   close();
@@ -146,6 +173,19 @@ export default function ComponentForum_PostingButtonMore({
         <ButtonDelete postingId={postingId} setOpenDel={setOpenDel} />
       </Modal>
 
+      <Modal
+        opened={openStatusClose}
+        onClose={() => setOpenStatusClose(false)}
+        centered
+        withCloseButton={false}
+      >
+        <ButtonStatus
+          postingId={postingId}
+          setOpenStatus={setOpenStatusClose}
+          statusId={statusId}
+        />
+      </Modal>
+
       <ActionIcon variant="transparent" onClick={() => open()}>
         <IconDots size={20} />
       </ActionIcon>
@@ -160,18 +200,18 @@ function ButtonDelete({
   postingId?: string;
   setOpenDel: any;
 }) {
-   const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function onDelete() {
     setOpenDel(false);
-     await forum_funDeletePostingById(postingId as any).then((res) => {
-       if (res.status === 200) {
-         ComponentGlobal_NotifikasiBerhasil(`Postingan Terhapus`, 2000);
-         setLoading(true)
-       } else {
-         ComponentGlobal_NotifikasiGagal(res.message);
-       }
-     });
+    await forum_funDeletePostingById(postingId as any).then((res) => {
+      if (res.status === 200) {
+        ComponentGlobal_NotifikasiBerhasil(`Postingan Terhapus`, 2000);
+        setLoading(true);
+      } else {
+        ComponentGlobal_NotifikasiGagal(res.message);
+      }
+    });
   }
   return (
     <>
@@ -192,6 +232,87 @@ function ButtonDelete({
           >
             Hapus
           </Button>
+        </Group>
+      </Stack>
+    </>
+  );
+}
+
+function ButtonStatus({
+  postingId,
+  setOpenStatus,
+  statusId,
+}: {
+  postingId?: string;
+  setOpenStatus: any;
+  statusId?: any;
+}) {
+  const [loading, setLoading] = useState(false);
+
+  async function onTutupForum() {
+    setOpenStatus(false);
+
+    await forum_funEditStatusPostingById(postingId as any, 2).then((res) => {
+      if (res.status === 200) {
+        ComponentGlobal_NotifikasiBerhasil(`Forum Ditutup`, 2000);
+        setLoading(true);
+      } else {
+        ComponentGlobal_NotifikasiGagal(res.message);
+      }
+    });
+  }
+
+  async function onBukaForum() {
+    setOpenStatus(false);
+
+    await forum_funEditStatusPostingById(postingId as any, 1).then((res) => {
+      if (res.status === 200) {
+        ComponentGlobal_NotifikasiBerhasil(`Forum Dibuka`, 2000);
+        setLoading(true);
+      } else {
+        ComponentGlobal_NotifikasiGagal(res.message);
+      }
+    });
+  }
+
+  return (
+    <>
+      <Stack>
+        {statusId === 1 ? (
+          <Title order={6}>Yakin menutup forum ini ?</Title>
+        ) : (
+          <Title order={6}>Yakin membuka forum ini ?</Title>
+        )}
+        <Group position="center">
+          <Button radius={"xl"} onClick={() => setOpenStatus(false)}>
+            Batal
+          </Button>
+
+          {statusId === 1 ? (
+            <Button
+              loaderPosition="center"
+              loading={loading ? true : false}
+              color="red"
+              radius={"xl"}
+              onClick={() => {
+                onTutupForum();
+              }}
+            >
+              Hapus
+            </Button>
+          ) : (
+            <Button
+              loaderPosition="center"
+              loading={loading ? true : false}
+              color="green"
+              radius={"xl"}
+              onClick={() => {
+                onBukaForum();
+              }}
+            >
+              Buka
+            </Button>
+          )}
         </Group>
       </Stack>
     </>

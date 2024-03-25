@@ -10,6 +10,7 @@ import {
   Group,
   ThemeIcon,
   ActionIcon,
+  Badge,
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import moment from "moment";
@@ -31,14 +32,18 @@ export default function ComponentForum_DetailOnHeaderAuthorName({
   authorName,
   username,
   isPembatas,
+  userLoginId,
+  statusId,
 }: {
-  authorId?: string
+  authorId?: string;
   postingId?: string;
   imagesId?: string;
   authorName?: string;
   username?: string;
   tglPublish?: Date;
   isPembatas?: boolean;
+  statusId: string;
+  userLoginId: string;
 }) {
   const router = useRouter();
 
@@ -73,40 +78,21 @@ export default function ComponentForum_DetailOnHeaderAuthorName({
               <Text lineClamp={1} fz={"sm"} fw={"bold"}>
                 {authorName ? authorName : "Nama author "}
               </Text>
-              <Text lineClamp={1} fz={"xs"} c={"gray"}>
-                {username ? `@${username}` : "@username "}
-              </Text>
+            <Badge
+              w={70}
+              variant="light"
+              color={(statusId as any) === 1 ? "green" : "red"}
+            >
+              <Text fz={10}>{(statusId as any) === 1 ? "Open" : "Close"}</Text>
+            </Badge>
             </Stack>
-
-            {/* <Stack justify="center" h={"100%"}>
-              <Grid>
-                <Grid.Col span={"auto"}>
-                  <Text lineClamp={1} fz={"sm"} fw={"bold"}>
-                    {authorName ? authorName : "Nama author "}
-                  </Text>
-                </Grid.Col>
-                <Grid.Col span={"auto"}>
-                  <Text lineClamp={1} fz={"sm"} c={"gray"}>
-                    {username ? username : "@username "}
-                  </Text>
-                </Grid.Col>
-                <Grid.Col span={"auto"}>
-                  <Group spacing={3}>
-                    <IconCircle size={5} color="gray" />
-                    <Text c={"gray"} fz={"sm"}>
-                      {skrng.toLocaleDateString(["id-ID"], {
-                        dateStyle: "medium",
-                      })}
-                    </Text>
-                  </Group>
-                </Grid.Col>
-              </Grid>
-            </Stack> */}
           </Grid.Col>
           <Grid.Col span={"content"}>
             <ComponentForum_DetailMoreButton
               postingId={postingId}
               authorId={authorId}
+              userLoginId={userLoginId}
+              statusId={statusId}
             />
           </Grid.Col>
         </Grid>

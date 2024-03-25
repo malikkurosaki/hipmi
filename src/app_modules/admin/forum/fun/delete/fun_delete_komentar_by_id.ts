@@ -1,0 +1,19 @@
+"use server";
+
+import prisma from "@/app/lib/prisma";
+import { revalidatePath } from "next/cache";
+
+export async function adminForum_funDeleteKomentarById(komentarId: string) {
+  const delTemporary = await prisma.forum_Komentar.update({
+    where: {
+      id: komentarId,
+    },
+    data: {
+      isActive: false,
+    },
+  });
+
+  if (!delTemporary) return { status: 400, message: "Gagal Dihapus" };
+  revalidatePath("/dev/admin/forum/children/semua-komentar");
+  return { status: 200, message: "Berhasil Dihapus" };
+}

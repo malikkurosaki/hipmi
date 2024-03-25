@@ -30,6 +30,7 @@ import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loadi
 import { MODEL_FORUM_POSTING } from "../model/interface";
 import ComponentForum_MainCardView from "../component/main_card_view";
 import { useWindowScroll } from "@mantine/hooks";
+import _ from "lodash";
 
 export default function Forum_Forumku({
   auhtorSelectedData,
@@ -77,7 +78,15 @@ export default function Forum_Forumku({
           auhtorSelectedData={auhtorSelectedData}
           totalPosting={totalPosting}
         />
-        <ForumPosting dataPosting={dataPosting} />
+        {_.isEmpty(dataPosting) ? (
+          <Center>
+            <Text fw={"bold"} fz={"xs"} c={"gray"}>
+              Belum ada posting
+            </Text>
+          </Center>
+        ) : (
+          <ForumPosting dataPosting={dataPosting} userLoginId={userLoginId} />
+        )}
       </Stack>
     </>
   );
@@ -160,7 +169,13 @@ function ForumProfile({
   );
 }
 
-function ForumPosting({ dataPosting }: { dataPosting: MODEL_FORUM_POSTING[] }) {
+function ForumPosting({
+  dataPosting,
+  userLoginId,
+}: {
+  dataPosting: MODEL_FORUM_POSTING[];
+  userLoginId: any;
+}) {
   const router = useRouter();
 
   const [loadingDetail, setLoadingDetail] = useState(false);
@@ -174,6 +189,7 @@ function ForumPosting({ dataPosting }: { dataPosting: MODEL_FORUM_POSTING[] }) {
         data={dataPosting}
         setLoadingKomen={setLoadingKomen}
         setLoadingDetail={setLoadingDetail}
+        userLoginId={userLoginId}
       />
 
       {/* <Stack>

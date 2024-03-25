@@ -11,6 +11,7 @@ import {
   Footer,
   Group,
   Header,
+  Loader,
   MediaQuery,
   NavLink,
   Navbar,
@@ -22,7 +23,13 @@ import {
 import React, { useState } from "react";
 import ComponentGlobal_HeaderTamplate from "../component_global/header_tamplate";
 import { useDisclosure } from "@mantine/hooks";
-import { IconCircleDot, IconCircleDotFilled, IconHome, IconLetterH, IconLogout } from "@tabler/icons-react";
+import {
+  IconCircleDot,
+  IconCircleDotFilled,
+  IconHome,
+  IconLetterH,
+  IconLogout,
+} from "@tabler/icons-react";
 import {
   RouterAdminAward,
   RouterAdminDashboard,
@@ -51,6 +58,7 @@ export default function AdminLayout({
   const router = useRouter();
   const [active, setActive] = useAtom(gs_admin_hotMenu);
   const [activeChild, setActiveChild] = useAtom(gs_admin_subMenu);
+  const [loading, setLoading] = useState(false);
 
   const navbarItems = listAdminPage.map((e, i) => (
     <Box key={e.id}>
@@ -61,9 +69,13 @@ export default function AdminLayout({
           },
         }}
         fw={active === e.id ? "bold" : "normal"}
-        icon={e.icon}
+        icon={
+          // active === e.id ? loading ? <Loader size={10} /> : e.icon : e.icon
+          e.icon
+        }
         label={<Text size={"sm"}>{e.name}</Text>}
         onClick={() => {
+          setLoading(true);
           setActive(e.id);
           setActiveChild(null);
           e.path === "" ? router.push(e.child[0].path) : router.push(e.path);
@@ -84,7 +96,13 @@ export default function AdminLayout({
                   }}
                   fw={activeChild === v.id ? "bold" : "normal"}
                   label={<Text>{v.name}</Text>}
-                  icon={activeChild === v.id ? <IconCircleDotFilled size={10}/> : <IconCircleDot size={10}/> }
+                  icon={
+                    activeChild === v.id ? (
+                      <IconCircleDotFilled size={10} />
+                    ) : (
+                      <IconCircleDot size={10} />
+                    )
+                  }
                   onClick={() => {
                     setActive(e.id);
                     setActiveChild(v.id);
@@ -105,7 +123,6 @@ export default function AdminLayout({
         padding="md"
         navbarOffsetBreakpoint="md"
         asideOffsetBreakpoint="sm"
-        
         navbar={
           <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
             <Navbar

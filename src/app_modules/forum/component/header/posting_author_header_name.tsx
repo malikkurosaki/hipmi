@@ -1,7 +1,16 @@
 "use client";
 
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import { Stack, Grid, Avatar, Divider, Text, Group } from "@mantine/core";
+import {
+  Stack,
+  Grid,
+  Avatar,
+  Divider,
+  Text,
+  Group,
+  Badge,
+  Loader,
+} from "@mantine/core";
 import { useRouter } from "next/navigation";
 import moment from "moment";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
@@ -19,6 +28,7 @@ import { IoIosMore } from "react-icons/io";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import ComponentForum_PostingButtonMore from "../more_button/posting_button_more";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
 
 export default function ComponentForum_PostingAuthorNameOnHeader({
   authorId,
@@ -28,6 +38,8 @@ export default function ComponentForum_PostingAuthorNameOnHeader({
   tglPublish,
   isPembatas,
   isMoreButton,
+  statusId,
+  userLoginId,
 }: {
   authorId?: string;
   postingId?: string;
@@ -36,8 +48,12 @@ export default function ComponentForum_PostingAuthorNameOnHeader({
   tglPublish?: Date;
   isPembatas?: boolean;
   isMoreButton?: boolean;
+  statusId?: string;
+  userLoginId: string;
 }) {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
   return (
     <>
       <Stack spacing={"xs"}>
@@ -46,43 +62,52 @@ export default function ComponentForum_PostingAuthorNameOnHeader({
             span={"content"}
             onClick={() => {
               if (authorId) {
+                setLoading(true);
                 router.push(RouterForum.forumku + authorId);
               } else {
                 ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
               }
             }}
           >
-            <Avatar
-              size={30}
-              sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-              radius={"xl"}
-              bg={"gray.1"}
-              src={
-                imagesId
-                  ? RouterProfile.api_foto_profile + imagesId
-                  : "/aset/global/avatar.png"
-              }
-            />
+            {loading ? (
+              <Loader color="gray" variant="dots" />
+            ) : (
+              <Avatar
+                size={40}
+                sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
+                radius={"xl"}
+                bg={"gray.1"}
+                src={
+                  imagesId
+                    ? RouterProfile.api_foto_profile + imagesId
+                    : "/aset/global/avatar.png"
+                }
+              />
+            )}
           </Grid.Col>
+
           <Grid.Col span={"auto"}>
-            <Stack justify="center" h={"100%"}>
+            <Stack justify="center" h={"100%"} spacing={0}>
               <Grid>
                 <Grid.Col span={"auto"}>
                   <Text lineClamp={1} fz={"sm"} fw={"bold"}>
-                    {authorName
-                      ? authorName
-                      : "Nama author coba di berikan panjang "}
+                    {authorName ? authorName : "Nama author  "}
                   </Text>
                 </Grid.Col>
-                {/* <Grid.Col span={"auto"}>
-                  <Text lineClamp={1} fz={"sm"} c={"gray"}>
-                    {username ? username : "@username "}
-                  </Text>
-                </Grid.Col> */}
                 <Grid.Col span={"content"}></Grid.Col>
               </Grid>
+              <Badge
+                w={70}
+                variant="light"
+                color={(statusId as any) === 1 ? "green" : "red"}
+              >
+                <Text fz={10}>
+                  {(statusId as any) === 1 ? "Open" : "Close"}
+                </Text>
+              </Badge>
             </Stack>
           </Grid.Col>
+
           <Grid.Col span={"content"}>
             <Group position="center" spacing={"xs"}>
               <Group spacing={3}>
@@ -108,6 +133,8 @@ export default function ComponentForum_PostingAuthorNameOnHeader({
                   <ComponentForum_PostingButtonMore
                     authorId={authorId}
                     postingId={postingId as any}
+                    statusId={statusId}
+                    userLoginId={userLoginId}
                   />
                 </Group>
               ) : (
