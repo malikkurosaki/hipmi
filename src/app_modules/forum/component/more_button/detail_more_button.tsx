@@ -294,13 +294,13 @@ function ButtonStatus({
             <Button
               loaderPosition="center"
               loading={loading ? true : false}
-              color="red"
+              color="orange"
               radius={"xl"}
               onClick={() => {
                 onTutupForum();
               }}
             >
-              Hapus
+              Tutup
             </Button>
           ) : (
             <Button
