@@ -21,6 +21,8 @@ import voting_status from "../../../bin/seeder/voting/master_status.json";
 import master_status from "../../../bin/seeder/master_status.json";
 import forum_kategori_report from "../../../bin/seeder/forum/master_report.json";
 import forum_status_posting from "../../../bin/seeder/forum/master_status.json";
+import collaboration_industri from "../../../bin/seeder/colab/master_industri.json";
+import collaboration_status from "../../../bin/seeder/colab/master_status.json";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
@@ -356,6 +358,34 @@ export async function GET(req: Request) {
         },
         update: {
           status: s.status,
+        },
+      });
+    }
+
+    for (let p of collaboration_industri) {
+      await prisma.projectCollaborationMaster_Industri.upsert({
+        where: {
+          id: p.id,
+        },
+        create: {
+          name: p.name,
+        },
+        update: {
+          name: p.name,
+        },
+      });
+    }
+
+    for (let p of collaboration_status) {
+      await prisma.projectCollaborationMaster_Status.upsert({
+        where: {
+          id: p.id,
+        },
+        create: {
+          name: p.name,
+        },
+        update: {
+          name: p.name,
         },
       });
     }
