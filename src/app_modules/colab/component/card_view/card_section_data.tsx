@@ -1,0 +1,82 @@
+"use client";
+
+import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { Card, Center, Title, Stack, Grid, Text } from "@mantine/core";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+export default function ComponentColab_CardSectionData({
+  colabId,
+  path,
+}: {
+  colabId?: any;
+  path?: any;
+}) {
+  const router = useRouter();
+
+  return (
+    <>
+      <Card.Section
+        px={"md"}
+        onClick={() => {
+          if (path) {
+            router.push(path + colabId);
+          } else {
+            ComponentGlobal_NotifikasiPeringatan("Path tidak ditemukan");
+          }
+        }}
+      >
+        <Center px={"md"} mb={"lg"}>
+          <Title order={5} lineClamp={1}>
+            Judul Proyek{" "}
+          </Title>
+        </Center>
+        <Stack spacing={"xs"}>
+          <Grid>
+            <Grid.Col span={2}>
+              <Text fw={"bold"} fz={"xs"}>
+                Industri
+              </Text>
+            </Grid.Col>
+            <Grid.Col span={1}>
+              <Text fz={"xs"}>:</Text>
+            </Grid.Col>
+            <Grid.Col span={"auto"}>
+              <Text fz={"xs"}>Industri</Text>
+            </Grid.Col>
+          </Grid>
+
+          <Grid>
+            <Grid.Col span={2}>
+              <Text fw={"bold"} fz={"xs"}>
+                Lokasi
+              </Text>
+            </Grid.Col>
+            <Grid.Col span={1}>
+              <Text fz={"xs"}>:</Text>
+            </Grid.Col>
+            <Grid.Col span={"auto"}>
+              <Text fz={"xs"} lineClamp={1}>
+                Lokasi dari proyek{" "}
+              </Text>
+            </Grid.Col>
+          </Grid>
+
+          <Stack spacing={5}>
+            <Text fw={"bold"} fz={"xs"}>
+              Tujuan proyek
+            </Text>
+            <Text lineClamp={3} fz={"xs"}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam
+              repudiandae nostrum temporibus velit possimus, voluptate inventore
+              recusandae hic ipsa praesentium deserunt, fuga asperiores
+              doloremque amet incidunt explicabo ea eius earum.
+            </Text>
+          </Stack>
+        </Stack>
+      </Card.Section>
+    </>
+  );
+}

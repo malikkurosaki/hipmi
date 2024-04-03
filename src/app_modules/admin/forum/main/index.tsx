@@ -4,36 +4,56 @@ import { Group, Paper, SimpleGrid, Stack, Text, Title } from "@mantine/core";
 import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
 import ComponentAdminGlobal_LoadingPage from "../../component/loading_admin_page";
 
-export default function AdminForum_Main() {
+export default function AdminForum_Main({
+  countPublish,
+  countLaporanPosting,
+  countLaporanKomentar,
+}: {
+  countPublish: number;
+  countLaporanPosting: number;
+  countLaporanKomentar: number;
+}) {
   return (
     <>
       <Stack>
         <ComponentAdminGlobal_HeaderTamplate name="Forum" />
-        <ForumMain />
+        <ForumMain
+          countPublish={countPublish}
+          countLaporanPosting={countLaporanPosting}
+          countLaporanKomentar={countLaporanKomentar}
+        />
       </Stack>
       {/* <ComponentGlobalAdmin_LoadingPage /> */}
     </>
   );
 }
 
-function ForumMain() {
+function ForumMain({
+  countPublish,
+  countLaporanPosting,
+  countLaporanKomentar,
+}: {
+  countPublish: number;
+  countLaporanPosting: number;
+  countLaporanKomentar: number;
+}) {
   const listBox = [
     {
       id: 1,
       name: "Publish",
-      jumlah: 0,
+      jumlah: countPublish,
       color: "green",
     },
     {
       id: 2,
       name: "Laporan Posting",
-      jumlah: 0,
+      jumlah: countLaporanPosting,
       color: "orange",
     },
     {
       id: 3,
       name: "Laporan Komentar",
-      jumlah: 0,
+      jumlah: countLaporanKomentar,
       color: "red",
     },
   ];

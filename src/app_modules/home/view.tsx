@@ -40,6 +40,7 @@ import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import ComponentGlobal_V2_LoadingPage from "../component_global/loading_page_v2";
+import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 
 export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
   const router = useRouter();
@@ -77,7 +78,7 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
       id: 5,
       name: "Project Collaboration",
       icon: <IconAffiliate size={50} />,
-      link: "",
+      link: RouterColab.splash,
     },
     {
       id: 6,
