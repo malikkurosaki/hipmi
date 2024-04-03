@@ -730,7 +730,7 @@ model ProjectCollaboration {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  catatan   String
+  catatan   String?
   title     String
   lokasi    String
   purpose   String   @db.Text
@@ -741,7 +741,7 @@ model ProjectCollaboration {
   Author                                User?                                @relation(fields: [userId], references: [id])
   userId                                String?
   ProjectCollaborationMaster_Status     ProjectCollaborationMaster_Status?   @relation(fields: [projectCollaborationMaster_StatusId], references: [id])
-  projectCollaborationMaster_StatusId   String?
+  projectCollaborationMaster_StatusId   Int?                                 @default(1)
   ProjectCollaboration_Partisipasi      ProjectCollaboration_Partisipasi[]
 }
 
@@ -756,7 +756,7 @@ model ProjectCollaborationMaster_Industri {
 }
 
 model ProjectCollaborationMaster_Status {
-  id        String   @id @default(cuid())
+  id        Int      @id @default(autoincrement())
   name      String
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
