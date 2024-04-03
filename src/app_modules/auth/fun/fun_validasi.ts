@@ -18,6 +18,7 @@ export async function auth_funValidasi(nomor: string) {
       id: true,
       nomor: true,
       username: true,
+      masterUserRoleId: true
     },
   });
 
@@ -42,5 +43,7 @@ export async function auth_funValidasi(nomor: string) {
     revalidatePath(RouterHome.main_home);
   }
 
-  return { status: 200, message: "Nomor Terverivikasi" };
+
+
+  return { status: 200, message: "Nomor Terverivikasi", role: cek.masterUserRoleId };
 }

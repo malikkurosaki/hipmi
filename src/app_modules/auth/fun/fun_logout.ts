@@ -21,6 +21,6 @@ export async function auth_Logout(kodeId: string) {
   });
 
   if (!del) return { status: 400, message: "Gagal Hapus Kode OTP Id"};
-  revalidatePath("/dev/katalog")
+  // revalidatePath("/dev/katalog")
   return { status: 200, message: "Logout Berhasil" };
 }

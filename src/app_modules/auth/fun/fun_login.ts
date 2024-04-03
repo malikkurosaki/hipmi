@@ -5,6 +5,7 @@ import { randomOTP } from "./rondom_otp";
 
 export async function auth_funLogin(nomor: string) {
   const codeOtp = randomOTP();
+  console.log(nomor)
 
   try {
     const res = await fetch(

@@ -7,7 +7,7 @@ import {
   RouterAdminDonasi,
   RouterAdminInvestasi,
 } from "@/app/lib/router_hipmi/router_admin";
-import { IconBriefcase, IconMessages } from "@tabler/icons-react";
+import { IconBriefcase, IconDashboard, IconMessages } from "@tabler/icons-react";
 import {
   IconHeartHandshake,
   IconHome,
@@ -170,5 +170,12 @@ export const listAdminPage = [
       //   path: RouterAdminForum.report_komentar,
       // },
     ],
+  },
+  {
+    id: 99,
+    name: "Developer",
+    path: RouterAdminDashboard.main_admin,
+    icon: <IconDashboard />,
+    child: [],
   },
 ];

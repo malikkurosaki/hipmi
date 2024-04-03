@@ -43,23 +43,23 @@ export async function GET(req: Request) {
       });
     }
 
-    // for (let i of userSeeder) {
-    //   await prisma.user.upsert({
-    //     where: {
-    //       nomor: i.nomor,
-    //     },
-    //     create: {
-    //       nomor: i.nomor,
-    //       username: i.name,
-    //       masterUserRoleId: i.masterUserRoleId,
-    //     },
-    //     update: {
-    //       nomor: i.nomor,
-    //       username: i.name,
-    //       masterUserRoleId: i.masterUserRoleId,
-    //     },
-    //   });
-    // }
+    for (let i of userSeeder) {
+      await prisma.user.upsert({
+        where: {
+          nomor: i.nomor,
+        },
+        create: {
+          nomor: i.nomor,
+          username: i.name,
+          masterUserRoleId: i.masterUserRoleId,
+        },
+        update: {
+          nomor: i.nomor,
+          username: i.name,
+          masterUserRoleId: i.masterUserRoleId,
+        },
+      });
+    }
 
     for (let i of bidangBisnis) {
       await prisma.masterBidangBisnis.upsert({

@@ -35,6 +35,7 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_glob
 import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { auth_funEditAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
+import { RouterAdminDashboard } from "@/app/lib/router_hipmi/router_admin";
 
 export default function Validasi({ dataOtp }: { dataOtp: any }) {
   const router = useRouter();
@@ -85,8 +86,12 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
       if (res.status === 200) {
         await auth_funEditAktivasiKodeOtpById(dataOtp.id).then((val) => {
           if (val.status === 200) {
-            ComponentGlobal_NotifikasiBerhasil(res.message);
-            router.push(RouterHome.main_home);
+            if (res.role === "1") {
+              ComponentGlobal_NotifikasiBerhasil(res.message);
+              router.push(RouterHome.main_home);
+            } else {
+              router.push(RouterAdminDashboard.splash_admin)
+            }
           } else {
             ComponentGlobal_NotifikasiPeringatan(val.message);
           }
@@ -183,7 +188,7 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
                 color={"teal"}
                 onClick={() => {
                   onVerifikasi();
-                  setLoading(true)
+                  setLoading(true);
                 }}
               >
                 <Text>VERIFIKASI</Text>

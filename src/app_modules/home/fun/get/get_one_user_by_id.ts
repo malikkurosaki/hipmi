@@ -10,6 +10,7 @@ export async function user_getOneById(userId: string) {
     select: {
       id: true,
       username: true,
+      masterUserRoleId: true,
       Profile: true,
     },
   });
