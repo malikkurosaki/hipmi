@@ -7,29 +7,30 @@ import { useAtom } from "jotai";
 import { IconLogout } from "@tabler/icons-react";
 import { Warna } from "@/app/lib/warna";
 import { useDisclosure } from "@mantine/hooks";
-import { gs_nomor, gs_otp } from "@/app_modules/auth/state/state";
+import { gs_kodeId, gs_nomor, gs_otp } from "@/app_modules/auth/state/state";
+import { auth_Logout } from "@/app_modules/auth/fun/fun_logout";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { useState } from "react";
 
 export default function Admin_Logout() {
   const router = useRouter();
-  const [nomor, setnomor] = useAtom(gs_nomor);
-  const [code, setCode] = useAtom(gs_otp);
-
   const [opened, { toggle }] = useDisclosure(false);
 
-  const onLogout = async () => {
-    router.push("/dev/auth/login");
+  const [kodeId, setKodeId] = useAtom(gs_kodeId);
+  const [loadingLogout, setLoadingLogout] = useState(false);
 
-    // await fetch(ApiHipmi.logout)
-    //   .then((res) => res.json())
-    //   .then((val) => {
-    //     if (val.status == 200) {
-    //         setnomor(null);
-    //         setCode(null);
-
-    //       router.push("/dev/auth/login");
-    //     }
-    //   });
-  };
+  async function onClickLogout() {
+    await auth_Logout(kodeId).then((res) => {
+      if (res.status === 200) {
+        setLoadingLogout(true);
+        ComponentGlobal_NotifikasiBerhasil(res.message);
+        setKodeId("");
+      } else {
+        ComponentGlobal_NotifikasiPeringatan(res.message);
+      }
+    });
+  }
 
   return (
     <>
@@ -42,10 +43,12 @@ export default function Admin_Logout() {
             </Button>
             <Button
               compact
+              loaderPosition="center"
+              loading={loadingLogout ? true : false}
               radius={50}
               bg={Warna.merah}
               color="red"
-              onClick={() => onLogout()}
+              onClick={() => onClickLogout()}
             >
               Keluar
             </Button>

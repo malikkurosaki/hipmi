@@ -24,8 +24,10 @@ import React, { useState } from "react";
 import ComponentGlobal_HeaderTamplate from "../component_global/header_tamplate";
 import { useDisclosure } from "@mantine/hooks";
 import {
+  IconCheck,
   IconCircleDot,
   IconCircleDotFilled,
+  IconDashboard,
   IconHome,
   IconLetterH,
   IconLogout,
@@ -47,10 +49,16 @@ import _ from "lodash";
 import { listAdminPage } from "./list_page";
 import { RouterAdminVote } from "@/app/lib/router_admin/router_admin_vote";
 import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
+import { gs_kodeId } from "../auth/state/state";
+import { auth_Logout } from "../auth/fun/fun_logout";
+import { ComponentGlobal_NotifikasiBerhasil } from "../component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "../component_global/notif_global/notifikasi_peringatan";
 
 export default function AdminLayout({
+  userRole,
   children,
 }: {
+  userRole: string;
   children: React.ReactNode;
 }) {
   const theme = useMantineTheme();
@@ -59,6 +67,21 @@ export default function AdminLayout({
   const [active, setActive] = useAtom(gs_admin_hotMenu);
   const [activeChild, setActiveChild] = useAtom(gs_admin_subMenu);
   const [loading, setLoading] = useState(false);
+  const [kodeId, setKodeId] = useAtom(gs_kodeId);
+
+  async function onClickLogout() {
+    // await auth_Logout(kodeId).then((res) => {
+    //   ComponentGlobal_NotifikasiBerhasil("Berhasil Logout");
+    // });
+    await auth_Logout(kodeId).then((res) => {
+      if (res.status === 200) {
+        ComponentGlobal_NotifikasiBerhasil(res.message);
+        setKodeId("");
+      } else {
+        ComponentGlobal_NotifikasiPeringatan(res.message);
+      }
+    });
+  }
 
   const navbarItems = listAdminPage.map((e, i) => (
     <Box key={e.id}>
@@ -117,6 +140,79 @@ export default function AdminLayout({
     </Box>
   ));
 
+  const bukanDeveloper = listAdminPage.slice(0, -1);
+  const notAdminDev = bukanDeveloper.map((e) => (
+    <Box key={e.id}>
+      <NavLink
+        sx={{
+          ":hover": {
+            backgroundColor: "transparent",
+          },
+        }}
+        fw={active === e.id ? "bold" : "normal"}
+        icon={
+          // active === e.id ? loading ? <Loader size={10} /> : e.icon : e.icon
+          e.icon
+        }
+        label={<Text size={"sm"}>{e.name}</Text>}
+        onClick={() => {
+          setLoading(true);
+          setActive(e.id);
+          setActiveChild(null);
+          e.path === "" ? router.push(e.child[0].path) : router.push(e.path);
+          e.path === "" ? setActiveChild(e.child[0].id) : "";
+        }}
+      >
+        {_.isEmpty(e.child) ? (
+          ""
+        ) : (
+          <Box>
+            {e.child.map((v, ii) => (
+              <Box key={v.id}>
+                <NavLink
+                  sx={{
+                    ":hover": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                  fw={activeChild === v.id ? "bold" : "normal"}
+                  label={<Text>{v.name}</Text>}
+                  icon={
+                    activeChild === v.id ? (
+                      <IconCircleDotFilled size={10} />
+                    ) : (
+                      <IconCircleDot size={10} />
+                    )
+                  }
+                  onClick={() => {
+                    setActive(e.id);
+                    setActiveChild(v.id);
+                    router.push(v.path);
+                  }}
+                />
+              </Box>
+            ))}
+          </Box>
+        )}
+      </NavLink>
+    </Box>
+  ));
+
+  const navbarAdmin = (
+    <Box>
+      <NavLink
+        c="orange"
+        icon={<IconDashboard />}
+        label="Developer"
+        sx={{
+          ":hover": {
+            backgroundColor: "transparent",
+          },
+        }}
+      />
+    </Box>
+  );
+
   return (
     <>
       <AppShell
@@ -132,7 +228,12 @@ export default function AdminLayout({
               p="xs"
               bg={"gray.2"}
             >
-              {navbarItems}
+              <Navbar.Section>
+                <Stack>
+                  {userRole === "3" ? navbarItems : notAdminDev}
+                  {/* <NavLink icon={<IconCheck />} label="Create Admin" /> */}
+                </Stack>
+              </Navbar.Section>
             </Navbar>
           </MediaQuery>
         }

@@ -39,9 +39,11 @@ export default function Login() {
     //   return ComponentGlobal_NotifikasiPeringatan("Nomor maximal 13 digit");
 
     const nomorHp = phone.substring(1);
+    // console.log(nomorHp)
 
     await auth_funLogin(nomorHp).then((res) => {
       if (res.status === 200) {
+        setLoading(true);
         ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
         setKodeId(res.kodeOtpId);
         router.push(RouterAuth.validasi + res.kodeOtpId);
@@ -130,7 +132,6 @@ export default function Login() {
             color={"teal"}
             onClick={() => {
               onLogin();
-              setLoading(true);
             }}
             loading={loading ? true : false}
             loaderPosition="center"
