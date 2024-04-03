@@ -37,6 +37,7 @@ export default async function funCreatePortofolio(
   const createProto = await prisma.portofolio.create({
     data: {
       profileId: profileId,
+      id_Portofolio: "Porto" + Date.now().toString(),
       namaBisnis: data.namaBisnis,
       deskripsi: data.deskripsi,
       tlpn: data.tlpn,

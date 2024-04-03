@@ -5,6 +5,6 @@ import { atomWithStorage } from "jotai/utils";
  * @type number
  * @
  */
-export const gs_admin_hotMenu = atomWithStorage("gs_admin_hotMenu", 0)
+export const gs_admin_hotMenu = atomWithStorage("gs_admin_hotMenu", 1)
 
 export const gs_admin_subMenu = atomWithStorage<number | null>("gs_admin_subMenu",null)

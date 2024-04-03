@@ -33,6 +33,7 @@ export default function Profile_UpdateFotoBackground({
   const [profile, setProfile] = useState(dataProfile);
   const [file, setFile] = useState<File | null>(null);
   const [image, setImage] = useState<any | null>(null);
+  const [loading, setLoading] = useState(false);
 
   return (
     <>
@@ -57,10 +58,15 @@ export default function Profile_UpdateFotoBackground({
                     const buffer = URL.createObjectURL(
                       new Blob([new Uint8Array(await files.arrayBuffer())])
                     );
-                    // console.log(buffer, "ini buffer");
-                    // console.log(files, " ini file");
-                    setImage(buffer);
-                    setFile(files);
+                    if (files.size > 1000000) {
+                      ComponentGlobal_NotifikasiPeringatan(
+                        "Maaf, Ukuran file terlalu besar, maximum 1mb",
+                        3000
+                      );
+                    } else {
+                      setImage(buffer);
+                      setFile(files);
+                    }
                   } catch (error) {
                     console.log(error);
                   }
@@ -85,10 +91,13 @@ export default function Profile_UpdateFotoBackground({
         </Paper>
 
         <Button
+          disabled={file ? false : true}
+          loading={loading ? true : false}
+          loaderPosition="center"
           radius={"xl"}
-          onClick={() => onUpdate(router, profile.id, file as any)}
+          onClick={() => onUpdate(router, profile.id, file as any, setLoading)}
         >
-          Simpan
+          Update
         </Button>
       </Stack>
     </>
@@ -98,13 +107,15 @@ export default function Profile_UpdateFotoBackground({
 async function onUpdate(
   router: AppRouterInstance,
   profileId: string,
-  file: FormData
+  file: FormData,
+  setLoading: any
 ) {
   const gambar = new FormData();
   gambar.append("file", file as any);
 
   await Profile_funUpdateBackground(profileId, gambar).then((res) => {
     if (res.status === 200) {
+      setLoading(true);
       ComponentGlobal_NotifikasiBerhasil(res.message);
       router.back();
     } else {

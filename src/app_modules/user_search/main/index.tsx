@@ -20,6 +20,7 @@ import { useState } from "react";
 import { UserSearch_searchByName } from "../fun/search/fun_search_by_name";
 import { useRouter } from "next/navigation";
 import ComponentGlobal_MaintenanceInformation from "@/app_modules/component_global/maintenance_information";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
 
 export default function UserSearch_MainView({
   listUser,
@@ -28,6 +29,7 @@ export default function UserSearch_MainView({
 }) {
   const router = useRouter();
   const [user, setUser] = useState(listUser);
+  const [loading, setLoading] = useState(false);
 
   async function onSearch(name: string) {
     await UserSearch_searchByName(name).then((res) => setUser(res as any));
@@ -40,6 +42,8 @@ export default function UserSearch_MainView({
   //     </Center>
   //   </>
   // );
+
+  if(loading) return <ComponentGlobal_V2_LoadingPage/>
 
   return (
     <>
@@ -60,11 +64,11 @@ export default function UserSearch_MainView({
                   ""
                 ) : (
                   <Stack key={e.id} spacing={"xs"} mt={"xs"}>
-                    <Grid >
+                    <Grid>
                       <Grid.Col span={2}>
                         <Center h={"100%"}>
                           <Avatar
-                          sx={{borderStyle: "solid", borderWidth: "0.5px"}}
+                            sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
                             radius={"xl"}
                             size={"md"}
                             src={
@@ -76,7 +80,7 @@ export default function UserSearch_MainView({
                       </Grid.Col>
                       <Grid.Col span={"auto"}>
                         <Stack spacing={0}>
-                          <Text fw={"bold"} truncate>
+                          <Text fw={"bold"} lineClamp={1}>
                             {e?.Profile?.name}
                           </Text>
                           <Text fz={"sm"} fs={"italic"}>
@@ -88,11 +92,12 @@ export default function UserSearch_MainView({
                         <Center h={"100%"}>
                           <ActionIcon
                             variant="transparent"
-                            onClick={() =>
+                            onClick={() => {
+                              setLoading(true);
                               router.push(
                                 RouterProfile.katalog + `${e?.Profile?.id}`
-                              )
-                            }
+                              );
+                            }}
                           >
                             <IconChevronRight />
                           </ActionIcon>

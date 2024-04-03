@@ -17,7 +17,7 @@ export async function ComponentGlobal_NotifikasiGagal(text: string) {
     ),
     color: "red",
     radius: "md",
-    autoClose: 1000,
+    autoClose: 2000,
     icon: <IconAlertTriangle color="white" />,
     withCloseButton: false,
 

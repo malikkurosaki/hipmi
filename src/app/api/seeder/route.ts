@@ -19,6 +19,8 @@ import event_status from "../../../bin/seeder/event/master_status.json";
 import event_tipe_acara from "../../../bin/seeder/event/master_tipe_acara.json";
 import voting_status from "../../../bin/seeder/voting/master_status.json";
 import master_status from "../../../bin/seeder/master_status.json";
+import forum_kategori_report from "../../../bin/seeder/forum/master_report.json";
+import forum_status_posting from "../../../bin/seeder/forum/master_status.json";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
@@ -39,23 +41,23 @@ export async function GET(req: Request) {
       });
     }
 
-    for (let i of userSeeder) {
-      await prisma.user.upsert({
-        where: {
-          nomor: i.nomor,
-        },
-        create: {
-          nomor: i.nomor,
-          username: i.name,
-          masterUserRoleId: i.masterUserRoleId,
-        },
-        update: {
-          nomor: i.nomor,
-          username: i.name,
-          masterUserRoleId: i.masterUserRoleId,
-        },
-      });
-    }
+    // for (let i of userSeeder) {
+    //   await prisma.user.upsert({
+    //     where: {
+    //       nomor: i.nomor,
+    //     },
+    //     create: {
+    //       nomor: i.nomor,
+    //       username: i.name,
+    //       masterUserRoleId: i.masterUserRoleId,
+    //     },
+    //     update: {
+    //       nomor: i.nomor,
+    //       username: i.name,
+    //       masterUserRoleId: i.masterUserRoleId,
+    //     },
+    //   });
+    // }
 
     for (let i of bidangBisnis) {
       await prisma.masterBidangBisnis.upsert({
@@ -324,6 +326,36 @@ export async function GET(req: Request) {
         },
         update: {
           name: m.name,
+        },
+      });
+    }
+
+    for (let m of forum_kategori_report) {
+      await prisma.forumMaster_KategoriReport.upsert({
+        where: {
+          id: m.id as number,
+        },
+        create: {
+          title: m.title,
+          deskripsi: m.deskripsi,
+        },
+        update: {
+          title: m.title,
+          deskripsi: m.deskripsi,
+        },
+      });
+    }
+
+    for (let s of forum_status_posting) {
+      await prisma.forumMaster_StatusPosting.upsert({
+        where: {
+          id: s.id,
+        },
+        create: {
+          status: s.status,
+        },
+        update: {
+          status: s.status,
         },
       });
     }
