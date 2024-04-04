@@ -1,7 +1,15 @@
 "use client";
 import { myConsole } from "@/app/fun/my_console";
 import { ApiHipmi } from "@/app/lib/api";
-import { ActionIcon, Button, Group, Modal, Stack, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Group,
+  Loader,
+  Modal,
+  Stack,
+  Title,
+} from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { IconLogout } from "@tabler/icons-react";
@@ -16,6 +24,7 @@ import { useState } from "react";
 export default function Admin_Logout() {
   const router = useRouter();
   const [opened, { toggle }] = useDisclosure(false);
+  const [loading, setLoading] = useState(false);
 
   const [kodeId, setKodeId] = useAtom(gs_kodeId);
   const [loadingLogout, setLoadingLogout] = useState(false);
@@ -34,15 +43,26 @@ export default function Admin_Logout() {
 
   return (
     <>
-      <Modal opened={opened} onClose={toggle} centered withCloseButton={false}>
+      <Modal
+        opened={opened}
+        onClose={toggle}
+        centered
+        withCloseButton={false}
+        closeOnClickOutside={false}
+      >
         <Stack>
           <Title order={6}>Anda yakin ingin keluar ?</Title>
           <Group align="center" position="center">
-            <Button compact onClick={toggle} radius={50}>
+            <Button
+              onClick={() => {
+                toggle();
+                setLoading(false);
+              }}
+              radius={50}
+            >
               Batal
             </Button>
             <Button
-              compact
               loaderPosition="center"
               loading={loadingLogout ? true : false}
               radius={50}
@@ -56,7 +76,17 @@ export default function Admin_Logout() {
         </Stack>
       </Modal>
       <ActionIcon variant="transparent">
-        <IconLogout color={Warna.merah} onClick={toggle} />
+        {loading ? (
+          <Loader color="gray" />
+        ) : (
+          <IconLogout
+            color={Warna.merah}
+            onClick={() => {
+              toggle();
+              setLoading(true);
+            }}
+          />
+        )}
       </ActionIcon>
       {/* <Button radius={"xl"} color={"red"} onClick={toggle}>
         Logout

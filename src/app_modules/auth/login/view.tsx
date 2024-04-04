@@ -79,67 +79,48 @@ export default function Login() {
 
   return (
     <>
-      <Center h={"80%"}>
-        <Stack px={"lg"} spacing={"xl"} w={{ base: 400 }} justify="center">
-          <Center h={"100%"}>
-            <Image
-              mt={"xl"}
-              height={130}
-              width={130}
-              alt="logo"
-              src={"/aset/logo/logo-hipmi.png"}
-            />
-          </Center>
-          <Stack spacing={0}>
-            <Title order={4}>Selamat Datang di HIPMI App</Title>
-            <Text fs={"italic"} fz={"sm"}>
-              Silahkan masukan nomor telepon anda untuk masuk !
-            </Text>
-          </Stack>
-
-          {/* <Grid>
-            <Grid.Col span={"content"}>
-              <Center h={"100%"}>
-                <Text fw={"bold"}>+62</Text>
-              </Center>
-            </Grid.Col>
-            <Grid.Col span={"auto"}>
-              <TextInput
-                ref={focusTrapRef}
-                w={"100%"}
-                type="number"
-                placeholder="xx xxx xxx xxx"
-                onChange={(val) => {
-                  setNomor(62 + val.target.value);
-                }}
+      <Stack align="center" justify="center"  h={"100vh"}>
+        <Center>
+          <Stack spacing={"xl"}>
+            <Center h={"100%"}>
+              <Image
+                mt={"xl"}
+                height={130}
+                width={130}
+                alt="logo"
+                src={"/aset/logo/logo-hipmi.png"}
               />
-            </Grid.Col>
-          </Grid> */}
+            </Center>
+            <Stack spacing={0}>
+              <Title order={4}>Selamat Datang di HIPMI App</Title>
+              <Text fs={"italic"} fz={"sm"}>
+                Silahkan masukan nomor telepon anda untuk masuk !
+              </Text>
+            </Stack>
 
-          <PhoneInput
-            // ref={focusTrapRef}
-            inputStyle={{ width: "100%" }}
-            defaultCountry="id"
-            onChange={(val) => {
-              setPhone(val);
-            }}
-          />
+            <PhoneInput
+              // ref={focusTrapRef}
+              inputStyle={{ width: "100%" }}
+              defaultCountry="id"
+              onChange={(val) => {
+                setPhone(val);
+              }}
+            />
 
-          <Button
-            radius={"md"}
-            compact
-            h={40}
-            color={"teal"}
-            onClick={() => {
-              onLogin();
-            }}
-            loading={loading ? true : false}
-            loaderPosition="center"
-          >
-            <Text>LOGIN</Text>
-          </Button>
-        </Stack>
-      </Center>
+            <Button
+              radius={"md"}
+              color={"teal"}
+              onClick={() => {
+                onLogin();
+              }}
+              loading={loading ? true : false}
+              loaderPosition="center"
+            >
+              LOGIN
+            </Button>
+          </Stack>
+        </Center>
+      </Stack>
     </>
   );
 }
