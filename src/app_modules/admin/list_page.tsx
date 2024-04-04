@@ -1,3 +1,4 @@
+import { RouterAdminDeveloper } from "@/app/lib/router_admin/router_admin_developer";
 import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
 import { RouterAdminForum } from "@/app/lib/router_admin/router_admin_forum";
 import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
@@ -174,7 +175,7 @@ export const listAdminPage = [
   {
     id: 99,
     name: "Developer",
-    path: RouterAdminDashboard.main_admin,
+    path: RouterAdminDeveloper.main,
     icon: <IconDashboard />,
     child: [],
   },
