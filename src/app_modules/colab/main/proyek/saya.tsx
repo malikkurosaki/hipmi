@@ -4,7 +4,7 @@ import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import { Card, Stack } from "@mantine/core";
 import ComponentColab_CardSectionData from "../../component/card_view/card_section_data";
 import ComponentColab_CardSectionHeaderAuthorName from "../../component/card_view/card_section_header_author_name";
-import ComponentColab_JumlahPartisipan from "../../component/card_view/jumlah_partisipan";
+import ComponentColab_JumlahPartisipan from "../../component/card_view/card_section_jumlah_partisipan";
 
 export default function Colab_ProyekSaya() {
   return (

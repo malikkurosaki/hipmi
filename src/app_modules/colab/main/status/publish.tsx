@@ -6,7 +6,7 @@ import ComponentColab_CardSectionData from "../../component/card_view/card_secti
 import ComponentColab_AuthorNameOnHeader from "../../component/header_author_name";
 import ComponentColab_CardSectionHeaderAuthorName from "../../component/card_view/card_section_header_author_name";
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
-import ComponentColab_JumlahPartisipan from "../../component/card_view/jumlah_partisipan";
+import ComponentColab_JumlahPartisipan from "../../component/card_view/card_section_jumlah_partisipan";
 
 export default function Colab_StatusPublish() {
   return (

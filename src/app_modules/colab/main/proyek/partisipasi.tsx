@@ -21,7 +21,7 @@ export default function Colab_PartisipasiProyek() {
           >
             <ComponentColab_CardSectionHeaderAuthorName
               tglPublish={new Date()}
-              jumlah_partisipan={12}
+              jumlah_partisipan={[]}
             />
             <ComponentColab_CardSectionData
               colabId={i}

@@ -2,13 +2,10 @@
 
 import prisma from "@/app/lib/prisma";
 
-export default async function colab_getListAllProyek() {
-  const data = await prisma.projectCollaboration.findMany({
-    orderBy: {
-      updatedAt: "desc",
-    },
+export default async function colab_getOneCollaborationById(colabId: string) {
+  const data = await prisma.projectCollaboration.findFirst({
     where: {
-      projectCollaborationMaster_StatusId: 1,
+      id: colabId,
     },
     select: {
       id: true,
@@ -19,6 +16,7 @@ export default async function colab_getListAllProyek() {
       benefit: true,
       Author: {
         select: {
+          id: true,
           Profile: true,
         },
       },
@@ -30,7 +28,6 @@ export default async function colab_getListAllProyek() {
       },
     },
   });
-
 
   return data;
 }

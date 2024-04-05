@@ -3,12 +3,13 @@
 import prisma from "@/app/lib/prisma";
 import { MODEL_COLLABORATION } from "../../model/interface";
 import { User_getUserId } from "@/app_modules/fun_global/get_user_token";
+import { revalidatePath } from "next/cache";
+import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 
 export default async function colab_funCreateProyek(
   value: MODEL_COLLABORATION
 ) {
-  const Author = await User_getUserId();
-  console.log(Author);
+  const AuthorId = await User_getUserId();
 
   const create = await prisma.projectCollaboration.create({
     data: {
@@ -18,10 +19,11 @@ export default async function colab_funCreateProyek(
       benefit: value.benefit,
       projectCollaborationMaster_IndustriId:
         value.projectCollaborationMaster_IndustriId,
-      userId: Author
+      userId: AuthorId
     },
   });
 
   if (!create) return { status: 400, message: "Gagal Membuat Proyek" };
+  revalidatePath(RouterColab.beranda)
   return { status: 201, message: "Berhasil Membuar Proyek" };
 }

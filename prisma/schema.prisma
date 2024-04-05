@@ -734,7 +734,7 @@ model ProjectCollaboration {
   title     String
   lokasi    String
   purpose   String   @db.Text
-  benefit   String   @db.Text
+  benefit   String?  @db.Text
 
   ProjectCollaborationMaster_Industri   ProjectCollaborationMaster_Industri? @relation(fields: [projectCollaborationMaster_IndustriId], references: [id])
   projectCollaborationMaster_IndustriId Int?

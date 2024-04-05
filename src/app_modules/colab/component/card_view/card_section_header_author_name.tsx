@@ -20,13 +20,13 @@ export default function ComponentColab_CardSectionHeaderAuthorName({
   authorName?: string;
   tglPublish?: Date;
   isPembatas?: boolean;
-  jumlah_partisipan?: number;
+  jumlah_partisipan?: any[]
 }) {
   const router = useRouter();
 
   return (
     <>
-      <Card.Section px={"md"} pb={"md"}>
+      <Card.Section px={"md"}>
         <Stack spacing={"xs"}>
           <Grid>
             <Grid.Col
@@ -60,11 +60,13 @@ export default function ComponentColab_CardSectionHeaderAuthorName({
             </Grid.Col>
             <Grid.Col span={"content"}>
               <Stack justify="center" h={"100%"}>
-                <Text c={"gray"} fz={"xs"}>
-                  {jumlah_partisipan
-                    ? jumlah_partisipan + " " + "partisipan"
-                    : 0 + " " + "partisipan"}
-                </Text>
+                {tglPublish ? (
+                  <Text c={"gray"} fz={"xs"}>
+                    {new Intl.DateTimeFormat("id-ID").format(tglPublish)}
+                  </Text>
+                ) : (
+                  ""
+                )}
               </Stack>
             </Grid.Col>
           </Grid>
