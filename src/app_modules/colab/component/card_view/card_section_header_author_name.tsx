@@ -1,26 +1,39 @@
 "use client";
 
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
-import { Avatar, Card, Divider, Grid, Stack, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Avatar,
+  Card,
+  Divider,
+  Grid,
+  Menu,
+  Stack,
+  Text,
+} from "@mantine/core";
 import ComponentColab_AuthorNameOnHeader from "../header_author_name";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import { useRouter } from "next/navigation";
+import { IconDots, IconEdit } from "@tabler/icons-react";
+import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
+import { useDisclosure } from "@mantine/hooks";
+import { useState } from "react";
 
 export default function ComponentColab_CardSectionHeaderAuthorName({
   profileId,
   imagesId,
   authorName,
-  tglPublish,
   isPembatas,
-  jumlah_partisipan,
+  isAuthor,
+  colabId,
 }: {
   profileId?: string;
   imagesId?: string;
   authorName?: string;
-  tglPublish?: Date;
   isPembatas?: boolean;
-  jumlah_partisipan?: any[]
+  isAuthor?: boolean;
+  colabId?: string;
 }) {
   const router = useRouter();
 
@@ -59,20 +72,57 @@ export default function ComponentColab_CardSectionHeaderAuthorName({
               </Stack>
             </Grid.Col>
             <Grid.Col span={"content"}>
-              <Stack justify="center" h={"100%"}>
-                {tglPublish ? (
-                  <Text c={"gray"} fz={"xs"}>
-                    {new Intl.DateTimeFormat("id-ID").format(tglPublish)}
-                  </Text>
-                ) : (
-                  ""
-                )}
-              </Stack>
+              <ButtonAction
+                isAuthor={isAuthor as any}
+                colabId={colabId as any}
+              />
             </Grid.Col>
           </Grid>
           {isPembatas ? <Divider /> : ""}
         </Stack>
       </Card.Section>
+    </>
+  );
+}
+
+function ButtonAction({
+  isAuthor,
+  colabId,
+}: {
+  isAuthor: boolean;
+  colabId: string;
+}) {
+  const router = useRouter();
+  const [opened, setOpened] = useState(false);
+  return (
+    <>
+      <Menu
+        opened={opened}
+        onChange={setOpened}
+        position="left-start"
+        offset={0}
+        shadow="lg"
+        withArrow
+        arrowPosition="center"
+      >
+        <Menu.Target >
+          <Stack justify="center" h={"100%"} >
+            <ActionIcon variant="transparent">
+              {isAuthor ? <IconDots size={20} /> : ""}
+            </ActionIcon>
+          </Stack>
+        </Menu.Target>
+        <Menu.Dropdown bg={"gray.1"} >
+          <Menu.Item
+            icon={<IconEdit size={15} />}
+            onClick={() => {
+              router.push(RouterColab.edit + colabId);
+            }}
+          >
+            Edit
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
     </>
   );
 }

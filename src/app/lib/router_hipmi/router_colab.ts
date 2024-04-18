@@ -7,6 +7,7 @@ export const RouterColab = {
   status: "/dev/colab/main/status",
   proyek: "/dev/colab/main/proyek",
   grup_diskusi: "/dev/colab/main/grup",
+  notifikasi: "/dev/colab/main/notifikasi",
 
   // create
   create: "/dev/colab/create",
@@ -17,7 +18,8 @@ export const RouterColab = {
   status_review: "/dev/colab/detail/status/review/",
   status_reject: "/dev/colab/detail/status/reject/",
   status_publish: "/dev/colab/detail/status/publish/",
-  partisipasi_proyek: "/dev/colab/detail/proyek/partisipasi/",
+  detail_partisipasi_proyek: "/dev/colab/detail/proyek/partisipasi/",
+  detail_proyek_saya: "/dev/colab/detail/proyek/saya/",
   detail_grup: "/dev/colab/detail/grup/",
 
   // proyek

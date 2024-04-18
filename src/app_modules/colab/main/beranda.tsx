@@ -29,8 +29,10 @@ import ComponentColab_JumlahPartisipan from "../component/card_view/card_section
 
 export default function Colab_Beranda({
   listData,
+  userLoginId,
 }: {
   listData: MODEL_COLLABORATION[];
+  userLoginId: string;
 }) {
   const router = useRouter();
   const [scroll, scrollTo] = useWindowScroll();
@@ -67,15 +69,17 @@ export default function Colab_Beranda({
               authorName={e?.Author?.Profile?.name}
               imagesId={e?.Author?.Profile?.imagesId}
               profileId={e?.Author?.Profile?.id}
-              tglPublish={new Date()}
-              jumlah_partisipan={e?.ProjectCollaboration_Partisipasi}
+              isAuthor={userLoginId === e.Author.id ? true : false}
+              colabId={e.id}
             />
             <ComponentColab_CardSectionData
               colabId={e.id}
               path={RouterColab.main_detail}
               data={e}
             />
-            <ComponentColab_JumlahPartisipan jumlah={e.ProjectCollaboration_Partisipasi} />
+            <ComponentColab_JumlahPartisipan
+              jumlah={e.ProjectCollaboration_Partisipasi}
+            />
           </Stack>
         </Card>
       ))}

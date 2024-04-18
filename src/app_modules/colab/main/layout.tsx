@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import ComponentColab_HeaderTamplate from "../component/header_tamplate";
 import router from "next/router";
 import {
+  IconBell,
   IconHistory,
   IconHome,
   IconMessages,
@@ -42,12 +43,12 @@ export default function LayoutColab_Main({
       icon: <IconHome />,
     },
 
-    {
-      id: 2,
-      name: "Status",
-      path: RouterColab.status,
-      icon: <IconReservedLine />,
-    },
+    // {
+    //   id: 2,
+    //   name: "Status",
+    //   path: RouterColab.status,
+    //   icon: <IconReservedLine />,
+    // },
 
     {
       id: 3,
@@ -55,12 +56,17 @@ export default function LayoutColab_Main({
       path: RouterColab.proyek,
       icon: <IconUsersGroup />,
     },
-
     {
       id: 4,
       name: "Grup Diskusi",
       path: RouterColab.grup_diskusi,
       icon: <IconMessages />,
+    },
+    {
+      id: 5,
+      name: "Notifikasi",
+      path: RouterColab.notifikasi,
+      icon: <IconBell />,
     },
   ];
 

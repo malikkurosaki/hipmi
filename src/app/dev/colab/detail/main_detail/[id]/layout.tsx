@@ -3,12 +3,17 @@ import React from "react";
 
 export default async function Layout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: { id: string };
 }) {
+  const colabId = params.id;
   return (
     <>
-      <LayoutColab_MainDetail>{children}</LayoutColab_MainDetail>
+      <LayoutColab_MainDetail colabId={colabId}>
+        {children}
+      </LayoutColab_MainDetail>
     </>
   );
 }

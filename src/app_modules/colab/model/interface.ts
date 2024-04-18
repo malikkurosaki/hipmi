@@ -23,7 +23,7 @@ export interface MODEL_COLLABORATION {
   Author: MODEL_USER;
   ProjectCollaborationMaster_Status: MODEL_COLLABORATION_MASTER;
   projectCollaborationMaster_StatusId: number;
-  ProjectCollaboration_Partisipasi: any[];
+  ProjectCollaboration_Partisipasi: MODEL_COLLABORATION_PARTISIPASI[];
 }
 
 export interface MODEL_COLLABORATION_PARTISIPASI {
@@ -35,4 +35,5 @@ export interface MODEL_COLLABORATION_PARTISIPASI {
   User: MODEL_USER;
   projectCollaborationId: string;
   projectCollaboration_RoomChatId: string;
+  ProjectCollaboration: MODEL_COLLABORATION;
 }
