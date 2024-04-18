@@ -6,13 +6,16 @@ import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_gl
 import { Card, Center, Title, Stack, Grid, Text } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { MODEL_COLLABORATION } from "../../model/interface";
 
 export default function ComponentColab_CardSectionData({
   colabId,
   path,
+  data,
 }: {
   colabId?: any;
   path?: any;
+  data?: MODEL_COLLABORATION;
 }) {
   const router = useRouter();
 
@@ -30,7 +33,7 @@ export default function ComponentColab_CardSectionData({
       >
         <Center px={"md"} mb={"lg"}>
           <Title order={5} lineClamp={1}>
-            Judul Proyek{" "}
+            {data?.title ? data.title : "Judul Proyek"}
           </Title>
         </Center>
         <Stack spacing={"xs"}>
@@ -44,7 +47,11 @@ export default function ComponentColab_CardSectionData({
               <Text fz={"xs"}>:</Text>
             </Grid.Col>
             <Grid.Col span={"auto"}>
-              <Text fz={"xs"}>Industri</Text>
+              <Text fz={"xs"} lineClamp={1}>
+                {data?.ProjectCollaborationMaster_Industri.name
+                  ? data?.ProjectCollaborationMaster_Industri?.name
+                  : "Industri"}
+              </Text>
             </Grid.Col>
           </Grid>
 
@@ -59,7 +66,7 @@ export default function ComponentColab_CardSectionData({
             </Grid.Col>
             <Grid.Col span={"auto"}>
               <Text fz={"xs"} lineClamp={1}>
-                Lokasi dari proyek{" "}
+                {data?.lokasi ? data?.lokasi : "Lokasi dari proyek"}
               </Text>
             </Grid.Col>
           </Grid>
@@ -69,10 +76,9 @@ export default function ComponentColab_CardSectionData({
               Tujuan proyek
             </Text>
             <Text lineClamp={3} fz={"xs"}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam
-              repudiandae nostrum temporibus velit possimus, voluptate inventore
-              recusandae hic ipsa praesentium deserunt, fuga asperiores
-              doloremque amet incidunt explicabo ea eius earum.
+              {data?.purpose
+                ? data?.purpose
+                : "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores odio nihil in animi expedita, suscipit excepturi pariatur totam esse officiis enim cumque. Quidem, facere aliquam. Sunt laboriosam incidunt iste amet"}
             </Text>
           </Stack>
         </Stack>

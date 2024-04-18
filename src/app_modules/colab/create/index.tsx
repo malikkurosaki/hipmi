@@ -4,10 +4,15 @@ import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import { Button, Select, Stack, TextInput, Textarea } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { MODEL_COLLABORATION_MASTER } from "../model/interface";
+import {
+  MODEL_COLLABORATION,
+  MODEL_COLLABORATION_MASTER,
+} from "../model/interface";
 import colab_funCreateProyek from "../fun/create/fun_create_proyek";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import _ from "lodash";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 
 export default function Colab_Create({
   listIndustri,
@@ -80,7 +85,6 @@ export default function Colab_Create({
         <Textarea
           label="Keuntungan "
           placeholder="Masukan keuntungan dalam proyek"
-          withAsterisk
           minRows={5}
           onChange={(val) => {
             setValue({
@@ -89,7 +93,7 @@ export default function Colab_Create({
             });
           }}
         />
-        <ButtonAction value={value} />
+        <ButtonAction value={value as any} />
       </Stack>
     </>
   );
@@ -100,13 +104,22 @@ function ButtonAction({ value }: { value: any }) {
   const [loading, setLoading] = useState(false);
 
   async function onSave() {
+    if (value.title === "")
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+    if (value.lokasi === "")
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+    if (value.purpose === "")
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+    if (value.projectCollaborationMaster_IndustriId === 0)
+      return ComponentGlobal_NotifikasiPeringatan("Pilih Industri");
+
     await colab_funCreateProyek(value).then((res) => {
       if (res.status === 201) {
         setLoading(true);
         router.back();
         ComponentGlobal_NotifikasiBerhasil(res.message);
       } else {
-        ComponentGlobal_NotifikasiGagal(res.message)
+        ComponentGlobal_NotifikasiGagal(res.message);
       }
     });
   }

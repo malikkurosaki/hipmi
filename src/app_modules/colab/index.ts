@@ -20,6 +20,9 @@ import LayoutColab_DetailPartisipasiProyek from "./detail/proyek/partisipasi/lay
 import Colab_GrupDiskus from "./main/grup";
 import Colab_DetailGrupDiskusi from "./detail/grup";
 import LayoutColab_DetailGrupDiskusi from "./detail/grup/layout";
+import Colab_NotifikasiView from "./main/pemberitahuan";
+import Colab_DetailProyekSaya from "./detail/proyek/saya";
+import LayoutColab_DetailProyekSaya from "./detail/proyek/saya/layout";
 
 export {
   Colab_Beranda,
@@ -44,4 +47,7 @@ export {
   Colab_GrupDiskus,
   Colab_DetailGrupDiskusi,
   LayoutColab_DetailGrupDiskusi,
+  Colab_NotifikasiView,
+  Colab_DetailProyekSaya,
+  LayoutColab_DetailProyekSaya,
 };

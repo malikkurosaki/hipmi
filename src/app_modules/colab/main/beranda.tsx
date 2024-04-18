@@ -24,8 +24,16 @@ import ComponentColab_CardSectionData from "../component/card_view/card_section_
 import ComponentColab_SectionHeaderAuthorName from "../component/card_view/card_section_header_author_name";
 import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
 import ComponentColab_CardSectionHeaderAuthorName from "../component/card_view/card_section_header_author_name";
+import { MODEL_COLLABORATION } from "../model/interface";
+import ComponentColab_JumlahPartisipan from "../component/card_view/card_section_jumlah_partisipan";
 
-export default function Colab_Beranda() {
+export default function Colab_Beranda({
+  listData,
+  userLoginId,
+}: {
+  listData: MODEL_COLLABORATION[];
+  userLoginId: string;
+}) {
   const router = useRouter();
   const [scroll, scrollTo] = useWindowScroll();
   const [loadingCreate, setLoadingCreate] = useState(false);
@@ -52,17 +60,29 @@ export default function Colab_Beranda() {
         </ActionIcon>
       </Affix>
 
-      {Array(5)
-        .fill(0)
-        .map((e, i) => (
-          <Card key={i} withBorder shadow="lg" mb={"lg"} radius={"md"}>
-            <ComponentColab_CardSectionHeaderAuthorName tglPublish={new Date} jumlah_partisipan={12} />
-            <ComponentColab_CardSectionData
-              colabId={i}
-              path={RouterColab.main_detail}
+      {/* <pre>{JSON.stringify(listData, null, 2)}</pre> */}
+
+      {listData.map((e, i) => (
+        <Card key={e.id} withBorder shadow="lg" mb={"lg"} radius={"md"}>
+          <Stack>
+            <ComponentColab_CardSectionHeaderAuthorName
+              authorName={e?.Author?.Profile?.name}
+              imagesId={e?.Author?.Profile?.imagesId}
+              profileId={e?.Author?.Profile?.id}
+              isAuthor={userLoginId === e.Author.id ? true : false}
+              colabId={e.id}
             />
-          </Card>
-        ))}
+            <ComponentColab_CardSectionData
+              colabId={e.id}
+              path={RouterColab.main_detail}
+              data={e}
+            />
+            <ComponentColab_JumlahPartisipan
+              jumlah={e.ProjectCollaboration_Partisipasi}
+            />
+          </Stack>
+        </Card>
+      ))}
     </>
   );
 }

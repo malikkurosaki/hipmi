@@ -1,15 +1,14 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import { User_getUserId } from "@/app_modules/fun_global/get_user_token";
 
-export default async function colab_getListAllProyek() {
+export default async function colab_getListByStatusId(statusId: number) {
+  const AuthorId = await User_getUserId();
   const data = await prisma.projectCollaboration.findMany({
-    orderBy: {
-      updatedAt: "desc",
-    },
     where: {
-      projectCollaborationMaster_StatusId: 1,
-      isActive: true,
+      userId: AuthorId,
+      projectCollaborationMaster_StatusId: statusId,
     },
     select: {
       id: true,
@@ -20,7 +19,6 @@ export default async function colab_getListAllProyek() {
       benefit: true,
       Author: {
         select: {
-          id: true,
           Profile: true,
         },
       },
@@ -33,6 +31,7 @@ export default async function colab_getListAllProyek() {
     },
   });
 
+  if (!data) return { status: 400, message: "Gagal Mengambil data" };
 
-  return data;
+  return { data: data, status: 200, message: "Berhasil mengambil data" };
 }

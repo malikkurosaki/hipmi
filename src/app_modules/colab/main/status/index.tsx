@@ -8,23 +8,31 @@ import Colab_StatusReview from "./review";
 import { useAtom } from "jotai";
 import { gs_colab_status } from "../../global_state";
 
-export default function Colab_Status() {
+export default function Colab_Status({
+  listPublish,
+  listReview,
+  listReject,
+}: {
+  listPublish: any[];
+  listReview: any[];
+  listReject: any[];
+}) {
   const [tabsStatus, setTabsStatus] = useAtom(gs_colab_status);
   const [colorTab, setColorTab] = useState<string | null>("");
 
   const listTabs = [
     {
       id: 1,
-      path: <Colab_StatusPublish />,
+      path: <Colab_StatusPublish listPublish={listPublish as any} />,
       value: "Publish",
       bg: "green",
     },
-    {
-      id: 2,
-      path: <Colab_StatusReview />,
-      value: "Review",
-      bg: "orange",
-    },
+    // {
+    //   id: 2,
+    //   path: <Colab_StatusReview />,
+    //   value: "Review",
+    //   bg: "orange",
+    // },
     {
       id: 3,
       path: <Colab_StatusReject />,

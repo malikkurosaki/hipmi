@@ -7,8 +7,18 @@ import Colab_ProyekSaya from "./saya";
 import Colab_PartisipasiProyek from "./partisipasi";
 import { useAtom } from "jotai";
 import { gs_colab_proyek } from "../../global_state";
+import {
+  MODEL_COLLABORATION,
+  MODEL_COLLABORATION_PARTISIPASI,
+} from "../../model/interface";
 
-export default function Colab_Proyek() {
+export default function Colab_Proyek({
+  listPartisipasiUser,
+  listProyekSaya,
+}: {
+  listPartisipasiUser: MODEL_COLLABORATION_PARTISIPASI[];
+  listProyekSaya: MODEL_COLLABORATION[];
+}) {
   const [activeTab, setActiveTab] = useAtom(gs_colab_proyek);
 
   const listTabs = [
@@ -17,14 +27,18 @@ export default function Colab_Proyek() {
       icon: <IconUsersGroup />,
       label: "Partisipasi Proyek",
       value: "Partisipasi",
-      path: <Colab_PartisipasiProyek />,
+      path: (
+        <Colab_PartisipasiProyek
+          listPartisipasiUser={listPartisipasiUser as any}
+        />
+      ),
     },
     {
       id: 2,
       icon: <IconUser />,
       label: "Proyek Saya",
       value: "Saya",
-      path: <Colab_ProyekSaya />,
+      path: <Colab_ProyekSaya listProyekSaya={listProyekSaya as any} />,
     },
   ];
 

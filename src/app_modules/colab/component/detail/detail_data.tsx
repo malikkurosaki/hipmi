@@ -1,15 +1,20 @@
-"use client"
+"use client";
 
 import { Stack, Box, Center, Title, Grid, Text } from "@mantine/core";
 import ComponentColab_AuthorNameOnHeader from "../header_author_name";
+import { MODEL_COLLABORATION } from "../../model/interface";
 
-export default function ComponentColab_DetailData() {
+export default function ComponentColab_DetailData({
+  data,
+}: {
+  data?: MODEL_COLLABORATION;
+}) {
   return (
     <>
       <Stack>
         <Box>
-          <Center px={"md"} mb={"lg"} >
-            <Title order={4}>Judul Proyek </Title>
+          <Center px={"md"} mb={"lg"}>
+            <Title order={4}>{data?.title ? data.title : "Judul Proyek"}</Title>
           </Center>
           <Stack spacing={"sm"}>
             <Grid>
@@ -22,7 +27,11 @@ export default function ComponentColab_DetailData() {
                 <Text fz={"sm"}>:</Text>
               </Grid.Col>
               <Grid.Col span={"auto"}>
-                <Text fz={"sm"}>Industri</Text>
+                <Text fz={"sm"}>
+                  {data?.ProjectCollaborationMaster_Industri.name
+                    ? data.ProjectCollaborationMaster_Industri.name
+                    : "Industri"}
+                </Text>
               </Grid.Col>
             </Grid>
 
@@ -37,7 +46,7 @@ export default function ComponentColab_DetailData() {
               </Grid.Col>
               <Grid.Col span={"auto"}>
                 <Text fz={"sm"} lineClamp={1}>
-                  Lokasi dari proyek{" "}
+                  {data?.lokasi ? data.lokasi : " Lokasi dari proyek"}
                 </Text>
               </Grid.Col>
             </Grid>
@@ -46,22 +55,14 @@ export default function ComponentColab_DetailData() {
               <Text fw={"bold"} fz={"sm"}>
                 Tujuan proyek
               </Text>
-              <Text fz={"sm"}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam
-                repudiandae nostrum temporibus velit possimus, voluptate
-                inventore recusandae hic ipsa praesentium deserunt, fuga
-                asperiores doloremque amet incidunt explicabo ea eius earum.
-              </Text>
+              <Text fz={"sm"}>{data?.purpose ? data?.purpose : "-"}</Text>
             </Stack>
             <Stack spacing={5}>
               <Text fw={"bold"} fz={"sm"}>
                 Keutungan
               </Text>
               <Text fz={"sm"}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam
-                repudiandae nostrum temporibus velit possimus, voluptate
-                inventore recusandae hic ipsa praesentium deserunt, fuga
-                asperiores doloremque amet incidunt explicabo ea eius earum.
+                {data?.benefit ? data?.benefit : "-"}
               </Text>
             </Stack>
           </Stack>

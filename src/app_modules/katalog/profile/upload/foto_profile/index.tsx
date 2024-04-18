@@ -54,9 +54,9 @@ export default function UploadFotoProfile({
                     const buffer = URL.createObjectURL(
                       new Blob([new Uint8Array(await files.arrayBuffer())])
                     );
-                    if (files.size > 1000000) {
+                    if (files.size > 2000000) {
                       ComponentGlobal_NotifikasiPeringatan(
-                        "Maaf, Ukuran file terlalu besar, maximum 1mb",
+                        "Maaf, Ukuran file terlalu besar, maximum 2mb",
                         3000
                       );
                     } else {
