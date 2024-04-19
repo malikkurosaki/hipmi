@@ -56,3 +56,7 @@ import { Box, Paper, SimpleGrid, Stack, Text, TextInput } from "@mantine/core";
 //     </>
 //   );
 // }
+
+export default function Page(){
+    return null
+}
