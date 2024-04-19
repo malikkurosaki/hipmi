@@ -5,6 +5,7 @@ import React from "react";
 import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
 import { useRouter } from "next/navigation";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutDonasi_DetailNotif({
   children,
@@ -16,7 +17,7 @@ export default function LayoutDonasi_DetailNotif({
   const router = useRouter();
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={<ComponentDonasi_HeaderTamplate title="Detail Pemberitahuan" />}
         footer={
           <Footer height={70} p={"md"}>
@@ -35,7 +36,7 @@ export default function LayoutDonasi_DetailNotif({
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

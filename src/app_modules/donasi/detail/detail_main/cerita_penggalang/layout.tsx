@@ -1,5 +1,6 @@
 "use client";
 
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 import ButtonDonasi from "@/app_modules/donasi/component/footer_button_donasi";
 import FooterDonasi from "@/app_modules/donasi/component/footer_close_donasi";
 import ComponentDonasi_HeaderTamplate from "@/app_modules/donasi/component/header_tamplate";
@@ -18,11 +19,11 @@ export default function LayoutCeritaPenggalangDonasi({
   if (statusDonasiId !== "1") {
     return (
       <>
-        <AppShell
+        <AppComponentGlobal_LayoutTamplate
           header={<ComponentDonasi_HeaderTamplate title="Cerita Penggalang Dana" />}
         >
           {children}
-        </AppShell>
+        </AppComponentGlobal_LayoutTamplate>
       </>
     );
   }

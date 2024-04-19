@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { useAtom } from "jotai";
 import { gs_donasi_hot_menu } from "../../global_state";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutDonasi_ProsesTransaksi({
   children,
@@ -22,7 +23,7 @@ export default function LayoutDonasi_ProsesTransaksi({
   }
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <Header height={50} sx={{ borderStyle: "none" }}>
             <Group h={50} position="apart" px={"md"}>
@@ -36,7 +37,7 @@ export default function LayoutDonasi_ProsesTransaksi({
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

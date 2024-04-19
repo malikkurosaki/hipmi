@@ -34,6 +34,7 @@ import { gs_donasi_hot_menu } from "../global_state";
 import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
 import { title } from "process";
 import _ from "lodash";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutDonasi({
   children,
@@ -69,7 +70,7 @@ export default function LayoutDonasi({
 
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <Header height={50} sx={{ borderStyle: "none" }}>
             <Group h={50} position="apart" px={"md"}>
@@ -98,8 +99,8 @@ export default function LayoutDonasi({
           </Header>
         }
         footer={
-          <Footer height={70} bg={"dark"}>
-            <Grid align="center" h={60} pt={"xs"} grow>
+          <Footer height={"10vh"} bg={"dark"}>
+            <Grid align="center" h={"10vh"} pt={"xs"} grow>
               {/* Tampilan Bursa */}
               {listPage.map((e, i) => (
                 <Grid.Col
@@ -131,7 +132,7 @@ export default function LayoutDonasi({
       >
         {/* {JSON.stringify(isRead)} */}
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }
