@@ -90,7 +90,7 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
               ComponentGlobal_NotifikasiBerhasil(res.message);
               router.push(RouterHome.main_home);
             } else {
-              router.push(RouterAdminDashboard.splash_admin)
+              router.push(RouterAdminDashboard.splash_admin);
             }
           } else {
             ComponentGlobal_NotifikasiPeringatan(val.message);
@@ -151,7 +151,7 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
 
       {/* <pre>{JSON.stringify(code)}</pre> */}
 
-      <Center h={"80%"} bg={"blue"} >
+      <Center h={"80%"}>
         <Stack px={"lg"} spacing={"xl"} w={{ base: 400 }} justify="center">
           <Center>
             <IconCloudLockOpen size={130} />

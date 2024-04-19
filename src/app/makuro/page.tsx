@@ -1,6 +1,16 @@
 "use client";
 
-import { Box, Paper, SimpleGrid, Stack, Text, TextInput } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Center,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
 // import ViewMakuro from "./_server/makuro_view";
 // import mqtt_client from "@/util/mqtt_client";
 // import { useState } from "react";
@@ -57,6 +67,19 @@ import { Box, Paper, SimpleGrid, Stack, Text, TextInput } from "@mantine/core";
 //   );
 // }
 
-export default function Page(){
-    return null
+export default function Page() {
+  return (
+    <Stack>
+      <Center>
+        <Stack>
+          <Title>LOGIN</Title>
+          <TextInput />
+          <TextInput />
+          <TextInput />
+          <TextInput />
+          <Button>LOGIN</Button>
+        </Stack>
+      </Center>
+    </Stack>
+  );
 }
