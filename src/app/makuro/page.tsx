@@ -71,7 +71,7 @@ import _ from "lodash";
 
 export default function Page() {
   return (
-    <Box>
+    <Box> 
       <Box
         style={{
           zIndex: 99,
