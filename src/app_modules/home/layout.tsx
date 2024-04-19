@@ -144,6 +144,7 @@ export default function HomeLayout({
   return (
     <>
       <Box>
+        {/* Header */}
         <Box
           style={{
             zIndex: 99,
@@ -160,17 +161,27 @@ export default function HomeLayout({
             </Title>
           </Center>
         </Box>
+
+        {/* Children */}
         <Box p={"sm"} pos={"static"}>
-          {children}
+          <Stack>
+            {children}
+            <Box
+              style={{
+                height: "10vh",
+              }}
+            ></Box>
+          </Stack>
         </Box>
 
+        {/* Footer */}
         <Box
           style={{
-            zIndex: 98,
+            zIndex: 99,
           }}
           w={"100%"}
           bg={"black"}
-          pos={"sticky"}
+          pos={"fixed"}
           bottom={0}
           h={"10vh"}
         >

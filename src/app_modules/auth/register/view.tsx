@@ -94,44 +94,6 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
 
   return (
     <>
-      {/* <Flex
-        align={"center"}
-        justify={"center"}
-        direction={"column"}
-        gap={50}
-        h={"100vh"}
-      >
-        <Title order={4}>Registrasi</Title>
-        <IconCircleLetterH size={150} />
-        <Flex direction={"column"} gap={"xl"} align={"center"}>
-          <Flex direction={"column"}>
-            <TextInput
-              ref={focusTrapRef}
-              w={250}
-              label="Username"
-              placeholder="Username"
-              onChange={(val) => {
-                setValue(val.target.value);
-              }}
-            />
-
-            <Text>Nomor : {nomor}</Text>
-          </Flex>
-          <Button
-            w={250}
-            mt={"md"}
-            radius={50}
-            bg={Warna.biru}
-            color="cyan"
-            compact
-            onClick={() => {
-              onRegister();
-            }}
-          >
-            Register
-          </Button>
-        </Flex>
-      </Flex> */}
 
       {/* <pre>{JSON.stringify(dataOtp,null,2)}</pre> */}
 

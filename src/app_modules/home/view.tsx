@@ -105,7 +105,7 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
     <>
       {visible ? <ComponentGlobal_V2_LoadingPage /> : ""}
 
-      <Box h={"100%"}>
+      <Box>
         <Paper bg={"dark"} radius={5} mb={"xs"}>
           <Image alt="logo" src={"/aset/home/home-hipmi.png"} />
         </Paper>

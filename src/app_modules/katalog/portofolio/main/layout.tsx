@@ -19,6 +19,7 @@ import { title } from "process";
 import { useDisclosure } from "@mantine/hooks";
 import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
 import { useState } from "react";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function PortofolioLayout({
   children,
@@ -39,7 +40,7 @@ export default function PortofolioLayout({
 
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <Header height={50} sx={{ borderStyle: "none" }}>
             <Group h={50} position="apart" px={"md"}>
@@ -107,7 +108,7 @@ export default function PortofolioLayout({
           </Stack>
         </Modal>
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

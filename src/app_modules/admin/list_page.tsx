@@ -3,12 +3,13 @@ import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
 import { RouterAdminForum } from "@/app/lib/router_admin/router_admin_forum";
 import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
 import { RouterAdminVote } from "@/app/lib/router_admin/router_admin_vote";
+import { RouterAdminUserAccess } from "@/app/lib/router_admin/router_admn_user_acces";
 import {
   RouterAdminDashboard,
   RouterAdminDonasi,
   RouterAdminInvestasi,
 } from "@/app/lib/router_hipmi/router_admin";
-import { IconBriefcase, IconDashboard, IconMessages } from "@tabler/icons-react";
+import { IconBriefcase, IconDashboard, IconMessages, IconUserCog } from "@tabler/icons-react";
 import {
   IconHeartHandshake,
   IconHome,
@@ -171,6 +172,13 @@ export const listAdminPage = [
       //   path: RouterAdminForum.report_komentar,
       // },
     ],
+  },
+  {
+    id: 98,
+    name: "User Access",
+    path: RouterAdminUserAccess.main,
+    icon: <IconUserCog />,
+    child: [],
   },
   {
     id: 99,

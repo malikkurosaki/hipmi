@@ -82,26 +82,34 @@ export default function Page() {
         top={0}
         h={"10vh"}
       >
-        satu
+        header
       </Box>
-      <Box bg={"red"} pos={"static"}>
+
+      <Box bg={"red"} pos={"static"} >
         <Stack>
-          {Array.from(new Array(300)).map((v, k) => (
-            <Title key={k}>INI DIMANA {k+1}</Title>
+          {Array.from(new Array(15)).map((v, k) => (
+            <Title key={k}>Cek halaman {k+1}</Title>
           ))}
+          <Box style={{
+            height: "10vh"
+          }}>
+
+          </Box>
         </Stack>
       </Box>
+
+
       <Text
         style={{
           zIndex: 98,
         }}
         w={"100%"}
         bg={"blue"}
-        pos={"sticky"}
+        pos={"fixed"}
         bottom={0}
         h={"10vh"}
       >
-        satu
+        footer
       </Text>
     </Box>
   );

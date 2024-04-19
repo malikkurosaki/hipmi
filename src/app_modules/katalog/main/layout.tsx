@@ -24,6 +24,7 @@ import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { title } from "process";
 import { RouterAdminDashboard } from "@/app/lib/router_hipmi/router_admin";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function KatalogLayout({
   children,
@@ -33,16 +34,44 @@ export default function KatalogLayout({
   profileId: any;
 }) {
   const router = useRouter();
+
+  return (
+    <>
+      <AppComponentGlobal_LayoutTamplate
+        header={
+          <Header height={50} sx={{ borderStyle: "none" }} bg={"black"}>
+            <Group h={50} position="apart" px={"md"}>
+              <ActionIcon
+                variant="transparent"
+                onClick={() => {
+                  router.back();
+                }}
+              >
+                <IconChevronLeft />
+              </ActionIcon>
+              <Title order={5} c={"white"}>
+                Katalog
+              </Title>
+              <ActionIcon variant="transparent" disabled></ActionIcon>
+              {/* <ActionIcon
+                variant="transparent"
+                onClick={() => router.push(RouterAdminDashboard.splash_admin)}
+              >
+                <IconDashboard />
+              </ActionIcon> */}
+            </Group>
+          </Header>
+        }
+      >
+        {children}
+      </AppComponentGlobal_LayoutTamplate>
+    </>
+  );
+
   return (
     <>
       <AppShell
         header={
-          // <ComponentKatalog_HeaderTamplate
-          //   title="Katalog"
-          //   bg={"black"}
-          //   titleColor="white"
-          //   // route={RouterHome.main_home}
-          // />
           <Header height={50} sx={{ borderStyle: "none" }} bg={"black"}>
             <Group h={50} position="apart" px={"md"}>
               <ActionIcon
