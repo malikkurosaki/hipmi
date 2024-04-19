@@ -1,6 +1,7 @@
 "use client";
 
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 import {
   AppShell,
   CloseButton,
@@ -26,7 +27,7 @@ export default function LayoutDialogPageCreateInvestasi({
   }, []);
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         footer={
           <Footer height={80} sx={{ borderStyle: "none" }}>
             <Group spacing={4} position="center">
@@ -38,7 +39,7 @@ export default function LayoutDialogPageCreateInvestasi({
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

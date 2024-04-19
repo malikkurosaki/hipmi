@@ -6,6 +6,7 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { gs_investasiFooter } from "../../g_state";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutCountDownTransaksiInvestasi({
   children,
@@ -13,18 +14,17 @@ export default function LayoutCountDownTransaksiInvestasi({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [hotMenu, setHotMenu] = useAtom(gs_investasiFooter)
+  const [hotMenu, setHotMenu] = useAtom(gs_investasiFooter);
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <Header height={50} sx={{ borderStyle: "none" }} px={"md"}>
             <Group h={50} align="center">
               <CloseButton
                 size={"md"}
                 onClick={() => {
-                  router.push(RouterInvestasi.main_transaksi),
-                  setHotMenu(3)
+                  router.push(RouterInvestasi.main_transaksi), setHotMenu(3);
                 }}
               />
               <Text>Status Transfer</Text>
@@ -33,7 +33,7 @@ export default function LayoutCountDownTransaksiInvestasi({
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
 import { ActionIcon, AppShell, Group, Header, Text } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
@@ -14,7 +15,7 @@ export default function LayoutStatusPesananInvestasi({
 }) {
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <Header height={50}>
             <Group h={50} position="center" px={"md"}>
@@ -24,7 +25,7 @@ export default function LayoutStatusPesananInvestasi({
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

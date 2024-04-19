@@ -6,6 +6,7 @@ import { AppShell } from "@mantine/core";
 import { IconPencilPlus } from "@tabler/icons-react";
 import React from "react";
 import getOneInvestasiById from "../fun/get_one_investasi_by_id";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutListEditBeritaInvestasi({
   children,
@@ -16,7 +17,7 @@ export default function LayoutListEditBeritaInvestasi({
 }) {
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <ComponentGlobal_HeaderTamplate
             title="List Berita"
@@ -26,7 +27,7 @@ export default function LayoutListEditBeritaInvestasi({
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }
