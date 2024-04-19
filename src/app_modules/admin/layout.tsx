@@ -250,12 +250,7 @@ export default function AdminLayout({
                   mr="xl"
                 />
                 <Title order={6}>Dashboard Admin</Title>
-                <ActionIcon
-                  variant="transparent"
-                  onClick={() => router.push(RouterHome.main_home)}
-                >
-                  <IconLogout color="red" />
-                </ActionIcon>
+                <Admin_Logout/>
               </Group>
             </MediaQuery>
 
@@ -278,7 +273,6 @@ export default function AdminLayout({
         }
       >
         {/* {JSON.stringify(active)} */}
-
         {children}
       </AppShell>
       <Drawer opened={opened} onClose={() => setOpened(false)} size={"50%"}>
