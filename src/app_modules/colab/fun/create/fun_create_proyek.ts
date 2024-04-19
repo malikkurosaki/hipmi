@@ -2,14 +2,14 @@
 
 import prisma from "@/app/lib/prisma";
 import { MODEL_COLLABORATION } from "../../model/interface";
-import { User_getUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { revalidatePath } from "next/cache";
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 
 export default async function colab_funCreateProyek(
   value: MODEL_COLLABORATION
 ) {
-  const AuthorId = await User_getUserId();
+  const AuthorId = await user_getOneUserId();
 
   const create = await prisma.projectCollaboration.create({
     data: {

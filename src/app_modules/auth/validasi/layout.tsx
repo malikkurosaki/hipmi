@@ -14,8 +14,9 @@ export default function LayoutValidasi({
   return (
     <>
       <AppShell
+      bg={"red"}
         header={
-          <Header height={50} sx={{borderStyle: "none"}} px={"md"}>
+          <Header height={50} sx={{borderStyle: "none"}} px={"md"} bg={"yellow"}>
            <Group h={50} align="center">
            <ActionIcon variant="transparent" onClick={() => router.back()} >
               <IconChevronLeft />

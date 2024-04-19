@@ -31,6 +31,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { NotifPeringatan } from "@/app_modules/donasi/component/notifikasi/notif_peringatan";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 
 export default function CreatePortofolio({
   bidangBisnis,
@@ -40,6 +41,7 @@ export default function CreatePortofolio({
   profileId: any;
 }) {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [value, setValue] = useState({
     namaBisnis: "",
     masterBidangBisnisId: "",
@@ -145,10 +147,15 @@ export default function CreatePortofolio({
                   const buffer = URL.createObjectURL(
                     new Blob([new Uint8Array(await files.arrayBuffer())])
                   );
-                  // console.log(buffer, "ini buffer");
-                  // console.log(files, " ini file");
-                  setImg(buffer);
-                  setFile(files);
+                  if (files.size > 2000000) {
+                    ComponentGlobal_NotifikasiPeringatan(
+                      "Maaf, Ukuran file terlalu besar, maximum 2mb",
+                      3000
+                    );
+                  } else {
+                    setImg(buffer);
+                    setFile(files);
+                  }
                 } catch (error) {
                   console.log(error);
                 }
@@ -230,8 +237,10 @@ export default function CreatePortofolio({
           radius={50}
           bg={Warna.hijau_muda}
           color="green"
+          loading={loading ? true : false}
+          loaderPosition="center"
           onClick={() => {
-            onSubmit(router, profileId, value as any, file, medsos);
+            onSubmit(router, profileId, value as any, file, medsos, setLoading);
           }}
         >
           Simpan
@@ -248,7 +257,8 @@ async function onSubmit(
   profileId: string,
   dataPorto: MODEL_PORTOFOLIO_OLD,
   file: FormData,
-  dataMedsos: any
+  dataMedsos: any,
+  setLoading: any
 ) {
   const porto = {
     namaBisnis: dataPorto.namaBisnis,
@@ -257,15 +267,18 @@ async function onSubmit(
     tlpn: dataPorto.tlpn,
     deskripsi: dataPorto.deskripsi,
   };
-  if (_.values(porto).includes("")) return toast("Lengkapi Data");
-  if (!file) return NotifPeringatan("Lengkapi logo binnis");
+  if (_.values(porto).includes(""))
+    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+  if (!file)
+    return ComponentGlobal_NotifikasiPeringatan("Lengkapi logo binnis");
 
-  const gambar = new FormData
-  gambar.append("file",file as any)
+  const gambar = new FormData();
+  gambar.append("file", file as any);
 
   await funCreatePortofolio(profileId, porto as any, gambar, dataMedsos).then(
     (res) => {
       if (res.status === 201) {
+        setLoading(true);
         ComponentGlobal_NotifikasiBerhasil("Berhasil disimpan");
         router.back();
       } else {

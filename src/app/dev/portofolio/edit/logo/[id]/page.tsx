@@ -1,10 +1,10 @@
 import { Portofolio_EditLogoBisnis } from "@/app_modules/katalog/portofolio";
-import { Portofolio_getOneById } from "@/app_modules/katalog/portofolio/fun/get/get_one_portofolio";
+import { portofolio_getOneById } from "@/app_modules/katalog/portofolio/fun/get/get_one_portofolio";
 import _ from "lodash";
 
 export default async function Page({ params }: { params: { id: string } }) {
   let portoId = params.id;
-  const dataPorto = await Portofolio_getOneById(portoId).then((res) =>
+  const dataPorto = await portofolio_getOneById(portoId).then((res) =>
     _.omit(res, [
       "Logo",
       "MasterBidangBisnis",

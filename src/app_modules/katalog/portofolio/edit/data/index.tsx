@@ -22,6 +22,7 @@ export default function Portofolio_EditDataBisnis({
 }) {
   const router = useRouter();
   const [porto, setPorto] = useState(dataPorto);
+  const [loading, setLoading] = useState(false);
   //   const [value, setPorto] = useState({
   //     namaBisnis: "",
   //     masterBidangBisnisId: "",
@@ -107,8 +108,10 @@ export default function Portofolio_EditDataBisnis({
         </Stack>
         <Button
           radius={"xl"}
+          loading={loading ? true : false}
+          loaderPosition="center"
           onClick={() => {
-            onUpdate(router, porto as any);
+            onUpdate(router, porto as any, setLoading);
           }}
         >
           Update
@@ -118,9 +121,14 @@ export default function Portofolio_EditDataBisnis({
   );
 }
 
-async function onUpdate(router: AppRouterInstance, data: MODEL_PORTOFOLIO) {
+async function onUpdate(
+  router: AppRouterInstance,
+  data: MODEL_PORTOFOLIO,
+  setLoading: any
+) {
   await Portofolio_funEditDataBisnis(data).then((res) => {
     if (res.status === 200) {
+      setLoading(true);
       ComponentGlobal_NotifikasiBerhasil(res.message);
       router.back();
     } else {

@@ -1,13 +1,13 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { User_getUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 
 export async function forum_funCreateReportKomentar(
   komentarId: string,
   value: string
 ) {
-  const authorId = await User_getUserId();
+  const authorId = await user_getOneUserId();
 
   const cekId = await prisma.forumMaster_KategoriReport.findFirst({
     where: {

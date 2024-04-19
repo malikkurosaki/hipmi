@@ -2,8 +2,8 @@
 
 import prisma from "@/app/lib/prisma";
 
-export async function Portofolio_getOneById(portoId: string) {
-    // console.log(id)
+export async function portofolio_getOneById(portoId: string) {
+  // console.log(id)
   const data = await prisma.portofolio.findUnique({
     where: {
       id: portoId,
@@ -27,12 +27,17 @@ export async function Portofolio_getOneById(portoId: string) {
         },
       },
       Portofolio_MediaSosial: true,
-      
-      
-
-
+      Profile: {
+        select: {
+          User: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
     },
   });
 
-  return data
+  return data;
 }

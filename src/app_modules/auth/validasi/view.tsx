@@ -151,7 +151,7 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
 
       {/* <pre>{JSON.stringify(code)}</pre> */}
 
-      <Center h={"80%"}>
+      <Center h={"80%"} bg={"blue"} >
         <Stack px={"lg"} spacing={"xl"} w={{ base: 400 }} justify="center">
           <Center>
             <IconCloudLockOpen size={130} />

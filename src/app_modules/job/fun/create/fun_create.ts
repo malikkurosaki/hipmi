@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { User_getUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 import _ from "lodash";
 import { v4 } from "uuid";
 import fs from "fs";
@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
 import { MODEL_JOB } from "../../model/interface";
 
 export async function Job_funCreate(req: MODEL_JOB, file: FormData) {
-  const authorId = await User_getUserId();
+  const authorId = await user_getOneUserId();
 
   const dataImage: any = file.get("file");
   if (dataImage !== "null") {

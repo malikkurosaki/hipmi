@@ -5,6 +5,7 @@ import {
   Center,
   Grid,
   Group,
+  Loader,
   Paper,
   SimpleGrid,
   Stack,
@@ -40,6 +41,10 @@ export default function ListPortofolioView({
 }) {
   const router = useRouter();
   const [porto, setPorto] = useState(listPorto);
+  const [loading, setLoading] = useState(false);
+  const [loadingPorto, setLoadingPorto] = useState(false);
+  const [idPorto, setIdPorto] = useState("")
+
   return (
     <>
       {/* <pre>{JSON.stringify(porto, null, 2)}</pre> */}
@@ -50,10 +55,12 @@ export default function ListPortofolioView({
             <Title order={4}>Portofolio</Title>
             {profile?.User.id === userLoginId ? (
               <ActionIcon
+                loading={loading ? true : false}
                 variant="transparent"
-                onClick={() =>
-                  router.push(RouterPortofolio.create + `${profile.id}`)
-                }
+                onClick={() => {
+                  router.push(RouterPortofolio.create + `${profile.id}`);
+                  setLoading(true);
+                }}
               >
                 <IconPencilPlus color={Warna.biru} />
               </ActionIcon>
@@ -70,42 +77,49 @@ export default function ListPortofolioView({
               </Center>
             ) : (
               <SimpleGrid
-              cols={4}
-              spacing="md"
-              breakpoints={[
-                { maxWidth: "md", cols: 3, spacing: "md" },
-                { maxWidth: "sm", cols: 2, spacing: "sm" },
-                { maxWidth: "xs", cols: 1, spacing: "sm" },
-              ]}
-            >
-              {porto.map((e: any) => (
-                <Paper
-                  key={e.id}
-                  bg={"gray.5"}
-                  radius={"md"}
-                  onClick={() => router.push(`/dev/portofolio/main/${e.id}/`)}
-                >
-                  <Grid align="center" p={"sm"}>
-                    <Grid.Col span={"auto"}>
-                      <Text fw={"bold"} truncate>
-                        {e.namaBisnis}
-                      </Text>
-                    </Grid.Col>
-                    <Grid.Col span={2}>
-                      <Stack>
-                        <IconCaretRight color="black" size={35} />
-                      </Stack>
-                    </Grid.Col>
-                  </Grid>
-                </Paper>
-              ))}
-            </SimpleGrid>
+                cols={4}
+                spacing="md"
+                breakpoints={[
+                  { maxWidth: "md", cols: 3, spacing: "md" },
+                  { maxWidth: "sm", cols: 2, spacing: "sm" },
+                  { maxWidth: "xs", cols: 1, spacing: "sm" },
+                ]}
+              >
+                {porto.map((e) => (
+                  <Paper
+                  shadow="md"
+                    key={e.id}
+                    bg={"gray.5"}
+                    radius={"md"}
+                    onClick={() => {
+                      setIdPorto(e.id)
+                      setLoadingPorto(true);
+                      router.push(`/dev/portofolio/main/${e.id}/`);
+                    }}
+                  >
+                    <Grid align="center" p={"sm"}>
+                      <Grid.Col span={"auto"}>
+                        <Text fw={"bold"} lineClamp={1}>
+                          {e.namaBisnis}
+                        </Text>
+                      </Grid.Col>
+                      <Grid.Col span={"content"}>
+                        <Stack>
+                          {idPorto === e.id && loadingPorto ? (
+                            <Loader  color="gray" size={25}/>
+                          ) : (
+                            <IconCaretRight color="black" size={25} />
+                          )}
+                        </Stack>
+                      </Grid.Col>
+                    </Grid>
+                  </Paper>
+                ))}
+              </SimpleGrid>
             )}
           </Box>
         </Stack>
       </Paper>
-
-    
     </>
   );
 }

@@ -39,7 +39,7 @@ import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_PORTOFOLIO } from "../model/interface";
 import { useDisclosure, useShallowEffect } from "@mantine/hooks";
-import { Portofolio_getOneById } from "../fun/get/get_one_portofolio";
+import { portofolio_getOneById } from "../fun/get/get_one_portofolio";
 import _ from "lodash";
 import { Portofolio_funDeletePortofolioById } from "../fun/delete/fun_delete_by_id";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
@@ -48,12 +48,15 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/
 
 export default function ViewPortofolio({
   dataPorto,
+  userLoginId,
 }: {
   dataPorto: MODEL_PORTOFOLIO;
+  userLoginId: string;
 }) {
   const router = useRouter();
   const [porto, setPorto] = useState(dataPorto);
   const [opened, { open, close }] = useDisclosure(false);
+  const [loadingDel, setLoadingDel] = useState(false);
 
   return (
     <>
@@ -67,7 +70,7 @@ export default function ViewPortofolio({
                 <IconBuildingSkyscraper />
               </Grid.Col>
               <Grid.Col span={"auto"}>
-                <Text truncate>{dataPorto.namaBisnis}</Text>
+                <Text>{dataPorto?.namaBisnis}</Text>
               </Grid.Col>
             </Grid>
             <Grid>
@@ -75,7 +78,7 @@ export default function ViewPortofolio({
                 <IconPhoneCall />
               </Grid.Col>
               <Grid.Col span={"auto"}>
-                <Text>+{dataPorto.tlpn}</Text>
+                <Text>+{dataPorto?.tlpn}</Text>
               </Grid.Col>
             </Grid>
             <Grid>
@@ -83,7 +86,7 @@ export default function ViewPortofolio({
                 <IconMapPin />
               </Grid.Col>
               <Grid.Col span={"auto"}>
-                <Text>{dataPorto.alamatKantor}</Text>
+                <Text>{dataPorto?.alamatKantor}</Text>
               </Grid.Col>
             </Grid>
             <Grid>
@@ -91,7 +94,7 @@ export default function ViewPortofolio({
                 <IconListDetails />
               </Grid.Col>
               <Grid.Col span={"auto"}>
-                <Text>{dataPorto.MasterBidangBisnis.name}</Text>
+                <Text>{dataPorto?.MasterBidangBisnis.name}</Text>
               </Grid.Col>
             </Grid>
             <Grid>
@@ -99,7 +102,7 @@ export default function ViewPortofolio({
                 <IconPinned />
               </Grid.Col>
               <Grid.Col span={"auto"}>
-                <Text>{dataPorto.deskripsi}</Text>
+                <Text>{dataPorto?.deskripsi}</Text>
               </Grid.Col>
             </Grid>
           </Stack>
@@ -111,7 +114,7 @@ export default function ViewPortofolio({
             <Paper>
               <Image
                 alt="Foto"
-                src={RouterPortofolio.api_logo_porto + `${dataPorto.logoId}`}
+                src={RouterPortofolio.api_logo_porto + `${dataPorto?.logoId}`}
               />
             </Paper>
           </AspectRatio>
@@ -125,8 +128,8 @@ export default function ViewPortofolio({
                 <IconBrandFacebook />
               </Grid.Col>
               <Grid.Col span={"auto"}>
-                {dataPorto.Portofolio_MediaSosial.facebook ? (
-                  <Text>{dataPorto.Portofolio_MediaSosial.facebook}</Text>
+                {dataPorto?.Portofolio_MediaSosial.facebook ? (
+                  <Text>{dataPorto?.Portofolio_MediaSosial.facebook}</Text>
                 ) : (
                   "-"
                 )}
@@ -137,8 +140,8 @@ export default function ViewPortofolio({
                 <IconBrandInstagram />
               </Grid.Col>
               <Grid.Col span={"auto"}>
-                {dataPorto.Portofolio_MediaSosial.instagram ? (
-                  <Text>{dataPorto.Portofolio_MediaSosial.instagram}</Text>
+                {dataPorto?.Portofolio_MediaSosial.instagram ? (
+                  <Text>{dataPorto?.Portofolio_MediaSosial.instagram}</Text>
                 ) : (
                   "-"
                 )}
@@ -149,8 +152,8 @@ export default function ViewPortofolio({
                 <IconBrandTiktok />
               </Grid.Col>
               <Grid.Col span={"auto"}>
-                {dataPorto.Portofolio_MediaSosial.tiktok ? (
-                  <Text>{dataPorto.Portofolio_MediaSosial.tiktok}</Text>
+                {dataPorto?.Portofolio_MediaSosial.tiktok ? (
+                  <Text>{dataPorto?.Portofolio_MediaSosial.tiktok}</Text>
                 ) : (
                   "-"
                 )}
@@ -161,8 +164,8 @@ export default function ViewPortofolio({
                 <IconBrandTwitter />
               </Grid.Col>
               <Grid.Col span={"auto"}>
-                {dataPorto.Portofolio_MediaSosial.twitter ? (
-                  <Text>{dataPorto.Portofolio_MediaSosial.twitter}</Text>
+                {dataPorto?.Portofolio_MediaSosial.twitter ? (
+                  <Text>{dataPorto?.Portofolio_MediaSosial.twitter}</Text>
                 ) : (
                   "-"
                 )}
@@ -173,8 +176,8 @@ export default function ViewPortofolio({
                 <IconBrandYoutube />
               </Grid.Col>
               <Grid.Col span={"auto"}>
-                {dataPorto.Portofolio_MediaSosial.youtube ? (
-                  <Text>{dataPorto.Portofolio_MediaSosial.youtube}</Text>
+                {dataPorto?.Portofolio_MediaSosial.youtube ? (
+                  <Text>{dataPorto?.Portofolio_MediaSosial.youtube}</Text>
                 ) : (
                   "-"
                 )}
@@ -204,7 +207,9 @@ export default function ViewPortofolio({
             <Button
               radius={"xl"}
               color="red"
-              onClick={() => onDelete(router, dataPorto as any)}
+              loaderPosition="center"
+              loading={loadingDel ? true : false}
+              onClick={() => onDelete(router, dataPorto as any, setLoadingDel)}
             >
               Hapus
             </Button>
@@ -217,10 +222,12 @@ export default function ViewPortofolio({
 
 async function onDelete(
   router: AppRouterInstance,
-  dataPorto: MODEL_PORTOFOLIO
+  dataPorto: MODEL_PORTOFOLIO,
+  setLoadingDel: any
 ) {
   await Portofolio_funDeletePortofolioById(dataPorto).then((res) => {
     if (res.status === 200) {
+      setLoadingDel(true)
       ComponentGlobal_NotifikasiBerhasil(res.message);
       router.push(RouterProfile.katalog + `${dataPorto.profileId}`);
     } else {
