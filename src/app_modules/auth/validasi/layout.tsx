@@ -13,8 +13,16 @@ export default function LayoutValidasi({
   const router = useRouter();
 
   return (
-    <Stack>
-      <Box p={"md"}>
+    <Stack >
+      <Box
+        bg={"white"}
+        p={"md"}
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 99,
+        }}
+      >
         <ActionIcon variant="transparent" onClick={() => router.back()}>
           <IconChevronLeft />
         </ActionIcon>

@@ -3,6 +3,7 @@ import {
   ActionIcon,
   AppShell,
   Avatar,
+  Box,
   Center,
   Flex,
   Footer,
@@ -14,6 +15,7 @@ import {
   Stack,
   Text,
   ThemeIcon,
+  Title,
 } from "@mantine/core";
 import { HomeView } from ".";
 import {
@@ -40,7 +42,7 @@ export default function HomeLayout({
 }) {
   const router = useRouter();
   const [user, setUser] = useState(dataUser);
-  const [loading, setLoading] = useState(false);
+  const [loadingProfil, setLoadingProfile] = useState(false);
   const [loadingUS, setLoadingUS] = useState(false);
   const listFooter = [
     {
@@ -57,33 +59,226 @@ export default function HomeLayout({
     },
   ];
 
+  const Compo_Footer = (
+    <Footer height={70} w={"100%"} bg={"black"}>
+      <Grid p={"xs"}>
+        <Grid.Col span={"auto"}>
+          {loadingUS ? (
+            <Center>
+              <Loader />
+            </Center>
+          ) : (
+            <Center>
+              <Stack
+                align="center"
+                spacing={0}
+                onClick={() => {
+                  if (user?.Profile === null) {
+                    ComponentGlobal_NotifikasiPeringatan("Lengkapi Profile");
+                  } else {
+                    setLoadingUS(true);
+                    // router.push(RouterProfile.katalog + `${user.Profile.id}`);
+                    router.push(RouterUserSearch.main);
+                  }
+                }}
+              >
+                <ActionIcon variant={"transparent"}>
+                  <IconUserSearch color="white" />
+                </ActionIcon>
+                <Text fz={"xs"} c={"white"}>
+                  Temukan pengguna
+                </Text>
+              </Stack>
+            </Center>
+          )}
+        </Grid.Col>
+        <Grid.Col span={"auto"}>
+          {loadingProfil ? (
+            <Center>
+              <Loader />
+            </Center>
+          ) : (
+            <Center>
+              <Stack
+                align="center"
+                spacing={2}
+                onClick={() => {
+                  setLoadingProfile(true);
+                  if (user?.Profile === null) {
+                    router.push(RouterProfile.create + `${user.id}`);
+                  } else {
+                    router.push(RouterProfile.katalog + `${user.Profile.id}`);
+                  }
+                }}
+              >
+                <ActionIcon variant={"transparent"}>
+                  {user?.Profile === null ? (
+                    <IconUserCircle color="white" />
+                  ) : (
+                    <Avatar
+                      radius={"xl"}
+                      size={25}
+                      sx={{
+                        borderStyle: "solid",
+                        borderWidth: "0.5px",
+                        borderColor: "white",
+                      }}
+                      src={
+                        RouterProfile.api_foto_profile +
+                        `${user?.Profile.imagesId}`
+                      }
+                    />
+                  )}
+                </ActionIcon>
+                <Text fz={"xs"} c={"white"}>
+                  Profile
+                </Text>
+              </Stack>
+            </Center>
+          )}
+        </Grid.Col>
+      </Grid>
+    </Footer>
+  );
+
+  return (
+    <>
+      <Box>
+        <Box
+          style={{
+            zIndex: 99,
+          }}
+          w={"100%"}
+          bg={"black"}
+          pos={"sticky"}
+          top={0}
+          h={50}
+        >
+          <Center h={"100%"}>
+            <Title order={4} c={"white"}>
+              HIPMI
+            </Title>
+          </Center>
+        </Box>
+        <Box p={"sm"} pos={"static"}>
+          {children}
+        </Box>
+
+        <Box
+          style={{
+            zIndex: 98,
+          }}
+          w={"100%"}
+          bg={"black"}
+          pos={"sticky"}
+          bottom={0}
+          h={"10vh"}
+        >
+          <SimpleGrid cols={2}>
+            <Center h={"10vh"}>
+              {loadingUS ? (
+                <Center>
+                  <Loader />
+                </Center>
+              ) : (
+                <Center>
+                  <Stack
+                    align="center"
+                    spacing={0}
+                    onClick={() => {
+                      if (user?.Profile === null) {
+                        ComponentGlobal_NotifikasiPeringatan(
+                          "Lengkapi Profile"
+                        );
+                      } else {
+                        setLoadingUS(true);
+                        // router.push(RouterProfile.katalog + `${user.Profile.id}`);
+                        router.push(RouterUserSearch.main);
+                      }
+                    }}
+                  >
+                    <ActionIcon variant={"transparent"}>
+                      <IconUserSearch color="white" />
+                    </ActionIcon>
+                    <Text fz={"xs"} c={"white"}>
+                      Temukan pengguna
+                    </Text>
+                  </Stack>
+                </Center>
+              )}
+            </Center>
+
+            <Center h={"10vh"}>
+              {loadingProfil ? (
+                <Center>
+                  <Loader />
+                </Center>
+              ) : (
+                <Center>
+                  <Stack
+                    align="center"
+                    spacing={2}
+                    onClick={() => {
+                      setLoadingProfile(true);
+                      if (user?.Profile === null) {
+                        router.push(RouterProfile.create + `${user.id}`);
+                      } else {
+                        router.push(
+                          RouterProfile.katalog + `${user.Profile.id}`
+                        );
+                      }
+                    }}
+                  >
+                    <ActionIcon variant={"transparent"}>
+                      {user?.Profile === null ? (
+                        <IconUserCircle color="white" />
+                      ) : (
+                        <Avatar
+                          radius={"xl"}
+                          size={25}
+                          sx={{
+                            borderStyle: "solid",
+                            borderWidth: "0.5px",
+                            borderColor: "white",
+                          }}
+                          src={
+                            RouterProfile.api_foto_profile +
+                            `${user?.Profile.imagesId}`
+                          }
+                        />
+                      )}
+                    </ActionIcon>
+                    <Text fz={"xs"} c={"white"}>
+                      Profile
+                    </Text>
+                  </Stack>
+                </Center>
+              )}
+            </Center>
+          </SimpleGrid>
+        </Box>
+      </Box>
+    </>
+  );
+
   return (
     <>
       <AppShell
         header={
           <Header height={50} bg={"dark"}>
             <Group position="center" align="center" h={50} p={"sm"}>
-              {/* <Group spacing={"sm"}>
-                <ActionIcon>
-                  <IconAward />
-                </ActionIcon>
-              </Group> */}
               <Text color="white" fw={"bold"}>
                 HIPMI
               </Text>
               {/* <Logout/> */}
-              {/* <Group spacing={"sm"}>
-                <ActionIcon>
-                  <IconQrcode />
-                </ActionIcon>
-              </Group> */}
             </Group>
           </Header>
         }
         footer={
           <Footer height={70} bg={"dark"}>
-            <Grid p={"xs"}>
+            <Grid p={"xs"} bg={"blue"}>
               <Grid.Col
+                bg={"red"}
                 span={"auto"}
                 onClick={() => {
                   if (user?.Profile === null) {
@@ -111,9 +306,10 @@ export default function HomeLayout({
                 )}
               </Grid.Col>
               <Grid.Col
+                bg={"cyan"}
                 span={"auto"}
                 onClick={() => {
-                  setLoading(true);
+                  setLoadingProfile(true);
                   if (user?.Profile === null) {
                     router.push(RouterProfile.create + `${user.id}`);
                   } else {
@@ -121,7 +317,7 @@ export default function HomeLayout({
                   }
                 }}
               >
-                {loading ? (
+                {loadingProfil ? (
                   <Center>
                     <Loader />
                   </Center>

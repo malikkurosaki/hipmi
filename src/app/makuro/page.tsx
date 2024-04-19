@@ -5,12 +5,14 @@ import {
   Button,
   Center,
   Paper,
+  ScrollArea,
   SimpleGrid,
   Stack,
   Text,
   TextInput,
   Title,
 } from "@mantine/core";
+import _ from "lodash";
 // import ViewMakuro from "./_server/makuro_view";
 // import mqtt_client from "@/util/mqtt_client";
 // import { useState } from "react";
@@ -69,17 +71,38 @@ import {
 
 export default function Page() {
   return (
-    <Stack>
-      <Center>
+    <Box>
+      <Box
+        style={{
+          zIndex: 99,
+        }}
+        w={"100%"}
+        bg={"green"}
+        pos={"sticky"}
+        top={0}
+        h={"10vh"}
+      >
+        satu
+      </Box>
+      <Box bg={"red"} pos={"static"}>
         <Stack>
-          <Title>LOGIN</Title>
-          <TextInput />
-          <TextInput />
-          <TextInput />
-          <TextInput />
-          <Button>LOGIN</Button>
+          {Array.from(new Array(300)).map((v, k) => (
+            <Title key={k}>INI DIMANA {k+1}</Title>
+          ))}
         </Stack>
-      </Center>
-    </Stack>
+      </Box>
+      <Text
+        style={{
+          zIndex: 98,
+        }}
+        w={"100%"}
+        bg={"blue"}
+        pos={"sticky"}
+        bottom={0}
+        h={"10vh"}
+      >
+        satu
+      </Text>
+    </Box>
   );
 }

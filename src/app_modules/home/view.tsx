@@ -105,8 +105,8 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
     <>
       {visible ? <ComponentGlobal_V2_LoadingPage /> : ""}
 
-      <Box>
-        <Paper bg={"dark"} radius={5} my={"xs"}>
+      <Box h={"100%"}>
+        <Paper bg={"dark"} radius={5} mb={"xs"}>
           <Image alt="logo" src={"/aset/home/home-hipmi.png"} />
         </Paper>
 
@@ -157,7 +157,7 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
                   >
                     {e.icon}
                   </ActionIcon>
-                  <Text c={e.link === "" ? "gray" : "teal"}>{e.name}</Text>
+                  <Text c={e.link === "" ? "gray" : "teal"} fz={"sm"}>{e.name}</Text>
                 </Flex>
               </Paper>
             ))}

@@ -105,53 +105,8 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
 
   return (
     <>
-      {/* <Flex
-        align={"center"}
-        justify={"center"}
-        direction={"column"}
-        gap={50}
-        h={"80vh"}
-      >
-        <Title order={4}>Validasi Kode OTP</Title>
-        <IconCircleLetterH size={150} />
-        <Flex direction={"column"} gap={"xl"} align={"center"}>
-          <Flex
-            justify={"center"}
-            gap={1}
-            direction={"column"}
-            align={"center"}
-          >
-            <Text>Enter the 4-digit OTP , we’ve just sent</Text>
-            <Text>to  +{nomor}</Text>
-          </Flex>
-          <PinInput
-          ref={focusTrapRef}
-            spacing={"md"}
-            mt={"md"}
-            onChange={(val) => {
-              setInputOtp(val);
-            }}
-          />
-          <Button
-            w={100}
-            mt={"md"}
-            compact
-            radius={50}
-            bg={Warna.hijau_tua}
-            color="green"
-            onClick={() => {
-              onValid();
-              // myConsole("ok")
-            }}
-          >
-            Submit
-          </Button>
-        </Flex>
-      </Flex> */}
 
-      {/* <pre>{JSON.stringify(code)}</pre> */}
-
-      <Center h={"80%"}>
+      <Center h={"100vh"}>
         <Stack px={"lg"} spacing={"xl"} w={{ base: 400 }} justify="center">
           <Center>
             <IconCloudLockOpen size={130} />
