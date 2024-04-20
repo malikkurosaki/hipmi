@@ -28,7 +28,7 @@ export default function Job_Beranda({ listJob }: { listJob: MODEL_JOB[] }) {
   const router = useRouter();
   return (
     <>
-      <Affix position={{ bottom: rem(100), right: rem(30) }}>
+      <Affix position={{ bottom: rem(150), right: rem(30) }}>
         <ActionIcon
           size={"xl"}
           radius={"xl"}

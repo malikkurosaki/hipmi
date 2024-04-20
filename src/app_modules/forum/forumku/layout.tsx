@@ -5,6 +5,7 @@ import React from "react";
 import ComponentForum_HeaderTamplate from "../component/header/header_tamplate";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { IconX } from "@tabler/icons-react";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutForum_Forumku({
   children,
@@ -15,11 +16,16 @@ export default function LayoutForum_Forumku({
 }) {
   return (
     <>
-      <AppShell
-        header={<ComponentForum_HeaderTamplate title={`${username}`} changeIconBack={<IconX/>}/>}
+      <AppComponentGlobal_LayoutTamplate
+        header={
+          <ComponentForum_HeaderTamplate
+            title={`${username}`}
+            changeIconBack={<IconX />}
+          />
+        }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

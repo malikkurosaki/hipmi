@@ -17,6 +17,7 @@ import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { useAtom } from "jotai";
 import { gs_job_hot_menu } from "../global_state";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutJob_Main({
   children,
@@ -50,7 +51,7 @@ export default function LayoutJob_Main({
 
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <ComponentJob_HeaderTamplate
             title="Job Vacancy"
@@ -58,39 +59,41 @@ export default function LayoutJob_Main({
           />
         }
         footer={
-          <Footer height={70} bg={"dark"}>
-            <Grid>
-              {listFooter.map((e) => (
-                <Grid.Col
-                  key={e.id}
-                  span={"auto"}
-                  pt={"md"}
-                  onClick={() => {
-                    router.replace(e.path);
-                    setHotMenu(e.id);
-                  }}
-                >
-                  <Center>
-                    <Stack align="center" spacing={0}>
-                      <ActionIcon
-                        variant="transparent"
-                        c={hotMenu === e.id ? "blue" : "white"}
-                      >
-                        {e.icon}
-                      </ActionIcon>
-                      <Text fz={10} c={hotMenu === e.id ? "blue" : "white"}>
-                        {e.name}
-                      </Text>
-                    </Stack>
-                  </Center>
-                </Grid.Col>
-              ))}
-            </Grid>
+          <Footer height={"10vh"} bg={"dark"}>
+            <Stack justify="center" h={"100%"}>
+              <Grid>
+                {listFooter.map((e) => (
+                  <Grid.Col
+                    key={e.id}
+                    span={"auto"}
+                    pt={"md"}
+                    onClick={() => {
+                      router.replace(e.path);
+                      setHotMenu(e.id);
+                    }}
+                  >
+                    <Center>
+                      <Stack align="center" spacing={0}>
+                        <ActionIcon
+                          variant="transparent"
+                          c={hotMenu === e.id ? "blue" : "white"}
+                        >
+                          {e.icon}
+                        </ActionIcon>
+                        <Text fz={10} c={hotMenu === e.id ? "blue" : "white"}>
+                          {e.name}
+                        </Text>
+                      </Stack>
+                    </Center>
+                  </Grid.Col>
+                ))}
+              </Grid>
+            </Stack>
           </Footer>
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

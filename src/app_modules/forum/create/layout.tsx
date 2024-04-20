@@ -3,6 +3,7 @@
 import { AppShell } from "@mantine/core";
 import React from "react";
 import ComponentForum_HeaderTamplate from "../component/header/header_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutForum_Create({
   children,
@@ -11,9 +12,9 @@ export default function LayoutForum_Create({
 }) {
   return (
     <>
-      <AppShell header={<ComponentForum_HeaderTamplate title="Tambah Postingan" />}>
+      <AppComponentGlobal_LayoutTamplate header={<ComponentForum_HeaderTamplate title="Tambah Postingan" />}>
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

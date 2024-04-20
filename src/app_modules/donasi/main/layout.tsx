@@ -119,7 +119,7 @@ export default function LayoutDonasi({
                       >
                         {e.icon}
                       </ActionIcon>
-                      <Text c={active === i ? "orange" : "white"}>
+                      <Text c={active === i ? "orange" : "white"} fz={"xs"}>
                         {e.name}
                       </Text>
                     </Flex>

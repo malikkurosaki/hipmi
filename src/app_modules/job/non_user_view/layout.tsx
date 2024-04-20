@@ -3,6 +3,7 @@
 import { AppShell } from "@mantine/core";
 import React from "react";
 import ComponentJob_HeaderTamplate from "../component/header_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutJob_NonUserView({
   children,
@@ -11,7 +12,7 @@ export default function LayoutJob_NonUserView({
 }) {
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <ComponentJob_HeaderTamplate
             hideBack={true}
@@ -20,7 +21,7 @@ export default function LayoutJob_NonUserView({
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

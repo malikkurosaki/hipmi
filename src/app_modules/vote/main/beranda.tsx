@@ -37,7 +37,7 @@ export default function Vote_Beranda({
 
   return (
     <>
-      <Affix position={{ bottom: rem(100), right: rem(30) }}>
+      <Affix position={{ bottom: rem(150), right: rem(30) }}>
         <ActionIcon
           size={"xl"}
           radius={"xl"}

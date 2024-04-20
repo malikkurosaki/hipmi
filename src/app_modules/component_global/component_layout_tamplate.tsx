@@ -46,6 +46,7 @@ export default function AppComponentGlobal_LayoutTamplate({
         {/* Children */}
         <Box p={"sm"} pos={"static"}>
           <Stack>
+            
             {children}
             <Box
               style={{

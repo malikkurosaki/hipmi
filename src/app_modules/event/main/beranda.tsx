@@ -37,6 +37,7 @@ export default function Event_Beranda({
   dataEvent: MODEL_EVENT[];
 }) {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   // if (_.isEmpty(dataEvent))
   //   return (
@@ -48,13 +49,17 @@ export default function Event_Beranda({
   //   );
   return (
     <>
-      <Affix position={{ bottom: rem(100), right: rem(30) }}>
+      <Affix position={{ bottom: rem(150), right: rem(30) }}>
         <ActionIcon
+          loading={loading ? true : false}
           size={"xl"}
           radius={"xl"}
           variant="transparent"
           bg={"blue"}
-          onClick={() => router.push(RouterEvent.create)}
+          onClick={() => {
+            setLoading(true);
+            router.push(RouterEvent.create);
+          }}
         >
           <IconCirclePlus color="white" size={40} />
         </ActionIcon>

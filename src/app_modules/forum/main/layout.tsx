@@ -24,6 +24,7 @@ import { title } from "process";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutForum_Main({
   children,
@@ -56,7 +57,7 @@ export default function LayoutForum_Main({
 
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <Header height={50} sx={{ borderStyle: "none" }}>
             <Group h={50} position="apart" px={"md"}>
@@ -131,7 +132,7 @@ export default function LayoutForum_Main({
         // }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }
