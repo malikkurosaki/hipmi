@@ -4,6 +4,9 @@ import prisma from "@/app/lib/prisma";
 
 export async function UserSearch_getListUser() {
   const data = await prisma.user.findMany({
+    where: {
+      masterUserRoleId: "1"
+    },
     select: {
       id: true,
       username: true,

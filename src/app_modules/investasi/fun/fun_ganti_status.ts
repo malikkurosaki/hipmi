@@ -11,7 +11,7 @@ export default async function funGantiStatusInvestasi(
   statusInves: string,
   statusProgres?: string
 ) {
-  console.log(statusProgres)
+
   if (statusProgres === '1') {
     const publishCD = new Date();
     const data = await prisma.investasi.update({
