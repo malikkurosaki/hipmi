@@ -15,6 +15,7 @@ import {
   MediaQuery,
   NavLink,
   Navbar,
+  ScrollArea,
   Stack,
   Text,
   Title,
@@ -220,7 +221,10 @@ export default function AdminLayout({
         navbarOffsetBreakpoint="md"
         asideOffsetBreakpoint="sm"
         navbar={
-          <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
+          <MediaQuery
+            smallerThan={"md"}
+            styles={{ display: "none", }}
+          >
             <Navbar
               width={{ lg: 200, md: 200, sm: 200, base: 200 }}
               hiddenBreakpoint="md"
@@ -228,12 +232,14 @@ export default function AdminLayout({
               p="xs"
               bg={"gray.2"}
             >
-              <Navbar.Section>
-                <Stack>
-                  {userRole === "3" ? navbarItems : notAdminDev}
-                  {/* <NavLink icon={<IconCheck />} label="Create Admin" /> */}
-                </Stack>
-              </Navbar.Section>
+              <ScrollArea h={"100vh"}  scrollbarSize={2}>
+                <Navbar.Section>
+                  <Stack>
+                    {userRole === "3" ? navbarItems : notAdminDev}
+                    {/* <NavLink icon={<IconCheck />} label="Create Admin" /> */}
+                  </Stack>
+                </Navbar.Section>
+              </ScrollArea>
             </Navbar>
           </MediaQuery>
         }
@@ -250,7 +256,7 @@ export default function AdminLayout({
                   mr="xl"
                 />
                 <Title order={6}>Dashboard Admin</Title>
-                <Admin_Logout/>
+                <Admin_Logout />
               </Group>
             </MediaQuery>
 

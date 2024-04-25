@@ -16,6 +16,7 @@ export default async function colab_getListPartisipanById(colabId: string) {
           Profile: true,
         },
       },
+      deskripsi_diri: true
     },
   });
 

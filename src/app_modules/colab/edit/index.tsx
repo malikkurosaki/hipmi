@@ -1,6 +1,13 @@
 "use client";
 
-import { Stack, TextInput, Select, Textarea, Button } from "@mantine/core";
+import {
+  Stack,
+  TextInput,
+  Select,
+  Textarea,
+  Button,
+  Text,
+} from "@mantine/core";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import {
@@ -10,6 +17,7 @@ import {
 import colab_funEditById from "../fun/edit/fun_edit_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 
 export default function Colab_Edit({
   selectedData,
@@ -70,6 +78,25 @@ export default function Colab_Edit({
           }
         />
 
+        {/* <TextInput
+          description={
+            <Text fz={10}>
+              minimal partisipan yang akan di pilih untuk mendiskusikan proyek
+            </Text>
+          }
+          type="number"
+          withAsterisk
+          label="Jumlah Partisipan"
+          placeholder={"2"}
+          value={value.jumlah_partisipan ? value.jumlah_partisipan : ""}
+          onChange={(val) => {
+            setValue({
+              ...value,
+              jumlah_partisipan: + val.currentTarget.value
+            });
+          }}
+        /> */}
+
         <Textarea
           label="Tujuan Proyek"
           placeholder="Masukan tujuan proyek"
@@ -103,11 +130,22 @@ export default function Colab_Edit({
   );
 }
 
-function ButtonAction({ value }: { value: React.ReactNode }) {
+function ButtonAction({ value }: { value: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   async function onUpdate() {
+    if (value.title === "")
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+    if (value.lokasi === "")
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+    if (value.purpose === "")
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+    if (value.projectCollaborationMaster_IndustriId === 0)
+      return ComponentGlobal_NotifikasiPeringatan("Pilih Industri");
+    // if (value.jumlah_partisipan < 2)
+    //   return ComponentGlobal_NotifikasiPeringatan("Minimal Ada 2 Partisipan");
+
     await colab_funEditById(value as any).then((res) => {
       if (res.status === 200) {
         setLoading(true);

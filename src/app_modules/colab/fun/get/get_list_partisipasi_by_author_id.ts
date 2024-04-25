@@ -7,6 +7,9 @@ export default async function colab_getListPartisipasiByAuthorId() {
   const AuthorId = await user_getOneUserId();
 
   const get = await prisma.projectCollaboration_Partisipasi.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
     where: {
       userId: AuthorId,
       isActive: true,

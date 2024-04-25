@@ -5,7 +5,7 @@ import prisma from "@/app/lib/prisma";
 export default async function colab_getListAllProyek() {
   const data = await prisma.projectCollaboration.findMany({
     orderBy: {
-      updatedAt: "desc",
+      createdAt: "desc",
     },
     where: {
       projectCollaborationMaster_StatusId: 1,
@@ -32,7 +32,6 @@ export default async function colab_getListAllProyek() {
       },
     },
   });
-
 
   return data;
 }

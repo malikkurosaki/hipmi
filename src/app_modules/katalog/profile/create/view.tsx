@@ -33,6 +33,7 @@ import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { useForm } from "@mantine/form";
+import { useTimeout } from "@mantine/hooks";
 
 export default function CreateProfile({ userId }: { userId: any }) {
   const [filePP, setFilePP] = useState<File | null>(null);
@@ -302,7 +303,7 @@ function ButtonAction({
       if (res.status === 201) {
         setLoading(true);
         ComponentGlobal_NotifikasiBerhasil("Berhasil Membuat Profile", 3000);
-        router.push(RouterHome.main_home);
+        setTimeout(() => router.push(RouterHome.main_home), 2000);
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }

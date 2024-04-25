@@ -3,6 +3,7 @@
 import {
   ActionIcon,
   AppShell,
+  Box,
   Center,
   Footer,
   Grid,
@@ -16,50 +17,47 @@ import ComponentColab_HeaderTamplate from "../../component/header_tamplate";
 import { IconPlane, IconSend } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { gs_colab_pesan } from "../../global_state";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutColab_DetailGrupDiskusi({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [pesan, setPesan] = useState("");
-
-  async function onSend() {
-    console.log(pesan);
-  }
   return (
     <>
-      <AppShell
-        header={<ComponentColab_HeaderTamplate title="Nama Grup Diskusi" />}
-        // footer={
-        //   <Footer height={60}>
-        //     <Stack justify="center" h={"100%"} px={"sm"}>
-        //       <Grid align="center">
-        //         <Grid.Col span={"auto"}>
-        //           <Textarea
-        //             minRows={1}
-        //             radius={"md"}
-        //             placeholder="Pesan..."
-        //             onChange={(val) => setPesan(val.currentTarget.value)}
-        //           />
-        //         </Grid.Col>
-        //         <Grid.Col span={"content"}>
-        //           <ActionIcon
-        //             variant="outline"
-        //             radius={"xl"}
-        //             size={"lg"}
-        //             onClick={() => onSend()}
-        //           >
-        //             <IconSend size={20} />
-        //           </ActionIcon>
-        //         </Grid.Col>
-        //       </Grid>
-        //     </Stack>
-        //   </Footer>
-        // }
-      >
-        {children}
-      </AppShell>
+      <Box>
+        {/* Header */}
+        <Box
+          style={{
+            zIndex: 99,
+          }}
+          w={"100%"}
+          bg={"black"}
+          pos={"fixed"}
+          top={0}
+          h={50}
+        >
+          <ComponentColab_HeaderTamplate title="Room Chat" bg={"gray.2"} />
+        </Box>
+
+        {/* Children */}
+        <Box p={"sm"} pos={"static"} h={"80vh"}>
+          <Box
+            style={{
+              height: 50,
+            }}
+          ></Box>
+          <Stack>
+            {children}
+            <Box
+              style={{
+                height: "10vh",
+              }}
+            ></Box>
+          </Stack>
+        </Box>
+      </Box>
     </>
   );
 }

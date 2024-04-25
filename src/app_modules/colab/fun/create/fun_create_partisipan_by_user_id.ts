@@ -6,12 +6,14 @@ import { revalidatePath } from "next/cache";
 
 export default async function colab_funCreatePartisipan(
   colabId: string,
-  userId: string
+  userId: string,
+  deskripsi: string
 ) {
   const create = await prisma.projectCollaboration_Partisipasi.create({
     data: {
       projectCollaborationId: colabId,
       userId: userId,
+      deskripsi_diri: deskripsi
     },
   });
 

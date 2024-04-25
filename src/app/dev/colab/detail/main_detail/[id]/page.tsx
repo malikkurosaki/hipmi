@@ -8,9 +8,8 @@ export default async function Page({ params }: { params: { id: string } }) {
   let colabId = params.id;
   const userLoginId = await user_getOneUserId();
   const dataColab = await colab_getOneCollaborationById(colabId);
-  const listPartisipan = await colab_getListPartisipanById(colabId)
-  const cekPartisipan = await colab_funCekPartisipasiById(colabId)
-
+  const listPartisipan = await colab_getListPartisipanById(colabId);
+  const cekPartisipan = await colab_funCekPartisipasiById(colabId);
 
   return (
     <>

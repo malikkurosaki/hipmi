@@ -23,6 +23,8 @@ import forum_kategori_report from "../../../bin/seeder/forum/master_report.json"
 import forum_status_posting from "../../../bin/seeder/forum/master_status.json";
 import collaboration_industri from "../../../bin/seeder/colab/master_industri.json";
 import collaboration_status from "../../../bin/seeder/colab/master_status.json";
+import collaboration_jumlah_minimal_room from "../../../bin/seeder/colab/jumlah_minimal_room.json";
+import { randomId } from "@mantine/hooks";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");

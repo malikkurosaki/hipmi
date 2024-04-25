@@ -10,6 +10,9 @@ import {
   Text,
   Divider,
   Button,
+  Drawer,
+  Textarea,
+  Group,
 } from "@mantine/core";
 import ComponentColab_AuthorNameOnHeader from "../header_author_name";
 import {
@@ -22,6 +25,8 @@ import colab_funCreatePartisipan from "../../fun/create/fun_create_partisipan_by
 import colab_getListPartisipanById from "../../fun/get/get_list_partisipan_by_id";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { useDisclosure } from "@mantine/hooks";
+import ComponentColab_AuthorNameOnListPartisipan from "./header_author_list_partisipan";
 
 export default function ComponentColab_DetailListPartisipasiUser({
   listPartisipan,
@@ -38,26 +43,57 @@ export default function ComponentColab_DetailListPartisipasiUser({
 }) {
   const [apply, setApply] = useState(false);
   const [data, setData] = useState(listPartisipan);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [deskripsi, setDeskripsi] = useState("");
 
   async function onJoin() {
-    await colab_funCreatePartisipan(colabId as any, userLoginId as any).then(
-      async (res) => {
-        if (res.status === 201) {
-          await colab_getListPartisipanById(colabId as any).then((val) => {
-            setApply(true);
-            setData(val as any);
-            ComponentGlobal_NotifikasiBerhasil(res.message);
-          });
-        } else {
-          ComponentGlobal_NotifikasiGagal(res.message);
-        }
+    await colab_funCreatePartisipan(
+      colabId as any,
+      userLoginId as any,
+      deskripsi
+    ).then(async (res) => {
+      if (res.status === 201) {
+        await colab_getListPartisipanById(colabId as any).then((val) => {
+          setApply(true);
+          close();
+          setData(val as any);
+          ComponentGlobal_NotifikasiBerhasil(res.message);
+        });
+      } else {
+        ComponentGlobal_NotifikasiGagal(res.message);
       }
-    );
+    });
   }
 
   return (
     <>
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+      <Drawer
+        opened={opened}
+        onClose={close}
+        position="bottom"
+        size={"30vh"}
+        withCloseButton={false}
+      >
+        <Stack>
+          <Textarea
+            label="Deskripsi Diri"
+            placeholder="Deskripsikan diri anda yang sesuai dengan proyek ini.."
+            minRows={4}
+            onChange={(val) => {
+              setDeskripsi(val.currentTarget.value);
+            }}
+          />
+          <Group position="center">
+            <Button radius={"xl"} onClick={() => close()}>
+              Batal
+            </Button>
+            <Button radius={"xl"} color="green" onClick={() => onJoin()}>
+              Simpan
+            </Button>
+          </Group>
+        </Stack>
+      </Drawer>
+
       <Stack>
         {userLoginId !== authorId ? (
           <Center>
@@ -66,7 +102,8 @@ export default function ComponentColab_DetailListPartisipasiUser({
               disabled={cekPartisipan ? true : false}
               color={cekPartisipan ? "green" : "blue"}
               onClick={() => {
-                onJoin();
+                // onJoin();
+                open();
               }}
             >
               {cekPartisipan ? "Telah Berpartisipasi" : "Partisipasi"}
@@ -93,11 +130,10 @@ export default function ComponentColab_DetailListPartisipasiUser({
                   ) : (
                     data?.map((e, i) => (
                       <Box key={i}>
-                        <ComponentColab_AuthorNameOnHeader
+                        <ComponentColab_AuthorNameOnListPartisipan
                           isPembatas={true}
-                          authorName={e?.User.Profile.name}
-                          imagesId={e?.User?.Profile?.imagesId}
-                          profileId={e?.User?.Profile?.id}
+                          author={e.User}
+                          deskripsi={e.deskripsi_diri}
                         />
                       </Box>
                     ))
