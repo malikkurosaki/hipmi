@@ -47,6 +47,7 @@ export default function ComponentColab_HeaderTamplate({
             <ActionIcon variant="transparent" disabled></ActionIcon>
           ) : (
             <ActionIcon
+              radius={"xl"}
               loading={loading ? true : false}
               variant="transparent"
               onClick={() => {

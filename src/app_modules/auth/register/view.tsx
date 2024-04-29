@@ -81,6 +81,7 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
         await auth_funEditAktivasiKodeOtpById(dataOtp.id).then((val) => {
           if (val.status === 200) {
             ComponentGlobal_NotifikasiBerhasil(res.message);
+            setLoading(true);
             router.push(RouterHome.main_home);
           } else {
             ComponentGlobal_NotifikasiPeringatan(val.message);
@@ -94,7 +95,6 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
 
   return (
     <>
-
       {/* <pre>{JSON.stringify(dataOtp,null,2)}</pre> */}
 
       <Center>
@@ -140,7 +140,6 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
                 color={"teal"}
                 onClick={() => {
                   onRegistarsi();
-                  setLoading(true);
                 }}
               >
                 <Text>DAFTAR</Text>

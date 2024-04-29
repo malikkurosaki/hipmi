@@ -3,7 +3,7 @@
 import prisma from "@/app/lib/prisma";
 
 export async function auth_funEditAktivasiKodeOtpById(otpId: string) {
-  console.log(otpId);
+  // console.log(otpId);
   const updt = await prisma.kodeOtp.update({
     where: {
       id: otpId,

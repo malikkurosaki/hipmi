@@ -29,6 +29,7 @@ export default function Colab_GrupDiskus({
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [idRoom, setIdRoom] = useState("");
 
   if (_.isEmpty(listRoom))
     return <ComponentColab_IsEmptyData text="Tidak Ada Data" />;
@@ -46,6 +47,7 @@ export default function Colab_GrupDiskus({
               router.push(
                 RouterColab.detail_grup + e?.ProjectCollaboration_RoomChat.id
               );
+              setIdRoom(e?.ProjectCollaboration_RoomChat.id);
               setLoading(true);
             }}
           >
@@ -66,7 +68,7 @@ export default function Colab_GrupDiskus({
               </Grid.Col>
               <Grid.Col span={"content"}>
                 <Center>
-                  {loading ? (
+                  {e?.ProjectCollaboration_RoomChat.id === idRoom ? (
                     <Loader color="gray" size={20} />
                   ) : (
                     <IconChevronRight color="gray" />

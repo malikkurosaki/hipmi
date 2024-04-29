@@ -21,6 +21,7 @@ export const RouterColab = {
   detail_partisipasi_proyek: "/dev/colab/detail/proyek/partisipasi/",
   detail_proyek_saya: "/dev/colab/detail/proyek/saya/",
   detail_grup: "/dev/colab/detail/grup/",
+  info_grup: "/dev/colab/detail/info-grup/",
 
   // proyek
 };

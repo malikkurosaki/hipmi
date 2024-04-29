@@ -11,11 +11,14 @@ export default async function Layout({
   params: { id: string };
 }) {
   let roomId = params.id;
-  // const listAnggota = await colab_getListAnggotaByRoomId(roomId);
+  const dataRoom = await colab_getListAnggotaByRoomId(roomId);
+  
 
   return (
     <>
-      <LayoutColab_DetailGrupDiskusi>{children}</LayoutColab_DetailGrupDiskusi>
+      <LayoutColab_DetailGrupDiskusi dataRoom={dataRoom as any}>
+        {children}
+      </LayoutColab_DetailGrupDiskusi>
     </>
   );
 }

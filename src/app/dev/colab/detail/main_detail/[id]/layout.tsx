@@ -13,13 +13,14 @@ export default async function Layout({
   const colabId = params.id;
   const dataColab = await colab_getOneCollaborationById(colabId);
   const authorId = dataColab?.Author?.id;
-  const userLoginId = await user_getOneUserId()
-  console.log(authorId)
-  console.log(userLoginId)
+  const userLoginId = await user_getOneUserId();
 
   return (
     <>
-      <LayoutColab_MainDetail colabId={colabId} isAuthor={authorId === userLoginId ? true : false}>
+      <LayoutColab_MainDetail
+        colabId={colabId}
+        isAuthor={authorId === userLoginId ? true : false}
+      >
         {children}
       </LayoutColab_MainDetail>
     </>

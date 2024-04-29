@@ -98,7 +98,7 @@ export default function ComponentColab_AuthorNameOnListPartisipan({
                   <IconZoomCheck />
                 </ActionIcon>
               ) : (
-                "Invalid Data"
+                ""
               )}
             </Stack>
           </Grid.Col>

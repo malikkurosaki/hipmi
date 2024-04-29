@@ -5,8 +5,9 @@ import prisma from "@/app/lib/prisma";
 export default async function colab_getMessageByRoomId(roomId: string) {
   const getList = await prisma.projectCollaboration_Message.findMany({
     orderBy: {
-      createdAt: "asc",
+      createdAt: "desc",
     },
+    take : 8,
     where: {
       projectCollaboration_RoomChatId: roomId,
     },

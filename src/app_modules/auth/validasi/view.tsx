@@ -88,6 +88,7 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
           if (val.status === 200) {
             if (res.role === "1") {
               ComponentGlobal_NotifikasiBerhasil(res.message);
+              setLoading(true);
               router.push(RouterHome.main_home);
             } else {
               router.push(RouterAdminDashboard.splash_admin);
@@ -105,7 +106,6 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
 
   return (
     <>
-
       <Center h={"100vh"}>
         <Stack px={"lg"} spacing={"xl"} w={{ base: 400 }} justify="center">
           <Center>
@@ -143,7 +143,6 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
                 color={"teal"}
                 onClick={() => {
                   onVerifikasi();
-                  setLoading(true);
                 }}
               >
                 <Text>VERIFIKASI</Text>
