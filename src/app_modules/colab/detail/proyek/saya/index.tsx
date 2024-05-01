@@ -4,6 +4,7 @@ import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import ComponentColab_DetailData from "@/app_modules/colab/component/detail/detail_data";
 import ComponentColab_AuthorNameOnListPartisipan from "@/app_modules/colab/component/detail/header_author_list_partisipan";
 import ComponentColab_AuthorNameOnHeader from "@/app_modules/colab/component/header_author_name";
+import ComponentColab_IsEmptyData from "@/app_modules/colab/component/is_empty_data";
 import colab_funCreateRoomChat from "@/app_modules/colab/fun/create/fun_create_room_chat";
 import { gs_colab_hot_menu } from "@/app_modules/colab/global_state";
 import {
@@ -12,6 +13,7 @@ import {
 } from "@/app_modules/colab/model/interface";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import {
   Button,
   Checkbox,
@@ -137,20 +139,24 @@ function CheckBoxPartisipan({
             <ScrollArea h={400} offsetScrollbars>
               <Checkbox.Group value={value} onChange={setValue}>
                 <Stack mt="xs">
-                  {listPartisipan.map((e, i) => (
-                    <Grid key={e.id} align="center">
-                      <Grid.Col span={"content"}>
-                        <Checkbox value={e.User.id} />
-                      </Grid.Col>
-                      <Grid.Col span={"auto"}>
-                        <ComponentColab_AuthorNameOnListPartisipan
-                          isPembatas={true}
-                          author={e.User}
-                          deskripsi={e.deskripsi_diri}
-                        />
-                      </Grid.Col>
-                    </Grid>
-                  ))}
+                  {_.isEmpty(listPartisipan) ? (
+                    <ComponentColab_IsEmptyData text="Tidak Ada Pertisipan" />
+                  ) : (
+                    listPartisipan.map((e, i) => (
+                      <Grid key={i} align="center">
+                        <Grid.Col span={"content"}>
+                          <Checkbox value={e?.User?.id} />
+                        </Grid.Col>
+                        <Grid.Col span={"auto"}>
+                          <ComponentColab_AuthorNameOnListPartisipan
+                            isPembatas={true}
+                            author={e?.User}
+                            deskripsi={e?.deskripsi_diri}
+                          />
+                        </Grid.Col>
+                      </Grid>
+                    ))
+                  )}
                 </Stack>
               </Checkbox.Group>
             </ScrollArea>
@@ -176,6 +182,8 @@ function ButtonAction({
   const [loading, setLoading] = useState(false);
 
   async function onSave() {
+    if (nameRoom === "")
+      return ComponentGlobal_NotifikasiPeringatan("Isi Nama Grup");
     await colab_funCreateRoomChat(nameRoom, value, colabId).then((res) => {
       console.log(res);
       if (res.status === 201) {
@@ -185,7 +193,7 @@ function ButtonAction({
         setHotMenu(4);
         router.push(RouterColab.grup_diskusi);
       } else {
-        ComponentGlobal_NotifikasiGagal("Gagal Membuat Grup")
+        ComponentGlobal_NotifikasiGagal("Gagal Membuat Grup");
       }
     });
   }
@@ -194,7 +202,7 @@ function ButtonAction({
     <>
       <Button
         radius={"xl"}
-        // disabled={value.length >= 2 ? false : true}
+        disabled={value.length >= 1 ? false : true}
         onClick={() => {
           open();
         }}

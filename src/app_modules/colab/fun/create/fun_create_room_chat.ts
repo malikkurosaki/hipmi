@@ -45,16 +45,17 @@ export default async function colab_funCreateRoomChat(
   if (!createForAuthor)
     return { status: 400, message: "Gagal Menambahkan Author" };
 
-  // const hideProyek = await prisma.projectCollaboration.update({
-  //   where: {
-  //     id: colabId,
-  //   },
-  //   data: {
-  //     isActive: false,
-  //   },
-  // });
+  // PROJECT YANG SUDAH DI CREATE ROOM AKAN DI HIDE AGAR HANYA ADA 1 GRUP UNTUK 1 PROYEK
+  const hideProyek = await prisma.projectCollaboration.update({
+    where: {
+      id: colabId,
+    },
+    data: {
+      isActive: false,
+    },
+  });
 
-  // if (!hideProyek) return { status: 400, message: "Gagal Menyimpan Proyek" };
+  if (!hideProyek) return { status: 400, message: "Gagal Menyimpan Proyek" };
 
   return { status: 201, message: "Berhasil Membuat Room" };
 }

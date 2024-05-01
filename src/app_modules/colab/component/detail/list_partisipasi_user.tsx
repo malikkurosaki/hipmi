@@ -22,7 +22,7 @@ import {
 import _ from "lodash";
 import { useState } from "react";
 import colab_funCreatePartisipan from "../../fun/create/fun_create_partisipan_by_user_id";
-import colab_getListPartisipanById from "../../fun/get/get_list_partisipan_by_id";
+import colab_getListPartisipanByColabId from "../../fun/get/get_list_partisipan_by_id";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { useDisclosure } from "@mantine/hooks";
@@ -53,7 +53,7 @@ export default function ComponentColab_DetailListPartisipasiUser({
       deskripsi
     ).then(async (res) => {
       if (res.status === 201) {
-        await colab_getListPartisipanById(colabId as any).then((val) => {
+        await colab_getListPartisipanByColabId(colabId as any).then((val) => {
           setApply(true);
           close();
           setData(val as any);

@@ -59,11 +59,9 @@ export default function ComponentColab_DetailData({
             </Stack>
             <Stack spacing={5}>
               <Text fw={"bold"} fz={"sm"}>
-                Keutungan
+                Keuntungan
               </Text>
-              <Text fz={"sm"}>
-                {data?.benefit ? data?.benefit : "-"}
-              </Text>
+              <Text fz={"sm"}>{data?.benefit ? data?.benefit : "-"}</Text>
             </Stack>
           </Stack>
         </Box>

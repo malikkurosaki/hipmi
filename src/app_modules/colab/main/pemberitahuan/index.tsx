@@ -1,11 +1,14 @@
-"use client"
+"use client";
 
-import { Text, Title } from "@mantine/core";
+import { Center, Text, Title } from "@mantine/core";
+import ComponentColab_IsEmptyData from "../../component/is_empty_data";
 
 export default function Colab_NotifikasiView() {
   return (
     <>
-      <Text>ini notif</Text>
+      <Center>
+        <ComponentColab_IsEmptyData text="Cooming Soon" />
+      </Center>
     </>
   );
 }

@@ -1,101 +1,55 @@
 "use client";
-
-import {
-  Box,
-  Button,
-  Center,
-  Paper,
-  ScrollArea,
-  SimpleGrid,
-  Stack,
-  Text,
-  TextInput,
-  Title,
-} from "@mantine/core";
-import _ from "lodash";
-import ViewMakuro from "./_server/makuro_view";
-import mqtt_client from "@/util/mqtt_client";
 import { useState } from "react";
-import { useAtom } from "jotai";
-import { gs_coba_chat } from "./gs_coba";
+import useInfiniteScroll, {
+  ScrollDirection,
+} from "react-easy-infinite-scroll-hook";
+import { createItems, loadMore } from "./_util";
 import { useShallowEffect } from "@mantine/hooks";
 
-export default function Page() {
-  const [pesan, setPesan] = useState("");
-  const [ini, setIni] = useState("");
+export default function App() {
+  const [data, setData] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useShallowEffect(() => {
-    mqtt_client.subscribe("apa");
-
-    mqtt_client.on("message", (data: any, msg: any) => {
-      console.log( msg.toString());
-      setIni(msg.toString());
-    });
+    setData(createItems());
   }, []);
 
+  const next = async (direction: ScrollDirection) => {
+    console.log("next", direction);
+    try {
+      setIsLoading(true);
+      const newData = await loadMore();
+
+      const d = direction === "up"? [...newData, ...data]: []
+      setData(d);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const ref = useInfiniteScroll({
+    next,
+    rowCount: data.length,
+    hasMore: { up: true },
+  });
+
   return (
-    <>
-      <Stack align="center" justify="center">
-        {ini}
-        <TextInput
-          label="User 1"
-          value={pesan}
-          onChange={(val) => setPesan(val.currentTarget.value)}
-        />
-        <button
-          onClick={() => {
-            mqtt_client.publish("apa", pesan);
-            setPesan("");
-          }}
-        >
-          kirim
-        </button>
-      </Stack>
-    </>
+    <div>
+      <div
+        ref={ref as any}
+        className="List"
+        style={{
+          height: 500,
+          overflowY: "auto",
+        }}
+      >
+        {data.map((key: any) => (
+          <div className="Row" key={key}>
+            {key}
+          </div>
+        ))}
+      </div>
+      {isLoading && <div>Loading...</div>}
+    </div>
   );
 }
-
-// export default function Page() {
-//   return (
-//     <Box>
-//       <Box
-//         style={{
-//           zIndex: 99,
-//         }}
-//         w={"100%"}
-//         bg={"green"}
-//         pos={"sticky"}
-//         top={0}
-//         h={"10vh"}
-//       >
-//         header
-//       </Box>
-
-//       <Box bg={"red"} pos={"static"} >
-//         <Stack>
-//           {Array.from(new Array(15)).map((v, k) => (
-//             <Title key={k}>Cek halaman {k+1}</Title>
-//           ))}
-//           <Box style={{
-//             height: "10vh"
-//           }}>
-
-//           </Box>
-//         </Stack>
-//       </Box>
-
-//       <Text
-//         style={{
-//           zIndex: 98,
-//         }}
-//         w={"100%"}
-//         bg={"blue"}
-//         pos={"fixed"}
-//         bottom={0}
-//         h={"10vh"}
-//       >
-//         footer
-//       </Text>
-//     </Box>
-//   );
-// }

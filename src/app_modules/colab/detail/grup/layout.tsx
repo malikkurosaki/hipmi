@@ -116,7 +116,7 @@ export default function LayoutColab_DetailGrupDiskusi({
         </Box>
 
         {/* Children */}
-        <Box p={"sm"} pos={"static"}>
+        <Box py={"xs"} px={"xs"} pos={"static"}>
           <Box
             style={{
               height: 50,

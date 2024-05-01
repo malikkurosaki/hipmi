@@ -1,13 +1,21 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import _ from "lodash";
 
-export default async function colab_getMessageByRoomId(roomId: string) {
+export default async function colab_getMessageByRoomId(
+  roomId: string,
+  page: number
+) {
+  // console.log(page)
+  const lewat = page * 5 - 5;
+  const ambil = 5;
   const getList = await prisma.projectCollaboration_Message.findMany({
     orderBy: {
       createdAt: "desc",
     },
-    take : 8,
+    skip: lewat,
+    take: ambil,
     where: {
       projectCollaboration_RoomChatId: roomId,
     },
@@ -30,6 +38,8 @@ export default async function colab_getMessageByRoomId(roomId: string) {
       },
     },
   });
+
+  const dataRevers = _.reverse(getList);
 
   return getList;
 }

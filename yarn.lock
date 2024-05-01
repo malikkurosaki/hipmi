@@ -3862,6 +3862,11 @@ react-dropzone-esm@15.0.1:
   dependencies:
     prop-types "^15.8.1"
 
+react-easy-infinite-scroll-hook@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/react-easy-infinite-scroll-hook/-/react-easy-infinite-scroll-hook-2.1.4.tgz#6b61ba1d9dbf17a28d5b99e7513e281b4b61159f"
+  integrity sha512-sRbQGWh4BjSvCHTUGQwqf6PtMsOJWYl+RQ7h7BagmNpoWRi+Q/X8qwMZJ5WyzZS6U5vi3OrSGAfjLFPKp73jrg==
+
 react-easy-swipe@^0.0.21:
   version "0.0.21"
   resolved "https://registry.yarnpkg.com/react-easy-swipe/-/react-easy-swipe-0.0.21.tgz#ce9384d576f7a8529dc2ca377c1bf03920bac8eb"

@@ -21,6 +21,7 @@ import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_gl
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { IconEyeCheck, IconZoomCheck } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
+import { IconFileCheck } from "@tabler/icons-react";
 
 export default function ComponentColab_AuthorNameOnListPartisipan({
   author,
@@ -95,7 +96,7 @@ export default function ComponentColab_AuthorNameOnListPartisipan({
                   radius={"xl"}
                   variant="transparent"
                 >
-                  <IconZoomCheck />
+                  <IconFileCheck color={opened ? "blue" : "gray"}/>
                 </ActionIcon>
               ) : (
                 ""

@@ -114,7 +114,6 @@ export default function Colab_Edit({
         <Textarea
           label="Keuntungan "
           placeholder="Masukan keuntungan dalam proyek"
-          withAsterisk
           minRows={5}
           value={value.benefit}
           onChange={(val) =>
