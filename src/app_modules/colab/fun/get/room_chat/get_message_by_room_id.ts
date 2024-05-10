@@ -41,5 +41,8 @@ export default async function colab_getMessageByRoomId({
     },
   });
 
-  return getList;
+
+  const reverse = _.reverse(getList)
+
+  return reverse;
 }

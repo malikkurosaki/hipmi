@@ -53,36 +53,35 @@ export default function Colab_DetailGrupDiskusi({
   const [data, setData] = useState<any[]>(listMsg as any);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [scroll, scrollTo] = useWindowScroll();
   const [isGet, setIsGet] = useState(true);
 
-  const next = async (direction: ScrollDirection) => {
-    try {
-      setIsLoading(true);
-      await new Promise((a) => setTimeout(a, 100));
+  // const next = async (direction: ScrollDirection) => {
+  //   try {
+  //     setIsLoading(true);
+  //     await new Promise((a) => setTimeout(a, 100));
 
-      setPage(page + 1);
-      const newData = await colab_getMessageByRoomId(roomId, page + 1);
+  //     setPage(page + 1);
+  //     const newData = await colab_getMessageByRoomId(roomId, page + 1);
 
-      console.log(newData);
+  //     console.log(newData);
 
-      if (_.isEmpty(newData)) {
-        setIsGet(false);
-      } else {
-        setData((prev) => (direction === "up" ? [...newData, ...prev] : []));
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     if (_.isEmpty(newData)) {
+  //       setIsGet(false);
+  //     } else {
+  //       setData((prev) => (direction === "up" ? [...newData, ...prev] : []));
+  //     }
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-  const ref = useInfiniteScroll({
-    next,
-    rowCount: data.length,
-    hasMore: { up: isGet },
-    scrollThreshold: 0.1,
-    initialScroll: { top: 100 },
-  });
+  // const ref = useInfiniteScroll({
+  //   next,
+  //   rowCount: data.length,
+  //   hasMore: { up: isGet },
+  //   scrollThreshold: 0.1,
+  //   initialScroll: { top: 100 },
+  // });
 
   useShallowEffect(() => {
     mqtt_client.subscribe(roomId);
@@ -93,7 +92,9 @@ export default function Colab_DetailGrupDiskusi({
   }, [setData]);
 
   async function onList(setData: any) {
-    await colab_getMessageByRoomId(roomId, page).then((val) => setData(val));
+    await colab_getMessageByRoomId({ page: page, roomId: roomId }).then((val) =>
+      setData(val)
+    );
   }
 
   async function onSend() {
@@ -107,12 +108,13 @@ export default function Colab_DetailGrupDiskusi({
     });
   }
 
+
+
   return (
     <>
       <Box h={"80vh"} bg={"blue.1"}>
         <Stack justify="flex-end" h={"100%"}>
           <div
-            ref={ref as any}
             style={{
               // overflow: "scroll",
               overflowY: "auto",

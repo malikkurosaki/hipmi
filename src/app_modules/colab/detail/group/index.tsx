@@ -57,36 +57,36 @@ export default function Colab_GroupChatView({
 
   const viewport = useRef<HTMLDivElement>(null);
 
-  const next = async (direction: ScrollDirection) => {
-    try {
-      setIsLoading(true);
-      await new Promise((a) => setTimeout(a, 500));
+  // const next = async (direction: ScrollDirection) => {
+  //   try {
+  //     setIsLoading(true);
+  //     await new Promise((a) => setTimeout(a, 500));
 
-      const newData = await colab_getMessageByRoomId({
-        roomId: selectRoom?.id,
-        page: totalPage + 1,
-      });
-      setTotalPage(totalPage + 1);
+  //     const newData = await colab_getMessageByRoomId({
+  //       roomId: selectRoom?.id,
+  //       page: totalPage + 1,
+  //     });
+  //     setTotalPage(totalPage + 1);
 
-      // console.log(newData, "loading baru");
+  //     // console.log(newData, "loading baru");
 
-      if (_.isEmpty(newData)) {
-        setIsGet(false);
-      } else {
-        const d =
-          direction === "down" ? [...data, ...newData] : [...newData, ...data];
-        setData(d);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     if (_.isEmpty(newData)) {
+  //       setIsGet(false);
+  //     } else {
+  //       const d =
+  //         direction === "down" ? [...data, ...newData] : [...newData, ...data];
+  //       setData(d);
+  //     }
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-  const ref = useInfiniteScroll({
-    next,
-    rowCount: data.length,
-    hasMore: { up: isGet },
-  });
+  // const ref = useInfiniteScroll({
+  //   next,
+  //   rowCount: data.length,
+  //   hasMore: { up: isGet },
+  // });
 
   useShallowEffect(() => {
     mqtt_client.subscribe(selectRoom.id);
@@ -186,7 +186,7 @@ export default function Colab_GroupChatView({
           <Box h={"80vh"}>
             <Stack justify="flex-end" h={"100%"}>
               <div
-                ref={ref as any}
+                // ref={ref as any}
                 style={{
                   overflowY: "auto",
                 }}

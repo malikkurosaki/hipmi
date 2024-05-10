@@ -6,7 +6,7 @@ import _ from "lodash";
 export default async function Page({ params }: { params: { id: string } }) {
   let roomId = params.id;
   const userLoginId = await user_getOneUserId();
-  let listMsg = await colab_getMessageByRoomId(roomId, 1);
+  let listMsg = await colab_getMessageByRoomId({ page: 1, roomId: roomId });
 
   return (
     <>
