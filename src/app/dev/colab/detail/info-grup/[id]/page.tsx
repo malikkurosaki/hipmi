@@ -4,7 +4,7 @@ import colab_getListAnggotaByRoomId from "@/app_modules/colab/fun/get/room_chat/
 
 export default async function Page({ params }: { params: { id: string } }) {
   let roomId = params.id;
-  const dataRoom = await colab_getListAnggotaByRoomId(roomId)
+  const dataRoom = await colab_getListAnggotaByRoomId(roomId);
 
   return (
     <>

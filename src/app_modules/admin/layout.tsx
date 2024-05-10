@@ -221,18 +221,16 @@ export default function AdminLayout({
         navbarOffsetBreakpoint="md"
         asideOffsetBreakpoint="sm"
         navbar={
-          <MediaQuery
-            smallerThan={"md"}
-            styles={{ display: "none", }}
-          >
+          <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
             <Navbar
+              h={"100vh"}
               width={{ lg: 200, md: 200, sm: 200, base: 200 }}
               hiddenBreakpoint="md"
               hidden={!opened}
               p="xs"
               bg={"gray.2"}
             >
-              <ScrollArea h={"100vh"}  scrollbarSize={2}>
+              <ScrollArea h={"100vh"} scrollbarSize={2}>
                 <Navbar.Section>
                   <Stack>
                     {userRole === "3" ? navbarItems : notAdminDev}

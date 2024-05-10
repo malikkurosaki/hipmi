@@ -103,8 +103,8 @@ export default function AdminUserAccess_View({
               placeholder="Masukan username"
             /> */}
         </Group>
-        <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
-          <ScrollArea h={"70vh"}>
+        <Paper p={"md"} withBorder shadow="lg" h={"85vh"}>
+          <ScrollArea h={"80vh"}>
             <Table
               verticalSpacing={"xs"}
               horizontalSpacing={"md"}

@@ -3,13 +3,15 @@
 import prisma from "@/app/lib/prisma";
 import _ from "lodash";
 
-export default async function colab_getMessageByRoomId(
-  roomId: string,
-  page: number
-) {
-  // console.log(page)
-  const lewat = page * 5 - 5;
-  const ambil = 5;
+export default async function colab_getMessageByRoomId({
+  roomId,
+  page,
+}: {
+  roomId: string;
+  page: number;
+}) {
+  const lewat = page * 6 - 6;
+  const ambil = 6;
   const getList = await prisma.projectCollaboration_Message.findMany({
     orderBy: {
       createdAt: "desc",
@@ -38,8 +40,6 @@ export default async function colab_getMessageByRoomId(
       },
     },
   });
-
-  const dataRevers = _.reverse(getList);
 
   return getList;
 }

@@ -45,7 +45,7 @@ export default function Colab_GrupDiskus({
             p={"md"}
             onClick={() => {
               router.push(
-                RouterColab.detail_grup + e?.ProjectCollaboration_RoomChat.id
+                RouterColab.group_chat + e?.ProjectCollaboration_RoomChat.id
               );
               setIdRoom(e?.ProjectCollaboration_RoomChat.id);
               setLoading(true);
@@ -55,12 +55,12 @@ export default function Colab_GrupDiskus({
               <Grid.Col span={"auto"}>
                 <Stack spacing={0}>
                   <Text fw={"bold"} lineClamp={1}>
-                    {e.ProjectCollaboration_RoomChat.name}
+                    {e?.ProjectCollaboration_RoomChat?.name}
                   </Text>
                   <Text fz={"xs"} c={"gray"}>
                     {
-                      e.ProjectCollaboration_RoomChat
-                        .ProjectCollaboration_AnggotaRoomChat.length
+                      e?.ProjectCollaboration_RoomChat
+                        ?.ProjectCollaboration_AnggotaRoomChat.length
                     }{" "}
                     Anggota
                   </Text>
@@ -68,7 +68,7 @@ export default function Colab_GrupDiskus({
               </Grid.Col>
               <Grid.Col span={"content"}>
                 <Center>
-                  {e?.ProjectCollaboration_RoomChat.id === idRoom ? (
+                  {e?.ProjectCollaboration_RoomChat?.id === idRoom ? (
                     <Loader color="gray" size={20} />
                   ) : (
                     <IconChevronRight color="gray" />

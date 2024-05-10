@@ -82,16 +82,7 @@ export default function Colab_DetailGrupDiskusi({
     hasMore: { up: isGet },
     scrollThreshold: 0.1,
     initialScroll: { top: 100 },
-    // initialScroll: { top : -1 },
-
-    // onScroll() {
-    //   scrollTo({ y: 100 });
-    // },
   });
-
-  // const setRef = useCallback((node: any) => {
-  //   if (node) ref.current = node._outerRef
-  // }, [ref]);
 
   useShallowEffect(() => {
     mqtt_client.subscribe(roomId);
@@ -118,12 +109,12 @@ export default function Colab_DetailGrupDiskusi({
 
   return (
     <>
-      <Box h={"80vh"}>
+      <Box h={"80vh"} bg={"blue.1"}>
         <Stack justify="flex-end" h={"100%"}>
           <div
             ref={ref as any}
             style={{
-              overflow: "scroll",
+              // overflow: "scroll",
               overflowY: "auto",
               // height: "100vh",
               // justifyContent: "flex-end",

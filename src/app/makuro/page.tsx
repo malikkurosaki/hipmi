@@ -5,6 +5,7 @@ import useInfiniteScroll, {
 } from "react-easy-infinite-scroll-hook";
 import { createItems, loadMore } from "./_util";
 import { useShallowEffect } from "@mantine/hooks";
+import { Center, Loader } from "@mantine/core";
 
 export default function App() {
   const [data, setData] = useState<any[]>([]);
@@ -20,7 +21,7 @@ export default function App() {
       setIsLoading(true);
       const newData = await loadMore();
 
-      const d = direction === "up"? [...newData, ...data]: []
+      const d = direction === "up" ? [...newData, ...data] : [];
       setData(d);
     } finally {
       setIsLoading(false);
@@ -34,22 +35,25 @@ export default function App() {
   });
 
   return (
-    <div>
-      <div
-        ref={ref as any}
-        className="List"
-        style={{
-          height: 500,
-          overflowY: "auto",
-        }}
-      >
-        {data.map((key: any) => (
-          <div className="Row" key={key}>
-            {key}
-          </div>
-        ))}
+    <Center>
+      <div>
+        <Center>{isLoading && <Loader />}</Center>
+
+        <div
+          ref={ref as any}
+          className="List"
+          style={{
+            height: 500,
+            overflowY: "auto",
+          }}
+        >
+          {data.map((key: any) => (
+            <div className="Row" key={key}>
+              {key}
+            </div>
+          ))}
+        </div>
       </div>
-      {isLoading && <div>Loading...</div>}
-    </div>
+    </Center>
   );
 }

@@ -1,3 +1,4 @@
+import { RouterAdminColab } from "@/app/lib/router_admin/router_admin_colab";
 import { RouterAdminDeveloper } from "@/app/lib/router_admin/router_admin_developer";
 import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
 import { RouterAdminForum } from "@/app/lib/router_admin/router_admin_forum";
@@ -9,7 +10,13 @@ import {
   RouterAdminDonasi,
   RouterAdminInvestasi,
 } from "@/app/lib/router_hipmi/router_admin";
-import { IconBriefcase, IconDashboard, IconMessages, IconUserCog } from "@tabler/icons-react";
+import {
+  IconAffiliate,
+  IconBriefcase,
+  IconDashboard,
+  IconMessages,
+  IconUserCog,
+} from "@tabler/icons-react";
 import {
   IconHeartHandshake,
   IconHome,
@@ -171,6 +178,34 @@ export const listAdminPage = [
       //   name: "Laporan Komentar",
       //   path: RouterAdminForum.report_komentar,
       // },
+    ],
+  },
+  {
+    id: 8,
+    name: "Project Collaboration",
+    path: "",
+    icon: <IconAffiliate />,
+    child: [
+      {
+        id: 81,
+        name: "Dashboard",
+        path: RouterAdminColab.dashboard,
+      },
+      {
+        id: 82,
+        name: "Table Publish",
+        path: RouterAdminColab.table_publish,
+      },
+      {
+        id: 83,
+        name: "Table Group",
+        path: RouterAdminColab.table_group,
+      },
+      {
+        id: 84,
+        name: "Table Reject",
+        path: RouterAdminColab.table_reject,
+      },
     ],
   },
   {

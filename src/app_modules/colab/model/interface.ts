@@ -18,6 +18,7 @@ export interface MODEL_COLLABORATION {
   lokasi: string;
   purpose: string;
   benefit: string;
+  report: string;
   jumlah_partisipan: number;
   ProjectCollaborationMaster_Industri: MODEL_COLLABORATION_MASTER;
   projectCollaborationMaster_IndustriId: number;
@@ -58,4 +59,14 @@ export interface MODEL_COLLABORATION_ANGGOTA_ROOM_CHAT {
   User: MODEL_USER;
   ProjectCollaboration_RoomChat: MODEL_COLLABORATION_ROOM_CHAT;
   projectCollaboration_RoomChatId: string;
+}
+
+export interface MODEL_COLLABORATION_NOTIFIKSI {
+  id: string;
+  isRead: boolean;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  note: string;
+  ProjectCollaboration: MODEL_COLLABORATION;
 }

@@ -7,6 +7,7 @@ import {
   Center,
   Footer,
   Grid,
+  Indicator,
   Loader,
   Stack,
   Text,
@@ -32,8 +33,10 @@ import { useTimeout } from "@mantine/hooks";
 
 export default function LayoutColab_Main({
   children,
+  cekNotif,
 }: {
   children: React.ReactNode;
+  cekNotif: boolean;
 }) {
   const router = useRouter();
   const [hotMenu, setHotMenu] = useAtom(gs_colab_hot_menu);
@@ -70,7 +73,13 @@ export default function LayoutColab_Main({
       id: 5,
       name: "Notifikasi",
       path: RouterColab.notifikasi,
-      icon: <IconBell />,
+      icon: cekNotif ? (
+        <Indicator processing color="orange">
+          <IconBell />
+        </Indicator>
+      ) : (
+        <IconBell />
+      ),
     },
   ];
 

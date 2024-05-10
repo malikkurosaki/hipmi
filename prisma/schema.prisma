@@ -41,6 +41,8 @@ model User {
   ProjectCollaboration_RoomChat        ProjectCollaboration_RoomChat[]
   ProjectCollaboration_AnggotaRoomChat ProjectCollaboration_AnggotaRoomChat[]
   ProjectCollaboration_Message         ProjectCollaboration_Message[]
+  AdminProjectCollaboration_Notifikasi ProjectCollaboration_Notifikasi[]      @relation("AdminNotifProjectToUser")
+  UserProjectCollaboration_Notifikasi  ProjectCollaboration_Notifikasi[]      @relation("UserNotifProjectToUser")
 }
 
 model MasterUserRole {
@@ -732,11 +734,12 @@ model ProjectCollaboration {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  catatan   String?
   title     String
   lokasi    String
   purpose   String   @db.Text
   benefit   String?  @db.Text
+  isReject  Boolean? @default(false)
+  report    String?
   // jumlah_partisipan Int      @default(0)
 
   ProjectCollaborationMaster_Industri   ProjectCollaborationMaster_Industri? @relation(fields: [projectCollaborationMaster_IndustriId], references: [id])
@@ -747,6 +750,7 @@ model ProjectCollaboration {
   projectCollaborationMaster_StatusId   Int?                                 @default(1)
   ProjectCollaboration_Partisipasi      ProjectCollaboration_Partisipasi[]
   ProjectCollaboration_RoomChat         ProjectCollaboration_RoomChat[]
+  ProjectCollaboration_Notifikasi       ProjectCollaboration_Notifikasi[]
 }
 
 model ProjectCollaborationMaster_Industri {
@@ -820,25 +824,17 @@ model ProjectCollaboration_Message {
   projectCollaboration_RoomChatId String?
 }
 
-// jumlah yg belom ke read oleh user yang login
-// find many ProjectCollaboration_AnggotaRoomChat where iduser login and is active = true,
-// select nya relasi ke table chat 
-// count table message where idroomchat - count read message where idroomchat && iduser login
-
-// TABLE MESSAGE
-// id
-// idroomchat
-// iduser (yg ngesend)
-// chat 
-// isFile def false
-// time
-// isActive def true
-
-// find many where idroomchat order by time 
-// if iduser == user yg login >> posisi di kanan
-
-// TABLE READ MESSAGE
-// id
-// idroomchat
-// idmessage
-// iduser (yg ngeread)
+model ProjectCollaboration_Notifikasi {
+  id                     String                @id @default(cuid())
+  isActive               Boolean               @default(true)
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
+  isRead                 Boolean               @default(false)
+  note                   String?
+  ProjectCollaboration   ProjectCollaboration? @relation(fields: [projectCollaborationId], references: [id])
+  projectCollaborationId String
+  AdminId                User                  @relation("AdminNotifProjectToUser", fields: [adminId], references: [id], map: "AdminNotifProjectUser")
+  adminId                String
+  User                   User                  @relation("UserNotifProjectToUser", fields: [userId], references: [id], map: "UserNotifProjectUser")
+  userId                 String
+}
