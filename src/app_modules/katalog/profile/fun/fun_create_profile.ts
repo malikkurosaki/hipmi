@@ -5,6 +5,8 @@ import { MODEL_PROFILE } from "../model/interface";
 import _ from "lodash";
 import { v4 } from "uuid";
 import fs from "fs";
+import { revalidatePath } from "next/cache";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 
 export default async function funCreateNewProfile(
   req: MODEL_PROFILE,
@@ -22,6 +24,10 @@ export default async function funCreateNewProfile(
   if (findEmail) return { status: 400, message: "Email telah digunakan" };
 
   const gambarProfile: any = gambarPP.get("filePP");
+
+  if (gambarProfile === "null")
+    return { status: 400, message: "Lengkapi Foto Profile" };
+
   const fileName = gambarProfile.name;
   const fileExtension = _.lowerCase(gambarProfile.name.split(".").pop());
   const fRandomName = v4(fileName) + "." + fileExtension;
@@ -42,6 +48,9 @@ export default async function funCreateNewProfile(
   fs.writeFileSync(`./public/profile/foto/${uploadPP.url}`, uploadPP_Folder);
 
   const gambarBackground: any = gambarBG.get("fileBG");
+  if (gambarBackground === "null")
+    return { status: 400, message: "Lengkapi Foto Background" };
+
   const fileNameBG = gambarBackground.name;
   const fileExtensionBG = _.lowerCase(gambarBackground.name.split(".").pop());
   const fRandomNameBG = v4(fileNameBG) + "." + fileExtensionBG;
@@ -65,8 +74,6 @@ export default async function funCreateNewProfile(
     uploadBG_Folder
   );
 
-  
-
   const createProfile = await prisma.profile.create({
     data: {
       userId: body.userId,
@@ -80,6 +87,7 @@ export default async function funCreateNewProfile(
   });
 
   if (!createProfile) return { status: 400, message: "Gagal membuat profile" };
+  revalidatePath(RouterHome.main_home);
 
   return {
     status: 201,

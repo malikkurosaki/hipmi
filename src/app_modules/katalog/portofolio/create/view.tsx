@@ -72,6 +72,7 @@ export default function CreatePortofolio({
             withAsterisk
             label="Nama Bisnis"
             placeholder="Nama bisnis"
+            error={value.namaBisnis.length > 100 ? "Maksimal 100 karakter" : ""}
             onChange={(val) => {
               setValue({
                 ...value,
@@ -98,6 +99,9 @@ export default function CreatePortofolio({
             withAsterisk
             label="Alamat Kantor"
             placeholder="Alamat kantor"
+            error={
+              value.alamatKantor.length > 100 ? "Maksimal 100 karakter" : ""
+            }
             onChange={(val) => {
               setValue({
                 ...value,
@@ -108,7 +112,7 @@ export default function CreatePortofolio({
           <TextInput
             withAsterisk
             label="Nomor Telepon Kantor"
-            placeholder="62 xxx xxx xxx"
+            placeholder="Nomor telepon kantor"
             type="number"
             onChange={(val) => {
               setValue({
@@ -124,6 +128,7 @@ export default function CreatePortofolio({
             withAsterisk
             label="Deskripsi"
             placeholder="Deskripsi singkat mengenai usaha"
+            error={value.deskripsi.length > 150 ? "Maksimal 150 karakter" : ""}
             onChange={(val) => {
               setValue({
                 ...value,
@@ -270,7 +275,11 @@ async function onSubmit(
   if (_.values(porto).includes(""))
     return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
   if (!file)
-    return ComponentGlobal_NotifikasiPeringatan("Lengkapi logo binnis");
+    return ComponentGlobal_NotifikasiPeringatan("Lengkapi logo bisnis");
+
+  if (porto.namaBisnis.length > 100) return null;
+  if (porto.alamatKantor.length > 100) return null;
+  if (porto.deskripsi.length > 150) return null;
 
   const gambar = new FormData();
   gambar.append("file", file as any);

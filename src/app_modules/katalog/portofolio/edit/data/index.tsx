@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { Portofolio_funEditDataBisnis } from "../../fun/edit/fun_edit_data_bisnis_by_id";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 
 export default function Portofolio_EditDataBisnis({
   dataPorto,
@@ -21,15 +22,9 @@ export default function Portofolio_EditDataBisnis({
   listBidang: MODEL_PORTOFOLIO_BIDANG_BISNIS[];
 }) {
   const router = useRouter();
-  const [porto, setPorto] = useState(dataPorto);
+  const [value, setValue] = useState(dataPorto);
   const [loading, setLoading] = useState(false);
-  //   const [value, setPorto] = useState({
-  //     namaBisnis: "",
-  //     masterBidangBisnisId: "",
-  //     alamatKantor: "",
-  //     tlpn: "",
-  //     deskripsi: "",
-  //   });
+
   return (
     <>
       {/* <pre>{JSON.stringify(porto, null, 2)}</pre> */}
@@ -37,19 +32,20 @@ export default function Portofolio_EditDataBisnis({
         <Stack>
           <TextInput
             withAsterisk
-            value={porto.namaBisnis}
+            value={value.namaBisnis}
             label="Nama Bisnis"
             placeholder="Nama bisnis"
+            error={value.namaBisnis.length > 100 ? "Maksimal 100 karakter" : ""}
             onChange={(val) => {
-              setPorto({
-                ...porto,
+              setValue({
+                ...value,
                 namaBisnis: val.target.value,
               });
             }}
           />
           <Select
             withAsterisk
-            value={porto.MasterBidangBisnis.id}
+            value={value.MasterBidangBisnis.id}
             label="Bidang Bisnis"
             placeholder="Pilih salah satu bidang bisnis"
             data={listBidang.map((e) => ({
@@ -57,8 +53,8 @@ export default function Portofolio_EditDataBisnis({
               label: e.name,
             }))}
             onChange={(val) => {
-              setPorto({
-                ...(porto as any),
+              setValue({
+                ...(value as any),
                 MasterBidangBisnis: {
                   id: val,
                 },
@@ -67,25 +63,28 @@ export default function Portofolio_EditDataBisnis({
           />
           <TextInput
             withAsterisk
-            value={porto.alamatKantor}
+            value={value.alamatKantor}
             label="Alamat Kantor"
             placeholder="Alamat kantor"
+            error={
+              value.alamatKantor.length > 100 ? "Maksimal 100 karakter" : ""
+            }
             onChange={(val) => {
-              setPorto({
-                ...porto,
+              setValue({
+                ...value,
                 alamatKantor: val.target.value,
               });
             }}
           />
           <TextInput
             withAsterisk
-            value={porto.tlpn}
+            value={value.tlpn}
             label="Nomor Telepon Kantor"
             placeholder="62 xxx xxx xxx"
             type="number"
             onChange={(val) => {
-              setPorto({
-                ...porto,
+              setValue({
+                ...value,
                 tlpn: val.target.value,
               });
             }}
@@ -95,12 +94,13 @@ export default function Portofolio_EditDataBisnis({
             minRows={2}
             maxRows={5}
             withAsterisk
-            value={porto.deskripsi}
+            value={value.deskripsi}
             label="Deskripsi"
             placeholder="Deskripsi singkat mengenai usaha"
+            error={value.deskripsi.length > 150 ? "Maksimal 150 karakter" : ""}
             onChange={(val) => {
-              setPorto({
-                ...porto,
+              setValue({
+                ...value,
                 deskripsi: val.target.value,
               });
             }}
@@ -111,7 +111,7 @@ export default function Portofolio_EditDataBisnis({
           loading={loading ? true : false}
           loaderPosition="center"
           onClick={() => {
-            onUpdate(router, porto as any, setLoading);
+            onUpdate(router, value as any, setLoading);
           }}
         >
           Update
@@ -126,6 +126,13 @@ async function onUpdate(
   data: MODEL_PORTOFOLIO,
   setLoading: any
 ) {
+  if (_.values(data).includes(""))
+    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+
+  if (data.namaBisnis.length > 100) return null;
+  if (data.alamatKantor.length > 100) return null;
+  if (data.deskripsi.length > 150) return null;
+
   await Portofolio_funEditDataBisnis(data).then((res) => {
     if (res.status === 200) {
       setLoading(true);

@@ -4,7 +4,10 @@ import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import {
   ActionIcon,
   Box,
+  Button,
+  Card,
   Center,
+  Code,
   Grid,
   Group,
   Header,
@@ -25,7 +28,10 @@ import {
 import { useRouter } from "next/navigation";
 import router from "next/router";
 import { useRef, useState } from "react";
-import { MODEL_COLLABORATION_ROOM_CHAT } from "../../model/interface";
+import {
+  MODEL_COLLABORATION_MESSAGE,
+  MODEL_COLLABORATION_ROOM_CHAT,
+} from "../../model/interface";
 import _ from "lodash";
 import ComponentColab_IsEmptyData from "../../component/is_empty_data";
 import colab_getMessageByRoomId from "../../fun/get/room_chat/get_message_by_room_id";
@@ -36,6 +42,8 @@ import mqtt_client from "@/util/mqtt_client";
 import useInfiniteScroll, {
   ScrollDirection,
 } from "react-easy-infinite-scroll-hook";
+import toast from "react-simple-toasts";
+import colab_getOneMessageById from "../../fun/get/room_chat/get_one_message_by_id";
 
 export default function Colab_GroupChatView({
   userLoginId,
@@ -50,61 +58,43 @@ export default function Colab_GroupChatView({
   const [loadingBack, setLoadingBack] = useState(false);
   const [loadingInfo, setLoadingInfo] = useState(false);
   const [msg, setMsg] = useState("");
+  const [newMessage, setNewMessage] = useState<any>();
   const [data, setData] = useState<any[]>(listMsg);
   const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isGet, setIsGet] = useState(true);
 
-  const viewport = useRef<HTMLDivElement>(null);
+  const next = async (direction: ScrollDirection) => {
+    try {
+      setIsLoading(true);
+      await new Promise((a) => setTimeout(a, 500));
 
-  // const next = async (direction: ScrollDirection) => {
-  //   try {
-  //     setIsLoading(true);
-  //     await new Promise((a) => setTimeout(a, 500));
+      const newData = await colab_getMessageByRoomId({
+        roomId: selectRoom?.id,
+        page: totalPage + 1,
+      });
+      setTotalPage(totalPage + 1);
 
-  //     const newData = await colab_getMessageByRoomId({
-  //       roomId: selectRoom?.id,
-  //       page: totalPage + 1,
-  //     });
-  //     setTotalPage(totalPage + 1);
+      // console.log(newData, "loading baru");
 
-  //     // console.log(newData, "loading baru");
+      if (_.isEmpty(newData)) {
+        setIsGet(false);
+      } else {
+        const d =
+          direction === "down" ? [...data, ...newData] : [...newData, ...data];
+        setData(d);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  //     if (_.isEmpty(newData)) {
-  //       setIsGet(false);
-  //     } else {
-  //       const d =
-  //         direction === "down" ? [...data, ...newData] : [...newData, ...data];
-  //       setData(d);
-  //     }
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  // const ref = useInfiniteScroll({
-  //   next,
-  //   rowCount: data.length,
-  //   hasMore: { up: isGet },
-  // });
-
-  useShallowEffect(() => {
-    mqtt_client.subscribe(selectRoom.id);
-
-    mqtt_client.on("message", () => {
-      onList(setData);
-    });
-  }, [setData]);
-
-  async function onList(setData: any) {
-    await colab_getMessageByRoomId({
-      roomId: selectRoom?.id,
-      page: 1,
-    }).then((val) => {
-      setData(val);
-      setTotalPage(totalPage);
-    });
-  }
+  const ref = useInfiniteScroll({
+    next,
+    rowCount: data.length,
+    hasMore: { up: isGet },
+    scrollThreshold: 0.1,
+  });
 
   async function onSend() {
     await colab_funCreateMessageByUserId(msg, selectRoom.id).then(
@@ -112,6 +102,22 @@ export default function Colab_GroupChatView({
         if (res.status === 200) {
           mqtt_client.publish(selectRoom.id, msg);
           setMsg("");
+
+          // const d = JSON.parse(JSON.stringify(res.data));
+          // setData([...data, ...[d]]);
+
+          await colab_getOneMessageById({
+            messageId: res.data?.id as any,
+          }).then((res) => {
+            // setNewMessage(res);
+            // console.log(res);
+            // const d = JSON.parse(JSON.stringify(res));
+            // setData([...data, ...[d]]);
+
+            mqtt_client.on("message", (a,b) => {
+              setData([...data, ...[res]])
+            })
+          });
         } else {
           ComponentGlobal_NotifikasiGagal(res.message);
         }
@@ -119,10 +125,41 @@ export default function Colab_GroupChatView({
     );
   }
 
+  useShallowEffect(() => {
+    mqtt_client.subscribe(selectRoom.id);
+
+    // mqtt_client.on("message", (a, b) => {
+    //   // loadDataNew(b.toString());
+    //   // onList(b);
+    //   onList2(newMessage);
+    // });
+  }, []);
+
+  async function onList2(dt: any) {
+    console.log(dt);
+    setData([...data, ...[dt]]);
+  }
+
+  // const loadDataNew = (dt: any) => {
+  //   setData([JSON.parse(dt),...data]);
+  // };
+
+  async function onList(b: any) {
+    await colab_getMessageByRoomId({
+      roomId: selectRoom?.id,
+      page: 1,
+    }).then((val) => {
+      const d = JSON.parse(JSON.stringify(val[5]));
+      setData([...data, ...[d]]);
+      // setTotalPage(totalPage);
+    });
+  }
+
   return (
     <>
       <Box h={"100vh"}>
         {/* Header */}
+
         <Box
           style={{
             zIndex: 99,
@@ -186,7 +223,7 @@ export default function Colab_GroupChatView({
           <Box h={"80vh"}>
             <Stack justify="flex-end" h={"100%"}>
               <div
-                // ref={ref as any}
+                ref={ref as any}
                 style={{
                   overflowY: "auto",
                 }}
@@ -203,16 +240,16 @@ export default function Colab_GroupChatView({
                     <Box key={i}>
                       {userLoginId === e?.User?.id ? (
                         <Group position="right">
-                          <Paper key={e.id} bg={"blue.2"} p={"sm"} mt={"sm"}>
+                          <Paper key={e?.id} bg={"blue.2"} p={"sm"} mt={"sm"}>
                             <Stack spacing={0}>
                               <Text lineClamp={1} fw={"bold"} fz={"xs"}>
-                                {e.User.Profile.name}
+                                {e?.User?.Profile?.name}
                               </Text>
                               <div
-                                dangerouslySetInnerHTML={{ __html: e.message }}
+                                dangerouslySetInnerHTML={{ __html: e?.message }}
                               />
 
-                              <Group spacing={"xs"}>
+                              {/* <Group spacing={"xs"}>
                                 <Text fz={7}>
                                   {new Intl.DateTimeFormat("id-ID", {
                                     timeStyle: "medium",
@@ -224,21 +261,21 @@ export default function Colab_GroupChatView({
                                     dateStyle: "medium",
                                   }).format(e.createdAt)}
                                 </Text>
-                              </Group>
+                              </Group> */}
                             </Stack>
                           </Paper>
                         </Group>
                       ) : (
                         <Group>
-                          <Paper key={e.id} bg={"cyan.2"} p={"sm"} mt={"sm"}>
+                          <Paper key={e?.id} bg={"cyan.2"} p={"sm"} mt={"sm"}>
                             <Stack spacing={0}>
                               <Text lineClamp={1} fw={"bold"} fz={"xs"}>
-                                {e.User.Profile.name}
+                                {e?.User?.Profile?.name}
                               </Text>
                               <div
-                                dangerouslySetInnerHTML={{ __html: e.message }}
+                                dangerouslySetInnerHTML={{ __html: e?.message }}
                               />
-                              <Group spacing={"xs"}>
+                              {/* <Group spacing={"xs"}>
                                 <Text fz={7}>
                                   {new Intl.DateTimeFormat("id-ID", {
                                     timeStyle: "medium",
@@ -250,7 +287,7 @@ export default function Colab_GroupChatView({
                                     dateStyle: "medium",
                                   }).format(e.createdAt)}
                                 </Text>
-                              </Group>
+                              </Group> */}
                             </Stack>
                           </Paper>
                         </Group>
@@ -281,6 +318,14 @@ export default function Colab_GroupChatView({
           h={"10vh"}
           bg={"gray.2"}
         >
+          {/* <Button
+            onClick={() => {
+              const d: { [key: string]: any } = _.clone(data[0]);
+              setData([...data, d]);
+            }}
+          >
+            KIzRIM PESAN
+          </Button> */}
           <Stack justify="center" h={"100%"} px={"sm"}>
             <Grid align="center">
               <Grid.Col span={"auto"}>
@@ -312,4 +357,35 @@ export default function Colab_GroupChatView({
       </Box>
     </>
   );
+
+  // return (
+  //   <Stack bg={"dark"}>
+  //     <Button
+  //       onClick={() => {
+  //         const dd = _.clone(data[0]);
+  //         dd.message = "apa kabar";
+  //         console.log(dd);
+  //         mqtt_client.publish(selectRoom.id, JSON.stringify(dd));
+  //       }}
+  //     >
+  //       kirim pesan
+  //     </Button>
+  //     <div
+  //       ref={ref as any}
+  //       style={{
+  //         overflowY: "auto",
+  //       }}
+  //     >
+  //       {data.map((v, k) => (
+  //         <Stack key={k}>
+  //           <Card withBorder shadow="md" mt={"md"}>
+  //             <Code>
+  //               <pre>{JSON.stringify(v, null, 2)}</pre>
+  //             </Code>
+  //           </Card>
+  //         </Stack>
+  //       ))}
+  //     </div>
+  //   </Stack>
+  // );
 }

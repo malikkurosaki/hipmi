@@ -35,46 +35,24 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
   const focusTrapRef = useFocusTrap();
   const [loading, setLoading] = useState(false);
 
-  // const onRegister = async () => {
-  //   myConsole(value);
-
-  //   const body = {
-  //     username: _.lowerCase(value),
-  //     nomor: nomor,
-  //   };
-
-  //   if (!body) return toast("Lengkapi username");
-  //   if (body.username.length < 5) return toast("Username minimal 5 karakter");
-
-  //   await fetch(ApiHipmi.register, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(body),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((val) => {
-  //       myConsole(val);
-  //       if (val.status == 201) {
-  //         toast("Pendaftaran Berhasil");
-  //         return route.push("/dev/home");
-  //       } else {
-  //         return toast(val.message);
-  //       }
-  //     });
-  // };
-
   async function onRegistarsi() {
     const body = {
-      username: _.lowerCase(value),
+      username: value,
       nomor: nomor,
     };
+    // console.log(body);
 
-    if (_.values(body.username).includes(""))
+    if (body.username === "")
       return ComponentGlobal_NotifikasiPeringatan("Lengkapi Username");
+
     if (body.username.length < 5)
-      return ComponentGlobal_NotifikasiPeringatan("Username minimal 5 krakter");
+      return ComponentGlobal_NotifikasiPeringatan("Username tidak sesuai");
+
+    if (_.values(body.username).includes(" "))
+      return ComponentGlobal_NotifikasiPeringatan(
+        "Username tidak sesuai",
+        3000
+      );
 
     await Auth_funRegister(body).then(async (res) => {
       if (res.status === 200) {
@@ -118,6 +96,18 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
               <TextInput
                 ref={focusTrapRef}
                 placeholder="Masukan Username"
+                error={
+                  value.length > 0 && value.length < 5 ? (
+                    <Text>Minimal 5 karakter</Text>
+                  ) : _.values(value).includes(" ") ? (
+                    <Stack spacing={0}>
+                      <Text>- Tidak boleh ada space</Text>
+                      <Text>- Sambungkan huruf meggunakan karakter _</Text>
+                    </Stack>
+                  ) : (
+                    ""
+                  )
+                }
                 onChange={(val) => {
                   setValue(val.currentTarget.value);
                 }}

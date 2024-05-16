@@ -45,5 +45,5 @@ export async function auth_funValidasi(nomor: string) {
 
 
 
-  return { status: 200, message: "Nomor Terverivikasi", role: cek.masterUserRoleId };
+  return { status: 200, message: "Nomor Terverifikasi", role: cek.masterUserRoleId };
 }

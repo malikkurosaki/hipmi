@@ -70,3 +70,14 @@ export interface MODEL_COLLABORATION_NOTIFIKSI {
   note: string;
   ProjectCollaboration: MODEL_COLLABORATION;
 }
+
+export interface MODEL_COLLABORATION_MESSAGE {
+  id: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  message: string;
+  isFile: boolean;
+  User: MODEL_USER;
+}

@@ -1,7 +1,9 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import _ from "lodash";
+import { revalidatePath } from "next/cache";
 
 export default async function colab_getMessageByRoomId({
   roomId,
@@ -10,8 +12,9 @@ export default async function colab_getMessageByRoomId({
   roomId: string;
   page: number;
 }) {
-  const lewat = page * 6 - 6;
-  const ambil = 6;
+  const lewat = page * 10 - 10;
+  const ambil = 10;
+
   const getList = await prisma.projectCollaboration_Message.findMany({
     orderBy: {
       createdAt: "desc",
@@ -41,8 +44,7 @@ export default async function colab_getMessageByRoomId({
     },
   });
 
-
-  const reverse = _.reverse(getList)
+  const reverse = _.reverse(getList);
 
   return reverse;
 }

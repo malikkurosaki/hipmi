@@ -181,7 +181,7 @@ function TableMenu({ listGroup }: { listGroup: any }) {
                       <Center>Industri</Center>
                     </th>
                     <th>
-                      <Center>Jumlah Partisipan</Center>
+                      <Center>Anggota Group</Center>
                     </th>
                     <th>
                       <Center>Aksi</Center>
@@ -222,7 +222,7 @@ function TableMenu({ listGroup }: { listGroup: any }) {
             <ScrollArea h={"100%"}>
               <Stack>
                 <Center>
-                  <Title order={4}>Partisipan</Title>
+                  <Title order={4}>Anggota</Title>
                 </Center>
                 <Stack>
                   {detailData?.ProjectCollaboration_AnggotaRoomChat?.map(

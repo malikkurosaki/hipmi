@@ -33,7 +33,7 @@ export default function RootStyleRegistry({
       <body suppressHydrationWarning={true}>
         <CacheProvider value={cache}>
           <MantineProvider withGlobalStyles withNormalizeCSS>
-            <Notifications position="top-center" containerWidth="250px" />
+            <Notifications position="top-center" containerWidth={300} />
             {children}
             {/* <ToastContainer position="bottom-center" />
             <AppNotif /> */}

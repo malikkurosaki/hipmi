@@ -34,6 +34,7 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { useForm } from "@mantine/form";
 import { useTimeout } from "@mantine/hooks";
+import { validRegex } from "../../component/regular_expressions";
 
 export default function CreateProfile({ userId }: { userId: any }) {
   const [filePP, setFilePP] = useState<File | null>(null);
@@ -210,7 +211,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
             label="Email"
             placeholder="Contoh: User@gmail.com"
             error={
-              value.email.length > 0 && !value.email.includes("@")
+              value.email.length > 0 && !value.email.match(validRegex)
                 ? "Invalid email"
                 : ""
             }
@@ -225,6 +226,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
             withAsterisk
             label="Alamat"
             placeholder="Alamat lengkap"
+            error={value.alamat.length > 100 ? "Max 100 karakter" : ""}
             onChange={(val) => {
               setValue({
                 ...value,
@@ -232,6 +234,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
               });
             }}
           />
+
           <Select
             withAsterisk
             label="Jenis Kelamin"
@@ -247,6 +250,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
               });
             }}
           />
+
           <ButtonAction
             value={value as any}
             userId={userId}
@@ -283,8 +287,8 @@ function ButtonAction({
     };
     if (_.values(body).includes(""))
       return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
-    if (!body.email.includes("@"))
-      return ComponentGlobal_NotifikasiPeringatan("Invalid Email");
+    if (!body.email.match(validRegex)) return null;
+    if (body.alamat.length > 100) return null;
 
     const gambarPP = new FormData();
     gambarPP.append("filePP", filePP as any);

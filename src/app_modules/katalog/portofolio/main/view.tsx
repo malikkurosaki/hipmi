@@ -185,16 +185,20 @@ export default function ViewPortofolio({
             </Grid>
           </Stack>
         </Paper>
-        <Button
-          radius={"xl"}
-          bg={"red"}
-          color="red"
-          onClick={() => {
-            open();
-          }}
-        >
-          <IconTrash />
-        </Button>
+        {userLoginId === dataPorto.Profile.User.id ? (
+          <Button
+            radius={"xl"}
+            bg={"red"}
+            color="red"
+            onClick={() => {
+              open();
+            }}
+          >
+            <IconTrash />
+          </Button>
+        ) : (
+          ""
+        )}
       </Stack>
 
       <Modal opened={opened} onClose={close} centered withCloseButton={false}>
@@ -227,7 +231,7 @@ async function onDelete(
 ) {
   await Portofolio_funDeletePortofolioById(dataPorto).then((res) => {
     if (res.status === 200) {
-      setLoadingDel(true)
+      setLoadingDel(true);
       ComponentGlobal_NotifikasiBerhasil(res.message);
       router.push(RouterProfile.katalog + `${dataPorto.profileId}`);
     } else {
