@@ -46,6 +46,7 @@ import useInfiniteScroll, {
 import toast from "react-simple-toasts";
 import colab_getOneMessageById from "../../fun/get/room_chat/get_one_message_by_id";
 import { List } from "react-virtualized";
+import { evnPesan } from "@/util/evn";
 
 const list = Array(100).fill(0);
 export default function ColabViewChat({
@@ -74,23 +75,53 @@ export default function ColabViewChat({
     down: false,
   });
 
+  const [topik, setTopic] = useState("")
+
+  useShallowEffect(() => {
+    evnPesan.on(topik, (msgg) => {
+      let dd: any[] = _.clone(data);
+      const a = [...dd, JSON.parse(msgg)];
+      // console.log(dd.length);
+      setData(a);
+    });
+  }, [data]);
+
+  
+
   // Kirim pesan
   async function onSend() {
-    await colab_funCreateMessageByUserId(msg, dataRoom.id).then(async (res) => {
-      if (res.status === 200) {
-        const newData = await colab_getMessageByRoomId({
-          roomId: dataRoom?.id,
-          page: 1,
-        });
 
-        setData(newData as any);
-        setHasMore({ up: true });
-        
+    // console.log(JSON.stringify(data[0], null, 2));
+    const kiriman = {
+      id: "clw8glvt4000j12efrecoubug",
+      createdAt: "2024-05-15T23:35:05.032Z",
+      isActive: true,
+      message: msg,
+      isFile: false,
+      User: {
+        id: "clvag8xt10007134j8sapm46n",
+        Profile: {
+          id: "clvajdger000g134jhhhg21c4",
+          name: "malikkurosaki",
+        },
+      },
+    };
+    mqtt_client.publish("pesan", JSON.stringify(kiriman));
+    // await colab_funCreateMessageByUserId(msg, dataRoom.id).then(async (res) => {
+    //   if (res.status === 200) {
+    //     const newData = await colab_getMessageByRoomId({
+    //       roomId: dataRoom?.id,
+    //       page: 1,
+    //     });
+
+    //     setData(newData as any);
+    //     setHasMore({ up: true });
+
         setMsg("");
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
-      }
-    });
+    //   } else {
+    //     ComponentGlobal_NotifikasiGagal(res.message);
+    //   }
+    // });
   }
 
   const next = async (direction: ScrollDirection) => {
@@ -220,19 +251,19 @@ export default function ColabViewChat({
                                 dangerouslySetInnerHTML={{ __html: e?.message }}
                               />
 
-                              {/* <Group spacing={"xs"}>
+                              <Group spacing={"xs"}>
                                 <Text fz={7}>
-                                  {new Intl.DateTimeFormat("id-ID", {
+                                  {/* {new Intl.DateTimeFormat("id-ID", {
                                     timeStyle: "medium",
-                                  }).format(e.createdAt)}
+                                  }).format(e.createdAt)} */}
                                 </Text>
                                 <IconCircle size={3} />
                                 <Text fz={7}>
-                                  {new Intl.DateTimeFormat("id-ID", {
+                                  {/* {new Intl.DateTimeFormat("id-ID", {
                                     dateStyle: "medium",
-                                  }).format(e.createdAt)}
+                                  }).format(e.createdAt)} */}
                                 </Text>
-                              </Group> */}
+                              </Group>
                             </Stack>
                           </Paper>
                         </Group>
@@ -246,19 +277,19 @@ export default function ColabViewChat({
                               <div
                                 dangerouslySetInnerHTML={{ __html: e?.message }}
                               />
-                              {/* <Group spacing={"xs"}>
+                              <Group spacing={"xs"}>
                                 <Text fz={7}>
-                                  {new Intl.DateTimeFormat("id-ID", {
+                                  {/* {new Intl.DateTimeFormat("id-ID", {
                                     timeStyle: "medium",
-                                  }).format(e.createdAt)}
+                                  }).format(e.createdAt)} */}
                                 </Text>
                                 <IconCircle size={3} />
                                 <Text fz={7}>
-                                  {new Intl.DateTimeFormat("id-ID", {
+                                  {/* {new Intl.DateTimeFormat("id-ID", {
                                     dateStyle: "medium",
-                                  }).format(e.createdAt)}
+                                  }).format(e.createdAt)} */}
                                 </Text>
-                              </Group> */}
+                              </Group>
                             </Stack>
                           </Paper>
                         </Group>

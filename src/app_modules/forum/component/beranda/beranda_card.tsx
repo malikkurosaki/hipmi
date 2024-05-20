@@ -4,18 +4,20 @@ import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { Stack, Card, Group, ActionIcon, Divider, Text } from "@mantine/core";
 import { IconMessageCircle, IconMessageCircleOff } from "@tabler/icons-react";
 
-import ComponentForum_PostingAuthorNameOnHeader from "./header/posting_author_header_name";
-import { MODEL_FORUM_POSTING } from "../model/interface";
+
+
 import { useState } from "react";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
-import { gs_forum_total_komentar } from "../global_state";
-import { forum_countOneTotalKomentarById } from "../fun/count/count_one_total_komentar_by_id";
+
+
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import { IconMessageCircleX } from "@tabler/icons-react";
+import { MODEL_FORUM_POSTING } from "../../model/interface";
+import ComponentForum_BerandaAuthorNameOnHeader from "./beranda_author_header";
 
-export default function ComponentForum_MainCardView({
+export default function ComponentForum_BerandaCardView({
   data,
   setData,
   setLoadingKomen,
@@ -23,7 +25,7 @@ export default function ComponentForum_MainCardView({
   userLoginId,
 }: {
   data: MODEL_FORUM_POSTING[];
-  setData: any,
+  setData: any;
   setLoadingKomen: any;
   setLoadingDetail: any;
   userLoginId: any;
@@ -38,7 +40,7 @@ export default function ComponentForum_MainCardView({
               {/* <pre>{JSON.stringify(e.Author.id, null, 2)}</pre>
               <pre>{JSON.stringify(userLoginId, null, 2)}</pre> */}
 
-              <ComponentForum_PostingAuthorNameOnHeader
+              <ComponentForum_BerandaAuthorNameOnHeader
                 authorName={e?.Author?.Profile?.name}
                 imagesId={e?.Author?.Profile?.imagesId}
                 tglPublish={e?.createdAt}

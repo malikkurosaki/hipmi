@@ -13,6 +13,8 @@ import { Portofolio_funEditDataBisnis } from "../../fun/edit/fun_edit_data_bisni
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
 
 export default function Portofolio_EditDataBisnis({
   dataPorto,
@@ -35,7 +37,14 @@ export default function Portofolio_EditDataBisnis({
             value={value.namaBisnis}
             label="Nama Bisnis"
             placeholder="Nama bisnis"
-            error={value.namaBisnis.length > 100 ? "Maksimal 100 karakter" : ""}
+            maxLength={100}
+            error={
+              value.namaBisnis === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan nama bisnis" />
+              ) : (
+                ""
+              )
+            }
             onChange={(val) => {
               setValue({
                 ...value,
@@ -66,8 +75,13 @@ export default function Portofolio_EditDataBisnis({
             value={value.alamatKantor}
             label="Alamat Kantor"
             placeholder="Alamat kantor"
+            maxLength={100}
             error={
-              value.alamatKantor.length > 100 ? "Maksimal 100 karakter" : ""
+              value.alamatKantor === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan alamat kantor" />
+              ) : (
+                ""
+              )
             }
             onChange={(val) => {
               setValue({
@@ -80,8 +94,16 @@ export default function Portofolio_EditDataBisnis({
             withAsterisk
             value={value.tlpn}
             label="Nomor Telepon Kantor"
-            placeholder="62 xxx xxx xxx"
+            placeholder="Nomor telepon kantor"
             type="number"
+            maxLength={15}
+            error={
+              value.tlpn === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan nomor telepon kantor" />
+              ) : (
+                ""
+              )
+            }
             onChange={(val) => {
               setValue({
                 ...value,
@@ -89,22 +111,35 @@ export default function Portofolio_EditDataBisnis({
               });
             }}
           />
-          <Textarea
-            autosize
-            minRows={2}
-            maxRows={5}
-            withAsterisk
-            value={value.deskripsi}
-            label="Deskripsi"
-            placeholder="Deskripsi singkat mengenai usaha"
-            error={value.deskripsi.length > 150 ? "Maksimal 150 karakter" : ""}
-            onChange={(val) => {
-              setValue({
-                ...value,
-                deskripsi: val.target.value,
-              });
-            }}
-          />
+          <Stack spacing={5}>
+            <Textarea
+              autosize
+              minRows={2}
+              maxRows={5}
+              withAsterisk
+              value={value.deskripsi}
+              label="Deskripsi"
+              placeholder="Deskripsi singkat mengenai usaha"
+              maxLength={150}
+              error={
+                value.deskripsi === "" ? (
+                  <ComponentGlobal_ErrorInput text="Masukan deskripsi" />
+                ) : (
+                  ""
+                )
+              }
+              onChange={(val) => {
+                setValue({
+                  ...value,
+                  deskripsi: val.target.value,
+                });
+              }}
+            />
+            <ComponentGlobal_InputCountDown
+              maxInput={150}
+              lengthInput={value.deskripsi.length}
+            />
+          </Stack>
         </Stack>
         <Button
           radius={"xl"}
@@ -126,12 +161,13 @@ async function onUpdate(
   data: MODEL_PORTOFOLIO,
   setLoading: any
 ) {
-  if (_.values(data).includes(""))
-    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+  if (_.values(data).includes("")) {
+    return null;
+  }
 
-  if (data.namaBisnis.length > 100) return null;
-  if (data.alamatKantor.length > 100) return null;
-  if (data.deskripsi.length > 150) return null;
+  // if (data.namaBisnis.length > 100) return null;
+  // if (data.alamatKantor.length > 100) return null;
+  // if (data.deskripsi.length > 150) return null;
 
   await Portofolio_funEditDataBisnis(data).then((res) => {
     if (res.status === 200) {

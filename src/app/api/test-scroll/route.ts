@@ -8,5 +8,5 @@ export async function GET(req: Request) {
     skip: +page * 5 - 5,
   });
 
-  return Response.json(res);
+  // return Response.json(res);
 }

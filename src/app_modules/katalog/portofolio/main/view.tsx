@@ -185,7 +185,7 @@ export default function ViewPortofolio({
             </Grid>
           </Stack>
         </Paper>
-        {userLoginId === dataPorto.Profile.User.id ? (
+        {userLoginId === dataPorto?.Profile?.User?.id ? (
           <Button
             radius={"xl"}
             bg={"red"}
@@ -233,7 +233,7 @@ async function onDelete(
     if (res.status === 200) {
       setLoadingDel(true);
       ComponentGlobal_NotifikasiBerhasil(res.message);
-      router.push(RouterProfile.katalog + `${dataPorto.profileId}`);
+      router.back();
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);
     }

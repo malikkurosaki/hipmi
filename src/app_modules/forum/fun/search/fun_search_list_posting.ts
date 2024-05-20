@@ -1,50 +1,51 @@
-"use server"
+"use server";
 
 import prisma from "@/app/lib/prisma";
-import _ from "lodash"
+import _ from "lodash";
 
-export async function forum_funSearchListPosting(text:string) {
-     const get = await prisma.forum_Posting.findMany({
-       orderBy: [
-         // {
-         //   forumMaster_StatusPostingId: "asc",
-         // },
-         {
-           createdAt: "desc",
-         },
-       ],
-       take: 10,
-       where: {
-         diskusi: {
-           contains: text,
-           mode: "insensitive",
-         },
-       },
-       select: {
-         id: true,
-         diskusi: true,
-         createdAt: true,
-         isActive: true,
-         authorId: true,
-         Author: {
-           select: {
-             id: true,
-             Profile: true,
-           },
-         },
-         Forum_Komentar: {
-           where: {
-             isActive: true,
-           },
-         },
-         ForumMaster_StatusPosting: true,
-       },
-     });
+export async function forum_funSearchListPosting(text: string) {
+  const get = await prisma.forum_Posting.findMany({
+    orderBy: [
+      // {
+      //   forumMaster_StatusPostingId: "asc",
+      // },
+      {
+        createdAt: "desc",
+      },
+    ],
+    take: 10,
+    where: {
+      isActive: true,
+      diskusi: {
+        contains: text,
+        mode: "insensitive",
+      },
+    },
+    select: {
+      id: true,
+      diskusi: true,
+      createdAt: true,
+      isActive: true,
+      authorId: true,
+      Author: {
+        select: {
+          id: true,
+          Profile: true,
+        },
+      },
+      Forum_Komentar: {
+        where: {
+          isActive: true,
+        },
+      },
+      ForumMaster_StatusPosting: true,
+    },
+  });
 
-     const data = get.map((val) => ({
-       ..._.omit(val, ["Forum_Komentar"]),
-       _count: val.Forum_Komentar.length,
-     }));
+  const data = get.map((val) => ({
+    ..._.omit(val, ["Forum_Komentar"]),
+    _count: val.Forum_Komentar.length,
+  }));
 
-     return data;
+  return data;
 }

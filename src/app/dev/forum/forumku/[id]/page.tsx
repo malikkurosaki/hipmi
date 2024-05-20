@@ -8,7 +8,7 @@ import { forum_countPostingByAuthorId } from "@/app_modules/forum/fun/count/coun
 
 export default async function Page({ params }: { params: { id: string } }) {
   const authorId = params.id;
-  const userLoginId = await user_getOneUserId()
+  const userLoginId = await user_getOneUserId();
   const dataAuthor = await user_getOneByUserId(authorId);
   const auhtorSelectedData = _.omit(dataAuthor, [
     "Profile.email",
@@ -25,14 +25,11 @@ export default async function Page({ params }: { params: { id: string } }) {
   //   setTimeout(a, 1000);
   // });
 
-  
-
   const dataPosting = await forum_getListPostingByAuhtorId(authorId);
   const totalPosting = await forum_countPostingByAuthorId(authorId);
 
   return (
     <>
-
       <Forum_Forumku
         auhtorSelectedData={auhtorSelectedData as any}
         dataPosting={dataPosting as any}

@@ -22,5 +22,5 @@ export default function LayoutEvent_DetailDraft({
         {children}
       </AppComponentGlobal_LayoutTamplate>
     </>
-  );
+  )
 }

@@ -15,7 +15,7 @@ export default function ComponentEvent_HeaderTamplate({
   bg,
 }: {
   hideBack?: boolean;
-  changeIconBack?: any
+  changeIconBack?: any;
   route?: any;
   route2?: any;
   title: string;
@@ -23,6 +23,8 @@ export default function ComponentEvent_HeaderTamplate({
   bg?: any;
 }) {
   const router = useRouter();
+  const [isLoadingBack, setLoadingBack] = useState(false);
+  const [isLoadingOtherIcon, setLoadingOtherIcon] = useState(false);
   return (
     <>
       <Header
@@ -35,8 +37,10 @@ export default function ComponentEvent_HeaderTamplate({
             <ActionIcon variant="transparent" disabled></ActionIcon>
           ) : (
             <ActionIcon
+              loading={isLoadingBack ? true : false}
               variant="transparent"
               onClick={() => {
+                setLoadingBack(true);
                 if (route === null || route === undefined) {
                   return router.back();
                 } else {
@@ -44,7 +48,7 @@ export default function ComponentEvent_HeaderTamplate({
                 }
               }}
             >
-             {changeIconBack ? changeIconBack:  <IconChevronLeft />}
+              {changeIconBack ? changeIconBack : <IconChevronLeft />}
             </ActionIcon>
           )}
           <Title order={5}>{title}</Title>
@@ -54,8 +58,12 @@ export default function ComponentEvent_HeaderTamplate({
             } else {
               return (
                 <ActionIcon
+                  loading={isLoadingOtherIcon ? true : false}
                   variant="transparent"
-                  onClick={() => router.push(route2)}
+                  onClick={() => {
+                    setLoadingOtherIcon(true);
+                    router.push(route2);
+                  }}
                 >
                   {icon}
                 </ActionIcon>

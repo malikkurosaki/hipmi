@@ -103,9 +103,6 @@ export default function Colab_GroupChatView({
           mqtt_client.publish(selectRoom.id, msg);
           setMsg("");
 
-          // const d = JSON.parse(JSON.stringify(res.data));
-          // setData([...data, ...[d]]);
-
           await colab_getOneMessageById({
             messageId: res.data?.id as any,
           }).then((res) => {
@@ -114,9 +111,9 @@ export default function Colab_GroupChatView({
             // const d = JSON.parse(JSON.stringify(res));
             // setData([...data, ...[d]]);
 
-            mqtt_client.on("message", (a,b) => {
-              setData([...data, ...[res]])
-            })
+            mqtt_client.on("message", (a, b) => {
+              setData([...data, ...[res]]);
+            });
           });
         } else {
           ComponentGlobal_NotifikasiGagal(res.message);

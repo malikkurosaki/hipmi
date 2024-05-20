@@ -27,11 +27,13 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_glob
 import { IconPencilCheck } from "@tabler/icons-react";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { auth_funEditAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
 
 export default function Register({ dataOtp }: { dataOtp: any }) {
   const router = useRouter();
   const [nomor, setNomor] = useState(dataOtp.nomor);
   const [value, setValue] = useState("");
+  const [isValue, setIsValue] = useState(false);
   const focusTrapRef = useFocusTrap();
   const [loading, setLoading] = useState(false);
 
@@ -42,17 +44,12 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
     };
     // console.log(body);
 
-    if (body.username === "")
-      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Username");
-
-    if (body.username.length < 5)
-      return ComponentGlobal_NotifikasiPeringatan("Username tidak sesuai");
-
-    if (_.values(body.username).includes(" "))
-      return ComponentGlobal_NotifikasiPeringatan(
-        "Username tidak sesuai",
-        3000
-      );
+    if (body.username === "") {
+      setIsValue(true);
+      return null;
+    }
+    if (body.username.length < 5) return null;
+    if (_.values(body.username).includes(" ")) return null;
 
     await Auth_funRegister(body).then(async (res) => {
       if (res.status === 200) {
@@ -92,23 +89,27 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
               <Title order={4}>REGISTRASI</Title>
               <Text fz={"xs"}>Masukan username anda !</Text>
             </Stack>
-            <Stack spacing={0}>
+            <Stack spacing={"sm"}>
               <TextInput
                 ref={focusTrapRef}
                 placeholder="Masukan Username"
+                maxLength={50}
                 error={
                   value.length > 0 && value.length < 5 ? (
-                    <Text>Minimal 5 karakter</Text>
+                    <ComponentGlobal_ErrorInput text="Minimal 5 karakter !" />
                   ) : _.values(value).includes(" ") ? (
-                    <Stack spacing={0}>
-                      <Text>- Tidak boleh ada space</Text>
-                      <Text>- Sambungkan huruf meggunakan karakter _</Text>
+                    <Stack spacing={5}>
+                      <ComponentGlobal_ErrorInput text="Tidak boleh ada space" />
+                      <ComponentGlobal_ErrorInput text="Sambungkan huruf meggunakan karakter _" />
                     </Stack>
+                  ) : isValue ? (
+                    <ComponentGlobal_ErrorInput text="Masukan username anda" />
                   ) : (
                     ""
                   )
                 }
                 onChange={(val) => {
+                  val.currentTarget.value.length > 0 ? setIsValue(false) : "";
                   setValue(val.currentTarget.value);
                 }}
               />

@@ -40,7 +40,7 @@ import { forum_funEditStatusPostingById } from "../../fun/edit/fun_edit_status_p
 import { forum_getListAllPosting } from "../../fun/get/get_list_all_posting";
 import { forum_getListPostingByAuhtorId } from "../../fun/get/get_list_posting_by_author_id";
 
-export default function ComponentForum_PostingButtonMore({
+export default function ComponentForum_BerandaButtonMore({
   authorId,
   postingId,
   statusId,
@@ -276,15 +276,11 @@ function ButtonStatus({
     await forum_funEditStatusPostingById(postingId as any, 2).then(
       async (res) => {
         if (res.status === 200) {
-          if (userLoginId === authorId) {
-            await forum_getListPostingByAuhtorId(authorId).then((val: any) =>
-              setData(val)
-            );
-          } else {
-            await forum_getListAllPosting().then((val) => setData(val as any));
-          }
-          ComponentGlobal_NotifikasiBerhasil(`Forum Ditutup`, 2000);
-          setLoading(true);
+          await forum_getListAllPosting().then((val) => {
+            setData(val as any);
+            ComponentGlobal_NotifikasiBerhasil(`Forum Ditutup`, 2000);
+            setLoading(true);
+          });
         } else {
           ComponentGlobal_NotifikasiGagal(res.message);
         }
@@ -298,15 +294,12 @@ function ButtonStatus({
     await forum_funEditStatusPostingById(postingId as any, 1).then(
       async (res) => {
         if (res.status === 200) {
-          if (userLoginId === authorId) {
-            await forum_getListPostingByAuhtorId(authorId).then((val: any) =>
-              setData(val)
-            );
-          } else {
-            await forum_getListAllPosting().then((val) => setData(val as any));
-          }
-          ComponentGlobal_NotifikasiBerhasil(`Forum Dibuka`, 2000);
-          setLoading(true);
+          await forum_getListAllPosting().then((val) => {
+            setData(val as any);
+
+            ComponentGlobal_NotifikasiBerhasil(`Forum Dibuka`, 2000);
+            setLoading(true);
+          });
         } else {
           ComponentGlobal_NotifikasiGagal(res.message);
         }

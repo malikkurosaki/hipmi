@@ -17,23 +17,19 @@ export default async function Page({ params }: { params: { id: string } }) {
   ]);
   let listMsg = await colab_getMessageByRoomId({ roomId: roomId, page: 1 });
 
-  // const listMessage = await colab_V2getListMessageByRoomId({
-  //   roomId: roomId,
-  //   page: 1,
-  // });
-
   return (
     <>
-      {/* <ColabViewChat
+      <ColabViewChat
         listMsg={listMsg as any}
         dataRoom={dataRoom as any}
         userLoginId={userLoginId}
-      /> */}
-      <Colab_GroupChatView
+      />
+
+      {/* <Colab_GroupChatView
         userLoginId={userLoginId}
         listMsg={listMsg}
         selectRoom={dataRoom as any}
-      />
+      /> */}
     </>
   );
 }

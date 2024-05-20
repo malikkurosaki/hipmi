@@ -128,17 +128,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
           <Stack>
             <ComponentKatalog_NotedBox informasi="Upload foto latar belakang profile anda." />
             <AspectRatio ratio={16 / 9}>
-              <Paper
-                radius={"md"}
-                withBorder
-                shadow="lg"
-                bg={"gray.2"}
-                // sx={{
-                //   borderStyle: "solid",
-                //   borderColor: "black",
-                //   borderWidth: "1px",
-                // }}
-              >
+              <Paper radius={"md"} withBorder shadow="lg" bg={"gray.2"}>
                 {imgBG ? (
                   <Image alt="Foto" src={imgBG ? imgBG : "/aset/no-img.png"} />
                 ) : (
@@ -197,6 +187,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
           <TextInput
             withAsterisk
             label="Nama"
+            maxLength={50}
             placeholder="Nama lengkap"
             onChange={(val) => {
               setValue({
@@ -209,6 +200,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
             withAsterisk
             icon={<IconAt size={15} />}
             label="Email"
+            maxLength={100}
             placeholder="Contoh: User@gmail.com"
             error={
               value.email.length > 0 && !value.email.match(validRegex)
@@ -225,8 +217,8 @@ export default function CreateProfile({ userId }: { userId: any }) {
           <TextInput
             withAsterisk
             label="Alamat"
+            maxLength={100}
             placeholder="Alamat lengkap"
-            error={value.alamat.length > 100 ? "Max 100 karakter" : ""}
             onChange={(val) => {
               setValue({
                 ...value,
@@ -288,7 +280,6 @@ function ButtonAction({
     if (_.values(body).includes(""))
       return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
     if (!body.email.match(validRegex)) return null;
-    if (body.alamat.length > 100) return null;
 
     const gambarPP = new FormData();
     gambarPP.append("filePP", filePP as any);

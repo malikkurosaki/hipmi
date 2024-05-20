@@ -30,8 +30,9 @@ import { useState } from "react";
 import ComponentForum_PostingButtonMore from "../more_button/posting_button_more";
 import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
 import { data } from "autoprefixer";
+import ComponentForum_BerandaButtonMore from "./beranda_button_more";
 
-export default function ComponentForum_PostingAuthorNameOnHeader({
+export default function ComponentForum_BerandaAuthorNameOnHeader({
   authorId,
   postingId,
   imagesId,
@@ -52,7 +53,7 @@ export default function ComponentForum_PostingAuthorNameOnHeader({
   isMoreButton?: boolean;
   statusId?: string;
   userLoginId: string;
-  setData?:any
+  setData?: any;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -131,10 +132,10 @@ export default function ComponentForum_PostingAuthorNameOnHeader({
                   />
                 </Text>
               </Group>
-             
+
               {isMoreButton ? (
                 <Group position="right">
-                  <ComponentForum_PostingButtonMore
+                  <ComponentForum_BerandaButtonMore
                     authorId={authorId}
                     postingId={postingId as any}
                     statusId={statusId}
