@@ -42,6 +42,8 @@ export interface MODEL_COLLABORATION_PARTISIPASI {
 
 export interface MODEL_COLLABORATION_ROOM_CHAT {
   id: string;
+  createdAt: Date;
+  updatedAt: Date;
   name: string;
   isActive: true;
   Author: MODEL_USER;
@@ -79,5 +81,34 @@ export interface MODEL_COLLABORATION_MESSAGE {
   userId: string;
   message: string;
   isFile: boolean;
-  User: MODEL_USER;
+  User: MODEL_USER_FOR_MESSAGE;
+}
+
+interface MODEL_USER_FOR_MESSAGE {
+  id: string;
+  username?: string;
+  nomor?: string;
+  active?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+  masterUserRoleId?: string;
+  Profile?: MODEL_PROFILE_FOR_MESSAGE;
+}
+
+
+interface MODEL_PROFILE_FOR_MESSAGE{
+  userId?: string;
+  User?: MODEL_USER;
+  id: string;
+  name: string;
+  email?: string;
+  alamat?: string;
+  jenisKelamin?: string;
+  active?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  // ImageProfile?: MODEL_IMAGES;
+  // imagesId?: string;
+  // ImagesBackground?: MODEL_IMAGES;
+  // imagesBackgroundId?: string;
 }

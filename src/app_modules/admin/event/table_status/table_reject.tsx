@@ -69,7 +69,7 @@ function TableStatus({ listReject }: { listReject: MODEL_EVENT[] }) {
   const TableRows = data.map((e, i) => (
     <tr key={i}>
       <td>
-        <Box w={200}>{e.Author.Profile.name}</Box>
+        <Box w={200}>{e?.Author?.Profile?.name}</Box>
       </td>
       <td>
         <Box w={200}>{e.title}</Box>

@@ -35,6 +35,7 @@ import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { useForm } from "@mantine/form";
 import { useTimeout } from "@mantine/hooks";
 import { validRegex } from "../../component/regular_expressions";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
 
 export default function CreateProfile({ userId }: { userId: any }) {
   const [filePP, setFilePP] = useState<File | null>(null);
@@ -203,9 +204,11 @@ export default function CreateProfile({ userId }: { userId: any }) {
             maxLength={100}
             placeholder="Contoh: User@gmail.com"
             error={
-              value.email.length > 0 && !value.email.match(validRegex)
-                ? "Invalid email"
-                : ""
+              value.email.length > 0 && !value.email.match(validRegex) ? (
+                <ComponentGlobal_ErrorInput text="Invalid Email" />
+              ) : (
+                ""
+              )
             }
             onChange={(val) => {
               setValue({

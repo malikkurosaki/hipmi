@@ -127,13 +127,13 @@ function DetailRiwayat({ listRiwayat }: { listRiwayat: MODEL_EVENT[] }) {
                       sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
                       radius={"xl"}
                       src={
-                        RouterProfile.api_foto_profile + e.User.Profile.imagesId
+                        RouterProfile.api_foto_profile + e?.User?.Profile?.imagesId
                       }
                     />
                   </Grid.Col>
                   <Grid.Col span={"auto"}>
                     <Group align="center" h={"100%"}>
-                      <Text>{e.User.Profile.name}</Text>
+                      <Text>{e?.User?.Profile?.name}</Text>
                     </Group>
                   </Grid.Col>
                 </Grid>

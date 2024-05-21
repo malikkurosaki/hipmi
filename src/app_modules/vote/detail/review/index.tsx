@@ -22,6 +22,7 @@ import ComponentVote_DetailDataSebelumPublish from "../../component/detail/detai
 import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_id";
 import { MODEL_VOTING } from "../../model/interface";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { useState } from "react";
 
 export default function Vote_DetailReview({
   dataVote,
@@ -40,6 +41,7 @@ export default function Vote_DetailReview({
 
 function ButtonAction({ voteId }: { voteId: string }) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
 
   async function onUpdate() {
@@ -48,6 +50,7 @@ function ButtonAction({ voteId }: { voteId: string }) {
         setTabsStatus("Draft");
         ComponentGlobal_NotifikasiBerhasil("Berhasil Batalkan Review", 2000);
         router.back();
+        setIsLoading(true);
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }
@@ -56,9 +59,11 @@ function ButtonAction({ voteId }: { voteId: string }) {
   return (
     <>
       <Button
+        loaderPosition="center"
+        loading={isLoading ? true : false}
         radius={"xl"}
-        color="red"
-        onClick={() => {
+        color="orange"
+        onClick={() => {8
           onUpdate();
         }}
       >

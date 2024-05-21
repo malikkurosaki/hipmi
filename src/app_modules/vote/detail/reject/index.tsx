@@ -19,6 +19,7 @@ import { MODEL_VOTING } from "../../model/interface";
 import { Vote_funDeleteById } from "../../fun/delete/fun_delete_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_id";
+import ComponentVote_NotedBox from "../../component/noted_box";
 
 export default function Vote_DetailReject({
   dataVote,
@@ -28,6 +29,7 @@ export default function Vote_DetailReject({
   return (
     <>
       <Stack spacing={"xl"}>
+        <ComponentVote_NotedBox informasi={dataVote?.catatan} />
         <ComponentVote_DetailDataSebelumPublish data={dataVote as any} />
         <ButtonAction voteId={dataVote.id} />
       </Stack>

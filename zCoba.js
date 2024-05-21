@@ -53,14 +53,23 @@ const _ = require("lodash");
 
 // randomNumberPerSecond()
 
-function CobaTanggal() {
-  const tgl = "2024-01-25T12:00:24.008Z";
-  const i = _.random(0, 100);
-  // setInterval(() => console.log("hello" + i), 1000);
-  const waktu = Date.now()
-const dt = moment(waktu).locale("fr").format()
-  console.log(dt)
-  
+// function CobaTanggal() {
+//   const tgl = "2024-01-25T12:00:24.008Z";
+//   const i = _.random(0, 100);
+//   // setInterval(() => console.log("hello" + i), 1000);
+//   const waktu = Date.now()
+// const dt = moment(waktu).locale("fr").format()
+//   console.log(dt)
+
+// }
+
+// CobaTanggal();
+
+function CobaSplice() {
+  let array = [1, 2, 3, 4, 5];
+  let indexToRemove = 1;
+  array.splice(indexToRemove, 1);
+  console.log(array);
 }
 
-CobaTanggal();
+CobaSplice();

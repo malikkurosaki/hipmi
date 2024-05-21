@@ -75,7 +75,7 @@ export default function ColabViewChat({
     down: false,
   });
 
-  const [topik, setTopic] = useState("")
+  const [topik, setTopic] = useState("");
 
   useShallowEffect(() => {
     evnPesan.on(topik, (msgg) => {
@@ -86,11 +86,8 @@ export default function ColabViewChat({
     });
   }, [data]);
 
-  
-
   // Kirim pesan
   async function onSend() {
-
     // console.log(JSON.stringify(data[0], null, 2));
     const kiriman = {
       id: "clw8glvt4000j12efrecoubug",
@@ -117,7 +114,7 @@ export default function ColabViewChat({
     //     setData(newData as any);
     //     setHasMore({ up: true });
 
-        setMsg("");
+    setMsg("");
     //   } else {
     //     ComponentGlobal_NotifikasiGagal(res.message);
     //   }

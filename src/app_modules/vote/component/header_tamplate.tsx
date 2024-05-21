@@ -23,6 +23,9 @@ export default function ComponentVote_HeaderTamplate({
   bg?: any;
 }) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRightLoading, setRightLoading] = useState(false);
+
   return (
     <>
       <Header
@@ -35,8 +38,10 @@ export default function ComponentVote_HeaderTamplate({
             <ActionIcon variant="transparent" disabled></ActionIcon>
           ) : (
             <ActionIcon
+              loading={isLoading ? true : false}
               variant="transparent"
               onClick={() => {
+                setIsLoading(true);
                 if (route === null || route === undefined) {
                   return router.back();
                 } else {
@@ -54,8 +59,13 @@ export default function ComponentVote_HeaderTamplate({
             } else {
               return (
                 <ActionIcon
+                  loading={isRightLoading ? true : false}
                   variant="transparent"
-                  onClick={() => router.push(route2)}
+                  onClick={() => {
+                    setRightLoading;
+                    true;
+                    router.push(route2);
+                  }}
                 >
                   {icon}
                 </ActionIcon>

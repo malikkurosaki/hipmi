@@ -70,16 +70,16 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
         <Center>
           <Button
             loading={
-              e.id === voteId ? (loading === true ? true : false) : false
+              e?.id === voteId ? (loading === true ? true : false) : false
             }
             radius={"xl"}
             color="green"
             leftIcon={<IconEyeCheck />}
             onClick={async () => {
-              setVoteId(e.id);
+              setVoteId(e?.id);
               setLoading(true);
               await new Promise((r) => setTimeout(r, 500));
-              onList(e.id, setHasil, setKontributor, setLoading, open);
+              onList(e?.id, setHasil, setKontributor, setLoading, open);
             }}
           >
             Lihat Hasil
@@ -87,7 +87,10 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
         </Center>
       </td>
       <td>
-        <Center>{e.title}</Center>
+        <Center>{e?.Author?.Profile?.name}</Center>
+      </td>
+      <td>
+        <Center>{e?.title}</Center>
       </td>
       <td>
         <Center>
@@ -97,27 +100,27 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
             maxHeight={50}
             showLabel="tampilkan"
           >
-            {e.deskripsi}
+            {e?.deskripsi}
           </Spoiler>
         </Center>
       </td>
       <th>
         <Stack>
-          {e.Voting_DaftarNamaVote.map((v) => (
-            <Box key={v.id}>
-              <Text>- {v.value}</Text>
+          {e?.Voting_DaftarNamaVote.map((v) => (
+            <Box key={v?.id}>
+              <Text>- {v?.value}</Text>
             </Box>
           ))}
         </Stack>
       </th>
       <td>
         <Center>
-          {e.awalVote.toLocaleDateString("id-ID", { dateStyle: "long" })}
+          {e?.awalVote.toLocaleDateString("id-ID", { dateStyle: "long" })}
         </Center>
       </td>
       <td>
         <Center>
-          {e.akhirVote.toLocaleDateString("id-ID", { dateStyle: "long" })}
+          {e?.akhirVote.toLocaleDateString("id-ID", { dateStyle: "long" })}
         </Center>
       </td>
     </tr>
@@ -131,7 +134,10 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
         size={"xl"}
         withCloseButton={false}
       >
-       <ComponentAdminVote_DetailHasil hasil={hasil} kontributor={kontributor}/>
+        <ComponentAdminVote_DetailHasil
+          hasil={hasil}
+          kontributor={kontributor}
+        />
       </Modal>
       <Box>
         <Box bg={"green.1"} p={"xs"}>
@@ -151,6 +157,9 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
             <tr>
               <th>
                 <Center>Aksi</Center>
+              </th>
+              <th>
+                <Center>Author</Center>
               </th>
               <th>
                 <Center>Judul</Center>

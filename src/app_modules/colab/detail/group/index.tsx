@@ -44,15 +44,19 @@ import useInfiniteScroll, {
 } from "react-easy-infinite-scroll-hook";
 import toast from "react-simple-toasts";
 import colab_getOneMessageById from "../../fun/get/room_chat/get_one_message_by_id";
+import { MODEL_USER } from "@/app_modules/home/model/interface";
+import { evnPesan } from "@/util/evn";
 
 export default function Colab_GroupChatView({
   userLoginId,
   listMsg,
   selectRoom,
+  dataUserLogin,
 }: {
   userLoginId: string;
   listMsg: any;
   selectRoom: MODEL_COLLABORATION_ROOM_CHAT;
+  dataUserLogin: MODEL_USER;
 }) {
   const router = useRouter();
   const [loadingBack, setLoadingBack] = useState(false);
@@ -63,6 +67,7 @@ export default function Colab_GroupChatView({
   const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isGet, setIsGet] = useState(true);
+  const [newMessageId, setIdMessage] = useState("");
 
   const next = async (direction: ScrollDirection) => {
     try {
@@ -93,28 +98,32 @@ export default function Colab_GroupChatView({
     next,
     rowCount: data.length,
     hasMore: { up: isGet },
-    scrollThreshold: 0.1,
+    scrollThreshold: 0.5,
   });
 
   async function onSend() {
     await colab_funCreateMessageByUserId(msg, selectRoom.id).then(
       async (res) => {
         if (res.status === 200) {
-          mqtt_client.publish(selectRoom.id, msg);
+          setIdMessage(res.data?.id as any);
           setMsg("");
-
-          await colab_getOneMessageById({
-            messageId: res.data?.id as any,
-          }).then((res) => {
-            // setNewMessage(res);
-            // console.log(res);
-            // const d = JSON.parse(JSON.stringify(res));
-            // setData([...data, ...[d]]);
-
-            mqtt_client.on("message", (a, b) => {
-              setData([...data, ...[res]]);
-            });
-          });
+          const kiriman: MODEL_COLLABORATION_MESSAGE = {
+            createdAt: new Date(),
+            id: newMessageId,
+            isActive: true,
+            message: msg,
+            isFile: false,
+            updatedAt: new Date(),
+            userId: dataUserLogin.id,
+            User: {
+              id: dataUserLogin.id,
+              Profile: {
+                id: dataUserLogin.Profile?.id as any,
+                name: dataUserLogin.Profile?.name as any,
+              },
+            },
+          };
+          mqtt_client.publish(selectRoom.id, JSON.stringify(kiriman));
         } else {
           ComponentGlobal_NotifikasiGagal(res.message);
         }
@@ -124,32 +133,38 @@ export default function Colab_GroupChatView({
 
   useShallowEffect(() => {
     mqtt_client.subscribe(selectRoom.id);
-
-    // mqtt_client.on("message", (a, b) => {
-    //   // loadDataNew(b.toString());
-    //   // onList(b);
-    //   onList2(newMessage);
+    // mqtt_client.on("message", (topic: any, message: any) => {
+    //   onList(message.toString());
     // });
-  }, []);
 
-  async function onList2(dt: any) {
-    console.log(dt);
-    setData([...data, ...[dt]]);
-  }
-
-  // const loadDataNew = (dt: any) => {
-  //   setData([JSON.parse(dt),...data]);
-  // };
-
-  async function onList(b: any) {
-    await colab_getMessageByRoomId({
-      roomId: selectRoom?.id,
-      page: 1,
-    }).then((val) => {
-      const d = JSON.parse(JSON.stringify(val[5]));
-      setData([...data, ...[d]]);
-      // setTotalPage(totalPage);
+    mqtt_client.on("message", (topic: any, message: any) => {
+      let dd = _.clone(data);
+      const a = [...dd, JSON.parse(message)];
+      // console.log(dd.length);
+      setData(a);
     });
+  }, [data]);
+
+  async function onList(message: any) {
+    const kiriman: MODEL_COLLABORATION_MESSAGE = {
+      createdAt: new Date(),
+      id: newMessageId,
+      isActive: true,
+      message: message,
+      isFile: false,
+      updatedAt: new Date(),
+      userId: dataUserLogin.id,
+      User: {
+        id: dataUserLogin.id,
+        Profile: {
+          id: dataUserLogin.Profile?.id as any,
+          name: dataUserLogin.Profile?.name as any,
+        },
+      },
+    };
+
+    const dataLama = _.clone(data);
+    setData([...dataLama, { ...kiriman }]);
   }
 
   return (

@@ -36,6 +36,7 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_glob
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { AdminEvent_funEditCatatanById } from "../../fun/edit/fun_edit_status_reject_by_id";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import moment from "moment";
 
 export default function AdminVote_TableReview({
   listVote,
@@ -58,9 +59,14 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
   const [data, setData] = useState(listData);
   const [votingId, setVotingId] = useState("");
   const [catatan, setCatatan] = useState("");
+  const [isLoadingPublish, setLoadingPublish] = useState(false);
+  const [isSaveLoading, setSaveLoading] = useState(false);
 
   const TableRows = data.map((e, i) => (
     <tr key={i}>
+      <td>
+        <Center>{e?.Author?.Profile?.name}</Center>
+      </td>
       <td>
         <Center>{e.title}</Center>
       </td>
@@ -99,11 +105,23 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
       <td>
         <Stack align="center">
           <Button
+            loaderPosition="center"
+            loading={
+              e?.id === votingId ? (isLoadingPublish ? true : false) : false
+            }
             w={120}
             color={"green"}
             leftIcon={<IconEyeShare />}
             radius={"xl"}
-            onClick={() => onPublish(e.id, setData, e.awalVote)}
+            onClick={() =>
+              onPublish(
+                e.id,
+                setData,
+                e.awalVote,
+                setLoadingPublish,
+                setVotingId
+              )
+            }
           >
             Publish
           </Button>
@@ -146,12 +164,15 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
             }}
           />
           <Group position="right">
+            <Button radius={"xl"} onClick={() => close()}>
+              Batal
+            </Button>
             <Button
+              loaderPosition="center"
+              loading={isSaveLoading ? true : false}
               radius={"xl"}
               onClick={() => {
-                onReject(votingId, setData, catatan, close);
-
-                // console.log("hehe")
+                onReject(votingId, setData, catatan, close, setSaveLoading);
               }}
             >
               Simpan
@@ -178,6 +199,9 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
             >
               <thead>
                 <tr>
+                  <th>
+                    <Center>Author</Center>
+                  </th>
                   <th>
                     <Center>Judul</Center>
                   </th>
@@ -217,19 +241,26 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
   );
 }
 
-async function onPublish(voteId: string, setData: any, awalVote: Date) {
+async function onPublish(
+  voteId: string,
+  setData: any,
+  awalVote: Date,
+  setLoadingPublish: any,
+  setVotingId: any
+) {
   const hariIni = new Date();
-  if (awalVote < hariIni)
-    return ComponentGlobal_NotifikasiPeringatan(
-      "Tanggal Mulai Votig Lewat, Edit Kembali",
-      1500
-    );
+  const cekHari = moment(awalVote).diff(hariIni, "days");
 
+  if (cekHari < 0)
+    return ComponentGlobal_NotifikasiPeringatan("Tanggal Voting Lewat");
+
+  setVotingId(voteId);
   await AdminVote_funEditStatusPublishById(voteId).then(async (res) => {
     if (res.status === 200) {
       await AdminVote_getListTableByStatusId("2").then((val) => {
         setData(val);
         ComponentGlobal_NotifikasiBerhasil(res.message);
+        setLoadingPublish(true);
       });
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);
@@ -241,7 +272,8 @@ async function onReject(
   voteId: string,
   setData: any,
   catatan: string,
-  close: any
+  close: any,
+  setSaveLoading: any
 ) {
   const data = {
     id: voteId,
@@ -251,6 +283,7 @@ async function onReject(
     if (res.status === 200) {
       await AdminVote_getListTableByStatusId("2").then((val) => {
         setData(val);
+        setSaveLoading(true);
         ComponentGlobal_NotifikasiBerhasil(res.message);
         close();
       });
