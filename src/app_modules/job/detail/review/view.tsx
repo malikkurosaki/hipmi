@@ -11,7 +11,6 @@ import { MODEL_JOB } from "../../model/interface";
 import { Job_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_status_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 
-
 export default function Job_DetailReview({ dataJob }: { dataJob: MODEL_JOB }) {
   return (
     <>
@@ -42,7 +41,7 @@ function ButtonAction({ jobId }: { jobId: string }) {
     <>
       <Button
         radius={"xl"}
-        color="red"
+        color="orange"
         mb={50}
         onClick={() => {
           onAction();

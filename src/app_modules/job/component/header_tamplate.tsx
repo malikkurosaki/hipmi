@@ -23,6 +23,8 @@ export default function ComponentJob_HeaderTamplate({
   bg?: any;
 }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+  const [isRightLoading, setRightLoading] = useState(false);
   return (
     <>
       <Header
@@ -35,8 +37,10 @@ export default function ComponentJob_HeaderTamplate({
             <ActionIcon variant="transparent" disabled></ActionIcon>
           ) : (
             <ActionIcon
+              loading={isLoading ? true : false}
               variant="transparent"
               onClick={() => {
+                setLoading(true);
                 if (route === null || route === undefined) {
                   return router.back();
                 } else {
@@ -54,8 +58,12 @@ export default function ComponentJob_HeaderTamplate({
             } else {
               return (
                 <ActionIcon
+                  loading={isRightLoading ? true : false}
                   variant="transparent"
-                  onClick={() => router.push(route2)}
+                  onClick={() => {
+                    setRightLoading(true);
+                    router.push(route2);
+                  }}
                 >
                   {icon}
                 </ActionIcon>
