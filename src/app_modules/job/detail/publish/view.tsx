@@ -11,6 +11,7 @@ import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_gl
 import { Job_funEditArsipById } from "../../fun/edit/fun_edit_arsip_by_id";
 import { MODEL_JOB } from "../../model/interface";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { useState } from "react";
 
 export default function Job_DetailPublish({ dataJob }: { dataJob: MODEL_JOB }) {
   return (
@@ -25,6 +26,8 @@ export default function Job_DetailPublish({ dataJob }: { dataJob: MODEL_JOB }) {
 
 function ButtonAction({ jobId }: { jobId: string }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+
   const [status, setStatus] = useAtom(gs_job_status);
   const [hotMenu, setHotMenu] = useAtom(gs_job_hot_menu);
 
@@ -34,6 +37,7 @@ function ButtonAction({ jobId }: { jobId: string }) {
         setStatus("Publish");
         setHotMenu(3);
         ComponentGlobal_NotifikasiBerhasil("Berhasil Diarsipkan");
+        setLoading(true);
         router.replace(RouterJob.arsip);
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
@@ -43,6 +47,8 @@ function ButtonAction({ jobId }: { jobId: string }) {
   return (
     <>
       <Button
+        loading={isLoading ? true : false}
+        loaderPosition="center"
         radius={"xl"}
         color="green"
         mb={30}

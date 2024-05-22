@@ -6,6 +6,7 @@ import {
   Center,
   Footer,
   Grid,
+  Loader,
   Stack,
   Text,
 } from "@mantine/core";
@@ -25,7 +26,8 @@ export default function LayoutJob_Main({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [hotMenu, setHotMenu] = useAtom(gs_job_hot_menu);
+  const [hotMenuId, setHotMenuId] = useAtom(gs_job_hot_menu);
+  const [isLoading, setLoading] = useState(false);
 
   const listFooter = [
     {
@@ -68,19 +70,27 @@ export default function LayoutJob_Main({
                     span={"auto"}
                     pt={"md"}
                     onClick={() => {
+                      // setLoading(true);
+                      // setTimeout(() => router.replace(e.path), 3000);
                       router.replace(e.path);
-                      setHotMenu(e.id);
+                      setHotMenuId(e.id);
+                      // setTimeout(() => setLoading(false), 1000);
                     }}
                   >
                     <Center>
                       <Stack align="center" spacing={0}>
                         <ActionIcon
                           variant="transparent"
-                          c={hotMenu === e.id ? "blue" : "white"}
+                          c={hotMenuId === e.id ? "blue" : "white"}
                         >
                           {e.icon}
+                          {/* {isLoading && hotMenuId === e.id ? (
+                            <Loader />
+                          ) : (
+                            e.icon
+                          )} */}
                         </ActionIcon>
-                        <Text fz={10} c={hotMenu === e.id ? "blue" : "white"}>
+                        <Text fz={10} c={hotMenuId === e.id ? "blue" : "white"}>
                           {e.name}
                         </Text>
                       </Stack>

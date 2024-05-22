@@ -8,6 +8,8 @@ import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_gl
 import { MODEL_JOB } from "../model/interface";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { IconChevronRight } from "@tabler/icons-react";
+import { useState } from "react";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
 
 export default function ComponentJob_CardViewStatus({
   listData,
@@ -17,6 +19,9 @@ export default function ComponentJob_CardViewStatus({
   path?: any;
 }) {
   const router = useRouter();
+  const [jobId, setJobId] = useState("");
+  const [visible, setVisible] = useState(false);
+
   if (_.isEmpty(listData))
     return (
       <>
@@ -40,7 +45,11 @@ export default function ComponentJob_CardViewStatus({
                   "Path tidak ditemukan"
                 );
               } else {
-                router.push(path + e.id);
+                visible
+                  ? ""
+                  : (setJobId(e?.id),
+                    setVisible(true),
+                    router.push(path + e?.id));
               }
             }}
           >
@@ -49,12 +58,17 @@ export default function ComponentJob_CardViewStatus({
                 <Grid.Col span={"auto"}>
                   <Center h={"100%"}>
                     <Text fw={"bold"} lineClamp={1}>
-                      {e.title}
+                      {e?.title}
                     </Text>
                   </Center>
                 </Grid.Col>
               </Grid>
             </Card.Section>
+            {visible && e?.id === jobId ? (
+              <ComponentGlobal_CardLoadingOverlay />
+            ) : (
+              ""
+            )}
           </Card>
         ))}
       </Stack>

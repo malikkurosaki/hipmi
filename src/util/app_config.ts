@@ -6,7 +6,7 @@ const app_config = {
   host:
     os.platform() === "darwin"
       ? "http://localhost:3000"
-      : "https://test-hipmi.wibudev.com",
+      : "https://test2-hipmi.wibudev.com",
   isLocal: os.platform() === "darwin",
 };
 
