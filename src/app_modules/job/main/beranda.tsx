@@ -27,6 +27,7 @@ import _ from "lodash";
 import ComponentJob_IsEmptyData from "../component/is_empty_data";
 import { useState } from "react";
 import { useWindowScroll } from "@mantine/hooks";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
 
 export default function Job_Beranda({ listJob }: { listJob: MODEL_JOB[] }) {
   const router = useRouter();
@@ -73,9 +74,9 @@ export default function Job_Beranda({ listJob }: { listJob: MODEL_JOB[] }) {
               </Card.Section>
               <Card.Section
                 onClick={() => {
-                  setVisible(true);
-                  setJobId(e.id);
-                  router.push(RouterJob.main_detail + e.id);
+                  visible ? "" : setJobId(e.id),
+                    setVisible(true),
+                    router.push(RouterJob.main_detail + e.id);
                 }}
                 mt={"lg"}
               >
@@ -90,11 +91,7 @@ export default function Job_Beranda({ listJob }: { listJob: MODEL_JOB[] }) {
                 </Grid>
               </Card.Section>
               {visible && e.id === jobId ? (
-                <Overlay h={"100%"} opacity={0.1}>
-                  <Center h={"100%"}>
-                    <Loader color="gray" />
-                  </Center>
-                </Overlay>
+                <ComponentGlobal_CardLoadingOverlay />
               ) : (
                 ""
               )}
