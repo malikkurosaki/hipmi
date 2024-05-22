@@ -2,12 +2,14 @@
 
 import {
   ActionIcon,
+  Box,
   Button,
   Center,
   Group,
   Loader,
   Paper,
   Stack,
+  Text,
 } from "@mantine/core";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
@@ -23,6 +25,9 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_glob
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import _ from "lodash";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");
@@ -32,7 +37,8 @@ const ReactQuill = dynamic(
 
 export default function Forum_Create() {
   const [value, setValue] = useState("");
-  const [maxForum, setMaxForum] = useState(0);
+  const [totalLength, setTotalLength] = useState(0);
+
   const [reload, setReload] = useState(false);
   useShallowEffect(() => {
     if (window && window.document) setReload(true);
@@ -48,27 +54,27 @@ export default function Forum_Create() {
   return (
     <>
       <Stack>
-        <Paper withBorder shadow="lg">
+        <Paper withBorder shadow="lg" p={"xs"}>
           <ReactQuill
             theme="bubble"
-            placeholder="Apa yang sedang hangat dibicarakan ?"
+            placeholder="Apa yang sedang ingin dibahas ?"
             style={{ height: 150 }}
             onChange={(val) => {
-              // if (val.length > 300) {
-              //   setMaxForum(val.length);
-              // }
               setValue(val);
             }}
           />
         </Paper>
         <Group position="right">
-          {/* <ActionIcon>
-            <IconPhotoUp />
-          </ActionIcon> */}
+          <ComponentGlobal_InputCountDown
+            maxInput={500}
+            lengthInput={value.length}
+          />
+        </Group>
+        <Group position="right">
           <ButtonAction value={value} />
         </Group>
       </Stack>
-      {/* <div dangerouslySetInnerHTML={{ __html: value }} /> */}
+      {/* <pre> {JSON.stringify(value, null, 2)}</pre> */}
     </>
   );
 }
@@ -78,6 +84,10 @@ function ButtonAction({ value }: { value: string }) {
   const [loading, setLoading] = useState(false);
 
   async function onCreate() {
+    if (value.length > 500) {
+      return null;
+    }
+
     await forum_funCreate(value).then((res) => {
       if (res.status === 201) {
         setLoading(true);
@@ -91,6 +101,14 @@ function ButtonAction({ value }: { value: string }) {
   return (
     <>
       <Button
+        style={{
+          transition: "0.5s",
+        }}
+        disabled={
+          value === "<p><br></p>" || value === "" || value.length > 500
+            ? true
+            : false
+        }
         radius={"xl"}
         loading={loading ? true : false}
         loaderPosition="center"

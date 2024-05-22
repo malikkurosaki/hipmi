@@ -3,9 +3,12 @@
 import {
   ActionIcon,
   AppShell,
+  Box,
   Center,
   Footer,
   Grid,
+  Indicator,
+  Loader,
   Stack,
   Text,
 } from "@mantine/core";
@@ -25,11 +28,15 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { gs_colab_hot_menu } from "../global_state";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import { useTimeout } from "@mantine/hooks";
 
 export default function LayoutColab_Main({
   children,
+  cekNotif,
 }: {
   children: React.ReactNode;
+  cekNotif: boolean;
 }) {
   const router = useRouter();
   const [hotMenu, setHotMenu] = useAtom(gs_colab_hot_menu);
@@ -66,13 +73,19 @@ export default function LayoutColab_Main({
       id: 5,
       name: "Notifikasi",
       path: RouterColab.notifikasi,
-      icon: <IconBell />,
+      icon: cekNotif ? (
+        <Indicator processing color="orange">
+          <IconBell />
+        </Indicator>
+      ) : (
+        <IconBell />
+      ),
     },
   ];
 
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <ComponentColab_HeaderTamplate
             title="Project Collaboration"
@@ -82,39 +95,41 @@ export default function LayoutColab_Main({
           />
         }
         footer={
-          <Footer height={70} bg={"dark"}>
-            <Grid>
-              {listFooter.map((e) => (
-                <Grid.Col
-                  key={e.id}
-                  span={"auto"}
-                  pt={"md"}
-                  onClick={() => {
-                    router.replace(e.path);
-                    setHotMenu(e.id);
-                  }}
-                >
-                  <Center>
-                    <Stack align="center" spacing={0}>
-                      <ActionIcon
-                        variant="transparent"
-                        c={hotMenu === e.id ? "blue" : "white"}
+          <Footer height={"10vh"} bg={"black"}>
+            {/* {value} */}
+            <Stack justify="center" h={"100%"}>
+              <Grid>
+                {listFooter.map((e) => (
+                  <Grid.Col key={e.id} span={"auto"} pt={"md"}>
+                    <Center>
+                      <Stack
+                        align="center"
+                        spacing={0}
+                        onClick={() => {
+                          router.replace(e.path);
+                          setHotMenu(e.id);
+                        }}
                       >
-                        {e.icon}
-                      </ActionIcon>
-                      <Text fz={10} c={hotMenu === e.id ? "blue" : "white"}>
-                        {e.name}
-                      </Text>
-                    </Stack>
-                  </Center>
-                </Grid.Col>
-              ))}
-            </Grid>
+                        <ActionIcon
+                          variant="transparent"
+                          c={hotMenu === e.id ? "blue" : "white"}
+                        >
+                          {e.icon}
+                        </ActionIcon>
+                        <Text fz={10} c={hotMenu === e.id ? "blue" : "white"}>
+                          {e.name}
+                        </Text>
+                      </Stack>
+                    </Center>
+                  </Grid.Col>
+                ))}
+              </Grid>
+            </Stack>
           </Footer>
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

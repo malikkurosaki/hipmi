@@ -1,11 +1,15 @@
-// import MqttLoader from '@/util/mqtt_loader';
-import RootStyleRegistry from './emotion';
+import MqttLoader from "@/util/mqtt_loader";
+import RootStyleRegistry from "./emotion";
 
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <RootStyleRegistry>
-      {/* <MqttLoader /> */}
-      {children}</RootStyleRegistry>
+      <MqttLoader />
+      {children}
+    </RootStyleRegistry>
   );
 }

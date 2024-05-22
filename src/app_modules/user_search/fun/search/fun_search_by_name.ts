@@ -14,7 +14,6 @@ export async function UserSearch_searchByName(name: string) {
         },
       },
     },
-    take: 10,
     select: {
       id: true,
       username: true,

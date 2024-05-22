@@ -9,9 +9,11 @@ import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 export default function LayoutColab_MainDetail({
   children,
   colabId,
+  isAuthor,
 }: {
   children: React.ReactNode;
   colabId: string;
+  isAuthor: boolean;
 }) {
   return (
     <>
@@ -19,8 +21,8 @@ export default function LayoutColab_MainDetail({
         header={
           <ComponentColab_HeaderTamplate
             title="Detail"
-            icon={<IconEdit />}
-            route2={RouterColab.edit + colabId}
+            icon={isAuthor ? <IconEdit /> : ""}
+            route2={isAuthor ? RouterColab.edit + colabId : ""}
           />
         }
       >

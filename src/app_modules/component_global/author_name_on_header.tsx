@@ -1,10 +1,21 @@
 "use client";
 
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import { Stack, Grid, Avatar, Divider, Text, Group } from "@mantine/core";
+import {
+  Stack,
+  Grid,
+  Avatar,
+  Divider,
+  Text,
+  Group,
+  Loader,
+  Overlay,
+  Center,
+} from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { ComponentGlobal_NotifikasiPeringatan } from "./notif_global/notifikasi_peringatan";
 import moment from "moment";
+import { useState } from "react";
 
 export default function ComponentGlobal_AuthorNameOnHeader({
   profileId,
@@ -21,6 +32,8 @@ export default function ComponentGlobal_AuthorNameOnHeader({
 }) {
   const router = useRouter();
   const skrng = new Date();
+  const [visible, setVisible] = useState(false);
+
   return (
     <>
       <Stack spacing={"xs"}>
@@ -29,23 +42,39 @@ export default function ComponentGlobal_AuthorNameOnHeader({
             span={"content"}
             onClick={() => {
               if (profileId) {
+                setVisible(true);
                 router.push(RouterProfile.katalog + profileId);
               } else {
                 ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
               }
             }}
           >
-            <Avatar
-              size={30}
-              sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-              radius={"xl"}
-              bg={"gray.1"}
-              src={
-                imagesId
-                  ? RouterProfile.api_foto_profile + imagesId
-                  : "/aset/global/avatar.png"
-              }
-            />
+            {visible ? (
+              <Avatar
+                size={30}
+                sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
+                radius={"xl"}
+                bg={"gray.1"}
+              >
+                <Overlay opacity={0.1}>
+                  <Center h={"100%"}>
+                    <Loader color="gray" size={20} />
+                  </Center>
+                </Overlay>
+              </Avatar>
+            ) : (
+              <Avatar
+                size={30}
+                sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
+                radius={"xl"}
+                bg={"gray.1"}
+                src={
+                  imagesId
+                    ? RouterProfile.api_foto_profile + imagesId
+                    : "/aset/global/avatar.png"
+                }
+              />
+            )}
           </Grid.Col>
           <Grid.Col span={"auto"}>
             <Stack justify="center" h={"100%"}>

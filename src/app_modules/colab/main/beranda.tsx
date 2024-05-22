@@ -40,7 +40,7 @@ export default function Colab_Beranda({
 
   return (
     <>
-      <Affix position={{ bottom: rem(100), right: rem(30) }}>
+      <Affix position={{ bottom: rem(150), right: rem(30) }}>
         <ActionIcon
           loading={loadingCreate ? true : false}
           opacity={scroll.y > 0 ? 0.5 : ""}
@@ -63,7 +63,7 @@ export default function Colab_Beranda({
       {/* <pre>{JSON.stringify(listData, null, 2)}</pre> */}
 
       {listData.map((e, i) => (
-        <Card key={e.id} withBorder shadow="lg" mb={"lg"} radius={"md"}>
+        <Card key={e.id} withBorder shadow="lg" mb={"sm"} radius={"md"}>
           <Stack>
             <ComponentColab_CardSectionHeaderAuthorName
               authorName={e?.Author?.Profile?.name}

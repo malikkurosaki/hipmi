@@ -15,6 +15,7 @@ export default async function colab_getOneCollaborationById(colabId: string) {
       purpose: true,
       benefit: true,
       createdAt: true,
+      // jumlah_partisipan: true,
       Author: {
         select: {
           id: true,

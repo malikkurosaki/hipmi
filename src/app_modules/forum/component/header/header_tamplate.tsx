@@ -32,9 +32,8 @@ export default function ComponentForum_HeaderTamplate({
   bg?: any;
 }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  if (loading) return <ComponentGlobal_V2_LoadingPage />;
-  
+  const [isLoading, setLoading] = useState(false);
+
   return (
     <>
       <Header
@@ -47,6 +46,7 @@ export default function ComponentForum_HeaderTamplate({
             <ActionIcon variant="transparent" disabled></ActionIcon>
           ) : (
             <ActionIcon
+              loading={isLoading ? true : false}
               variant="transparent"
               onClick={() => {
                 setLoading(true);

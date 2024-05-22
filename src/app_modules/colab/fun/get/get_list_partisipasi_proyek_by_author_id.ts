@@ -3,10 +3,13 @@
 import prisma from "@/app/lib/prisma";
 import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 
-export default async function colab_getListPartisipasiByAuthorId() {
+export default async function colab_getListPartisipasiProyekByAuthorId() {
   const AuthorId = await user_getOneUserId();
 
   const get = await prisma.projectCollaboration_Partisipasi.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
     where: {
       userId: AuthorId,
       isActive: true,

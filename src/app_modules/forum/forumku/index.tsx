@@ -177,7 +177,7 @@ function ForumPosting({
   userLoginId: any;
 }) {
   const router = useRouter();
-
+  const [data, setData] = useState(dataPosting);
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [loadingKomen, setLoadingKomen] = useState(false);
 
@@ -185,11 +185,15 @@ function ForumPosting({
   if (loadingKomen) return <ComponentGlobal_V2_LoadingPage />;
   return (
     <>
+
+
+
       <ComponentForum_MainCardView
-        data={dataPosting}
+        data={data}
         setLoadingKomen={setLoadingKomen}
         setLoadingDetail={setLoadingDetail}
         userLoginId={userLoginId}
+        setData={setData}
       />
 
       {/* <Stack>

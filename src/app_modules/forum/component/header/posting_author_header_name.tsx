@@ -29,6 +29,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import ComponentForum_PostingButtonMore from "../more_button/posting_button_more";
 import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import { data } from "autoprefixer";
 
 export default function ComponentForum_PostingAuthorNameOnHeader({
   authorId,
@@ -40,6 +41,7 @@ export default function ComponentForum_PostingAuthorNameOnHeader({
   isMoreButton,
   statusId,
   userLoginId,
+  setData,
 }: {
   authorId?: string;
   postingId?: string;
@@ -50,6 +52,7 @@ export default function ComponentForum_PostingAuthorNameOnHeader({
   isMoreButton?: boolean;
   statusId?: string;
   userLoginId: string;
+  setData?:any
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -128,6 +131,7 @@ export default function ComponentForum_PostingAuthorNameOnHeader({
                   />
                 </Text>
               </Group>
+             
               {isMoreButton ? (
                 <Group position="right">
                   <ComponentForum_PostingButtonMore
@@ -135,6 +139,7 @@ export default function ComponentForum_PostingAuthorNameOnHeader({
                     postingId={postingId as any}
                     statusId={statusId}
                     userLoginId={userLoginId}
+                    setData={setData}
                   />
                 </Group>
               ) : (

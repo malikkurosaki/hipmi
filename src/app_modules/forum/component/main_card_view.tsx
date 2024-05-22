@@ -17,14 +17,16 @@ import { IconMessageCircleX } from "@tabler/icons-react";
 
 export default function ComponentForum_MainCardView({
   data,
+  setData,
   setLoadingKomen,
   setLoadingDetail,
   userLoginId,
 }: {
   data: MODEL_FORUM_POSTING[];
+  setData: any,
   setLoadingKomen: any;
   setLoadingDetail: any;
-  userLoginId: any
+  userLoginId: any;
 }) {
   const router = useRouter();
   return (
@@ -33,7 +35,9 @@ export default function ComponentForum_MainCardView({
         {data.map((e, i) => (
           <Card key={i}>
             <Card.Section>
-              {/* <pre>{JSON.stringify( typeof e.ForumMaster_StatusPosting.id)}</pre> */}
+              {/* <pre>{JSON.stringify(e.Author.id, null, 2)}</pre>
+              <pre>{JSON.stringify(userLoginId, null, 2)}</pre> */}
+
               <ComponentForum_PostingAuthorNameOnHeader
                 authorName={e?.Author?.Profile?.name}
                 imagesId={e?.Author?.Profile?.imagesId}
@@ -43,6 +47,7 @@ export default function ComponentForum_MainCardView({
                 postingId={e?.id}
                 statusId={e?.ForumMaster_StatusPosting?.id}
                 userLoginId={userLoginId}
+                setData={setData}
               />
             </Card.Section>
             <Card.Section

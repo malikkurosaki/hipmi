@@ -11,7 +11,7 @@ export default function ComponentColab_NotedBox({
         <Group>
           <Text fz={10} fs={"italic"}>
             <Text span inherit c={"red"}>
-              *{" "}
+              Alasan:{" "}
             </Text>
             {informasi}
           </Text>

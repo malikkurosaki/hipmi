@@ -1,4 +1,6 @@
+import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { MODEL_IMAGES } from "@/app_modules/model_global/interface";
+import { MODEL_PROFILE } from "../../profile/model/interface";
 
 export interface MODEL_PORTOFOLIO {
   id: string;
@@ -13,6 +15,7 @@ export interface MODEL_PORTOFOLIO {
   Logo: MODEL_IMAGES;
   logoId: string;
   Portofolio_MediaSosial: MODEL_PORTOFOLIO_MEDSOS
+  Profile: MODEL_PROFILE
 }
 
 export interface MODEL_PORTOFOLIO_BIDANG_BISNIS {

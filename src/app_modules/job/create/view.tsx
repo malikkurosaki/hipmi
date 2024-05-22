@@ -21,12 +21,19 @@ import { IconCamera, IconUpload } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 import { gs_job_hot_menu, gs_job_status } from "../global_state";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
+const ReactQuill = dynamic(
+  () => {
+    return import("react-quill");
+  },
+  { ssr: false }
+);
+
 import { useShallowEffect, useToggle } from "@mantine/hooks";
 import { Job_funCreate } from "../fun/create/fun_create";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
@@ -34,12 +41,9 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/
 import { MODEL_JOB } from "../model/interface";
 import toast from "react-simple-toasts";
 import ComponentJob_NotedBox from "../component/detail/noted_box";
-const ReactQuill = dynamic(
-  () => {
-    return import("react-quill");
-  },
-  { ssr: false }
-);
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import { defaultDeskripsi, defaultSyarat } from "../component/default_value";
+import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
 
 export default function Job_Create() {
   const [value, setValue] = useState({
@@ -59,7 +63,7 @@ export default function Job_Create() {
     return (
       <>
         <Center h={"50vh"}>
-          <Loader />
+          <ComponentGlobal_V2_LoadingPage />
         </Center>
       </>
     );
@@ -92,9 +96,9 @@ export default function Job_Create() {
                   const buffer = URL.createObjectURL(
                     new Blob([new Uint8Array(await files.arrayBuffer())])
                   );
-                  if (files.size > 20000) {
+                  if (files.size > 200000) {
                     ComponentGlobal_NotifikasiPeringatan(
-                      "Maaf, Ukuran file terlalu besar, maximum 20Mb",
+                      "Maaf, Ukuran file terlalu besar, maksimal 2mb",
                       3000
                     );
                   } else {
@@ -128,6 +132,7 @@ export default function Job_Create() {
               withAsterisk
               label="Judul"
               placeholder="Masukan judul lowongan kerja"
+              maxLength={100}
               onChange={(val) => {
                 setValue({
                   ...value,
@@ -144,33 +149,32 @@ export default function Job_Create() {
                   *
                 </Text>
               </Text>
-              <ReactQuill
-                defaultValue={`
-          <p><strong>Syarat &amp; Ketentuan :</strong></p>
-          <ol>
-          <li>Minimal pendidika SMA / Sederajat</li>
-          <li>Pasif berbahasa inggris </li>
-          <li>Dll,.</li>
-          </ol>
-          <p></br></p>
-          `}
-                modules={{
-                  toolbar: [
-                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                    ["bold", "italic", "underline", "link"],
-                    // [{ align: [] }],
-                    [{ list: "ordered" }, { list: "bullet" }],
-                    ["clean"],
-                  ],
-                }}
-                theme="snow"
-                onChange={(val) => {
-                  setValue({
-                    ...value,
-                    content: val,
-                  });
-                }}
-              />
+
+              <Stack spacing={5}>
+                <ReactQuill
+                  defaultValue={defaultSyarat}
+                  modules={{
+                    toolbar: [
+                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                      ["bold", "italic", "underline", "link"],
+                      // [{ align: [] }],
+                      [{ list: "ordered" }, { list: "bullet" }],
+                      ["clean"],
+                    ],
+                  }}
+                  theme="snow"
+                  onChange={(val) => {
+                    setValue({
+                      ...value,
+                      content: val,
+                    });
+                  }}
+                />
+                <ComponentGlobal_InputCountDown
+                  maxInput={500}
+                  lengthInput={value.content.length}
+                />
+              </Stack>
             </Stack>
             <Stack spacing={3}>
               <Text fz={"sm"}>
@@ -180,43 +184,31 @@ export default function Job_Create() {
                   *
                 </Text>
               </Text>
-              <ReactQuill
-                defaultValue={`
-            <p>
-            <strong>Deskripsi :</strong>
-          </p>
-          <p>Jika berminat dapat menghubungi WA berikut</p>
-          <p>+6281 xxx xxx xx</p>
-          <p>Kirim CV anda melalui email berikut</p>
-          <p>test-email@gmail.com</p>
-          <p>Atau kunjungi website kami:</p>
-          <p>
-            <a
-              href="https://test-hipmi.wibudev.com/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              https://test-hipmi.wibudev.com/
-            </a>
-          </p>
-          `}
-                modules={{
-                  toolbar: [
-                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                    ["bold", "italic", "underline", "link"],
-                    // [{ align: [] }],
-                    [{ list: "ordered" }, { list: "bullet" }],
-                    ["clean"],
-                  ],
-                }}
-                theme="snow"
-                onChange={(val) => {
-                  setValue({
-                    ...value,
-                    deskripsi: val,
-                  });
-                }}
-              />
+              <Stack spacing={5}>
+                <ReactQuill
+                  defaultValue={defaultDeskripsi}
+                  modules={{
+                    toolbar: [
+                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                      ["bold", "italic", "underline", "link"],
+                      // [{ align: [] }],
+                      [{ list: "ordered" }, { list: "bullet" }],
+                      ["clean"],
+                    ],
+                  }}
+                  theme="snow"
+                  onChange={(val) => {
+                    setValue({
+                      ...value,
+                      deskripsi: val,
+                    });
+                  }}
+                />
+                <ComponentGlobal_InputCountDown
+                  maxInput={500}
+                  lengthInput={value.deskripsi.length}
+                />
+              </Stack>
             </Stack>
           </Stack>
 
@@ -229,6 +221,8 @@ export default function Job_Create() {
 
 function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const [hotMenu, setHotMenu] = useAtom(gs_job_hot_menu);
   const [status, setStatus] = useAtom(gs_job_status);
   const [preview, setPreview] = useToggle();
@@ -237,13 +231,14 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
     const gambar = new FormData();
     gambar.append("file", file as any);
 
-    // console.log(value)
+    // console.log(value);
 
     await Job_funCreate(value as any, gambar).then((res) => {
       if (res.status === 201) {
         setHotMenu(2);
         setStatus("Review");
         router.replace(RouterJob.status);
+        setIsLoading(true);
         ComponentGlobal_NotifikasiBerhasil("Tambah Lowongan Berhasil");
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
@@ -256,6 +251,22 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
       <Stack>
         <Group grow mt={"lg"} mb={70}>
           <Button
+            style={{
+              transition: "0.5s",
+            }}
+            loaderPosition="center"
+            loading={isLoading ? true : false}
+            disabled={
+              value.title === "" ||
+              value.content === "" ||
+              value.content === "<p><br></p>" ||
+              value.content.length > 500 ||
+              value.deskripsi === "" ||
+              value.deskripsi === "<p><br></p>" ||
+              value.deskripsi.length > 500
+                ? true
+                : false
+            }
             w={"100%"}
             radius={"xl"}
             onClick={() => {

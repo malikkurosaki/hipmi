@@ -33,7 +33,7 @@ export default function ComponentColab_HeaderTamplate({
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  if (loading) return <ComponentGlobal_V2_LoadingPage />;
+  // if (loading) return <ComponentGlobal_V2_LoadingPage />;
 
   return (
     <>
@@ -47,6 +47,8 @@ export default function ComponentColab_HeaderTamplate({
             <ActionIcon variant="transparent" disabled></ActionIcon>
           ) : (
             <ActionIcon
+              radius={"xl"}
+              loading={loading ? true : false}
               variant="transparent"
               onClick={() => {
                 setLoading(true);

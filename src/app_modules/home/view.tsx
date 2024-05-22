@@ -78,7 +78,7 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
       id: 5,
       name: "Project Collaboration",
       icon: <IconAffiliate size={50} />,
-      link: "",
+      link: RouterColab.splash,
     },
     {
       id: 6,
@@ -157,7 +157,9 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
                   >
                     {e.icon}
                   </ActionIcon>
-                  <Text c={e.link === "" ? "gray" : "teal"} fz={"sm"}>{e.name}</Text>
+                  <Text c={e.link === "" ? "gray" : "teal"} fz={"sm"}>
+                    {e.name}
+                  </Text>
                 </Flex>
               </Paper>
             ))}

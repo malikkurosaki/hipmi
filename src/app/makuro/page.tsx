@@ -1,116 +1,101 @@
 "use client";
+import { useState } from "react";
+import useInfiniteScroll, {
+  ScrollDirection,
+} from "react-easy-infinite-scroll-hook";
+import { createItems, loadMore } from "./_util";
+import { useShallowEffect } from "@mantine/hooks";
+import { Center, Loader, Text } from "@mantine/core";
+// Beda Package
+import InfiniteScroll from "react-infinite-scroll-component";
 
-import {
-  Box,
-  Button,
-  Center,
-  Paper,
-  ScrollArea,
-  SimpleGrid,
-  Stack,
-  Text,
-  TextInput,
-  Title,
-} from "@mantine/core";
-import _ from "lodash";
-// import ViewMakuro from "./_server/makuro_view";
-// import mqtt_client from "@/util/mqtt_client";
-// import { useState } from "react";
-// import { useAtom } from "jotai";
-// import { gs_coba_chat } from "./gs_coba";
+export default function App() {
+  const [data, setData] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-// export default function Page() {
-//   const [data1, setData1] = useState("");
-//   const [data2, setData2] = useState("");
+  const ttlData = Array.from({ length: 21 });
+  const [list, setList] = useState<any[]>(ttlData);
 
-//   const [msg, setMsg] = useAtom(gs_coba_chat);
+  // useShallowEffect(() => {
+  //   setData(createItems());
+  // }, []);
 
-//   return (
-//     <>
-//       <SimpleGrid cols={2} mt={"lg"}>
-//         <Stack align="center" justify="center">
-//           <TextInput
-//             label="User 1"
-//             value={data1}
-//             onChange={(val) => setData1(val.currentTarget.value)}
-//           />
-//           <button
-//             onClick={() => {
-//               mqtt_client.publish("example_hipmi", data1);
-//               setData1("");
-//             }}
-//           >
-//             kirim
-//           </button>
-//         </Stack>
-//         <Stack align="center" justify="center">
-//           <TextInput
-//             label="User 2"
-//             value={data2}
-//             onChange={(val) => setData2(val.currentTarget.value)}
-//           />
-//           <button
-//             onClick={() => {
-//               mqtt_client.publish("example_hipmi", data2);
-//               setData2("");
-//             }}
-//           >
-//             kirim
-//           </button>
-//         </Stack>
-//       </SimpleGrid>
-//       <Stack align="center" justify="center" mt={"xl"}>
-//         <Paper withBorder shadow="lg" p={"lg"}>
-//           {msg}
-//         </Paper>
-//       </Stack>
-//       {/* <ViewMakuro /> */}
-//     </>
-//   );
-// }
+  // const next = async (direction: ScrollDirection) => {
+  //   console.log("next", direction);
+  //   try {
+  //     setIsLoading(true);
+  //     const newData = await loadMore();
 
-export default function Page() {
+  //     const d = direction === "up" ? [...newData, ...data] : [];
+  //     setData(d);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  // const ref = useInfiniteScroll({
+  //   next,
+  //   rowCount: data.length,
+  //   hasMore: { up: true },
+  // });
+
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      setList(list.concat(Array.from({ length: 20 })));
+    }, 100);
+  };
+
+  const style = {
+    height: 30,
+    border: "1px solid green",
+    margin: 6,
+    padding: 8,
+  };
+
   return (
-    <Box> 
-      <Box
-        style={{
-          zIndex: 99,
-        }}
-        w={"100%"}
-        bg={"green"}
-        pos={"sticky"}
-        top={0}
-        h={"10vh"}
-      >
-        header
-      </Box>
-
-      <Box bg={"red"} pos={"static"} >
-        <Stack>
-          {Array.from(new Array(15)).map((v, k) => (
-            <Title key={k}>Cek halaman {k+1}</Title>
+    <>
+      <div id="scrollableDiv" style={{ height: "100vh", overflow: "auto" }}>
+        <InfiniteScroll
+          dataLength={list.length}
+          next={fetchMoreData}
+          hasMore={true}
+          loader={
+            <center>
+              <h4>Loading...</h4>
+            </center>
+          }
+          scrollableTarget="scrollableDiv"
+        >
+          {list.map((i, index) => (
+            <div style={style} key={index}>
+              div - #{index}
+            </div>
           ))}
-          <Box style={{
-            height: "10vh"
-          }}>
+        </InfiniteScroll>
+      </div>
+    </>
+  );
 
-          </Box>
-        </Stack>
-      </Box>
+  return (
+    <Center>
+      <div>
+        <Center>{isLoading && <Loader />}</Center>
 
-
-      <Text
-        style={{
-          zIndex: 98,
-        }}
-        w={"100%"}
-        bg={"blue"}
-        pos={"fixed"}
-        bottom={0}
-        h={"10vh"}
-      >
-        footer
-      </Text>
-    </Box>
+        <div
+          // ref={ref as any}
+          className="List"
+          style={{
+            height: 500,
+            overflowY: "auto",
+          }}
+        >
+          {data.map((key: any) => (
+            <div className="Row" key={key}>
+              {key}
+            </div>
+          ))}
+        </div>
+      </div>
+    </Center>
   );
 }

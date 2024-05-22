@@ -35,10 +35,10 @@ export default function AppComponentGlobal_LayoutTamplate({
             zIndex: 99,
           }}
           w={"100%"}
-          bg={"black"}
+          // bg={"black"}
           pos={"sticky"}
           top={0}
-          h={50}
+          h={"7vh"}
         >
           {header}
         </Box>
@@ -46,29 +46,36 @@ export default function AppComponentGlobal_LayoutTamplate({
         {/* Children */}
         <Box p={"sm"} pos={"static"}>
           <Stack>
-            
             {children}
-            <Box
-              style={{
-                height: "10vh",
-              }}
-            ></Box>
+            {footer ? (
+              <Box
+                style={{
+                  height: "10vh",
+                }}
+              ></Box>
+            ) : (
+              ""
+            )}
           </Stack>
         </Box>
 
         {/* Footer */}
-       {footer ?  <Box
-          style={{
-            zIndex: 98,
-          }}
-          w={"100%"}
-          bg={"black"}
-          pos={"fixed"}
-          bottom={0}
-          h={"10vh"}
-        >
-          {footer}
-        </Box> : ""}
+        {footer ? (
+          <Box
+            style={{
+              zIndex: 98,
+            }}
+            w={"100%"}
+            bg={"black"}
+            pos={"fixed"}
+            bottom={0}
+            h={"10vh"}
+          >
+            {footer}
+          </Box>
+        ) : (
+          ""
+        )}
       </Box>
     </>
   );

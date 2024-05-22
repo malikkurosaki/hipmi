@@ -2,7 +2,7 @@
 
 import prisma from "@/app/lib/prisma";
 
-export default async function colab_getListPartisipanById(colabId: string) {
+export default async function colab_getListPartisipanByColabId(colabId: string) {
   const data = await prisma.projectCollaboration_Partisipasi.findMany({
     where: {
       projectCollaborationId: colabId,
@@ -16,6 +16,7 @@ export default async function colab_getListPartisipanById(colabId: string) {
           Profile: true,
         },
       },
+      deskripsi_diri: true
     },
   });
 

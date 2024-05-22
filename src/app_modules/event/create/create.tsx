@@ -48,23 +48,21 @@ export default function Event_Create({
   const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
   const [listTipe, setListTipe] = useState(listTipeAcara);
   const [hotMenu, setHotMenu] = useAtom(gs_event_hotMenu);
-
-  // Masimal karakter state
-  const [maxTitle, setMaxTitle] = useState("");
-  const [maxLokasi, setMaxLokasi] = useState("");
-  const [maxDeskripsi, setMaxDeskripsi] = useState("");
+  const [isTime, setIsTime] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const [value, setValue] = useState({
     title: "",
     lokasi: "",
     deskripsi: "",
-    tanggal: Date,
+    tanggal: Date.toString(),
     eventMaster_TipeAcaraId: 0,
     authorId: authorId,
   });
 
   return (
     <>
+      {/* <pre>{JSON.stringify(value, null, 2)}</pre> */}
       <Stack px={"sm"}>
         <TextInput
           label="Judul"
@@ -72,21 +70,19 @@ export default function Event_Create({
           withAsterisk
           maxLength={100}
           error={
-            maxTitle.length >= 100 ? (
+            value.title.length >= 100 ? (
               <ComponentEvent_ErrorMaximalInput max={100} />
             ) : (
               ""
             )
           }
           onChange={(val) => {
-            setMaxTitle(val.target.value);
             setValue({
               ...value,
               title: val.target.value,
             });
           }}
         />
-
         <Select
           withAsterisk
           label="Tipe Acara"
@@ -107,16 +103,15 @@ export default function Event_Create({
           label="Lokasi"
           placeholder="Masukan lokasi acara"
           withAsterisk
-          maxLength={200}
+          maxLength={100}
           error={
-            maxLokasi.length >= 200 ? (
-              <ComponentEvent_ErrorMaximalInput max={200} />
+            value.lokasi.length >= 100 ? (
+              <ComponentEvent_ErrorMaximalInput max={100} />
             ) : (
               ""
             )
           }
           onChange={(val) => {
-            setMaxLokasi(val.target.value);
             setValue({
               ...value,
               lokasi: val.target.value,
@@ -124,48 +119,68 @@ export default function Event_Create({
           }}
         />
         <DateTimePicker
-          // onClick={() => {
-          //   console.log(moment().diff(moment("2024-02-01"), "days"));
-          // }}
           excludeDate={(date) => {
             return moment(date).diff(Date.now(), "days") < 0;
           }}
           withAsterisk
           label="Tanggal & Waktu "
           placeholder="Masukan tangal dan waktu acara"
-          onChange={(val: any) =>
+          error={
+            isTime ? (
+              <ComponentEvent_ErrorMaximalInput text="Invalid Time !" />
+            ) : (
+              ""
+            )
+          }
+          onChange={(val) => {
+            // console.log(
+            //   moment(val?.toISOString().toString()).diff(moment(), "minutes" )
+            // );
+            moment(val?.toISOString().toString()).diff(moment(), "minutes") < 0
+              ? setIsTime(true)
+              : setIsTime(false);
+
             setValue({
               ...value,
-              tanggal: val,
-            })
-          }
+              tanggal: val as any,
+            });
+          }}
         />
         <Textarea
           label="Deskripsi"
           placeholder="Deskripsikan acara yang akan di selenggarakan"
           withAsterisk
           autosize
-          maxLength={500}
+          maxLength={200}
           error={
-            maxDeskripsi.length >= 500 ? (
-              <ComponentEvent_ErrorMaximalInput max={500} />
+            value.deskripsi.length >= 200 ? (
+              <ComponentEvent_ErrorMaximalInput max={200} />
             ) : (
               ""
             )
           }
           onChange={(val) => {
-            setMaxDeskripsi(val.target.value);
             setValue({
               ...value,
               deskripsi: val.target.value,
             });
           }}
         />
-
         <Button
+          disabled={
+            value.title === "" ||
+            value.lokasi === "" ||
+            value.deskripsi === "" ||
+            value.eventMaster_TipeAcaraId === 0 ||
+            value.tanggal === "function Date() { [native code] }"
+          }
+          loaderPosition="center"
+          loading={isLoading ? true : false}
           radius={"xl"}
           mt={"xl"}
-          onClick={() => onSave(router, setTabsStatus, value, setHotMenu)}
+          onClick={() =>
+            onSave(router, setTabsStatus, value, setHotMenu, setLoading)
+          }
         >
           Simpan
         </Button>
@@ -178,19 +193,30 @@ async function onSave(
   router: AppRouterInstance,
   setTabsStatus: any,
   value: any,
-  setHotMenu: any
+  setHotMenu: any,
+  setLoading: any
 ) {
   if (_.values(value).includes(""))
     return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+
+  if (value.title.length >= 100) return null;
+  if (value.lokasi.length >= 100) return null;
   if (value.eventMaster_TipeAcaraId === 0)
     return ComponentGlobal_NotifikasiPeringatan("Pilih Tipe Acara");
   if (moment(value.tanggal).format() === "Invalid date")
     return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
+  if (
+    moment(value.tanggal.toISOString().toString()).diff(moment(), "minutes") < 0
+  )
+    return null;
+  if (value.deskripsi.length >= 200) return null;
+
   await Event_funCreate(value).then((res) => {
     if (res.status === 201) {
       ComponentGlobal_NotifikasiBerhasil(res.message);
       setTabsStatus("Review");
       setHotMenu(1);
+      setLoading(true);
       router.push(RouterEvent.status_page);
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);

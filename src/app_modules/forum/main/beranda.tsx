@@ -36,6 +36,7 @@ import ComponentForum_MainCardView from "../component/main_card_view";
 import { forum_getListAllPosting } from "../fun/get/get_list_all_posting";
 import { forum_funSearchListPosting } from "../fun/search/fun_search_list_posting";
 import _ from "lodash";
+import ComponentForum_BerandaCardView from "../component/beranda/beranda_card";
 
 export default function Forum_Beranda({
   listForum,
@@ -105,8 +106,9 @@ export default function Forum_Beranda({
             </Stack>
           </Stack>
         ) : (
-          <ComponentForum_MainCardView
+          <ComponentForum_BerandaCardView
             data={data}
+            setData={setData}
             setLoadingKomen={setLoadingKomen}
             setLoadingDetail={setLoadingDetail}
             userLoginId={userLoginId}

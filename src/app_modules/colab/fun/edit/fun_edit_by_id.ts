@@ -16,6 +16,7 @@ export default async function colab_funEditById(value: MODEL_COLLABORATION) {
       lokasi: value.lokasi,
       purpose: value.purpose,
       benefit: value.benefit,
+      // jumlah_partisipan: value.jumlah_partisipan,
       projectCollaborationMaster_IndustriId: value
         .ProjectCollaborationMaster_Industri.id as any,
     },
@@ -23,6 +24,6 @@ export default async function colab_funEditById(value: MODEL_COLLABORATION) {
 
   if (!updt) return { status: 400, message: "Gagal update" };
   revalidatePath(RouterColab.beranda);
-  revalidatePath(RouterColab.main_detail)
+  revalidatePath(RouterColab.main_detail);
   return { status: 200, message: "Berhasil update" };
 }

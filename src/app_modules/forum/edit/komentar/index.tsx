@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   ActionIcon,
@@ -15,7 +15,6 @@ import { IconPhotoUp } from "@tabler/icons-react";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
-
 
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
@@ -73,10 +72,12 @@ function ButtonAction() {
 
   return (
     <>
-      <Button radius={"xl"} onClick={() => {
-        router.back()
-
-      }}>
+      <Button
+        radius={"xl"}
+        onClick={() => {
+          router.back();
+        }}
+      >
         Update
       </Button>
     </>

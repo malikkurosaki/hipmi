@@ -24,6 +24,8 @@ import { MODEL_FORUM_POSTING } from "../../model/interface";
 import { forum_funEditPostingById } from "../../fun/edit/fun_edit_posting_by_id";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");
@@ -52,10 +54,10 @@ export default function Forum_EditPosting({
   return (
     <>
       <Stack>
-        <Paper withBorder shadow="lg">
+        <Paper withBorder shadow="lg" p={"xs"}>
           <ReactQuill
             theme="bubble"
-            placeholder="Apa yang sedang hangat dibicarakan ?"
+            placeholder="Apa yang sedang ingin dibahas ?"
             style={{ height: 150 }}
             value={value.diskusi}
             onChange={(val) => {
@@ -67,13 +69,19 @@ export default function Forum_EditPosting({
           />
         </Paper>
         <Group position="right">
+          <ComponentGlobal_InputCountDown
+            maxInput={500}
+            lengthInput={value.diskusi.length}
+          />
+        </Group>
+        <Group position="right">
           {/* <ActionIcon>
             <IconPhotoUp />
           </ActionIcon> */}
           <ButtonAction diskusi={value.diskusi as any} postingId={value.id} />
         </Group>
       </Stack>
-      {/* <div dangerouslySetInnerHTML={{ __html: value }} /> */}
+      {/* <div dangerouslySetInnerHTML={{ __html: value.diskusi }} /> */}
     </>
   );
 }
@@ -89,11 +97,14 @@ function ButtonAction({
   const [loading, setLoading] = useState(false);
 
   async function onUpdate() {
+    if (diskusi === "<p><br></p>" || diskusi === "")
+      return ComponentGlobal_NotifikasiPeringatan("Masukan postingan anda");
+
     await forum_funEditPostingById(postingId, diskusi).then((res) => {
       if (res.status === 200) {
         setLoading(true);
         ComponentGlobal_NotifikasiBerhasil(res.message);
-        setTimeout(() => router.back(), 1000)
+        setTimeout(() => router.back(), 1000);
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }
@@ -103,9 +114,17 @@ function ButtonAction({
   return (
     <>
       <Button
+        disabled={
+          diskusi === "<p><br></p>" || diskusi === "" || diskusi.length > 500
+            ? true
+            : false
+        }
         loaderPosition="center"
         loading={loading ? true : false}
         radius={"xl"}
+        style={{
+          transition: "0.5s",
+        }}
         onClick={() => {
           onUpdate();
         }}

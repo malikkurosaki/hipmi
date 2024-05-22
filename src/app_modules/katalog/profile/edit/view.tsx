@@ -17,6 +17,9 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/
 import { MODEL_PROFILE } from "../model/interface";
 import { Profile_funEditById } from "../fun/update/fun_edit_profile_by_id";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { validRegex } from "../../component/regular_expressions";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
 
 export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
   const router = useRouter();
@@ -29,7 +32,8 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
     const body = dataProfile;
 
     // console.log(body)
-    if (_.values(body).includes("")) return toast("Lengkapi data");
+    if (_.values(body).includes("")) return null;
+    if (!body.email.match(validRegex)) return null;
 
     await Profile_funEditById(body).then((res) => {
       if (res.status === 200) {
@@ -72,7 +76,6 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
           value={dataProfile?.User?.username}
           onChange={(val) => {
             // const dataUsername = _.clone(dataProfile)
-
             setDataProfile({
               ...(dataProfile as any),
               User: {
@@ -85,7 +88,15 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         <TextInput
           withAsterisk
           label="Nama"
-          placeholder="Nama"
+          placeholder="nama"
+          maxLength={50}
+          error={
+            dataProfile?.name === "" ? (
+              <ComponentGlobal_ErrorInput text="Masukan nama" />
+            ) : (
+              ""
+            )
+          }
           value={dataProfile?.name}
           onChange={(val) => {
             setDataProfile({
@@ -100,9 +111,14 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
           label="Email"
           placeholder="email"
           error={
-            dataProfile?.email?.length > 0 && !dataProfile?.email.includes("@")
-              ? "Invalid email"
-              : ""
+            dataProfile?.email === "" ? (
+              <ComponentGlobal_ErrorInput text="Masukan email " />
+            ) : dataProfile?.email?.length > 0 &&
+              !dataProfile?.email.match(validRegex) ? (
+              <ComponentGlobal_ErrorInput text="Invalid email" />
+            ) : (
+              ""
+            )
           }
           value={dataProfile?.email}
           onChange={(val) => {
@@ -118,6 +134,14 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
           label="Alamat"
           placeholder="alamat"
           value={dataProfile.alamat}
+          maxLength={100}
+          error={
+            dataProfile?.alamat === "" ? (
+              <ComponentGlobal_ErrorInput text="Masukan alamat " />
+            ) : (
+              ""
+            )
+          }
           onChange={(val) => {
             setDataProfile({
               ...dataProfile,

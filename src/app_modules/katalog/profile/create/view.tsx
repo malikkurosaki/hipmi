@@ -33,6 +33,9 @@ import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { useForm } from "@mantine/form";
+import { useTimeout } from "@mantine/hooks";
+import { validRegex } from "../../component/regular_expressions";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
 
 export default function CreateProfile({ userId }: { userId: any }) {
   const [filePP, setFilePP] = useState<File | null>(null);
@@ -126,17 +129,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
           <Stack>
             <ComponentKatalog_NotedBox informasi="Upload foto latar belakang profile anda." />
             <AspectRatio ratio={16 / 9}>
-              <Paper
-                radius={"md"}
-                withBorder
-                shadow="lg"
-                bg={"gray.2"}
-                // sx={{
-                //   borderStyle: "solid",
-                //   borderColor: "black",
-                //   borderWidth: "1px",
-                // }}
-              >
+              <Paper radius={"md"} withBorder shadow="lg" bg={"gray.2"}>
                 {imgBG ? (
                   <Image alt="Foto" src={imgBG ? imgBG : "/aset/no-img.png"} />
                 ) : (
@@ -195,6 +188,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
           <TextInput
             withAsterisk
             label="Nama"
+            maxLength={50}
             placeholder="Nama lengkap"
             onChange={(val) => {
               setValue({
@@ -207,11 +201,14 @@ export default function CreateProfile({ userId }: { userId: any }) {
             withAsterisk
             icon={<IconAt size={15} />}
             label="Email"
+            maxLength={100}
             placeholder="Contoh: User@gmail.com"
             error={
-              value.email.length > 0 && !value.email.includes("@")
-                ? "Invalid email"
-                : ""
+              value.email.length > 0 && !value.email.match(validRegex) ? (
+                <ComponentGlobal_ErrorInput text="Invalid Email" />
+              ) : (
+                ""
+              )
             }
             onChange={(val) => {
               setValue({
@@ -223,6 +220,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
           <TextInput
             withAsterisk
             label="Alamat"
+            maxLength={100}
             placeholder="Alamat lengkap"
             onChange={(val) => {
               setValue({
@@ -231,6 +229,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
               });
             }}
           />
+
           <Select
             withAsterisk
             label="Jenis Kelamin"
@@ -246,6 +245,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
               });
             }}
           />
+
           <ButtonAction
             value={value as any}
             userId={userId}
@@ -282,8 +282,7 @@ function ButtonAction({
     };
     if (_.values(body).includes(""))
       return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
-    if (!body.email.includes("@"))
-      return ComponentGlobal_NotifikasiPeringatan("Invalid Email");
+    if (!body.email.match(validRegex)) return null;
 
     const gambarPP = new FormData();
     gambarPP.append("filePP", filePP as any);
@@ -302,7 +301,7 @@ function ButtonAction({
       if (res.status === 201) {
         setLoading(true);
         ComponentGlobal_NotifikasiBerhasil("Berhasil Membuat Profile", 3000);
-        router.push(RouterHome.main_home);
+        setTimeout(() => router.push(RouterHome.main_home), 2000);
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }

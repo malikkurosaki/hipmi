@@ -1,7 +1,15 @@
 "use client";
 
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
-import { Button, Select, Stack, TextInput, Textarea } from "@mantine/core";
+import {
+  Button,
+  NumberInput,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+  Textarea,
+} from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -25,6 +33,7 @@ export default function Colab_Create({
     purpose: "",
     benefit: "",
     projectCollaborationMaster_IndustriId: 0,
+    // jumlah_partisipan: 0,
   });
   return (
     <>
@@ -69,6 +78,24 @@ export default function Colab_Create({
           }}
         />
 
+        {/* <TextInput
+          description={
+            <Text fz={10}>
+              minimal partisipan yang akan di pilih untuk mendiskusikan proyek
+            </Text>
+          }
+          type="number"
+          withAsterisk
+          label="Jumlah Partisipan"
+          placeholder={"2"}
+          onChange={(val) => {
+            setValue({
+              ...value,
+              jumlah_partisipan: val.currentTarget.value as any,
+            });
+          }}
+        /> */}
+
         <Textarea
           label="Tujuan Proyek"
           placeholder="Masukan tujuan proyek"
@@ -104,6 +131,7 @@ function ButtonAction({ value }: { value: any }) {
   const [loading, setLoading] = useState(false);
 
   async function onSave() {
+    // console.log(value.jumlah_partisipan);
     if (value.title === "")
       return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
     if (value.lokasi === "")
@@ -112,6 +140,8 @@ function ButtonAction({ value }: { value: any }) {
       return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
     if (value.projectCollaborationMaster_IndustriId === 0)
       return ComponentGlobal_NotifikasiPeringatan("Pilih Industri");
+    // if (value.jumlah_partisipan < 2)
+    //   return ComponentGlobal_NotifikasiPeringatan("Minimal Ada 2 Partisipan");
 
     await colab_funCreateProyek(value).then((res) => {
       if (res.status === 201) {

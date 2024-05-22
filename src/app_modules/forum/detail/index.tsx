@@ -10,6 +10,7 @@ import {
   Divider,
   Group,
   Paper,
+  Spoiler,
   Stack,
   Text,
 } from "@mantine/core";
@@ -34,6 +35,7 @@ const ReactQuill = dynamic(
 );
 import "react-quill/dist/quill.bubble.css";
 import { forum_getKomentarById } from "../fun/get/get_komentar_by_id";
+import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
 
 export default function Forum_Detail({
   dataPosting,
@@ -162,14 +164,20 @@ function CreateKomentar({
   const router = useRouter();
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(false);
 
   async function onComment() {
+    if (value.length > 500) {
+      return null;
+    }
+
     await forum_funCreateKomentar(postingId, value).then(async (res) => {
       if (res.status === 201) {
         await forum_getKomentarById(postingId).then((val) => {
           setKomentar(val);
           // setLoading(true);
           setValue("");
+          setIsEmpty(true);
           ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
         });
         // router.replace(RouterForum.main_detail + postingId, { scroll: false });
@@ -193,7 +201,21 @@ function CreateKomentar({
           />
         </Paper>
         <Group position="right">
+          <ComponentGlobal_InputCountDown
+            maxInput={500}
+            lengthInput={value.length}
+          />
+        </Group>
+        <Group position="right">
           <Button
+            style={{
+              transition: "0.5s",
+            }}
+            disabled={
+              value === "" || value === "<p><br></p>" || value.length > 500
+                ? true
+                : false
+            }
             loaderPosition="center"
             loading={loading ? true : false}
             radius={"xl"}
@@ -248,7 +270,13 @@ function KomentarView({
                 <Stack spacing={"xs"}>
                   <Text fz={"sm"} lineClamp={4}>
                     {e.komentar ? (
-                      <div dangerouslySetInnerHTML={{ __html: e.komentar }} />
+                      <Spoiler
+                        hideLabel="sembunyikan"
+                        maxHeight={100}
+                        showLabel="tampilkan"
+                      >
+                        <div dangerouslySetInnerHTML={{ __html: e.komentar }} />
+                      </Spoiler>
                     ) : (
                       ""
                     )}

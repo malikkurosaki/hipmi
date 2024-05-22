@@ -37,11 +37,6 @@ export async function forum_getListAllPosting() {
         },
       },
       ForumMaster_StatusPosting: true,
-      // _count: {
-      //   select: {
-      //     Forum_Komentar: true,
-      //   },
-      // },
     },
   });
 

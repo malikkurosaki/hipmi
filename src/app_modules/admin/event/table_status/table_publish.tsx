@@ -130,13 +130,13 @@ function TableStatus({ listPublish }: { listPublish: MODEL_EVENT[] }) {
                         radius={"xl"}
                         src={
                           RouterProfile.api_foto_profile +
-                          e.User.Profile.imagesId
+                          e?.User?.Profile?.imagesId
                         }
                       />
                     </Grid.Col>
                     <Grid.Col span={"auto"}>
                       <Group align="center" h={"100%"}>
-                        <Text>{e.User.Profile.name}</Text>
+                        <Text>{e?.User?.Profile?.name}</Text>
                       </Group>
                     </Grid.Col>
                   </Grid>

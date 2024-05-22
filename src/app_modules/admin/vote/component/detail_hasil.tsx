@@ -1,8 +1,22 @@
-"use client"
+"use client";
 
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import { MODEL_VOTE_KONTRIBUTOR, MODEL_VOTING_DAFTAR_NAMA_VOTE } from "@/app_modules/vote/model/interface";
-import { Paper, Stack, Center, Title, Grid, Card, Avatar, Badge, Divider, Text } from "@mantine/core";
+import {
+  MODEL_VOTE_KONTRIBUTOR,
+  MODEL_VOTING_DAFTAR_NAMA_VOTE,
+} from "@/app_modules/vote/model/interface";
+import {
+  Paper,
+  Stack,
+  Center,
+  Title,
+  Grid,
+  Card,
+  Avatar,
+  Badge,
+  Divider,
+  Text,
+} from "@mantine/core";
 import _ from "lodash";
 import router from "next/router";
 
@@ -11,7 +25,7 @@ export default function ComponentAdminVote_DetailHasil({
   kontributor,
 }: {
   hasil?: MODEL_VOTING_DAFTAR_NAMA_VOTE[];
-  kontributor?: MODEL_VOTE_KONTRIBUTOR[]
+  kontributor?: MODEL_VOTE_KONTRIBUTOR[];
 }) {
   return (
     <>
@@ -58,7 +72,7 @@ export default function ComponentAdminVote_DetailHasil({
                             span={2}
                             onClick={() =>
                               router.push(
-                                RouterProfile.katalog + e.Author.Profile.id
+                                RouterProfile.katalog + e?.Author?.Profile?.id
                               )
                             }
                           >
@@ -73,7 +87,7 @@ export default function ComponentAdminVote_DetailHasil({
                               src={
                                 e
                                   ? RouterProfile.api_foto_profile +
-                                    e.Author.Profile.imagesId
+                                    e?.Author?.Profile?.imagesId
                                   : "/aset/global/avatar.png"
                               }
                             />
@@ -81,7 +95,7 @@ export default function ComponentAdminVote_DetailHasil({
                           <Grid.Col span={5}>
                             <Stack justify="center" h={"100%"}>
                               <Text truncate fz={"sm"} fw={"bold"}>
-                                {e ? e.Author.Profile.name : "Nama author"}
+                                {e ? e?.Author?.Profile?.name : "Nama author"}
                               </Text>
                             </Stack>
                           </Grid.Col>

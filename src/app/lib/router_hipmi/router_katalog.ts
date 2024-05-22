@@ -2,7 +2,7 @@ export const RouterProfile = {
   katalog: "/dev/katalog/",
 
   // create
-  create: "/dev/profile/create/",
+  create: "/dev/profile/create",
 
   // edit
   edit: "/dev/profile/edit/",

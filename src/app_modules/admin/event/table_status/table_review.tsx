@@ -66,7 +66,7 @@ function TableStatus({ listReview }: { listReview: MODEL_EVENT[] }) {
 
   const TableRows = data.map((e, i) => (
     <tr key={i}>
-      <td>{e.Author.Profile.name}</td>
+      <td>{e?.Author?.Profile?.name}</td>
       <td>{e.title}</td>
       <td>{e.lokasi}</td>
       <td>{e.EventMaster_TipeAcara.name}</td>
