@@ -1,19 +1,9 @@
-"use client";
+import Coba_TestLoading from "@/app_modules/zCoba";
 
-import { NotifPeringatan } from "@/app_modules/donasi/component/notifikasi/notif_peringatan";
-import { Box, Button, Group } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-
-export default function Coba() {
+export default async function Page() {
   return (
     <>
-      <Box p={"lg"}>
-        <Group position="center">
-          <Button variant="outline" onClick={() => NotifPeringatan("Coba")}>
-            Show notification
-          </Button>
-        </Group>
-      </Box>
+      <Coba_TestLoading />
     </>
   );
 }

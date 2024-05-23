@@ -23,7 +23,18 @@ export async function AdminVote_getListTableByStatusId(statusId: string) {
         akhirVote: true,
         catatan: true,
         authorId: true,
-        Author: true,
+        Author: {
+          select: {
+            id: true,
+            username: true,
+            Profile: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
         voting_StatusId: true,
         Voting_DaftarNamaVote: true,
       },
@@ -52,7 +63,18 @@ export async function AdminVote_getListTableByStatusId(statusId: string) {
         akhirVote: true,
         catatan: true,
         authorId: true,
-        Author: true,
+        Author: {
+          select: {
+            id: true,
+            username: true,
+            Profile: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
         voting_StatusId: true,
         Voting_DaftarNamaVote: true,
       },
@@ -63,6 +85,9 @@ export async function AdminVote_getListTableByStatusId(statusId: string) {
 
   if (statusId === "2") {
     const getData = await prisma.voting.findMany({
+      orderBy: {
+        updatedAt: "desc",
+      },
       where: {
         voting_StatusId: "2",
         isActive: true,
@@ -78,7 +103,18 @@ export async function AdminVote_getListTableByStatusId(statusId: string) {
         akhirVote: true,
         catatan: true,
         authorId: true,
-        Author: true,
+        Author: {
+          select: {
+            id: true,
+            username: true,
+            Profile: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
         voting_StatusId: true,
         Voting_DaftarNamaVote: true,
       },
@@ -104,7 +140,18 @@ export async function AdminVote_getListTableByStatusId(statusId: string) {
         akhirVote: true,
         catatan: true,
         authorId: true,
-        Author: true,
+        Author: {
+          select: {
+            id: true,
+            username: true,
+            Profile: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
         voting_StatusId: true,
         Voting_DaftarNamaVote: true,
       },
@@ -112,6 +159,4 @@ export async function AdminVote_getListTableByStatusId(statusId: string) {
 
     return getData;
   }
-
-  
 }

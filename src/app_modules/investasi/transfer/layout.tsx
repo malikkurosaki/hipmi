@@ -18,6 +18,7 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { gs_investasiFooter } from "../g_state";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutTransferInvestasi({
   children,
@@ -29,7 +30,7 @@ export default function LayoutTransferInvestasi({
 
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <Header height={50}>
             <Group position="apart" h={50} px={"md"}>
@@ -51,7 +52,7 @@ export default function LayoutTransferInvestasi({
         // }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

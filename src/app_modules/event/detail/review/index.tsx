@@ -11,6 +11,7 @@ import { MODEL_EVENT } from "../../model/interface";
 import { Event_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import ComponentEvent_CatatanReject from "../../component/catatan_reject";
+import { useState } from "react";
 
 export default function Event_DetailReview({
   dataEvent,
@@ -19,15 +20,20 @@ export default function Event_DetailReview({
 }) {
   const router = useRouter();
   const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
+  const [isLoading, setLoading] = useState(false);
 
   return (
     <>
       <Stack spacing={"xl"}>
         <ComponentEvent_DetailData data={dataEvent} />
         <Button
+          loaderPosition="center"
+          loading={isLoading ? true : false}
           radius={"xl"}
-          color={"red"}
-          onClick={() => onClick(router, setTabsStatus, dataEvent.id)}
+          color={"orange"}
+          onClick={() =>
+            onClick(router, setTabsStatus, dataEvent.id, setLoading)
+          }
         >
           Batalkan Review
         </Button>
@@ -39,12 +45,14 @@ export default function Event_DetailReview({
 async function onClick(
   router: AppRouterInstance,
   setTabsStatus: any,
-  eventId: string
+  eventId: string,
+  setLoading: any
 ) {
   await Event_funEditStatusById("3", eventId).then((res) => {
     if (res.status === 200) {
       ComponentGlobal_NotifikasiBerhasil(res.message, 1500);
       setTabsStatus("Draft");
+      setLoading(true);
       router.back();
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);

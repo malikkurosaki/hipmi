@@ -1,5 +1,6 @@
 "use client";
 
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 import {
   AppShell,
   Box,
@@ -16,14 +17,12 @@ export default function LayoutPortofolioInvestasi({
   children: React.ReactNode;
 }) {
   const [active, setActive] = useState(0);
-  
 
   return (
     <>
-      <AppShell
-      >
+      <AppComponentGlobal_LayoutTamplate>
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
 import { AppShell } from "@mantine/core";
 import { IconEdit } from "@tabler/icons-react";
@@ -14,7 +15,7 @@ export default function LayoutDetailDraftInvestasi({
 }) {
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <ComponentGlobal_HeaderTamplate
             title="Detail Draft"
@@ -24,7 +25,7 @@ export default function LayoutDetailDraftInvestasi({
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

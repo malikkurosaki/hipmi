@@ -18,9 +18,11 @@ export default function Portofolio_EditMedsosBisnis({
 }) {
   const router = useRouter();
   const [medsos, setMedsos] = useState(dataMedsos);
+  const [loading, setLoading] = useState(false);
+
   return (
     <>
-      <pre>{JSON.stringify(dataMedsos, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(dataMedsos, null, 2)}</pre> */}
       <Paper shadow="lg" p={"sm"}>
         <Stack px={"sm"}>
           <TextInput
@@ -82,7 +84,9 @@ export default function Portofolio_EditMedsosBisnis({
           <Button
             mt={"xl"}
             radius={"xl"}
-            onClick={() => onUpdate(router, medsos)}
+            loading={loading ? true : false}
+            loaderPosition="center"
+            onClick={() => onUpdate(router, medsos, setLoading)}
           >
             Update
           </Button>
@@ -94,10 +98,12 @@ export default function Portofolio_EditMedsosBisnis({
 
 async function onUpdate(
   router: AppRouterInstance,
-  medsos: MODEL_PORTOFOLIO_MEDSOS
+  medsos: MODEL_PORTOFOLIO_MEDSOS,
+  setLoading: any
 ) {
   await Portofolio_funEditMedsosById(medsos).then((res) => {
     if (res.status === 200) {
+      setLoading(true);
       ComponentGlobal_NotifikasiBerhasil(res.message);
       router.back();
     } else {

@@ -50,13 +50,13 @@ export default function AdminEvent_Main({
       path: RouterAdminEvent.table_review,
       color: "orange",
     },
-    {
-      id: 3,
-      name: "Draft",
-      jumlah: countDraft,
-      path: "",
-      color: "yellow",
-    },
+    // {
+    //   id: 3,
+    //   name: "Draft",
+    //   jumlah: countDraft,
+    //   path: "",
+    //   color: "yellow",
+    // },
     {
       id: 4,
       name: "Reject",

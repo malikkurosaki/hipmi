@@ -75,15 +75,15 @@ function DetailRiwayat({ listRiwayat }: { listRiwayat: MODEL_EVENT[] }) {
           Peserta
         </Button>
       </td>
-      <td>{e.title}</td>
-      <td>{e.lokasi}</td>
-      <td>{e.EventMaster_TipeAcara.name}</td>
-      <td>{e.tanggal.toLocaleString("id-ID", { dateStyle: "full" })}</td>
+      <td>{e?.Author?.Profile?.name}</td>
+      <td>{e?.title}</td>
+      <td>{e?.lokasi}</td>
+      <td>{e?.EventMaster_TipeAcara?.name}</td>
+      <td>{e?.tanggal.toLocaleString("id-ID", { dateStyle: "full" })}</td>
       <td>
         {e.tanggal.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
-          hour12: false,
         })}
       </td>
       <td>
@@ -121,23 +121,24 @@ function DetailRiwayat({ listRiwayat }: { listRiwayat: MODEL_EVENT[] }) {
             <Stack>
               {peserta?.map((e) => (
                 <Stack key={e.id} spacing={"xs"}>
-                  <Grid >
-                  <Grid.Col span={"content"}>
-                    <Avatar
-                      sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-                      radius={"xl"}
-                      src={
-                        RouterProfile.api_foto_profile + e.User.Profile.imagesId
-                      }
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={"auto"}>
-                    <Group align="center" h={"100%"}>
-                      <Text>{e.User.Profile.name}</Text>
-                    </Group>
-                  </Grid.Col>
-                </Grid>
-                <Divider/>
+                  <Grid>
+                    <Grid.Col span={"content"}>
+                      <Avatar
+                        sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
+                        radius={"xl"}
+                        src={
+                          RouterProfile.api_foto_profile +
+                          e?.User?.Profile?.imagesId
+                        }
+                      />
+                    </Grid.Col>
+                    <Grid.Col span={"auto"}>
+                      <Group align="center" h={"100%"}>
+                        <Text>{e?.User?.Profile?.name}</Text>
+                      </Group>
+                    </Grid.Col>
+                  </Grid>
+                  <Divider />
                 </Stack>
               ))}
             </Stack>
@@ -163,6 +164,9 @@ function DetailRiwayat({ listRiwayat }: { listRiwayat: MODEL_EVENT[] }) {
             <tr>
               <th>
                 <Center>Aksi</Center>
+              </th>
+              <th>
+                <Center>Author</Center>
               </th>
               <th>
                 <Center>Judul</Center>

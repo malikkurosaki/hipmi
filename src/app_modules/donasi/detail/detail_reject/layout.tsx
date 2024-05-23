@@ -5,6 +5,7 @@ import React from "react";
 import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
 import { IconEdit, IconMessageShare } from "@tabler/icons-react";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default  function LayoutDetailRejectDonasi({
   children,
@@ -14,9 +15,9 @@ export default  function LayoutDetailRejectDonasi({
   
   return (
     <>
-      <AppShell header={<ComponentDonasi_HeaderTamplate title="Detail Reject"  />}>
+      <AppComponentGlobal_LayoutTamplate header={<ComponentDonasi_HeaderTamplate title="Detail Reject"  />}>
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

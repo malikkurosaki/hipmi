@@ -6,6 +6,7 @@ import {
   MODEL_VOTING_DAFTAR_NAMA_VOTE,
 } from "../../model/interface";
 import { revalidatePath } from "next/cache";
+import _ from "lodash";
 
 export async function Vote_funEditById(
   data: MODEL_VOTING,
@@ -22,22 +23,34 @@ export async function Vote_funEditById(
       awalVote: data.awalVote,
       akhirVote: data.akhirVote,
     },
+    select: {
+      Voting_DaftarNamaVote: {
+        where: {
+          isActive: true,
+        },
+      },
+    },
   });
-
   if (!updtVoting) return { status: 400, message: "Gagal Update" };
 
-  for (let e of listVoting) {
-    const updtListVoting = await prisma.voting_DaftarNamaVote.updateMany({
-      where: {
-        id: e.id,
-      },
+  const delPilihan = await prisma.voting_DaftarNamaVote.deleteMany({
+    where: {
+      votingId: data.id,
+    },
+  });
+  if (!delPilihan) return { status: 400, message: "Gagal Update Pilihan" };
+
+  for (let v of listVoting) {
+    const val = v.value;
+
+    const namaPilihan = await prisma.voting_DaftarNamaVote.create({
       data: {
-        value: e.value,
+        value: val,
+        votingId: data.id,
       },
     });
 
-    if (!updtListVoting)
-      return { status: 400, message: "Gagal Update Daftar Vote" };
+    if (!namaPilihan) return { status: 400, message: "Gagal Membuat List" };
   }
 
   revalidatePath("/dev/vote/detail/draft");

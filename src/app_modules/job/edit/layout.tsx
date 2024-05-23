@@ -3,6 +3,7 @@
 import { AppShell } from "@mantine/core";
 import React from "react";
 import ComponentJob_HeaderTamplate from "../component/header_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutJob_Edit({
   children,
@@ -11,9 +12,11 @@ export default function LayoutJob_Edit({
 }) {
   return (
     <>
-      <AppShell header={<ComponentJob_HeaderTamplate title="Edit Job" />}>
+      <AppComponentGlobal_LayoutTamplate
+        header={<ComponentJob_HeaderTamplate title="Edit Job" />}
+      >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

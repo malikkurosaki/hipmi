@@ -29,9 +29,11 @@ import { data } from "autoprefixer";
 import { Vote_funCreate } from "../fun/create/create_vote";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { MODEL_VOTING } from "../model/interface";
+import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
 
 export default function Vote_Create() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [hotMenu, setHotMenu] = useAtom(gs_vote_hotMenu);
   const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
 
@@ -47,11 +49,11 @@ export default function Vote_Create() {
 
   const [listVote, setListVote] = useState([
     {
-      name: "Nama Voting",
+      name: "Nama Pilihan",
       value: "",
     },
     {
-      name: "Nama Voting",
+      name: "Nama Pilihan",
       value: "",
     },
   ]);
@@ -64,6 +66,7 @@ export default function Vote_Create() {
             label="Judul"
             withAsterisk
             placeholder="Masukan judul"
+            maxLength={100}
             onChange={(val) => {
               setData({
                 ...data,
@@ -71,20 +74,27 @@ export default function Vote_Create() {
               });
             }}
           />
-          <Textarea
-            label="Deskripsi"
-            autosize
-            minRows={2}
-            maxRows={5}
-            withAsterisk
-            placeholder="Masukan deskripsi"
-            onChange={(val) => {
-              setData({
-                ...data,
-                deskripsi: val.target.value,
-              });
-            }}
-          />
+          <Stack spacing={5}>
+            <Textarea
+              label="Deskripsi"
+              autosize
+              minRows={2}
+              maxRows={5}
+              withAsterisk
+              maxLength={300}
+              placeholder="Masukan deskripsi"
+              onChange={(val) => {
+                setData({
+                  ...data,
+                  deskripsi: val.target.value,
+                });
+              }}
+            />
+            <ComponentGlobal_InputCountDown
+              maxInput={300}
+              lengthInput={data.deskripsi.length}
+            />
+          </Stack>
 
           <DatePickerInput
             label="Jangka Waktu"
@@ -108,7 +118,7 @@ export default function Vote_Create() {
         <Stack spacing={0}>
           <Center>
             <Text fw={"bold"} fz={"sm"}>
-              Daftar Voting
+              Daftar Pilihan
             </Text>
           </Center>
 
@@ -119,6 +129,7 @@ export default function Vote_Create() {
                   <TextInput
                     label={e.name}
                     withAsterisk
+                    maxLength={100}
                     placeholder="Nama pilihan voting"
                     onChange={(v) => {
                       const val = _.clone(listVote);
@@ -131,60 +142,55 @@ export default function Vote_Create() {
             </Stack>
 
             <Group position="center">
-              {listVote.length >= 4 ? (
-                ""
-              ) : (
-                <Button
-                  compact
-                  w={100}
-                  radius={"xl"}
-                  leftIcon={<IconPlus size={15} />}
-                  variant="outline"
-                  onClick={() => {
-                    // if (listVote.length >= 4)
-                    //   return ComponentGlobal_NotifikasiPeringatan(
-                    //     "Daftar Voting Maksimal 4"
-                    //   );
-                    setListVote([
-                      ...listVote,
-                      { name: "Nama Voting", value: "" },
-                    ]);
-                  }}
-                >
-                  <Text fz={8}>Tambah List</Text>
-                </Button>
-              )}
+              <Button
+                disabled={listVote.length >= 4 ? true : false}
+                compact
+                w={100}
+                radius={"xl"}
+                leftIcon={<IconPlus size={15} />}
+                variant="outline"
+                onClick={() => {
+                  setListVote([
+                    ...listVote,
+                    { name: "Nama Voting", value: "" },
+                  ]);
+                }}
+              >
+                <Text fz={8}>Tambah List</Text>
+              </Button>
 
-              {listVote.length <= 2 ? (
-                ""
-              ) : (
-                <Button
-                  compact
-                  w={100}
-                  radius={"xl"}
-                  leftIcon={<IconMinus size={15} />}
-                  variant="outline"
-                  onClick={() => {
-                    if (listVote.length <= 2)
-                      return ComponentGlobal_NotifikasiPeringatan(
-                        "Daftar Voting Minimal 2"
-                      );
-                    setListVote([...listVote.slice(0, -1)]);
-                  }}
-                >
-                  <Text fz={8}>Kurangi List</Text>
-                </Button>
-              )}
+              <Button
+                disabled={listVote.length <= 2 ? true : false}
+                compact
+                w={100}
+                radius={"xl"}
+                leftIcon={<IconMinus size={15} />}
+                variant="outline"
+                onClick={() => {
+                  setListVote([...listVote.slice(0, -1)]);
+                }}
+              >
+                <Text fz={8}>Kurangi List</Text>
+              </Button>
             </Group>
           </Stack>
         </Stack>
 
         <Button
           // disabled
+          loaderPosition="center"
+          loading={isLoading ? true : false}
           mt={"lg"}
           radius={"xl"}
           onClick={() => {
-            onSave(router, setHotMenu, setTabsStatus, data as any, listVote);
+            onSave(
+              router,
+              setHotMenu,
+              setTabsStatus,
+              data as any,
+              listVote,
+              setIsLoading
+            );
           }}
         >
           Simpan
@@ -199,7 +205,8 @@ async function onSave(
   setHotMenu: any,
   setTabsStatus: any,
   data: MODEL_VOTING,
-  listVote: any[]
+  listVote: any[],
+  setIsLoading: any
 ) {
   if (_.values(data).includes(""))
     return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
@@ -213,7 +220,9 @@ async function onSave(
     return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
 
   if (_.values(listVote.map((e) => e.value)).includes(""))
-    return ComponentGlobal_NotifikasiPeringatan("Isi Semua Nama Voting");
+    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Pilihan Voting");
+
+  // console.log("berhasil");
 
   await Vote_funCreate(data, listVote).then((res) => {
     if (res.status === 201) {
@@ -221,6 +230,7 @@ async function onSave(
       setTabsStatus("Review");
       router.replace(RouterVote.status);
       ComponentGlobal_NotifikasiBerhasil(res.message);
+      setIsLoading(true);
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);
     }

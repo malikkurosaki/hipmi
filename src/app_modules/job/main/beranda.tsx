@@ -11,34 +11,50 @@ import {
   Center,
   Grid,
   Image,
+  Loader,
+  Overlay,
   Stack,
   Text,
   Title,
   rem,
 } from "@mantine/core";
-import { IconCirclePlus } from "@tabler/icons-react";
+import { IconCirclePlus, IconPencilPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { MODEL_JOB } from "../model/interface";
 import ComponentJob_DetailData from "../component/detail/detail_data";
 import ComponentJob_CardViewStatus from "../component/card_view_status";
 import _ from "lodash";
 import ComponentJob_IsEmptyData from "../component/is_empty_data";
+import { useState } from "react";
+import { useWindowScroll } from "@mantine/hooks";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
 
 export default function Job_Beranda({ listJob }: { listJob: MODEL_JOB[] }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+  const [scroll, scrollTo] = useWindowScroll();
+  const [visible, setVisible] = useState(false);
+  const [jobId, setJobId] = useState("");
+
   return (
     <>
-      <Affix position={{ bottom: rem(100), right: rem(30) }}>
+      <Affix position={{ bottom: rem(150), right: rem(30) }}>
         <ActionIcon
+          loading={isLoading ? true : false}
+          opacity={scroll.y > 0 ? 0.5 : ""}
+          style={{
+            transition: "0.5s",
+          }}
           size={"xl"}
           radius={"xl"}
           variant="transparent"
           bg={"blue"}
           onClick={() => {
+            setLoading(true);
             router.push(RouterJob.create);
           }}
         >
-          <IconCirclePlus color="white" size={40} />
+          <IconPencilPlus color="white" />
         </ActionIcon>
       </Affix>
 
@@ -48,15 +64,20 @@ export default function Job_Beranda({ listJob }: { listJob: MODEL_JOB[] }) {
         <Stack>
           {listJob.map((e, i) => (
             <Card key={i} shadow="lg" withBorder p={30} radius={"md"}>
-              <Card.Section>
+              <Card.Section style={{ zIndex: 99 }}>
                 <ComponentGlobal_AuthorNameOnHeader
                   authorName={e.Author.Profile.name}
                   imagesId={e.Author.Profile.imagesId}
                   profileId={e.Author.Profile.id}
+                  isPembatas={true}
                 />
               </Card.Section>
               <Card.Section
-                onClick={() => router.push(RouterJob.main_detail + e.id)}
+                onClick={() => {
+                  visible ? "" : setJobId(e.id),
+                    setVisible(true),
+                    router.push(RouterJob.main_detail + e.id);
+                }}
                 mt={"lg"}
               >
                 <Grid>
@@ -69,6 +90,11 @@ export default function Job_Beranda({ listJob }: { listJob: MODEL_JOB[] }) {
                   </Grid.Col>
                 </Grid>
               </Card.Section>
+              {visible && e.id === jobId ? (
+                <ComponentGlobal_CardLoadingOverlay />
+              ) : (
+                ""
+              )}
             </Card>
           ))}
         </Stack>

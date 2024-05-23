@@ -1,10 +1,10 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { User_getUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 
 export async function Job_getListStatusByStatusId(statusId: string) {
-  const authorId = await User_getUserId();
+  const authorId = await user_getOneUserId();
   if (statusId === "1") {
     const data = await prisma.job.findMany({
       orderBy: {

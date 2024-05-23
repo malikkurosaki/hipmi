@@ -20,9 +20,9 @@ import Vote_MainDetail from "./detail/main";
 import LayoutVote_MainDetail from "./detail/main/layout";
 import Vote_DetailKontribusi from "./detail/kontribusi";
 import LayoutVote_DetailKontribusi from "./detail/kontribusi/layout";
-import Vote_DetailSemuaRiwayat from "./detail/semua_riwayat/page";
+import Vote_DetailSemuaRiwayat from "./detail/semua_riwayat";
 import LayoutVote_DetailSemuaRiwayat from "./detail/semua_riwayat/layout";
-import Vote_DetailRiwayatSaya from "./detail/riwayat_saya/page";
+import Vote_DetailRiwayatSaya from "./detail/riwayat_saya";
 import LayoutVote_DetailRiwayatSaya from "./detail/riwayat_saya/layout";
 
 export {

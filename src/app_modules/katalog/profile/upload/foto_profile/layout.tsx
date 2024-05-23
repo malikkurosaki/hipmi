@@ -14,6 +14,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentKatalog_HeaderTamplate from "@/app_modules/katalog/component/header_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function UploadFotoProfileLayout({
   children,
@@ -27,11 +28,11 @@ export default function UploadFotoProfileLayout({
 
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={<ComponentKatalog_HeaderTamplate title="Update Foto" />}
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

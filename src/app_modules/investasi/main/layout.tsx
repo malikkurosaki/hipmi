@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { gs_investasiFooter } from "../g_state";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutMainInvestasi({
   children,
@@ -64,7 +65,7 @@ export default function LayoutMainInvestasi({
 
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <ComponentGlobal_HeaderTamplate
             route="/dev/crowd/main"
@@ -74,8 +75,8 @@ export default function LayoutMainInvestasi({
           />
         }
         footer={
-          <Footer height={70} bg={"dark.4"}>
-            <Grid align="center" h={60} pt={"xs"} grow>
+          <Footer height={"10vh"} bg={"dark.4"}>
+            <Grid align="center" h={"10vh"} pt={"xs"} grow>
               {/* Tampilan Bursa */}
               {listFooter.map((e, k) => (
                 <Grid.Col
@@ -83,13 +84,20 @@ export default function LayoutMainInvestasi({
                   span={3}
                   onClick={() => {
                     router.push(e.route);
-                    setActive(k)
+                    setActive(k);
                   }}
                 >
-                  <Center>
+                  <Center h={"100%"}>
                     <Flex direction={"column"} align={"center"} w={"100%"}>
-                      <ActionIcon variant="transparent" c={active === k ? "green" : "white"}>{e.icon}</ActionIcon>
-                      <Text c={active === k ? "green" : "white"}>{e.name}</Text>
+                      <ActionIcon
+                        variant="transparent"
+                        c={active === k ? "green" : "white"}
+                      >
+                        {e.icon}
+                      </ActionIcon>
+                      <Text c={active === k ? "green" : "white"} fz={"xs"}>
+                        {e.name}
+                      </Text>
                     </Flex>
                   </Center>
                 </Grid.Col>
@@ -99,7 +107,7 @@ export default function LayoutMainInvestasi({
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

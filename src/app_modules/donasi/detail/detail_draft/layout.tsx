@@ -24,6 +24,7 @@ import router from "next/router";
 import { title } from "process";
 import { useRouter } from "next/navigation";
 import { data } from "autoprefixer";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutDetailDraftDonasi({
   children,
@@ -36,7 +37,7 @@ export default function LayoutDetailDraftDonasi({
   const router = useRouter();
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <Header height={50} sx={{ borderStyle: "none" }}>
             <Group h={50} position="apart" px={"md"}>
@@ -57,7 +58,7 @@ export default function LayoutDetailDraftDonasi({
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
       <Modal opened={opened} onClose={close} centered withCloseButton={false}>
         <Stack>
           <Button

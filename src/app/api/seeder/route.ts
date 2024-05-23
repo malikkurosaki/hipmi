@@ -19,6 +19,12 @@ import event_status from "../../../bin/seeder/event/master_status.json";
 import event_tipe_acara from "../../../bin/seeder/event/master_tipe_acara.json";
 import voting_status from "../../../bin/seeder/voting/master_status.json";
 import master_status from "../../../bin/seeder/master_status.json";
+import forum_kategori_report from "../../../bin/seeder/forum/master_report.json";
+import forum_status_posting from "../../../bin/seeder/forum/master_status.json";
+import collaboration_industri from "../../../bin/seeder/colab/master_industri.json";
+import collaboration_status from "../../../bin/seeder/colab/master_status.json";
+import collaboration_jumlah_minimal_room from "../../../bin/seeder/colab/jumlah_minimal_room.json";
+import { randomId } from "@mantine/hooks";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
@@ -324,6 +330,64 @@ export async function GET(req: Request) {
         },
         update: {
           name: m.name,
+        },
+      });
+    }
+
+    for (let m of forum_kategori_report) {
+      await prisma.forumMaster_KategoriReport.upsert({
+        where: {
+          id: m.id as number,
+        },
+        create: {
+          title: m.title,
+          deskripsi: m.deskripsi,
+        },
+        update: {
+          title: m.title,
+          deskripsi: m.deskripsi,
+        },
+      });
+    }
+
+    for (let s of forum_status_posting) {
+      await prisma.forumMaster_StatusPosting.upsert({
+        where: {
+          id: s.id,
+        },
+        create: {
+          status: s.status,
+        },
+        update: {
+          status: s.status,
+        },
+      });
+    }
+
+    for (let p of collaboration_industri) {
+      await prisma.projectCollaborationMaster_Industri.upsert({
+        where: {
+          id: p.id,
+        },
+        create: {
+          name: p.name,
+        },
+        update: {
+          name: p.name,
+        },
+      });
+    }
+
+    for (let p of collaboration_status) {
+      await prisma.projectCollaborationMaster_Status.upsert({
+        where: {
+          id: p.id,
+        },
+        create: {
+          name: p.name,
+        },
+        update: {
+          name: p.name,
         },
       });
     }

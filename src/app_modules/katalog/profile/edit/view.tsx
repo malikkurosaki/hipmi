@@ -17,21 +17,29 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/
 import { MODEL_PROFILE } from "../model/interface";
 import { Profile_funEditById } from "../fun/update/fun_edit_profile_by_id";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { validRegex } from "../../component/regular_expressions";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
 
 export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
   const router = useRouter();
 
   //Get data profile
   const [dataProfile, setDataProfile] = useState(data);
+  const [loading, setLoading] = useState(false);
 
   async function onUpdate() {
     const body = dataProfile;
-    if (_.values(body).includes("")) return toast("Lengkapi data");
+
+    // console.log(body)
+    if (_.values(body).includes("")) return null;
+    if (!body.email.match(validRegex)) return null;
 
     await Profile_funEditById(body).then((res) => {
       if (res.status === 200) {
+        setLoading(true);
         ComponentGlobal_NotifikasiBerhasil(res.message);
-        setTimeout(() => router.back(), 1000)
+        setTimeout(() => router.back(), 1000);
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }
@@ -47,18 +55,49 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
 
   return (
     <>
+      {/* <pre>{JSON.stringify(dataProfile, null, 2)}</pre> */}
       <Stack px={"sm"}>
         <TextInput
-          label="Username"
+          withAsterisk
+          label="Nomor"
           disabled
-          value={dataProfile.User.username}
+          value={dataProfile?.User?.nomor}
         />
-        <TextInput label="Nomor" disabled value={dataProfile.User.nomor} />
 
         <TextInput
+          withAsterisk
+          label="Username"
+          error={
+            data?.User?.username?.length < 5
+              ? "Username minimal 5 karakter"
+              : ""
+          }
+          disabled
+          value={dataProfile?.User?.username}
+          onChange={(val) => {
+            // const dataUsername = _.clone(dataProfile)
+            setDataProfile({
+              ...(dataProfile as any),
+              User: {
+                username: val.target.value,
+              },
+            });
+          }}
+        />
+
+        <TextInput
+          withAsterisk
           label="Nama"
-          placeholder="Nama"
-          value={dataProfile.name}
+          placeholder="nama"
+          maxLength={50}
+          error={
+            dataProfile?.name === "" ? (
+              <ComponentGlobal_ErrorInput text="Masukan nama" />
+            ) : (
+              ""
+            )
+          }
+          value={dataProfile?.name}
           onChange={(val) => {
             setDataProfile({
               ...dataProfile,
@@ -68,9 +107,20 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         />
 
         <TextInput
+          withAsterisk
           label="Email"
           placeholder="email"
-          value={dataProfile.email}
+          error={
+            dataProfile?.email === "" ? (
+              <ComponentGlobal_ErrorInput text="Masukan email " />
+            ) : dataProfile?.email?.length > 0 &&
+              !dataProfile?.email.match(validRegex) ? (
+              <ComponentGlobal_ErrorInput text="Invalid email" />
+            ) : (
+              ""
+            )
+          }
+          value={dataProfile?.email}
           onChange={(val) => {
             setDataProfile({
               ...dataProfile,
@@ -80,9 +130,18 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         />
 
         <TextInput
+          withAsterisk
           label="Alamat"
           placeholder="alamat"
           value={dataProfile.alamat}
+          maxLength={100}
+          error={
+            dataProfile?.alamat === "" ? (
+              <ComponentGlobal_ErrorInput text="Masukan alamat " />
+            ) : (
+              ""
+            )
+          }
           onChange={(val) => {
             setDataProfile({
               ...dataProfile,
@@ -92,8 +151,9 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         />
 
         <Select
+          withAsterisk
           label="Jenis Kelamin"
-          value={dataProfile.jenisKelamin}
+          value={dataProfile?.jenisKelamin}
           data={[
             { value: "Laki-laki", label: "Laki-laki" },
             { value: "Perempuan", label: "Perempuan" },
@@ -101,7 +161,7 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
           onChange={(val: any) => {
             setDataProfile({
               ...dataProfile,
-              jenisKelamin: val
+              jenisKelamin: val,
             });
           }}
         />
@@ -111,6 +171,8 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
           radius={50}
           bg={Warna.biru}
           color="cyan"
+          loading={loading ? true : false}
+          loaderPosition="center"
           onClick={() => onUpdate()}
         >
           Update

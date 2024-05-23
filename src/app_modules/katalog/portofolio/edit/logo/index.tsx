@@ -34,6 +34,7 @@ export default function Portofolio_EditLogoBisnis({
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [image, setImage] = useState<any | null>(null);
+  const [loading, setLoading] = useState(false);
   return (
     <>
       <Stack spacing={"xl"} px={"sm"}>
@@ -83,12 +84,28 @@ export default function Portofolio_EditLogoBisnis({
           </Stack>
         </Paper>
 
-        <Button
-          radius={"xl"}
-          onClick={() => onUpdate(router, dataPorto.id, file as any)}
-        >
-          Simpan
-        </Button>
+        {file ? (
+          <Button
+            radius={"xl"}
+            onClick={() =>
+              onUpdate(router, dataPorto.id, file as any, setLoading)
+            }
+          >
+            Simpan
+          </Button>
+        ) : (
+          <Button
+            disabled
+            radius={"xl"}
+            loading={loading ? true : false}
+            loaderPosition="center"
+            onClick={() =>
+              onUpdate(router, dataPorto.id, file as any, setLoading)
+            }
+          >
+            Simpan
+          </Button>
+        )}
       </Stack>
     </>
   );
@@ -97,13 +114,15 @@ export default function Portofolio_EditLogoBisnis({
 async function onUpdate(
   router: AppRouterInstance,
   portoId: string,
-  file: FormData
+  file: FormData,
+  setLoading: any
 ) {
   const gambar = new FormData();
   gambar.append("file", file as any);
 
   await Portofolio_funEditLogoBisnisById(portoId, gambar).then((res) => {
     if (res.status === 200) {
+      setLoading(true);
       ComponentGlobal_NotifikasiBerhasil(res.message);
       router.back();
     } else {

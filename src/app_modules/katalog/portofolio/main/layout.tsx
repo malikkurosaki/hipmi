@@ -18,19 +18,29 @@ import ComponentKatalog_HeaderTamplate from "../../component/header_tamplate";
 import { title } from "process";
 import { useDisclosure } from "@mantine/hooks";
 import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
+import { useState } from "react";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function PortofolioLayout({
   children,
   portoId,
+  userLoginId,
+  authorId,
 }: {
   children: any;
   portoId: any;
+  userLoginId: string;
+  authorId: string;
 }) {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
+  const [loadingData, setLoadingData] = useState(false);
+  const [loadingLogo, setLoadingLogo] = useState(false);
+  const [loadingMedia, setLoadingMedia] = useState(false);
+
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <Header height={50} sx={{ borderStyle: "none" }}>
             <Group h={50} position="apart" px={"md"}>
@@ -43,9 +53,13 @@ export default function PortofolioLayout({
                 <IconChevronLeft />
               </ActionIcon>
               <Title order={5}>Detail Portofolio</Title>
-              <ActionIcon variant="transparent" onClick={() => open()}>
-                <IconEdit />
-              </ActionIcon>
+              {userLoginId === authorId ? (
+                <ActionIcon variant="transparent" onClick={() => open()}>
+                  <IconEdit />
+                </ActionIcon>
+              ) : (
+                <ActionIcon disabled variant="transparent"></ActionIcon>
+              )}
             </Group>
           </Header>
         }
@@ -56,7 +70,10 @@ export default function PortofolioLayout({
             <Button
               radius={"xl"}
               variant="outline"
+              loaderPosition="center"
+              loading={loadingData ? true : false}
               onClick={() => {
+                setLoadingData(true);
                 router.push(RouterPortofolio.edit_data_bisnis + `${portoId}`);
               }}
             >
@@ -66,7 +83,10 @@ export default function PortofolioLayout({
               radius={"xl"}
               variant="outline"
               color="green"
+              loaderPosition="center"
+              loading={loadingLogo ? true : false}
               onClick={() => {
+                setLoadingLogo(true);
                 router.push(RouterPortofolio.edit_logo_bisnis + `${portoId}`);
               }}
             >
@@ -76,7 +96,10 @@ export default function PortofolioLayout({
               radius={"xl"}
               variant="outline"
               color="orange"
+              loaderPosition="center"
+              loading={loadingMedia ? true : false}
               onClick={() => {
+                setLoadingMedia(true);
                 router.push(RouterPortofolio.edit_medsos_bisnis + `${portoId}`);
               }}
             >
@@ -85,7 +108,7 @@ export default function PortofolioLayout({
           </Stack>
         </Modal>
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

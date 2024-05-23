@@ -7,6 +7,7 @@ import { IconEdit } from "@tabler/icons-react";
 import React from "react";
 import getOneInvestasiById from "../fun/get_one_investasi_by_id";
 import { MODEL_Investasi } from "../model/model_investasi";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutEditProspektusInvestasi({
   children,
@@ -17,7 +18,7 @@ export default function LayoutEditProspektusInvestasi({
 }) {
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <ComponentGlobal_HeaderTamplate
             title="Edit Prospektus"
@@ -27,7 +28,7 @@ export default function LayoutEditProspektusInvestasi({
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

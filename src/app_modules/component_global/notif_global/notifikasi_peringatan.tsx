@@ -20,7 +20,7 @@ export async function ComponentGlobal_NotifikasiPeringatan(
     ),
     color: "yellow.1",
     radius: "md",
-    autoClose: durasi ? durasi : 1000,
+    autoClose: durasi ? durasi : 2000,
     style: {
       borderWidth: "0.5px",
       borderStyle: "solid",

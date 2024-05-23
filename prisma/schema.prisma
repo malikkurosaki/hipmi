@@ -12,26 +12,37 @@ datasource db {
 }
 
 model User {
-  id                 String               @id @default(cuid())
-  username           String               @unique
-  nomor              String               @unique
-  active             Boolean              @default(true)
-  createdAt          DateTime?            @default(now())
-  updatedAt          DateTime?            @updatedAt
-  MasterUserRole     MasterUserRole       @relation(fields: [masterUserRoleId], references: [id])
-  masterUserRoleId   String               @default("1")
-  UserSession        UserSession?
-  Profile            Profile?
-  Investasi          Investasi[]
-  TransaksiInvestasi TransaksiInvestasi[]
-  Donasi             Donasi[]
-  Donasi_Invoice     Donasi_Invoice[]
-  Donasi_Notif       Donasi_Notif[]
-  Event              Event[]
-  Event_Peserta      Event_Peserta[]
-  Voting             Voting[]
-  Voting_Kontributor Voting_Kontributor[]
-  Job                Job[]
+  id                                   String                                 @id @default(cuid())
+  username                             String                                 @unique
+  nomor                                String                                 @unique
+  active                               Boolean                                @default(true)
+  createdAt                            DateTime?                              @default(now())
+  updatedAt                            DateTime?                              @updatedAt
+  MasterUserRole                       MasterUserRole                         @relation(fields: [masterUserRoleId], references: [id])
+  masterUserRoleId                     String                                 @default("1")
+  UserSession                          UserSession?
+  Profile                              Profile?
+  Investasi                            Investasi[]
+  TransaksiInvestasi                   TransaksiInvestasi[]
+  Donasi                               Donasi[]
+  Donasi_Invoice                       Donasi_Invoice[]
+  Donasi_Notif                         Donasi_Notif[]
+  Event                                Event[]
+  Event_Peserta                        Event_Peserta[]
+  Voting                               Voting[]
+  Voting_Kontributor                   Voting_Kontributor[]
+  Job                                  Job[]
+  Forum_Posting                        Forum_Posting[]
+  Forum_Komentar                       Forum_Komentar[]
+  Forum_ReportPosting                  Forum_ReportPosting[]
+  Forum_ReportKomentar                 Forum_ReportKomentar[]
+  ProjectCollaboration                 ProjectCollaboration[]
+  ProjectCollaboration_Partisipasi     ProjectCollaboration_Partisipasi[]
+  ProjectCollaboration_RoomChat        ProjectCollaboration_RoomChat[]
+  ProjectCollaboration_AnggotaRoomChat ProjectCollaboration_AnggotaRoomChat[]
+  ProjectCollaboration_Message         ProjectCollaboration_Message[]
+  AdminProjectCollaboration_Notifikasi ProjectCollaboration_Notifikasi[]      @relation("AdminNotifProjectToUser")
+  UserProjectCollaboration_Notifikasi  ProjectCollaboration_Notifikasi[]      @relation("UserNotifProjectToUser")
 }
 
 model MasterUserRole {
@@ -52,6 +63,15 @@ model UserSession {
   updatedAt DateTime @default(now()) @updatedAt
   User      User     @relation(fields: [userId], references: [id])
   userId    String   @unique
+}
+
+model KodeOtp {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  nomor     String
+  otp       Int
 }
 
 model Profile {
@@ -104,6 +124,7 @@ model ImagesBackground {
 
 model Portofolio {
   id                     String                  @id @default(cuid())
+  id_Portofolio          String                  @unique
   namaBisnis             String
   alamatKantor           String
   tlpn                   String
@@ -624,4 +645,196 @@ model Job {
   authorId       String?
   MasterStatus   MasterStatus? @relation(fields: [masterStatusId], references: [id])
   masterStatusId String?       @default("2")
+}
+
+// ========================================= FORUM ========================================= //
+
+model ForumMaster_StatusPosting {
+  id            Int             @id @default(autoincrement())
+  isActive      Boolean         @default(true)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  status        String
+  Forum_Posting Forum_Posting[]
+}
+
+model Forum_Posting {
+  id                          String                     @id @default(cuid())
+  isActive                    Boolean                    @default(true)
+  createdAt                   DateTime                   @default(now())
+  updatedAt                   DateTime                   @updatedAt
+  publishAt                   DateTime?
+  diskusi                     String                     @db.Text
+  Forum_Komentar              Forum_Komentar[]
+  Forum_ReportPosting         Forum_ReportPosting[]
+  Author                      User?                      @relation(fields: [authorId], references: [id])
+  authorId                    String?
+  ForumMaster_StatusPosting   ForumMaster_StatusPosting? @relation(fields: [forumMaster_StatusPostingId], references: [id])
+  forumMaster_StatusPostingId Int?
+}
+
+model Forum_Komentar {
+  id                   String                 @id @default(cuid())
+  isActive             Boolean                @default(true)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  komentar             String                 @db.Text
+  Forum_Posting        Forum_Posting?         @relation(fields: [forum_PostingId], references: [id])
+  forum_PostingId      String?
+  Forum_ReportKomentar Forum_ReportKomentar[]
+  Author               User?                  @relation(fields: [authorId], references: [id])
+  authorId             String?
+}
+
+model ForumMaster_KategoriReport {
+  id                   Int                    @id @default(autoincrement())
+  isActive             Boolean                @default(true)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  title                String
+  deskripsi            String                 @db.Text
+  Forum_ReportPosting  Forum_ReportPosting[]
+  Forum_ReportKomentar Forum_ReportKomentar[]
+}
+
+model Forum_ReportPosting {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deskripsi String?  @db.Text
+
+  ForumMaster_KategoriReport   ForumMaster_KategoriReport? @relation(fields: [forumMaster_KategoriReportId], references: [id])
+  forumMaster_KategoriReportId Int?
+  Forum_Posting                Forum_Posting?              @relation(fields: [forum_PostingId], references: [id])
+  forum_PostingId              String?
+  User                         User?                       @relation(fields: [userId], references: [id])
+  userId                       String?
+}
+
+model Forum_ReportKomentar {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deskripsi String?  @db.Text
+
+  ForumMaster_KategoriReport   ForumMaster_KategoriReport? @relation(fields: [forumMaster_KategoriReportId], references: [id])
+  forumMaster_KategoriReportId Int?
+  Forum_Komentar               Forum_Komentar?             @relation(fields: [forum_KomentarId], references: [id])
+  forum_KomentarId             String?
+  User                         User?                       @relation(fields: [userId], references: [id])
+  userId                       String?
+}
+
+// ========================================= PROJECT COLLABORATION ========================================= //
+
+model ProjectCollaboration {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  lokasi    String
+  purpose   String   @db.Text
+  benefit   String?  @db.Text
+  isReject  Boolean? @default(false)
+  report    String?
+  // jumlah_partisipan Int      @default(0)
+
+  ProjectCollaborationMaster_Industri   ProjectCollaborationMaster_Industri? @relation(fields: [projectCollaborationMaster_IndustriId], references: [id])
+  projectCollaborationMaster_IndustriId Int?
+  Author                                User?                                @relation(fields: [userId], references: [id])
+  userId                                String?
+  ProjectCollaborationMaster_Status     ProjectCollaborationMaster_Status?   @relation(fields: [projectCollaborationMaster_StatusId], references: [id])
+  projectCollaborationMaster_StatusId   Int?                                 @default(1)
+  ProjectCollaboration_Partisipasi      ProjectCollaboration_Partisipasi[]
+  ProjectCollaboration_RoomChat         ProjectCollaboration_RoomChat[]
+  ProjectCollaboration_Notifikasi       ProjectCollaboration_Notifikasi[]
+}
+
+model ProjectCollaborationMaster_Industri {
+  id        Int      @id @default(autoincrement())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+
+  ProjectCollaboration ProjectCollaboration[]
+}
+
+model ProjectCollaborationMaster_Status {
+  id        Int      @id @default(autoincrement())
+  name      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ProjectCollaboration ProjectCollaboration[]
+}
+
+model ProjectCollaboration_Partisipasi {
+  id                     String                @id @default(cuid())
+  isActive               Boolean               @default(true)
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
+  User                   User?                 @relation(fields: [userId], references: [id])
+  userId                 String?
+  ProjectCollaboration   ProjectCollaboration? @relation(fields: [projectCollaborationId], references: [id])
+  projectCollaborationId String?
+  deskripsi_diri         String
+}
+
+model ProjectCollaboration_RoomChat {
+  id        String   @id @default(cuid())
+  name      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Author    User?    @relation(fields: [userId], references: [id])
+  userId    String?
+
+  ProjectCollaboration                 ProjectCollaboration?                  @relation(fields: [projectCollaborationId], references: [id])
+  projectCollaborationId               String?
+  ProjectCollaboration_AnggotaRoomChat ProjectCollaboration_AnggotaRoomChat[]
+  ProjectCollaboration_Message         ProjectCollaboration_Message[]
+}
+
+model ProjectCollaboration_AnggotaRoomChat {
+  id                              String                         @id @default(cuid())
+  isActive                        Boolean                        @default(true)
+  createdAt                       DateTime                       @default(now())
+  updatedAt                       DateTime                       @updatedAt
+  User                            User                           @relation(fields: [userId], references: [id])
+  userId                          String
+  ProjectCollaboration_RoomChat   ProjectCollaboration_RoomChat? @relation(fields: [projectCollaboration_RoomChatId], references: [id])
+  projectCollaboration_RoomChatId String?
+}
+
+model ProjectCollaboration_Message {
+  id                              String                         @id @default(cuid())
+  isActive                        Boolean                        @default(true)
+  createdAt                       DateTime                       @default(now())
+  updatedAt                       DateTime                       @updatedAt
+  message                         String
+  isFile                          Boolean?                       @default(false)
+  User                            User?                          @relation(fields: [userId], references: [id])
+  userId                          String?
+  ProjectCollaboration_RoomChat   ProjectCollaboration_RoomChat? @relation(fields: [projectCollaboration_RoomChatId], references: [id])
+  projectCollaboration_RoomChatId String?
+}
+
+model ProjectCollaboration_Notifikasi {
+  id                     String                @id @default(cuid())
+  isActive               Boolean               @default(true)
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
+  isRead                 Boolean               @default(false)
+  note                   String?
+  ProjectCollaboration   ProjectCollaboration? @relation(fields: [projectCollaborationId], references: [id])
+  projectCollaborationId String
+  AdminId                User                  @relation("AdminNotifProjectToUser", fields: [adminId], references: [id], map: "AdminNotifProjectUser")
+  adminId                String
+  User                   User                  @relation("UserNotifProjectToUser", fields: [userId], references: [id], map: "UserNotifProjectUser")
+  userId                 String
 }

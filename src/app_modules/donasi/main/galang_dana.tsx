@@ -27,12 +27,12 @@ export default function GalangDanaDonasi({
   listPublish,
   listReview,
   listDraft,
-  listReject
+  listReject,
 }: {
   listPublish: any;
   listReview: any;
   listDraft: any;
-  listReject: any
+  listReject: any;
 }) {
   const router = useRouter();
   const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
@@ -68,7 +68,7 @@ export default function GalangDanaDonasi({
 
   return (
     <>
-      <Affix position={{ bottom: rem(100), right: rem(20) }}>
+      <Affix position={{ bottom: rem(150), right: rem(20) }}>
         <Button
           radius={"xl"}
           bg={"orange"}

@@ -5,6 +5,7 @@ import React from "react";
 import ComponentVote_HeaderTamplate from "../../component/header_tamplate";
 import { IconEdit } from "@tabler/icons-react";
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutVote_DetailDraft({
   children,
@@ -15,7 +16,7 @@ export default function LayoutVote_DetailDraft({
 }) {
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <ComponentVote_HeaderTamplate
             title="Detail Draft"
@@ -25,7 +26,7 @@ export default function LayoutVote_DetailDraft({
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

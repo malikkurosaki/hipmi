@@ -1,10 +1,10 @@
 "use server";
 
-import { User_getUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 import prisma from "@/app/lib/prisma";
 
 export async function Vote_getAllListRiwayatSaya() {
-  const authorId = await User_getUserId();
+  const authorId = await user_getOneUserId();
   const data = await prisma.voting.findMany({
     orderBy: {
       createdAt: "asc",

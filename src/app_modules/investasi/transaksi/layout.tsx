@@ -1,5 +1,6 @@
 "use client";
 
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
 import { AppShell, Title } from "@mantine/core";
 import React from "react";
@@ -11,9 +12,9 @@ export default function LayoutTransaksiInvestasi({
 }) {
   return (
     <>
-      <AppShell header={<Title order={6}>History transaksi</Title>}>
+      <AppComponentGlobal_LayoutTamplate header={<Title order={6}>History transaksi</Title>}>
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

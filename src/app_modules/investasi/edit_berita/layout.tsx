@@ -2,6 +2,7 @@
 
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
 import { AppShell, Button, Center, Footer } from "@mantine/core";
 import { useRouter } from "next/navigation";
@@ -13,19 +14,19 @@ export default function LayoutEditBeritaInvestasi({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={<ComponentGlobal_HeaderTamplate title="Edit Berita" />}
         // footer={
         //   <Footer height={70} sx={{ borderStyle: "none" }}>
-           
+
         //   </Footer>
         // }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

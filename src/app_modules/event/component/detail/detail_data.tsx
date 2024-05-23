@@ -15,14 +15,14 @@ export default function ComponentEvent_DetailData({
   const jam = tgl.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
-    hour12: false,
   });
 
   return (
     <>
+      {/* <pre>{JSON.stringify(jam)}</pre> */}
       <Paper withBorder p={"md"} shadow="lg">
         <Stack px={"sm"}>
-          <Title order={4}>{data ? data?.title : null}</Title>
+          <Title w={"100%"} order={4}>{data ? data?.title : null}</Title>
           <Grid>
             <Grid.Col span={4}>
               <Text fw={"bold"} fz={"sm"}>
@@ -52,7 +52,7 @@ export default function ComponentEvent_DetailData({
               </Text>
             </Grid.Col>
             <Grid.Col span={1}>:</Grid.Col>
-            <Grid.Col span={"auto"}>{hari}</Grid.Col>
+            <Grid.Col span={"auto"}>{hari ? hari : ""}</Grid.Col>
           </Grid>
           <Grid>
             <Grid.Col span={4}>
@@ -61,7 +61,7 @@ export default function ComponentEvent_DetailData({
               </Text>
             </Grid.Col>
             <Grid.Col span={1}>:</Grid.Col>
-            <Grid.Col span={"auto"}>{jam}</Grid.Col>
+            <Grid.Col span={"auto"}>{jam ? jam : ""}</Grid.Col>
           </Grid>
           <Stack spacing={2}>
             <Text fw={"bold"} fz={"sm"}>

@@ -3,6 +3,7 @@
 import { AppShell } from "@mantine/core";
 import React from "react";
 import ComponentEvent_HeaderTamplate from "../../component/header_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutEvent_DetailMain({
   children,
@@ -11,9 +12,11 @@ export default function LayoutEvent_DetailMain({
 }) {
   return (
     <>
-      <AppShell header={<ComponentEvent_HeaderTamplate title="Detail Event" />}>
+      <AppComponentGlobal_LayoutTamplate
+        header={<ComponentEvent_HeaderTamplate title="Detail Event" />}
+      >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

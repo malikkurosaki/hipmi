@@ -14,7 +14,7 @@ export default function SplashDashboardAdmin() {
   useShallowEffect(() => {
     setTimeout(() => {
       router.push(RouterAdminDashboard.main_admin);
-      setActive(0);
+      setActive(1);
     }, 2000);
   }, []);
   return (

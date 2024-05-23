@@ -1,4 +1,4 @@
-export interface LIST_PORTOFOLIO {
+export interface MODEL_PORTOFOLIO_Lama {
   id: string;
   namaBisnis: string;
   alamatKantor: string;

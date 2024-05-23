@@ -40,6 +40,10 @@ export default function ProfileView({
   userLoginId: string;
 }) {
   const router = useRouter();
+  const [loadingPP, setLoadingPP] = useState(false);
+  const [loadingBG, setLoadingBG] = useState(false);
+  const [loadingEdit, setLoadingEdit] = useState(false);
+
   // const [data, setData] = useState(profile);
   // useShallowEffect(() => {
   //   funGetUserProfile(user.id ?? "").then(setProfile as any);
@@ -49,7 +53,7 @@ export default function ProfileView({
   return (
     <>
       {/* <pre>{JSON.stringify(profile, null,2)}</pre> */}
-      <Paper p={"sm"} bg={"gray.1"} shadow="lg" withBorder>
+      <Paper px={"md"} py={"sm"} bg={"gray.1"} shadow="lg" withBorder>
         {/* Background dan foto */}
 
         {/* Upload Background Profile */}
@@ -57,12 +61,14 @@ export default function ProfileView({
           <AspectRatio ratio={16 / 9}>
             <Paper radius={"sm"} shadow="md">
               <Image
-                radius={"sm"}
-                height={210}
-                alt=""
+                mah={"100%"}
+                maw={"100%"}
+                alt="Background"
                 src={
-                  RouterProfile.api_url_background +
-                  `${profile?.ImagesBackground.url}`
+                  profile?.ImagesBackground.url
+                    ? RouterProfile.api_url_background +
+                      `${profile?.ImagesBackground.url}`
+                    : "/aset/no-image.png"
                 }
               />
             </Paper>
@@ -72,19 +78,21 @@ export default function ProfileView({
           {profile?.User.id === userLoginId ? (
             <Center>
               <ActionIcon
-                ml={{base: 300, sm: 500, md: 900, lg: 1000}}
+                loading={loadingBG ? true : false}
+                ml={{ base: 300, sm: 500, md: 900, lg: 1000 }}
                 mt={-10}
                 bg={"gray.5"}
                 variant="transparent"
                 radius={50}
-                onClick={() =>
+                onClick={() => {
+                  setLoadingBG(true);
                   router.push(
                     RouterProfile.update_foto_background + `${profile.id}`
-                  )
-                }
+                  );
+                }}
                 sx={{
                   position: "relative",
-                  // zIndex: 2,
+                  color: "gray",
                   border: "1px",
                   borderStyle: "solid",
                 }}
@@ -110,10 +118,15 @@ export default function ProfileView({
                 bg={"gray.2"}
                 sx={{
                   borderStyle: "solid",
-                  borderColor: "black",
-                  borderWidth: "1px",
+                  borderColor: "gray",
+                  borderWidth: "0.5px",
                 }}
-                src={RouterProfile.api_url_foto + `${profile?.ImageProfile.url}`}
+                src={
+                  profile?.ImageProfile?.url
+                    ? RouterProfile.api_url_foto +
+                      `${profile?.ImageProfile.url}`
+                    : "/aset/global/avatar.png"
+                }
                 size={100}
                 radius={"100%"}
               />
@@ -124,16 +137,18 @@ export default function ProfileView({
           {profile?.User.id === userLoginId ? (
             <Center>
               <ActionIcon
+                loading={loadingPP ? true : false}
                 mr={-70}
                 mt={15}
                 variant="transparent"
                 bg={"gray.5"}
                 radius={50}
-                onClick={() =>
+                onClick={() => {
+                  setLoadingPP(true);
                   router.push(
                     RouterProfile.update_foto_profile + `${profile.id}`
-                  )
-                }
+                  );
+                }}
                 sx={{
                   position: "relative",
                   border: "1px",
@@ -150,30 +165,47 @@ export default function ProfileView({
 
         {/* Username dan Nama */}
 
-       
-        <Group position="apart" pt={profile?.User.id === userLoginId ? 0 : "xl" }>
-          <Flex direction={"column"} mt={"lg"}>
-            <Text fz={"lg"} fw={"bold"}>
-              {profile?.name}
-            </Text>
-            <Text fz={"xs"}>@{profile?.User?.username}</Text>
-          </Flex>
-          {profile?.User.id === userLoginId ? (
-            <ActionIcon
-              variant="transparent"
-              onClick={() => {
-                router.push(RouterProfile.edit + `${profile.id}`);
-              }}
-            >
-              <IconEditCircle color={Warna.hijau_muda} />
-            </ActionIcon>
-          ) : (
-            ""
-          )}
-        </Group>
+        <Grid>
+          <Grid.Col
+            span={"auto"}
+            pt={profile?.User.id === userLoginId ? 10 : 50}
+          >
+            <Stack spacing={0}>
+              <Text fz={"lg"} fw={"bold"} lineClamp={1}>
+                {profile?.name}
+              </Text>
+              <Text fz={"xs"} c={"dark.3"}>
+                @{profile?.User?.username}
+              </Text>
+            </Stack>
+          </Grid.Col>
+          <Grid.Col span={"content"}>
+            {profile?.User.id === userLoginId ? (
+              <ActionIcon
+                loading={loadingEdit ? true : false}
+                variant="transparent"
+                onClick={() => {
+                  setLoadingEdit(true);
+                  router.push(RouterProfile.edit + `${profile.id}`);
+                }}
+              >
+                <IconEditCircle color={Warna.hijau_muda} />
+              </ActionIcon>
+            ) : (
+              ""
+            )}
+          </Grid.Col>
+        </Grid>
+
+        {/* <Group
+          position="apart"
+          pt={profile?.User.id === userLoginId ? 0 : "xl"}
+        >
+          <Flex direction={"column"} mt={"lg"}></Flex>
+        </Group> */}
 
         {/* Info user: nomor, email dll */}
-        <Stack spacing={"xs"}  pt={"lg"}>
+        <Stack spacing={"xs"} pt={"lg"}>
           <Grid>
             <Grid.Col span={"content"}>
               <IconAddressBook />

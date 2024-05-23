@@ -3,12 +3,10 @@ import { cookies } from "next/headers";
 
 export default function Page() {
   const c = cookies().getAll();
-  const tkn = c;
 
   return (
     <>
-      {/* {JSON.stringify(tkn)} */}
-      <Login />;
+      <Login />
     </>
   );
 }

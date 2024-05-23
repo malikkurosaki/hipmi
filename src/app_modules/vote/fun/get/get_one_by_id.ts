@@ -21,15 +21,17 @@ export async function Vote_getOnebyId(voteId: string) {
       voting_StatusId: true,
       Voting_DaftarNamaVote: {
         orderBy: {
-          createdAt: "asc"
-        }
+          createdAt: "asc",
+        },
+        where: {
+          isActive: true,
+        },
       },
       Author: {
         select: {
-          Profile: true
-        }
-      }
-      
+          Profile: true,
+        },
+      },
     },
   });
 

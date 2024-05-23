@@ -11,6 +11,7 @@ import {
   Flex,
   Grid,
   Image,
+  Loader,
   Paper,
   Stack,
   Text,
@@ -19,12 +20,15 @@ import {
 import { IconChevronRight } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import toast from "react-simple-toasts";
 
 export default function MainCrowd() {
   const router = useRouter();
   const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
-  const [donasiHotMenu, setDonasiHotMenu] = useAtom(gs_donasi_hot_menu)
+  const [donasiHotMenu, setDonasiHotMenu] = useAtom(gs_donasi_hot_menu);
+  const [loadingInv, setLoadingInv] = useState(false);
+  const [loadingDon, setLoadingDon] = useState(false);
   return (
     <>
       <Stack>
@@ -37,10 +41,12 @@ export default function MainCrowd() {
         </Paper>
         <Stack>
           <Paper
-            p={"xs"}
+            shadow="lg"
+            p={"md"}
             radius={"md"}
-            bg={"teal"}
+            bg={"teal.4"}
             onClick={() => {
+              setLoadingInv(true);
               router.push(RouterCrowd.investasi);
               setChangeColor(0);
             }}
@@ -49,35 +55,39 @@ export default function MainCrowd() {
               <Grid.Col span={10}>
                 <Title order={4}> Investasi</Title>
                 <Text fz={12}>
-                  Buat investasi dan jual beli saham lebih mudah dengan pengguna lain dengan CROWD INVESTASI
+                  Buat investasi dan jual beli saham lebih mudah dengan pengguna
+                  lain dengan CROWD INVESTASI
                 </Text>
               </Grid.Col>
               <Grid.Col span={2}>
                 <Stack h={"100%"} justify="center" align="center">
-                  <IconChevronRight />
+                  {loadingInv ? <Loader /> : <IconChevronRight />}
                 </Stack>
               </Grid.Col>
             </Grid>
           </Paper>
           <Paper
-            bg={"blue.4"}
+            shadow="lg"
+            bg={"blue.3"}
             radius={"md"}
-            p={"xs"}
+            p={"md"}
             onClick={() => {
-              router.push(RouterCrowd.donasi)
-              setDonasiHotMenu(0)
+              setLoadingDon(true);
+              router.push(RouterCrowd.donasi);
+              setDonasiHotMenu(0);
             }}
           >
-           <Grid>
+            <Grid>
               <Grid.Col span={10}>
                 <Title order={4}> Donasi</Title>
                 <Text fz={12}>
-                 Berbagi info untuk berdonasi lebih luas dan lebih mudah dengan CROWD DONASI
+                  Berbagi info untuk berdonasi lebih luas dan lebih mudah dengan
+                  CROWD DONASI
                 </Text>
               </Grid.Col>
               <Grid.Col span={2}>
                 <Stack h={"100%"} justify="center" align="center">
-                  <IconChevronRight />
+                  {loadingDon ? <Loader /> : <IconChevronRight />}
                 </Stack>
               </Grid.Col>
             </Grid>

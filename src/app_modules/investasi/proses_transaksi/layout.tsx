@@ -8,6 +8,7 @@ import { gs_midtrans_snap } from "../g_state";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { title } from "process";
 import { useRouter } from "next/navigation";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutProsesTransaksiInvestasi({
   children,
@@ -19,7 +20,7 @@ export default function LayoutProsesTransaksiInvestasi({
   // console.log(snapShow)
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <Header height={50} sx={{ borderStyle: "none" }}>
             <Group h={50} position="apart" px={"md"}>
@@ -38,7 +39,7 @@ export default function LayoutProsesTransaksiInvestasi({
         }
       >
         <Box>{children}</Box>
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

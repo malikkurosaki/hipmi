@@ -17,7 +17,7 @@ import {
 import { ProfileView } from "../profile";
 import { ListPortofolioView } from "../portofolio";
 import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
-import { LIST_PORTOFOLIO } from "@/app_modules/model_global/portofolio";
+import { MODEL_PORTOFOLIO_Lama } from "@/app_modules/model_global/portofolio";
 import User_Logout from "@/app_modules/auth/logout/view";
 import { MODEL_PORTOFOLIO } from "../portofolio/model/interface";
 import { MODEL_PROFILE } from "../profile/model/interface";
@@ -28,10 +28,9 @@ export default function KatalogView({
   userLoginId,
 }: {
   profile: MODEL_PROFILE;
-  listPorto: LIST_PORTOFOLIO;
+  listPorto: MODEL_PORTOFOLIO;
   userLoginId: string;
 }) {
-
   return (
     <>
       <Stack>
@@ -41,9 +40,9 @@ export default function KatalogView({
           profile={profile}
           userLoginId={userLoginId}
         />
-       <Stack my={"lg"} w={"100%"}>
-       {profile?.User.id === userLoginId ? <User_Logout /> : ""}
-       </Stack>
+        <Stack my={"lg"} w={"100%"}>
+          {profile?.User.id === userLoginId ? <User_Logout /> : ""}
+        </Stack>
       </Stack>
     </>
   );

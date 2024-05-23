@@ -12,6 +12,9 @@ import { useRouter } from "next/navigation";
 import { Portofolio_funEditDataBisnis } from "../../fun/edit/fun_edit_data_bisnis_by_id";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
 
 export default function Portofolio_EditDataBisnis({
   dataPorto,
@@ -21,14 +24,9 @@ export default function Portofolio_EditDataBisnis({
   listBidang: MODEL_PORTOFOLIO_BIDANG_BISNIS[];
 }) {
   const router = useRouter();
-  const [porto, setPorto] = useState(dataPorto);
-  //   const [value, setPorto] = useState({
-  //     namaBisnis: "",
-  //     masterBidangBisnisId: "",
-  //     alamatKantor: "",
-  //     tlpn: "",
-  //     deskripsi: "",
-  //   });
+  const [value, setValue] = useState(dataPorto);
+  const [loading, setLoading] = useState(false);
+
   return (
     <>
       {/* <pre>{JSON.stringify(porto, null, 2)}</pre> */}
@@ -36,19 +34,27 @@ export default function Portofolio_EditDataBisnis({
         <Stack>
           <TextInput
             withAsterisk
-            value={porto.namaBisnis}
+            value={value.namaBisnis}
             label="Nama Bisnis"
             placeholder="Nama bisnis"
+            maxLength={100}
+            error={
+              value.namaBisnis === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan nama bisnis" />
+              ) : (
+                ""
+              )
+            }
             onChange={(val) => {
-              setPorto({
-                ...porto,
+              setValue({
+                ...value,
                 namaBisnis: val.target.value,
               });
             }}
           />
           <Select
             withAsterisk
-            value={porto.MasterBidangBisnis.id}
+            value={value.MasterBidangBisnis.id}
             label="Bidang Bisnis"
             placeholder="Pilih salah satu bidang bisnis"
             data={listBidang.map((e) => ({
@@ -56,8 +62,8 @@ export default function Portofolio_EditDataBisnis({
               label: e.name,
             }))}
             onChange={(val) => {
-              setPorto({
-                ...(porto as any),
+              setValue({
+                ...(value as any),
                 MasterBidangBisnis: {
                   id: val,
                 },
@@ -66,49 +72,81 @@ export default function Portofolio_EditDataBisnis({
           />
           <TextInput
             withAsterisk
-            value={porto.alamatKantor}
+            value={value.alamatKantor}
             label="Alamat Kantor"
             placeholder="Alamat kantor"
+            maxLength={100}
+            error={
+              value.alamatKantor === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan alamat kantor" />
+              ) : (
+                ""
+              )
+            }
             onChange={(val) => {
-              setPorto({
-                ...porto,
+              setValue({
+                ...value,
                 alamatKantor: val.target.value,
               });
             }}
           />
           <TextInput
             withAsterisk
-            value={porto.tlpn}
+            value={value.tlpn}
             label="Nomor Telepon Kantor"
-            placeholder="62 xxx xxx xxx"
+            placeholder="Nomor telepon kantor"
             type="number"
+            maxLength={15}
+            error={
+              value.tlpn === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan nomor telepon kantor" />
+              ) : (
+                ""
+              )
+            }
             onChange={(val) => {
-              setPorto({
-                ...porto,
+              setValue({
+                ...value,
                 tlpn: val.target.value,
               });
             }}
           />
-          <Textarea
-            autosize
-            minRows={2}
-            maxRows={5}
-            withAsterisk
-            value={porto.deskripsi}
-            label="Deskripsi"
-            placeholder="Deskripsi singkat mengenai usaha"
-            onChange={(val) => {
-              setPorto({
-                ...porto,
-                deskripsi: val.target.value,
-              });
-            }}
-          />
+          <Stack spacing={5}>
+            <Textarea
+              autosize
+              minRows={2}
+              maxRows={5}
+              withAsterisk
+              value={value.deskripsi}
+              label="Deskripsi"
+              placeholder="Deskripsi singkat mengenai usaha"
+              maxLength={150}
+              error={
+                value.deskripsi === "" ? (
+                  <ComponentGlobal_ErrorInput text="Masukan deskripsi" />
+                ) : (
+                  ""
+                )
+              }
+              onChange={(val) => {
+                setValue({
+                  ...value,
+                  deskripsi: val.target.value,
+                });
+              }}
+            />
+            <ComponentGlobal_InputCountDown
+              maxInput={150}
+              lengthInput={value.deskripsi.length}
+            />
+          </Stack>
         </Stack>
         <Button
           radius={"xl"}
+          loading={loading ? true : false}
+          loaderPosition="center"
           onClick={() => {
-            onUpdate(router, porto as any);
+            onUpdate(router, value as any, setLoading);
           }}
         >
           Update
@@ -118,9 +156,22 @@ export default function Portofolio_EditDataBisnis({
   );
 }
 
-async function onUpdate(router: AppRouterInstance, data: MODEL_PORTOFOLIO) {
+async function onUpdate(
+  router: AppRouterInstance,
+  data: MODEL_PORTOFOLIO,
+  setLoading: any
+) {
+  if (_.values(data).includes("")) {
+    return null;
+  }
+
+  // if (data.namaBisnis.length > 100) return null;
+  // if (data.alamatKantor.length > 100) return null;
+  // if (data.deskripsi.length > 150) return null;
+
   await Portofolio_funEditDataBisnis(data).then((res) => {
     if (res.status === 200) {
+      setLoading(true);
       ComponentGlobal_NotifikasiBerhasil(res.message);
       router.back();
     } else {

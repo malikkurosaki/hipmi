@@ -88,6 +88,9 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
         </Center>
       </td>
       <td>
+        <Center>{e?.Author?.Profile?.name}</Center>
+      </td>
+      <td>
         <Center>{e.title}</Center>
       </td>
       <td>
@@ -184,7 +187,9 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
                   <th>
                     <Center>Catatan</Center>
                   </th>
-
+                  <th>
+                    <Center>Author</Center>
+                  </th>
                   <th>
                     <Center>Judul</Center>
                   </th>

@@ -9,6 +9,7 @@ export async function Event_getListAllPublish() {
       tanggal: "desc",
     },
     where: {
+      active: true,
       eventMaster_StatusId: "1",
       tanggal: {
         gte: new Date(),

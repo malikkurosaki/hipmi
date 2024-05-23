@@ -16,74 +16,73 @@ export default function ComponentEvent_DetailMainData({
   const jam = tgl.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
-    hour12: false,
   });
 
   return (
     <>
       <Paper withBorder p={"md"} shadow="lg">
-       <Stack>
-       <ComponentGlobal_AuthorNameOnHeader
-          authorName={data.Author.Profile.name}
-          imagesId={data.Author.Profile.imagesId}
-          profileId={data.Author.Profile.id}
-        />
-        <Stack px={"sm"}>
-          <Title order={4}>{data ? data.title : null}</Title>
-          <Grid>
-            <Grid.Col span={4}>
+        <Stack>
+          <ComponentGlobal_AuthorNameOnHeader
+            authorName={data.Author.Profile.name}
+            imagesId={data.Author.Profile.imagesId}
+            profileId={data.Author.Profile.id}
+          />
+          <Stack px={"sm"}>
+            <Title order={4}>{data ? data.title : null}</Title>
+            <Grid>
+              <Grid.Col span={4}>
+                <Text fw={"bold"} fz={"sm"}>
+                  Lokasi
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={1}>:</Grid.Col>
+              <Grid.Col span={"auto"}>
+                <Text>{data ? data.lokasi : null}</Text>
+              </Grid.Col>
+            </Grid>
+            <Grid>
+              <Grid.Col span={4}>
+                <Text fw={"bold"} fz={"sm"}>
+                  Tipe Acara
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={1}>:</Grid.Col>
+              <Grid.Col span={"auto"}>
+                <Text>{data ? data.EventMaster_TipeAcara.name : null}</Text>
+              </Grid.Col>
+            </Grid>
+            <Grid>
+              <Grid.Col span={4}>
+                <Text fw={"bold"} fz={"sm"}>
+                  Tanggal
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={1}>:</Grid.Col>
+              <Grid.Col span={"auto"}>{hari}</Grid.Col>
+            </Grid>
+            <Grid>
+              <Grid.Col span={4}>
+                <Text fw={"bold"} fz={"sm"}>
+                  Jam
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={1}>:</Grid.Col>
+              <Grid.Col span={"auto"}>{jam}</Grid.Col>
+            </Grid>
+            <Stack spacing={2}>
               <Text fw={"bold"} fz={"sm"}>
-                Lokasi
+                Deskripsi
               </Text>
-            </Grid.Col>
-            <Grid.Col span={1}>:</Grid.Col>
-            <Grid.Col span={"auto"}>
-              <Text>{data ? data.lokasi : null}</Text>
-            </Grid.Col>
-          </Grid>
-          <Grid>
-            <Grid.Col span={4}>
-              <Text fw={"bold"} fz={"sm"}>
-                Tipe Acara
-              </Text>
-            </Grid.Col>
-            <Grid.Col span={1}>:</Grid.Col>
-            <Grid.Col span={"auto"}>
-              <Text>{data ? data.EventMaster_TipeAcara.name : null}</Text>
-            </Grid.Col>
-          </Grid>
-          <Grid>
-            <Grid.Col span={4}>
-              <Text fw={"bold"} fz={"sm"}>
-                Tanggal
-              </Text>
-            </Grid.Col>
-            <Grid.Col span={1}>:</Grid.Col>
-            <Grid.Col span={"auto"}>{hari}</Grid.Col>
-          </Grid>
-          <Grid>
-            <Grid.Col span={4}>
-              <Text fw={"bold"} fz={"sm"}>
-                Jam
-              </Text>
-            </Grid.Col>
-            <Grid.Col span={1}>:</Grid.Col>
-            <Grid.Col span={"auto"}>{jam}</Grid.Col>
-          </Grid>
-          <Stack spacing={2}>
-            <Text fw={"bold"} fz={"sm"}>
-              Deskripsi
-            </Text>
-            <Spoiler
-              hideLabel="Lihat sedikit"
-              maxHeight={50}
-              showLabel="Lihat banyak"
-            >
-              {data ? data.deskripsi : null}
-            </Spoiler>
+              <Spoiler
+                hideLabel="Lihat sedikit"
+                maxHeight={50}
+                showLabel="Lihat banyak"
+              >
+                {data ? data.deskripsi : null}
+              </Spoiler>
+            </Stack>
           </Stack>
         </Stack>
-       </Stack>
       </Paper>
     </>
   );

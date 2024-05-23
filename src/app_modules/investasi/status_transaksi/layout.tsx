@@ -17,9 +17,9 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { gs_investasiFooter } from "../g_state";
 import { Warna } from "@/app/lib/warna";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
-export default function LayoutStatusTransaksiInvestasi(
-  {
+export default function LayoutStatusTransaksiInvestasi({
   children,
 }: {
   children: React.ReactNode;
@@ -29,7 +29,7 @@ export default function LayoutStatusTransaksiInvestasi(
 
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <Header height={50}>
             <Group position="apart" align="center" h={50} px={"md"}>
@@ -63,7 +63,7 @@ export default function LayoutStatusTransaksiInvestasi(
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }
