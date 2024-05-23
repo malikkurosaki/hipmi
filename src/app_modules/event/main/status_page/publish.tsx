@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import { MODEL_EVENT } from "../../model/interface";
 import ComponentEvent_BoxListStatus from "../../component/box_list_status";
 import _ from "lodash";
+import ComponentEvent_IsEmptyData from "../../component/is_empty_data";
+import { useState } from "react";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
 
 export default function Event_StatusPublish({
   listPublish,
@@ -14,22 +17,29 @@ export default function Event_StatusPublish({
   listPublish: MODEL_EVENT[];
 }) {
   const router = useRouter();
+  
 
   if (_.isEmpty(listPublish))
-    return (
-      <Center h={"50vh"} fz={"sm"} fw={"bold"}>
-        Tidak Ada Event
-      </Center>
-    );
+    return <ComponentEvent_IsEmptyData text="Tidak ada data" />;
 
   return (
     <>
-      {listPublish
-        .map((e, i) => (
-         <Box key={e.id}>
-          <ComponentEvent_BoxListStatus data={e} path={RouterEvent.detail_publish}/>
-         </Box>
-        ))}
+      {listPublish.map((e, i) => (
+        <Box key={e.id}>
+          <Box>
+            <ComponentEvent_BoxListStatus
+              data={e}
+              path={RouterEvent.detail_publish}
+             
+            />
+            {/* {visible && e?.id === eventId ? (
+              <ComponentGlobal_CardLoadingOverlay />
+            ) : (
+              ""
+            )} */}
+          </Box>
+        </Box>
+      ))}
     </>
   );
 }

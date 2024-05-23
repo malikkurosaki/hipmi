@@ -9,7 +9,8 @@ import { useState } from "react";
 import ComponentEvent_BoxListStatus from "../../component/box_list_status";
 import _ from "lodash";
 import { useShallowEffect } from "@mantine/hooks";
-import { Event_getByStatusId } from "../../fun/get/get_event_by_status_id";
+import { Event_getListByStatusId } from "../../fun/get/get_list_event_by_status_id";
+import ComponentEvent_IsEmptyData from "../../component/is_empty_data";
 
 export default function Event_StatusReview({
   listReview,
@@ -21,12 +22,8 @@ export default function Event_StatusReview({
   const router = useRouter();
 
 
-  if (_.isEmpty(listReview))
-    return (
-      <Center h={"50vh"} fz={"sm"} fw={"bold"}>
-        Tidak Ada Event
-      </Center>
-    );
+ if (_.isEmpty(listReview))
+    return <ComponentEvent_IsEmptyData text="Tidak ada data"/>
   return (
     <>
       {listReview.map((e, i) => (

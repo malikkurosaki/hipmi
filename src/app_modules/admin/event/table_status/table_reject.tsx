@@ -90,7 +90,6 @@ function TableStatus({ listReject }: { listReject: MODEL_EVENT[] }) {
           {e.tanggal.toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
-            hour12: false,
           })}
         </Box>
       </td>

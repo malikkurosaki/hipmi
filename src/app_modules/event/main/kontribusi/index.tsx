@@ -23,6 +23,7 @@ import { MODEL_EVENT_PESERTA } from "../../model/interface";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import _ from "lodash";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
 
 export default function Event_Kontribusi({
   listKontribusi,
@@ -30,19 +31,8 @@ export default function Event_Kontribusi({
   listKontribusi: MODEL_EVENT_PESERTA[];
 }) {
   const router = useRouter();
-  const [tabsKontribusi, setTabsKontribusi] = useState<string | any>("Panitia");
-  const listTabs = [
-    {
-      id: 1,
-      path: <Event_KontribusiPanitia />,
-      value: "Panitia",
-    },
-    {
-      id: 2,
-      path: <Event_KontribusiPeserta />,
-      value: "Peserta",
-    },
-  ];
+  const [eventId, setEventId] = useState("");
+  const [visible, setVisible] = useState(false);
 
   if (_.isEmpty(listKontribusi))
     return (
@@ -67,9 +57,10 @@ export default function Event_Kontribusi({
           </Card.Section>
           <Card.Section
             p={"sm"}
-            onClick={() =>
-              router.push(RouterEvent.detail_kontribusi + e.Event.id)
-            }
+            onClick={() => {
+              setEventId(e?.id), setVisible(true);
+              router.push(RouterEvent.detail_kontribusi + e.Event.id);
+            }}
           >
             <Stack>
               <Grid>
@@ -90,15 +81,15 @@ export default function Event_Kontribusi({
               </Text> */}
 
               <Group position="center">
-                {e.Event.Event_Peserta.map((val) => (
-                  <Box key={val.id}>
+                {e.Event.Event_Peserta.map((val, i) => (
+                  <Box key={i}>
                     <Avatar
                       size={"lg"}
                       radius={"xl"}
                       sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
                       src={
                         RouterProfile.api_foto_profile +
-                        val.User.Profile.imagesId
+                        val?.User?.Profile?.imagesId
                       }
                     />
                   </Box>
@@ -106,40 +97,13 @@ export default function Event_Kontribusi({
               </Group>
             </Stack>
           </Card.Section>
+          {visible && eventId === e?.id ? (
+            <ComponentGlobal_CardLoadingOverlay />
+          ) : (
+            ""
+          )}
         </Card>
       ))}
     </>
   );
-
-  // return (
-  //   <>
-  //     <Tabs
-  //       color="blue"
-  //       variant="pills"
-  //       radius="xl"
-  //       defaultValue="Panitia"
-  //       value={tabsKontribusi}
-  //       onTabChange={setTabsKontribusi}
-  //     >
-  //       <Stack>
-  //         <Tabs.List grow>
-  //           {listTabs.map((e) => (
-  //             <Tabs.Tab
-  //               key={e.id}
-  //               value={e.value}
-  //               bg={tabsKontribusi === e.value ? "blue" : "gray.1"}
-  //             >
-  //               Sebagai {e.value}
-  //             </Tabs.Tab>
-  //           ))}
-  //         </Tabs.List>
-  //         {listTabs.map((e) => (
-  //           <Tabs.Panel key={e.id} value={e.value}>
-  //             {e.path}
-  //           </Tabs.Panel>
-  //         ))}
-  //       </Stack>
-  //     </Tabs>
-  //   </>
-  // );
 }

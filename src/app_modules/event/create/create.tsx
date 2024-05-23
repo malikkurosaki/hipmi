@@ -36,6 +36,7 @@ import toast from "react-simple-toasts";
 import moment from "moment";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import ComponentEvent_ErrorMaximalInput from "../component/error_maksimal_input";
+import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
 
 export default function Event_Create({
   listTipeAcara,
@@ -69,13 +70,6 @@ export default function Event_Create({
           placeholder="Masukan judul"
           withAsterisk
           maxLength={100}
-          error={
-            value.title.length >= 100 ? (
-              <ComponentEvent_ErrorMaximalInput max={100} />
-            ) : (
-              ""
-            )
-          }
           onChange={(val) => {
             setValue({
               ...value,
@@ -104,13 +98,6 @@ export default function Event_Create({
           placeholder="Masukan lokasi acara"
           withAsterisk
           maxLength={100}
-          error={
-            value.lokasi.length >= 100 ? (
-              <ComponentEvent_ErrorMaximalInput max={100} />
-            ) : (
-              ""
-            )
-          }
           onChange={(val) => {
             setValue({
               ...value,
@@ -146,33 +133,38 @@ export default function Event_Create({
             });
           }}
         />
-        <Textarea
-          label="Deskripsi"
-          placeholder="Deskripsikan acara yang akan di selenggarakan"
-          withAsterisk
-          autosize
-          maxLength={200}
-          error={
-            value.deskripsi.length >= 200 ? (
-              <ComponentEvent_ErrorMaximalInput max={200} />
-            ) : (
-              ""
-            )
-          }
-          onChange={(val) => {
-            setValue({
-              ...value,
-              deskripsi: val.target.value,
-            });
-          }}
-        />
+
+        <Stack spacing={5}>
+          <Textarea
+            label="Deskripsi"
+            placeholder="Deskripsikan acara yang akan di selenggarakan"
+            withAsterisk
+            autosize
+            maxLength={300}
+            onChange={(val) => {
+              setValue({
+                ...value,
+                deskripsi: val.target.value,
+              });
+            }}
+          />
+          <ComponentGlobal_InputCountDown
+            lengthInput={value.deskripsi.length}
+            maxInput={300}
+          />
+        </Stack>
+
         <Button
+          style={{
+            transition: "0.5s",
+          }}
           disabled={
             value.title === "" ||
             value.lokasi === "" ||
             value.deskripsi === "" ||
             value.eventMaster_TipeAcaraId === 0 ||
-            value.tanggal === "function Date() { [native code] }"
+            value.tanggal === "function Date() { [native code] }" ||
+            moment(value.tanggal).diff(moment(), "minutes") < 0
           }
           loaderPosition="center"
           loading={isLoading ? true : false}
@@ -196,20 +188,16 @@ async function onSave(
   setHotMenu: any,
   setLoading: any
 ) {
-  if (_.values(value).includes(""))
-    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
-
-  if (value.title.length >= 100) return null;
-  if (value.lokasi.length >= 100) return null;
-  if (value.eventMaster_TipeAcaraId === 0)
-    return ComponentGlobal_NotifikasiPeringatan("Pilih Tipe Acara");
-  if (moment(value.tanggal).format() === "Invalid date")
-    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
-  if (
-    moment(value.tanggal.toISOString().toString()).diff(moment(), "minutes") < 0
-  )
-    return null;
-  if (value.deskripsi.length >= 200) return null;
+  // if (_.values(value).includes(""))
+  //   return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+  // if (value.eventMaster_TipeAcaraId === 0)
+  //   return ComponentGlobal_NotifikasiPeringatan("Pilih Tipe Acara");
+  // if (moment(value.tanggal).format() === "Invalid date")
+  //   return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
+  // if (
+  //   moment(value.tanggal.toISOString().toString()).diff(moment(), "minutes") < 0
+  // )
+  //   return null;
 
   await Event_funCreate(value).then((res) => {
     if (res.status === 201) {

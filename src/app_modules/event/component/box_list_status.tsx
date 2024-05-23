@@ -1,10 +1,12 @@
 "use client";
 
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import { Paper, Stack, Group, Title, Text, Grid } from "@mantine/core";
+import { Paper, Stack, Group, Title, Text, Grid, Card } from "@mantine/core";
 import moment from "moment";
 import { MODEL_EVENT } from "../model/interface";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
 
 export default function ComponentEvent_BoxListStatus({
   data,
@@ -14,15 +16,22 @@ export default function ComponentEvent_BoxListStatus({
   path: string;
 }) {
   const router = useRouter();
+  const [eventId, setEventId] = useState("");
+  const [visible, setVisible] = useState(false);
+
   return (
     <>
-      <Paper
+      <Card
         shadow="lg"
         radius={"md"}
         p={"md"}
         withBorder
         mb={"sm"}
-        onClick={() => router.push(path + data.id)}
+        onClick={() => {
+          setEventId(data?.id);
+          setVisible(true);
+          router.push(path + data.id);
+        }}
       >
         <Stack>
           <Grid>
@@ -42,7 +51,12 @@ export default function ComponentEvent_BoxListStatus({
             {data.deskripsi}
           </Text>
         </Stack>
-      </Paper>
+        {visible && eventId !== "" ? (
+          <ComponentGlobal_CardLoadingOverlay />
+        ) : (
+          ""
+        )}
+      </Card>
     </>
   );
 }

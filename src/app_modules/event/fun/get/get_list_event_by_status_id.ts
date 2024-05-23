@@ -2,7 +2,10 @@
 
 import prisma from "@/app/lib/prisma";
 
-export async function Event_getByStatusId(statusId: string, authorId: string) {
+export async function Event_getListByStatusId(
+  statusId: string,
+  authorId: string
+) {
   if (statusId === "1") {
     const data = await prisma.event.findMany({
       orderBy: {

@@ -23,6 +23,8 @@ import _ from "lodash";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import { IconAlertTriangle } from "@tabler/icons-react";
 import ComponentEvent_ErrorMaximalInput from "../component/error_maksimal_input";
+import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
 
 export default function Event_Edit({
   dataEvent,
@@ -32,6 +34,8 @@ export default function Event_Edit({
   listTipeAcara: MODEL_DEFAULT_MASTER[];
 }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+
   const [value, setValue] = useState(dataEvent);
   const [tipe, setTipe] = useState(listTipeAcara);
 
@@ -45,13 +49,13 @@ export default function Event_Edit({
       <Stack px={"sm"}>
         <TextInput
           label="Judul"
-          placeholder="Masukan judul"
+          placeholder="judul"
           withAsterisk
           value={value.title}
           maxLength={100}
           error={
-            maxTitle.length >= 100 ? (
-              <ComponentEvent_ErrorMaximalInput max={100} />
+            value.title === "" ? (
+              <ComponentGlobal_ErrorInput text="Masukan judul" />
             ) : (
               ""
             )
@@ -86,13 +90,13 @@ export default function Event_Edit({
 
         <TextInput
           label="Lokasi"
-          placeholder="Masukan lokasi acara"
+          placeholder="lokasi acara"
           withAsterisk
           value={value.lokasi}
-          maxLength={200}
+          maxLength={100}
           error={
-            maxLokasi.length >= 200 ? (
-              <ComponentEvent_ErrorMaximalInput max={200} />
+            value.lokasi === "" ? (
+              <ComponentGlobal_ErrorInput text="Masukan lokasi" />
             ) : (
               ""
             )
@@ -113,6 +117,16 @@ export default function Event_Edit({
           label="Tanggal & Waktu "
           placeholder="Masukan tangal dan waktu acara"
           value={value.tanggal}
+          error={
+            moment(value.tanggal.toISOString().toString()).diff(
+              moment(),
+              "minutes"
+            ) < 0 ? (
+              <ComponentGlobal_ErrorInput text="Invalid Time" />
+            ) : (
+              ""
+            )
+          }
           onChange={(val) => {
             setValue({
               ...(value as any),
@@ -120,30 +134,55 @@ export default function Event_Edit({
             });
           }}
         />
-        <Textarea
-          label="Deskripsi"
-          placeholder="Deskripsikan acara yang akan di selenggarakan"
-          withAsterisk
-          autosize
-          value={value.deskripsi}
-          maxLength={500}
-          error={
-            maxDeskripsi.length >= 500 ? (
-              <ComponentEvent_ErrorMaximalInput max={500} />
-            ) : (
-              ""
-            )
-          }
-          onChange={(val) => {
-            setMaxDeskripsi(val.target.value);
-            setValue({
-              ...value,
-              deskripsi: val.target.value,
-            });
-          }}
-        />
 
-        <Button radius={"xl"} mt={"xl"} onClick={() => onUpdate(router, value)}>
+        <Stack spacing={5}>
+          <Textarea
+            label="Deskripsi"
+            placeholder="Deskripsikan acara yang akan di selenggarakan"
+            withAsterisk
+            autosize
+            value={value.deskripsi}
+            maxLength={300}
+            error={
+              value.deskripsi === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan deskripsi" />
+              ) : (
+                ""
+              )
+            }
+            onChange={(val) => {
+              setMaxDeskripsi(val.target.value);
+              setValue({
+                ...value,
+                deskripsi: val.target.value,
+              });
+            }}
+          />
+          <ComponentGlobal_InputCountDown
+            maxInput={300}
+            lengthInput={value.deskripsi.length}
+          />
+        </Stack>
+
+        <Button
+          style={{
+            transition: "0.5s",
+          }}
+          disabled={
+            value.title === "" ||
+            value.lokasi === "" ||
+            value.deskripsi === "" ||
+            value.eventMaster_TipeAcaraId === 0 ||
+            value.tanggal.toISOString.toString() ===
+              "function Date() { [native code] }" ||
+            moment(value.tanggal).diff(moment(), "minutes") < 0
+          }
+          loaderPosition="center"
+          loading={isLoading ? true : false}
+          radius={"xl"}
+          mt={"xl"}
+          onClick={() => onUpdate(router, value, setLoading)}
+        >
           Update
         </Button>
       </Stack>
@@ -151,13 +190,18 @@ export default function Event_Edit({
   );
 }
 
-async function onUpdate(router: AppRouterInstance, value: MODEL_EVENT) {
+async function onUpdate(
+  router: AppRouterInstance,
+  value: MODEL_EVENT,
+  setLoading: any
+) {
   if (_.values(value).includes(""))
     return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
 
   await Event_funEditById(value).then((res) => {
     if (res.status === 200) {
       ComponentGlobal_NotifikasiBerhasil(res.message);
+      setLoading(true);
       router.back();
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);
