@@ -27,7 +27,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { gs_event_hotMenu, gs_event_status } from "../global_state";
-import { MODEL_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
+import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
 import { Event_funCreate } from "../fun/create/fun_create";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { kMaxLength } from "buffer";
@@ -42,7 +42,7 @@ export default function Event_Create({
   listTipeAcara,
   authorId,
 }: {
-  listTipeAcara: MODEL_DEFAULT_MASTER[];
+  listTipeAcara: MODEL_DEFAULT_MASTER_OLD[];
   authorId: string;
 }) {
   const router = useRouter();

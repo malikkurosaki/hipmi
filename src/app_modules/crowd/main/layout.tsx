@@ -16,7 +16,12 @@ export default function LayoutMainCrowd({
   return (
     <>
       <AppComponentGlobal_LayoutTamplate
-        header={<ComponentGlobal_HeaderTamplate route="/dev/home" title="HIPMI Crowd Funding" />}
+        header={
+          <ComponentGlobal_HeaderTamplate
+            route="/dev/home"
+            title="HIPMI Crowd Funding"
+          />
+        }
       >
         {children}
       </AppComponentGlobal_LayoutTamplate>

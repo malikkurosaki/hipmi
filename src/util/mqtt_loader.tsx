@@ -10,7 +10,11 @@ import { Button, Stack } from "@mantine/core";
 export default function MqttLoader() {
   useEffect(() => {
     mqtt_client.on("connect", () => {
-      console.log("connected");
+      try {
+        console.log("connected");
+      } catch (error) {
+        console.log(error)
+      };
       mqtt_client.subscribe("pesan");
       mqtt_client.subscribe("pesan2");
 

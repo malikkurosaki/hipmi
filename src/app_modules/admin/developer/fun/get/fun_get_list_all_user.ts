@@ -2,8 +2,14 @@
 import prisma from "@/app/lib/prisma";
 import _, { ceil } from "lodash";
 
-export default async function adminDeveloper_funGetListAllUser({ search, page }: { search?: any, page: any }) {
-  const dataSkip = _.toNumber(page) * 9 - 9
+export default async function adminDeveloper_funGetListAllUser({
+  search,
+  page,
+}: {
+  search?: any;
+  page: any;
+}) {
+  const dataSkip = _.toNumber(page) * 9 - 9;
 
   const data = await prisma.user.findMany({
     skip: dataSkip,
@@ -15,8 +21,8 @@ export default async function adminDeveloper_funGetListAllUser({ search, page }:
       masterUserRoleId: "1",
       username: {
         contains: search,
-        mode: 'insensitive'
-      }
+        mode: "insensitive",
+      },
     },
   });
 
@@ -25,15 +31,15 @@ export default async function adminDeveloper_funGetListAllUser({ search, page }:
       masterUserRoleId: "1",
       username: {
         contains: search,
-        mode: 'insensitive'
-      }
-    }
-  })
+        mode: "insensitive",
+      },
+    },
+  });
 
   const allData = {
     data: data,
-    nPage: ceil(nCount / 9)
-  }
+    nPage: ceil(nCount / 9),
+  };
 
   return allData;
 }

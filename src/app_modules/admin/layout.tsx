@@ -6,6 +6,7 @@ import {
   Avatar,
   Box,
   Burger,
+  Center,
   Divider,
   Drawer,
   Footer,
@@ -36,8 +37,8 @@ import {
 import {
   RouterAdminAward,
   RouterAdminDashboard,
-  RouterAdminDonasi,
-  RouterAdminInvestasi,
+  RouterAdminDonasi_OLD,
+  RouterAdminInvestasi_OLD,
 } from "@/app/lib/router_hipmi/router_admin";
 import { useRouter } from "next/navigation";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
@@ -230,51 +231,82 @@ export default function AdminLayout({
               p="xs"
               bg={"gray.2"}
             >
-              <ScrollArea h={"100vh"} scrollbarSize={2}>
+              {/* <ScrollArea h={"100vh"} scrollbarSize={2}>
                 <Navbar.Section>
                   <Stack>
                     {userRole === "3" ? navbarItems : notAdminDev}
-                    {/* <NavLink icon={<IconCheck />} label="Create Admin" /> */}
+
                   </Stack>
                 </Navbar.Section>
-              </ScrollArea>
+              </ScrollArea> */}
+              <Navbar.Section>
+                {/* <Stack align="center" bg={"blue"} h={"100%"}>
+                  <Title order={5} ff={"sans-serif"}>
+                    Dashboard Admin
+                  </Title>
+                  <Divider />
+                </Stack> */}
+                <Center h={50}>
+                  <Title order={4} ff={"sans-serif"}>
+                    Dashboard Admin
+                  </Title>
+                </Center>
+                <Divider />
+              </Navbar.Section>
+              <Navbar.Section grow component={ScrollArea}>
+                <Stack>
+                  {userRole === "3" ? navbarItems : notAdminDev}
+                  {/* <NavLink icon={<IconCheck />} label="Create Admin" /> */}
+                </Stack>
+              </Navbar.Section>
+              <Navbar.Section>
+                <Stack>
+                  <Divider />
+                  <Group position="apart">
+                    <Text fs={"italic"} c={"gray"} fz={"xs"}>
+                      V 1.0.0
+                    </Text>
+                    <Admin_Logout />
+                  </Group>
+                </Stack>
+              </Navbar.Section>
             </Navbar>
           </MediaQuery>
         }
-        header={
-          <Header height={50} bg={"gray.2"}>
-            {/* Mobile View */}
-            <MediaQuery largerThan="md" styles={{ display: "none" }}>
-              <Group h={50} align="center" px={"md"} position="apart">
-                <Burger
-                  opened={opened}
-                  onClick={() => setOpened((o) => !o)}
-                  size="sm"
-                  color={theme.colors.gray[6]}
-                  mr="xl"
-                />
-                <Title order={6}>Dashboard Admin</Title>
-                <Admin_Logout />
-              </Group>
-            </MediaQuery>
+        // header={
+        //   <Header height={50} bg={"gray.2"}>
+        //     {/* Mobile View */}
+        //     <MediaQuery largerThan="md" styles={{ display: "none" }}>
+        //       <Group h={50} align="center" px={"md"} position="apart">
+        //         <Burger
+        //           opened={opened}
+        //           onClick={() => setOpened((o) => !o)}
+        //           size="sm"
+        //           color={theme.colors.gray[6]}
+        //           mr="xl"
+        //         />
+        //         <Title order={6}>Dashboard Admin</Title>
+        //         <Admin_Logout />
+        //       </Group>
+        //     </MediaQuery>
 
-            {/* Web View */}
-            <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
-              <Group position="apart" align="center" h={50} px={"md"}>
-                <Text fw={"lighter"}>Dashboard Admin</Text>
-                <Title order={4}> HIPMI</Title>
-                {/* <Group>
-                  {listAdminPage.map((e) => (
-                    <Text key={e.id}  onClick={() => router.push(e.route)}>
-                      {e.name}
-                    </Text>
-                  ))}
-                </Group> */}
-                <Admin_Logout />
-              </Group>
-            </MediaQuery>
-          </Header>
-        }
+        //     {/* Web View */}
+        //     <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
+        //       <Group position="apart" align="center" h={50} px={"md"}>
+        //         <Text fw={"lighter"}>Dashboard Admin</Text>
+        //         <Title order={4}> HIPMI</Title>
+        //         {/* <Group>
+        //           {listAdminPage.map((e) => (
+        //             <Text key={e.id}  onClick={() => router.push(e.route)}>
+        //               {e.name}
+        //             </Text>
+        //           ))}
+        //         </Group> */}
+        //         <Admin_Logout />
+        //       </Group>
+        //     </MediaQuery>
+        //   </Header>
+        // }
       >
         {/* {JSON.stringify(active)} */}
         {children}

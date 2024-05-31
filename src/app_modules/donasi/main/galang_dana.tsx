@@ -68,7 +68,7 @@ export default function GalangDanaDonasi({
 
   return (
     <>
-      <Affix position={{ bottom: rem(150), right: rem(20) }}>
+      {/* <Affix position={{ bottom: rem(150), right: rem(20) }}>
         <Button
           radius={"xl"}
           bg={"orange"}
@@ -78,7 +78,7 @@ export default function GalangDanaDonasi({
         >
           Galang Dana
         </Button>
-      </Affix>
+      </Affix> */}
       <Stack>
         <Tabs
           color="orange"

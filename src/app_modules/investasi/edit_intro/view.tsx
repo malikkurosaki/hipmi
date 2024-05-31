@@ -32,6 +32,11 @@ import _ from "lodash";
 import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/model_default_master";
 import funEditInvestasi from "../fun/fun_edit_investasi";
 import { useDisclosure, useWindowScroll } from "@mantine/hooks";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import {
+  ComponentGlobal_WarningMaxUpload,
+  maksimalUploadFile,
+} from "@/app_modules/component_global/variabel_global";
 
 export default function EditIntroInvestasi({
   dataInvestasi,
@@ -109,11 +114,20 @@ export default function EditIntroInvestasi({
         <Group position="center" mb={"md"}>
           <FileButton
             onChange={async (files: any) => {
-              const buffer = URL.createObjectURL(
-                new Blob([new Uint8Array(await files.arrayBuffer())])
-              );
-              setImg(buffer);
-              setFl(files);
+              try {
+                const buffer = URL.createObjectURL(
+                  new Blob([new Uint8Array(await files.arrayBuffer())])
+                );
+
+                if (files.size > maksimalUploadFile) {
+                  ComponentGlobal_WarningMaxUpload({});
+                } else {
+                  setImg(buffer);
+                  setFl(files);
+                }
+              } catch (error) {
+                console.log(error);
+              }
             }}
             accept="image/png,image/jpeg"
           >
@@ -136,6 +150,14 @@ export default function EditIntroInvestasi({
           label="Judul Proyek"
           placeholder={"Masukan Judul"}
           value={edit_inves.title}
+          maxLength={100}
+          error={
+            edit_inves.title === "" ? (
+              <ComponentGlobal_ErrorInput text="Masukan judul" />
+            ) : (
+              ""
+            )
+          }
           onChange={(val) => {
             setEdit_inves({
               ...edit_inves,

@@ -17,7 +17,7 @@ export default function Event_SplashScreen() {
       router.replace(RouterEvent.beranda);
       setHotMenu(0);
       setTabsStatus("Publish");
-    }, 2000);
+    }, 1000);
   }, []);
   return (
     <>

@@ -22,6 +22,8 @@ import { useRouter } from "next/navigation";
 
 import toast from "react-simple-toasts";
 import { MODEL_DONASI } from "../../model/interface";
+import _ from "lodash";
+import ComponentDonasi_IsEmptyData from "../../component/is_empty_data";
 
 export default function PostingReviewDonasi({
   listReview,
@@ -30,6 +32,10 @@ export default function PostingReviewDonasi({
 }) {
   const { height, width } = useViewportSize();
   const router = useRouter();
+
+  if (_.isEmpty(listReview))
+    return <ComponentDonasi_IsEmptyData text="Tidak ada data" />;
+
   return (
     <>
       <SimpleGrid
@@ -42,7 +48,10 @@ export default function PostingReviewDonasi({
         ]}
       >
         {listReview.map((e, i) => (
-          <Box key={i} onClick={() => router.push(RouterDonasi.detail_review + `${e.id}`)}>
+          <Box
+            key={i}
+            onClick={() => router.push(RouterDonasi.detail_review + `${e.id}`)}
+          >
             <Stack>
               <Grid>
                 <Grid.Col span={7}>

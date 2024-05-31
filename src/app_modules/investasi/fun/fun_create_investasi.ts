@@ -83,11 +83,7 @@ export async function funCreateInvestasi(
   // const upPdfFolder = Buffer.from(await file.arrayBuffer());
   // fs.writeFileSync(`./public/file/${uploadFile.url}`, upPdfFolder);
 
-  const updloadPDF = await funUploadProspektusInvestasi(
-    filePdf,
-    createInvest.id
-  );
-  // console.log(updloadPDF);
+  await funUploadProspektusInvestasi(filePdf, createInvest.id);
 
   revalidatePath(RouterInvestasi.main_porto);
 

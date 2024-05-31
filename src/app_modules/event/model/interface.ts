@@ -1,5 +1,5 @@
 import { MODEL_USER } from "@/app_modules/home/model/interface";
-import { MODEL_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
+import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
 
 export interface MODEL_EVENT {
   id: string;
@@ -14,9 +14,9 @@ export interface MODEL_EVENT {
   authorId: string;
   Author: MODEL_USER;
   eventMaster_StatusId: string;
-  EventMaster_Status: MODEL_DEFAULT_MASTER;
+  EventMaster_Status: MODEL_DEFAULT_MASTER_OLD;
   eventMaster_TipeAcaraId: number;
-  EventMaster_TipeAcara: MODEL_DEFAULT_MASTER;
+  EventMaster_TipeAcara: MODEL_DEFAULT_MASTER_OLD;
   Event_Peserta: MODEL_EVENT_PESERTA[];
 }
 

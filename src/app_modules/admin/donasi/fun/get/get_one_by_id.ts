@@ -35,6 +35,5 @@ export async function AdminDonasi_getOneById(id: string) {
       DonasiMaster_Status: true,
     },
   });
-  // console.log(res)
   return res;
 }

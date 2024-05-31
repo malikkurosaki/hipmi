@@ -1,5 +1,5 @@
 "use client";
-import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin";
+import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
 import {
   Badge,
@@ -55,7 +55,7 @@ export default function Admin_TableReviewInvestasi({
             <ActionIcon
               variant="transparent"
               onClick={() =>
-                router.push(RouterAdminInvestasi.konfirmasi + `${e.id}`)
+                router.push(RouterAdminInvestasi_OLD.konfirmasi + `${e.id}`)
               }
             >
               <IconEdit color="green" />
@@ -71,7 +71,7 @@ export default function Admin_TableReviewInvestasi({
   return (
     <>
       <Stack>
-        <ActionIcon variant="outline" onClick={() => router.push(RouterAdminInvestasi.main_investasi)}>
+        <ActionIcon variant="outline" onClick={() => router.push(RouterAdminInvestasi_OLD.main_investasi)}>
           <IconChevronLeft />
         </ActionIcon>
         <Box>

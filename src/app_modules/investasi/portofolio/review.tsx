@@ -21,6 +21,7 @@ import {
   MODEL_Investasi,
 } from "../model/model_investasi";
 import _ from "lodash";
+import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
 
 export default function Review({ data }: { data: MODEL_Investasi[] }) {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function Review({ data }: { data: MODEL_Investasi[] }) {
   if (_.isEmpty(data))
     return (
       <>
-        <Center h={"50vh"}>Tidak ada Review</Center>
+        <ComponentInvestasi_IsEmptyData text="Tidak ada data" />
       </>
     );
   return (
@@ -38,7 +39,6 @@ export default function Review({ data }: { data: MODEL_Investasi[] }) {
           // sx={{ borderStyle: "solid", borderColor: "orange", borderWidth: "1px" }}
           key={e.id}
           mb={"md"}
-          bg={"orange.1"}
           p={"xs"}
           withBorder
           onClick={() => router.push(RouterInvestasi.detail_review + `${e.id}`)}

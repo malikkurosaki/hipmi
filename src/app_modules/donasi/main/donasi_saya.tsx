@@ -30,6 +30,7 @@ import moment from "moment";
 import toast from "react-simple-toasts";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import _ from "lodash";
+import ComponentDonasi_IsEmptyData from "../component/is_empty_data";
 
 export default function DonasiSayaDonasi({
   listInvoice,
@@ -39,12 +40,10 @@ export default function DonasiSayaDonasi({
   const [invoice, setInvoice] = useState(listInvoice);
   const router = useRouter();
   const { height, width } = useViewportSize();
-  if (_.isEmpty(invoice))
-    return (
-      <>
-        <Center h={"80vh"}>Belum Ada Donasi</Center>
-      </>
-    );
+
+  if (_.isEmpty(listInvoice))
+    return <ComponentDonasi_IsEmptyData text="Tidak ada data" />;
+
   return (
     <>
       <SimpleGrid

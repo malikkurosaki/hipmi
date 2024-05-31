@@ -16,7 +16,7 @@ export default function Colab_Splash() {
       setHotMenu(1);
       // setStatus("Publish");
       router.replace(RouterColab.beranda);
-    }, 2000);
+    }, 1000);
   }, []);
 
   return (

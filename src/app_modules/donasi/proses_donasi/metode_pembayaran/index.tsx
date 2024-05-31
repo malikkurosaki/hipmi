@@ -39,13 +39,14 @@ const listBank = [
 export default function Donasi_MetodePembayaran({
   listBank,
   donasiId,
-  authorId
+  authorId,
 }: {
   listBank: Model_Nama_Bank[];
   donasiId: string;
-  authorId: string
+  authorId: string;
 }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
   const [prosesDonasi, setProsesDonasi] = useAtom(gs_proses_donasi);
   const [pilihBank, setPilihBank] = useState("1");
   const [bank, setBank] = useState(listBank);
@@ -55,13 +56,14 @@ export default function Donasi_MetodePembayaran({
       donasiId: donasiId,
       donasiMaster_BankId: pilihBank,
       nominal: prosesDonasi.nominal,
-      authorId: authorId
+      authorId: authorId,
     };
 
     // console.log(body)
 
     await Donasi_funCreateInvoice(body).then((res) => {
       if (res.status === 200) {
+        setLoading(true);
         NotifBerhasil(res.message);
         router.push(RouterDonasi.invoice + `${res.invoiceId}`);
         setProsesDonasi({
@@ -94,7 +96,13 @@ export default function Donasi_MetodePembayaran({
           ))}
         </Radio.Group>
 
-        <Button radius={"xl"} onClick={() => onProses()}>
+        <Button
+          style={{ transition: "0.5s" }}
+          loaderPosition="center"
+          loading={isLoading ? true : false}
+          radius={"xl"}
+          onClick={() => onProses()}
+        >
           Pilih
         </Button>
       </Stack>
