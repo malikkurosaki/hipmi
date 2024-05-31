@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterAdminDonasi } from "@/app/lib/router_hipmi/router_admin";
+import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import {
   Stack,
   Title,
@@ -15,6 +15,7 @@ import {
 } from "@mantine/core";
 import { IconChevronsRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
 
 export default function AdminDonasi_Main({
   countPublish,
@@ -33,14 +34,14 @@ export default function AdminDonasi_Main({
       id: 1,
       name: "Publish",
       jumlah: countPublish,
-      link: RouterAdminDonasi.table_publish,
+      link: RouterAdminDonasi_OLD.table_publish,
       color: "green",
     },
     {
       id: 2,
       name: "Review",
       jumlah: countReview,
-      link: RouterAdminDonasi.table_review,
+      link: RouterAdminDonasi_OLD.table_review,
       color: "orange",
     },
     {
@@ -54,13 +55,45 @@ export default function AdminDonasi_Main({
       id: 4,
       name: "Reject",
       jumlah: countReject,
-      link: RouterAdminDonasi.table_reject,
+      link: RouterAdminDonasi_OLD.table_reject,
       color: "red",
     },
   ];
   return (
     <>
-      <Stack spacing={"sm"}>
+      <Stack spacing={"xl"}>
+        <ComponentAdminGlobal_HeaderTamplate name="Donasi" />
+
+        <SimpleGrid
+          cols={4}
+          spacing="lg"
+          breakpoints={[
+            { maxWidth: "62rem", cols: 4, spacing: "lg" },
+            { maxWidth: "48rem", cols: 2, spacing: "sm" },
+            { maxWidth: "36rem", cols: 1, spacing: "sm" },
+          ]}
+        >
+          {listBox.map((e, i) => (
+            <Paper
+              key={i}
+              bg={`${e.color}.2`}
+              shadow="md"
+              radius="md"
+              p="md"
+              // sx={{ borderColor: e.color, borderStyle: "solid" }}
+            >
+              <Group position="center">
+                <Stack align="center" spacing={0}>
+                  <Text>{e.name}</Text>
+                  <Title>{e.jumlah}</Title>
+                </Stack>
+              </Group>
+            </Paper>
+          ))}
+        </SimpleGrid>
+      </Stack>
+
+      {/* <Stack spacing={"sm"}>
         <Title>Donasi</Title>
         <Divider mb={"md"} />
         <SimpleGrid
@@ -99,7 +132,7 @@ export default function AdminDonasi_Main({
             </Paper>
           ))}
         </SimpleGrid>
-      </Stack>
+      </Stack> */}
     </>
   );
 }

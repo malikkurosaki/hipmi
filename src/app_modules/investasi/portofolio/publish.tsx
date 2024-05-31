@@ -25,6 +25,7 @@ import _ from "lodash";
 import moment from "moment";
 import { useState } from "react";
 import { IconChecklist, IconCircleCheck } from "@tabler/icons-react";
+import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
 
 export default function Publish({ data }: { data: MODEL_Investasi[] }) {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function Publish({ data }: { data: MODEL_Investasi[] }) {
   if (_.isEmpty(data))
     return (
       <>
-        <Center h={"50vh"}>Tidak ada Publish</Center>
+        <ComponentInvestasi_IsEmptyData text="Tidak ada data" />
       </>
     );
 
@@ -45,7 +46,6 @@ export default function Publish({ data }: { data: MODEL_Investasi[] }) {
           withBorder
           mb={"md"}
           p={"xs"}
-          bg={"green.1"}
           onClick={() =>
             router.push(RouterInvestasi.detail_publish + `${e.id}`)
           }

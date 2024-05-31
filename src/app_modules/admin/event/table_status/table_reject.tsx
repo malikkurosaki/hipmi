@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterAdminDonasi } from "@/app/lib/router_hipmi/router_admin";
+import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import {
   ActionIcon,
   Box,
@@ -90,7 +90,6 @@ function TableStatus({ listReject }: { listReject: MODEL_EVENT[] }) {
           {e.tanggal.toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
-            hour12: false,
           })}
         </Box>
       </td>

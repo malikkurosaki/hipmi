@@ -838,3 +838,11 @@ model ProjectCollaboration_Notifikasi {
   User                   User                  @relation("UserNotifProjectToUser", fields: [userId], references: [id], map: "UserNotifProjectUser")
   userId                 String
 }
+
+model NomorAdmin {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  nomor     String
+}

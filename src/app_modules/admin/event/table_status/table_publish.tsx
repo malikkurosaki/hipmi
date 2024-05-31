@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterAdminDonasi } from "@/app/lib/router_hipmi/router_admin";
+import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import {
   ActionIcon,
   Avatar,
@@ -72,15 +72,15 @@ function TableStatus({ listPublish }: { listPublish: MODEL_EVENT[] }) {
 
   const TableRows = data.map((e, i) => (
     <tr key={i}>
-      <td>{e.title}</td>
-      <td>{e.lokasi}</td>
-      <td>{e.EventMaster_TipeAcara.name}</td>
-      <td>{e.tanggal.toLocaleString("id-ID", { dateStyle: "full" })}</td>
+      <td>{e?.Author?.Profile?.name}</td>
+      <td>{e?.title}</td>
+      <td>{e?.lokasi}</td>
+      <td>{e?.EventMaster_TipeAcara?.name}</td>
+      <td>{e?.tanggal.toLocaleString("id-ID", { dateStyle: "full" })}</td>
       <td>
         {e.tanggal.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
-          hour12: false,
         })}
       </td>
       <td>
@@ -121,28 +121,34 @@ function TableStatus({ listPublish }: { listPublish: MODEL_EVENT[] }) {
               <Title order={3}>Daftar Peserta</Title>
             </Center>
             <Stack>
-              {peserta?.map((e) => (
-                <Stack key={e.id} spacing={"xs"}>
-                  <Grid>
-                    <Grid.Col span={"content"}>
-                      <Avatar
-                        sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-                        radius={"xl"}
-                        src={
-                          RouterProfile.api_foto_profile +
-                          e?.User?.Profile?.imagesId
-                        }
-                      />
-                    </Grid.Col>
-                    <Grid.Col span={"auto"}>
-                      <Group align="center" h={"100%"}>
-                        <Text>{e?.User?.Profile?.name}</Text>
-                      </Group>
-                    </Grid.Col>
-                  </Grid>
-                  <Divider />
-                </Stack>
-              ))}
+              {_.isEmpty(peserta) ? (
+                <Center>
+                  <Text c={"gray"}>Tidak ada peserta</Text>
+                </Center>
+              ) : (
+                peserta?.map((e) => (
+                  <Stack key={e.id} spacing={"xs"}>
+                    <Grid>
+                      <Grid.Col span={"content"}>
+                        <Avatar
+                          sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
+                          radius={"xl"}
+                          src={
+                            RouterProfile.api_foto_profile +
+                            e?.User?.Profile?.imagesId
+                          }
+                        />
+                      </Grid.Col>
+                      <Grid.Col span={"auto"}>
+                        <Group align="center" h={"100%"}>
+                          <Text>{e?.User?.Profile?.name}</Text>
+                        </Group>
+                      </Grid.Col>
+                    </Grid>
+                    <Divider />
+                  </Stack>
+                ))
+              )}
             </Stack>
           </Stack>
         </Paper>
@@ -163,6 +169,7 @@ function TableStatus({ listPublish }: { listPublish: MODEL_EVENT[] }) {
         >
           <thead>
             <tr>
+              <th>Author</th>
               <th>Judul</th>
               <th>Lokasi</th>
               <th>Tipe Acara</th>

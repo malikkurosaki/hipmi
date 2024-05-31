@@ -24,7 +24,7 @@ import forum_status_posting from "../../../bin/seeder/forum/master_status.json";
 import collaboration_industri from "../../../bin/seeder/colab/master_industri.json";
 import collaboration_status from "../../../bin/seeder/colab/master_status.json";
 import collaboration_jumlah_minimal_room from "../../../bin/seeder/colab/jumlah_minimal_room.json";
-import { randomId } from "@mantine/hooks";
+import nomor_admin from "../../../bin/seeder/nomor_admin.json";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
@@ -388,6 +388,22 @@ export async function GET(req: Request) {
         },
         update: {
           name: p.name,
+        },
+      });
+    }
+
+    for (let a of nomor_admin) {
+      await prisma.nomorAdmin.upsert({
+        where: {
+          id: a.id,
+        },
+        create: {
+          id: a.id,
+          nomor: a.nomor,
+        },
+        update: {
+          id: a.id,
+          nomor: a.nomor,
         },
       });
     }

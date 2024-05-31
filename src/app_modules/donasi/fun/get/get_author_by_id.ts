@@ -12,6 +12,13 @@ export async function Donasi_getAuthorById(authorId: string) {
       id: true,
       username: true,
       nomor: true,
+      Profile: {
+        select: {
+          id: true,
+          name: true,
+          imagesId: true,
+        },
+      },
       Donasi: {
         where: {
           donasiMaster_StatusDonasiId: "1",

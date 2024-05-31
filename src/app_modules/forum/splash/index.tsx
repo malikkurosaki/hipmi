@@ -12,7 +12,7 @@ const router = useRouter()
         // setHotMenu(1);
         // setStatus("Publish");
         router.replace(RouterForum.beranda);
-      }, 2000);
+      }, 1000);
     }, []);
 
   return (

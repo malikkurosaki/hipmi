@@ -14,25 +14,25 @@ import {
 } from "@mantine/core";
 import TampilanRupiahDonasi from "../tampilan_rupiah";
 
-export default function ComponentDonasi_DetailDataGalangDana({ donasi }: { donasi: MODEL_DONASI }) {
+export default function ComponentDonasi_DetailDataGalangDana({
+  donasi,
+}: {
+  donasi: MODEL_DONASI;
+}) {
   const router = useRouter();
   return (
     <>
-      <Stack>
+      <Stack px={"xs"}>
         <Stack>
-          <AspectRatio ratio={16 / 9}>
-            <Paper radius={"md"}>
-              <Image
-                alt="Foto"
-                src={RouterDonasi.api_gambar + `${donasi.imagesId}`}
-              />
-            </Paper>
-          </AspectRatio>
+          <Image
+            alt="Foto"
+            src={RouterDonasi.api_gambar + `${donasi.imagesId}`}
+          />
+          {/* <AspectRatio ratio={9 / 16} maw={500} mah={1000} bg={"blue"}>
+          </AspectRatio> */}
           <Stack spacing={0}>
             <Title order={4}>{donasi.title}</Title>
-            <Text fz={10}>
-              Durasi: {donasi.DonasiMaster_Durasi.name} hari
-            </Text>
+            <Text fz={10}>Durasi: {donasi.DonasiMaster_Durasi.name} hari</Text>
           </Stack>
           <Stack spacing={0}>
             <Group position="apart">

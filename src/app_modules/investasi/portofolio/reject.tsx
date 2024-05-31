@@ -22,6 +22,7 @@ import {
 } from "../model/model_investasi";
 import { useState } from "react";
 import _ from "lodash";
+import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
 
 export default function Reject({ data }: { data: MODEL_Investasi[] }) {
   const [investasi, setInvestasi] = useState(data);
@@ -30,7 +31,7 @@ export default function Reject({ data }: { data: MODEL_Investasi[] }) {
   if (_.isEmpty(data))
     return (
       <>
-        <Center h={"50vh"}>Tidak ada Reject</Center>
+        <ComponentInvestasi_IsEmptyData text="Tidak ada data" />
       </>
     );
 
@@ -43,7 +44,6 @@ export default function Reject({ data }: { data: MODEL_Investasi[] }) {
           withBorder
           mb={"md"}
           p={"xs"}
-          bg={"red.1"}
           onClick={() => router.push(RouterInvestasi.detail_reject + `${e.id}`)}
         >
           <Grid>

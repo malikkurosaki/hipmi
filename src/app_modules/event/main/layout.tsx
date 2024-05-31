@@ -44,7 +44,7 @@ export default function LayoutEvent_Main({
 
     {
       id: "2",
-      name: "Status Event",
+      name: "Status",
       path: RouterEvent.status_page,
       icon: <IconTimelineEventText />,
     },

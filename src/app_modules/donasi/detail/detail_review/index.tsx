@@ -42,6 +42,7 @@ export default function DetailReviewDonasi({
   dataDonasi: MODEL_DONASI;
 }) {
   const [donasi, setDonasi] = useState(dataDonasi);
+
   return (
     <>
       <Stack spacing={"xl"}>
@@ -54,6 +55,7 @@ export default function DetailReviewDonasi({
 }
 function ButtonBatalReview({ donasi }: { donasi: MODEL_DONASI }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
   const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
     gs_donasi_tabs_posting
   );
@@ -61,9 +63,10 @@ function ButtonBatalReview({ donasi }: { donasi: MODEL_DONASI }) {
   async function onCLick() {
     await Donasi_funGantiStatus(donasi.id, "3").then((res) => {
       if (res.status === 200) {
-        router.push(RouterDonasi.main_galang_dana);
         setTabsPostingDonasi("Draft");
         NotifBerhasil("Berhasil Dibatalkan");
+        setLoading(true);
+        router.push(RouterDonasi.main_galang_dana);
       } else {
         NotifPeringatan(res.message);
       }
@@ -71,11 +74,19 @@ function ButtonBatalReview({ donasi }: { donasi: MODEL_DONASI }) {
   }
   return (
     <>
-      <Button radius={"xl"} bg={"red"} color="red" onClick={() => onCLick()}>
+      <Button
+        style={{
+          transition: "0.5s",
+        }}
+        loaderPosition="center"
+        loading={isLoading ? true : false}
+        radius={"xl"}
+        bg={"red"}
+        color="red"
+        onClick={() => onCLick()}
+      >
         Batalkan Review
       </Button>
     </>
   );
 }
-
-

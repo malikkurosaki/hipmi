@@ -15,7 +15,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useAtom } from "jotai";
-import { gs_proses_donasi } from "../../global_state";
+import { gs_donasi_hot_menu, gs_proses_donasi } from "../../global_state";
 import { MODEL_DONASI, MODEL_DONASI_INVOICE } from "../../model/interface";
 import { useState } from "react";
 import TampilanRupiahDonasi from "../../component/tampilan_rupiah";
@@ -39,6 +39,7 @@ export default function Donasi_InvoiceProses({
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [image, setImage] = useState<any | null>(null);
+  const [active, setActive] = useAtom(gs_donasi_hot_menu);
 
   return (
     <>
@@ -174,38 +175,12 @@ export default function Donasi_InvoiceProses({
           </Stack>
         </Paper>
 
-        {/* <Paper p={"sm"} withBorder>
-          <Stack>
-            <Text>Detail donasi</Text>
-            <Paper p={"md"} bg={"gray.2"}>
-              <Stack spacing={"lg"}>
-                <Stack spacing={"xs"}>
-                  <Title order={4}>{invoice.Donasi.title}</Title>
-                  <Stack spacing={0}>
-                    <Group spacing={5}>
-                      <Text>Kategori</Text>
-                      <Title order={5}>
-                        {invoice.Donasi.DonasiMaster_Ketegori.name}
-                      </Title>
-                    </Group>
-                    <ComponentDonasi_TampilanHitungMundur
-                      durasi={invoice.Donasi.DonasiMaster_Durasi.name}
-                      publishTime={invoice.Donasi.publishTime}
-                      textSize={16}
-                    />
-                  </Stack>
-                </Stack>
-              </Stack>
-            </Paper>
-          </Stack>
-        </Paper> */}
-
         {file !== null ? (
           <Button
             radius={"xl"}
             bg={"orange"}
             color="orange"
-            onClick={() => onClick(router, invoice.id)}
+            onClick={() => onClick(router, invoice.id, setActive)}
           >
             Saya Sudah Transfer
           </Button>
@@ -225,10 +200,15 @@ export default function Donasi_InvoiceProses({
   );
 }
 
-async function onClick(router: AppRouterInstance, invoiceId: string) {
+async function onClick(
+  router: AppRouterInstance,
+  invoiceId: string,
+  setActive: any
+) {
   await Donasi_funUpdateStatusInvoice(invoiceId, "2").then((res) => {
     if (res.status === 200) {
       NotifBerhasil(res.message);
+      setActive(2);
       router.push(RouterDonasi.proses_transaksi + `${invoiceId}`);
     } else {
       NotifGagal(res.message);

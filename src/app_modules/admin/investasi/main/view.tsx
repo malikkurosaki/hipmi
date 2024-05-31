@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin";
+import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
 import {
   ActionIcon,
@@ -13,6 +13,7 @@ import {
   Group,
   Paper,
   ScrollArea,
+  SimpleGrid,
   Stack,
   Table,
   Text,
@@ -37,6 +38,7 @@ import moment from "moment";
 import _ from "lodash";
 import TableTotalInvestasi from "./table_total_investasi";
 import TablePublikasiProgresInvestasi from "./table_publikasi_progres";
+import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
 
 export default function Admin_Investasi({
   listInvestasi,
@@ -70,73 +72,57 @@ export default function Admin_Investasi({
       id: 2,
       name: "Review",
       jumlah: countReview,
-      link: RouterAdminInvestasi.table_status_review,
+      link: RouterAdminInvestasi_OLD.table_status_review,
       color: "orange",
     },
     {
       id: 3,
       name: "Publish",
       jumlah: countPublish,
-      link: RouterAdminInvestasi.table_status_publish,
+      link: RouterAdminInvestasi_OLD.table_status_publish,
       color: "green",
     },
     {
       id: 4,
       name: "Reject",
       jumlah: countReject,
-      link: RouterAdminInvestasi.table_status_reject,
+      link: RouterAdminInvestasi_OLD.table_status_reject,
       color: "red",
     },
   ];
 
   return (
     <>
-      <Stack spacing={"sm"}>
-        <Title>Investasi</Title>
-        <Divider mb={"md"} />
-        {/* Status box */}
-        <Grid mb={"md"}>
-          {listBox.map((e) => (
-            <Grid.Col sm={12} md={6} lg={3} key={e.id}>
-              <Paper
-                bg={`${e.color}.1`}
-                p={"xs"}
-                // sx={{borderStyle: "solid", borderColor: e.color}}
-              >
-                <Stack align="center" justify="center" spacing={0} mb={-35}>
-                  <Text tt={"uppercase"}>{e.name}</Text>
-                  <Text fw={"bold"} fz={50}>
-                    {e.jumlah}
-                  </Text>
-                </Stack>
-                <Group position="right">
-                  {e.link === "" ? (
-                    <ActionIcon variant="transparent">
-                      {/* <IconChevronsRight color="black" /> */}
-                    </ActionIcon>
-                  ) : (
-                    <ActionIcon
-                      variant="transparent"
-                      onClick={() => router.push(e.link)}
-                    >
-                      <IconChevronsRight color="black" />
-                    </ActionIcon>
-                  )}
-                </Group>
-              </Paper>
-            </Grid.Col>
-          ))}
-        </Grid>
+      <Stack spacing={"xl"}>
+        <ComponentAdminGlobal_HeaderTamplate name="Investasi" />
 
-        {/* Table Total & Progres */}
-        {/* <Grid>
-          <Grid.Col sm={12} md={4} lg={4}>
-            <TableTotalInvestasi totalInvestasiByUser={totalInvestasiByUser} />
-          </Grid.Col>
-          <Grid.Col sm={12} md={8} lg={8}>
-            <TablePublikasiProgresInvestasi publishProgres={publishProgres} />
-          </Grid.Col>
-        </Grid> */}
+        <SimpleGrid
+          cols={4}
+          spacing="lg"
+          breakpoints={[
+            { maxWidth: "62rem", cols: 4, spacing: "lg" },
+            { maxWidth: "48rem", cols: 2, spacing: "sm" },
+            { maxWidth: "36rem", cols: 1, spacing: "sm" },
+          ]}
+        >
+          {listBox.map((e, i) => (
+            <Paper
+              key={i}
+              bg={`${e.color}.2`}
+              shadow="md"
+              radius="md"
+              p="md"
+              // sx={{ borderColor: e.color, borderStyle: "solid" }}
+            >
+              <Group position="center">
+                <Stack align="center" spacing={0}>
+                  <Text>{e.name}</Text>
+                  <Title>{e.jumlah}</Title>
+                </Stack>
+              </Group>
+            </Paper>
+          ))}
+        </SimpleGrid>
       </Stack>
     </>
   );

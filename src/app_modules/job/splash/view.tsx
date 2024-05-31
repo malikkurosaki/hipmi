@@ -18,7 +18,7 @@ export default function Job_Splash() {
       setHotMenu(1);
       setStatus("Publish")
       router.replace(RouterJob.beranda);
-    }, 2000);
+    }, 1000);
   }, []);
 
   return (

@@ -8,28 +8,25 @@ import { MODEL_EVENT } from "../../model/interface";
 import { useState } from "react";
 import ComponentEvent_BoxListStatus from "../../component/box_list_status";
 import _ from "lodash";
+import ComponentEvent_IsEmptyData from "../../component/is_empty_data";
 
 export default function Event_StatusDraft({
   listDraft,
 }: {
   listDraft: MODEL_EVENT[];
 }) {
-  const router = useRouter();
-
   if (_.isEmpty(listDraft))
-    return (
-      <Center h={"50vh"} fz={"sm"} fw={"bold"}>
-        Tidak Ada Event
-      </Center>
-    );
+    return <ComponentEvent_IsEmptyData text="Tidak ada data" />;
   return (
     <>
-      {listDraft
-        .map((e, i) => (
-          <Box key={e.id}>
-            <ComponentEvent_BoxListStatus data={e} path={RouterEvent.detail_draft}/>
-          </Box>
-        ))}
+      {listDraft.map((e, i) => (
+        <Box key={e.id}>
+          <ComponentEvent_BoxListStatus
+            data={e}
+            path={RouterEvent.detail_draft}
+          />
+        </Box>
+      ))}
     </>
   );
 }

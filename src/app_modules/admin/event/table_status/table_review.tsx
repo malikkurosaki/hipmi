@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterAdminDonasi } from "@/app/lib/router_hipmi/router_admin";
+import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import {
   ActionIcon,
   Box,
@@ -75,7 +75,6 @@ function TableStatus({ listReview }: { listReview: MODEL_EVENT[] }) {
         {e.tanggal.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
-          hour12: false,
         })}
       </td>
       <td>
@@ -90,7 +89,7 @@ function TableStatus({ listReview }: { listReview: MODEL_EVENT[] }) {
             color={"green"}
             leftIcon={<IconEyeShare />}
             radius={"xl"}
-            onClick={() => onPublish(e.id, setData)}
+            onClick={() => onPublish(e.id, setData, e.tanggal)}
           >
             Publish
           </Button>
@@ -194,7 +193,12 @@ function TableStatus({ listReview }: { listReview: MODEL_EVENT[] }) {
   );
 }
 
-async function onPublish(eventId: string, setData: any) {
+async function onPublish(eventId: string, setData: any, tanggal: Date) {
+  if (moment(tanggal).diff(Date.now(), "minutes") < 0)
+    return ComponentGlobal_NotifikasiPeringatan(
+      "Waktu acara telah lewat, Report untuk memberitahu user !"
+    );
+
   await AdminEvent_funEditStatusPublishById(eventId, "1").then(async (res) => {
     if (res.status === 200) {
       await AdminEvent_getListTableByStatusId("2").then((res) => {

@@ -29,9 +29,10 @@ import ComponentEvent_BoxListStatus from "../component/box_list_status";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
 import _ from "lodash";
-import { IconCirclePlus } from "@tabler/icons-react";
+import { IconCirclePlus, IconPencilPlus } from "@tabler/icons-react";
 import ComponentEvent_IsEmptyData from "../component/is_empty_data";
 import { useWindowScroll } from "@mantine/hooks";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
 
 export default function Event_Beranda({
   dataEvent,
@@ -41,6 +42,8 @@ export default function Event_Beranda({
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
   const [scroll, scrollTo] = useWindowScroll();
+  const [eventId, setEventId] = useState("");
+  const [visible, setVisible] = useState(false);
 
   return (
     <>
@@ -60,50 +63,56 @@ export default function Event_Beranda({
             router.push(RouterEvent.create);
           }}
         >
-          <IconCirclePlus color="white" size={40} />
+          <IconPencilPlus color="white" />
         </ActionIcon>
       </Affix>
       {_.isEmpty(dataEvent) ? (
         <ComponentEvent_IsEmptyData text="Tidak ada data" />
       ) : (
-        <Box>
-          {Array(10)
-            .fill(0)
-            .map((e, i) => (
-              <Card key={i} shadow="lg" radius={"md"} withBorder mb={"sm"}>
-                <Card.Section px={"sm"} pt={"sm"}>
-                  <ComponentGlobal_AuthorNameOnHeader
-                    profileId={e?.Author.Profile.id}
-                    imagesId={e?.Author.Profile.imagesId}
-                    authorName={e?.Author.Profile.name}
-                  />
-                </Card.Section>
-                <Card.Section
-                  p={"sm"}
-                  onClick={() => router.push(RouterEvent.detail_main + e?.id)}
-                >
-                  <Stack>
-                    <Grid>
-                      <Grid.Col span={8}>
-                        <Title order={6} truncate>
-                          {e?.title}
-                        </Title>
-                      </Grid.Col>
-                      <Grid.Col span={4}>
-                        <Text fz={"sm"} truncate>
-                          {moment(e?.tanggal).format("ll")}
-                        </Text>
-                      </Grid.Col>
-                    </Grid>
-
-                    <Text fz={"sm"} lineClamp={2}>
-                      {e?.deskripsi}
+        dataEvent.map((e, i) => (
+          <Card key={i} shadow="lg" radius={"md"} withBorder mb={"sm"}>
+            <Card.Section px={"sm"} pt={"sm"}>
+              <ComponentGlobal_AuthorNameOnHeader
+                profileId={e?.Author?.Profile?.id}
+                imagesId={e?.Author?.Profile?.imagesId}
+                authorName={e?.Author?.Profile?.name}
+                isPembatas={true}
+              />
+            </Card.Section>
+            <Card.Section
+              p={"sm"}
+              onClick={() => {
+                setEventId(e?.id);
+                setVisible(true);
+                router.push(RouterEvent.detail_main + e?.id);
+              }}
+            >
+              <Stack>
+                <Grid>
+                  <Grid.Col span={8}>
+                    <Title order={6} truncate>
+                      {e?.title}
+                    </Title>
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <Text fz={"sm"} truncate>
+                      {moment(e?.tanggal).format("ll")}
                     </Text>
-                  </Stack>
-                </Card.Section>
-              </Card>
-            ))}
-        </Box>
+                  </Grid.Col>
+                </Grid>
+
+                <Text fz={"sm"} lineClamp={2}>
+                  {e?.deskripsi}
+                </Text>
+              </Stack>
+            </Card.Section>
+            {visible && e?.id === eventId ? (
+              <ComponentGlobal_CardLoadingOverlay />
+            ) : (
+              ""
+            )}
+          </Card>
+        ))
       )}
     </>
   );

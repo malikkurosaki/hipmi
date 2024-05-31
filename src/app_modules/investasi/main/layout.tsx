@@ -75,7 +75,7 @@ export default function LayoutMainInvestasi({
           />
         }
         footer={
-          <Footer height={"10vh"} bg={"dark.4"}>
+          <Footer height={"10vh"} bg={"black"}>
             <Grid align="center" h={"10vh"} pt={"xs"} grow>
               {/* Tampilan Bursa */}
               {listFooter.map((e, k) => (
@@ -91,11 +91,11 @@ export default function LayoutMainInvestasi({
                     <Flex direction={"column"} align={"center"} w={"100%"}>
                       <ActionIcon
                         variant="transparent"
-                        c={active === k ? "green" : "white"}
+                        c={active === k ? "blue" : "white"}
                       >
                         {e.icon}
                       </ActionIcon>
-                      <Text c={active === k ? "green" : "white"} fz={"xs"}>
+                      <Text c={active === k ? "blue" : "white"} fz={"xs"}>
                         {e.name}
                       </Text>
                     </Flex>

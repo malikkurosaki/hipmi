@@ -15,11 +15,16 @@ export default function CeritaPenggalangDonasi({
   return (
     <>
       {/* <pre>{JSON.stringify(data.imageCeritaDonasi, null, 2)}</pre> */}
-      <Stack>
-        {moment(data.createdAt).format("ll")}
+      <Stack px={"xs"}>
+        <Text>
+          {new Intl.DateTimeFormat("id-ID", { dateStyle: "full" }).format(
+            data.createdAt
+          )}
+        </Text>
         <Text fw={"bold"}> #HaloOrangBaik</Text>
         <Text>{data.pembukaan}</Text>
         <Image
+          radius={"sm"}
           alt="Foto"
           src={RouterDonasi.api_image_cerita + `${data.imageCeritaDonasi.url}`}
         />
