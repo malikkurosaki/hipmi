@@ -31,7 +31,7 @@ import { useState } from "react";
 import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import ComponentAdminDonasi_TombolKembali from "../../donasi/component/tombol_kembali";
 import { MODEL_EVENT } from "@/app_modules/event/model/interface";
-import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
 import moment from "moment";
 import _ from "lodash";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -134,9 +134,7 @@ function TableStatus({ listReview }: { listReview: MODEL_EVENT[] }) {
             <Button
               radius={"xl"}
               onClick={() => {
-                onReject(eventId, catatan, setData, close);
-
-                // console.log("hehe")
+                onReject(eventId, catatan, setData, close)
               }}
             >
               Simpan

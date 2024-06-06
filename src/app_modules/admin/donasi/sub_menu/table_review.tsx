@@ -25,7 +25,7 @@ import AdminDonasi_DetailReview from "../detail/detail_review";
 import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
 import { useState } from "react";
 import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
-import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
 import _ from "lodash";
 import adminDonasi_getListReview from "../fun/get/get_list_review";
 

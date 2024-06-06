@@ -2,9 +2,7 @@
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
-  ActionIcon,
   AspectRatio,
-  Box,
   Button,
   Center,
   FileButton,
@@ -13,27 +11,24 @@ import {
   Select,
   Stack,
   Text,
-  TextInput,
-  Textarea,
+  TextInput
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 
-import ComponentDonasi_NotedBox from "../component/noted_box";
-import { MODEL_DONASI_ALL_MASTER } from "../model/interface";
-import { useState } from "react";
-import { useShallowEffect } from "@mantine/hooks";
-import Donasi_funCreateTemporary from "../fun/create/fun_create_donasi_temporary";
-import toast from "react-simple-toasts";
-import _ from "lodash";
-import { notifications } from "@mantine/notifications";
-import { NotifPeringatan } from "../component/notifikasi/notif_peringatan";
 import {
   ComponentGlobal_WarningMaxUpload,
   maksimalUploadFile,
 } from "@/app_modules/component_global/variabel_global";
+import _ from "lodash";
+import { useState } from "react";
+import toast from "react-simple-toasts";
+import ComponentDonasi_NotedBox from "../component/noted_box";
+import { NotifPeringatan } from "../component/notifikasi/notif_peringatan";
+import Donasi_funCreateTemporary from "../fun/create/fun_create_donasi_temporary";
 import { gs_donasi_tabs_posting } from "../global_state";
+import { MODEL_DONASI_ALL_MASTER } from "../model/interface";
 
 export default function CreateDonasi({
   masterKategori,

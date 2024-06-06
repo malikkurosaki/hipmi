@@ -8,13 +8,13 @@ import adminDonasi_getMasterStatus from "@/app_modules/admin/donasi/fun/master/g
 export default async function Page({ params }: { params: { id: string } }) {
   let donasiId = params.id;
   const dataPublish = await AdminDonasi_getOneById(params.id);
+  const countDonatur = await AdminDonasi_funCountDonatur(params.id);
+  const listMasterStatus = await adminDonasi_getMasterStatus();
   const listDonatur = await adminDonasi_getListDonatur({
     donasiId: donasiId,
     page: 1,
   });
-  const countDonatur = await AdminDonasi_funCountDonatur(params.id);
   const listPencairan = await AdminDonasi_getListPencairanDana(params.id);
-  const listMasterStatus = await adminDonasi_getMasterStatus();
 
   return (
     <>

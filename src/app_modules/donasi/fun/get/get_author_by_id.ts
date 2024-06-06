@@ -16,6 +16,7 @@ export async function Donasi_getAuthorById(authorId: string) {
         select: {
           id: true,
           name: true,
+          email: true,
           imagesId: true,
         },
       },

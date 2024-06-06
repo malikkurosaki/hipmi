@@ -1,4 +1,5 @@
 "use client";
+"use dev";
 
 import ComponentDonasi_IsEmptyData from "@/app_modules/donasi/component/is_empty_data";
 import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
@@ -56,7 +57,11 @@ export default function DonaturDonasi({
                       <TampilanRupiahDonasi nominal={+e.nominal} />
                     </Text>
                   </Group>
-                  <Text fz={"xs"}>{moment(e.createdAt).format("ll")}</Text>
+                  <Text fz={"xs"}>
+                    {new Intl.DateTimeFormat("id-ID", {
+                      dateStyle: "full",
+                    }).format(e?.createdAt)}
+                  </Text>
                 </Stack>
               </Grid.Col>
             </Grid>
