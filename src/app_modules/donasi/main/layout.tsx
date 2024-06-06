@@ -2,39 +2,29 @@
 
 import {
   ActionIcon,
-  AppShell,
   Center,
   Flex,
   Footer,
   Grid,
   Group,
   Header,
-  Indicator,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
 import React, { useState } from "react";
-import ComponentDonasi_HeaderTamplate from "../component/header_tamplate";
 
+import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
+import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 import {
-  IconBell,
   IconChevronLeft,
-  IconCurrencyDollar,
-  IconGift,
   IconGiftCardFilled,
   IconHome,
-  IconMoneybag,
-  IconSend,
+  IconMoneybag
 } from "@tabler/icons-react";
-import toast from "react-simple-toasts";
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
 import { gs_donasi_hot_menu } from "../global_state";
-import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
-import { title } from "process";
-import _ from "lodash";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutDonasi({
   children,
@@ -89,7 +79,8 @@ export default function LayoutDonasi({
                 <IconChevronLeft />
               </ActionIcon>
               <Title order={5}>Donasi</Title>
-              <ActionIcon
+              <ActionIcon disabled variant="transparent"/>
+              {/* <ActionIcon
                 radius={"md"}
                 loading={isRightLoading ? true : false}
                 variant="transparent"
@@ -107,7 +98,7 @@ export default function LayoutDonasi({
                 ) : (
                   <IconBell />
                 )}
-              </ActionIcon>
+              </ActionIcon> */}
             </Group>
           </Header>
         }

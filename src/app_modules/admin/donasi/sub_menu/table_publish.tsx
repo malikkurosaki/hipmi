@@ -22,7 +22,7 @@ import ComponentAdminDonasi_TombolKembali from "../component/tombol_kembali";
 import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
 import { useState } from "react";
 import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
-import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
 import adminDonasi_getListPublish from "../fun/get/get_list_publish";
 
 export default function AdminDonasi_TablePublish({

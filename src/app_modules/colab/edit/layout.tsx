@@ -1,6 +1,6 @@
 "use client";
 
-import { AppShell } from "@mantine/core";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 import React from "react";
 import ComponentColab_HeaderTamplate from "../component/header_tamplate";
 
@@ -11,9 +11,9 @@ export default function LayoutColab_Edit({
 }) {
   return (
     <>
-      <AppShell header={<ComponentColab_HeaderTamplate title="Edit Proyek" />}>
+      <AppComponentGlobal_LayoutTamplate header={<ComponentColab_HeaderTamplate title="Edit Proyek" />}>
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

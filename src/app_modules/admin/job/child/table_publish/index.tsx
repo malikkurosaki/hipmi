@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
 import { MODEL_JOB } from "@/app_modules/job/model/interface";
 import {
   Avatar,

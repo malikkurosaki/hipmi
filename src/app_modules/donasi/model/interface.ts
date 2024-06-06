@@ -1,5 +1,5 @@
 import { MODEL_USER } from "@/app_modules/home/model/interface";
-import { Model_Nama_Bank } from "@/app_modules/investasi/model/model_investasi";
+import { MODEL_DATA_BANK } from "@/app_modules/investasi/model/model_investasi";
 import { MODEL_IMAGES } from "@/app_modules/model_global/interface";
 
 export interface MODEL_DONASI {

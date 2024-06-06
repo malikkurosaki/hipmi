@@ -8,10 +8,8 @@ export default async function Page() {
   const countReview = await AdminEvent_funCountByStatusId("2");
   const countDraft = await AdminEvent_funCountByStatusId("3");
   const countReject = await AdminEvent_funCountByStatusId("4");
-  const countTipeAcara = await AdminEvent_funCountTipeAcara()
-  const countRiwayat = await AdminEvent_funCountRiwayat()
-
-
+  const countTipeAcara = await AdminEvent_funCountTipeAcara();
+  const countRiwayat = await AdminEvent_funCountRiwayat();
 
   return (
     <>

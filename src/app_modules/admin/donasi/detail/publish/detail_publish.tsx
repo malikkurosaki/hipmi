@@ -43,18 +43,18 @@ import {
 import { useState } from "react";
 import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
-import _ from "lodash";
+import _, { toNumber } from "lodash";
 import { useRouter } from "next/navigation";
 import { useDisclosure, useInterval, useShallowEffect } from "@mantine/hooks";
 import { Donasi_getOneById } from "@/app_modules/donasi/fun/get/get_one_donasi_by_id";
 import { AdminDonasi_getOneById } from "../../fun/get/get_one_by_id";
-import ComponentGlobalAdmin_BackButton from "@/app_modules/admin/component/back_button";
+import ComponentGlobalAdmin_BackButton from "@/app_modules/admin/component_global/back_button";
 import { MODEL_NEW_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
 import { adminDonasi_getListDonatur } from "../../fun/get/get_list_donatur_by_id";
 import { RouterAdminDonasi } from "@/app/lib/router_admin/router_admin_donasi";
 import adminDonasi_funUpdateStatusDanTotal from "../../fun/update/fun_update_status_dan_total";
-import { ComponentGlobalAdmin_NotifikasiBerhasil } from "@/app_modules/admin/component/admin_notifikasi/notifikasi_berhasil";
-import { ComponentGlobalAdmin_NotifikasiGagal } from "@/app_modules/admin/component/admin_notifikasi/notifikasi_gagal";
+import { ComponentGlobalAdmin_NotifikasiBerhasil } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentGlobalAdmin_NotifikasiGagal } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_gagal";
 
 export default function AdminDonasi_DetailPublish({
   dataPublish,
@@ -130,37 +130,37 @@ function TampilanDetailDonasi({
                   // mah={500}
                   // mx={"auto"}
                   alt="Foto"
-                  src={RouterDonasi.api_gambar + `${donasi.imagesId}`}
+                  src={RouterDonasi.api_gambar + `${donasi?.imagesId}`}
                 />
               </AspectRatio>
             </Paper>
 
             <Paper withBorder p={"sm"}>
               <Stack spacing={5}>
-                <Title order={4}>{donasi.title}</Title>
+                <Title order={4}>{donasi?.title}</Title>
                 <Group>
                   <Text fz={"xs"}>Penggalang Dana</Text>
                   <Title order={5} c="blue">
-                    {donasi.Author.username}
+                    {donasi?.Author.username}
                   </Title>
                 </Group>
                 <Group>
                   <Text fz={12}>Durasi</Text>
                   <Title order={5} c="blue">
-                    {donasi.DonasiMaster_Durasi.name} hari
+                    {donasi?.DonasiMaster_Durasi.name} hari
                   </Title>
                 </Group>
 
                 <Group>
                   <Text fz={12}>Dana dibutuhkan</Text>
                   <Title order={5} c="blue">
-                    <TampilanRupiahDonasi nominal={+donasi.target} />
+                    <TampilanRupiahDonasi nominal={+donasi?.target} />
                   </Title>
                 </Group>
                 <Group>
                   <Text fz={12}>Kategori</Text>
                   <Title order={5} c="blue">
-                    {donasi.DonasiMaster_Ketegori.name}
+                    {donasi?.DonasiMaster_Ketegori?.name}
                   </Title>
                 </Group>
                 <Group>
@@ -172,13 +172,13 @@ function TampilanDetailDonasi({
                 <Group>
                   <Text fz={12}>Progres</Text>
                   <Title order={5} c="blue">
-                    {donasi.progres} %
+                    {toNumber(donasi.progres).toFixed(2)} %
                   </Title>
                 </Group>
                 <Group>
                   <Text fz={12}>Dana terkumpul</Text>
                   <Title order={5} c="blue">
-                    <TampilanRupiahDonasi nominal={+donasi.terkumpul} />
+                    <TampilanRupiahDonasi nominal={+donasi?.terkumpul} />
                   </Title>
                 </Group>
                 {/* <Button w={200} bg={"green.5"} color="green">Pencairan Dana</Button> */}
@@ -196,7 +196,7 @@ function TampilanDetailDonasi({
                       <Text fz={"xs"}>Total Dana Dicairkan</Text>
                       <Title>
                         <TampilanRupiahDonasi
-                          nominal={donasi.totalPencairan}
+                          nominal={donasi?.totalPencairan}
                           fontSize={14}
                         />
                       </Title>
@@ -205,7 +205,7 @@ function TampilanDetailDonasi({
                   <Grid.Col span={"auto"}>
                     <Stack spacing={0}>
                       <Text fz={"xs"}>Bank Tujuan</Text>
-                      <Title order={6}>{donasi.namaBank}</Title>
+                      <Title order={6}>{donasi?.namaBank}</Title>
                     </Stack>
                   </Grid.Col>
                 </Grid>
@@ -213,13 +213,13 @@ function TampilanDetailDonasi({
                   <Grid.Col span={"auto"}>
                     <Stack spacing={0}>
                       <Text fz={"xs"}>Akumulasi Pencairan</Text>
-                      <Title order={6}>{donasi.akumulasiPencairan} Kali</Title>
+                      <Title order={6}>{donasi?.akumulasiPencairan} Kali</Title>
                     </Stack>
                   </Grid.Col>
                   <Grid.Col span={"auto"}>
                     <Stack spacing={0}>
                       <Text fz={"xs"}>Nomor Rekening</Text>
-                      <Title order={6}>{donasi.rekening}</Title>
+                      <Title order={6}>{donasi?.rekening}</Title>
                     </Stack>
                   </Grid.Col>
                 </Grid>
@@ -228,7 +228,7 @@ function TampilanDetailDonasi({
                   radius={"xl"}
                   onClick={() =>
                     router.push(
-                      RouterAdminDonasi_OLD.pencairan_dana + `${donasi.id}`
+                      RouterAdminDonasi_OLD.pencairan_dana + `${donasi?.id}`
                     )
                   }
                 >
@@ -569,17 +569,25 @@ function TampilanListPencairan({
 }: {
   pencairan: MODEL_DONASI_PENCAIRAN_DANA[];
 }) {
+  const router = useRouter();
+  const [data, setData] = useState(pencairan);
   const [opened, { open, close }] = useDisclosure(false);
   const [gambarId, setGambarId] = useState("");
 
-  const rowTable = pencairan.map((e) => (
+  const rowTable = data.map((e) => (
     <tr key={e.id}>
       <td>
-        <TampilanRupiahDonasi nominal={e.nominalCair} />
+        <Center>
+          <TampilanRupiahDonasi nominal={e.nominalCair} />
+        </Center>
       </td>
-      <td>{moment(e.createdAt).format("ll")}</td>
       <td>
-        <Text>{e.title}</Text>
+        <Center>{moment(e.createdAt).format("ll")}</Center>
+      </td>
+      <td>
+        <Center>
+          <Text>{e.title}</Text>
+        </Center>
       </td>
       <td width={500}>
         <Box w={"100%"}>
@@ -589,42 +597,119 @@ function TampilanListPencairan({
         </Box>
       </td>
       <td>
-        {
-          <Box>
-            <Center>
-              <Button
-                radius={"xl"}
-                compact
-                bg={"green"}
-                color="green"
-                onClick={() => {
-                  open();
-                  setGambarId(e.imagesId);
-                }}
-              >
-                Detail
-              </Button>
-            </Center>
-          </Box>
-        }
+        <Box>
+          <Center>
+            <Button
+              radius={"xl"}
+              bg={"green"}
+              color="green"
+              onClick={() => {
+                // open();
+                // setGambarId(e.imagesId);
+                router.push(
+                  RouterAdminDonasi.transfer_invoice_reimbursement + e?.imagesId
+                );
+              }}
+            >
+              Cek
+            </Button>
+          </Center>
+        </Box>
       </td>
     </tr>
   ));
 
   return (
     <>
-      <Modal opened={opened} onClose={close} centered>
+      {/* <Modal opened={opened} onClose={close} centered>
         <AspectRatio ratio={9 / 16}>
           <Image
             src={RouterDonasi.api_gambar_pencairan + `${gambarId}`}
             alt="Foto"
           />
         </AspectRatio>
-      </Modal>
+      </Modal> */}
 
-      <Stack p={"md"}>
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+
+      <Stack spacing={"xs"} h={"100%"}>
+        <Group
+          position="apart"
+          bg={"gray.4"}
+          p={"xs"}
+          style={{ borderRadius: "6px" }}
+        >
+          <Title order={4}>Rincian Pencairan Dana</Title>
+          <Group>
+            <ActionIcon
+              size={"lg"}
+              radius={"xl"}
+              variant="light"
+              onClick={() => {
+                // onRelaod();
+              }}
+            >
+              <IconReload />
+            </ActionIcon>
+            {/* <Select
+              placeholder="Pilih status"
+              value={isSelect}
+              data={listMasterStatus.map((e) => ({
+                value: e.id,
+                label: e.name,
+              }))}
+              onChange={(val) => {
+                onSelect(val);
+              }}
+            /> */}
+          </Group>
+        </Group>
+
+        <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
+          <ScrollArea w={"100%"} h={"90%"}>
+            <Table
+              verticalSpacing={"xl"}
+              horizontalSpacing={"md"}
+              p={"md"}
+              w={1500}
+              striped
+              highlightOnHover
+            >
+              <thead>
+                <tr>
+                  <th>
+                    <Center>Nominal</Center>
+                  </th>
+                  <th>
+                    <Center>Tanggal</Center>
+                  </th>
+                  <th>
+                    <Center>Judul</Center>
+                  </th>
+                  <th>Deskripsi</th>
+                  <th>
+                    <Center>Bukti Transfer</Center>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>{rowTable}</tbody>
+            </Table>
+          </ScrollArea>
+
+          {/* <Center mt={"xl"}>
+            <Pagination
+              value={isActivePage}
+              total={isNPage}
+              onChange={(val) => {
+                onPageClick(val);
+              }}
+            />
+          </Center> */}
+        </Paper>
+      </Stack>
+
+      {/* <Stack p={"md"}>
         <Title order={3}>Rincian Pencairan Dana</Title>
-        {/* <pre>{JSON.stringify(pencairan, null, 2)}</pre> */}
         {_.isEmpty(pencairan) ? (
           <Paper bg={"gray.1"} p={"xs"}>
             <Center>BELUM ADA PENCAIRAN DANA</Center>
@@ -649,7 +734,7 @@ function TampilanListPencairan({
             </Table>
           </Paper>
         )}
-      </Stack>
+      </Stack> */}
     </>
   );
 }

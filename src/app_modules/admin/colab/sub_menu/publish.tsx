@@ -18,7 +18,7 @@ import {
   Textarea,
   Box,
 } from "@mantine/core";
-import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
 import { MODEL_COLLABORATION } from "@/app_modules/colab/model/interface";
 import { useState } from "react";
 import { useDisclosure, useShallowEffect } from "@mantine/hooks";

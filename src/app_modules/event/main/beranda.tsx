@@ -31,8 +31,9 @@ import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/a
 import _ from "lodash";
 import { IconCirclePlus, IconPencilPlus } from "@tabler/icons-react";
 import ComponentEvent_IsEmptyData from "../component/is_empty_data";
-import { useWindowScroll } from "@mantine/hooks";
+import { useShallowEffect, useWindowScroll } from "@mantine/hooks";
 import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
+import { Event_getListAllPublish } from "../fun/get/get_list_all_publish";
 
 export default function Event_Beranda({
   dataEvent,
@@ -40,10 +41,24 @@ export default function Event_Beranda({
   dataEvent: MODEL_EVENT[];
 }) {
   const router = useRouter();
+  const [data, setData] = useState(dataEvent);
   const [isLoading, setLoading] = useState(false);
   const [scroll, scrollTo] = useWindowScroll();
   const [eventId, setEventId] = useState("");
   const [visible, setVisible] = useState(false);
+
+  useShallowEffect(() => {
+    onLoad({
+      onPublish(val) {
+        setData(val);
+      },
+    });
+  }, [setData]);
+
+  async function onLoad({ onPublish }: { onPublish: (val: any) => void }) {
+    const loadData = await Event_getListAllPublish();
+    onPublish(loadData);
+  }
 
   return (
     <>
@@ -66,10 +81,10 @@ export default function Event_Beranda({
           <IconPencilPlus color="white" />
         </ActionIcon>
       </Affix>
-      {_.isEmpty(dataEvent) ? (
+      {_.isEmpty(data) ? (
         <ComponentEvent_IsEmptyData text="Tidak ada data" />
       ) : (
-        dataEvent.map((e, i) => (
+        data.map((e, i) => (
           <Card key={i} shadow="lg" radius={"md"} withBorder mb={"sm"}>
             <Card.Section px={"sm"} pt={"sm"}>
               <ComponentGlobal_AuthorNameOnHeader

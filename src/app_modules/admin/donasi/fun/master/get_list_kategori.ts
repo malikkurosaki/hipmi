@@ -7,9 +7,7 @@ export default async function adminDonasi_getMasterKategori() {
     orderBy: {
       createdAt: "asc",
     },
-    where: {
-      active: true,
-    },
+
   });
   return data;
 }

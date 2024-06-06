@@ -1,7 +1,7 @@
 "use client";
 
 import { Group, Paper, SimpleGrid, Stack, Text, Title } from "@mantine/core";
-import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
 import { useRouter } from "next/navigation";
 
 export default function AdminJob_Main({

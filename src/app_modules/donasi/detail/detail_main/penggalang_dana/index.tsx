@@ -100,7 +100,7 @@ function InformasiPenggalang({ value }: { value: MODEL_USER }) {
             </Group>
             <Group>
               <IconBrandGmail />
-              <Text>user1@gmail.com</Text>
+              <Text>{value?.Profile?.email}</Text>
             </Group>
           </Stack>
         </Stack>

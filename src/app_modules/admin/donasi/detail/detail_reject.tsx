@@ -25,22 +25,26 @@ import { NotifBerhasil } from "@/app_modules/donasi/component/notifikasi/notif_b
 import { NotifGagal } from "@/app_modules/donasi/component/notifikasi/notif_gagal";
 import { AdminDonasi_getOneById } from "../fun/get/get_one_by_id";
 import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import ComponentGlobalAdmin_BackButton from "../../component_global/back_button";
+import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_detail_donasi";
+import ComponentAdminDonasi_CeritaPenggalangDana from "../component/tampilan_detail_cerita";
 
 export default function AdminDonasi_DetailReject({
   dataReject,
 }: {
   dataReject: MODEL_DONASI;
 }) {
-  const [donasi, setDonasi] = useState(dataReject);
+  const [data, setData] = useState(dataReject);
 
   return (
     <>
       <Stack>
         <ButtonOnHeader
-          catatan={donasi.catatan}
-          donasiId={donasi.id}
-          setDonasi={setDonasi}
+          catatan={data.catatan}
+          donasiId={data.id}
+          setDonasi={setData}
         />
+          <CatatanReject catatan={data.catatan} />
         <SimpleGrid
           cols={2}
           spacing="lg"
@@ -50,8 +54,10 @@ export default function AdminDonasi_DetailReject({
             { maxWidth: "xs", cols: 1, spacing: "xs" },
           ]}
         >
-          <TampilanDetailDonasi donasi={donasi} />
-          <CatatanReject catatan={donasi.catatan} />
+          <ComponentAdminDonasi_TampilanDetailDonasi donasi={data} />
+          <ComponentAdminDonasi_CeritaPenggalangDana
+            cerita={data.CeritaDonasi}
+          />
         </SimpleGrid>
       </Stack>
     </>
@@ -88,12 +94,12 @@ function ButtonOnHeader({
     <>
       <Stack>
         <Group position="apart">
-          <ComponentAdminDonasi_TombolKembali />
+          <ComponentGlobalAdmin_BackButton />
           <Button radius={"xl"} bg={"orange"} color="orange" onClick={open}>
             Tambah catatan
           </Button>
         </Group>
-        <Divider />
+
       </Stack>
 
       <Modal
@@ -188,10 +194,12 @@ function TampilanDetailDonasi({ donasi }: { donasi: MODEL_DONASI }) {
 function CatatanReject({ catatan }: { catatan: string }) {
   return (
     <>
-      <Stack>
-        <Title order={6}>Alasan Penolakan</Title>
-        <Text>{catatan}</Text>
-      </Stack>
+      <Paper p={"md"} bg={"gray.1"}>
+        <Stack>
+          <Title order={5} >Alasan Penolakan :</Title>
+          <Text>{catatan}</Text>
+        </Stack>
+      </Paper>
     </>
   );
 }

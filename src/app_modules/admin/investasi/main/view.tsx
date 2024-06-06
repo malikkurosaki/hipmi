@@ -38,7 +38,7 @@ import moment from "moment";
 import _ from "lodash";
 import TableTotalInvestasi from "./table_total_investasi";
 import TablePublikasiProgresInvestasi from "./table_publikasi_progres";
-import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
 
 export default function Admin_Investasi({
   listInvestasi,

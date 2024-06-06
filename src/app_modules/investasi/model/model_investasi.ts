@@ -95,7 +95,7 @@ export interface Model_Dokumen_Investasi {
   investasiId: string;
 }
 
-export interface Model_Nama_Bank {
+export interface MODEL_DATA_BANK {
   id: string;
   name: string;
   norek: string;

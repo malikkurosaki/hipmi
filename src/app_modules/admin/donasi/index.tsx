@@ -9,7 +9,7 @@ import AdminDonasi_ProsesTransaksi from "./detail/publish/proses_transaksi";
 import AdminDonasi_PencairanDana from "./detail/publish/pencairan_dana";
 import AdminDonasi_TableKategori from "./sub_menu/table_kategori";
 import AdminDonasi_BuktiTransfer from "./sub-detail/bukti_transfer";
-
+import AdminDonasi_BuktiTransferPencairan from "./sub-detail/bukti_transfer_pencairan";
 
 export {
   AdminDonasi_Main,
@@ -23,5 +23,5 @@ export {
   AdminDonasi_PencairanDana,
   AdminDonasi_TableKategori,
   AdminDonasi_BuktiTransfer,
-
+  AdminDonasi_BuktiTransferPencairan,
 };

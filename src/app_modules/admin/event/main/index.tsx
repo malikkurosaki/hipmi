@@ -16,7 +16,7 @@ import {
 } from "@mantine/core";
 import { IconChevronsRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
 
 export default function AdminEvent_Main({
   countPublish,

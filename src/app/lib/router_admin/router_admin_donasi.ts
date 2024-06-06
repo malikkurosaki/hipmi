@@ -5,5 +5,7 @@ export const RouterAdminDonasi = {
   table_reject: "/dev/admin/donasi/sub-menu/reject",
   table_kategori: "/dev/admin/donasi/sub-menu/kategori",
   transfer_invoice: "/dev/admin/donasi/sub-detail/transfer-invoice/",
+  transfer_invoice_reimbursement:
+    "/dev/admin/donasi/sub-detail/transfer-invoice-reimbursement/",
   informasi: "/dev/admin/donasi/sub-menu/informasi",
 };

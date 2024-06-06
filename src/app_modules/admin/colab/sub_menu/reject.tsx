@@ -14,7 +14,7 @@ import {
   Box,
   Pagination,
 } from "@mantine/core";
-import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
 import { useState } from "react";
 import { MODEL_COLLABORATION } from "@/app_modules/colab/model/interface";
 import adminColab_getListAllRejected from "../fun/get/get_list_all_reject";

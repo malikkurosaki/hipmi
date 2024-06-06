@@ -1,30 +1,23 @@
 "use client";
 
+import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 import {
   ActionIcon,
-  AppShell,
   Button,
-  Footer,
   Group,
   Header,
   Modal,
   Stack,
-  Title,
+  Title
 } from "@mantine/core";
-import React, { useState } from "react";
-import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
+import { useDisclosure } from "@mantine/hooks";
 import {
   IconChevronLeft,
-  IconEdit,
-  IconMessageShare,
+  IconEdit
 } from "@tabler/icons-react";
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { useDisclosure } from "@mantine/hooks";
-import router from "next/router";
-import { title } from "process";
 import { useRouter } from "next/navigation";
-import { data } from "autoprefixer";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import React, { useState } from "react";
 
 export default function LayoutDetailDraftDonasi({
   children,

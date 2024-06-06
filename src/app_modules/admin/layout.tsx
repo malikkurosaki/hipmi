@@ -3,16 +3,12 @@
 import {
   ActionIcon,
   AppShell,
-  Avatar,
   Box,
   Burger,
-  Center,
   Divider,
   Drawer,
-  Footer,
   Group,
   Header,
-  Loader,
   MediaQuery,
   NavLink,
   Navbar,
@@ -20,41 +16,25 @@ import {
   Stack,
   Text,
   Title,
-  useMantineTheme,
+  useMantineTheme
 } from "@mantine/core";
-import React, { useState } from "react";
-import ComponentGlobal_HeaderTamplate from "../component_global/header_tamplate";
-import { useDisclosure } from "@mantine/hooks";
 import {
-  IconCheck,
+  IconBell,
   IconCircleDot,
   IconCircleDotFilled,
-  IconDashboard,
-  IconHome,
-  IconLetterH,
-  IconLogout,
+  IconDashboard
 } from "@tabler/icons-react";
-import {
-  RouterAdminAward,
-  RouterAdminDashboard,
-  RouterAdminDonasi_OLD,
-  RouterAdminInvestasi_OLD,
-} from "@/app/lib/router_hipmi/router_admin";
-import { useRouter } from "next/navigation";
-import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import { Logout } from "@/app_modules/auth";
 import { useAtom } from "jotai";
-import { gs_admin_hotMenu, gs_admin_subMenu } from "./global_state";
-import Admin_Logout from "./component/logout";
-import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
 import _ from "lodash";
-import { listAdminPage } from "./list_page";
-import { RouterAdminVote } from "@/app/lib/router_admin/router_admin_vote";
-import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
-import { gs_kodeId } from "../auth/state/state";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { auth_Logout } from "../auth/fun/fun_logout";
+import { gs_kodeId } from "../auth/state/state";
 import { ComponentGlobal_NotifikasiBerhasil } from "../component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiPeringatan } from "../component_global/notif_global/notifikasi_peringatan";
+import Admin_Logout from "./component_global/logout";
+import { gs_admin_hotMenu, gs_admin_subMenu } from "./global_state";
+import { listAdminPage } from "./list_page";
 
 export default function AdminLayout({
   userRole,
@@ -224,40 +204,23 @@ export default function AdminLayout({
         navbar={
           <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
             <Navbar
-              h={"100vh"}
-              width={{ lg: 200, md: 200, sm: 200, base: 200 }}
+              h={"95%"}
+              width={{ lg: 250, md: 200, sm: 200, base: 250 }}
               hiddenBreakpoint="md"
               hidden={!opened}
               p="xs"
               bg={"gray.2"}
             >
-              {/* <ScrollArea h={"100vh"} scrollbarSize={2}>
-                <Navbar.Section>
-                  <Stack>
-                    {userRole === "3" ? navbarItems : notAdminDev}
-
-                  </Stack>
-                </Navbar.Section>
-              </ScrollArea> */}
-              <Navbar.Section>
-                {/* <Stack align="center" bg={"blue"} h={"100%"}>
-                  <Title order={5} ff={"sans-serif"}>
-                    Dashboard Admin
-                  </Title>
-                  <Divider />
-                </Stack> */}
+              {/* <Navbar.Section>
                 <Center h={50}>
                   <Title order={4} ff={"sans-serif"}>
                     Dashboard Admin
                   </Title>
                 </Center>
                 <Divider />
-              </Navbar.Section>
+              </Navbar.Section> */}
               <Navbar.Section grow component={ScrollArea}>
-                <Stack>
-                  {userRole === "3" ? navbarItems : notAdminDev}
-                  {/* <NavLink icon={<IconCheck />} label="Create Admin" /> */}
-                </Stack>
+                <Stack>{userRole === "3" ? navbarItems : notAdminDev}</Stack>
               </Navbar.Section>
               <Navbar.Section>
                 <Stack>
@@ -273,40 +236,46 @@ export default function AdminLayout({
             </Navbar>
           </MediaQuery>
         }
-        // header={
-        //   <Header height={50} bg={"gray.2"}>
-        //     {/* Mobile View */}
-        //     <MediaQuery largerThan="md" styles={{ display: "none" }}>
-        //       <Group h={50} align="center" px={"md"} position="apart">
-        //         <Burger
-        //           opened={opened}
-        //           onClick={() => setOpened((o) => !o)}
-        //           size="sm"
-        //           color={theme.colors.gray[6]}
-        //           mr="xl"
-        //         />
-        //         <Title order={6}>Dashboard Admin</Title>
-        //         <Admin_Logout />
-        //       </Group>
-        //     </MediaQuery>
+        header={
+          <Header height={"5vh"} bg={"gray.2"}>
+            {/* Web View */}
+            <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
+              <Group position="apart" align="center" h={"100%"} px={"md"}>
+                <Text fw={"lighter"}>Dashboard Admin</Text>
+                <Title order={4}> HIPMI</Title>
+                {/* <Group>
+                  {listAdminPage.map((e) => (
+                    <Text key={e.id}  onClick={() => router.push(e.route)}>
+                      {e.name}
+                    </Text>
+                  ))}
+                </Group> */}
+                {/* <Admin_Logout /> */}
+                <ActionIcon radius={"xl"}>
+                  <IconBell />
+                </ActionIcon>
+              </Group>
+            </MediaQuery>
 
-        //     {/* Web View */}
-        //     <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
-        //       <Group position="apart" align="center" h={50} px={"md"}>
-        //         <Text fw={"lighter"}>Dashboard Admin</Text>
-        //         <Title order={4}> HIPMI</Title>
-        //         {/* <Group>
-        //           {listAdminPage.map((e) => (
-        //             <Text key={e.id}  onClick={() => router.push(e.route)}>
-        //               {e.name}
-        //             </Text>
-        //           ))}
-        //         </Group> */}
-        //         <Admin_Logout />
-        //       </Group>
-        //     </MediaQuery>
-        //   </Header>
-        // }
+            {/* Mobile View */}
+            <MediaQuery largerThan="md" styles={{ display: "none" }}>
+              <Group h={50} align="center" px={"md"} position="apart">
+                <Burger
+                  opened={opened}
+                  onClick={() => setOpened((o) => !o)}
+                  size="sm"
+                  color={theme.colors.gray[6]}
+                  mr="xl"
+                />
+                <Title order={6}>Dashboard Admin</Title>
+                {/* <Admin_Logout /> */}
+                <ActionIcon>
+                  <IconBell />
+                </ActionIcon>
+              </Group>
+            </MediaQuery>
+          </Header>
+        }
       >
         {/* {JSON.stringify(active)} */}
         {children}

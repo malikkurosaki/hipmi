@@ -4,12 +4,17 @@ import prisma from "@/app/lib/prisma";
 
 export async function Donasi_getListDonatur(donasiId: string) {
   const data = await prisma.donasi_Invoice.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
     where: {
       donasiId: donasiId,
       donasiMaster_StatusInvoiceId: "1",
     },
     select: {
       id: true,
+      createdAt: true,
+      updatedAt: true,
       nominal: true,
       DonasiMaster_StatusInvoice: true,
       donasiMaster_StatusInvoiceId: true,

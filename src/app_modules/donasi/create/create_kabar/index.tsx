@@ -23,6 +23,8 @@ import _ from "lodash";
 import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
 import ComponentDonasi_NotedBox from "../../component/noted_box";
 import { Donasi_funCreateNotif } from "../../fun/create/fun_create_notif";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 
 export default function Donasi_CreateKabar({ donasiId }: { donasiId: string }) {
   const router = useRouter();
@@ -137,14 +139,16 @@ async function onSave(
 
   await Donasi_funCreateKabar(body as any, gambar).then(async (res) => {
     if (res.status === 200) {
-      await Donasi_funCreateNotif(body.donasiId, res.kabarId as any).then((val) => {
-        if (val.status === 200) {
-          NotifBerhasil(res.message);
-          router.back();
+      await Donasi_funCreateNotif(body.donasiId, res.kabarId as any).then(
+        (val) => {
+          if (val.status === 200) {
+            ComponentGlobal_NotifikasiBerhasil(res.message);
+            router.back();
+          }
         }
-      });
+      );
     } else {
-      NotifGagal(res.message);
+      ComponentGlobal_NotifikasiGagal(res.message);
     }
   });
 }

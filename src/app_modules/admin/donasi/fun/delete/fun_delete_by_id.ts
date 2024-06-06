@@ -7,15 +7,17 @@ import { revalidatePath } from "next/cache";
 
 export default async function adminDonasi_funDeleteKategori({
   kategoriId,
+  isActive,
 }: {
   kategoriId: string;
+  isActive: boolean;
 }) {
   const del = await prisma.donasiMaster_Kategori.update({
     where: {
       id: kategoriId,
     },
     data: {
-      active: false,
+      active: isActive,
     },
   });
 
