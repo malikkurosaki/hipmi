@@ -23,6 +23,7 @@ import {
   IconAward,
   IconQrcode,
   IconUserCircle,
+  IconBell,
 } from "@tabler/icons-react";
 import { Logout } from "../auth";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
@@ -32,6 +33,7 @@ import { useRouter } from "next/navigation";
 import { ComponentGlobal_NotifikasiPeringatan } from "../component_global/notif_global/notifikasi_peringatan";
 import { ComponentGlobal_NotifikasiBerhasil } from "../component_global/notif_global/notifikasi_berhasil";
 import { RouterUserSearch } from "@/app/lib/router_hipmi/router_user_search";
+import { RouterNotifikasi } from "@/app/lib/router_hipmi/router_notifikasi";
 
 export default function HomeLayout({
   dataUser,
@@ -157,11 +159,22 @@ export default function HomeLayout({
           top={0}
           h={50}
         >
-          <Center h={"100%"}>
-            <Title order={4} c={"white"}>
-              HIPMI
-            </Title>
-          </Center>
+          <Group position="apart" h={"100%"} px={"md"}>
+            <ActionIcon variant="transparent" disabled></ActionIcon>
+            <Center>
+              <Title order={4} c={"white"}>
+                HIPMI
+              </Title>
+            </Center>
+            <ActionIcon
+              variant="transparent"
+              onClick={() => {
+                router.push(RouterNotifikasi.main);
+              }}
+            >
+              <IconBell />
+            </ActionIcon>
+          </Group>
         </Box>
 
         {/* Children */}

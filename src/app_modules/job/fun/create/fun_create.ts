@@ -55,11 +55,22 @@ export async function Job_funCreate(req: MODEL_JOB, file: FormData) {
         deskripsi: req.deskripsi,
         authorId: authorId,
       },
+      select: {
+        id: true,
+        authorId: true,
+        MasterStatus: {
+          select: {
+            name: true,
+          },
+        },
+        title: true,
+      },
     });
 
     if (!create) return { status: 400, message: "Gagal Disimpan" };
     revalidatePath("/dev/job/main/status");
     return {
+      data: create,
       status: 201,
       message: "Berhasil Disimpan",
     };

@@ -1,13 +1,9 @@
 "use client";
 
-import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import {
-  AspectRatio,
-  Box,
   Button,
   Center,
   FileButton,
-  Flex,
   Group,
   Image,
   Loader,
@@ -15,18 +11,15 @@ import {
   Stack,
   Text,
   TextInput,
-  Textarea,
 } from "@mantine/core";
 import { IconCamera, IconUpload } from "@tabler/icons-react";
 import { useAtom } from "jotai";
-import _ from "lodash";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 import { gs_job_hot_menu, gs_job_status } from "../global_state";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 
-import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");
@@ -34,16 +27,20 @@ const ReactQuill = dynamic(
   { ssr: false }
 );
 
-import { useShallowEffect, useToggle } from "@mantine/hooks";
-import { Job_funCreate } from "../fun/create/fun_create";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { MODEL_JOB } from "../model/interface";
-import toast from "react-simple-toasts";
-import ComponentJob_NotedBox from "../component/detail/noted_box";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
-import { defaultDeskripsi, defaultSyarat } from "../component/default_value";
 import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import mqtt_client from "@/util/mqtt_client";
+import { useShallowEffect } from "@mantine/hooks";
+import { defaultDeskripsi, defaultSyarat } from "../component/default_value";
+import ComponentJob_NotedBox from "../component/detail/noted_box";
+import { MODEL_JOB } from "../model/interface";
+import { Job_funCreate } from "../fun/create/fun_create";
+import notifikasi_funCreate from "@/app_modules/notifikasi/fun/create/create_notif";
+import { RouterJob } from "@/app/lib/router_hipmi/router_job";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { MODEL_NOTIFIKASI } from "@/app_modules/notifikasi/model/interface";
 
 export default function Job_Create() {
   const [value, setValue] = useState({
@@ -225,25 +222,40 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
 
   const [hotMenu, setHotMenu] = useAtom(gs_job_hot_menu);
   const [status, setStatus] = useAtom(gs_job_status);
-  const [preview, setPreview] = useToggle();
 
-  async function onAction() {
+  async function onCreate() {
     const gambar = new FormData();
     gambar.append("file", file as any);
 
-    // console.log(value);
+    const create = await Job_funCreate(value as any, gambar);
+    if (create.status === 201) {
+      const dataNotif = {
+        appId: create.data?.id as any,
+        kategoriApp: "JOB",
+        status: create.data?.MasterStatus?.name as any,
+        userId: create.data?.authorId as any,
+        pesan: create.data?.title as any,
+        title: "Job baru",
+      };
+      const notif = await notifikasi_funCreate({ data: dataNotif as any });
 
-    await Job_funCreate(value as any, gambar).then((res) => {
-      if (res.status === 201) {
+      if (notif.status === 201) {
+        mqtt_client.publish(
+          "ADMIN",
+          JSON.stringify({
+            count: 1,
+          })
+        );
+
         setHotMenu(2);
         setStatus("Review");
         router.replace(RouterJob.status);
         setIsLoading(true);
-        ComponentGlobal_NotifikasiBerhasil("Tambah Lowongan Berhasil");
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
+        ComponentGlobal_NotifikasiBerhasil(create.message);
       }
-    });
+    } else {
+      ComponentGlobal_NotifikasiGagal(create.message);
+    }
   }
 
   return (
@@ -251,11 +263,6 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
       <Stack>
         <Group grow mt={"lg"} mb={70}>
           <Button
-            style={{
-              transition: "0.5s",
-            }}
-            loaderPosition="center"
-            loading={isLoading ? true : false}
             disabled={
               value.title === "" ||
               value.content === "" ||
@@ -267,10 +274,15 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
                 ? true
                 : false
             }
+            style={{
+              transition: "0.5s",
+            }}
+            loaderPosition="center"
+            loading={isLoading ? true : false}
             w={"100%"}
             radius={"xl"}
             onClick={() => {
-              onAction();
+              onCreate();
             }}
           >
             Simpan

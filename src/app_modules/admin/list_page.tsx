@@ -194,17 +194,17 @@ export const listAdminPage = [
       {
         id: 62,
         name: "Table Publish",
-        path: RouterAdminJob.table_publish,
+        path: RouterAdminJob.publish,
       },
       {
         id: 63,
         name: "Table Review",
-        path: RouterAdminJob.table_review,
+        path: RouterAdminJob.review,
       },
       {
         id: 64,
         name: "Table Reject",
-        path: RouterAdminJob.table_reject,
+        path: RouterAdminJob.reject,
       },
       {
         id: 65,
