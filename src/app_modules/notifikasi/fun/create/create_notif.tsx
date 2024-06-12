@@ -3,7 +3,7 @@
 import prisma from "@/app/lib/prisma";
 import { MODEL_NOTIFIKASI } from "../../model/interface";
 
-export default async function notifikasi_funCreate({
+export default async function notifikasiToAdmin_funCreate({
   data,
 }: {
   data: MODEL_NOTIFIKASI;

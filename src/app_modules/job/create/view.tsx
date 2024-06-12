@@ -36,7 +36,7 @@ import { defaultDeskripsi, defaultSyarat } from "../component/default_value";
 import ComponentJob_NotedBox from "../component/detail/noted_box";
 import { MODEL_JOB } from "../model/interface";
 import { Job_funCreate } from "../fun/create/fun_create";
-import notifikasi_funCreate from "@/app_modules/notifikasi/fun/create/create_notif";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
@@ -229,7 +229,7 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
 
     const create = await Job_funCreate(value as any, gambar);
     if (create.status === 201) {
-      const dataNotif = {
+      const dataNotif : any = {
         appId: create.data?.id as any,
         kategoriApp: "JOB",
         status: create.data?.MasterStatus?.name as any,
@@ -237,7 +237,8 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
         pesan: create.data?.title as any,
         title: "Job baru",
       };
-      const notif = await notifikasi_funCreate({ data: dataNotif as any });
+      const notif = await notifikasiToAdmin_funCreate({ data: dataNotif as any });
+      console.log(notif)
 
       if (notif.status === 201) {
         mqtt_client.publish(

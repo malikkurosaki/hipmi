@@ -16,6 +16,7 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/
 import { Job_funDeleteById } from "../../fun/delete/fun_delete_by_id";
 
 export default function Job_DetailReject({ dataJob }: { dataJob: MODEL_JOB }) {
+  
   return (
     <>
       <Stack>

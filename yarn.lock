@@ -3718,6 +3718,14 @@ next-dev@^1.1.9:
     readdirp "^3.6.0"
     yargs "^17.7.2"
 
+next-scroll-loader@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/next-scroll-loader/-/next-scroll-loader-1.0.5.tgz#e25aaed2c3e5c60bf6d2fa89a387b62483b2ffd0"
+  integrity sha512-j2/yQkjtCZttnpZcKMyLbIylBsGsutFD4Net0cdk3lYOWN7FmPRUlpK0JrZP+KGnq6pyuXh6OxCxY9HJ8BWGZQ==
+  dependencies:
+    react "^18.3.1"
+    react-dom "^18.3.1"
+
 next@^13.5.4-canary.8:
   version "13.5.6"
   resolved "https://registry.yarnpkg.com/next/-/next-13.5.6.tgz#e964b5853272236c37ce0dd2c68302973cf010b1"

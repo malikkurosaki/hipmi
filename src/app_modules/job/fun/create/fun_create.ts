@@ -31,7 +31,7 @@ export async function Job_funCreate(req: MODEL_JOB, file: FormData) {
     if (!upload) return { status: 400, message: "Gagal upload gambar" };
     const uploadFolder = Buffer.from(await dataImage.arrayBuffer());
     fs.writeFileSync(`./public/job/${upload.url}`, uploadFolder);
-    const create = await prisma.job.create({
+    const createDataWithImg = await prisma.job.create({
       data: {
         title: req.title,
         content: req.content,
@@ -39,16 +39,27 @@ export async function Job_funCreate(req: MODEL_JOB, file: FormData) {
         authorId: authorId,
         imagesId: upload.id,
       },
+      select: {
+        id: true,
+        authorId: true,
+        MasterStatus: {
+          select: {
+            name: true,
+          },
+        },
+        title: true,
+      },
     });
 
-    if (!create) return { status: 400, message: "Gagal Disimpan" };
+    if (!createDataWithImg) return { status: 400, message: "Gagal Disimpan" };
     revalidatePath("/dev/job/main/status");
     return {
+      data: createDataWithImg,
       status: 201,
       message: "Berhasil Disimpan",
     };
   } else {
-    const create = await prisma.job.create({
+    const createDataWithoutImg = await prisma.job.create({
       data: {
         title: req.title,
         content: req.content,
@@ -67,10 +78,11 @@ export async function Job_funCreate(req: MODEL_JOB, file: FormData) {
       },
     });
 
-    if (!create) return { status: 400, message: "Gagal Disimpan" };
+    if (!createDataWithoutImg)
+      return { status: 400, message: "Gagal Disimpan" };
     revalidatePath("/dev/job/main/status");
     return {
-      data: create,
+      data: createDataWithoutImg,
       status: 201,
       message: "Berhasil Disimpan",
     };

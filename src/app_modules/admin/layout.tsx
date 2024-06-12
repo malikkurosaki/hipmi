@@ -1,12 +1,12 @@
 "use client";
 
+import mqtt_client from "@/util/mqtt_client";
 import {
   ActionIcon,
   AppShell,
   Badge,
   Box,
   Burger,
-  Button,
   Card,
   Center,
   Divider,
@@ -30,17 +30,15 @@ import {
   IconChecks,
   IconCircleDot,
   IconCircleDotFilled,
-  IconDashboard,
   IconUserSquareRounded,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import _ from "lodash";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { auth_Logout } from "../auth/fun/fun_logout";
-import { gs_kodeId } from "../auth/state/state";
-import { ComponentGlobal_NotifikasiBerhasil } from "../component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiPeringatan } from "../component_global/notif_global/notifikasi_peringatan";
+import { MODEL_USER } from "../home/model/interface";
+import { MODEL_NOTIFIKASI } from "../notifikasi/model/interface";
 import Admin_Logout from "./component_global/logout";
 import {
   gs_admin_hotMenu,
@@ -48,16 +46,9 @@ import {
   gs_layout_admin_isNavbarOpen,
 } from "./global_state";
 import { listAdminPage } from "./list_page";
-import { MODEL_NOTIFIKASI } from "../notifikasi/model/interface";
-import { MODEL_USER } from "../home/model/interface";
-import { useHover, useShallowEffect, useToggle } from "@mantine/hooks";
-import moment from "moment";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
-import adminNotifikasi_funUpdateIsReadById from "./notifikasi/fun/update/fun_update_is_read_by_id";
-import adminNotifikasi_getByUserId from "./notifikasi/fun/get/get_notifikasi_by_user_id";
 import adminNotifikasi_countNotifikasi from "./notifikasi/fun/count/count_is_read";
-import mqtt_client from "@/util/mqtt_client";
+import adminNotifikasi_getByUserId from "./notifikasi/fun/get/get_notifikasi_by_user_id";
+import adminNotifikasi_funUpdateIsReadById from "./notifikasi/fun/update/fun_update_is_read_by_id";
 
 export default function AdminLayout({
   children,
@@ -322,7 +313,6 @@ export default function AdminLayout({
             <Text fw={"bold"} fz={"lg"}>
               Notifikasi
             </Text>
-            {/* <Button compact radius={"xl"} fz={10}>Tandai terliha</Button> */}
           </Group>
         }
         opened={isNotif}
@@ -364,7 +354,7 @@ function DrawerNotifikasi({
 }) {
   const router = useRouter();
 
-  if (_.isEmpty(data)){
+  if (_.isEmpty(data)) {
     return (
       <>
         <Center>
@@ -375,7 +365,6 @@ function DrawerNotifikasi({
       </>
     );
   }
- 
 
   return (
     <>
@@ -383,6 +372,9 @@ function DrawerNotifikasi({
         <Stack>
           {data.map((e, i) => (
             <Card
+              style={{
+                transition: "0.5s",
+              }}
               key={e?.id}
               // withBorder
               bg={e?.isRead ? "gray.1" : "gray.4"}
@@ -391,9 +383,7 @@ function DrawerNotifikasi({
                 borderStyle: "solid",
                 borderWidth: "0.5px",
                 ":hover": {
-                  borderColor: "gray",
-                  borderStyle: "solid",
-                  borderWidth: "1.5px",
+                  backgroundColor: "#C1C2C5",
                 },
               }}
               onClick={async () => {
@@ -426,15 +416,31 @@ function DrawerNotifikasi({
               }}
             >
               <Card.Section p={"sm"}>
-                <Group position="apart">
-                  <Text fw={"bold"} fz={"xs"}>
-                    # {e?.kategoriApp}
-                  </Text>
-                  {e?.status ? <Badge w={70}>{e?.status}</Badge> : ""}
-                </Group>
+                <Stack spacing={"xs"}>
+                  <Group position="apart">
+                    <Text fw={"bold"} fz={10}>
+                      # {e?.kategoriApp}
+                    </Text>
+                    {e?.status ? (
+                      <Badge fz={10} size="sm">
+                        {e?.status}
+                      </Badge>
+                    ) : (
+                      ""
+                    )}
+                  </Group>
+                  <Divider color="gray.3" />
+                </Stack>
               </Card.Section>
-              <Card.Section p={"sm"}>
-                <Text lineClamp={2}>{e?.pesan}</Text>
+              <Card.Section px={"sm"} pb={"sm"}>
+                <Stack spacing={0}>
+                  <Text lineClamp={2} fw={"bold"} fz={"xs"}>
+                    {e?.title}
+                  </Text>
+                  <Text lineClamp={2} fz={"xs"}>
+                    {e?.pesan}
+                  </Text>
+                </Stack>
               </Card.Section>
               <Card.Section p={"sm"}>
                 <Group position="apart">
@@ -487,10 +493,22 @@ async function findRouterJob({
   onToggleNavbar2: (val: any) => void;
 }) {
   const routeName = "/dev/admin/job/child/";
-  router.push(routeName + _.lowerCase(data.status));
-  onChangeNavbar2({
-    id: 6,
-    childId: 63,
-  });
+
+  if (data.status === "Review") {
+    router.push(routeName + _.lowerCase(data.status));
+    onChangeNavbar2({
+      id: 6,
+      childId: 63,
+    });
+  }
+
+  if (data.status === "Draft") {
+    router.push(routeName + "review");
+    onChangeNavbar2({
+      id: 6,
+      childId: 63,
+    });
+  }
+
   onToggleNavbar2(true);
 }

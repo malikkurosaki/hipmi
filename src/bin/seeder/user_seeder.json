@@ -2,7 +2,7 @@
   {
     "name": "banuna",
     "nomor": "6282340374412",
-    "masterUserRoleId": "2"
+    "masterUserRoleId": "3"
   },
   {
     "name": "firman",
@@ -18,5 +18,10 @@
     "name": "lukman",
     "nomor": "6287701790942",
     "masterUserRoleId": "1"
+  },
+  {
+    "name": "fahmi",
+    "nomor": "628123833845",
+    "masterUserRoleId": "3"
   }
 ]

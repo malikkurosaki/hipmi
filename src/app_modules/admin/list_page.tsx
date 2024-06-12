@@ -206,11 +206,11 @@ export const listAdminPage = [
         name: "Table Reject",
         path: RouterAdminJob.reject,
       },
-      {
-        id: 65,
-        name: "Arsip",
-        path: RouterAdminJob.arsip,
-      },
+      // {
+      //   id: 65,
+      //   name: "Arsip",
+      //   path: RouterAdminJob.arsip,
+      // },
     ],
   },
 

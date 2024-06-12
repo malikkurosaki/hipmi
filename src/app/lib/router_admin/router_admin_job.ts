@@ -4,4 +4,5 @@ export const RouterAdminJob = {
   review: "/dev/admin/job/child/review",
   reject: "/dev/admin/job/child/reject",
   arsip: "/dev/admin/job/child/arsip",
+  detail_poster: "/dev/admin/job/detail/poster/",
 };
