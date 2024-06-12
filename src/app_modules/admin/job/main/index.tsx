@@ -23,24 +23,28 @@ export default function AdminJob_Main({
       name: "Publish",
       jumlah: countPublish,
       color: "green",
+      text_color: "white",
     },
     {
       id: 2,
       name: "Review",
       jumlah: countReview,
       color: "orange",
+      text_color: "white",
     },
     {
       id: 3,
       name: "Reject",
       jumlah: countReject,
       color: "red",
+      text_color: "white",
     },
     {
       id: 4,
       name: "Arsip",
       jumlah: countArsip,
       color: "gray",
+      text_color: "white",
     },
   ];
   return (

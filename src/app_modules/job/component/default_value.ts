@@ -14,11 +14,11 @@ export let defaultDeskripsi = `
 <p>Atau kunjungi website kami:</p>
 <p>
 <a
-href="https://test-hipmi.wibudev.com/"
+href="https://www.google.co.id/?hl=id"
 rel="noopener noreferrer"
 target="_blank"
 >
-https://test-hipmi.wibudev.com/
+https://www.google.co.id/?hl=id
 </a>
 </p>
 `;

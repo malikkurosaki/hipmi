@@ -43,15 +43,18 @@ model User {
   ProjectCollaboration_Message         ProjectCollaboration_Message[]
   AdminProjectCollaboration_Notifikasi ProjectCollaboration_Notifikasi[]      @relation("AdminNotifProjectToUser")
   UserProjectCollaboration_Notifikasi  ProjectCollaboration_Notifikasi[]      @relation("UserNotifProjectToUser")
+  Admin_Notifikasi                     Notifikasi[]                           @relation("AdminNotifikasi")
+  User_Notifikasi                      Notifikasi[]                           @relation("UserNotifikasi")
 }
 
 model MasterUserRole {
-  id        String    @id
-  name      String
-  active    Boolean   @default(true)
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-  User      User[]
+  id         String       @id
+  name       String
+  active     Boolean      @default(true)
+  createdAt  DateTime?    @default(now())
+  updatedAt  DateTime?    @updatedAt
+  User       User[]
+  Notifikasi Notifikasi[]
 }
 
 model UserSession {
@@ -847,3 +850,23 @@ model NomorAdmin {
   nomor     String
 }
 
+model Notifikasi {
+  id          String   @id @default(cuid())
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  isRead      Boolean  @default(false)
+  appId       String
+  kategoriApp String
+  pesan       String
+  title       String?
+  status      String?
+
+  Role       MasterUserRole? @relation(fields: [userRoleId], references: [id])
+  userRoleId String
+
+  User    User   @relation("UserNotifikasi", fields: [userId], references: [id], map: "NotifikasiUser")
+  userId  String
+  Admin   User   @relation("AdminNotifikasi", fields: [adminId], references: [id], map: "NotifikasiAdmin")
+  adminId String
+}
