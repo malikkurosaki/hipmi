@@ -3,55 +3,48 @@
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import {
-  Drawer,
-  Stack,
-  Grid,
-  Button,
-  Modal,
-  Title,
-  Group,
   ActionIcon,
-  Text,
-  Box,
-  Center,
+  Button,
+  Drawer,
+  Grid,
+  Group,
   Loader,
+  Modal,
+  Stack,
+  Text,
+  Title,
 } from "@mantine/core";
-import { useDisclosure, useShallowEffect } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 import {
-  IconTrash,
+  IconDots,
   IconEdit,
   IconFlag3,
-  IconDots,
-  IconSquareRoundedX,
   IconSquareCheck,
+  IconSquareRoundedX,
+  IconTrash,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { createStyles } from "@mantine/core";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
-import { useAtom } from "jotai";
-import { gs_forum_loading_edit_posting } from "../../global_state";
-import ComponentForum_LoadingDrawer from "../loading_drawer";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
-import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_by_id";
 import { forum_funEditStatusPostingById } from "../../fun/edit/fun_edit_status_posting_by_id";
 import { forum_getListAllPosting } from "../../fun/get/get_list_all_posting";
-import { forum_getListPostingByAuhtorId } from "../../fun/get/get_list_posting_by_author_id";
+import { forum_new_getAllPosting } from "../../fun/get/new_get_all_posting";
+import forum_v2_getAllPosting from "../../fun/get/v2_get_all_posting";
 
-export default function ComponentForum_BerandaButtonMore({
+export default function ComponentForum_V2_CardMoreButton({
   authorId,
   postingId,
   statusId,
   userLoginId,
-  setData,
+  onLoadData,
 }: {
   authorId: any;
   postingId?: any;
   statusId?: any;
   userLoginId: any;
-  setData: any;
+  onLoadData: (val: any) => void;
 }) {
   const router = useRouter();
 
@@ -177,7 +170,7 @@ export default function ComponentForum_BerandaButtonMore({
         <ButtonDelete
           postingId={postingId}
           setOpenDel={setOpenDel}
-          setData={setData}
+          onLoadData={onLoadData}
         />
       </Modal>
 
@@ -191,7 +184,7 @@ export default function ComponentForum_BerandaButtonMore({
           postingId={postingId}
           setOpenStatus={setOpenStatusClose}
           statusId={statusId}
-          setData={setData}
+          onLoadData={onLoadData}
           userLoginId={userLoginId}
           authorId={authorId}
         />
@@ -207,11 +200,11 @@ export default function ComponentForum_BerandaButtonMore({
 function ButtonDelete({
   postingId,
   setOpenDel,
-  setData,
+  onLoadData,
 }: {
   postingId?: string;
   setOpenDel: any;
-  setData: any;
+  onLoadData: (val: any) => void;
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -221,8 +214,8 @@ function ButtonDelete({
       if (res.status === 200) {
         // ComponentGlobal_NotifikasiBerhasil(`Postingan Terhapus`, 2000);
         setLoading(true);
-        const listForum = await forum_getListAllPosting();
-        setData(listForum);
+        const loadData = await forum_new_getAllPosting({ page: 1 });
+        onLoadData(loadData);
         return null;
       } else {
         // ComponentGlobal_NotifikasiGagal(res.message);
@@ -259,14 +252,14 @@ function ButtonStatus({
   postingId,
   setOpenStatus,
   statusId,
-  setData,
+  onLoadData,
   userLoginId,
   authorId,
 }: {
   postingId?: string;
   setOpenStatus: any;
   statusId?: any;
-  setData: any;
+  onLoadData: (val: any) => void;
   userLoginId: string;
   authorId: string;
 }) {
@@ -280,29 +273,17 @@ function ButtonStatus({
       2
     );
     if (upateStatusClose.status === 200) {
-      const loadData = await forum_getListAllPosting();
-      // ComponentGlobal_NotifikasiBerhasil(`Forum Ditutup`, 2000);
-      setData(loadData);
+      ComponentGlobal_NotifikasiBerhasil(`Forum Ditutup`, 2000);
+
+      const loadData = await forum_v2_getAllPosting({})
+      onLoadData(loadData);
       setLoading(true);
-      return null;
+
     } else {
-      //  ComponentGlobal_NotifikasiGagal(upateStatusClose.message);
-      return null;
+       ComponentGlobal_NotifikasiGagal(upateStatusClose.message);
+
     }
 
-    // await forum_funEditStatusPostingById(postingId as any, 2).then(
-    //   async (res) => {
-    //     if (res.status === 200) {
-    //       await forum_getListAllPosting().then((val) => {
-    //         setData(val as any);
-    //         ComponentGlobal_NotifikasiBerhasil(`Forum Ditutup`, 2000);
-    //         setLoading(true);
-    //       });
-    //     } else {
-    //       ComponentGlobal_NotifikasiGagal(res.message);
-    //     }
-    //   }
-    // );
   }
 
   async function onBukaForum() {
@@ -311,12 +292,12 @@ function ButtonStatus({
     await forum_funEditStatusPostingById(postingId as any, 1).then(
       async (res) => {
         if (res.status === 200) {
-          await forum_getListAllPosting().then((val) => {
-            setData(val as any);
+          const loadData = await forum_v2_getAllPosting({});
+          onLoadData(loadData);
 
-            ComponentGlobal_NotifikasiBerhasil(`Forum Dibuka`, 2000);
-            setLoading(true);
-          });
+          ComponentGlobal_NotifikasiBerhasil(`Forum Dibuka`, 2000);
+          setLoading(true);
+
         } else {
           ComponentGlobal_NotifikasiGagal(res.message);
         }

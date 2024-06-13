@@ -35,6 +35,8 @@ const ReactQuill = dynamic(
   { ssr: false }
 );
 
+import mqtt_client from "@/util/mqtt_client";
+
 export default function Forum_Create() {
   const [value, setValue] = useState("");
   const [totalLength, setTotalLength] = useState(0);
@@ -74,7 +76,6 @@ export default function Forum_Create() {
           <ButtonAction value={value} />
         </Group>
       </Stack>
-      {/* <pre> {JSON.stringify(value, null, 2)}</pre> */}
     </>
   );
 }
@@ -88,15 +89,17 @@ function ButtonAction({ value }: { value: string }) {
       return null;
     }
 
-    await forum_funCreate(value).then((res) => {
-      if (res.status === 201) {
-        setLoading(true);
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-        setTimeout(() => router.back(), 1000);
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
-      }
-    });
+    const create = await forum_funCreate(value);
+    if (create.status === 201) {
+      setLoading(true);
+      ComponentGlobal_NotifikasiBerhasil(create.message);
+      setTimeout(() => router.back(), 1000);
+
+      mqtt_client.publish("Forum_user_to_user", JSON.stringify({isNewPost: true, count: 1 }));
+
+    } else {
+      ComponentGlobal_NotifikasiGagal(create.message);
+    }
   }
   return (
     <>

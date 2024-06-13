@@ -865,8 +865,8 @@ model Notifikasi {
   Role       MasterUserRole? @relation(fields: [userRoleId], references: [id])
   userRoleId String
 
-  User    User   @relation("UserNotifikasi", fields: [userId], references: [id], map: "NotifikasiUser")
+  User    User    @relation("UserNotifikasi", fields: [userId], references: [id], map: "NotifikasiUser")
   userId  String
-  Admin   User   @relation("AdminNotifikasi", fields: [adminId], references: [id], map: "NotifikasiAdmin")
-  adminId String
+  Admin   User?   @relation("AdminNotifikasi", fields: [adminId], references: [id], map: "NotifikasiAdmin")
+  adminId String?
 }

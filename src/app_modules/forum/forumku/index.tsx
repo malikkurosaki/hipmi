@@ -1,36 +1,28 @@
 "use client";
 
+import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import {
   ActionIcon,
   Affix,
   Avatar,
   Button,
-  Card,
   Center,
   Divider,
   Grid,
-  Group,
   Stack,
   Text,
   rem,
 } from "@mantine/core";
-import {
-  IconCircleFilled,
-  IconMessageCircle,
-  IconPencilPlus,
-} from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import ComponentForum_PostingAuthorNameOnHeader from "../component/header/posting_author_header_name";
-import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import { useState } from "react";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
-import { MODEL_FORUM_POSTING } from "../model/interface";
-import ComponentForum_MainCardView from "../component/main_card_view";
 import { useWindowScroll } from "@mantine/hooks";
+import { IconCircleFilled, IconPencilPlus } from "@tabler/icons-react";
 import _ from "lodash";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ComponentForum_MainCardView from "../component/main_card_view";
+import { MODEL_FORUM_POSTING } from "../model/interface";
 
 export default function Forum_Forumku({
   auhtorSelectedData,
@@ -185,9 +177,6 @@ function ForumPosting({
   if (loadingKomen) return <ComponentGlobal_V2_LoadingPage />;
   return (
     <>
-
-
-
       <ComponentForum_MainCardView
         data={data}
         setLoadingKomen={setLoadingKomen}

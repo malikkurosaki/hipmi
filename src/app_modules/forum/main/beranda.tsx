@@ -16,6 +16,8 @@ import {
   Box,
   TextInput,
   Center,
+  Button,
+  Pagination,
 } from "@mantine/core";
 import { useShallowEffect, useTimeout, useWindowScroll } from "@mantine/hooks";
 import {
@@ -37,33 +39,95 @@ import { forum_getListAllPosting } from "../fun/get/get_list_all_posting";
 import { forum_funSearchListPosting } from "../fun/search/fun_search_list_posting";
 import _ from "lodash";
 import ComponentForum_BerandaCardView from "../component/beranda/beranda_card";
+import mqtt_client from "@/util/mqtt_client";
+import ComponentForum_V2_MainCardView from "../component/main_component/card_view";
+import { forum_new_getAllPosting } from "../fun/get/new_get_all_posting";
+import forum_v2_getAllPosting from "../fun/get/v2_get_all_posting";
 
 export default function Forum_Beranda({
   listForum,
   userLoginId,
 }: {
-  listForum: MODEL_FORUM_POSTING[];
+  listForum: any;
   userLoginId: string;
 }) {
   const router = useRouter();
-  const [data, setData] = useState(listForum);
   const [scroll, scrollTo] = useWindowScroll();
 
-  const [loadingCreate, setLoadingCreate] = useState(false);
-  const [loadingKomen, setLoadingKomen] = useState(false);
-  const [loadingDetail, setLoadingDetail] = useState(false);
+  const [data, setData] = useState<MODEL_FORUM_POSTING[]>(listForum);
+  // const [nPage, setNPage] = useState(listForum.nPage);
+  // const [activePage, setActivePage] = useState(1);
+  const [isSearch, setIsSearch] = useState("");
 
-  if (loadingDetail) return <ComponentGlobal_V2_LoadingPage />;
-  if (loadingKomen) return <ComponentGlobal_V2_LoadingPage />;
+  const [loadingCreate, setLoadingCreate] = useState(false);
+
+  // 
+  const [isNewPost, setIsNewPost] = useState(false);
+  const [countNewPost, setCountNewPost] = useState(0);
+
+  // useShallowEffect(() => {
+  //   onLoadAllData({
+  //     onLoad(val) {
+  //       setData(val.data);
+  //       setNPage(val.nPage);
+  //     },
+  //   });
+  // }, [setData, setNPage]);
+
+  // async function onLoadAllData({ onLoad }: { onLoad: (val: any) => void }) {
+  //   const loadData = await forum_new_getAllPosting({ page: 1 });
+  //   onLoad(loadData);
+  // }
+
+  useShallowEffect(() => {
+    mqtt_client.subscribe("Forum_user_to_user");
+
+    mqtt_client.on("message", (topic: any, message: any) => {
+      const data = JSON.parse(message.toString());
+      // console.log(data);
+      setIsNewPost(data.isNewPost);
+      const tambah = countNewPost + data.count;
+      setCountNewPost(tambah);
+    });
+  }, [countNewPost]);
 
   async function onSearch(text: string) {
-    await forum_funSearchListPosting(text).then((res: any) => {
-      setData(res);
-    });
+    setIsSearch(text);
+    const search = await forum_v2_getAllPosting({search: text});
+    setData(search as any);
+    // setNPage(search.nPage);
+    // setActivePage(1);
   }
+
+  // async function onClickPage(nextpage: number) {
+  //   setActivePage(nextpage);
+  //   const next = await forum_new_getAllPosting({
+  //     page: nextpage,
+  //     search: isSearch,
+  //   });
+  //   scrollTo({ y: 0 });
+  //   setData(next.data as any);
+  //   setNPage(next.nPage);
+  // }
+
 
   return (
     <>
+      {isNewPost && (
+        <Affix position={{ top: rem(70) }} w={"100%"}>
+          <ButtonUpdateBeranda
+            countNewPost={countNewPost}
+            onSetData={(val) => setData(val)}
+            onSetNewPost={(val) => {
+              setIsNewPost(val);
+            }}
+            onSetCountNewPosting={(val) => {
+              setCountNewPost(val);
+            }}
+          />
+        </Affix>
+      )}
+
       {/* <pre>{JSON.stringify(listForum, null, 2)}</pre> */}
       <Affix position={{ bottom: rem(100), right: rem(30) }}>
         <ActionIcon
@@ -98,23 +162,80 @@ export default function Forum_Beranda({
             <IconSearchOff size={80} color="gray" />
             <Stack spacing={0} align="center">
               <Text c={"gray"} fw={"bold"} fz={"xs"}>
-                Forum tidak ditemukan
-              </Text>
-              <Text c={"gray"} fw={"bold"} fz={"xs"}>
-                Coba masukan kata yang bebeda
+                Tidak ada data
               </Text>
             </Stack>
           </Stack>
         ) : (
-          <ComponentForum_BerandaCardView
+          // --- Main component --- //
+          <ComponentForum_V2_MainCardView
             data={data}
-            setData={setData}
-            setLoadingKomen={setLoadingKomen}
-            setLoadingDetail={setLoadingDetail}
             userLoginId={userLoginId}
+            onLoadData={(val) => {
+              setData(val);
+              // setNPage(val.nPage);
+            }}
           />
         )}
       </Stack>
+
+      {/* <Center mt={"md"}>
+        <Pagination
+          value={activePage}
+          total={nPage}
+          onChange={(val) => {
+            onClickPage(val);
+          }}
+          styles={(theme) => ({
+            control: {
+              borderRadius: "100%",
+             
+            },
+          })}
+        />
+      </Center> */}
+    </>
+  );
+}
+
+function ButtonUpdateBeranda({
+  countNewPost,
+  onSetData,
+  onSetNewPost,
+  onSetCountNewPosting,
+}: {
+  countNewPost: number;
+  onSetData: (val: any) => void;
+  onSetNewPost: (val: any) => void;
+  onSetCountNewPosting: (val: any) => void;
+}) {
+  const [scroll, scrollTo] = useWindowScroll();
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function onLoadData() {
+    setIsLoading(true);
+    const loadData = await forum_getListAllPosting();
+    if (loadData) {
+      onSetData(loadData);
+      onSetNewPost(false);
+      setIsLoading(false);
+      onSetCountNewPosting(0);
+    }
+  }
+
+  return (
+    <>
+      <Center>
+        <Button
+          loaderPosition="center"
+          loading={isLoading ? true : false}
+          radius={"xl"}
+          opacity={scroll.y > 0 ? 0.5 : 0.8}
+          onClick={() => onLoadData()}
+        >
+          Update beranda + {countNewPost}
+        </Button>
+      </Center>
     </>
   );
 }
