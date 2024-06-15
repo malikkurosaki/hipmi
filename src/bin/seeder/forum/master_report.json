@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "Kebencian",
+    "deskripsi": "Cercaan, Stereotip rasis atau seksis, Dehumanisasi, Menyulut ketakutan atau diskriminasi, Referensi kebencian, Simbol & logo kebencian"
+  },
+  {
+    "id": 2,
+    "title": "Penghinaan & Pelecehan secara Online",
+    "deskripsi": "Penghinaan, Konten Seksual yang Tidak Diinginkan, Penyangkalan Peristiwa Kekerasan, Pelecehan Bertarget dan Memprovokasi Pelecehan"
+  },
+  {
+    "id": 3,
+    "title": "Tutur Kekerasan",
+    "deskripsi": "Ancaman Kekerasan, Berharap Terjadinya Celaka, Mengagungkan Kekerasan, Penghasutan Kekerasan, Penghasutan Kekerasan dengan Kode"
+  },
+  {
+    "id": 4,
+    "title": "Keselamatan Anak",
+    "deskripsi": "Eksploitasi seks anak di bawah umur, grooming, kekerasan fisik terhadap anak, pengguna di bawah umur"
+  },
+  {
+    "id": 5,
+    "title": "Privasi",
+    "deskripsi": "Membagikan informasi pribadi, mengancam akan membagikan/menyebarkan informasi pribadi, membagikan gambar intim tanpa persetujuan, membagikan gambar saya yang tidak saya kehendaki di platform ini"
+  },
+  {
+    "id": 6,
+    "title": "Spam",
+    "deskripsi": "Akun palsu, penipuan keuangan, memposting tautan berbahaya, menyalahgunakan hashtag, keterlibatan palsu, balasan berulang, Posting Ulang, atau Direct Message"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "name": "Draft",
+    "color": "yellow"
+  },
+  {
+    "id": "2",
+    "name": "Review",
+    "color": "orange"
+  },
+  {
+    "id": "3",
+    "name": "Publish",
+    "color": "green"
+  },
+  {
+    "id": "4",
+    "name": "Reject",
+    "color": "red"
+  }
+]

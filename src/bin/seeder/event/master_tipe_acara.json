@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Seminar"
+  },
+  {
+    "id": 2,
+    "name": "Workshop"
+  },
+  {
+    "id": 3,
+    "name": "Konferensi"
+  },
+  {
+    "id": 4,
+    "name": "Musyawarah Anggota"
+  },
+  {
+    "id": 5,
+    "name": "Kegiatan Sosial"
+  }
+]

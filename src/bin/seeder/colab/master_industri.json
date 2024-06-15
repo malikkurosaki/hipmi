@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Software Developer"
+  },
+  {
+    "id": 2,
+    "name": "Makanan & Minuman"
+  },
+  {
+    "id": 3,
+    "name": "Kosmetik"
+  },
+  {
+    "id": 4,
+    "name": "Furniture"
+  },
+  {
+    "id": 5,
+    "name": "Kendaraan"
+  },
+  {
+    "id": 6,
+    "name": "Kesehatan"
+  }
+]
