@@ -1,0 +1,23 @@
+[
+    {
+      "id": "1",
+      "name": "Menunggu",
+      "color": "yellow"
+    },
+    {
+      "id": "2",
+      "name": "Proses",
+      "color": "orange"
+    },
+    {
+      "id": "3",
+      "name": "Berhasil",
+      "color": "green"
+    },
+    {
+      "id": "4",
+      "name": "Gagal",
+      "color": "red"
+    }
+  ]
+  
