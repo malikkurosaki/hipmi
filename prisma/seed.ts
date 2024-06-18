@@ -414,7 +414,7 @@ const prisma = new PrismaClient()
     })
     .finally(() => {
         prisma.$disconnect()
-        console.log("finish")
+        console.log("finish ")
         process.exit(0)
 
     })
