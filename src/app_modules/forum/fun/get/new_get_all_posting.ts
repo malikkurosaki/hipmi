@@ -1,18 +1,16 @@
 "use server";
 
-import _, { ceil } from "lodash";
 import prisma from "@/app/lib/prisma";
-import { forum_countOneTotalKomentarById } from "../count/count_one_total_komentar_by_id";
-import { forum_countTotalKomenById } from "../count/count_total_komentar_by_id";
+import { ceil } from "lodash";
 
 export async function forum_new_getAllPosting({
   page,
   search,
 }: {
-  page: number;
+  page: any;
   search?: string;
 }) {
-  const takeData = 10;
+  const takeData = 5;
   const skipData = page * takeData - takeData;
 
   const getData = await prisma.forum_Posting.findMany({
@@ -51,25 +49,15 @@ export async function forum_new_getAllPosting({
           isActive: true,
         },
       },
-      ForumMaster_StatusPosting: true,
-    },
-  });
-
-  const nCount = await prisma.forum_Posting.count({
-    where: {
-      isActive: true,
-      diskusi: {
-        mode: "insensitive",
-        contains: search,
+      ForumMaster_StatusPosting: {
+        select: {
+          id: true,
+          status: true,
+        },
       },
+      forumMaster_StatusPostingId: true,
     },
   });
 
-  const allData = {
-    data: getData,
-    nPage: ceil(nCount / takeData),
-  };
-  
-
-  return allData;
+  return getData;
 }

@@ -3718,10 +3718,10 @@ next-dev@^1.1.9:
     readdirp "^3.6.0"
     yargs "^17.7.2"
 
-next-scroll-loader@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/next-scroll-loader/-/next-scroll-loader-1.0.5.tgz#e25aaed2c3e5c60bf6d2fa89a387b62483b2ffd0"
-  integrity sha512-j2/yQkjtCZttnpZcKMyLbIylBsGsutFD4Net0cdk3lYOWN7FmPRUlpK0JrZP+KGnq6pyuXh6OxCxY9HJ8BWGZQ==
+next-scroll-loader@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/next-scroll-loader/-/next-scroll-loader-1.0.9.tgz#5d33260c086fbce9061ab5281694355395e91d4f"
+  integrity sha512-TezMxzzgJ1XP7rk+dFbAgIpWtvTPUx1KnE8o19Rr/rxT5WnHZ67HBzP9KXAM1t4MAao+HT9OwG1KDSCi0GL8lg==
   dependencies:
     react "^18.3.1"
     react-dom "^18.3.1"

@@ -9,10 +9,11 @@ export interface MODEL_FORUM_POSTING {
   diskusi: string;
   authorId: string;
   Author: MODEL_USER;
-  _count: number
+  _count: number;
   Forum_Komentar: MODEL_FORUM_KOMENTAR[];
   Forum_ReportPosting: MODEL_FORUM_MASTER_REPORT[];
   ForumMaster_StatusPosting: MODEL_FORUM_MASTER_STATUS;
+  forumMaster_StatusPostingId: number
 }
 
 export interface MODEL_FORUM_KOMENTAR {

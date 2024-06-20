@@ -15,7 +15,7 @@ import { Job_funDeleteById } from "../../fun/delete/fun_delete_by_id";
 import ComponentJob_NotedBox from "../../component/detail/noted_box";
 import { MODEL_JOB } from "../../model/interface";
 import mqtt_client from "@/util/mqtt_client";
-import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 
 export default function Job_DetailDraft({ dataJob }: { dataJob: MODEL_JOB }) {
   return (

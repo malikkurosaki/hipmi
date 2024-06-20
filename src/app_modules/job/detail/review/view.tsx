@@ -10,7 +10,7 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_glob
 import { MODEL_JOB } from "../../model/interface";
 import { Job_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_status_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import mqtt_client from "@/util/mqtt_client";
 
 export default function Job_DetailReview({ dataJob }: { dataJob: MODEL_JOB }) {

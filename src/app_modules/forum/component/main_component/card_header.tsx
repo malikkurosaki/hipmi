@@ -27,11 +27,13 @@ export default function ComponentForum_V2_HeaderCard({
   isMoreButton,
   userLoginId,
   onLoadData,
+  allData,
 }: {
   data: MODEL_FORUM_POSTING;
   isMoreButton: boolean;
   userLoginId: string;
-  onLoadData: (val: any) => void
+  onLoadData: (val: any) => void;
+  allData: any[];
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -91,11 +93,7 @@ export default function ComponentForum_V2_HeaderCard({
                     : "red"
                 }
               >
-                <Text fz={10}>
-                  {(data.ForumMaster_StatusPosting.id as any) === 1
-                    ? "Open"
-                    : "Close"}
-                </Text>
+                <Text fz={10}>{data?.ForumMaster_StatusPosting.status}</Text>
               </Badge>
             </Stack>
           </Grid.Col>
@@ -104,8 +102,8 @@ export default function ComponentForum_V2_HeaderCard({
             <Group position="center" spacing={"xs"}>
               <Group spacing={3}>
                 <Text c={"gray"} fz={"sm"}>
-                  {data.createdAt
-                    ? data.createdAt.toLocaleDateString(["id-ID"], {
+                  {data.createdAt !== undefined && data?.createdAt
+                    ? new Date(data?.createdAt).toLocaleDateString(["id-ID"], {
                         day: "numeric",
                         month: "short",
                       })
@@ -130,8 +128,8 @@ export default function ComponentForum_V2_HeaderCard({
                     statusId={data?.ForumMaster_StatusPosting.id}
                     userLoginId={userLoginId}
                     onLoadData={onLoadData}
+                    allData={allData}
                   />
-
                 </Group>
               ) : (
                 ""

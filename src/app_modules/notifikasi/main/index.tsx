@@ -26,6 +26,9 @@ import { useAtom } from "jotai";
 import { gs_job_hot_menu, gs_job_status } from "@/app_modules/job/global_state";
 import _ from "lodash";
 import ComponentGlobal_IsEmptyData from "@/app_modules/component_global/is_empty_data";
+import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
+import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
+import { useShallowEffect } from "@mantine/hooks";
 
 export default function Notifikasi_MainView({
   listNotifikasi,
@@ -51,6 +54,19 @@ function MainView({ listNotifikasi }: { listNotifikasi: MODEL_NOTIFIKASI[] }) {
   const [jobMenuId, setJobMenuId] = useAtom(gs_job_hot_menu);
   const [jobStatus, setJobStatus] = useAtom(gs_job_status);
 
+  useShallowEffect(() => {
+    onLoadData({
+      onLoad(val) {
+        setData(val);
+      },
+    });
+  }, []);
+
+  async function onLoadData({ onLoad }: { onLoad: (val: any) => void }) {
+    const loadData = await notifikasi_getByUserId();
+    onLoad(loadData);
+  }
+
   if (_.isEmpty(data)) {
     return <ComponentGlobal_IsEmptyData text="Tidak ada pemberitahuan" />;
   }
@@ -74,7 +90,6 @@ function MainView({ listNotifikasi }: { listNotifikasi: MODEL_NOTIFIKASI[] }) {
               borderColor: "gray",
               borderStyle: "solid",
               borderWidth: "0.5px",
-             
             }}
             onClick={async () => {
               e?.kategoriApp === "JOB" &&
@@ -87,12 +102,19 @@ function MainView({ listNotifikasi }: { listNotifikasi: MODEL_NOTIFIKASI[] }) {
                   },
                 });
 
-              const cek = await notifikasi_funUpdateIsReadById({
+              e?.kategoriApp === "FORUM" &&
+                redirectDetailForumPage({
+                  appId: e.appId,
+                  router: router,
+                });
+
+              const updateIsRead = await notifikasi_funUpdateIsReadById({
                 notifId: e?.id,
               });
-              if (cek.status === 200) return null;
+              if (updateIsRead.status === 200) return null;
             }}
           >
+            {/* <pre>{JSON.stringify(e, null, 2)}</pre> */}
             <Card.Section p={"sm"}>
               <Stack spacing={"xs"}>
                 <Group position="apart">
@@ -105,13 +127,22 @@ function MainView({ listNotifikasi }: { listNotifikasi: MODEL_NOTIFIKASI[] }) {
               </Stack>
             </Card.Section>
             <Card.Section px={"sm"} pb={"sm"}>
-              <Stack spacing={0}>
+              <Stack spacing={e.kategoriApp === "FORUM" ? 0 : "xs"}>
                 <Text lineClamp={2} fw={"bold"} fz={"xs"}>
                   {e?.title}
                 </Text>
-                <Text lineClamp={2} fz={"xs"}>
-                  {e?.pesan}
-                </Text>
+                {e.kategoriApp === "FORUM" ? (
+                  <div
+                    style={{ fontSize: 12 }}
+                    dangerouslySetInnerHTML={{ __html: e?.pesan }}
+                  />
+                ) : (
+                  // <Text >
+                  // </Text>
+                  <Text lineClamp={2} fz={"xs"}>
+                    {e?.pesan}
+                  </Text>
+                )}
               </Stack>
             </Card.Section>
             <Card.Section p={"sm"}>
@@ -177,5 +208,16 @@ function redirectJobPage({
     });
   }
 
+  router.push(path);
+}
+
+function redirectDetailForumPage({
+  appId,
+  router,
+}: {
+  appId: string;
+  router: AppRouterInstance;
+}) {
+  const path = RouterForum.main_detail + appId;
   router.push(path);
 }

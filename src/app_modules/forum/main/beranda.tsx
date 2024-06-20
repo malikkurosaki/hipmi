@@ -18,6 +18,7 @@ import {
   Center,
   Button,
   Pagination,
+  Loader,
 } from "@mantine/core";
 import { useShallowEffect, useTimeout, useWindowScroll } from "@mantine/hooks";
 import {
@@ -43,6 +44,7 @@ import mqtt_client from "@/util/mqtt_client";
 import ComponentForum_V2_MainCardView from "../component/main_component/card_view";
 import { forum_new_getAllPosting } from "../fun/get/new_get_all_posting";
 import forum_v2_getAllPosting from "../fun/get/v2_get_all_posting";
+import { ScrollOnly } from "next-scroll-loader";
 
 export default function Forum_Beranda({
   listForum,
@@ -55,61 +57,86 @@ export default function Forum_Beranda({
   const [scroll, scrollTo] = useWindowScroll();
 
   const [data, setData] = useState<MODEL_FORUM_POSTING[]>(listForum);
-  // const [nPage, setNPage] = useState(listForum.nPage);
-  // const [activePage, setActivePage] = useState(1);
+  const [activePage, setActivePage] = useState(1);
   const [isSearch, setIsSearch] = useState("");
 
   const [loadingCreate, setLoadingCreate] = useState(false);
 
-  // 
+  //
   const [isNewPost, setIsNewPost] = useState(false);
   const [countNewPost, setCountNewPost] = useState(0);
 
-  // useShallowEffect(() => {
-  //   onLoadAllData({
-  //     onLoad(val) {
-  //       setData(val.data);
-  //       setNPage(val.nPage);
-  //     },
-  //   });
-  // }, [setData, setNPage]);
+  useShallowEffect(() => {
+    onLoadAllData({
+      onLoad(val) {
+        setData(val);
+      },
+    });
+  }, [setData]);
 
-  // async function onLoadAllData({ onLoad }: { onLoad: (val: any) => void }) {
-  //   const loadData = await forum_new_getAllPosting({ page: 1 });
-  //   onLoad(loadData);
-  // }
+  async function onLoadAllData({ onLoad }: { onLoad: (val: any) => void }) {
+    const loadData = await forum_new_getAllPosting({ page: 1 });
+    onLoad(loadData);
+  }
 
   useShallowEffect(() => {
-    mqtt_client.subscribe("Forum_user_to_user");
+    mqtt_client.subscribe("Forum_create_new");
+    mqtt_client.subscribe("Forum_ganti_status");
+    mqtt_client.subscribe("Forum_hapus_data");
+    mqtt_client.subscribe("Forum_detail_ganti_status");
 
     mqtt_client.on("message", (topic: any, message: any) => {
-      const data = JSON.parse(message.toString());
-      // console.log(data);
-      setIsNewPost(data.isNewPost);
-      const tambah = countNewPost + data.count;
-      setCountNewPost(tambah);
+      // console.log(topic);
+      const cloneData = _.clone(data);
+
+      if (topic === "Forum_create_new") {
+        const newData = JSON.parse(message.toString());
+        setIsNewPost(newData.isNewPost);
+        const tambah = countNewPost + newData.count;
+        setCountNewPost(tambah);
+      }
+
+      if (topic === "Forum_hapus_data") {
+        const newData = JSON.parse(message.toString());
+        setData(newData.data);
+      }
+
+      if (topic === "Forum_ganti_status") {
+        const newData = JSON.parse(message.toString());
+        setData(newData.data);
+      }
+
+      if (topic === "Forum_detail_ganti_status") {
+        const newData = JSON.parse(message.toString());
+
+        const updateOneData = cloneData.map((val) => ({
+          ...val,
+          ForumMaster_StatusPosting: {
+            id:
+              val.id === newData.id
+                ? newData.data.id
+                : val.ForumMaster_StatusPosting.id,
+            status:
+              val.id === newData.id
+                ? newData.data.status
+                : val.ForumMaster_StatusPosting.status,
+          },
+        }));
+
+        setData(updateOneData as any);
+      }
     });
-  }, [countNewPost]);
+  }, [countNewPost, data]);
 
   async function onSearch(text: string) {
     setIsSearch(text);
-    const search = await forum_v2_getAllPosting({search: text});
-    setData(search as any);
-    // setNPage(search.nPage);
-    // setActivePage(1);
+    const loadSearch = await forum_new_getAllPosting({
+      page: activePage,
+      search: text,
+    });
+    setData(loadSearch as any);
+    setActivePage(1);
   }
-
-  // async function onClickPage(nextpage: number) {
-  //   setActivePage(nextpage);
-  //   const next = await forum_new_getAllPosting({
-  //     page: nextpage,
-  //     search: isSearch,
-  //   });
-  //   scrollTo({ y: 0 });
-  //   setData(next.data as any);
-  //   setNPage(next.nPage);
-  // }
-
 
   return (
     <>
@@ -118,7 +145,7 @@ export default function Forum_Beranda({
           <ButtonUpdateBeranda
             countNewPost={countNewPost}
             onSetData={(val) => setData(val)}
-            onSetNewPost={(val) => {
+            onSetIsNewPost={(val) => {
               setIsNewPost(val);
             }}
             onSetCountNewPosting={(val) => {
@@ -168,32 +195,38 @@ export default function Forum_Beranda({
           </Stack>
         ) : (
           // --- Main component --- //
-          <ComponentForum_V2_MainCardView
+          <ScrollOnly
+            height="80vh"
+            renderLoading={() => (
+              <Center mt={"lg"}>
+                <Loader />
+              </Center>
+            )}
             data={data}
-            userLoginId={userLoginId}
-            onLoadData={(val) => {
-              setData(val);
-              // setNPage(val.nPage);
+            setData={setData}
+            moreData={async () => {
+              const loadData = await forum_new_getAllPosting({
+                page: activePage + 1,
+                search: isSearch,
+              });
+              setActivePage((val) => val + 1);
+
+              return loadData;
             }}
-          />
+          >
+            {(item) => (
+              <ComponentForum_V2_MainCardView
+                data={item}
+                userLoginId={userLoginId}
+                onLoadData={(val) => {
+                  setData(val);
+                }}
+                allData={data}
+              />
+            )}
+          </ScrollOnly>
         )}
       </Stack>
-
-      {/* <Center mt={"md"}>
-        <Pagination
-          value={activePage}
-          total={nPage}
-          onChange={(val) => {
-            onClickPage(val);
-          }}
-          styles={(theme) => ({
-            control: {
-              borderRadius: "100%",
-             
-            },
-          })}
-        />
-      </Center> */}
     </>
   );
 }
@@ -201,12 +234,12 @@ export default function Forum_Beranda({
 function ButtonUpdateBeranda({
   countNewPost,
   onSetData,
-  onSetNewPost,
+  onSetIsNewPost,
   onSetCountNewPosting,
 }: {
   countNewPost: number;
   onSetData: (val: any) => void;
-  onSetNewPost: (val: any) => void;
+  onSetIsNewPost: (val: any) => void;
   onSetCountNewPosting: (val: any) => void;
 }) {
   const [scroll, scrollTo] = useWindowScroll();
@@ -214,10 +247,11 @@ function ButtonUpdateBeranda({
 
   async function onLoadData() {
     setIsLoading(true);
-    const loadData = await forum_getListAllPosting();
+    const loadData = await forum_new_getAllPosting({ page: 1 });
+
     if (loadData) {
       onSetData(loadData);
-      onSetNewPost(false);
+      onSetIsNewPost(false);
       setIsLoading(false);
       onSetCountNewPosting(0);
     }

@@ -14,7 +14,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { IconMessageCircle } from "@tabler/icons-react";
+import { IconMessageCircle, IconMessageCircleX } from "@tabler/icons-react";
 import ComponentForum_PostingAuthorNameOnHeader from "../component/header/posting_author_header_name";
 import ComponentForum_DetailOnHeaderAuthorName from "../component/header/detail_author_header_name";
 import { useRouter } from "next/navigation";
@@ -36,32 +36,78 @@ const ReactQuill = dynamic(
 import "react-quill/dist/quill.bubble.css";
 import { forum_getKomentarById } from "../fun/get/get_komentar_by_id";
 import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import ComponentForum_DetailHeader from "../component/detail_component/detail_header";
+import { useShallowEffect } from "@mantine/hooks";
+import mqtt_client from "@/util/mqtt_client";
+import { MODEL_NOTIFIKASI } from "@/app_modules/notifikasi/model/interface";
+import notifikasiToUser_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_user";
 
 export default function Forum_Detail({
   dataPosting,
   listKomentar,
-  totalKomentar,
   userLoginId,
 }: {
   dataPosting: MODEL_FORUM_POSTING;
   listKomentar: MODEL_FORUM_KOMENTAR[];
-  totalKomentar: number;
   userLoginId: string;
 }) {
+  const [data, setData] = useState(dataPosting);
   const [komentar, setKomentar] = useState(listKomentar);
+
+  // useShallowEffect(() => {
+  //   onLoadKomentar({
+  //     onLoad(val) {
+  //       setKomentar(val);
+  //     },
+  //   });
+  // }, [setKomentar]);
+
+  // async function onLoadKomentar({ onLoad }: { onLoad: (val: any) => void }) {
+  //   const loadKomentar = await forum_getKomentarById(data.id);
+  //   onLoad(loadKomentar);
+  // }
+
+  useShallowEffect(() => {
+    mqtt_client.subscribe("Forum_detail_ganti_status");
+
+    mqtt_client.on("message", (topic: any, message: any) => {
+      const newData = JSON.parse(message.toString());
+      if (newData.id === data.id) {
+        const cloneData = _.clone(data);
+
+        // console.log(newData.data);
+        const updateData = {
+          ...cloneData,
+          ForumMaster_StatusPosting: {
+            id: newData.data.id,
+            status: newData.data.status,
+          },
+        };
+
+        setData(updateData as any);
+      }
+    });
+  }, [data]);
 
   return (
     <>
       <Stack px={"xs"}>
         <ForumView
-          dataPosting={dataPosting}
-          totalKomentar={totalKomentar}
+          data={data}
+          totalKomentar={komentar.length}
           userLoginId={userLoginId}
+          onLoadData={(val) => {
+            setData(val);
+          }}
         />
-        {(dataPosting?.ForumMaster_StatusPosting?.id as any) === 1 ? (
+        {(data?.ForumMaster_StatusPosting?.id as any) === 1 ? (
           <CreateKomentar
             postingId={dataPosting?.id}
-            setKomentar={setKomentar}
+            onSetKomentar={(val) => {
+              setKomentar(val);
+            }}
+            data={data}
+            userLoginId={userLoginId}
           />
         ) : (
           ""
@@ -69,7 +115,7 @@ export default function Forum_Detail({
         <KomentarView
           listKomentar={komentar}
           setKomentar={setKomentar}
-          postingId={dataPosting?.id}
+          postingId={data?.id}
           userLoginId={userLoginId}
         />
       </Stack>
@@ -78,66 +124,65 @@ export default function Forum_Detail({
 }
 
 function ForumView({
-  dataPosting,
+  data,
   totalKomentar,
   userLoginId,
+  onLoadData,
 }: {
-  dataPosting: MODEL_FORUM_POSTING;
+  data: MODEL_FORUM_POSTING;
   totalKomentar: number;
   userLoginId: string;
+  onLoadData: (val: any) => void;
 }) {
   return (
     <>
       <Card style={{ position: "relative", width: "100%" }}>
+        {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+
+        {/* HEADER */}
         <Card.Section>
-          {/* <pre>{JSON.stringify(dataPosting, null, 2)}</pre> */}
-          <ComponentForum_DetailOnHeaderAuthorName
-            authorId={dataPosting?.Author?.id}
-            authorName={dataPosting?.Author?.Profile?.name}
-            username={dataPosting?.Author?.username}
-            imagesId={dataPosting?.Author?.Profile?.imagesId}
-            postingId={dataPosting?.id}
-            tglPublish={dataPosting?.createdAt}
+          <ComponentForum_DetailHeader
+            data={data}
             userLoginId={userLoginId}
-            statusId={dataPosting?.ForumMaster_StatusPosting?.id}
+            onLoadData={(val) => {
+              onLoadData(val);
+            }}
           />
         </Card.Section>
+
+        {/* CONTENT */}
         <Card.Section sx={{ zIndex: 0 }} py={"sm"}>
           <Stack spacing={"xs"}>
             <Text fz={"sm"}>
-              {dataPosting?.diskusi ? (
-                <div
-                  dangerouslySetInnerHTML={{ __html: dataPosting?.diskusi }}
-                />
+              {data?.diskusi ? (
+                <div dangerouslySetInnerHTML={{ __html: data?.diskusi }} />
               ) : (
                 ""
               )}
             </Text>
           </Stack>
         </Card.Section>
+
+        {/* FOOTER */}
         <Card.Section>
           <Stack>
             <Group position="apart">
               <Group spacing={"xs"}>
-                {/* <ActionIcon
-                  variant="transparent"
-                  sx={{ zIndex: 1 }}
-                  onClick={() => {
-                    router.push(RouterForum.komentar + dataPosting.id);
-                  }}
-                >
-                </ActionIcon> */}
-                <IconMessageCircle color="gray" size={25} />
+                {(data?.ForumMaster_StatusPosting?.id as any) === 1 ? (
+                  <IconMessageCircle color="gray" size={25} />
+                ) : (
+                  <IconMessageCircleX color="gray" size={25} />
+                )}
                 <Text c={"gray"}>{totalKomentar}</Text>
               </Group>
               <Group>
                 <Text c={"gray"} fz={"sm"}>
-                  {new Date(dataPosting?.createdAt).toLocaleTimeString()}
+                  {new Date(data?.createdAt).toLocaleTimeString()}
                   {/* {new Intl.RelativeTimeFormat("id", {style: "short"}).format(-1,"day")} */}
                 </Text>
                 <Text c={"gray"} fz={"sm"}>
-                  {dataPosting?.createdAt
-                    ? dataPosting?.createdAt.toLocaleDateString(["id-ID"], {
+                  {data?.createdAt
+                    ? new Date(data?.createdAt).toLocaleDateString(["id-ID"], {
                         dateStyle: "medium",
                       })
                     : new Date().toLocaleDateString(["id-ID"], {
@@ -156,10 +201,14 @@ function ForumView({
 
 function CreateKomentar({
   postingId,
-  setKomentar,
+  onSetKomentar,
+  data,
+  userLoginId,
 }: {
   postingId: string;
-  setKomentar: any;
+  onSetKomentar: (val: any) => void;
+  data: MODEL_FORUM_POSTING;
+  userLoginId: string;
 }) {
   const router = useRouter();
   const [value, setValue] = useState("");
@@ -171,20 +220,41 @@ function CreateKomentar({
       return null;
     }
 
-    await forum_funCreateKomentar(postingId, value).then(async (res) => {
-      if (res.status === 201) {
-        await forum_getKomentarById(postingId).then((val) => {
-          setKomentar(val);
-          // setLoading(true);
-          setValue("");
-          setIsEmpty(true);
-          ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
+    const createComment = await forum_funCreateKomentar(postingId, value);
+    if (createComment.status === 201) {
+      const loadKomentar = await forum_getKomentarById(data.id);
+      onSetKomentar(loadKomentar);
+
+      setValue("");
+      setIsEmpty(true);
+      ComponentGlobal_NotifikasiBerhasil(createComment.message, 2000);
+
+      if (userLoginId !== data.Author.id) {
+        const dataNotif = {
+          appId: data.id,
+          userId: data.authorId,
+          pesan: value,
+          kategoriApp: "FORUM",
+          title: "Komentar baru",
+        };
+
+        const createNotifikasi = await notifikasiToUser_funCreate({
+          data: dataNotif as any,
         });
-        // router.replace(RouterForum.main_detail + postingId, { scroll: false });
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
+
+        if (createNotifikasi.status === 201) {
+          mqtt_client.publish(
+            "USER",
+            JSON.stringify({
+              userId: dataNotif.userId,
+              count: 1,
+            })
+          );
+        }
       }
-    });
+    } else {
+      ComponentGlobal_NotifikasiGagal(createComment.message);
+    }
   }
 
   return (
@@ -200,13 +270,12 @@ function CreateKomentar({
             }}
           />
         </Paper>
-        <Group position="right">
+
+        <Group position="apart">
           <ComponentGlobal_InputCountDown
             maxInput={500}
             lengthInput={value.length}
           />
-        </Group>
-        <Group position="right">
           <Button
             style={{
               transition: "0.5s",
@@ -251,45 +320,55 @@ function KomentarView({
             </Text>
           </Center>
         ) : (
-          listKomentar.map((e, i) => (
-            <Card key={i} mt={"xs"}>
-              <Card.Section>
-                <ComponentForum_KomentarAuthorNameOnHeader
-                  authorName={e?.Author?.Profile?.name}
-                  imagesId={e?.Author?.Profile?.imagesId}
-                  tglPublish={e?.createdAt}
-                  userId={e?.Author?.id}
-                  komentarId={e?.id}
-                  isMoreButton={true}
-                  setKomentar={setKomentar}
-                  postingId={postingId}
-                  userLoginId={userLoginId}
-                />
-              </Card.Section>
-              <Card.Section sx={{ zIndex: 0 }} p={"sm"}>
-                <Stack spacing={"xs"}>
-                  <Text fz={"sm"} lineClamp={4}>
-                    {e.komentar ? (
-                      <Spoiler
-                        hideLabel="sembunyikan"
-                        maxHeight={100}
-                        showLabel="tampilkan"
-                      >
-                        <div dangerouslySetInnerHTML={{ __html: e.komentar }} />
-                      </Spoiler>
-                    ) : (
-                      ""
-                    )}
-                  </Text>
-                </Stack>
-              </Card.Section>
-              <Card.Section>
-                <Stack>
-                  <Divider />
-                </Stack>
-              </Card.Section>
-            </Card>
-          ))
+          <Box>
+            <Center>
+              <Text fz={"xs"} c={"gray"}>
+                {" "}
+                Komentar
+              </Text>
+            </Center>
+            {listKomentar.map((e, i) => (
+              <Card key={i} mt={"xs"}>
+                <Card.Section>
+                  <ComponentForum_KomentarAuthorNameOnHeader
+                    authorName={e?.Author?.Profile?.name}
+                    imagesId={e?.Author?.Profile?.imagesId}
+                    tglPublish={e?.createdAt}
+                    userId={e?.Author?.id}
+                    komentarId={e?.id}
+                    isMoreButton={true}
+                    setKomentar={setKomentar}
+                    postingId={postingId}
+                    userLoginId={userLoginId}
+                  />
+                </Card.Section>
+                <Card.Section sx={{ zIndex: 0 }} p={"sm"}>
+                  <Stack spacing={"xs"}>
+                    <Text fz={"sm"} lineClamp={4}>
+                      {e.komentar ? (
+                        <Spoiler
+                          hideLabel="sembunyikan"
+                          maxHeight={100}
+                          showLabel="tampilkan"
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{ __html: e.komentar }}
+                          />
+                        </Spoiler>
+                      ) : (
+                        ""
+                      )}
+                    </Text>
+                  </Stack>
+                </Card.Section>
+                <Card.Section>
+                  <Stack>
+                    <Divider />
+                  </Stack>
+                </Card.Section>
+              </Card>
+            ))}
+          </Box>
         )}
       </Stack>
     </>

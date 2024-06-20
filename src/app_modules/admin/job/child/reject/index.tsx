@@ -249,7 +249,7 @@ function TableStatus({ listReject }: { listReject: any }) {
               verticalSpacing={"md"}
               horizontalSpacing={"md"}
               p={"md"}
-              w={1500}
+              w={"100%"}
               h={"100%"}
               striped
               highlightOnHover

@@ -66,7 +66,8 @@ export default function Forum_Komentar({
             </Stack>
           </Card.Section>
         </Card>
-        <CreateKomentar postingId={dataPosting?.id} />
+        {dataPosting?.ForumMaster_StatusPosting?.id === "1" ?  <CreateKomentar postingId={dataPosting?.id} /> : "" }
+       
       </Stack>
     </>
   );

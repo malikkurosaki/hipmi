@@ -95,7 +95,7 @@ function ButtonAction({ value }: { value: string }) {
       ComponentGlobal_NotifikasiBerhasil(create.message);
       setTimeout(() => router.back(), 1000);
 
-      mqtt_client.publish("Forum_user_to_user", JSON.stringify({isNewPost: true, count: 1 }));
+      mqtt_client.publish("Forum_create_new", JSON.stringify({isNewPost: true, count: 1 }));
 
     } else {
       ComponentGlobal_NotifikasiGagal(create.message);

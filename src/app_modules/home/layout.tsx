@@ -56,9 +56,12 @@ export default function HomeLayout({
 
   useShallowEffect(() => {
     mqtt_client.subscribe("USER");
+    // mqtt_client.subscribe("Notifikasi_forum_create_komentar");
 
     mqtt_client.on("message", (topic: any, message: any) => {
+      console.log(topic);
       const data = JSON.parse(message.toString());
+
       if (data.userId === dataUser.id) {
         setCountNotif(countNotif + data.count);
       }

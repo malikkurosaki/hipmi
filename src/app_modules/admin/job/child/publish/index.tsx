@@ -114,7 +114,7 @@ function TableStatus({ dataPublish }: { dataPublish: any }) {
               Lihat
             </Button>
           ) : (
-            <Center w={200}>
+            <Center w={200} >
               <Text fw={"bold"} fz={"xs"} fs={"italic"}>
                 Tidak ada poster
               </Text>
@@ -176,7 +176,7 @@ function TableStatus({ dataPublish }: { dataPublish: any }) {
               verticalSpacing={"md"}
               horizontalSpacing={"md"}
               p={"md"}
-              w={1500}
+              w={"100%"}
               h={"100%"}
               striped
               highlightOnHover

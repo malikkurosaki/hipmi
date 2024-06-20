@@ -1,58 +1,144 @@
 "use client";
 
-import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import {
+  Stack,
+  Grid,
+  Avatar,
+  Divider,
+  Text,
+  Group,
+  ThemeIcon,
   ActionIcon,
+  Badge,
   Button,
   Drawer,
-  Grid,
-  Group,
   Loader,
   Modal,
-  Stack,
-  Text,
   Title,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useRouter } from "next/navigation";
+import moment from "moment";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import {
+  IconCircleFilled,
   IconDots,
   IconEdit,
   IconFlag3,
+  IconMessageCircle,
   IconSquareCheck,
   IconSquareRoundedX,
   IconTrash,
 } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-
+import { IconCircle } from "@tabler/icons-react";
+import ComponentForum_PostingButtonMore from "../more_button/posting_button_more";
+import ComponentForum_DetailMoreButton from "../more_button/detail_more_button";
+import { MODEL_FORUM_POSTING } from "../../model/interface";
+import { useDisclosure } from "@mantine/hooks";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { useState } from "react";
 import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_by_id";
 import { forum_funEditStatusPostingById } from "../../fun/edit/fun_edit_status_posting_by_id";
-import forum_v2_getAllPosting from "../../fun/get/v2_get_all_posting";
-import { forum_new_getAllPosting } from "../../fun/get/new_get_all_posting";
-import _ from "lodash";
-import { MODEL_FORUM_POSTING } from "../../model/interface";
+import { forum_getOnePostingById } from "../../fun/get/get_one_posting_by_id";
 import mqtt_client from "@/util/mqtt_client";
 
-export default function ComponentForum_V2_CardMoreButton({
+export default function ComponentForum_DetailHeader({
+  data,
+  userLoginId,
+  onLoadData,
+}: {
+  data?: MODEL_FORUM_POSTING;
+  userLoginId: string;
+  onLoadData: (val: any) => void;
+}) {
+  const router = useRouter();
+
+  return (
+    <>
+      <Stack spacing={"xs"}>
+        <Grid>
+          <Grid.Col
+            span={"content"}
+            onClick={() => {
+              if (data?.Author?.id) {
+                router.push(RouterForum.forumku + data?.Author?.id);
+              } else {
+                ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
+              }
+            }}
+          >
+            <Avatar
+              size={40}
+              sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
+              radius={"xl"}
+              bg={"gray.1"}
+              src={
+                data?.Author.Profile.imagesId
+                  ? RouterProfile.api_foto_profile +
+                    data?.Author.Profile.imagesId
+                  : "/aset/global/avatar.png"
+              }
+            />
+          </Grid.Col>
+
+          <Grid.Col span={"auto"}>
+            <Stack spacing={0}>
+              <Text lineClamp={1} fz={"sm"} fw={"bold"}>
+                {data?.Author.username ? data?.Author.username : "Nama author "}
+              </Text>
+              <Badge
+                w={70}
+                variant="light"
+                color={
+                  (data?.ForumMaster_StatusPosting.id as any) === 1
+                    ? "green"
+                    : "red"
+                }
+              >
+                <Text fz={10}>
+                  {(data?.ForumMaster_StatusPosting.id as any) === 1
+                    ? "Open"
+                    : "Close"}
+                </Text>
+              </Badge>
+            </Stack>
+          </Grid.Col>
+
+          <Grid.Col span={"content"}>
+            <ComponentForum_DetailButtonMore_V2
+              postingId={data?.id}
+              authorId={data?.Author.id}
+              userLoginId={userLoginId}
+              statusId={data?.forumMaster_StatusPostingId}
+              onLoadData={(val) => {
+                onLoadData(val);
+              }}
+            />
+          </Grid.Col>
+        </Grid>
+        {/* {isPembatas ? <Divider /> : ""} */}
+      </Stack>
+    </>
+  );
+}
+
+function ComponentForum_DetailButtonMore_V2({
   authorId,
   postingId,
   statusId,
   userLoginId,
   onLoadData,
-  allData,
 }: {
   authorId: any;
   postingId?: any;
-  statusId?: any;
+  statusId: any;
   userLoginId: any;
   onLoadData: (val: any) => void;
-  allData: any[];
 }) {
   const router = useRouter();
-
-  // modal & drawer
   const [opened, { open, close }] = useDisclosure(false);
   const [openDel, setOpenDel] = useState(false);
   const [openStatusClose, setOpenStatusClose] = useState(false);
@@ -171,15 +257,7 @@ export default function ComponentForum_V2_CardMoreButton({
         centered
         withCloseButton={false}
       >
-        <ButtonDelete
-          postingId={postingId}
-          setOpenDel={setOpenDel}
-          onLoadData={(val) => {
-            onLoadData(val);
-          }}
-          allData={allData}
-        />
-        {/* <pre>{JSON.stringify(allData, null, 2)}</pre> */}
+        <ButtonDelete postingId={postingId} setOpenDel={setOpenDel} />
       </Modal>
 
       <Modal
@@ -195,9 +273,6 @@ export default function ComponentForum_V2_CardMoreButton({
           onLoadData={(val) => {
             onLoadData(val);
           }}
-          userLoginId={userLoginId}
-          authorId={authorId}
-          allData={allData}
         />
       </Modal>
 
@@ -211,35 +286,29 @@ export default function ComponentForum_V2_CardMoreButton({
 function ButtonDelete({
   postingId,
   setOpenDel,
-  onLoadData,
-  allData,
 }: {
   postingId?: string;
   setOpenDel: any;
-  onLoadData: (val: any) => void;
-  allData: MODEL_FORUM_POSTING[];
 }) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  if (loading) return <ComponentGlobal_V2_LoadingPage />;
 
   async function onDelete() {
     setOpenDel(false);
-    await forum_funDeletePostingById(postingId as any).then(async (res) => {
+    await forum_funDeletePostingById(postingId as any).then((res) => {
       if (res.status === 200) {
         ComponentGlobal_NotifikasiBerhasil(`Postingan Terhapus`, 2000);
         setLoading(true);
+        router.back();
 
-        const cloneData = _.clone(allData);
-        const hapusData = cloneData.filter((e) => e.id !== postingId);
-
-        onLoadData(hapusData);
-
-        mqtt_client.publish(
-          "Forum_hapus_data",
-          JSON.stringify({
-            data: hapusData,
-          })
-        );
-
+        // mqtt_client.publish(
+        //   "Forum_detail_hapus_data",
+        //   JSON.stringify({
+        //     id: postingId,
+        //   })
+        // );
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }
@@ -275,139 +344,80 @@ function ButtonStatus({
   setOpenStatus,
   statusId,
   onLoadData,
-  userLoginId,
-  authorId,
-  allData,
 }: {
   postingId?: string;
   setOpenStatus: any;
   statusId?: any;
   onLoadData: (val: any) => void;
-  userLoginId: string;
-  authorId: string;
-  allData: MODEL_FORUM_POSTING[];
 }) {
   const [loading, setLoading] = useState(false);
 
   async function onTutupForum() {
     setOpenStatus(false);
 
-    const upateStatusClose = await forum_funEditStatusPostingById(
+    const closeForum = await forum_funEditStatusPostingById(
       postingId as any,
       2
     );
-    if (upateStatusClose.status === 200) {
+    if (closeForum.status === 200) {
       ComponentGlobal_NotifikasiBerhasil(`Forum Ditutup`, 2000);
       setLoading(true);
 
-      const cloneData = _.clone(allData);
-      const loadData = cloneData.map(
-        (e) => (
-          e.id === postingId,
-          {
-            ...e,
-            ForumMaster_StatusPosting: {
-              id: e.id === postingId ? 2 : e.ForumMaster_StatusPosting.id,
-              status:
-                e.id === postingId
-                  ? "Close"
-                  : e.ForumMaster_StatusPosting.status,
-            },
-          }
-        )
-      );
+      const loadData = await forum_getOnePostingById(postingId as any);
       onLoadData(loadData);
 
-      //
-      mqtt_client.publish(
-        "Forum_ganti_status",
-        JSON.stringify({
-          id: postingId,
-          data: loadData,
-        })
-      );
+      if (loadData) {
+        const updateData = {
+          ...loadData,
+          ForumMaster_StatusPosting: {
+            id: 2,
+            status: "Close",
+          },
+        };
 
-      const findData = cloneData.find((val) => val.id === postingId);
-      const updateDetail = {
-        ...findData,
-        ForumMaster_StatusPosting: {
-          id: 2,
-          status: "Close",
-        },
-      };
-
-      console.log(updateDetail);
-
-      mqtt_client.publish(
-        "Forum_detail_ganti_status",
-        JSON.stringify({
-          id: postingId,
-          data: updateDetail.ForumMaster_StatusPosting,
-        })
-      );
+        mqtt_client.publish(
+          "Forum_detail_ganti_status",
+          JSON.stringify({
+            id: postingId,
+            data: updateData.ForumMaster_StatusPosting,
+          })
+        );
+      }
     } else {
-      ComponentGlobal_NotifikasiGagal(upateStatusClose.message);
+      ComponentGlobal_NotifikasiGagal(closeForum.message);
     }
   }
 
   async function onBukaForum() {
     setOpenStatus(false);
 
-    const updateStatusOpen = await forum_funEditStatusPostingById(
-      postingId as any,
-      1
-    );
-    if (updateStatusOpen.status === 200) {
+    const openForum = await forum_funEditStatusPostingById(postingId as any, 1);
+    if (openForum.status === 200) {
       ComponentGlobal_NotifikasiBerhasil(`Forum Dibuka`, 2000);
       setLoading(true);
 
-      const cloneData = _.clone(allData);
-      const loadData = cloneData.map(
-        (e) => (
-          e.id === postingId,
-          {
-            ...e,
-            ForumMaster_StatusPosting: {
-              id: e.id === postingId ? 1 : e.ForumMaster_StatusPosting.id,
-              status:
-                e.id === postingId
-                  ? "Open"
-                  : e.ForumMaster_StatusPosting.status,
-            },
-          }
-        )
-      );
-
-      mqtt_client.publish(
-        "Forum_ganti_status",
-        JSON.stringify({
-          id: postingId,
-          data: loadData,
-        })
-      );
-
+      const loadData = await forum_getOnePostingById(postingId as any);
       onLoadData(loadData);
 
-      const findData = cloneData.find((val) => val.id === postingId);
-      const updateDetail = {
-        ...findData,
-        ForumMaster_StatusPosting: {
-          id: 1,
-          status: "Open",
-        },
-      };
+      if (loadData) {
+        const updateData = {
+          ...loadData,
+          ForumMaster_StatusPosting: {
+            id: 1,
+            status: "Open",
+          },
+        };
 
-      console.log(updateDetail.ForumMaster_StatusPosting);
-
-      mqtt_client.publish(
-        "Forum_detail_ganti_status",
-        JSON.stringify({
-          id: postingId,
-          data: updateDetail.ForumMaster_StatusPosting,
-        })
-      );
+        mqtt_client.publish(
+          "Forum_detail_ganti_status",
+          JSON.stringify({
+            id: postingId,
+            data: updateData.ForumMaster_StatusPosting,
+          })
+        );
+      }
     } else {
-      ComponentGlobal_NotifikasiGagal(updateStatusOpen.message);
+      ComponentGlobal_NotifikasiGagal(openForum.message);
     }
   }
 

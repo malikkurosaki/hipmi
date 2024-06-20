@@ -278,7 +278,7 @@ function TableStatus({ listReview }: { listReview: any }) {
               verticalSpacing={"md"}
               horizontalSpacing={"md"}
               p={"md"}
-              w={1500}
+              w={"100%"}
               h={"100%"}
               striped
               highlightOnHover
@@ -375,6 +375,7 @@ async function onReject({
   if (reject.status === 200) {
     const loadData = await adminJob_getListReview({ page: 1 });
     onLoadData(loadData);
+
     ComponentGlobal_NotifikasiBerhasil(reject.message);
 
     const dataNotif = {
@@ -393,7 +394,7 @@ async function onReject({
     if (notif.status === 201) {
       mqtt_client.publish(
         "USER",
-        JSON.stringify({ userId: reject?.data?.authorId, count: 1 })
+        JSON.stringify({ userId: dataNotif.userId, count: 1 })
       );
     }
   } else {
