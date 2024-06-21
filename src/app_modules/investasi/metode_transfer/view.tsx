@@ -21,7 +21,7 @@ import toast from "react-simple-toasts";
 import {
   MODEL_Investasi,
   MODEL_Transaksi_Investasi,
-  Model_Nama_Bank,
+  MODEL_DATA_BANK,
 } from "../model/model_investasi";
 import { useAtom } from "jotai";
 import { gs_TransferValue } from "../g_state";
@@ -36,7 +36,7 @@ export default function MetodeTransferInvestasi({
   authorId,
 }: {
   dataInvestasi: MODEL_Investasi;
-  namaBank: Model_Nama_Bank[];
+  namaBank: MODEL_DATA_BANK[];
   authorId: string;
 }) {
   const [investasi, setInvestasi] = useState(dataInvestasi);

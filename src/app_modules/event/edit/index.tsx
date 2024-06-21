@@ -15,7 +15,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { useRouter } from "next/navigation";
 import { MODEL_EVENT } from "../model/interface";
 import { useState } from "react";
-import { MODEL_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
+import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
 import { Event_funEditById } from "../fun/edit/fun_edit_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import moment from "moment";
@@ -31,7 +31,7 @@ export default function Event_Edit({
   listTipeAcara,
 }: {
   dataEvent: MODEL_EVENT;
-  listTipeAcara: MODEL_DEFAULT_MASTER[];
+  listTipeAcara: MODEL_DEFAULT_MASTER_OLD[];
 }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);

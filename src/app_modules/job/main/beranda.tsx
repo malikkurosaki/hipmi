@@ -26,15 +26,31 @@ import ComponentJob_CardViewStatus from "../component/card_view_status";
 import _ from "lodash";
 import ComponentJob_IsEmptyData from "../component/is_empty_data";
 import { useState } from "react";
-import { useWindowScroll } from "@mantine/hooks";
+import { useShallowEffect, useWindowScroll } from "@mantine/hooks";
 import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
+import { Job_getAllListPublish } from "../fun/get/get_list_all_publish";
 
 export default function Job_Beranda({ listJob }: { listJob: MODEL_JOB[] }) {
   const router = useRouter();
+
+  const [data, setData] = useState(listJob);
   const [isLoading, setLoading] = useState(false);
   const [scroll, scrollTo] = useWindowScroll();
   const [visible, setVisible] = useState(false);
   const [jobId, setJobId] = useState("");
+
+  useShallowEffect(() => {
+    onLoad({
+      setData(val) {
+        setData(val);
+      },
+    });
+  }, [setData]);
+
+  async function onLoad({ setData }: { setData: (val: any) => void }) {
+    const loadData = await Job_getAllListPublish();
+    setData(loadData);
+  }
 
   return (
     <>
@@ -58,11 +74,11 @@ export default function Job_Beranda({ listJob }: { listJob: MODEL_JOB[] }) {
         </ActionIcon>
       </Affix>
 
-      {_.isEmpty(listJob) ? (
+      {_.isEmpty(data) ? (
         <ComponentJob_IsEmptyData text="Data tidak ada" />
       ) : (
         <Stack>
-          {listJob.map((e, i) => (
+          {data.map((e, i) => (
             <Card key={i} shadow="lg" withBorder p={30} radius={"md"}>
               <Card.Section style={{ zIndex: 99 }}>
                 <ComponentGlobal_AuthorNameOnHeader

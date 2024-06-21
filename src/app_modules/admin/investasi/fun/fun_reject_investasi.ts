@@ -1,7 +1,7 @@
 "use server"
 
 import prisma from "@/app/lib/prisma"
-import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin"
+import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin"
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi"
 import { revalidatePath } from "next/cache"
 
@@ -17,7 +17,7 @@ export default async function Admin_funRejectInvestasi(data: any) {
     })
     if(!res) return {status: 400, message: "Gagal reject"}
 
-    revalidatePath(RouterAdminInvestasi.main_investasi)
+    revalidatePath(RouterAdminInvestasi_OLD.main_investasi)
 
     return {
         status: 200,

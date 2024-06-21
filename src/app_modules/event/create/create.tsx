@@ -1,48 +1,32 @@
 "use client";
 
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
+import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { MODEL_USER } from "@/app_modules/home/model/interface";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
 import {
-  AspectRatio,
-  Avatar,
-  Box,
   Button,
-  Center,
-  FileButton,
-  Image,
-  MultiSelect,
-  Paper,
   Select,
   Stack,
-  Text,
   TextInput,
-  Textarea,
+  Textarea
 } from "@mantine/core";
-import { DateInput, DatePicker, DateTimePicker } from "@mantine/dates";
-import { TimeInput } from "@mantine/dates";
-import { IconCamera } from "@tabler/icons-react";
+import { DateTimePicker } from "@mantine/dates";
 import { useAtom } from "jotai";
+import moment from "moment";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { gs_event_hotMenu, gs_event_status } from "../global_state";
-import { MODEL_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
-import { Event_funCreate } from "../fun/create/fun_create";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { kMaxLength } from "buffer";
-import _ from "lodash";
-import toast from "react-simple-toasts";
-import moment from "moment";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import ComponentEvent_ErrorMaximalInput from "../component/error_maksimal_input";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import { Event_funCreate } from "../fun/create/fun_create";
+import { gs_event_hotMenu, gs_event_status } from "../global_state";
 
 export default function Event_Create({
   listTipeAcara,
   authorId,
 }: {
-  listTipeAcara: MODEL_DEFAULT_MASTER[];
+  listTipeAcara: MODEL_DEFAULT_MASTER_OLD[];
   authorId: string;
 }) {
   const router = useRouter();

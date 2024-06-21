@@ -13,6 +13,7 @@ export interface MODEL_FORUM_POSTING {
   Forum_Komentar: MODEL_FORUM_KOMENTAR[];
   Forum_ReportPosting: MODEL_FORUM_MASTER_REPORT[];
   ForumMaster_StatusPosting: MODEL_FORUM_MASTER_STATUS;
+  forumMaster_StatusPostingId: number
 }
 
 export interface MODEL_FORUM_KOMENTAR {

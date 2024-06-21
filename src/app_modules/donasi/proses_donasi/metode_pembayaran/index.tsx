@@ -7,47 +7,25 @@ import { IconChevronRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { useState } from "react";
-import { Model_Nama_Bank } from "@/app_modules/investasi/model/model_investasi";
+import { MODEL_DATA_BANK } from "@/app_modules/investasi/model/model_investasi";
 import { Donasi_getNamaBank } from "../../fun/get/get_nama_bank";
 import { Donasi_funCreateInvoice } from "../../fun/create/fun_create_invoice";
 import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
 import { NotifGagal } from "../../component/notifikasi/notif_gagal";
 
-const listBank = [
-  {
-    id: "1",
-    norek: "345678765",
-    bank: "BCA",
-  },
-  {
-    id: "2",
-    norek: "4565435",
-    bank: "BRI",
-  },
-  {
-    id: "3",
-    norek: "423533424565",
-    bank: "BNI",
-  },
-  {
-    id: "4",
-    norek: "8765423",
-    bank: "MANDIRI",
-  },
-];
-
 export default function Donasi_MetodePembayaran({
   listBank,
   donasiId,
-  authorId
+  authorId,
 }: {
-  listBank: Model_Nama_Bank[];
+  listBank: MODEL_DATA_BANK[];
   donasiId: string;
-  authorId: string
+  authorId: string;
 }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
   const [prosesDonasi, setProsesDonasi] = useAtom(gs_proses_donasi);
-  const [pilihBank, setPilihBank] = useState("1");
+  const [pilihBank, setPilihBank] = useState("");
   const [bank, setBank] = useState(listBank);
 
   async function onProses() {
@@ -55,13 +33,14 @@ export default function Donasi_MetodePembayaran({
       donasiId: donasiId,
       donasiMaster_BankId: pilihBank,
       nominal: prosesDonasi.nominal,
-      authorId: authorId
+      authorId: authorId,
     };
 
     // console.log(body)
 
     await Donasi_funCreateInvoice(body).then((res) => {
       if (res.status === 200) {
+        setLoading(true);
         NotifBerhasil(res.message);
         router.push(RouterDonasi.invoice + `${res.invoiceId}`);
         setProsesDonasi({
@@ -80,7 +59,7 @@ export default function Donasi_MetodePembayaran({
         {/* <pre>{JSON.stringify(prosesDonasi, null, 2)}</pre> */}
 
         <Radio.Group value={pilihBank} onChange={setPilihBank} withAsterisk>
-          {bank.map((e) => (
+          {bank.map((e, i) => (
             <Paper
               key={e.id}
               withBorder
@@ -94,7 +73,17 @@ export default function Donasi_MetodePembayaran({
           ))}
         </Radio.Group>
 
-        <Button radius={"xl"} onClick={() => onProses()}>
+        <Button
+          disabled={pilihBank === "" ? true : false}
+          style={{ transition: "0.5s" }}
+          loaderPosition="center"
+          loading={isLoading ? true : false}
+          radius={"xl"}
+          onClick={() => {
+            onProses();
+
+          }}
+        >
           Pilih
         </Button>
       </Stack>

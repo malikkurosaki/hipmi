@@ -2,6 +2,7 @@
 
 import {
   Box,
+  Button,
   Center,
   Group,
   LoadingOverlay,
@@ -18,120 +19,83 @@ import useInfiniteScroll, {
 import { createItems, loadMore } from "./utils";
 import { v4 as uuidv4 } from "uuid";
 import { useShallowEffect } from "@mantine/hooks";
+import { ScrollOnly } from "next-scroll-loader";
+import _ from "lodash";
+
+const newData = Array(20)
+  .fill(0)
+  .map((e, i) => i + 1);
+
+const data2 = [
+  {
+    id: 1,
+    name: "bagas",
+    age: 28,
+  },
+  {
+    id: 2,
+    name: "lukman",
+    age: 25,
+  },
+  {
+    id: 3,
+    name: "marcel",
+    age: 23,
+  },
+];
 
 export default function Coba_TestLoading() {
-  const [data, setData] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [data, setData] = useState<any[]>(newData);
+  // const [isLoading, setIsLoading] = useState(false);
 
-  const next = async (direction: ScrollDirection) => {
-    try {
-      setIsLoading(true);
-      const newData = await loadMore();
+  // return (
+  //   <>
+  //     <ScrollOnly
+  //       height="90vh"
+  //       data={data}
+  //       setData={setData}
+  //       moreData={async () => {
+  //         const newData = Array.from(
+  //           { length: 50 },
+  //           (_, i) => i + data.length + 1
+  //         );
+  //         await new Promise((resolve) => setTimeout(resolve, 2000));
+  //         return newData;
+  //       }}
+  //     >
+  //       {(item) => <div style={{height: 50}}> {item}</div>}
+  //     </ScrollOnly>
+  //   </>
+  // );
 
-      setData((prev) =>
-        direction === "up" ? [...newData, ...prev] : [...prev, ...newData]
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const ref = useInfiniteScroll({
-    next,
-    rowCount: data.length,
-    hasMore: { up: true },
-  });
-
-  useShallowEffect(() => {
-    const d = createItems();
-    setData([...d]);
-  }, []);
-
-  //   const next = async (direction: ScrollDirection) => {
-  // setIsLoading(true);
-  // const ar = Array.from({ length: 100 }).map((v, i) => "baru" + i);
-  // const d = direction === "up" ? [...ar, ...obrolan] : [];
-  // console.log(d);
-  // setObrolan(d);
-  // await new Promise((r) => setTimeout(r, 100));
-  // setIsLoading(false);
-  //   };
-
-  //   const ref = useInfiniteScroll({
-  //     next,
-  //     rowCount: obrolan.length,
-  //     hasMore: { up: true },
-  //   });
-
-  useShallowEffect(() => {
-    // const a = Array.from({ length: 100 }).map((x) => "apa");
-    // setObrolan(a);
-    // mqtt_client.subscribe(roomId);
-    // mqtt_client.on("message", (data: any, msg: any) => {
-    //   onList(setObrolan);
-    // });
-  }, []);
+  const [data, setData] = useState(data2);
 
   return (
     <>
-      <Box p={"lg"}>
-        <div
-          ref={ref as any}
-          style={{
-            height: "90vh",
-            overflowY: "auto",
-          }}
-        >
-          {isLoading && <div>Loading...</div>}
-          <Stack>
-            {data.map((item, index) => (
-              <Paper key={index} p={"md"} bg={"blue.1"}>
-                <Text>{item}</Text>
-              </Paper>
-            ))}
-          </Stack>
-        </div>
+      <Box mt={"lg"}>
+        <Stack>
+          <Button
+            onClick={() => {
+              const clone = _.clone(data);
+              const dataBaru = clone.map(
+                (e) => (
+                  e.id === 1,
+                  {
+                    ...e,
+                    name: e.id === 1 ? "firman" : e.name,
+                    age: e.id === 1 ? 30 : e.age,
+                  }
+                )
+              );
+              setData(dataBaru);
+            }}
+          >
+            Update
+          </Button>
+        </Stack>
+
+        <pre>{JSON.stringify(data, null, 2)}</pre>
       </Box>
     </>
   );
 }
-
-// export default function ComponentCobaCoba_LoadingPage() {
-//   const listhHuruf = [
-//     {
-//       huruf: "H",
-//     },
-//     {
-//       huruf: "I",
-//     },
-//     {
-//       huruf: "P",
-//     },
-//     {
-//       huruf: "M",
-//     },
-//     {
-//       huruf: "I",
-//     },
-//   ];
-//   const customLOader = (
-//     <Center h={"100vh"}>
-//       <Group>
-//         {listhHuruf.map((e, i) => (
-//           <Center key={i} h={"100%"}>
-//             <Skeleton height={50} circle radius={"100%"} />
-//             <Text sx={{ position: "absolute" }} c={"gray.4"} fw={"bold"}>
-//               {e.huruf}
-//             </Text>
-//           </Center>
-//         ))}
-//       </Group>
-//     </Center>
-//   );
-
-//   return (
-//     <>
-//       <LoadingOverlay visible overlayBlur={2} loader={customLOader} />
-//     </>
-//   );
-// }

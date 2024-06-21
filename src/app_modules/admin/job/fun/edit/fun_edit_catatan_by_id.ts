@@ -7,7 +7,7 @@ export async function AdminJob_funEditCatatanById(
   jobId: string,
   catatan: string
 ) {
-  const up = await prisma.job.update({
+  const udpt = await prisma.job.update({
     where: {
       id: jobId,
     },
@@ -15,9 +15,21 @@ export async function AdminJob_funEditCatatanById(
       masterStatusId: "4",
       catatan: catatan,
     },
+    select: {
+      id: true,
+      authorId: true,
+      MasterStatus: {
+        select: {
+          name: true,
+        },
+      },
+      title: true,
+    },
   });
 
-  if (!up) return { status: 400, message: "Gagal reject" };
+
+
+  if (!udpt) return { status: 400, message: "Gagal menambah catatan" };
   revalidatePath("/dev/admin/job/child/table_review");
-  return { status: 200, message: "Berhasil reject" };
+  return {data: udpt, status: 200, message: "Berhasil menambah catatan" };
 }

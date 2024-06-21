@@ -219,12 +219,14 @@ function ButtonDelete({
     setOpenDel(false);
     await forum_funDeletePostingById(postingId as any).then(async (res) => {
       if (res.status === 200) {
-        ComponentGlobal_NotifikasiBerhasil(`Postingan Terhapus`, 2000);
+        // ComponentGlobal_NotifikasiBerhasil(`Postingan Terhapus`, 2000);
         setLoading(true);
         const listForum = await forum_getListAllPosting();
         setData(listForum);
+        return null;
       } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
+        // ComponentGlobal_NotifikasiGagal(res.message);
+        return null;
       }
     });
   }
@@ -273,19 +275,34 @@ function ButtonStatus({
   async function onTutupForum() {
     setOpenStatus(false);
 
-    await forum_funEditStatusPostingById(postingId as any, 2).then(
-      async (res) => {
-        if (res.status === 200) {
-          await forum_getListAllPosting().then((val) => {
-            setData(val as any);
-            ComponentGlobal_NotifikasiBerhasil(`Forum Ditutup`, 2000);
-            setLoading(true);
-          });
-        } else {
-          ComponentGlobal_NotifikasiGagal(res.message);
-        }
-      }
+    const upateStatusClose = await forum_funEditStatusPostingById(
+      postingId as any,
+      2
     );
+    if (upateStatusClose.status === 200) {
+      const loadData = await forum_getListAllPosting();
+      // ComponentGlobal_NotifikasiBerhasil(`Forum Ditutup`, 2000);
+      setData(loadData);
+      setLoading(true);
+      return null;
+    } else {
+      //  ComponentGlobal_NotifikasiGagal(upateStatusClose.message);
+      return null;
+    }
+
+    // await forum_funEditStatusPostingById(postingId as any, 2).then(
+    //   async (res) => {
+    //     if (res.status === 200) {
+    //       await forum_getListAllPosting().then((val) => {
+    //         setData(val as any);
+    //         ComponentGlobal_NotifikasiBerhasil(`Forum Ditutup`, 2000);
+    //         setLoading(true);
+    //       });
+    //     } else {
+    //       ComponentGlobal_NotifikasiGagal(res.message);
+    //     }
+    //   }
+    // );
   }
 
   async function onBukaForum() {

@@ -1,35 +1,23 @@
 "use client";
 
+import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import {
   ActionIcon,
-  AppShell,
   Box,
   Center,
-  Footer,
   Grid,
   Group,
   Header,
   Stack,
-  Text,
-  TextInput,
-  Textarea,
-  Title,
+  Title
 } from "@mantine/core";
-import React, { useState } from "react";
-import ComponentColab_HeaderTamplate from "../../component/header_tamplate";
 import {
   IconChevronLeft,
-  IconInfoSquareRounded,
-  IconPlane,
-  IconSend,
+  IconInfoSquareRounded
 } from "@tabler/icons-react";
-import { useAtom } from "jotai";
-import { gs_colab_pesan } from "../../global_state";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
-import { MODEL_COLLABORATION_ROOM_CHAT } from "../../model/interface";
-import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
-import { useViewportSize } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { MODEL_COLLABORATION_ROOM_CHAT } from "../../model/interface";
 
 export default function LayoutColab_DetailGrupDiskusi({
   children,

@@ -78,7 +78,7 @@ export default function PortofolioInvestasi({
     <>
       {/* <pre>{JSON.stringify(dataInvestasi, null, 2)}</pre> */}
       <Stack>
-        <Button
+        {/* <Button
           radius={"xl"}
           bg={Warna.hijau_muda}
           color="green"
@@ -86,7 +86,7 @@ export default function PortofolioInvestasi({
           onClick={() => router.push(RouterInvestasi.create)}
         >
           Buat Proyek Invetasi
-        </Button>
+        </Button> */}
         <Tabs
           variant="pills"
           radius="xl"
@@ -94,30 +94,41 @@ export default function PortofolioInvestasi({
           value={activeTab}
           onTabChange={setActiveTab}
         >
-          <Tabs.List grow>
-            {status_inves.map((e) => (
-              <Tabs.Tab
-                key={e.id}
-                value={e.name}
-                color={!activeTab ? "gray" : e.color}
-              >
-                {e.name}
-              </Tabs.Tab>
-            ))}
-          </Tabs.List>
-          <Divider my={"xs"} />
-          <Tabs.Panel key={"1"} value="Draft">
-            <Draft data={dataDraft as any} />
-          </Tabs.Panel>
-          <Tabs.Panel key={"2"} value="Review">
-            <Review data={dataReview as any} />
-          </Tabs.Panel>
-          <Tabs.Panel key={"3"} value="Publish">
-            <Publish data={dataPublish as any} />
-          </Tabs.Panel>
-          <Tabs.Panel key={"4"} value="Reject">
-            <Reject data={dataReject as any} />
-          </Tabs.Panel>
+          <Stack>
+            <Tabs.List grow>
+              {status_inves.map((e) => (
+                <Tabs.Tab
+                  sx={
+                    activeTab === e.name
+                      ? {
+                          boxShadow:
+                            "0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 6px 0 rgba(0, 0, 0, 0.2)",
+                        }
+                      : {}
+                  }
+                  key={e.id}
+                  value={e.name}
+                  bg={activeTab === e.name ? "blue" : "gray.1"}
+                  fw={activeTab === e.name ? "bold" : "normal"}
+                >
+                  {e.name}
+                </Tabs.Tab>
+              ))}
+            </Tabs.List>
+
+            <Tabs.Panel key={"1"} value="Draft">
+              <Draft data={dataDraft as any} />
+            </Tabs.Panel>
+            <Tabs.Panel key={"2"} value="Review">
+              <Review data={dataReview as any} />
+            </Tabs.Panel>
+            <Tabs.Panel key={"3"} value="Publish">
+              <Publish data={dataPublish as any} />
+            </Tabs.Panel>
+            <Tabs.Panel key={"4"} value="Reject">
+              <Reject data={dataReject as any} />
+            </Tabs.Panel>
+          </Stack>
         </Tabs>
       </Stack>
     </>

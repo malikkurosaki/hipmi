@@ -16,6 +16,9 @@ import {
   Box,
   TextInput,
   Center,
+  Button,
+  Pagination,
+  Loader,
 } from "@mantine/core";
 import { useShallowEffect, useTimeout, useWindowScroll } from "@mantine/hooks";
 import {
@@ -37,33 +40,121 @@ import { forum_getListAllPosting } from "../fun/get/get_list_all_posting";
 import { forum_funSearchListPosting } from "../fun/search/fun_search_list_posting";
 import _ from "lodash";
 import ComponentForum_BerandaCardView from "../component/beranda/beranda_card";
+import mqtt_client from "@/util/mqtt_client";
+import ComponentForum_V2_MainCardView from "../component/main_component/card_view";
+import { forum_new_getAllPosting } from "../fun/get/new_get_all_posting";
+import forum_v2_getAllPosting from "../fun/get/v2_get_all_posting";
+import { ScrollOnly } from "next-scroll-loader";
 
 export default function Forum_Beranda({
   listForum,
   userLoginId,
 }: {
-  listForum: MODEL_FORUM_POSTING[];
+  listForum: any;
   userLoginId: string;
 }) {
   const router = useRouter();
-  const [data, setData] = useState(listForum);
   const [scroll, scrollTo] = useWindowScroll();
 
-  const [loadingCreate, setLoadingCreate] = useState(false);
-  const [loadingKomen, setLoadingKomen] = useState(false);
-  const [loadingDetail, setLoadingDetail] = useState(false);
+  const [data, setData] = useState<MODEL_FORUM_POSTING[]>(listForum);
+  const [activePage, setActivePage] = useState(1);
+  const [isSearch, setIsSearch] = useState("");
 
-  if (loadingDetail) return <ComponentGlobal_V2_LoadingPage />;
-  if (loadingKomen) return <ComponentGlobal_V2_LoadingPage />;
+  const [loadingCreate, setLoadingCreate] = useState(false);
+
+  //
+  const [isNewPost, setIsNewPost] = useState(false);
+  const [countNewPost, setCountNewPost] = useState(0);
+
+  useShallowEffect(() => {
+    onLoadAllData({
+      onLoad(val) {
+        setData(val);
+      },
+    });
+  }, [setData]);
+
+  async function onLoadAllData({ onLoad }: { onLoad: (val: any) => void }) {
+    const loadData = await forum_new_getAllPosting({ page: 1 });
+    onLoad(loadData);
+  }
+
+  useShallowEffect(() => {
+    mqtt_client.subscribe("Forum_create_new");
+    mqtt_client.subscribe("Forum_ganti_status");
+    mqtt_client.subscribe("Forum_hapus_data");
+    mqtt_client.subscribe("Forum_detail_ganti_status");
+
+    mqtt_client.on("message", (topic: any, message: any) => {
+      // console.log(topic);
+      const cloneData = _.clone(data);
+
+      if (topic === "Forum_create_new") {
+        const newData = JSON.parse(message.toString());
+        setIsNewPost(newData.isNewPost);
+        const tambah = countNewPost + newData.count;
+        setCountNewPost(tambah);
+      }
+
+      if (topic === "Forum_hapus_data") {
+        const newData = JSON.parse(message.toString());
+        setData(newData.data);
+      }
+
+      if (topic === "Forum_ganti_status") {
+        const newData = JSON.parse(message.toString());
+        setData(newData.data);
+      }
+
+      if (topic === "Forum_detail_ganti_status") {
+        const newData = JSON.parse(message.toString());
+
+        const updateOneData = cloneData.map((val) => ({
+          ...val,
+          ForumMaster_StatusPosting: {
+            id:
+              val.id === newData.id
+                ? newData.data.id
+                : val.ForumMaster_StatusPosting.id,
+            status:
+              val.id === newData.id
+                ? newData.data.status
+                : val.ForumMaster_StatusPosting.status,
+          },
+        }));
+
+        setData(updateOneData as any);
+      }
+    });
+  }, [countNewPost, data]);
 
   async function onSearch(text: string) {
-    await forum_funSearchListPosting(text).then((res: any) => {
-      setData(res);
+    setIsSearch(text);
+    const loadSearch = await forum_new_getAllPosting({
+      page: activePage,
+      search: text,
     });
+    setData(loadSearch as any);
+    setActivePage(1);
   }
 
   return (
     <>
+      {isNewPost && (
+        <Affix position={{ top: rem(70) }} w={"100%"}>
+          <ButtonUpdateBeranda
+            countNewPost={countNewPost}
+            onSetData={(val) => setData(val)}
+            onSetIsNewPost={(val) => {
+              setIsNewPost(val);
+            }}
+            onSetCountNewPosting={(val) => {
+              setCountNewPost(val);
+            }}
+          />
+        </Affix>
+      )}
+
       {/* <pre>{JSON.stringify(listForum, null, 2)}</pre> */}
       <Affix position={{ bottom: rem(100), right: rem(30) }}>
         <ActionIcon
@@ -98,23 +189,87 @@ export default function Forum_Beranda({
             <IconSearchOff size={80} color="gray" />
             <Stack spacing={0} align="center">
               <Text c={"gray"} fw={"bold"} fz={"xs"}>
-                Forum tidak ditemukan
-              </Text>
-              <Text c={"gray"} fw={"bold"} fz={"xs"}>
-                Coba masukan kata yang bebeda
+                Tidak ada data
               </Text>
             </Stack>
           </Stack>
         ) : (
-          <ComponentForum_BerandaCardView
+          // --- Main component --- //
+          <ScrollOnly
+            height="80vh"
+            renderLoading={() => (
+              <Center mt={"lg"}>
+                <Loader />
+              </Center>
+            )}
             data={data}
             setData={setData}
-            setLoadingKomen={setLoadingKomen}
-            setLoadingDetail={setLoadingDetail}
-            userLoginId={userLoginId}
-          />
+            moreData={async () => {
+              const loadData = await forum_new_getAllPosting({
+                page: activePage + 1,
+                search: isSearch,
+              });
+              setActivePage((val) => val + 1);
+
+              return loadData;
+            }}
+          >
+            {(item) => (
+              <ComponentForum_V2_MainCardView
+                data={item}
+                userLoginId={userLoginId}
+                onLoadData={(val) => {
+                  setData(val);
+                }}
+                allData={data}
+              />
+            )}
+          </ScrollOnly>
         )}
       </Stack>
+    </>
+  );
+}
+
+function ButtonUpdateBeranda({
+  countNewPost,
+  onSetData,
+  onSetIsNewPost,
+  onSetCountNewPosting,
+}: {
+  countNewPost: number;
+  onSetData: (val: any) => void;
+  onSetIsNewPost: (val: any) => void;
+  onSetCountNewPosting: (val: any) => void;
+}) {
+  const [scroll, scrollTo] = useWindowScroll();
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function onLoadData() {
+    setIsLoading(true);
+    const loadData = await forum_new_getAllPosting({ page: 1 });
+
+    if (loadData) {
+      onSetData(loadData);
+      onSetIsNewPost(false);
+      setIsLoading(false);
+      onSetCountNewPosting(0);
+    }
+  }
+
+  return (
+    <>
+      <Center>
+        <Button
+          loaderPosition="center"
+          loading={isLoading ? true : false}
+          radius={"xl"}
+          opacity={scroll.y > 0 ? 0.5 : 0.8}
+          onClick={() => onLoadData()}
+        >
+          Update beranda + {countNewPost}
+        </Button>
+      </Center>
     </>
   );
 }

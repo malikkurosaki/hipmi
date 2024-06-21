@@ -37,9 +37,6 @@ export default function ComponentForum_BerandaCardView({
         {data.map((e, i) => (
           <Card key={i}>
             <Card.Section>
-              {/* <pre>{JSON.stringify(e.Author.id, null, 2)}</pre>
-              <pre>{JSON.stringify(userLoginId, null, 2)}</pre> */}
-
               <ComponentForum_BerandaAuthorNameOnHeader
                 authorName={e?.Author?.Profile?.name}
                 imagesId={e?.Author?.Profile?.imagesId}
@@ -52,11 +49,11 @@ export default function ComponentForum_BerandaCardView({
                 setData={setData}
               />
             </Card.Section>
+
             <Card.Section
               sx={{ zIndex: 0 }}
               p={"lg"}
               onClick={() => {
-                // console.log("halaman forum");
                 setLoadingDetail(true);
                 router.push(RouterForum.main_detail + e.id);
               }}
@@ -65,6 +62,7 @@ export default function ComponentForum_BerandaCardView({
                 <div dangerouslySetInnerHTML={{ __html: e.diskusi }} />
               </Text>
             </Card.Section>
+            
             <Card.Section>
               <Stack>
                 <Group spacing={"xs"} px={"sm"}>

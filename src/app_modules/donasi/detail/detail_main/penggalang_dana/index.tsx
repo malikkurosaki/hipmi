@@ -1,6 +1,7 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import ComponentDonasi_BoxPublish from "@/app_modules/donasi/component/box_publish";
 import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import {
@@ -45,7 +46,7 @@ export default function PenggalangDanaDonasi({
 
   return (
     <>
-      <Stack>
+      <Stack >
         <InformasiPenggalang value={value as any} />
         <ComponentDonasi_BoxPublish
           dataDonasi={value.Donasi}
@@ -59,6 +60,7 @@ export default function PenggalangDanaDonasi({
 function InformasiPenggalang({ value }: { value: MODEL_USER }) {
   return (
     <>
+      {/* <pre>{JSON.stringify(value, null, 2)}</pre> */}
       <Paper radius={"md"}>
         <Stack
           bg={"gray.1"}
@@ -75,10 +77,13 @@ function InformasiPenggalang({ value }: { value: MODEL_USER }) {
             >
               <Center h={"100%"}>
                 <Image
+                  radius={"100%"}
                   width={100}
                   height={100}
                   alt="Foto"
-                  src={"/aset/avatar.png"}
+                  src={
+                    RouterProfile.api_foto_profile + value?.Profile?.imagesId
+                  }
                 />
               </Center>
             </Paper>
@@ -95,7 +100,7 @@ function InformasiPenggalang({ value }: { value: MODEL_USER }) {
             </Group>
             <Group>
               <IconBrandGmail />
-              <Text>user1@gmail.com</Text>
+              <Text>{value?.Profile?.email}</Text>
             </Group>
           </Stack>
         </Stack>

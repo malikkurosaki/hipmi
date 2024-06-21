@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Center, Image, Stack, Text } from "@mantine/core";
+import { Card, Center, Image, Overlay, Stack, Text, Title } from "@mantine/core";
 import ComponentJob_DetailData from "../component/detail/detail_data";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { data } from "autoprefixer";
@@ -46,6 +46,18 @@ export default function Job_NonUserView({ data }: { data: MODEL_JOB }) {
               </Stack>
             </Stack>
           </Card.Section>
+          {data?.isArsip === true && (
+            <Overlay color="gray" opacity={0.5} blur={1}>
+              <Stack align="center" h={"100%"} justify="center">
+                <Title c={"red"} fw={"bold"} order={3}>
+                  Mohon Maaf !
+                </Title>
+                <Title c={"red"} fw={"bold"} order={3}>
+                  Lowongan Kerja Ini Sudah Ditutup{" "}
+                </Title>
+              </Stack>
+            </Overlay>
+          )}
         </Card>
       </Center>
     </>

@@ -51,7 +51,9 @@ const listNominal = [
 
 export default function MasukanDonasi({ donasiId }: { donasiId: string }) {
   const router = useRouter();
-  const [nominal, setNominal] = useState(0);
+  const [isLoading, setLoading] = useState(false);
+  const [nominal, setNominal] = useState("");
+  const [value, setValue] = useState(0);
   const [prosesDonasi, setProsesDonasi] = useAtom(gs_proses_donasi);
 
   async function onProses(nominal: number) {
@@ -62,6 +64,7 @@ export default function MasukanDonasi({ donasiId }: { donasiId: string }) {
       ...prosesDonasi,
       nominal: "" + nominal,
     });
+    setLoading(true);
     router.push(RouterDonasi.metode_pembayaran + `${donasiId}`);
   }
 
@@ -97,24 +100,40 @@ export default function MasukanDonasi({ donasiId }: { donasiId: string }) {
         <Paper p={"sm"} withBorder shadow="lg">
           <Stack>
             <Text>Nominal Lainnya</Text>
-            <Grid>
-              <Grid.Col span={1}>
-                <Title order={4}>Rp.</Title>
-              </Grid.Col>
-              <Grid.Col span={11}>
-                <NumberInput
-                  min={0}
-                  type="number"
-                  onChange={(val: number) => setNominal(val)}
-                />
-              </Grid.Col>
-            </Grid>
+            <TextInput
+              icon={<Text fw={"bold"}>Rp.</Text>}
+              placeholder="0"
+              min={0}
+              value={nominal}
+              onChange={(val) => {
+                const match = val.currentTarget.value
+                  .replace(/\./g, "")
+                  .match(/^[0-9]+$/);
+
+                if (val.currentTarget.value === "") return setNominal(0 + "");
+
+                if (!match?.[0]) return null;
+
+                const nilai = val.currentTarget.value.replace(/\./g, "");
+                const target = Intl.NumberFormat("id-ID").format(+nilai);
+
+                setValue(+nilai);
+                setNominal(target);
+              }}
+            />
             <Text c={"gray"} fz={"xs"}>
               Minimal Donasi Rp. 10.000
             </Text>
           </Stack>
         </Paper>
-        <Button radius={"xl"} onClick={() => onProses(nominal)}>
+        <Button
+          loaderPosition="center"
+          loading={isLoading ? true : false}
+          style={{ transition: "0.5s" }}
+          disabled={value === 0 || value < 10000}
+          radius={"xl"}
+          onClick={() => onProses(value)}
+        >
           Lanjutan Pembayaran
         </Button>
       </Stack>

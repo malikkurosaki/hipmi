@@ -33,8 +33,8 @@ export async function AdminDonasi_getOneById(id: string) {
       DonasiMaster_Ketegori: true,
       DonasiMaster_Durasi: true,
       DonasiMaster_Status: true,
+      
     },
   });
-  // console.log(res)
   return res;
 }

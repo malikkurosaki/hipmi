@@ -25,6 +25,12 @@ import toast from "react-simple-toasts";
 import { Donasi_funCreate } from "../fun/create/fun_create_donasi";
 import { notifications } from "@mantine/notifications";
 import { NotifPeringatan } from "../component/notifikasi/notif_peringatan";
+import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import { tree } from "next/dist/build/templates/app-page";
+import {
+  ComponentGlobal_WarningMaxUpload,
+  maksimalUploadFile,
+} from "@/app_modules/component_global/variabel_global";
 
 export default function CreateCeritaPenggalangDonasi({
   dataTemporary,
@@ -34,6 +40,8 @@ export default function CreateCeritaPenggalangDonasi({
   userId: string;
 }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+
   const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
     gs_donasi_tabs_posting
   );
@@ -41,8 +49,7 @@ export default function CreateCeritaPenggalangDonasi({
     pembukaan: "",
     cerita: "",
     namaBank: "",
-    rekening: ""
-    
+    rekening: "",
   });
   const [temporary, setTemporary] = useState(dataTemporary);
   const [file, setFile] = useState<File | null>(null);
@@ -73,6 +80,7 @@ export default function CreateCeritaPenggalangDonasi({
 
     await Donasi_funCreate(body as any, gambar).then((res) => {
       if (res.status === 201) {
+        setLoading(true);
         router.push(RouterDonasi.page_pop_up_create);
         setTabsPostingDonasi("Review");
       } else {
@@ -87,35 +95,49 @@ export default function CreateCeritaPenggalangDonasi({
         <Stack spacing={"sm"}>
           <ComponentDonasi_NotedBox informasi="Ceritakan dengan jujur & benar mengapa Penggalanagn Dana ini harus diadakan!" />
 
-          <Textarea
-            autosize
-            minRows={2}
-            maxRows={4}
-            withAsterisk
-            label="Pembukaan"
-            placeholder="Pembuka dari isi cerita"
-            onChange={(val) =>
-              setCreate({
-                ...create,
-                pembukaan: val.target.value,
-              })
-            }
-          />
+          <Stack spacing={5}>
+            <Textarea
+              autosize
+              minRows={2}
+              maxRows={4}
+              withAsterisk
+              label="Pembukaan"
+              placeholder="Pembuka dari isi cerita"
+              maxLength={300}
+              onChange={(val) =>
+                setCreate({
+                  ...create,
+                  pembukaan: val.target.value,
+                })
+              }
+            />
+            <ComponentGlobal_InputCountDown
+              maxInput={300}
+              lengthInput={create.pembukaan.length}
+            />
+          </Stack>
 
-          <Textarea
-            autosize
-            minRows={2}
-            maxRows={10}
-            withAsterisk
-            label="Cerita"
-            placeholder="Ceritakan alasan mengapa harus membuat Penggalangan Dana"
-            onChange={(val) =>
-              setCreate({
-                ...create,
-                cerita: val.target.value,
-              })
-            }
-          />
+          <Stack spacing={5}>
+            <Textarea
+              autosize
+              minRows={2}
+              maxRows={10}
+              withAsterisk
+              label="Cerita"
+              placeholder="Ceritakan alasan mengapa harus membuat Penggalangan Dana"
+              maxLength={300}
+              onChange={(val) =>
+                setCreate({
+                  ...create,
+                  cerita: val.target.value,
+                })
+              }
+            />
+            <ComponentGlobal_InputCountDown
+              maxInput={300}
+              lengthInput={create.cerita.length}
+            />
+          </Stack>
 
           <Stack spacing={"xs"}>
             <Center>
@@ -125,10 +147,12 @@ export default function CreateCeritaPenggalangDonasi({
                     const buffer = URL.createObjectURL(
                       new Blob([new Uint8Array(await files.arrayBuffer())])
                     );
-                    // console.log(buffer, "ini buffer");
-                    // console.log(files, " ini file");
-                    setImageCerita(buffer);
-                    setFile(files);
+                    if (files.size > maksimalUploadFile) {
+                      ComponentGlobal_WarningMaxUpload({});
+                    } else {
+                      setImageCerita(buffer);
+                      setFile(files);
+                    }
                   } catch (error) {
                     console.log(error);
                   }
@@ -161,10 +185,10 @@ export default function CreateCeritaPenggalangDonasi({
               </AspectRatio>
             ) : (
               <Center>
-              <Text fs={"italic"} fz={10}>
-                Upload poster atau gambar penggalangan !
-              </Text>
-            </Center>
+                <Text fs={"italic"} fz={10}>
+                  Upload poster atau gambar penggalangan !
+                </Text>
+              </Center>
             )}
           </Stack>
         </Stack>
@@ -175,26 +199,40 @@ export default function CreateCeritaPenggalangDonasi({
             withAsterisk
             placeholder="Contoh: BNI, BCA, MANDIRI, DLL"
             label="Nama Bank"
+            maxLength={50}
             onChange={(val) => {
               setCreate({
                 ...create,
-                namaBank: _.upperCase(val.target.value)
-              })
+                namaBank: _.upperCase(val.target.value),
+              });
             }}
           />
           <TextInput
             withAsterisk
             placeholder="Maskuan nomor rekening"
             label="Nomor rekening"
+            maxLength={100}
             onChange={(val) => {
               setCreate({
                 ...create,
-                rekening: val.target.value
-              })
+                rekening: val.target.value,
+              });
             }}
           />
         </Stack>
-        <Button w={"100%"} radius={"xl"} onClick={() => onCreate()}>
+        <Button
+          style={{
+            transition: "0.5s",
+          }}
+          disabled={
+            _.values(create).includes("") || file === null ? true : false
+          }
+          loaderPosition="center"
+          loading={isLoading ? true : false}
+          w={"100%"}
+          radius={"xl"}
+          onClick={() => onCreate()}
+        >
           Simpan
         </Button>
       </Stack>

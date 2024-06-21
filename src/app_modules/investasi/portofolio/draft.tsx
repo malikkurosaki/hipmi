@@ -19,6 +19,7 @@ import {
 import { useRouter } from "next/navigation";
 import { MODEL_Investasi } from "../model/model_investasi";
 import _ from "lodash";
+import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
 
 export default function Draft({ data }: { data: MODEL_Investasi[] }) {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function Draft({ data }: { data: MODEL_Investasi[] }) {
   if (_.isEmpty(data))
     return (
       <>
-        <Center h={"50vh"}>Tidak ada Draft</Center>
+        <ComponentInvestasi_IsEmptyData text="Tidak ada data" />
       </>
     );
 
@@ -40,7 +41,6 @@ export default function Draft({ data }: { data: MODEL_Investasi[] }) {
           p={"xs"}
           key={e.id}
           mb={"md"}
-          bg={"yellow.1"}
           withBorder
           onClick={() => router.push(RouterInvestasi.detail_draft + `${e.id}`)}
         >

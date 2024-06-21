@@ -2,9 +2,7 @@
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
-  ActionIcon,
   AspectRatio,
-  Box,
   Button,
   Center,
   FileButton,
@@ -13,22 +11,24 @@ import {
   Select,
   Stack,
   Text,
-  TextInput,
-  Textarea,
+  TextInput
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 
-import ComponentDonasi_NotedBox from "../component/noted_box";
-import { MODEL_DONASI_ALL_MASTER } from "../model/interface";
-import { useState } from "react";
-import { useShallowEffect } from "@mantine/hooks";
-import Donasi_funCreateTemporary from "../fun/create/fun_create_donasi_temporary";
-import toast from "react-simple-toasts";
+import {
+  ComponentGlobal_WarningMaxUpload,
+  maksimalUploadFile,
+} from "@/app_modules/component_global/variabel_global";
 import _ from "lodash";
-import { notifications } from "@mantine/notifications";
+import { useState } from "react";
+import toast from "react-simple-toasts";
+import ComponentDonasi_NotedBox from "../component/noted_box";
 import { NotifPeringatan } from "../component/notifikasi/notif_peringatan";
+import Donasi_funCreateTemporary from "../fun/create/fun_create_donasi_temporary";
+import { gs_donasi_tabs_posting } from "../global_state";
+import { MODEL_DONASI_ALL_MASTER } from "../model/interface";
 
 export default function CreateDonasi({
   masterKategori,
@@ -38,6 +38,8 @@ export default function CreateDonasi({
   masterDurasi: MODEL_DONASI_ALL_MASTER[];
 }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+
   const [kategori, setKategori] = useState(masterKategori);
   const [durasi, setDurasi] = useState(masterDurasi);
   const [create, setCreate] = useState({
@@ -46,15 +48,19 @@ export default function CreateDonasi({
     target: "",
     durasiId: "",
   });
+  const [targetDana, setTargetDana] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [imageDonasi, setImageDonasi] = useState<any | null>();
+  const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
+    gs_donasi_tabs_posting
+  );
 
   async function onCreate() {
     const body = {
       donasiMaster_KategoriId: create.kategoriId,
       donasiMaster_DurasiId: create.durasiId,
       title: create.title,
-      target: create.target,
+      target: targetDana,
     };
 
     if (_.values(body).includes("")) return NotifPeringatan("Lengkapin Data");
@@ -65,6 +71,8 @@ export default function CreateDonasi({
 
     await Donasi_funCreateTemporary(body as any, gambar).then((res) => {
       if (res.status === 201) {
+        setLoading(true);
+        setTabsPostingDonasi("Review");
         router.push(RouterDonasi.create_cerita_penggalang + `${res.donasiId}`);
       } else {
         toast(res.message);
@@ -97,18 +105,40 @@ export default function CreateDonasi({
             withAsterisk
             label="Judul Donasi"
             placeholder="Contoh: Renovasi Masjid pada kampung, dll"
-            onChange={(val) =>
-              setCreate({ ...create, title: val.target.value })
-            }
+            maxLength={100}
+            onChange={(val) => {
+              setCreate({ ...create, title: val.target.value });
+            }}
           />
           <TextInput
-            type="number"
+            icon={<Text fw={"bold"}>Rp.</Text>}
+            min={0}
             withAsterisk
             label="Target Dana"
-            placeholder="Masukan nominal angka"
-            onChange={(val) =>
-              setCreate({ ...create, target: val.target.value })
-            }
+            placeholder="0"
+            value={create.target}
+            onChange={(val) => {
+              // console.log(val.currentTarget.value, "nilai");
+              const match = val.currentTarget.value
+                .replace(/\./g, "")
+                .match(/^[0-9]+$/);
+
+              if (val.currentTarget.value === "")
+                return setCreate({
+                  ...create,
+                  target: 0 + "",
+                });
+              if (!match?.[0]) return null;
+
+              const nilai = val.currentTarget.value.replace(/\./g, "");
+              const target = Intl.NumberFormat("id-ID").format(+nilai);
+
+              setTargetDana(nilai);
+              setCreate({
+                ...create,
+                target,
+              });
+            }}
           />
           <Select
             label="Durasi"
@@ -130,10 +160,13 @@ export default function CreateDonasi({
                   const buffer = URL.createObjectURL(
                     new Blob([new Uint8Array(await files.arrayBuffer())])
                   );
-                  // console.log(buffer, "ini buffer");
-                  // console.log(files, " ini file");
-                  setImageDonasi(buffer);
-                  setFile(files);
+
+                  if (files.size > maksimalUploadFile) {
+                    ComponentGlobal_WarningMaxUpload({});
+                  } else {
+                    setImageDonasi(buffer);
+                    setFile(files);
+                  }
                 } catch (error) {
                   console.log(error);
                 }
@@ -142,7 +175,7 @@ export default function CreateDonasi({
             >
               {(props) => (
                 <Button
-                compact
+                  compact
                   {...props}
                   radius={"xl"}
                   variant="outline"
@@ -155,8 +188,8 @@ export default function CreateDonasi({
             </FileButton>
           </Center>
           {imageDonasi ? (
-            <AspectRatio ratio={16 / 9}>
-              <Paper radius={"md"}>
+            <AspectRatio ratio={1 / 1} onChange={(val) => console.log(val)}>
+              <Paper radius={"sm"} withBorder>
                 <Image
                   alt="Foto"
                   src={imageDonasi ? imageDonasi : "/aset/no-img.png"}
@@ -171,7 +204,19 @@ export default function CreateDonasi({
             </Center>
           )}
         </Stack>
-        <Button my={"lg"} radius={"xl"} onClick={() => onCreate()}>
+        <Button
+          style={{
+            transition: "0.5s",
+          }}
+          disabled={
+            _.values(create).includes("") || file === null ? true : false
+          }
+          loaderPosition="center"
+          loading={isLoading ? true : false}
+          my={"lg"}
+          radius={"xl"}
+          onClick={() => onCreate()}
+        >
           Selanjutnya
         </Button>
       </Stack>

@@ -14,6 +14,8 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/
 import { Job_funDeleteById } from "../../fun/delete/fun_delete_by_id";
 import ComponentJob_NotedBox from "../../component/detail/noted_box";
 import { MODEL_JOB } from "../../model/interface";
+import mqtt_client from "@/util/mqtt_client";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 
 export default function Job_DetailDraft({ dataJob }: { dataJob: MODEL_JOB }) {
   return (
@@ -37,15 +39,31 @@ function ButtonAction({ jobId }: { jobId: string }) {
   const [opened, { open, close }] = useDisclosure();
 
   async function onAction() {
-    await Job_funEditStatusByStatusId(jobId, "2").then((res) => {
-      if (res.status === 200) {
-        setStatus("Review");
-        ComponentGlobal_NotifikasiBerhasil("Berhasil Diajukan");
-        router.push(RouterJob.status);
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
+    const update = await Job_funEditStatusByStatusId(jobId, "2");
+    if (update.status === 200) {
+      const dataNotif = {
+        appId: update.data?.id as any,
+        status: update.data?.MasterStatus?.name as any,
+        userId: update.data?.authorId as any,
+        pesan: update.data?.title as any,
+        kategoriApp: "JOB",
+        title: "Mengajukan review",
+      };
+
+      const notif = await notifikasiToAdmin_funCreate({
+        data: dataNotif as any,
+      });
+
+      if (notif.status === 201) {
+        mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
       }
-    });
+
+      setStatus("Review");
+      ComponentGlobal_NotifikasiBerhasil("Berhasil Diajukan");
+      router.push(RouterJob.status);
+    } else {
+      ComponentGlobal_NotifikasiGagal(update.message);
+    }
   }
 
   async function onDelete() {

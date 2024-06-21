@@ -62,35 +62,36 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
       icon: <IconPresentation size={50} />,
       link: RouterEvent.splash,
     },
+
     {
       id: 3,
-      name: "Business Maps",
-      icon: <IconMap2 size={50} />,
-      link: "",
-    },
-    {
-      id: 4,
       name: "Voting",
       icon: <IconPackageImport size={50} />,
       link: RouterVote.splash,
     },
     {
-      id: 5,
+      id: 4,
       name: "Project Collaboration",
       icon: <IconAffiliate size={50} />,
       link: RouterColab.splash,
     },
     {
-      id: 6,
+      id: 5,
       name: "Crowd Funding",
       icon: <IconHeartHandshake size={50} />,
       link: `/dev/crowd/splash`,
     },
     {
-      id: 7,
+      id: 6,
       name: "Job Vacancy",
       icon: <IconBriefcase size={50} />,
       link: RouterJob.spalsh,
+    },
+    {
+      id: 7,
+      name: "Business Maps",
+      icon: <IconMap2 size={50} />,
+      link: "",
     },
 
     {
@@ -153,11 +154,11 @@ export default function HomeView({ dataUser }: { dataUser: MODEL_USER }) {
                   <ActionIcon
                     size={50}
                     variant="transparent"
-                    color={e.link === "" ? "gray" : "teal"}
+                    color={e.link === "" ? "gray.3" : "teal"}
                   >
                     {e.icon}
                   </ActionIcon>
-                  <Text c={e.link === "" ? "gray" : "teal"} fz={"sm"}>
+                  <Text c={e.link === "" ? "gray.3" : "teal"} fz={"sm"}>
                     {e.name}
                   </Text>
                 </Flex>

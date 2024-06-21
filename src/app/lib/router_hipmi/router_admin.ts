@@ -3,7 +3,7 @@ export const RouterAdminDashboard = {
   splash_admin: "/dev/splash/admin",
 };
 
-export const RouterAdminInvestasi = {
+export const RouterAdminInvestasi_OLD = {
   main_investasi: "/dev/admin/investasi/main",
   halaman_aksi: "/dev/admin/investasi/halaman_aksi/",
   konfirmasi: "/dev/admin/investasi/konfirmasi/",
@@ -14,7 +14,7 @@ export const RouterAdminInvestasi = {
   table_status_reject: "/dev/admin/investasi/table_status/reject",
 };
 
-export const RouterAdminDonasi = {
+export const RouterAdminDonasi_OLD = {
   api_gambar_bukti_transfer: "/api/donasi/gambar_bukti_transfer/",
 
   main_donasi: "/dev/admin/donasi/main",

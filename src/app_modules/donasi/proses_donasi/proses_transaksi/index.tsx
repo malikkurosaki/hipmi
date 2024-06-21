@@ -31,8 +31,10 @@ import Link from "next/link";
 
 export default function Donasi_ProsesTransaksi({
   dataInvoice,
+  nomorAdmin,
 }: {
   dataInvoice: MODEL_DONASI_INVOICE;
+  nomorAdmin: any
 }) {
   const [invoice, setInvoice] = useState(dataInvoice);
   const [hotMenu, setHotMenu] = useAtom(gs_donasi_hot_menu);
@@ -114,7 +116,7 @@ export default function Donasi_ProsesTransaksi({
                 }}
                 target="_blank"
                 href={
-                  "https://wa.me/+6289697338821?text=Hallo Admin , Saya ada kendala dalam proses transfer donasi!"
+                  `https://wa.me/+${nomorAdmin.nomor}?text=Hallo Admin , Saya ada kendala dalam proses transfer donasi!`
                 }
               >
                 <IconBrandWhatsapp size={40} color={Warna.hijau_cerah} />

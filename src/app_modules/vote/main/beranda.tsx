@@ -28,7 +28,8 @@ import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/a
 import _ from "lodash";
 import ComponentVote_IsEmptyData from "../component/is_empty_data";
 import { useState } from "react";
-import { useWindowScroll } from "@mantine/hooks";
+import { useShallowEffect, useWindowScroll } from "@mantine/hooks";
+import { Vote_getAllListPublish } from "../fun/get/get_all_list_publish";
 
 export default function Vote_Beranda({
   dataVote,
@@ -36,8 +37,24 @@ export default function Vote_Beranda({
   dataVote: MODEL_VOTING[];
 }) {
   const router = useRouter();
+
+  const [data, setData] = useState(dataVote);
+
   const [isLoading, setIsLoading] = useState(false);
   const [scroll, scrollTo] = useWindowScroll();
+
+  useShallowEffect(() => {
+    onLoad({
+      setData(val) {
+        setData(val);
+      },
+    });
+  }, [setData]);
+
+  async function onLoad({ setData }: { setData: (val: any) => void }) {
+    const loadData = await Vote_getAllListPublish();
+    setData(loadData);
+  }
 
   return (
     <>
@@ -61,11 +78,11 @@ export default function Vote_Beranda({
         </ActionIcon>
       </Affix>
 
-      {_.isEmpty(dataVote) ? (
+      {_.isEmpty(data) ? (
         <ComponentVote_IsEmptyData text="Tidak ada data" />
       ) : (
         <Stack>
-          {dataVote.map((e, i) => (
+          {data.map((e, i) => (
             <Box key={i}>
               <ComponentVote_CardViewPublish
                 path={RouterVote.main_detail}

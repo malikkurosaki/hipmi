@@ -53,7 +53,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast, { toastConfig } from "react-simple-toasts";
 import Admin_funRejectInvestasi from "../fun/fun_reject_investasi";
-import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin";
+import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import "react-simple-toasts/dist/theme/dark.css";
 import { BeritaInvestasi } from "@/app_modules/investasi";
 
@@ -125,7 +125,7 @@ export default function Admin_KonfirmasiInvestasi({
     await funGantiStatusInvestasi(investasi.id, "3", "1").then((res) => {
       if (res.status === 200) {
         setTimeout(() => setPublish(false), 1000);
-        router.push(RouterAdminInvestasi.table_status_review);
+        router.push(RouterAdminInvestasi_OLD.table_status_review);
         toast("Proyek Investasi Di Publish");
       }
     });

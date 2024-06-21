@@ -16,8 +16,8 @@ import {
   Title,
 } from "@mantine/core";
 import ComponentAdminDonasi_TombolKembali from "../../donasi/component/tombol_kembali";
-import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
-import { MODEL_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
 import { useState } from "react";
 import { AdminEvent_funCreateTipeAcara } from "../fun/create/fun_create_tipe_acara";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
@@ -45,11 +45,11 @@ export default function AdminEvent_DetailTipeAcara({
   );
 }
 
-function DetailTipeAcara({ listTipe }: { listTipe: MODEL_DEFAULT_MASTER[] }) {
+function DetailTipeAcara({ listTipe }: { listTipe: MODEL_DEFAULT_MASTER_OLD[] }) {
   const [tipe, setTipe] = useState(listTipe);
   const [name, setName] = useState("");
   const [openEditor, setOpenEditor] = useState(false);
-  const [edit, setEdit] = useState<MODEL_DEFAULT_MASTER | null>(null);
+  const [edit, setEdit] = useState<MODEL_DEFAULT_MASTER_OLD | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
   const [hapusTipe, setHapusTipe] = useState({
     id: "",
@@ -222,7 +222,7 @@ async function onUpdate(id: any, edit: any, setTipe: any, setOpenEditor: any) {
   });
 }
 
-async function onDelete(data: MODEL_DEFAULT_MASTER, close: any, setTipe: any) {
+async function onDelete(data: MODEL_DEFAULT_MASTER_OLD, close: any, setTipe: any) {
   await AdminEvent_funEditActivationTipeAcaraById(data.id as any).then(
     async (res) => {
       if (res.status === 200) {

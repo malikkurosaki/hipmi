@@ -62,7 +62,15 @@ function ButtonAction({
         >
           Batal
         </Button>
-        <Button radius={"xl"} color="red" onClick={() => onReport()}>
+        <Button
+        style={{
+          transition: "0.5s"
+        }}
+          disabled={deskripsi === "" ? true : false}
+          radius={"xl"}
+          color="orange"
+          onClick={() => onReport()}
+        >
           Report
         </Button>
       </Group>
