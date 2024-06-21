@@ -1,23 +1,17 @@
 "use client";
 
+import { MainColor } from "@/app_modules/component_global/color/color_pallet";
 import {
-  AspectRatio,
-  Box,
   Center,
-  Flex,
   Image,
   Paper,
-  Stack,
-  Text,
-  Title,
+  Stack
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export default function SplashScreen({ data }: { data: any }) {
   const router = useRouter();
-  const [val, setVal] = useState(false);
 
   useShallowEffect(() => {
     if (!data) {
@@ -32,16 +26,16 @@ export default function SplashScreen({ data }: { data: any }) {
   }, []);
   return (
     <>
-      <Center h={"100vh"}>
+      <Center h={"100vh"} bg={MainColor.darkblue}>
         <Stack align="center" justify="center" p={"md"}>
           {/* <Title c={"#002e59"}>Welcome to</Title> */}
           <Paper
-            p={{ base: 50, md: 60, lg: 80 }}
+            p={{ base: 20, md: 30, lg: 40 }}
             bg={"gray.1"}
-            radius={500}
+            radius={"100%"}
             shadow="xl"
           >
-            <Image alt="" src={"/aset/logo/logo-hipmi.png"} />
+            <Image height={200} alt="" src={"/aset/logo/logo-hipmi.png"} />
           </Paper>
         </Stack>
       </Center>
