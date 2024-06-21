@@ -24,6 +24,11 @@ import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
 
 export default function Login() {
   const router = useRouter();
@@ -31,15 +36,13 @@ export default function Login() {
   const focusTrapRef = useFocusTrap();
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isError, setError] = useState(false);
 
   async function onLogin() {
-    // if (nomor.length < 10)
-    //   return ComponentGlobal_NotifikasiPeringatan("Nomor minimal 10 digit");
-    // if (nomor.length > 13)
-    //   return ComponentGlobal_NotifikasiPeringatan("Nomor maximal 13 digit");
-
     const nomorHp = phone.substring(1);
-    // console.log(nomorHp)
+    console.log(nomorHp);
+
+    if (nomorHp.length <= 4) return setError(true);
 
     await auth_funLogin(nomorHp).then((res) => {
       if (res.status === 200) {
@@ -79,47 +82,54 @@ export default function Login() {
 
   return (
     <>
-      <Stack align="center" justify="center"  h={"100vh"}>
-        <Center>
-          <Stack spacing={"xl"}>
-            <Center h={"100%"}>
-              <Image
-                mt={"xl"}
-                height={130}
-                width={130}
-                alt="logo"
-                src={"/aset/logo/logo-hipmi.png"}
-              />
-            </Center>
-            <Stack spacing={0}>
-              <Title order={4}>Selamat Datang di HIPMI App</Title>
-              <Text fs={"italic"} fz={"sm"}>
-                Silahkan masukan nomor telepon anda untuk masuk !
-              </Text>
-            </Stack>
+      <Stack
+        align="center"
+        justify="center"
+        h={"100vh"}
+        bg={MainColor.darkblue}
+        spacing={100}
+      >
+        <Stack align="center" spacing={0}>
+          <Title order={3} c={MainColor.yellow}>
+            WELCOME TO
+          </Title>
+          <Title c={MainColor.yellow}>HIPMI APPS</Title>
+        </Stack>
 
-            <PhoneInput
-              // ref={focusTrapRef}
-              inputStyle={{ width: "100%" }}
-              defaultCountry="id"
-              onChange={(val) => {
-                setPhone(val);
-              }}
-            />
+        <Stack w={300}>
+          <Center>
+            <Text c={"white"}>Nomor telepon</Text>
+          </Center>
+          <PhoneInput
+            inputStyle={{ width: "100%" }}
+            defaultCountry="id"
+            onChange={(val) => {
+              setPhone(val);
+            }}
+          />
 
-            <Button
-              radius={"md"}
-              color={"teal"}
-              onClick={() => {
-                onLogin();
-              }}
-              loading={loading ? true : false}
-              loaderPosition="center"
-            >
-              LOGIN
-            </Button>
-          </Stack>
-        </Center>
+          {isError ? (
+            <ComponentGlobal_ErrorInput text="Masukan nomor telepon anda" />
+          ) : (
+            ""
+          )}
+
+          <Button
+            radius={"md"}
+            bg={MainColor.yellow}
+            loading={loading ? true : false}
+            loaderPosition="center"
+            c={"black"}
+            style={{
+              borderColor: AccentColor.yellow,
+            }}
+            onClick={() => {
+              onLogin();
+            }}
+          >
+            LOGIN
+          </Button>
+        </Stack>
       </Stack>
     </>
   );
