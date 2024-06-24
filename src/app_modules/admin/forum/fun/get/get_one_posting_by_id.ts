@@ -10,11 +10,19 @@ export async function adminForum_getOnePostingById(postingId: string) {
     select: {
       id: true,
       diskusi: true,
+      ForumMaster_StatusPosting: {
+        select: {
+          id: true,
+          status: true,
+        },
+      },
       Author: {
         select: {
+          id: true,
+          username: true,
           Profile: {
             select: {
-              name: true
+              name: true,
             },
           },
         },
@@ -22,7 +30,7 @@ export async function adminForum_getOnePostingById(postingId: string) {
     },
   });
 
-//   console.log(data);
+  //   console.log(data);
 
   return data;
 }

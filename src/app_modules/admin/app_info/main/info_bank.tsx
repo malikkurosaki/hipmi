@@ -2,41 +2,34 @@
 
 import { MODEL_DATA_BANK } from "@/app_modules/investasi/model/model_investasi";
 import {
-  Center,
-  Stack,
   ActionIcon,
-  Tooltip,
-  Group,
-  Title,
   Button,
+  Center,
+  Grid,
+  Group,
+  Modal,
   Paper,
   ScrollArea,
-  Modal,
-  TextInput,
-  Text,
-  Table,
-  SimpleGrid,
-  Grid,
+  Stack,
   Switch,
+  Table,
+  Text,
+  TextInput,
+  Title,
+  Tooltip
 } from "@mantine/core";
 import {
-  IconEye,
-  IconEyeOff,
-  IconEdit,
-  IconTrash,
-  IconPlus,
   IconCirclePlus,
+  IconEdit
 } from "@tabler/icons-react";
-import _, { fill } from "lodash";
+import _ from "lodash";
 import { useState } from "react";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../component_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentAdminGlobal_NotifikasiGagal } from "../../component_global/admin_notifikasi/notifikasi_gagal";
 import adminAppInformation_createBank from "../fun/create/fun_create_new_bank";
 import adminAppInformation_getMasterBank from "../fun/master/get_list_bank";
-import { ComponentGlobalAdmin_NotifikasiBerhasil } from "../../component_global/admin_notifikasi/notifikasi_berhasil";
-import { ComponentGlobalAdmin_NotifikasiGagal } from "../../component_global/admin_notifikasi/notifikasi_gagal";
-import adminAppInformation_getOneBankById from "../fun/get/get_one_bank_by_id";
-import { useShallowEffect } from "@mantine/hooks";
-import adminAppInformation_updateDataBankById from "../fun/update/fun_update_data_bank";
 import adminAppInformation_updateStatusBankById from "../fun/update/fun_udpate_status_bank";
+import adminAppInformation_updateDataBankById from "../fun/update/fun_update_data_bank";
 
 export default function InformasiBank({
   listBank,
@@ -70,9 +63,9 @@ export default function InformasiBank({
     if (create.status === 200) {
       const loadData = await adminAppInformation_getMasterBank();
       setData(loadData);
-      ComponentGlobalAdmin_NotifikasiBerhasil(create.message);
+      ComponentAdminGlobal_NotifikasiBerhasil(create.message);
     } else {
-      ComponentGlobalAdmin_NotifikasiGagal(create.message);
+      ComponentAdminGlobal_NotifikasiGagal(create.message);
     }
     setIsCreate(false);
   }
@@ -84,10 +77,10 @@ export default function InformasiBank({
     if (updt.status === 200) {
       const loadData = await adminAppInformation_getMasterBank();
       setData(loadData);
-      ComponentGlobalAdmin_NotifikasiBerhasil(updt.message);
+      ComponentAdminGlobal_NotifikasiBerhasil(updt.message);
       setIsUpdate(false);
     } else {
-      ComponentGlobalAdmin_NotifikasiGagal(updt.message);
+      ComponentAdminGlobal_NotifikasiGagal(updt.message);
     }
   }
 
@@ -108,10 +101,10 @@ export default function InformasiBank({
     if (updt.status === 200) {
       const loadData = await adminAppInformation_getMasterBank();
       setData(loadData);
-      ComponentGlobalAdmin_NotifikasiBerhasil(updt.message);
+      ComponentAdminGlobal_NotifikasiBerhasil(updt.message);
       setIsActivation(false);
     } else {
-      ComponentGlobalAdmin_NotifikasiGagal(updt.message);
+      ComponentAdminGlobal_NotifikasiGagal(updt.message);
     }
   }
 

@@ -1,41 +1,32 @@
 "use client";
 
-import { useAtom } from "jotai";
+import { RouterAdminDashboard } from "@/app/lib/router_hipmi/router_admin";
+import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import {
   ActionIcon,
+  Box,
   Button,
   Center,
-  Flex,
   PinInput,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
-import { gs_nomor, gs_otp } from "../state/state";
-import { Warna } from "@/app/lib/warna";
-import { useState } from "react";
-import { myConsole } from "@/app/fun/my_console";
-import {
-  IconChevronLeft,
-  IconCircleLetterH,
-  IconCloudLockOpen,
-} from "@tabler/icons-react";
-import toast from "react-simple-toasts";
-import { ApiHipmi } from "@/app/lib/api";
-import { useRouter } from "next/navigation";
-import { funGetUserProfile } from "@/app_modules/fun_global/get_user_profile";
 import { useFocusTrap } from "@mantine/hooks";
-import { NotifBerhasil } from "@/app_modules/donasi/component/notifikasi/notif_berhasil";
-import { NotifGagal } from "@/app_modules/donasi/component/notifikasi/notif_gagal";
-import { NotifPeringatan } from "@/app_modules/donasi/component/notifikasi/notif_peringatan";
-import Countdown from "react-countdown";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { auth_funValidasi } from "../fun/fun_validasi";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
-import { RouterHome } from "@/app/lib/router_hipmi/router_home";
+import {
+  IconChevronLeft
+} from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { auth_funEditAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
-import { RouterAdminDashboard } from "@/app/lib/router_hipmi/router_admin";
+import { auth_funValidasi } from "../fun/fun_validasi";
 
 export default function Validasi({ dataOtp }: { dataOtp: any }) {
   const router = useRouter();
@@ -44,37 +35,6 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
   const [inputCode, setInputOtp] = useState("");
   const focusTrapRef = useFocusTrap();
   const [loading, setLoading] = useState(false);
-
-  const onValid = async () => {
-    // MyConsole(inputCode)
-    const body = {
-      nomor: nomor,
-      otp: code,
-    };
-
-    if (!inputCode) return toast("Lengkapi Kode");
-    if (body.otp != inputCode) return toast("Kode Salah");
-
-    // await fetch(ApiHipmi.validasi, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(body),
-    // })
-    //   .then((res) => res.json())
-    //   .then((val) => {
-    //     myConsole(val);
-    //     if (val.status == 200) {
-    //       setTimeout(() => router.push("/dev/home"), 2000);
-    //       funGetUserProfile(val.data.id);
-    //       NotifBerhasil("Berhasil Login");
-    //     } else {
-    //       router.push("/dev/auth/register");
-    //       NotifPeringatan("Silahkan Registrasi");
-    //     }
-    //   });
-  };
 
   async function onVerifikasi() {
     if (!inputCode)
@@ -106,23 +66,32 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
 
   return (
     <>
-      <Center h={"100vh"}>
-        <Stack px={"lg"} spacing={"xl"} w={{ base: 400 }} justify="center">
-          <Center>
-            <IconCloudLockOpen size={130} />
-          </Center>
+      <Stack bg={MainColor.darkblue} h={"100vh"}>
+        <Box
+          pt={"md"}
+          px={"md"}
+          style={{
+            position: "sticky",
+            top: 0,
+          }}
+        >
+          <ActionIcon variant="transparent" onClick={() => router.back()}>
+            <IconChevronLeft color="white" />
+          </ActionIcon>
+        </Box>
 
-          <Stack spacing={50}>
-            <Stack spacing={0}>
-              <Title order={4}>Verifikasi Kode OTP</Title>
-              <Text fs={"italic"} fz={"xs"}>
-                Silahkan masukan 4 digit kode otp yang dikirim ke{" "}
-                <Text span inherit fw={"bold"}>
-                  +{nomor}
-                </Text>
-              </Text>
-            </Stack>
+        <Stack align="center" justify="center" h={"100vh"} spacing={70}>
+          <Title order={2} color={MainColor.yellow}>
+            Verifikasi Kode OTP
+          </Title>
 
+          <Stack spacing={0} align="center">
+            <Text fz={"xs"}  c={"white"}>
+              Masukan 4 digit kode otp
+            </Text>
+            <Text fz={"xs"}  c={"white"}>
+              Yang dikirim ke <Text span inherit fw={"bold"}> +{nomor}</Text>
+            </Text>
             <Center>
               <PinInput
                 ref={focusTrapRef}
@@ -133,24 +102,28 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
                 }}
               />
             </Center>
-            <Stack>
-              <Button
-                loading={loading ? true : false}
-                loaderPosition="center"
-                radius={"md"}
-                compact
-                h={40}
-                color={"teal"}
-                onClick={() => {
-                  onVerifikasi();
-                }}
-              >
-                <Text>VERIFIKASI</Text>
-              </Button>
-            </Stack>
           </Stack>
+          <Button
+            w={300}
+            loading={loading ? true : false}
+            loaderPosition="center"
+            radius={"md"}
+            compact
+            h={40}
+            c={"black"}
+            bg={MainColor.yellow}
+            color={"yellow"}
+            style={{
+              borderColor: AccentColor.yellow,
+            }}
+            onClick={() => {
+              onVerifikasi();
+            }}
+          >
+            <Text>VERIFIKASI</Text>
+          </Button>
         </Stack>
-      </Center>
+      </Stack>
     </>
   );
 }

@@ -25,14 +25,14 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ComponentGlobalAdmin_NotifikasiBerhasil } from "../../component_global/admin_notifikasi/notifikasi_berhasil";
-import { ComponentGlobalAdmin_NotifikasiGagal } from "../../component_global/admin_notifikasi/notifikasi_gagal";
-import { ComponentGlobalAdmin_NotifikasiPeringatan } from "../../component_global/admin_notifikasi/notifikasi_peringatan";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../component_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentAdminGlobal_NotifikasiGagal } from "../../component_global/admin_notifikasi/notifikasi_gagal";
+import { ComponentAdminGlobal_NotifikasiPeringatan } from "../../component_global/admin_notifikasi/notifikasi_peringatan";
 import ComponentAdminDonasi_TombolKembali from "../component/tombol_kembali";
 import { AdminDonasi_getOneById } from "../fun/get/get_one_by_id";
 import { AdminDonasi_funUpdateStatusPublish } from "../fun/update/fun_status_publish";
 import { AdminDonasi_funUpdateStatusReject } from "../fun/update/fun_status_reject";
-import ComponentGlobalAdmin_BackButton from "../../component_global/back_button";
+import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
 import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_detail_donasi";
 import ComponentAdminDonasi_CeritaPenggalangDana from "../component/tampilan_detail_cerita";
 
@@ -85,12 +85,12 @@ function ButtonOnHeader({
         if (res.status === 200) {
           const newData = await AdminDonasi_getOneById(donasi?.id);
           setData(newData);
-          ComponentGlobalAdmin_NotifikasiBerhasil(
+          ComponentAdminGlobal_NotifikasiBerhasil(
             "Berhasil Mengubah Status Donasi"
           );
           setLoadingPublish(true);
         } else {
-          ComponentGlobalAdmin_NotifikasiPeringatan(
+          ComponentAdminGlobal_NotifikasiPeringatan(
             "Gagal Mengubah Status Donasi"
           );
         }
@@ -100,7 +100,7 @@ function ButtonOnHeader({
 
   async function onReject() {
     if (catatan === "")
-      return ComponentGlobalAdmin_NotifikasiPeringatan(
+      return ComponentAdminGlobal_NotifikasiPeringatan(
         "Lengkapi Alasan Penolakan"
       );
 
@@ -110,10 +110,10 @@ function ButtonOnHeader({
           const newData = await AdminDonasi_getOneById(donasi?.id);
           setData(newData);
           close();
-          ComponentGlobalAdmin_NotifikasiBerhasil(res.message);
+          ComponentAdminGlobal_NotifikasiBerhasil(res.message);
           setLoadingReject(true);
         } else {
-          ComponentGlobalAdmin_NotifikasiGagal(res.message);
+          ComponentAdminGlobal_NotifikasiGagal(res.message);
         }
       }
     );
@@ -122,7 +122,7 @@ function ButtonOnHeader({
   return (
     <>
       <Group position="apart">
-        <ComponentGlobalAdmin_BackButton />
+        <ComponentAdminGlobal_BackButton />
         {donasi.donasiMaster_StatusDonasiId === "2" ? (
           <Group>
             <Button
