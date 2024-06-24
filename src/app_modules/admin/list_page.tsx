@@ -229,13 +229,13 @@ export const listAdminPage = [
       {
         id: 72,
         name: "Table Posting",
-        path: RouterAdminForum.publish,
+        path: RouterAdminForum.table_posting,
       },
-      // {
-      //   id: 73,
-      //   name: "Laporan Posting",
-      //   path: RouterAdminForum.report_posting,
-      // },
+      {
+        id: 73,
+        name: "Report Posting",
+        path: RouterAdminForum.table_report_posting,
+      },
       // {
       //   id: 74,
       //   name: "Laporan Komentar",

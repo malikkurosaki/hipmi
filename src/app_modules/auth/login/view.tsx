@@ -40,7 +40,6 @@ export default function Login() {
 
   async function onLogin() {
     const nomorHp = phone.substring(1);
-    console.log(nomorHp);
 
     if (nomorHp.length <= 4) return setError(true);
 
@@ -117,6 +116,7 @@ export default function Login() {
           <Button
             radius={"md"}
             bg={MainColor.yellow}
+            color={"yellow"}
             loading={loading ? true : false}
             loaderPosition="center"
             c={"black"}

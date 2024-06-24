@@ -1,14 +1,30 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import { ceil } from "lodash";
 
-export async function adminForum_getListPublish() {
+export async function adminForum_getListPosting({
+  page,
+  search,
+}: {
+  page: number;
+  search?: string;
+}) {
+  const takeData = 10;
+  const skipData = page * takeData - takeData;
+
   const data = await prisma.forum_Posting.findMany({
+    take: takeData,
+    skip: skipData,
     orderBy: {
       createdAt: "desc",
     },
     where: {
       isActive: true,
+      diskusi: {
+        contains: search,
+        mode: "insensitive",
+      },
     },
     select: {
       id: true,
@@ -25,12 +41,27 @@ export async function adminForum_getListPublish() {
       Forum_ReportPosting: true,
       Forum_Komentar: {
         where: {
-          isActive: true
-        }
+          isActive: true,
+        },
       },
-      ForumMaster_StatusPosting: true
+      ForumMaster_StatusPosting: true,
     },
   });
 
-  return data;
+  const nCount = await prisma.forum_Posting.count({
+    where: {
+      isActive: true,
+      diskusi: {
+        contains: search,
+        mode: "insensitive",
+      },
+    },
+  });
+
+  const allData = {
+    data: data,
+    nPage: ceil(nCount / takeData),
+  };
+
+  return allData;
 }

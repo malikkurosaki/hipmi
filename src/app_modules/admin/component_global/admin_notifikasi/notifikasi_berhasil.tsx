@@ -14,7 +14,7 @@ import {
  * @type number
  * @returns notifikasi berhasil warna hijau
  */
-export async function ComponentGlobalAdmin_NotifikasiBerhasil(
+export async function ComponentAdminGlobal_NotifikasiBerhasil(
   text: string,
   durasi?: number
 ) {

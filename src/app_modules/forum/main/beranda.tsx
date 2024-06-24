@@ -1,50 +1,30 @@
 "use client";
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
-import {
-  Affix,
-  rem,
-  ActionIcon,
-  Card,
-  CardSection,
-  Text,
-  Stack,
-  Divider,
-  Group,
-  Box,
-  TextInput,
-  Center,
-  Button,
-  Pagination,
-  Loader,
-} from "@mantine/core";
-import { useShallowEffect, useTimeout, useWindowScroll } from "@mantine/hooks";
-import {
-  IconCirclePlus,
-  IconMessageCircle,
-  IconPencilPlus,
-  IconSearch,
-  IconSearchOff,
-} from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import ComponentForum_PostingAuthorNameOnHeader from "../component/header/posting_author_header_name";
-import { useState } from "react";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
-import { useAtom } from "jotai";
-import { gs_forum_loading_edit_posting } from "../global_state";
-import { MODEL_FORUM_POSTING } from "../model/interface";
-import ComponentForum_MainCardView from "../component/main_card_view";
-import { forum_getListAllPosting } from "../fun/get/get_list_all_posting";
-import { forum_funSearchListPosting } from "../fun/search/fun_search_list_posting";
-import _ from "lodash";
-import ComponentForum_BerandaCardView from "../component/beranda/beranda_card";
 import mqtt_client from "@/util/mqtt_client";
+import {
+  ActionIcon,
+  Affix,
+  Button,
+  Center,
+  Loader,
+  Stack,
+  Text,
+  TextInput,
+  rem
+} from "@mantine/core";
+import { useShallowEffect, useWindowScroll } from "@mantine/hooks";
+import {
+  IconPencilPlus,
+  IconSearchOff
+} from "@tabler/icons-react";
+import _ from "lodash";
+import { ScrollOnly } from "next-scroll-loader";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import ComponentForum_V2_MainCardView from "../component/main_component/card_view";
 import { forum_new_getAllPosting } from "../fun/get/new_get_all_posting";
-import forum_v2_getAllPosting from "../fun/get/v2_get_all_posting";
-import { ScrollOnly } from "next-scroll-loader";
+import { MODEL_FORUM_POSTING } from "../model/interface";
 
 export default function Forum_Beranda({
   listForum,

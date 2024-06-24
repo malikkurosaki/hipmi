@@ -28,7 +28,7 @@ export default function ComponentAdminGlobal_LoadingPage() {
     },
   ];
   const customLOader = (
-    <Center h={"100vh"}>
+    <Center h={"90vh"}>
       <Group>
         {listhHuruf.map((e, i) => (
           <Center key={i} h={"100%"}>
@@ -44,7 +44,10 @@ export default function ComponentAdminGlobal_LoadingPage() {
 
   return (
     <>
-      <LoadingOverlay visible overlayBlur={1} loader={customLOader} />
+      {/* <LoadingOverlay visible  loader={customLOader} /> */}
+      <Box>
+        {customLOader}
+      </Box>
     </>
   );
 }

@@ -48,13 +48,13 @@ import { useRouter } from "next/navigation";
 import { useDisclosure, useInterval, useShallowEffect } from "@mantine/hooks";
 import { Donasi_getOneById } from "@/app_modules/donasi/fun/get/get_one_donasi_by_id";
 import { AdminDonasi_getOneById } from "../../fun/get/get_one_by_id";
-import ComponentGlobalAdmin_BackButton from "@/app_modules/admin/component_global/back_button";
+import ComponentAdminGlobal_BackButton from "@/app_modules/admin/component_global/back_button";
 import { MODEL_NEW_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
 import { adminDonasi_getListDonatur } from "../../fun/get/get_list_donatur_by_id";
 import { RouterAdminDonasi } from "@/app/lib/router_admin/router_admin_donasi";
 import adminDonasi_funUpdateStatusDanTotal from "../../fun/update/fun_update_status_dan_total";
-import { ComponentGlobalAdmin_NotifikasiBerhasil } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_berhasil";
-import { ComponentGlobalAdmin_NotifikasiGagal } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_gagal";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentAdminGlobal_NotifikasiGagal } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_gagal";
 
 export default function AdminDonasi_DetailPublish({
   dataPublish,
@@ -86,7 +86,7 @@ export default function AdminDonasi_DetailPublish({
     <>
       {/* <pre>{JSON.stringify(pencairan, null, 2)}</pre> */}
       <Stack>
-        <ComponentGlobalAdmin_BackButton />
+        <ComponentAdminGlobal_BackButton />
         <TampilanDetailDonasi donasi={dataDonasi} countDonatur={countDonatur} />
         <TampilanListDonatur
           donatur={listDonatur}
@@ -517,9 +517,9 @@ function ButtonAccept({
       });
       onSuccessDonatur(updatelistDonatur);
 
-      ComponentGlobalAdmin_NotifikasiBerhasil(updateStatus.message);
+      ComponentAdminGlobal_NotifikasiBerhasil(updateStatus.message);
     } else {
-      ComponentGlobalAdmin_NotifikasiGagal(updateStatus.message);
+      ComponentAdminGlobal_NotifikasiGagal(updateStatus.message);
     }
 
     close();

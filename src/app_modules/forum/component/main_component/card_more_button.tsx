@@ -27,13 +27,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import mqtt_client from "@/util/mqtt_client";
+import _ from "lodash";
 import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_by_id";
 import { forum_funEditStatusPostingById } from "../../fun/edit/fun_edit_status_posting_by_id";
-import forum_v2_getAllPosting from "../../fun/get/v2_get_all_posting";
-import { forum_new_getAllPosting } from "../../fun/get/new_get_all_posting";
-import _ from "lodash";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
-import mqtt_client from "@/util/mqtt_client";
 
 export default function ComponentForum_V2_CardMoreButton({
   authorId,

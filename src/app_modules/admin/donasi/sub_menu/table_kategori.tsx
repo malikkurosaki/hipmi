@@ -23,8 +23,8 @@ import { MODEL_NEW_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
 import { useState } from "react";
 import { IconCirclePlus, IconEdit, IconTrash } from "@tabler/icons-react";
 import adminDonasi_funCreateKategori from "../fun/create/fun_create_kategori";
-import { ComponentGlobalAdmin_NotifikasiBerhasil } from "../../component_global/admin_notifikasi/notifikasi_berhasil";
-import { ComponentGlobalAdmin_NotifikasiGagal } from "../../component_global/admin_notifikasi/notifikasi_gagal";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../component_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentAdminGlobal_NotifikasiGagal } from "../../component_global/admin_notifikasi/notifikasi_gagal";
 import adminDonasi_getMasterKategori from "../fun/master/get_list_kategori";
 import adminDonasi_funDeleteKategori from "../fun/delete/fun_delete_by_id";
 import adminDonasi_funUpdatekategoriById from "../fun/update/fun_update_kategori_by_id";
@@ -72,9 +72,9 @@ function TableView({ list }: { list: MODEL_NEW_DEFAULT_MASTER[] }) {
       const loadNewdata = await adminDonasi_getMasterKategori();
       setData(loadNewdata);
       setCreate("");
-      ComponentGlobalAdmin_NotifikasiBerhasil(tambahData.message);
+      ComponentAdminGlobal_NotifikasiBerhasil(tambahData.message);
     } else {
-      ComponentGlobalAdmin_NotifikasiGagal(tambahData.message);
+      ComponentAdminGlobal_NotifikasiGagal(tambahData.message);
     }
   }
 
@@ -88,10 +88,10 @@ function TableView({ list }: { list: MODEL_NEW_DEFAULT_MASTER[] }) {
     if (del.status === 200) {
       const loadNewdata = await adminDonasi_getMasterKategori();
       setData(loadNewdata);
-      ComponentGlobalAdmin_NotifikasiBerhasil(del.message);
+      ComponentAdminGlobal_NotifikasiBerhasil(del.message);
       setIsChangeStatus(false);
     } else {
-      ComponentGlobalAdmin_NotifikasiGagal(del.message);
+      ComponentAdminGlobal_NotifikasiGagal(del.message);
     }
   }
 
@@ -102,12 +102,12 @@ function TableView({ list }: { list: MODEL_NEW_DEFAULT_MASTER[] }) {
     });
     if (updt.status === 200) {
       setUpdateKategori({ kategoriId: "", name: "" });
-      ComponentGlobalAdmin_NotifikasiBerhasil(updt.message);
+      ComponentAdminGlobal_NotifikasiBerhasil(updt.message);
       const loadData = await adminDonasi_getMasterKategori();
       setData(loadData);
       setIsUpdate(false);
     } else {
-      ComponentGlobalAdmin_NotifikasiGagal(updt.message);
+      ComponentAdminGlobal_NotifikasiGagal(updt.message);
     }
   }
 
