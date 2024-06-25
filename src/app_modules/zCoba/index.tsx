@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BackgroundImage,
   Box,
   Button,
   Center,
@@ -21,6 +22,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useShallowEffect } from "@mantine/hooks";
 import { ScrollOnly } from "next-scroll-loader";
 import _ from "lodash";
+import ComponentGlobal_V2_LoadingPage from "../component_global/loading_page_v2";
 
 const newData = Array(20)
   .fill(0)
@@ -69,6 +71,27 @@ export default function Coba_TestLoading() {
   // );
 
   const [data, setData] = useState(data2);
+
+  return (
+    <>
+      <BackgroundImage src={"/aset/global/main_background.png"}>
+        <Box h={"100vh"}>Apa</Box>
+      </BackgroundImage>
+    </>
+  );
+
+  return (
+    <>
+      <Box h={"100%"} bg={"blue"}>
+        {Array(50)
+          .fill(0)
+          .map((e, i) => (
+            <Text key={i}>{i + 1}</Text>
+          ))}
+        <ComponentGlobal_V2_LoadingPage />
+      </Box>
+    </>
+  );
 
   return (
     <>
