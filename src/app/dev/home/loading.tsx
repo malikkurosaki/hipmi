@@ -3,7 +3,7 @@ import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loadi
 export default async function Page() {
   return (
     <>
-      <ComponentGlobal_V2_LoadingPage />
+      {/* <ComponentGlobal_V2_LoadingPage /> */}
     </>
   );
 }
