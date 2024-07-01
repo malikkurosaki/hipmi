@@ -36,6 +36,10 @@ const ReactQuill = dynamic(
 );
 
 import mqtt_client from "@/util/mqtt_client";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
 
 export default function Forum_Create() {
   const [value, setValue] = useState("");
@@ -95,8 +99,10 @@ function ButtonAction({ value }: { value: string }) {
       ComponentGlobal_NotifikasiBerhasil(create.message);
       setTimeout(() => router.back(), 1000);
 
-      mqtt_client.publish("Forum_create_new", JSON.stringify({isNewPost: true, count: 1 }));
-
+      mqtt_client.publish(
+        "Forum_create_new",
+        JSON.stringify({ isNewPost: true, count: 1 })
+      );
     } else {
       ComponentGlobal_NotifikasiGagal(create.message);
     }
@@ -106,7 +112,12 @@ function ButtonAction({ value }: { value: string }) {
       <Button
         style={{
           transition: "0.5s",
+          border:
+            value === "<p><br></p>" || value === "" || value.length > 500
+              ? ""
+              : `1px solid ${AccentColor.yellow}`,
         }}
+        bg={MainColor.yellow}
         disabled={
           value === "<p><br></p>" || value === "" || value.length > 500
             ? true

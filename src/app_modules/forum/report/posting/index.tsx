@@ -77,10 +77,9 @@ function ButtonAction({
       const getKategori = await forum_getOneKategoriById({
         kategoriId: toNumber(kategoriId),
       });
-      console.log(getKategori);
+      // console.log(getKategori);
 
       ComponentGlobal_NotifikasiBerhasil(report.message, 2000);
-      setLoading(true);
       router.back();
 
       const dataNotif = {
@@ -99,6 +98,8 @@ function ButtonAction({
       if (createNotifikasi.status === 201) {
         mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
       }
+      setLoading(true);
+
     } else {
       ComponentGlobal_NotifikasiGagal(report.message);
     }

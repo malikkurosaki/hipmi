@@ -5,7 +5,7 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_glob
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import {
   MODEL_FORUM_POSTING,
-  MODEL_FORUM_REPORT,
+  MODEL_FORUM_REPORT_POSTING,
 } from "@/app_modules/forum/model/interface";
 import {
   Button,
@@ -31,6 +31,8 @@ import ComponentAdminGlobal_IsEmptyData from "../../component_global/is_empty_da
 import { adminForum_funDeletePostingById } from "../fun/delete/fun_delete_posting_by_id";
 import { adminForum_getListReportPostingById } from "../fun/get/get_list_report_posting_by_id";
 import ComponentAdminForum_ViewOneDetailPosting from "../component/detail_one_posting";
+import mqtt_client from "@/util/mqtt_client";
+import adminNotifikasi_funCreateToUser from "../../notifikasi/fun/create/fun_create_notif_user";
 
 export default function AdminForum_HasilReportPosting({
   dataPosting,
@@ -45,7 +47,7 @@ export default function AdminForum_HasilReportPosting({
         <ComponentAdminGlobal_HeaderTamplate name="Forum: Hasil Report Posting" />
         <Group position="apart">
           <ComponentAdminGlobal_BackButton />
-          <ButtonDeletePosting postingId={dataPosting.id} />
+          <ButtonDeletePosting dataPosting={dataPosting} />
         </Group>
         <ComponentAdminForum_ViewOneDetailPosting dataPosting={dataPosting} />
         <HasilReportPosting
@@ -58,24 +60,45 @@ export default function AdminForum_HasilReportPosting({
   );
 }
 
-function ButtonDeletePosting({ postingId }: { postingId: string }) {
+function ButtonDeletePosting({
+  dataPosting,
+}: {
+  dataPosting: MODEL_FORUM_POSTING;
+}) {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
-  const [loadingDel, setLoadingDel] = useState(false);
+
   const [loadingDel2, setLoadingDel2] = useState(false);
 
   async function onDelete() {
-    await adminForum_funDeletePostingById(postingId).then((res) => {
-      if (res.status === 200) {
-        setLoadingDel2(false);
-        setLoadingDel(false);
-        close();
-        router.back();
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
+    const del = await adminForum_funDeletePostingById(dataPosting.id);
+    if (del.status === 200) {
+      setLoadingDel2(false);
+      close();
+      router.back();
+
+      const dataNotif = {
+        appId: dataPosting.id,
+        status: "Report Posting",
+        userId: dataPosting.authorId,
+        pesan: dataPosting.diskusi,
+        kategoriApp: "FORUM",
+        title: "Postingan anda telah di laporkan",
+      };
+      const notif = await adminNotifikasi_funCreateToUser({
+        data: dataNotif as any,
+      });
+      if (notif.status === 201) {
+        mqtt_client.publish(
+          "USER",
+          JSON.stringify({ userId: dataPosting.authorId, count: 1 })
+        );
       }
-    });
+
+      ComponentGlobal_NotifikasiBerhasil(del.message);
+    } else {
+      ComponentGlobal_NotifikasiGagal(del.message);
+    }
   }
   return (
     <>
@@ -93,12 +116,13 @@ function ButtonDeletePosting({ postingId }: { postingId: string }) {
               radius={"xl"}
               onClick={() => {
                 close();
-                setLoadingDel(false);
               }}
             >
               Batal
             </Button>
             <Button
+              loaderPosition="center"
+              loading={loadingDel2 ? true : false}
               radius={"xl"}
               color="red"
               onClick={() => {
@@ -112,15 +136,12 @@ function ButtonDeletePosting({ postingId }: { postingId: string }) {
         </Stack>
       </Modal>
       <Button
-        loaderPosition="center"
-        loading={loadingDel ? true : false}
         radius={"xl"}
         color="red"
         leftIcon={<IconTrash size={15} />}
         onClick={() => {
           // onDelete();
           open();
-          setLoadingDel(true);
         }}
       >
         Hapus Posting
@@ -137,7 +158,9 @@ function HasilReportPosting({
   postingId: string;
 }) {
   const router = useRouter();
-  const [data, setData] = useState<MODEL_FORUM_REPORT[]>(listReport.data);
+  const [data, setData] = useState<MODEL_FORUM_REPORT_POSTING[]>(
+    listReport.data
+  );
   const [nPage, setNPage] = useState(listReport.nPage);
   const [activePage, setActivePage] = useState(1);
 
@@ -232,7 +255,7 @@ function HasilReportPosting({
                       <Center>Username</Center>
                     </th>
                     <th>
-                      <Center>Title</Center>
+                      <Center>Kategori</Center>
                     </th>
                     <th>
                       <Center>Deskripsi</Center>

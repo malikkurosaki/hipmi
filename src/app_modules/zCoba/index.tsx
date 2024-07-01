@@ -75,7 +75,7 @@ export default function Coba_TestLoading() {
   return (
     <>
       <BackgroundImage src={"/aset/global/main_background.png"}>
-        <Box h={"100vh"}>Apa</Box>
+        <Box h={"100vh"}></Box>
       </BackgroundImage>
     </>
   );

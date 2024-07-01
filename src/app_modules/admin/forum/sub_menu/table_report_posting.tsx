@@ -1,11 +1,9 @@
 "use client";
 
 import { RouterAdminForum } from "@/app/lib/router_admin/router_admin_forum";
-import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
 import {
-  MODEL_FORUM_POSTING,
-  MODEL_FORUM_REPORT,
+  MODEL_FORUM_REPORT_POSTING
 } from "@/app_modules/forum/model/interface";
 import {
   Badge,
@@ -13,7 +11,6 @@ import {
   Button,
   Center,
   Group,
-  Modal,
   Pagination,
   Paper,
   ScrollArea,
@@ -22,23 +19,15 @@ import {
   Table,
   Text,
   TextInput,
-  Title,
+  Title
 } from "@mantine/core";
-import { IconMessageCircle, IconSearch } from "@tabler/icons-react";
-import { IconFlag3 } from "@tabler/icons-react";
-import { IconEyeCheck, IconTrash } from "@tabler/icons-react";
-import _, { isEmpty } from "lodash";
+import { IconFlag3, IconSearch } from "@tabler/icons-react";
+import { isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { adminForum_funDeletePostingById } from "../fun/delete/fun_delete_posting_by_id";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { useDisclosure } from "@mantine/hooks";
-import { adminForum_getListPosting } from "../fun/get/get_list_publish";
-import adminJob_getListPublish from "@/app_modules/admin/job/fun/get/get_list_publish";
+import ComponentAdminGlobal_IsEmptyData from "../../component_global/is_empty_data";
 import ComponentAdminForum_ButtonDeletePosting from "../component/button_delete";
 import adminForum_funGetAllReportPosting from "../fun/get/get_all_report_posting";
-import ComponentAdminGlobal_IsEmptyData from "../../component_global/is_empty_data";
 
 export default function AdminForum_TableReportPosting({
   listData,
@@ -58,7 +47,7 @@ export default function AdminForum_TableReportPosting({
 
 function TableView({ listData }: { listData: any }) {
   const router = useRouter();
-  const [data, setData] = useState<MODEL_FORUM_REPORT[]>(listData.data);
+  const [data, setData] = useState<MODEL_FORUM_REPORT_POSTING[]>(listData.data);
   const [nPage, setNPage] = useState(listData.nPage);
   const [activePage, setActivePage] = useState(1);
   const [isSearch, setSearch] = useState("");
@@ -109,7 +98,7 @@ function TableView({ listData }: { listData: any }) {
         </Center>
       </td>
 
-      <td>
+      {/* <td>
         <Center w={200}>
           <Text lineClamp={1}>{e?.Forum_Posting.Author.username}</Text>
         </Center>
@@ -130,7 +119,7 @@ function TableView({ listData }: { listData: any }) {
             />
           </Spoiler>
         </Box>
-      </td>
+      </td> */}
 
       <td>
         <Center w={200}>
@@ -160,14 +149,14 @@ function TableView({ listData }: { listData: any }) {
         <Stack align="center" spacing={"xs"}>
           {/* <ButtonAction postingId={e?.id} /> */}
           <ButtonLihatReportLainnya postingId={e?.forum_PostingId} />
-          <ComponentAdminForum_ButtonDeletePosting
+          {/* <ComponentAdminForum_ButtonDeletePosting
             postingId={e?.forum_PostingId}
             onSuccesDelete={(val) => {
               if (val) {
                 onLoadData();
               }
             }}
-          />
+          /> */}
         </Stack>
       </td>
     </tr>
@@ -190,7 +179,7 @@ function TableView({ listData }: { listData: any }) {
             radius={"xl"}
             placeholder="Cari postingan"
             onChange={(val) => {
-              // console.log(val.currentTarget.value)
+
               onSearch(val.currentTarget.value);
             }}
           />
@@ -218,12 +207,12 @@ function TableView({ listData }: { listData: any }) {
                     <th>
                       <Center>Jenis Laporan</Center>
                     </th>
-                    <th>
+                    {/* <th>
                       <Center>Author</Center>
                     </th>
                     <th>
                       <Text>Postingan</Text>
-                    </th>
+                    </th> */}
                     <th>
                       <Center w={200}>Status Posting</Center>
                     </th>

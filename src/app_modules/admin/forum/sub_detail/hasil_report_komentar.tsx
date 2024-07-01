@@ -6,8 +6,9 @@ import ComponentAdminDonasi_TombolKembali from "@/app_modules/admin/donasi/compo
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import {
+  MODEL_FORUM_KOMENTAR,
   MODEL_FORUM_MASTER_REPORT,
-  MODEL_FORUM_REPORT,
+  MODEL_FORUM_REPORT_POSTING,
 } from "@/app_modules/forum/model/interface";
 import {
   Badge,
@@ -41,22 +42,38 @@ import { useDisclosure, useShallowEffect } from "@mantine/hooks";
 import ComponentAdminGlobal_IsEmptyData from "../../component_global/is_empty_data";
 import { adminForum_getListReportKomentarbyId } from "../fun/get/get_list_report_komentar_by_id";
 import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
+import ComponentAdminForum_ViewOneDetailKomentar from "../component/detail_one_komentar";
+import adminForum_funGetOneKomentarById from "../fun/get/get_one_komentar_by_id";
+import mqtt_client from "@/util/mqtt_client";
+import adminNotifikasi_funCreateToUser from "../../notifikasi/fun/create/fun_create_notif_user";
 
 export default function AdminForum_HasilReportKomentar({
   komentarId,
   listReport,
+  dataKomentar,
 }: {
   komentarId: string;
   listReport: any;
+  dataKomentar: MODEL_FORUM_KOMENTAR;
 }) {
+  const [data, setData] = useState(dataKomentar);
+  console.log(komentarId);
+
   return (
     <>
       <Stack>
         <ComponentAdminGlobal_HeaderTamplate name="Forum: Hasil Report Komentar" />
         <Group position="apart">
           <ComponentAdminGlobal_BackButton />
-          <ButtonDeleteKomentar komentarId={komentarId} />
+          <ButtonDeleteKomentar
+            komentarId={komentarId}
+            data={data}
+            onSuccess={(val) => {
+              setData(val);
+            }}
+          />
         </Group>
+        <ComponentAdminForum_ViewOneDetailKomentar dataKomentar={data} />
         <HasilReportPosting listReport={listReport} komentarId={komentarId} />
         {/* <pre>{JSON.stringify(listReport, null, 2)}</pre> */}
       </Stack>
@@ -64,23 +81,56 @@ export default function AdminForum_HasilReportKomentar({
   );
 }
 
-function ButtonDeleteKomentar({ komentarId }: { komentarId: string }) {
+function ButtonDeleteKomentar({
+  komentarId,
+  data,
+  onSuccess,
+}: {
+  komentarId: string;
+  data: MODEL_FORUM_KOMENTAR;
+  onSuccess: (val: any) => void;
+}) {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
   const [loadingDel2, setLoadingDel2] = useState(false);
 
   async function onDelete() {
-    await adminForum_funDeleteKomentarById(komentarId).then((res) => {
+    await adminForum_funDeleteKomentarById(komentarId).then(async (res) => {
       if (res.status === 200) {
         setLoadingDel2(false);
         close();
-        router.back();
+
+        const dataKomentar = await adminForum_funGetOneKomentarById({
+          komentarId: komentarId,
+        });
+        onSuccess(dataKomentar);
+
+        const dataNotif = {
+          appId: data.id,
+          status: "Report Komentar",
+          userId: data.authorId,
+          pesan: data.komentar,
+          kategoriApp: "FORUM",
+          title: "Komentar anda telah di laporkan",
+        };
+
+        const notif = await adminNotifikasi_funCreateToUser({
+          data: dataNotif as any,
+        });
+        if (notif.status === 201) {
+          mqtt_client.publish(
+            "USER",
+            JSON.stringify({ userId: data.authorId, count: 1 })
+          );
+        }
+
         ComponentGlobal_NotifikasiBerhasil(res.message);
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }
     });
   }
+
   return (
     <>
       <Modal opened={opened} onClose={close} centered withCloseButton={false}>
@@ -111,17 +161,21 @@ function ButtonDeleteKomentar({ komentarId }: { komentarId: string }) {
         </Stack>
       </Modal>
 
-      <Button
-        loaderPosition="center"
-        radius={"xl"}
-        color="red"
-        leftIcon={<IconTrash size={15} />}
-        onClick={() => {
-          open();
-        }}
-      >
-        Hapus Komentar
-      </Button>
+      {data.isActive ? (
+        <Button
+          loaderPosition="center"
+          radius={"xl"}
+          color="red"
+          leftIcon={<IconTrash size={15} />}
+          onClick={() => {
+            open();
+          }}
+        >
+          Hapus Komentar
+        </Button>
+      ) : (
+        ""
+      )}
     </>
   );
 }
@@ -134,7 +188,9 @@ function HasilReportPosting({
   komentarId: string;
 }) {
   const router = useRouter();
-  const [data, setData] = useState<MODEL_FORUM_REPORT[]>(listReport.data);
+  const [data, setData] = useState<MODEL_FORUM_REPORT_POSTING[]>(
+    listReport.data
+  );
   const [nPage, setNPage] = useState(listReport.nPage);
   const [activePage, setActivePage] = useState(1);
   const [isSearch, setSearch] = useState("");
@@ -230,7 +286,7 @@ function HasilReportPosting({
                       <Center>Username</Center>
                     </th>
                     <th>
-                      <Center>Title</Center>
+                      <Center>Kategori</Center>
                     </th>
                     <th>
                       <Center>Deskripsi</Center>

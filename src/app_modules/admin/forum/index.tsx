@@ -4,6 +4,7 @@ import AdminForum_TableReportPosting from "./sub_menu/table_report_posting";
 import AdminForum_DetailPosting from "./detail/detail_posting";
 import AdminForum_HasilReportPosting from "./sub_detail/hasil_report_posting";
 import AdminForum_HasilReportKomentar from "./sub_detail/hasil_report_komentar";
+import AdminForum_TableReportKomentar from "./sub_menu/table_report_komentar";
 
 export {
   AdminForum_Main,
@@ -12,4 +13,5 @@ export {
   AdminForum_DetailPosting as AdminForum_LihatSemuaKomentar,
   AdminForum_HasilReportPosting,
   AdminForum_HasilReportKomentar,
+  AdminForum_TableReportKomentar,
 };

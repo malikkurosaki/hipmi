@@ -92,7 +92,7 @@ export default function HomeLayout({
     mqtt_client.subscribe("USER");
 
     mqtt_client.on("message", (topic: any, message: any) => {
-      console.log(topic);
+      // console.log(topic);
       const data = JSON.parse(message.toString());
 
       if (data.userId === dataUser.id) {
@@ -172,7 +172,7 @@ export default function HomeLayout({
                 <Indicator
                   processing
                   color={MainColor.yellow}
-                  label={<Text fz={10}>{countNotif}</Text>}
+                  label={<Text fz={10} c={MainColor.darkblue}>{countNotif}</Text>}
                 >
                   <IconBell color="white" />
                 </Indicator>

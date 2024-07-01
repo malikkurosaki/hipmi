@@ -30,7 +30,7 @@ import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { forum_funDeleteKomentarById } from "../../fun/delete/fun_delete_komentar_by_id";
-import { forum_getKomentarById } from "../../fun/get/get_komentar_by_id";
+import { forum_funGetAllKomentarById } from "../../fun/get/get_all_komentar_by_id";
 
 export default function ComponentForum_KomentarButtonMore({
   userId,
@@ -178,7 +178,7 @@ function ButtonDelete({
   async function onDelete() {
     await forum_funDeleteKomentarById(komentarId as any).then(async (res) => {
       if (res.status === 200) {
-        await forum_getKomentarById(postingId as any).then((val) => {
+        await forum_funGetAllKomentarById(postingId as any).then((val) => {
           setKomentar(val);
           setOpenDel(false);
           setLoading(true);

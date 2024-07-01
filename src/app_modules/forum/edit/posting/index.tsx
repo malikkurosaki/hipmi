@@ -26,6 +26,10 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_glob
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");
@@ -114,6 +118,17 @@ function ButtonAction({
   return (
     <>
       <Button
+        style={{
+          transition: "0.5s",
+          border:
+            diskusi === "<p><br></p>" || diskusi === "" || diskusi.length > 500
+              ? ""
+              : `1px solid ${AccentColor.yellow}`,
+          backgroundColor:
+            diskusi === "<p><br></p>" || diskusi === "" || diskusi.length > 500
+              ? ""
+              : MainColor.yellow,
+        }}
         disabled={
           diskusi === "<p><br></p>" || diskusi === "" || diskusi.length > 500
             ? true
@@ -122,9 +137,6 @@ function ButtonAction({
         loaderPosition="center"
         loading={loading ? true : false}
         radius={"xl"}
-        style={{
-          transition: "0.5s",
-        }}
         onClick={() => {
           onUpdate();
         }}

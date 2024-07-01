@@ -236,11 +236,11 @@ export const listAdminPage = [
         name: "Report Posting",
         path: RouterAdminForum.table_report_posting,
       },
-      // {
-      //   id: 74,
-      //   name: "Laporan Komentar",
-      //   path: RouterAdminForum.report_komentar,
-      // },
+      {
+        id: 74,
+        name: "Report Komentar",
+        path: RouterAdminForum.table_report_komentar,
+      },
     ],
   },
 

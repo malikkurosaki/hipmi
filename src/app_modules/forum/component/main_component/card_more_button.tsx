@@ -4,6 +4,7 @@ import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import {
   ActionIcon,
+  Box,
   Button,
   Drawer,
   Grid,
@@ -32,8 +33,12 @@ import _ from "lodash";
 import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_by_id";
 import { forum_funEditStatusPostingById } from "../../fun/edit/fun_edit_status_posting_by_id";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
 
-export default function ComponentForum_V2_CardMoreButton({
+export default function ComponentForum_BerandaMoreButton({
   authorId,
   postingId,
   statusId,
@@ -59,12 +64,15 @@ export default function ComponentForum_V2_CardMoreButton({
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [loadingReport, setLoadingReport] = useState(false);
 
-  //   if (loadingEdit) return <ComponentGlobal_V2_LoadingPage />;
-
   return (
     <>
       <Drawer
-        // className={classes.radiusCustom}
+        // styles={{
+        //   content: {
+        //     backgroundColor: MainColor.darkblue,
+        //     borderTop: `1px solid ${AccentColor.blue}`,
+        //   },
+        // }}
         opened={opened}
         onClose={close}
         withCloseButton={false}
@@ -77,6 +85,22 @@ export default function ComponentForum_V2_CardMoreButton({
             ""
           ) : (
             <Stack>
+              <Grid
+                onClick={() => {
+                  setLoadingEdit(true);
+                  router.push(RouterForum.edit_posting + postingId);
+                }}
+              >
+                <Grid.Col span={"content"}>
+                  <IconEdit color={loadingEdit ? "gray" : "black"} />
+                </Grid.Col>
+                <Grid.Col span={"auto"}>
+                  <Group>
+                    <Text c={loadingEdit ? "gray" : "black"}>Edit posting</Text>{" "}
+                    {loadingEdit ? <Loader size={"sm"} /> : ""}
+                  </Group>
+                </Grid.Col>
+              </Grid>
               <Grid
                 onClick={() => {
                   close();
@@ -110,23 +134,6 @@ export default function ComponentForum_V2_CardMoreButton({
                 </Grid.Col>
                 <Grid.Col span={"auto"}>
                   <Text c={"red"}>Hapus</Text>
-                </Grid.Col>
-              </Grid>
-
-              <Grid
-                onClick={() => {
-                  setLoadingEdit(true);
-                  router.push(RouterForum.edit_posting + postingId);
-                }}
-              >
-                <Grid.Col span={"content"}>
-                  <IconEdit color={loadingEdit ? "gray" : "black"} />
-                </Grid.Col>
-                <Grid.Col span={"auto"}>
-                  <Group>
-                    <Text c={loadingEdit ? "gray" : "black"}>Edit posting</Text>{" "}
-                    {loadingEdit ? <Loader size={"sm"} /> : ""}
-                  </Group>
                 </Grid.Col>
               </Grid>
             </Stack>
@@ -199,7 +206,7 @@ export default function ComponentForum_V2_CardMoreButton({
         />
       </Modal>
 
-      <ActionIcon variant="transparent" onClick={() => open()}>
+      <ActionIcon c="white" variant="transparent" onClick={() => open()}>
         <IconDots size={20} />
       </ActionIcon>
     </>
@@ -237,7 +244,6 @@ function ButtonDelete({
             data: hapusData,
           })
         );
-
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }

@@ -1,28 +1,24 @@
 "use client";
 
-import loading from "@/app/dev/home/loading";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import {
-  Stack,
-  Loader,
   Avatar,
   Badge,
-  Group,
-  Divider,
   Grid,
-  Text,
+  Group,
+  Loader,
+  Stack,
+  Text
 } from "@mantine/core";
 import { IconCircle } from "@tabler/icons-react";
-import ComponentForum_BerandaButtonMore from "../beranda/beranda_button_more";
-import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
-import ComponentForum_V2_CardMoreButton from "./card_more_button";
+import ComponentForum_BerandaMoreButton from "./card_more_button";
 
-export default function ComponentForum_V2_HeaderCard({
+export default function ComponentForum_BerandaHeaderCard({
   data,
   isMoreButton,
   userLoginId,
@@ -58,7 +54,11 @@ export default function ComponentForum_V2_HeaderCard({
             ) : (
               <Avatar
                 size={40}
-                sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
+                sx={{
+                  borderStyle: "solid",
+                  borderWidth: "1px",
+                  borderColor: "white",
+                }}
                 radius={"xl"}
                 bg={"gray.1"}
                 src={
@@ -75,7 +75,7 @@ export default function ComponentForum_V2_HeaderCard({
             <Stack justify="center" h={"100%"} spacing={3}>
               <Grid>
                 <Grid.Col span={"auto"}>
-                  <Text lineClamp={1} fz={"sm"} fw={"bold"}>
+                  <Text lineClamp={1} fz={"sm"} fw={"bold"} color={"white"}>
                     {data.Author.username
                       ? data.Author.username
                       : "Nama author  "}
@@ -86,7 +86,7 @@ export default function ComponentForum_V2_HeaderCard({
 
               <Badge
                 w={70}
-                variant="light"
+                variant="outline"
                 color={
                   (data.ForumMaster_StatusPosting.id as any) === 1
                     ? "green"
@@ -101,7 +101,7 @@ export default function ComponentForum_V2_HeaderCard({
           <Grid.Col span={"content"}>
             <Group position="center" spacing={"xs"}>
               <Group spacing={3}>
-                <Text c={"gray"} fz={"sm"}>
+                <Text color={"white"} fz={"sm"}>
                   {data.createdAt !== undefined && data?.createdAt
                     ? new Date(data?.createdAt).toLocaleDateString(["id-ID"], {
                         day: "numeric",
@@ -114,7 +114,7 @@ export default function ComponentForum_V2_HeaderCard({
 
                   <IconCircle
                     size={5}
-                    color="gray"
+                    color="white"
                     style={{ marginLeft: "5px" }}
                   />
                 </Text>
@@ -122,7 +122,7 @@ export default function ComponentForum_V2_HeaderCard({
 
               {isMoreButton ? (
                 <Group position="right">
-                  <ComponentForum_V2_CardMoreButton
+                  <ComponentForum_BerandaMoreButton
                     authorId={data?.Author.id}
                     postingId={data?.id}
                     statusId={data?.ForumMaster_StatusPosting.id}

@@ -29,6 +29,7 @@ import ComponentGlobal_IsEmptyData from "@/app_modules/component_global/is_empty
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
 import { useShallowEffect } from "@mantine/hooks";
+import { data } from "autoprefixer";
 
 export default function Notifikasi_MainView({
   listNotifikasi,
@@ -104,7 +105,7 @@ function MainView({ listNotifikasi }: { listNotifikasi: MODEL_NOTIFIKASI[] }) {
 
               e?.kategoriApp === "FORUM" &&
                 redirectDetailForumPage({
-                  appId: e.appId,
+                  data: e,
                   router: router,
                 });
 
@@ -212,12 +213,24 @@ function redirectJobPage({
 }
 
 function redirectDetailForumPage({
-  appId,
+  data,
   router,
 }: {
-  appId: string;
+  data: MODEL_NOTIFIKASI;
   router: AppRouterInstance;
 }) {
-  const path = RouterForum.main_detail + appId;
-  router.push(path);
+  if (data.status === null) {
+    const path = RouterForum.main_detail + data.appId;
+    router.push(path);
+  }
+
+  if (data.status === "Report Komentar") {
+    const path = RouterForum.detail_report_komentar + data.appId;
+    router.push(path);
+  }
+
+  if (data.status === "Report Posting") {
+    const path = RouterForum.detail_report_posting + data.appId;
+    router.push(path);
+  }
 }

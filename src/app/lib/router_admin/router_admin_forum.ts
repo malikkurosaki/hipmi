@@ -5,7 +5,7 @@ export const RouterAdminForum = {
   // sub menu
   table_posting: "/dev/admin/forum/sub-menu/posting",
   table_report_posting: "/dev/admin/forum/sub-menu/report-posting",
-
+  table_report_komentar: "/dev/admin/forum/sub-menu/report-komentar",
 
   // detail
   detail_posting: "/dev/admin/forum/detail/",

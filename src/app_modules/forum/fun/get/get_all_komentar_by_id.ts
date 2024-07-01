@@ -2,7 +2,7 @@
 
 import prisma from "@/app/lib/prisma";
 
-export async function forum_getKomentarById(postingId: string) {
+export async function forum_funGetAllKomentarById(postingId: string) {
   const data = await prisma.forum_Komentar.findMany({
     orderBy: {
       createdAt: "desc",

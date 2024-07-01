@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BackgroundImage,
   Box,
   Button,
   Center,
@@ -81,56 +82,56 @@ export default function Login() {
 
   return (
     <>
-      <Stack
-        align="center"
-        justify="center"
+      <BackgroundImage
+        src={"/aset/global/main_background.png"}
         h={"100vh"}
-        bg={MainColor.darkblue}
-        spacing={100}
+        // pos={"static"}
       >
-        <Stack align="center" spacing={0}>
-          <Title order={3} c={MainColor.yellow}>
-            WELCOME TO
-          </Title>
-          <Title c={MainColor.yellow}>HIPMI APPS</Title>
+        <Stack align="center" justify="center" h={"100vh"} spacing={100}>
+          <Stack align="center" spacing={0}>
+            <Title order={3} c={MainColor.yellow}>
+              WELCOME TO
+            </Title>
+            <Title c={MainColor.yellow}>HIPMI APPS</Title>
+          </Stack>
+
+          <Stack w={300}>
+            <Center>
+              <Text c={"white"}>Nomor telepon</Text>
+            </Center>
+            <PhoneInput
+              inputStyle={{ width: "100%" }}
+              defaultCountry="id"
+              onChange={(val) => {
+                setPhone(val);
+              }}
+            />
+
+            {isError ? (
+              <ComponentGlobal_ErrorInput text="Masukan nomor telepon anda" />
+            ) : (
+              ""
+            )}
+
+            <Button
+              radius={"md"}
+              bg={MainColor.yellow}
+              color={"yellow"}
+              loading={loading ? true : false}
+              loaderPosition="center"
+              c={"black"}
+              style={{
+                borderColor: AccentColor.yellow,
+              }}
+              onClick={() => {
+                onLogin();
+              }}
+            >
+              LOGIN
+            </Button>
+          </Stack>
         </Stack>
-
-        <Stack w={300}>
-          <Center>
-            <Text c={"white"}>Nomor telepon</Text>
-          </Center>
-          <PhoneInput
-            inputStyle={{ width: "100%" }}
-            defaultCountry="id"
-            onChange={(val) => {
-              setPhone(val);
-            }}
-          />
-
-          {isError ? (
-            <ComponentGlobal_ErrorInput text="Masukan nomor telepon anda" />
-          ) : (
-            ""
-          )}
-
-          <Button
-            radius={"md"}
-            bg={MainColor.yellow}
-            color={"yellow"}
-            loading={loading ? true : false}
-            loaderPosition="center"
-            c={"black"}
-            style={{
-              borderColor: AccentColor.yellow,
-            }}
-            onClick={() => {
-              onLogin();
-            }}
-          >
-            LOGIN
-          </Button>
-        </Stack>
-      </Stack>
+      </BackgroundImage>
     </>
   );
 }

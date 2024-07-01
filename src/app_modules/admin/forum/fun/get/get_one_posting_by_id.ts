@@ -16,6 +16,7 @@ export async function adminForum_getOnePostingById(postingId: string) {
           status: true,
         },
       },
+      authorId: true,
       Author: {
         select: {
           id: true,

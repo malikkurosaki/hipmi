@@ -61,7 +61,7 @@ function ButtonAction({
         >
           Batal
         </Button>
-        <Button radius={"xl"} color="red" onClick={() => onReport()}>
+        <Button radius={"xl"} color="orange" onClick={() => onReport()}>
           Report
         </Button>
       </Group>

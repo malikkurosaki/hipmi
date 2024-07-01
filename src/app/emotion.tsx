@@ -1,11 +1,9 @@
 "use client";
-import AppNotif from "@/app_modules/notif";
 // import './globals.css'
 import { CacheProvider } from "@emotion/react";
-import { Image, MantineProvider, useEmotionCache } from "@mantine/core";
+import { MantineProvider, useEmotionCache } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { useServerInsertedHTML } from "next/navigation";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function RootStyleRegistry({

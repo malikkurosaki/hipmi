@@ -19,7 +19,7 @@ import { IoIosMore } from "react-icons/io";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import ComponentForum_PostingButtonMore from "../more_button/posting_button_more";
-import ComponentForum_KomentarButtonMore from "../more_button/komentar_button_more";
+import ComponentForum_KomentarButtonMore from "./komentar_button_more";
 
 export default function ComponentForum_KomentarAuthorNameOnHeader({
   userId,
