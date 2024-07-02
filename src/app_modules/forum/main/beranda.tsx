@@ -1,6 +1,7 @@
 "use client";
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
+import { AccentColor } from "@/app_modules/component_global/color/color_pallet";
 import mqtt_client from "@/util/mqtt_client";
 import {
   ActionIcon,
@@ -22,10 +23,6 @@ import { useState } from "react";
 import ComponentForum_BerandaCardView from "../component/main_component/card_view";
 import { forum_new_getAllPosting } from "../fun/get/new_get_all_posting";
 import { MODEL_FORUM_POSTING } from "../model/interface";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
 
 export default function Forum_Beranda({
   listForum,
@@ -185,7 +182,7 @@ export default function Forum_Beranda({
             height="83vh"
             renderLoading={() => (
               <Center mt={"lg"}>
-                <Loader />
+                <Loader color={"yellow"} />
               </Center>
             )}
             data={data}

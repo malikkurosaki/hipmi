@@ -20,7 +20,6 @@ export default function ComponentGlobal_UI_LayoutTamplate({
       <BackgroundImage
         src={"/aset/global/main_background.png"}
         h={"100vh"}
-        pos={"sticky"}
       >
         {/* Header */}
         {header ? (

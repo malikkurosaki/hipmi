@@ -5,15 +5,21 @@ import { forum_countOneTotalKomentarById } from "@/app_modules/forum/fun/count/c
 import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { redirect } from "next/navigation";
+import { forum_countTotalKomenById } from "@/app_modules/forum/fun/count/count_total_komentar_by_id";
 
 export default async function Page({ params }: { params: { id: string } }) {
   let postingId = params.id;
 
   const userLoginId = await user_getOneUserId();
   const dataPosting = await forum_getOnePostingById(postingId);
-  const listKomentar = await forum_funGetAllKomentarById(postingId);
+  const listKomentar = await forum_funGetAllKomentarById({
+    postingId: postingId,
+    page: 1,
+  });
 
   dataPosting?.isActive === false && redirect(RouterForum.beranda);
+
+  const countKomentar = await forum_countTotalKomenById(postingId);
 
   return (
     <>
@@ -21,6 +27,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         dataPosting={dataPosting as any}
         listKomentar={listKomentar as any}
         userLoginId={userLoginId}
+        countKomentar={countKomentar}
       />
     </>
   );

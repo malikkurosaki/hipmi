@@ -31,6 +31,10 @@ import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { forum_funDeleteKomentarById } from "../../fun/delete/fun_delete_komentar_by_id";
 import { forum_funGetAllKomentarById } from "../../fun/get/get_all_komentar_by_id";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
 
 export default function ComponentForum_KomentarButtonMore({
   userId,
@@ -43,7 +47,7 @@ export default function ComponentForum_KomentarButtonMore({
   komentarId: any;
   setKomentar?: any;
   postingId?: string;
-  userLoginId: string
+  userLoginId: string;
 }) {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
@@ -53,14 +57,19 @@ export default function ComponentForum_KomentarButtonMore({
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [loadingReport, setLoadingReport] = useState(false);
 
-  //   if (loadingEdit) return <ComponentGlobal_V2_LoadingPage />;
-
- 
-
   return (
     <>
       <Drawer
-        // className={classes.radiusCustom}
+        styles={{
+          content: {
+            backgroundColor: MainColor.darkblue,
+            borderTop: `1px solid ${AccentColor.blue}`,
+            borderRadius: "10px 10px 0px 0px",
+          },
+          header: {
+            borderRadius: "10px 10px 0px 0px",
+          },
+        }}
         opened={opened}
         onClose={close}
         withCloseButton={false}
@@ -69,9 +78,7 @@ export default function ComponentForum_KomentarButtonMore({
         size={"auto"}
       >
         <Stack>
-          {userLoginId != userId ? (
-            ""
-          ) : (
+          {userLoginId == userId ? (
             <Stack>
               <Grid
                 onClick={() => {
@@ -86,30 +93,7 @@ export default function ComponentForum_KomentarButtonMore({
                   <Text c={"red"}>Hapus</Text>
                 </Grid.Col>
               </Grid>
-
-              {/* <Grid
-                onClick={() => {
-                  setLoadingEdit(true);
-                  router.push(RouterForum.edit_komentar + komentarId);
-                }}
-              >
-                <Grid.Col span={"content"}>
-                  <IconEdit color={loadingEdit ? "gray" : "black"} />
-                </Grid.Col>
-                <Grid.Col span={"auto"}>
-                  <Group>
-                    <Text c={loadingEdit ? "gray" : "black"}>
-                      Edit komentar
-                    </Text>{" "}
-                    {loadingEdit ? <Loader size={"sm"} /> : ""}
-                  </Group>
-                </Grid.Col>
-              </Grid> */}
             </Stack>
-          )}
-
-          {userLoginId == userId ? (
-            ""
           ) : (
             <Grid
               onClick={() => {
@@ -118,11 +102,11 @@ export default function ComponentForum_KomentarButtonMore({
               }}
             >
               <Grid.Col span={"content"}>
-                <IconFlag3 color={loadingReport ? "gray" : "black"} />
+                <IconFlag3 color={loadingReport ? "gray" : "white"} />
               </Grid.Col>
               <Grid.Col span={"auto"}>
                 <Group>
-                  <Text c={loadingReport ? "gray" : "black"}>
+                  <Text c={loadingReport ? "gray" : "white"}>
                     Laporkan komentar
                   </Text>{" "}
                   {loadingReport ? <Loader size={"sm"} /> : ""}
@@ -131,13 +115,27 @@ export default function ComponentForum_KomentarButtonMore({
             </Grid>
           )}
 
-          <Button variant="outline" radius={"xl"} onClick={close}>
+          <Button
+            bg={MainColor.yellow}
+            color={"yellow"}
+            style={{
+              border: `1px solid ${AccentColor.yellow}`,
+            }}
+            radius={"xl"}
+            onClick={close}
+          >
             Batal
           </Button>
         </Stack>
       </Drawer>
 
       <Modal
+        styles={{
+          content: {
+            backgroundColor: MainColor.darkblue,
+            border: `1px solid ${AccentColor.blue}`,
+          },
+        }}
         opened={openDel}
         onClose={() => {
           setOpenDel(false);
@@ -153,7 +151,7 @@ export default function ComponentForum_KomentarButtonMore({
         />
       </Modal>
 
-      <ActionIcon variant="transparent" onClick={() => open()}>
+      <ActionIcon c={"white"} variant="transparent" onClick={() => open()}>
         <IconDots size={20} />
       </ActionIcon>
     </>
@@ -188,19 +186,11 @@ function ButtonDelete({
         ComponentGlobal_NotifikasiGagal(res.message);
       }
     });
-
-    // await forum_funDeletePostingById(komentarId as any).then((res) => {
-    //   if (res.status === 200) {
-    //     ComponentGlobal_NotifikasiBerhasil(`Postingan Terhapus`, 2000);
-    //   } else {
-    //     ComponentGlobal_NotifikasiGagal(res.message);
-    //   }
-    // });
   }
   return (
     <>
       <Stack>
-        <Title order={6}>Yakin menghapus komentar ini ?</Title>
+        <Title order={6} c="white">Yakin menghapus komentar ini ?</Title>
         <Group position="center">
           <Button radius={"xl"} onClick={() => setOpenDel(false)}>
             Batal
@@ -208,7 +198,7 @@ function ButtonDelete({
           <Button
             loaderPosition="center"
             loading={loading ? true : false}
-            color="orange"
+            color="red"
             radius={"xl"}
             onClick={() => {
               onDelete();

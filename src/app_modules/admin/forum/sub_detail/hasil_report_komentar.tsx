@@ -1,18 +1,14 @@
 "use client";
 
-import { RouterAdminForum } from "@/app/lib/router_admin/router_admin_forum";
 import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
-import ComponentAdminDonasi_TombolKembali from "@/app_modules/admin/donasi/component/tombol_kembali";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import {
   MODEL_FORUM_KOMENTAR,
-  MODEL_FORUM_MASTER_REPORT,
-  MODEL_FORUM_REPORT_POSTING,
+  MODEL_FORUM_REPORT_POSTING
 } from "@/app_modules/forum/model/interface";
+import mqtt_client from "@/util/mqtt_client";
 import {
-  Badge,
-  Box,
   Button,
   Center,
   Group,
@@ -24,28 +20,22 @@ import {
   Stack,
   Table,
   Text,
-  TextInput,
-  Title,
+  Title
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
-  IconMessageCircle,
-  IconFlag3,
-  IconTrash,
-  IconSearch,
+  IconTrash
 } from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { adminForum_funDeletePostingById } from "../fun/delete/fun_delete_posting_by_id";
-import { adminForum_funDeleteKomentarById } from "../fun/delete/fun_delete_komentar_by_id";
-import { useDisclosure, useShallowEffect } from "@mantine/hooks";
-import ComponentAdminGlobal_IsEmptyData from "../../component_global/is_empty_data";
-import { adminForum_getListReportKomentarbyId } from "../fun/get/get_list_report_komentar_by_id";
 import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
-import ComponentAdminForum_ViewOneDetailKomentar from "../component/detail_one_komentar";
-import adminForum_funGetOneKomentarById from "../fun/get/get_one_komentar_by_id";
-import mqtt_client from "@/util/mqtt_client";
+import ComponentAdminGlobal_IsEmptyData from "../../component_global/is_empty_data";
 import adminNotifikasi_funCreateToUser from "../../notifikasi/fun/create/fun_create_notif_user";
+import ComponentAdminForum_ViewOneDetailKomentar from "../component/detail_one_komentar";
+import { adminForum_funDeleteKomentarById } from "../fun/delete/fun_delete_komentar_by_id";
+import { adminForum_getListReportKomentarbyId } from "../fun/get/get_list_report_komentar_by_id";
+import adminForum_funGetOneKomentarById from "../fun/get/get_one_komentar_by_id";
 
 export default function AdminForum_HasilReportKomentar({
   komentarId,
@@ -108,6 +98,7 @@ function ButtonDeleteKomentar({
         const dataNotif = {
           appId: data.id,
           status: "Report Komentar",
+          // userId harus sama seperti author
           userId: data.authorId,
           pesan: data.komentar,
           kategoriApp: "FORUM",

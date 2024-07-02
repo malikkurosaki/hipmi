@@ -4,6 +4,10 @@ import { Card, Stack, Group, Text } from "@mantine/core";
 import { IconMessageCircle, IconMessageCircleX } from "@tabler/icons-react";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
 import ComponentForum_DetailHeader from "./detail_header";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
 
 export default function ComponentForum_DetailForumView({
   data,
@@ -18,7 +22,15 @@ export default function ComponentForum_DetailForumView({
 }) {
   return (
     <>
-      <Card style={{ position: "relative", width: "100%" }}>
+      <Card
+        mb={"md"}
+        p={"xl"}
+        bg={MainColor.darkblue}
+        style={{
+          border: `2px solid ${AccentColor.blue}`,
+        }}
+        radius={"md"}
+      >
         {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
 
         {/* HEADER */}
@@ -33,9 +45,9 @@ export default function ComponentForum_DetailForumView({
         </Card.Section>
 
         {/* CONTENT */}
-        <Card.Section sx={{ zIndex: 0 }} py={"sm"}>
+        <Card.Section sx={{ zIndex: 0 }} p={"lg"}>
           <Stack spacing={"xs"}>
-            <Text fz={"sm"}>
+            <Text fz={"sm"} color="white">
               {data?.diskusi ? (
                 <div dangerouslySetInnerHTML={{ __html: data?.diskusi }} />
               ) : (
@@ -49,20 +61,28 @@ export default function ComponentForum_DetailForumView({
         <Card.Section>
           <Stack>
             <Group position="apart">
-              <Group spacing={"xs"}>
+              <Group spacing={"xs"} px={"sm"}>
                 {(data?.ForumMaster_StatusPosting?.id as any) === 1 ? (
-                  <IconMessageCircle color="gray" size={25} />
+                  <IconMessageCircle color="white" size={25} />
                 ) : (
                   <IconMessageCircleX color="gray" size={25} />
                 )}
-                <Text c={"gray"}>{totalKomentar}</Text>
+                <Text
+                  c={
+                    (data?.ForumMaster_StatusPosting?.id as any) === 1
+                      ? "white"
+                      : "gray"
+                  }
+                >
+                  {totalKomentar}
+                </Text>
               </Group>
               <Group>
-                <Text c={"gray"} fz={"sm"}>
+                <Text c={"white"} fz={"sm"}>
                   {new Date(data?.createdAt).toLocaleTimeString()}
                   {/* {new Intl.RelativeTimeFormat("id", {style: "short"}).format(-1,"day")} */}
                 </Text>
-                <Text c={"gray"} fz={"sm"}>
+                <Text c={"white"} fz={"sm"}>
                   {data?.createdAt
                     ? new Date(data?.createdAt).toLocaleDateString(["id-ID"], {
                         dateStyle: "medium",

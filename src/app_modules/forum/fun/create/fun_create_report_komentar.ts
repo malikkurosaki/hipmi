@@ -11,18 +11,19 @@ export async function forum_funCreateReportKomentar({
   kategoriId: any;
 }) {
   const authorId = await user_getOneUserId();
+  // console.log(kategoriId);
 
-  const cekId = await prisma.forumMaster_KategoriReport.findFirst({
-    where: {
-      title: kategoriId,
-    },
-  });
+  // const cekId = await prisma.forumMaster_KategoriReport.findFirst({
+  //   where: {
+  //     title: kategoriId,
+  //   },
+  // });
 
   try {
     const createReport = await prisma.forum_ReportKomentar.create({
       data: {
         userId: authorId,
-        forumMaster_KategoriReportId: cekId?.id,
+        forumMaster_KategoriReportId: kategoriId,
         forum_KomentarId: komentarId,
       },
     });

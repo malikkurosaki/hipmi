@@ -29,7 +29,6 @@ export default function ComponentForum_ForumkuMainCardView({
 
   return (
     <>
-      {/* <pre>{JSON.stringify(data, null,2)}</pre> */}
       <Card
         mb={"md"}
         p={"xl"}

@@ -42,7 +42,7 @@ export default function ComponentForum_KomentarAuthorNameOnHeader({
   isMoreButton?: boolean;
   setKomentar?: any;
   postingId?: string;
-  userLoginId: string
+  userLoginId: string;
 }) {
   const router = useRouter();
 
@@ -76,25 +76,17 @@ export default function ComponentForum_KomentarAuthorNameOnHeader({
             <Stack justify="center" h={"100%"}>
               <Grid>
                 <Grid.Col span={"auto"}>
-                  <Text lineClamp={1} fz={"sm"} fw={"bold"}>
-                    {authorName
-                      ? authorName
-                      : "Nama author coba di berikan panjang "}
+                  <Text color="white" lineClamp={1} fz={"sm"} fw={"bold"}>
+                    {authorName ? authorName : "Nama author  "}
                   </Text>
                 </Grid.Col>
-                {/* <Grid.Col span={"auto"}>
-                  <Text lineClamp={1} fz={"sm"} c={"gray"}>
-                    {username ? username : "@username "}
-                  </Text>
-                </Grid.Col> */}
-                <Grid.Col span={"content"}></Grid.Col>
               </Grid>
             </Stack>
           </Grid.Col>
           <Grid.Col span={"content"}>
             <Group position="center" spacing={"xs"}>
               <Group spacing={3}>
-                <Text c={"gray"} fz={"sm"}>
+                <Text c={"white"} fz={"sm"}>
                   {tglPublish
                     ? tglPublish.toLocaleDateString(["id-ID"], {
                         day: "numeric",
@@ -107,7 +99,7 @@ export default function ComponentForum_KomentarAuthorNameOnHeader({
 
                   <IconCircle
                     size={5}
-                    color="gray"
+                    color="white"
                     style={{ marginLeft: "5px" }}
                   />
                 </Text>

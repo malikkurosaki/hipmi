@@ -44,6 +44,7 @@ import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_
 import { forum_funEditStatusPostingById } from "../../fun/edit/fun_edit_status_posting_by_id";
 import { forum_getOnePostingById } from "../../fun/get/get_one_posting_by_id";
 import mqtt_client from "@/util/mqtt_client";
+import { AccentColor, MainColor } from "@/app_modules/component_global/color/color_pallet";
 
 export default function ComponentForum_DetailHeader({
   data,
@@ -85,13 +86,13 @@ export default function ComponentForum_DetailHeader({
           </Grid.Col>
 
           <Grid.Col span={"auto"}>
-            <Stack spacing={0}>
-              <Text lineClamp={1} fz={"sm"} fw={"bold"}>
+            <Stack spacing={3}>
+              <Text lineClamp={1} fz={"sm"} fw={"bold"} color="white">
                 {data?.Author.username ? data?.Author.username : "Nama author "}
               </Text>
               <Badge
                 w={70}
-                variant="light"
+                variant="outline"
                 color={
                   (data?.ForumMaster_StatusPosting.id as any) === 1
                     ? "green"
@@ -153,6 +154,12 @@ function ComponentForum_DetailButtonMore_V2({
     <>
       <Drawer
         // className={classes.radiusCustom}
+        styles={{
+          content: {
+            backgroundColor: MainColor.darkblue,
+            borderTop: `1px solid ${AccentColor.blue}`,
+          },
+        }}
         opened={opened}
         onClose={close}
         withCloseButton={false}
@@ -162,9 +169,43 @@ function ComponentForum_DetailButtonMore_V2({
       >
         <Stack>
           {userLoginId != authorId ? (
-            ""
+            <Grid
+              onClick={() => {
+                setLoadingReport(true);
+                router.push(RouterForum.report_posting + postingId);
+              }}
+            >
+              <Grid.Col span={"content"}>
+                <IconFlag3 color={loadingReport ? "gray" : "white"} />
+              </Grid.Col>
+              <Grid.Col span={"auto"}>
+                <Group>
+                  <Text c={loadingReport ? "gray" : "white"}>
+                    Laporkan posting
+                  </Text>{" "}
+                  {loadingReport ? <Loader size={"sm"} /> : ""}
+                </Group>
+              </Grid.Col>
+            </Grid>
           ) : (
             <Stack>
+              <Grid
+                onClick={() => {
+                  setLoadingEdit(true);
+                  router.push(RouterForum.edit_posting + postingId);
+                }}
+              >
+                <Grid.Col span={"content"}>
+                  <IconEdit color={loadingEdit ? "gray" : "white"} />
+                </Grid.Col>
+                <Grid.Col span={"auto"}>
+                  <Group>
+                    <Text c={loadingEdit ? "gray" : "white"}>Edit posting</Text>{" "}
+                    {loadingEdit ? <Loader size={"sm"} /> : ""}
+                  </Group>
+                </Grid.Col>
+              </Grid>
+
               <Grid
                 onClick={() => {
                   close();
@@ -173,16 +214,16 @@ function ComponentForum_DetailButtonMore_V2({
               >
                 <Grid.Col span={"content"}>
                   {statusId === 1 ? (
-                    <IconSquareRoundedX color="red" />
+                    <IconSquareRoundedX color="orange" />
                   ) : (
-                    <IconSquareCheck />
+                    <IconSquareCheck color="white" />
                   )}
                 </Grid.Col>
                 <Grid.Col span={"auto"}>
                   {statusId === 1 ? (
-                    <Text c={"red"}>Tutup forum</Text>
+                    <Text c={"orange"}>Tutup forum</Text>
                   ) : (
-                    <Text>Buka forum</Text>
+                    <Text c={"white"}>Buka forum</Text>
                   )}
                 </Grid.Col>
               </Grid>
@@ -200,56 +241,30 @@ function ComponentForum_DetailButtonMore_V2({
                   <Text c={"red"}>Hapus</Text>
                 </Grid.Col>
               </Grid>
-
-              <Grid
-                onClick={() => {
-                  setLoadingEdit(true);
-                  router.push(RouterForum.edit_posting + postingId);
-                }}
-              >
-                <Grid.Col span={"content"}>
-                  <IconEdit color={loadingEdit ? "gray" : "black"} />
-                </Grid.Col>
-                <Grid.Col span={"auto"}>
-                  <Group>
-                    <Text c={loadingEdit ? "gray" : "black"}>Edit posting</Text>{" "}
-                    {loadingEdit ? <Loader size={"sm"} /> : ""}
-                  </Group>
-                </Grid.Col>
-              </Grid>
             </Stack>
           )}
 
-          {userLoginId == authorId ? (
-            ""
-          ) : (
-            <Grid
-              onClick={() => {
-                setLoadingReport(true);
-                router.push(RouterForum.report_posting + postingId);
-              }}
-            >
-              <Grid.Col span={"content"}>
-                <IconFlag3 color={loadingReport ? "gray" : "black"} />
-              </Grid.Col>
-              <Grid.Col span={"auto"}>
-                <Group>
-                  <Text c={loadingReport ? "gray" : "black"}>
-                    Laporkan posting
-                  </Text>{" "}
-                  {loadingReport ? <Loader size={"sm"} /> : ""}
-                </Group>
-              </Grid.Col>
-            </Grid>
-          )}
-
-          <Button variant="outline" radius={"xl"} onClick={close}>
+          <Button
+            bg={MainColor.yellow}
+            color={"yellow"}
+            style={{
+              border: `1px solid ${AccentColor.yellow}`,
+            }}
+            radius={"xl"}
+            onClick={close}
+          >
             Batal
           </Button>
         </Stack>
       </Drawer>
 
       <Modal
+        styles={{
+          content: {
+            backgroundColor: MainColor.darkblue,
+            border: `2px solid ${AccentColor.blue}`,
+          },
+        }}
         opened={openDel}
         onClose={() => {
           setOpenDel(false);
@@ -261,6 +276,12 @@ function ComponentForum_DetailButtonMore_V2({
       </Modal>
 
       <Modal
+        styles={{
+          content: {
+            backgroundColor: MainColor.darkblue,
+            border: `1px solid ${AccentColor.blue}`,
+          },
+        }}
         opened={openStatusClose}
         onClose={() => setOpenStatusClose(false)}
         centered
@@ -276,7 +297,7 @@ function ComponentForum_DetailButtonMore_V2({
         />
       </Modal>
 
-      <ActionIcon variant="transparent" onClick={() => open()}>
+      <ActionIcon c="white" variant="transparent" onClick={() => open()}>
         <IconDots size={20} />
       </ActionIcon>
     </>
@@ -317,7 +338,7 @@ function ButtonDelete({
   return (
     <>
       <Stack>
-        <Title order={6}>Yakin menghapus posting ini ?</Title>
+        <Title order={6} color="white">Yakin menghapus posting ini ?</Title>
         <Group position="center">
           <Button radius={"xl"} onClick={() => setOpenDel(false)}>
             Batal
@@ -425,9 +446,13 @@ function ButtonStatus({
     <>
       <Stack>
         {statusId === 1 ? (
-          <Title order={6}>Yakin menutup forum ini ?</Title>
+          <Title color="white" order={6}>
+            Yakin menutup forum ini ?
+          </Title>
         ) : (
-          <Title order={6}>Yakin membuka forum ini ?</Title>
+          <Title color="white" order={6}>
+            Yakin membuka forum ini ?
+          </Title>
         )}
         <Group position="center">
           <Button radius={"xl"} onClick={() => setOpenStatus(false)}>

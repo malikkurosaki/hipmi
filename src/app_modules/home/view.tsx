@@ -3,12 +3,16 @@
 import {
   ActionIcon,
   Box,
+  Center,
   Group,
   Image,
+  Loader,
+  LoadingOverlay,
+  Overlay,
   Paper,
   SimpleGrid,
   Stack,
-  Text
+  Text,
 } from "@mantine/core";
 
 import {
@@ -17,20 +21,18 @@ import {
   IconHeartHandshake,
   IconPackageImport,
   IconPresentation,
-  IconUserSearch
+  IconUserSearch,
 } from "@tabler/icons-react";
 
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
-import { useDisclosure } from "@mantine/hooks";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AccentColor, MainColor } from "../component_global/color/color_pallet";
 import ComponentGlobal_IsEmptyData from "../component_global/is_empty_data";
-import ComponentGlobal_V2_LoadingPage from "../component_global/loading_page_v2";
 import { ComponentGlobal_NotifikasiPeringatan } from "../component_global/notif_global/notifikasi_peringatan";
 import { MODEL_JOB } from "../job/model/interface";
 import { MODEL_USER } from "./model/interface";
@@ -43,8 +45,8 @@ export default function HomeView({
   dataJob: MODEL_JOB[];
 }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [visible, { toggle }] = useDisclosure(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [pageId, setPageId] = useState(0);
 
   const listPageOnBox = [
     {
@@ -83,8 +85,6 @@ export default function HomeView({
 
   return (
     <>
-      {visible ? <ComponentGlobal_V2_LoadingPage /> : ""}
-
       <Box p={"md"}>
         <Paper
           radius={"xl"}
@@ -127,8 +127,9 @@ export default function HomeView({
                         "Cooming Soon !!"
                       );
                     } else {
-                      toggle();
-                      return router.push(e.link);
+                      setIsLoading(true);
+                      setPageId(e.id);
+                      router.push(e.link);
                     }
                   }
                 }}
@@ -139,7 +140,7 @@ export default function HomeView({
                     variant="transparent"
                     c={e.link === "" ? "gray.3" : "white"}
                   >
-                    {e.icon}
+                    {isLoading && e.id === pageId ? <Loader /> : e.icon}
                   </ActionIcon>
                   <Text c={e.link === "" ? "gray.3" : "white"} fz={"sm"}>
                     {e.name}
@@ -172,7 +173,6 @@ export default function HomeView({
                       "Cooming Soon !!"
                     );
                   } else {
-                    toggle();
                     return router.push(routePageJob.link);
                   }
                 }

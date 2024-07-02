@@ -1,16 +1,16 @@
 "use client";
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import { ActionIcon, Card, Divider, Group, Stack, Text } from "@mantine/core";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
+import { ActionIcon, Card, Group, Stack, Text } from "@mantine/core";
 import { IconMessageCircle, IconMessageCircleX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
 import ComponentForum_BerandaHeaderCard from "./card_header";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
 
 export default function ComponentForum_BerandaCardView({
   data,
@@ -31,7 +31,6 @@ export default function ComponentForum_BerandaCardView({
 
   return (
     <>
-      {/* <pre>{JSON.stringify(data, null,2)}</pre> */}
       <Card
         mb={"md"}
         p={"xl"}

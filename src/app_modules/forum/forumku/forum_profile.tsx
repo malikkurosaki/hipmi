@@ -6,15 +6,7 @@ import {
   MainColor,
 } from "@/app_modules/component_global/color/color_pallet";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
-import {
-  Center,
-  Avatar,
-  Stack,
-  Button,
-  Divider,
-  Grid,
-  Text,
-} from "@mantine/core";
+import { Avatar, Button, Center, Grid, Stack, Text } from "@mantine/core";
 import { IconCircleFilled } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
@@ -30,17 +22,16 @@ export default function ComponentForum_ViewForumProfile({
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  // if (loading) return <ComponentGlobal_V2_LoadingPage />;
-
   return (
     <>
       <Center>
         <Avatar
+          bg={"gray"}
           radius={"100%"}
           sx={{
             borderStyle: "solid",
             borderWidth: "0.5px",
-            borderColor: "black",
+            borderColor: AccentColor.yellow,
           }}
           size={100}
           alt="foto"

@@ -9,11 +9,14 @@ import { toNumber } from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { forum_funCreateReportKomentar } from "../../fun/create/fun_create_report_komentar";
-import forum_funCreateNotifikasiToAdmin from "../../fun/forum_notifikasi/fun_create_notifikasi";
 
-import { MODEL_FORUM_MASTER_REPORT } from "../../model/interface";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import forum_getOneKategoriById from "../../fun/get/get_one_kategori_by_id";
-import getMaster_NamaBank from "@/app_modules/investasi/fun/master/get_nama_bank";
+import { MODEL_FORUM_MASTER_REPORT } from "../../model/interface";
 
 export default function Forum_ReportKomentar({
   komentarId,
@@ -24,12 +27,21 @@ export default function Forum_ReportKomentar({
   listReport: MODEL_FORUM_MASTER_REPORT[];
   userLoginId: string;
 }) {
-  const [reportValue, setReportValue] = useState("Kebencian");
+  const [reportValue, setReportValue] = useState("1");
 
   return (
     <>
-      <Stack px={"sm"}>
+      <Stack
+        mb={"md"}
+        p={"sm"}
+        bg={MainColor.darkblue}
+        style={{
+          border: `2px solid ${AccentColor.blue}`,
+          borderRadius: "10px 10px 10px 10px",
+        }}
+      >
         <Radio.Group
+          c={"white"}
           value={reportValue as any}
           onChange={(val) => {
             setReportValue(val);
@@ -37,10 +49,14 @@ export default function Forum_ReportKomentar({
         >
           <Stack spacing={"xl"}>
             {listReport.map((e) => (
-              <Stack key={e.id}>
+              <Stack key={e?.id.toString()}>
                 <Radio
-                  value={e.title}
-                  label={<Title order={5}>{e.title}</Title>}
+                  value={e?.id.toString()}
+                  label={
+                    <Title c={"white"} order={5}>
+                      {e.title}
+                    </Title>
+                  }
                 />
                 <Text>{e.deskripsi}</Text>
               </Stack>
@@ -48,7 +64,7 @@ export default function Forum_ReportKomentar({
           </Stack>
         </Radio.Group>
         <ButtonAction
-          kategoriId={reportValue}
+          kategoriId={toNumber(reportValue)}
           komentarId={komentarId}
           userLoginId={userLoginId}
         />
@@ -62,12 +78,13 @@ function ButtonAction({
   komentarId,
   userLoginId,
 }: {
-  kategoriId: string;
+  kategoriId: number;
   komentarId: string;
   userLoginId: string;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [isLoadingLain, setIsLoadingLain] = useState(false);
 
   async function onReport() {
     const report = await forum_funCreateReportKomentar({
@@ -76,35 +93,29 @@ function ButtonAction({
     });
 
     if (report.status === 201) {
-      ComponentGlobal_NotifikasiBerhasil(report.message, 2000);
+      const getKategori = await forum_getOneKategoriById({
+        kategoriId: kategoriId,
+      });
+      // console.log(getKategori);
+      const dataNotif = {
+        appId: komentarId,
+        pesan: getKategori?.deskripsi,
+        kategoriApp: "FORUM",
+        title: getKategori?.title,
+        userId: userLoginId,
+        status: "Report Komentar",
+      };
+      const createNotif = await notifikasiToAdmin_funCreate({
+        data: dataNotif as any,
+      });
+
+      if (createNotif.status === 201) {
+        mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
+      }
+
       setLoading(true);
       router.back();
-
-      // const get = await getMaster_NamaBank();
-      // console.log(get);
-
-      // await forum_getOneKategoriById({
-      //   kategoriId: kategoriId,
-      // });
-
-      // console.log(getKategori);
-
-      // const dataNotif = {
-      //   appId: komentarId,
-      //   pesan: getKategori?.deskripsi,
-      //   kategoriApp: "FORUM",
-      //   title: getKategori?.title,
-      //   userId: userLoginId,
-      //   status: "Report Komentar",
-      // };
-
-      // const createNotif = await forum_funCreateNotifikasiToAdmin({
-      //   data: dataNotif as any,
-      // });
-
-      // if (createNotif.status === 201) {
-      //   mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
-      // }
+      return ComponentGlobal_NotifikasiBerhasil(report.message, 2000);
     } else {
       ComponentGlobal_NotifikasiGagal(report.message);
     }
@@ -113,10 +124,13 @@ function ButtonAction({
     <>
       <Stack mt={"md"}>
         <Button
+          loaderPosition="center"
+          loading={isLoadingLain ? true : false}
           radius={"xl"}
-          onClick={() =>
-            router.replace(RouterForum.report_komentar_lainnya + komentarId)
-          }
+          onClick={() => {
+            setIsLoadingLain(true);
+            router.replace(RouterForum.report_komentar_lainnya + komentarId);
+          }}
         >
           Lainnya
         </Button>

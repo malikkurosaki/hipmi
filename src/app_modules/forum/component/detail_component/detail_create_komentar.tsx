@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
@@ -17,7 +17,8 @@ import { forum_funCreateKomentar } from "../../fun/create/fun_create_komentar";
 import { forum_funGetAllKomentarById } from "../../fun/get/get_all_komentar_by_id";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
 import { useRouter } from "next/navigation";
-
+import { MainColor } from "@/app_modules/component_global/color/color_pallet";
+import mqtt_client from "@/util/mqtt_client";
 export default function ComponentForum_DetailCreateKomentar({
   postingId,
   onSetKomentar,
@@ -41,8 +42,13 @@ export default function ComponentForum_DetailCreateKomentar({
 
     const createComment = await forum_funCreateKomentar(postingId, value);
     if (createComment.status === 201) {
-      const loadKomentar = await forum_funGetAllKomentarById(data.id);
-      onSetKomentar(loadKomentar);
+      // const loadKomentar = await forum_funGetAllKomentarById(data.id);
+
+      const loadData = await forum_funGetAllKomentarById({
+        postingId: data.id,
+        page: 1,
+      });
+      onSetKomentar(loadData);
 
       setValue("");
       setIsEmpty(true);
@@ -104,6 +110,8 @@ export default function ComponentForum_DetailCreateKomentar({
                 ? true
                 : false
             }
+            bg={MainColor.yellow}
+            color={"yellow"}
             loaderPosition="center"
             loading={loading ? true : false}
             radius={"xl"}
@@ -112,7 +120,6 @@ export default function ComponentForum_DetailCreateKomentar({
             Balas
           </Button>
         </Group>
-        <Divider />
       </Stack>
     </>
   );

@@ -16,6 +16,7 @@ import { AccentColor, MainColor } from "../color/color_pallet";
 
 export default function ComponentGlobal_UI_HeaderTamplate({
   title,
+  posotion,
   // left button
   hideButtonLeft,
   iconLeft,
@@ -25,6 +26,7 @@ export default function ComponentGlobal_UI_HeaderTamplate({
   routerRight,
 }: {
   title: string;
+  posotion?: any;
   // left button
   hideButtonLeft?: boolean;
   iconLeft?: any;
@@ -48,20 +50,31 @@ export default function ComponentGlobal_UI_HeaderTamplate({
         }}
         bg={MainColor.darkblue}
       >
-        <Group h={"100%"} position="apart" px={"md"}>
-          <ActionIcon
-            c={"white"}
-            variant="transparent"
-            radius={"xl"}
-            onClick={() => {
-              setIsLoading(true);
-              routerLeft === undefined
-                ? router.back()
-                : router.push(routerLeft);
-            }}
-          >
-            {isLoading ? <Loader size={20} /> : iconLeft ? iconLeft : <IconChevronLeft />}
-          </ActionIcon>
+        <Group h={"100%"} position={posotion ? posotion : "apart"} px={"md"}>
+          {hideButtonLeft ? (
+            <ActionIcon disabled variant="transparent"></ActionIcon>
+          ) : (
+            <ActionIcon
+              c={"white"}
+              variant="transparent"
+              radius={"xl"}
+              onClick={() => {
+                setIsLoading(true);
+                routerLeft === undefined
+                  ? router.back()
+                  : router.push(routerLeft);
+              }}
+            >
+              {isLoading ? (
+                <Loader size={20} />
+              ) : iconLeft ? (
+                iconLeft
+              ) : (
+                <IconChevronLeft />
+              )}
+            </ActionIcon>
+          )}
+
           <Title order={5} c={MainColor.yellow}>
             {title}
           </Title>

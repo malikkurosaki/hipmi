@@ -40,21 +40,6 @@ export default function LayoutForum_Main({
   const [hotMenu, setHotMenu] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  const listFooter = [
-    {
-      id: 1,
-      name: "Beranda",
-      path: RouterForum.beranda,
-      icon: <IconHome />,
-    },
-
-    {
-      id: 2,
-      name: "ForumKu",
-      path: RouterForum.forumku,
-      icon: <IconCircle />,
-    },
-  ];
 
   return (
     <>
