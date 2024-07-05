@@ -27,20 +27,22 @@ const ReactQuill = dynamic(
   { ssr: false }
 );
 
+import { RouterJob } from "@/app/lib/router_hipmi/router_job";
+import ComponentGlobal_BoxInformation from "@/app_modules/component_global/box_information";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
 import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import mqtt_client from "@/util/mqtt_client";
 import { useShallowEffect } from "@mantine/hooks";
 import { defaultDeskripsi, defaultSyarat } from "../component/default_value";
-import ComponentJob_NotedBox from "../component/detail/noted_box";
-import { MODEL_JOB } from "../model/interface";
 import { Job_funCreate } from "../fun/create/fun_create";
-import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
-import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { MODEL_NOTIFIKASI } from "@/app_modules/notifikasi/model/interface";
+import { MODEL_JOB } from "../model/interface";
 
 export default function Job_Create() {
   const [value, setValue] = useState({
@@ -56,23 +58,14 @@ export default function Job_Create() {
     if (window && window.document) setReload(true);
   }, []);
 
-  if (!reload)
-    return (
-      <>
-        <Center h={"50vh"}>
-          <ComponentGlobal_V2_LoadingPage />
-        </Center>
-      </>
-    );
-
   return (
     <>
       {!reload ? (
         <Center h={"50vh"}>
-          <Loader />
+          <Loader color={MainColor.yellow} />
         </Center>
       ) : (
-        <Stack px={"sm"} spacing={40}>
+        <Stack spacing={40}>
           <Stack align="center" spacing={"xs"}>
             {images ? (
               <Image alt="" src={images} height={300} width={200} />
@@ -110,11 +103,13 @@ export default function Job_Create() {
             >
               {(props) => (
                 <Button
-                  compact
                   {...props}
                   radius={"xl"}
-                  variant="outline"
-                  w={150}
+                  w={100}
+                  style={{
+                    backgroundColor: MainColor.yellow,
+                    border: `1px solid ${AccentColor.yellow}`,
+                  }}
                 >
                   <IconCamera />
                 </Button>
@@ -122,10 +117,23 @@ export default function Job_Create() {
             </FileButton>
           </Stack>
 
-          <ComponentJob_NotedBox informasi="Poster atau Gambar tidak wajib untuk di upload. Upload lah jika dirasa perlu." />
+          <ComponentGlobal_BoxInformation informasi="Poster atau Gambar tidak wajib untuk di upload. Upload lah jika dirasa perlu." />
 
-          <Stack spacing={"lg"}>
+          <Stack
+            spacing={"lg"}
+            p={"md"}
+            style={{
+              backgroundColor: MainColor.darkblue,
+              border: `2px solid ${AccentColor.blue}`,
+              borderRadius: "5px 5px 5px 5px",
+            }}
+          >
             <TextInput
+              styles={{
+                label: {
+                  color: "white",
+                },
+              }}
               withAsterisk
               label="Judul"
               placeholder="Masukan judul lowongan kerja"
@@ -139,7 +147,7 @@ export default function Job_Create() {
             />
 
             <Stack spacing={3}>
-              <Text fz={"sm"}>
+              <Text fz={"sm"} c={"white"}>
                 Syarat & Ketentuan
                 <Text inherit span c={"red"}>
                   {" "}
@@ -150,6 +158,9 @@ export default function Job_Create() {
               <Stack spacing={5}>
                 <ReactQuill
                   defaultValue={defaultSyarat}
+                  style={{
+                    backgroundColor: "white",
+                  }}
                   modules={{
                     toolbar: [
                       [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -174,7 +185,7 @@ export default function Job_Create() {
               </Stack>
             </Stack>
             <Stack spacing={3}>
-              <Text fz={"sm"}>
+              <Text fz={"sm"} c={"white"}>
                 Deskripsi
                 <Text inherit span c={"red"}>
                   {" "}
@@ -184,6 +195,9 @@ export default function Job_Create() {
               <Stack spacing={5}>
                 <ReactQuill
                   defaultValue={defaultDeskripsi}
+                  style={{
+                    backgroundColor: "white",
+                  }}
                   modules={{
                     toolbar: [
                       [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -249,7 +263,6 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
             count: 1,
           })
         );
-
         setHotMenu(2);
         setStatus("Review");
         router.replace(RouterJob.status);
@@ -264,7 +277,7 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
   return (
     <>
       <Stack>
-        <Group grow mt={"lg"} mb={70}>
+        <Group grow mb={"lg"}>
           <Button
             disabled={
               value.title === "" ||
@@ -279,7 +292,19 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
             }
             style={{
               transition: "0.5s",
+              border:
+                value.title === "" ||
+                value.content === "" ||
+                value.content === "<p><br></p>" ||
+                value.content.length > 500 ||
+                value.deskripsi === "" ||
+                value.deskripsi === "<p><br></p>" ||
+                value.deskripsi.length > 500
+                  ? ""
+                  : `2px solid ${AccentColor.yellow}`,
             }}
+            bg={MainColor.yellow}
+            color="yellow"
             loaderPosition="center"
             loading={isLoading ? true : false}
             w={"100%"}

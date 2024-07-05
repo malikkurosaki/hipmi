@@ -1,24 +1,17 @@
 "use client";
 
-import {
-  ActionIcon,
-  AppShell,
-  Center,
-  Footer,
-  Grid,
-  Loader,
-  Stack,
-  Text,
-} from "@mantine/core";
-import React, { useState } from "react";
-import ComponentJob_HeaderTamplate from "../component/header_tamplate";
-import { IconHistory, IconHome, IconReservedLine } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
+import { MainColor } from "@/app_modules/component_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import ComponentGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import ComponentGlobal_UI_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import { ActionIcon, SimpleGrid, Stack, Text } from "@mantine/core";
+import { IconHistory, IconHome, IconReservedLine } from "@tabler/icons-react";
 import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { gs_job_hot_menu } from "../global_state";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutJob_Main({
   children,
@@ -53,57 +46,79 @@ export default function LayoutJob_Main({
 
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <ComponentGlobal_UI_LayoutTamplate
         header={
-          <ComponentJob_HeaderTamplate
-            title="Job Vacancy"
-            route={RouterHome.main_home}
+          <ComponentGlobal_UI_HeaderTamplate
+            title="JOB"
+            routerLeft={RouterHome.main_home}
           />
         }
         footer={
-          <Footer height={"10vh"} bg={"dark"}>
-            <Stack justify="center" h={"100%"}>
-              <Grid>
-                {listFooter.map((e) => (
-                  <Grid.Col
-                    key={e.id}
-                    span={"auto"}
-                    pt={"md"}
-                    onClick={() => {
-                      // setLoading(true);
-                      // setTimeout(() => router.replace(e.path), 3000);
-                      router.replace(e.path);
-                      setHotMenuId(e.id);
-                      // setTimeout(() => setLoading(false), 1000);
-                    }}
-                  >
-                    <Center>
-                      <Stack align="center" spacing={0}>
-                        <ActionIcon
-                          variant="transparent"
-                          c={hotMenuId === e.id ? "blue" : "white"}
-                        >
-                          {e.icon}
-                          {/* {isLoading && hotMenuId === e.id ? (
-                            <Loader />
-                          ) : (
-                            e.icon
-                          )} */}
-                        </ActionIcon>
-                        <Text fz={10} c={hotMenuId === e.id ? "blue" : "white"}>
-                          {e.name}
-                        </Text>
-                      </Stack>
-                    </Center>
-                  </Grid.Col>
-                ))}
-              </Grid>
-            </Stack>
-          </Footer>
+          <SimpleGrid cols={3} h={"10vh"} mx={"xs"}>
+            {listFooter.map((e, i) => (
+              <Stack key={i} align="center" justify="center" spacing={0}>
+                <ActionIcon
+                  // disabled={e.path === "" ? true : false}
+                  variant="transparent"
+                  c={hotMenuId === e.id ? MainColor.yellow : "white"}
+                  onClick={() =>
+                    e.path === ""
+                      ? ComponentGlobal_NotifikasiPeringatan("Cooming Soon")
+                      : (router.replace(e.path), setHotMenuId(e.id))
+                  }
+                >
+                  {e.icon}
+                </ActionIcon>
+                <Text
+                  c={hotMenuId === e.id ? MainColor.yellow : "white"}
+                  fz={"xs"}
+                  lineClamp={1}
+                >
+                  {e.name}
+                </Text>
+              </Stack>
+            ))}
+          </SimpleGrid>
+          // <Stack justify="center" h={"100%"}>
+          //   <Grid>
+          //     {listFooter.map((e) => (
+          //       <Grid.Col
+          //         key={e.id}
+          //         span={"auto"}
+          //         pt={"md"}
+          //         onClick={() => {
+          //           // setLoading(true);
+          //           // setTimeout(() => router.replace(e.path), 3000);
+          //           router.replace(e.path);
+          //           setHotMenuId(e.id);
+          //           // setTimeout(() => setLoading(false), 1000);
+          //         }}
+          //       >
+          //         <Center>
+          //           <Stack align="center" spacing={0}>
+          //             <ActionIcon
+          //               radius={"xl"}
+          //               variant="transparent"
+          //               c={hotMenuId === e.id ? MainColor.yellow : "white"}
+          //             >
+          //               {e.icon}
+          //             </ActionIcon>
+          //             <Text
+          //               fz={10}
+          //               c={hotMenuId === e.id ? MainColor.yellow : "white"}
+          //             >
+          //               {e.name}
+          //             </Text>
+          //           </Stack>
+          //         </Center>
+          //       </Grid.Col>
+          //     ))}
+          //   </Grid>
+          // </Stack>
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </ComponentGlobal_UI_LayoutTamplate>
     </>
   );
 }

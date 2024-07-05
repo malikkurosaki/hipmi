@@ -1,21 +1,9 @@
 "use client";
 
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import { RouterUserSearch } from "@/app/lib/router_hipmi/router_user_search";
 import {
   Box,
-  Center,
-  Title,
-  SimpleGrid,
-  Loader,
-  Stack,
-  ActionIcon,
-  Avatar,
-  Text,
+  Stack
 } from "@mantine/core";
-import { IconUserSearch, IconUserCircle } from "@tabler/icons-react";
-import router from "next/router";
-import { ComponentGlobal_NotifikasiPeringatan } from "./notif_global/notifikasi_peringatan";
 
 export default function AppComponentGlobal_LayoutTamplate({
   children,
@@ -44,7 +32,7 @@ export default function AppComponentGlobal_LayoutTamplate({
         </Box>
 
         {/* Children */}
-        <Box p={"sm"} pos={"static"}>
+        <Box p={"md"} pos={"static"}>
           <Stack>
             {children}
             {footer ? (

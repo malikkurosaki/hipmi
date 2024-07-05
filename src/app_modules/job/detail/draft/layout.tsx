@@ -1,32 +1,74 @@
 "use client";
 
-import { AppShell } from "@mantine/core";
+import {
+  ActionIcon,
+  AppShell,
+  Box,
+  Drawer,
+  Group,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import React from "react";
 import ComponentJob_HeaderTamplate from "../../component/header_tamplate";
-import { IconEdit } from "@tabler/icons-react";
+import { IconDots, IconEdit, IconX } from "@tabler/icons-react";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import ComponentGlobal_UI_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import ComponentGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import { useRouter } from "next/navigation";
+import { useDisclosure } from "@mantine/hooks";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
+import ComponentGlobal_UI_Drawer from "@/app_modules/component_global/ui/ui_drawer";
 
 export default function LayoutJob_DetailDraft({
   children,
   jobId,
 }: {
   children: React.ReactNode;
-  jobId: string
+  jobId: string;
 }) {
+  const router = useRouter();
+  const [opened, { open, close }] = useDisclosure();
+
+  const listComponent = [
+    {
+      id: "1",
+      name: "Edit Job",
+      icon: <IconEdit />,
+      path: RouterJob.edit + jobId,
+    },
+  ];
+
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <ComponentGlobal_UI_LayoutTamplate
         header={
-          <ComponentJob_HeaderTamplate
+          <ComponentGlobal_UI_HeaderTamplate
             title="Detail Draft"
-            icon={<IconEdit />}
-            route2={RouterJob.edit + jobId}
+            iconRight={
+              <ActionIcon variant="transparent" onClick={() => open()}>
+                <IconDots color="white" />
+              </ActionIcon>
+            }
+            // routerRight={}
           />
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </ComponentGlobal_UI_LayoutTamplate>
+
+      <ComponentGlobal_UI_Drawer
+        opened={opened}
+        close={close}
+        component={listComponent}
+      />
     </>
   );
 }

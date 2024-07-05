@@ -1,6 +1,7 @@
 "use client";
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
+import { AccentColor } from "@/app_modules/component_global/color/color_pallet";
 import mqtt_client from "@/util/mqtt_client";
 import {
   ActionIcon,
@@ -11,18 +12,15 @@ import {
   Stack,
   Text,
   TextInput,
-  rem
+  rem,
 } from "@mantine/core";
 import { useShallowEffect, useWindowScroll } from "@mantine/hooks";
-import {
-  IconPencilPlus,
-  IconSearchOff
-} from "@tabler/icons-react";
+import { IconPencilPlus, IconSearchOff } from "@tabler/icons-react";
 import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentForum_V2_MainCardView from "../component/main_component/card_view";
+import ComponentForum_BerandaCardView from "../component/main_component/card_view";
 import { forum_new_getAllPosting } from "../fun/get/new_get_all_posting";
 import { MODEL_FORUM_POSTING } from "../model/interface";
 
@@ -121,7 +119,7 @@ export default function Forum_Beranda({
   return (
     <>
       {isNewPost && (
-        <Affix position={{ top: rem(70) }} w={"100%"}>
+        <Affix position={{ top: rem(100) }} w={"100%"}>
           <ButtonUpdateBeranda
             countNewPost={countNewPost}
             onSetData={(val) => setData(val)}
@@ -138,25 +136,29 @@ export default function Forum_Beranda({
       {/* <pre>{JSON.stringify(listForum, null, 2)}</pre> */}
       <Affix position={{ bottom: rem(100), right: rem(30) }}>
         <ActionIcon
-          loading={loadingCreate ? true : false}
           opacity={scroll.y > 0 ? 0.5 : ""}
           style={{
             transition: "0.5s",
+            border: `1px solid ${AccentColor.skyblue}`,
           }}
           size={"xl"}
           radius={"xl"}
           variant="transparent"
-          bg={"blue"}
+          bg={AccentColor.blue}
           onClick={() => {
             setLoadingCreate(true);
             router.push(RouterForum.create);
           }}
         >
-          <IconPencilPlus color="white" />
+          {loadingCreate ? (
+            <Loader color={AccentColor.yellow} size={25} />
+          ) : (
+            <IconPencilPlus color="white" />
+          )}
         </ActionIcon>
       </Affix>
 
-      <Stack px={"sm"} spacing={"xl"}>
+      <Stack spacing={"xl"}>
         <TextInput
           radius={"xl"}
           placeholder="Topik forum apa yang anda cari hari ini ?"
@@ -164,11 +166,12 @@ export default function Forum_Beranda({
             onSearch(val.currentTarget.value);
           }}
         />
+
         {_.isEmpty(data) ? (
           <Stack align="center" justify="center" h={"80vh"}>
-            <IconSearchOff size={80} color="gray" />
+            <IconSearchOff size={80} color="white" />
             <Stack spacing={0} align="center">
-              <Text c={"gray"} fw={"bold"} fz={"xs"}>
+              <Text color="white" fw={"bold"} fz={"xs"}>
                 Tidak ada data
               </Text>
             </Stack>
@@ -176,10 +179,10 @@ export default function Forum_Beranda({
         ) : (
           // --- Main component --- //
           <ScrollOnly
-            height="80vh"
+            height="83vh"
             renderLoading={() => (
               <Center mt={"lg"}>
-                <Loader />
+                <Loader color={"yellow"} />
               </Center>
             )}
             data={data}
@@ -195,7 +198,7 @@ export default function Forum_Beranda({
             }}
           >
             {(item) => (
-              <ComponentForum_V2_MainCardView
+              <ComponentForum_BerandaCardView
                 data={item}
                 userLoginId={userLoginId}
                 onLoadData={(val) => {
@@ -241,6 +244,11 @@ function ButtonUpdateBeranda({
     <>
       <Center>
         <Button
+          style={{
+            transition: "0.5s",
+            border: `1px solid ${AccentColor.skyblue}`,
+          }}
+          bg={AccentColor.blue}
           loaderPosition="center"
           loading={isLoading ? true : false}
           radius={"xl"}

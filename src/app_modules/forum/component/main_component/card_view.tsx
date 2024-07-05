@@ -1,14 +1,18 @@
 "use client";
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import { ActionIcon, Card, Divider, Group, Stack, Text } from "@mantine/core";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
+import { ActionIcon, Card, Group, Stack, Text } from "@mantine/core";
 import { IconMessageCircle, IconMessageCircleX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
-import ComponentForum_V2_HeaderCard from "./card_header";
+import ComponentForum_BerandaHeaderCard from "./card_header";
 
-export default function ComponentForum_V2_MainCardView({
+export default function ComponentForum_BerandaCardView({
   data,
   userLoginId,
   onLoadData,
@@ -27,10 +31,17 @@ export default function ComponentForum_V2_MainCardView({
 
   return (
     <>
-    {/* <pre>{JSON.stringify(data, null,2)}</pre> */}
-      <Card mb={"md"}>
+      <Card
+        mb={"md"}
+        p={"xl"}
+        bg={MainColor.darkblue}
+        style={{
+          border: `2px solid ${AccentColor.blue}`,
+        }}
+        radius={"md"}
+      >
         <Card.Section>
-          <ComponentForum_V2_HeaderCard
+          <ComponentForum_BerandaHeaderCard
             data={data}
             isMoreButton={true}
             userLoginId={userLoginId}
@@ -46,7 +57,7 @@ export default function ComponentForum_V2_MainCardView({
             router.push(RouterForum.main_detail + data?.id);
           }}
         >
-          <Text fz={"sm"} lineClamp={4}>
+          <Text c="white" fz={"sm"} lineClamp={4}>
             <div dangerouslySetInnerHTML={{ __html: data?.diskusi }} />
           </Text>
         </Card.Section>
@@ -58,16 +69,9 @@ export default function ComponentForum_V2_MainCardView({
                 loading={loadingKomen && data?.id === postingId ? true : false}
                 variant="transparent"
                 sx={{ zIndex: 1 }}
-                // onClick={() => {
-                //   setPostingId(data?.id),
-                //     (data?.ForumMaster_StatusPosting.id as any) === 1
-                //       ? (router.push(RouterForum.komentar + data?.id),
-                //         setLoadingKomen(true))
-                //       : router.push(RouterForum.main_detail + data?.id);
-                // }}
               >
                 {(data?.ForumMaster_StatusPosting?.id as any) === 1 ? (
-                  <IconMessageCircle color="gray" size={25} />
+                  <IconMessageCircle color="white" size={25} />
                 ) : (
                   <IconMessageCircleX color="gray" size={25} />
                 )}
@@ -75,9 +79,8 @@ export default function ComponentForum_V2_MainCardView({
 
               {/* <TotalKomentar postingId={e?.id} /> */}
 
-              <Text c={"gray"}>{data?.Forum_Komentar.length}</Text>
+              <Text color={(data?.ForumMaster_StatusPosting?.id as any) === 1 ? "white" :"gray"}>{data?.Forum_Komentar.length}</Text>
             </Group>
-            <Divider />
           </Stack>
         </Card.Section>
       </Card>

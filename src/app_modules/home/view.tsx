@@ -2,55 +2,40 @@
 
 import {
   ActionIcon,
-  BackgroundImage,
   Box,
   Center,
-  Flex,
   Group,
   Image,
   Loader,
   LoadingOverlay,
+  Overlay,
   Paper,
-  ScrollArea,
   SimpleGrid,
-  Skeleton,
   Stack,
   Text,
-  ThemeIcon,
-  Title,
 } from "@mantine/core";
 
 import {
   IconAffiliate,
   IconBriefcase,
   IconHeartHandshake,
-  IconMap2,
-  IconMessages,
   IconPackageImport,
   IconPresentation,
-  IconShoppingBag,
-  IconUserCircle,
   IconUserSearch,
 } from "@tabler/icons-react";
 
-import toast from "react-simple-toasts";
-import { useRouter } from "next/navigation";
-import { MODEL_PROFILE_OLD } from "./model/user_profile";
-import AppNotif from "../notif";
-import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
-import { MODEL_USER } from "./model/interface";
-import { ComponentGlobal_NotifikasiPeringatan } from "../component_global/notif_global/notifikasi_peringatan";
-import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import { useState } from "react";
-import { useDisclosure } from "@mantine/hooks";
-import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import ComponentGlobal_V2_LoadingPage from "../component_global/loading_page_v2";
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
-import { AccentColor, MainColor } from "../component_global/color/color_pallet";
-import { MODEL_JOB } from "../job/model/interface";
+import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
+import { RouterJob } from "@/app/lib/router_hipmi/router_job";
+import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
 import _ from "lodash";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { AccentColor, MainColor } from "../component_global/color/color_pallet";
 import ComponentGlobal_IsEmptyData from "../component_global/is_empty_data";
+import { ComponentGlobal_NotifikasiPeringatan } from "../component_global/notif_global/notifikasi_peringatan";
+import { MODEL_JOB } from "../job/model/interface";
+import { MODEL_USER } from "./model/interface";
 
 export default function HomeView({
   dataUser,
@@ -60,8 +45,9 @@ export default function HomeView({
   dataJob: MODEL_JOB[];
 }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [visible, { toggle }] = useDisclosure(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [pageId, setPageId] = useState(0);
+  const [isLoadingJob, setLoadingJob] = useState(false);
 
   const listPageOnBox = [
     {
@@ -100,8 +86,6 @@ export default function HomeView({
 
   return (
     <>
-      {visible ? <ComponentGlobal_V2_LoadingPage /> : ""}
-
       <Box p={"md"}>
         <Paper
           radius={"xl"}
@@ -144,8 +128,9 @@ export default function HomeView({
                         "Cooming Soon !!"
                       );
                     } else {
-                      toggle();
-                      return router.push(e.link);
+                      setIsLoading(true);
+                      setPageId(e.id);
+                      router.push(e.link);
                     }
                   }
                 }}
@@ -156,7 +141,11 @@ export default function HomeView({
                     variant="transparent"
                     c={e.link === "" ? "gray.3" : "white"}
                   >
-                    {e.icon}
+                    {isLoading && e.id === pageId ? (
+                      <Loader color={AccentColor.yellow} />
+                    ) : (
+                      e.icon
+                    )}
                   </ActionIcon>
                   <Text c={e.link === "" ? "gray.3" : "white"} fz={"sm"}>
                     {e.name}
@@ -189,7 +178,7 @@ export default function HomeView({
                       "Cooming Soon !!"
                     );
                   } else {
-                    toggle();
+                    setLoadingJob(true);
                     return router.push(routePageJob.link);
                   }
                 }
@@ -200,7 +189,11 @@ export default function HomeView({
                   size={40}
                   c={routePageJob.link === "" ? "gray.3" : "white"}
                 >
-                  {routePageJob.icon}
+                  {isLoadingJob ? (
+                    <Loader color={AccentColor.yellow} size={20} />
+                  ) : (
+                    routePageJob.icon
+                  )}
                 </ActionIcon>
                 <Text c={routePageJob.link === "" ? "gray.3" : "white"}>
                   {routePageJob.name}

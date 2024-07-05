@@ -36,6 +36,10 @@ import { Job_EditById } from "../fun/edit/fun_edit_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import dynamic from "next/dynamic";
 import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");
@@ -55,23 +59,14 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
     if (window && window.document) setReload(true);
   }, []);
 
-  if (!reload)
-    return (
-      <>
-        <Center h={"50vh"}>
-          <Loader />
-        </Center>
-      </>
-    );
-
   return (
     <>
       {!reload ? (
         <Center h={"50vh"}>
-          <Loader />
+          <Loader color={MainColor.yellow} />
         </Center>
       ) : (
-        <Stack px={"sm"} spacing={40}>
+        <Stack py={"md"} spacing={40}>
           <Stack align="center">
             {images ? (
               <Image alt="" src={images} mah={500} maw={200} />
@@ -121,11 +116,13 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
             >
               {(props) => (
                 <Button
-                  compact
                   {...props}
                   radius={"xl"}
-                  variant="outline"
-                  w={150}
+                  w={100}
+                  style={{
+                    backgroundColor: MainColor.yellow,
+                    border: `1px solid ${AccentColor.yellow}`,
+                  }}
                 >
                   <IconCamera />
                 </Button>
@@ -133,8 +130,21 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
             </FileButton>
           </Stack>
 
-          <Stack spacing={"lg"}>
+          <Stack
+            spacing={"lg"}
+            p={"md"}
+            style={{
+              backgroundColor: MainColor.darkblue,
+              border: `2px solid ${AccentColor.blue}`,
+              borderRadius: "5px 5px 5px 5px",
+            }}
+          >
             <TextInput
+              styles={{
+                label: {
+                  color: "white",
+                },
+              }}
               withAsterisk
               label="Judul"
               placeholder="Masukan judul lowongan kerja"
@@ -149,7 +159,7 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
             />
 
             <Stack spacing={3}>
-              <Text fz={"sm"}>
+              <Text fz={"sm"} c={"white"}>
                 Syarat & Ketentuan
                 <Text inherit span c={"red"}>
                   {" "}
@@ -158,6 +168,9 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
               </Text>
               <Stack spacing={5}>
                 <ReactQuill
+                  style={{
+                    backgroundColor: "white",
+                  }}
                   modules={{
                     toolbar: [
                       [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -183,7 +196,7 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
               </Stack>
             </Stack>
             <Stack spacing={3}>
-              <Text fz={"sm"}>
+              <Text fz={"sm"} c={"white"}>
                 Deskripsi
                 <Text inherit span c={"red"}>
                   {" "}
@@ -192,6 +205,9 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
               </Text>
               <Stack spacing={5}>
                 <ReactQuill
+                  style={{
+                    backgroundColor: "white",
+                  }}
                   modules={{
                     toolbar: [
                       [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -253,9 +269,22 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
 
   return (
     <>
-      <Modal opened={opened} onClose={close} centered withCloseButton={false}>
+      <Modal
+        opened={opened}
+        onClose={close}
+        centered
+        withCloseButton={false}
+        styles={{
+          content: {
+            backgroundColor: MainColor.darkblue,
+            border: `2px solid ${AccentColor.blue}`,
+          },
+        }}
+      >
         <Stack>
-          <Title order={6}>Anda yakin menyimpan data ini ?</Title>
+          <Title order={6} c={"white"}>
+            Anda yakin menyimpan data ini ?
+          </Title>
           <Group position="center">
             <Button radius={"xl"} onClick={() => close()}>
               Batal
@@ -287,10 +316,10 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
             ? true
             : false
         }
+        // bg={"teal"}
         color="teal"
         radius={"xl"}
-        mt={"lg"}
-        mb={70}
+        my={"lg"}
         onClick={() => {
           open();
           scrollTo({ y: 0 });

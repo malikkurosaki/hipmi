@@ -58,7 +58,7 @@ export default function HomeLayout({
 }) {
   const router = useRouter();
   // const [user, setUser] = useState(dataUser);
-  const [idLoadingProfil, setIsLoadingProfile] = useState(false);
+  const [isLoadingProfil, setIsLoadingProfile] = useState(false);
   const [isLoadingUS, setIsLoadingUS] = useState(false);
   const [isLoadingBell, setIsLoadingBell] = useState(false);
   const [isLoadingPage, setIsLoadingPage] = useState(false);
@@ -92,7 +92,7 @@ export default function HomeLayout({
     mqtt_client.subscribe("USER");
 
     mqtt_client.on("message", (topic: any, message: any) => {
-      console.log(topic);
+      // console.log(topic);
       const data = JSON.parse(message.toString());
 
       if (data.userId === dataUser.id) {
@@ -144,7 +144,7 @@ export default function HomeLayout({
               }}
             >
               {isLoadingUS ? (
-                <Loader size={20} />
+                <Loader color={AccentColor.yellow} size={20} />
               ) : (
                 <IconUserSearch color="white" />
               )}
@@ -167,12 +167,16 @@ export default function HomeLayout({
               }}
             >
               {isLoadingBell ? (
-                <Loader size={20} />
+                <Loader color={AccentColor.yellow} size={20} />
               ) : (
                 <Indicator
                   processing
                   color={MainColor.yellow}
-                  label={<Text fz={10}>{countNotif}</Text>}
+                  label={
+                    <Text fz={10} c={MainColor.darkblue}>
+                      {countNotif}
+                    </Text>
+                  }
                 >
                   <IconBell color="white" />
                 </Indicator>
@@ -182,7 +186,6 @@ export default function HomeLayout({
         </Box>
 
         {/* Children */}
-
         <Box h={"82vh"} pos={"static"}>
           <ScrollArea h={"100%"}>
             {/* {Array(10)
@@ -201,14 +204,6 @@ export default function HomeLayout({
           />
         </Box>
 
-        {/* <Box h={"100%"} pos={"static"}>
-          <ScrollArea h={"100%"}>{children}</ScrollArea>
-          <Box
-            style={{
-              height: "10vh",
-            }}
-          />
-        </Box> */}
 
         {/* Footer */}
         <Box
@@ -216,9 +211,9 @@ export default function HomeLayout({
             zIndex: 99,
             borderRadius: "20px 20px 0px 0px",
           }}
-          bg={MainColor.darkblue}
+          // bg={MainColor.darkblue}
           w={"100%"}
-          color="blue"
+          // color="blue"
           pos={"fixed"}
           bottom={0}
           h={"10vh"}
@@ -228,94 +223,84 @@ export default function HomeLayout({
             cols={4}
             style={{
               borderRadius: "20px 20px 0px 0px",
-              border: `1px solid ${AccentColor.blue}`,
+              borderTop: `2px solid ${AccentColor.blue}`,
             }}
           >
             {listHalamanFooter.map((e, i) => (
               <Center h={"10vh"} key={e.id}>
-                {isLoadingPage && e.id === pageId ? (
-                  <Center>
-                    <Loader size={"sm"} />
-                  </Center>
-                ) : (
-                  <Stack align="center" spacing={0}>
-                    <ActionIcon
-                      radius={"xl"}
-                      // loading={isLoadingPage && e.id === pageId ? true : false}
-                      c={e.link === "" ? "gray" : "white"}
-                      variant="transparent"
-                      onClick={() => {
-                        if (dataUser?.Profile === null) {
-                          ComponentGlobal_NotifikasiPeringatan(
-                            "Lengkapi Profile"
-                          );
-                        } else {
-                          e.link === ""
-                            ? ComponentGlobal_NotifikasiPeringatan(
-                                "Cooming Soon"
-                              )
-                            : (router.push(e.link),
-                              setIsLoadingPage(true),
-                              setPageId(e?.id));
-                        }
-                      }}
-                    >
-                      {e.icon}
-                    </ActionIcon>
-                    <Text c={e.link === "" ? "gray" : "white"} fz={"xs"}>
-                      {e.name}
-                    </Text>
-                  </Stack>
-                )}
+                <Stack align="center" spacing={0}>
+                  <ActionIcon
+                    radius={"xl"}
+                    // loading={isLoadingPage && e.id === pageId ? true : false}
+                    c={e.link === "" ? "gray" : "white"}
+                    variant="transparent"
+                    onClick={() => {
+                      if (dataUser?.Profile === null) {
+                        ComponentGlobal_NotifikasiPeringatan(
+                          "Lengkapi Profile"
+                        );
+                      } else {
+                        e.link === ""
+                          ? ComponentGlobal_NotifikasiPeringatan("Cooming Soon")
+                          : (router.push(e.link),
+                            setIsLoadingPage(true),
+                            setPageId(e?.id));
+                      }
+                    }}
+                  >
+                    {isLoadingPage && e.id === pageId ? (
+                      <Loader color={AccentColor.yellow} size={20} />
+                    ) : (
+                      e.icon
+                    )}
+                  </ActionIcon>
+                  <Text c={e.link === "" ? "gray" : "white"} fz={"xs"}>
+                    {e.name}
+                  </Text>
+                </Stack>
               </Center>
             ))}
 
             <Center h={"10vh"}>
-              {idLoadingProfil ? (
-                <Center>
-                  <Loader size={"sm"} />
-                </Center>
-              ) : (
-                <Center>
-                  <Stack
-                    align="center"
-                    spacing={2}
-                    onClick={() => {
-                      setIsLoadingProfile(true);
-                      if (dataUser?.Profile === null) {
-                        router.push(RouterProfile.create);
-                      } else {
-                        router.push(
-                          RouterProfile.katalog + `${dataUser.Profile.id}`
-                        );
+              <Stack
+                align="center"
+                spacing={2}
+                onClick={() => {
+                  setIsLoadingProfile(true);
+                  if (dataUser?.Profile === null) {
+                    router.push(RouterProfile.create);
+                  } else {
+                    router.push(
+                      RouterProfile.katalog + `${dataUser.Profile.id}`
+                    );
+                  }
+                }}
+              >
+                <ActionIcon variant={"transparent"}>
+                  {dataUser?.Profile === null ? (
+                    <IconUserCircle color="white" />
+                  ) : isLoadingProfil ? (
+                    <Loader color={AccentColor.yellow} size={20} />
+                  ) : (
+                    <Avatar
+                      radius={"xl"}
+                      size={25}
+                      sx={{
+                        borderStyle: "solid",
+                        borderWidth: "0.5px",
+                        borderColor: "white",
+                      }}
+                      src={
+                        RouterProfile.api_foto_profile +
+                        `${dataUser?.Profile.imagesId}`
                       }
-                    }}
-                  >
-                    <ActionIcon variant={"transparent"}>
-                      {dataUser?.Profile === null ? (
-                        <IconUserCircle color="white" />
-                      ) : (
-                        <Avatar
-                          radius={"xl"}
-                          size={25}
-                          sx={{
-                            borderStyle: "solid",
-                            borderWidth: "0.5px",
-                            borderColor: "white",
-                          }}
-                          src={
-                            RouterProfile.api_foto_profile +
-                            `${dataUser?.Profile.imagesId}`
-                          }
-                        />
-                      )}
-                    </ActionIcon>
-                    <Text fz={"xs"} c={"white"}>
-                      Profile
-                    </Text>
-                  </Stack>
-                </Center>
-              )}
+                    />
+                  )}
+                </ActionIcon>
+                <Text fz={"xs"} c={"white"}>
+                  Profile
+                </Text>
+              </Stack>
             </Center>
           </SimpleGrid>
         </Box>

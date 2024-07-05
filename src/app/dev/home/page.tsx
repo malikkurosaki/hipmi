@@ -26,7 +26,7 @@ export default async function Page() {
 
   return (
     <>
-      <HomeView dataUser={dataUser as any} dataJob={[]} />
+      <HomeView dataUser={dataUser as any} dataJob={dataJob as any} />
     </>
   );
 }

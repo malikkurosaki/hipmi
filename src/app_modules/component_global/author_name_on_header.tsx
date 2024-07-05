@@ -52,7 +52,11 @@ export default function ComponentGlobal_AuthorNameOnHeader({
             {visible ? (
               <Avatar
                 size={30}
-                sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
+                sx={{
+                  borderStyle: "solid",
+                  borderWidth: "1px",
+                  borderColor: "white",
+                }}
                 radius={"xl"}
                 bg={"gray.1"}
               >
@@ -65,7 +69,11 @@ export default function ComponentGlobal_AuthorNameOnHeader({
             ) : (
               <Avatar
                 size={30}
-                sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
+                sx={{
+                  borderStyle: "solid",
+                  borderWidth: "1px",
+                  borderColor: "white",
+                }}
                 radius={"xl"}
                 bg={"gray.1"}
                 src={
@@ -77,16 +85,16 @@ export default function ComponentGlobal_AuthorNameOnHeader({
             )}
           </Grid.Col>
           <Grid.Col span={"auto"}>
-            <Stack justify="center" h={"100%"}>
+            <Stack justify="center" h={"100%"} c={"white"}>
               <Group position="apart">
-                <Stack justify="center" h={"100%"}>
+                <Stack justify="center" h={"100%"} >
                   <Text lineClamp={1} fz={"sm"} fw={"bold"}>
                     {authorName ? authorName : "Nama author"}
                   </Text>
                 </Stack>
                 <Stack justify="center" h={"100%"}>
                   {tglPublish ? (
-                    <Text c={"gray"} fz={"xs"}>
+                    <Text c={"white"} fz={"xs"}>
                       {skrng.toLocaleDateString(["id-ID"], {
                         dateStyle: "medium",
                       })}

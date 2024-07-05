@@ -13,5 +13,5 @@ export default async function forum_getOneKategoriById({
     },
   });
 
-  return cekData
+  return cekData;
 }

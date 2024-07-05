@@ -13,10 +13,21 @@ export default async function adminNotifikasi_findRouterForum({
   onChangeNavbar: (val: any) => void;
   onToggleNavbar: (val: any) => void;
 }) {
-  const routeName = RouterAdminForum.table_report_posting;
-  router.push(routeName);
-   onChangeNavbar({
-     id: 7,
-     childId: 73,
-   });
+  if (data.status === "Report Posting") {
+    const routeName = RouterAdminForum.table_report_posting;
+    router.push(routeName);
+    onChangeNavbar({
+      id: 7,
+      childId: 73,
+    });
+  }
+
+  if (data.status === "Report Komentar") {
+    const routeName = RouterAdminForum.table_report_komentar;
+    router.push(routeName);
+    onChangeNavbar({
+      id: 7,
+      childId: 74,
+    });
+  }
 }

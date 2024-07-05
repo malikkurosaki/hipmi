@@ -1,18 +1,21 @@
 "use client";
 
-import { Box, Button, Paper, Radio, Stack, Text, Title } from "@mantine/core";
-import { MODEL_FORUM_MASTER_REPORT } from "../../model/interface";
+import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
+import { Button, Radio, Stack, Text, Title } from "@mantine/core";
+import { toNumber } from "lodash";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { forum_funCreateReportPosting } from "../../fun/create/fun_create_report_posting";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { useRouter } from "next/navigation";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import mqtt_client from "@/util/mqtt_client";
-import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
-import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import forum_getOneKategoriById from "../../fun/get/get_one_kategori_by_id";
-import { toNumber } from "lodash";
+import { MODEL_FORUM_MASTER_REPORT } from "../../model/interface";
 
 export default function Forum_ReportPosting({
   postingId,
@@ -27,8 +30,17 @@ export default function Forum_ReportPosting({
 
   return (
     <>
-      <Stack px={"sm"}>
+      <Stack
+        mb={"md"}
+        p={"sm"}
+        bg={MainColor.darkblue}
+        style={{
+          border: `2px solid ${AccentColor.blue}`,
+          borderRadius: "10px 10px 10px 10px",
+        }}
+      >
         <Radio.Group
+          c={"white"}
           value={reportValue as any}
           onChange={(val: any) => {
             setReportValue(val);
@@ -39,7 +51,11 @@ export default function Forum_ReportPosting({
               <Stack key={e?.id.toString()}>
                 <Radio
                   value={e.id.toString()}
-                  label={<Title order={5}>{e.title}</Title>}
+                  label={
+                    <Title c={"white"} order={5}>
+                      {e.title}
+                    </Title>
+                  }
                 />
                 <Text>{e.deskripsi}</Text>
               </Stack>
@@ -66,7 +82,8 @@ function ButtonAction({
   userLoginId: string;
 }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingLain, setIsLoadingLain] = useState(false);
 
   async function onReport() {
     const report = await forum_funCreateReportPosting({
@@ -77,10 +94,9 @@ function ButtonAction({
       const getKategori = await forum_getOneKategoriById({
         kategoriId: toNumber(kategoriId),
       });
-      console.log(getKategori);
+      // console.log(getKategori);
 
       ComponentGlobal_NotifikasiBerhasil(report.message, 2000);
-      setLoading(true);
       router.back();
 
       const dataNotif = {
@@ -99,6 +115,7 @@ function ButtonAction({
       if (createNotifikasi.status === 201) {
         mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
       }
+      setIsLoading(true);
     } else {
       ComponentGlobal_NotifikasiGagal(report.message);
     }
@@ -107,10 +124,13 @@ function ButtonAction({
     <>
       <Stack mt={"md"}>
         <Button
+          loaderPosition="center"
+          loading={isLoadingLain ? true : false}
           radius={"xl"}
-          onClick={() =>
-            router.replace(RouterForum.report_posting_lainnya + postingId)
-          }
+          onClick={() => {
+            setIsLoadingLain(true);
+            router.replace(RouterForum.report_posting_lainnya + postingId);
+          }}
         >
           Lainnya
         </Button>
@@ -118,7 +138,7 @@ function ButtonAction({
           radius={"xl"}
           color="orange"
           loaderPosition="center"
-          loading={loading ? true : false}
+          loading={isLoading ? true : false}
           onClick={() => onReport()}
         >
           Report

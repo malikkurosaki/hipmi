@@ -21,7 +21,7 @@ export default function ComponentAdminForum_ViewOneDetailPosting({
   return (
     <>
       <Stack spacing={"xs"} h={"100%"} w={"50%"}>
-        <Paper bg={"green.4"} p={"xs"} style={{ borderRadius: "6px" }}>
+        <Paper bg={"gray"} p={"xs"} style={{ borderRadius: "6px" }}>
           <Title order={4} c={"white"}>
             Detail Posting
           </Title>
@@ -31,9 +31,9 @@ export default function ComponentAdminForum_ViewOneDetailPosting({
           <Stack>
             <Stack spacing={5}>
               <Group position="apart">
-                <Text>
+                <Text fw={"bold"}>
                   Username:{" "}
-                  <Text span inherit fw={"bold"}>
+                  <Text span inherit>
                     {dataPosting?.Author?.username}
                   </Text>
                 </Text>
@@ -48,7 +48,7 @@ export default function ComponentAdminForum_ViewOneDetailPosting({
                   {dataPosting?.ForumMaster_StatusPosting?.status}
                 </Badge>
               </Group>
-              <Divider />
+              {/* <Divider /> */}
             </Stack>
 
             <Box>

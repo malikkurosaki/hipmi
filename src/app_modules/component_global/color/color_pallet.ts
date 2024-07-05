@@ -8,5 +8,6 @@ export const AccentColor = {
   blackgray: "#333533",
   darkblue: "#002E59",
   blue: "#00447D",
+  skyblue: "#00BFFF",
   yellow: "#FFD60A",
 };

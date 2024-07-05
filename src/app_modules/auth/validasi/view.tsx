@@ -11,18 +11,17 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_glob
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import {
   ActionIcon,
+  BackgroundImage,
   Box,
   Button,
   Center,
   PinInput,
   Stack,
   Text,
-  Title
+  Title,
 } from "@mantine/core";
 import { useFocusTrap } from "@mantine/hooks";
-import {
-  IconChevronLeft
-} from "@tabler/icons-react";
+import { IconChevronLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { auth_funEditAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
@@ -66,64 +65,74 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
 
   return (
     <>
-      <Stack bg={MainColor.darkblue} h={"100vh"}>
-        <Box
-          pt={"md"}
-          px={"md"}
-          style={{
-            position: "sticky",
-            top: 0,
-          }}
-        >
-          <ActionIcon variant="transparent" onClick={() => router.back()}>
-            <IconChevronLeft color="white" />
-          </ActionIcon>
-        </Box>
-
-        <Stack align="center" justify="center" h={"100vh"} spacing={70}>
-          <Title order={2} color={MainColor.yellow}>
-            Verifikasi Kode OTP
-          </Title>
-
-          <Stack spacing={0} align="center">
-            <Text fz={"xs"}  c={"white"}>
-              Masukan 4 digit kode otp
-            </Text>
-            <Text fz={"xs"}  c={"white"}>
-              Yang dikirim ke <Text span inherit fw={"bold"}> +{nomor}</Text>
-            </Text>
-            <Center>
-              <PinInput
-                ref={focusTrapRef}
-                spacing={"md"}
-                mt={"md"}
-                onChange={(val) => {
-                  setInputOtp(val);
-                }}
-              />
-            </Center>
-          </Stack>
-          <Button
-            w={300}
-            loading={loading ? true : false}
-            loaderPosition="center"
-            radius={"md"}
-            compact
-            h={40}
-            c={"black"}
-            bg={MainColor.yellow}
-            color={"yellow"}
+      <BackgroundImage
+        src={"/aset/global/main_background.png"}
+        h={"100vh"}
+        // pos={"static"}
+      >
+        <Stack h={"100vh"}>
+          <Box
+            pt={"md"}
+            px={"md"}
             style={{
-              borderColor: AccentColor.yellow,
-            }}
-            onClick={() => {
-              onVerifikasi();
+              position: "sticky",
+              top: 0,
             }}
           >
-            <Text>VERIFIKASI</Text>
-          </Button>
+            <ActionIcon variant="transparent" onClick={() => router.back()}>
+              <IconChevronLeft color="white" />
+            </ActionIcon>
+          </Box>
+
+          <Stack align="center" justify="center" h={"100vh"} spacing={70}>
+            <Title order={2} color={MainColor.yellow}>
+              Verifikasi Kode OTP
+            </Title>
+
+            <Stack spacing={0} align="center">
+              <Text fz={"xs"} c={"white"}>
+                Masukan 4 digit kode otp
+              </Text>
+              <Text fz={"xs"} c={"white"}>
+                Yang dikirim ke{" "}
+                <Text span inherit fw={"bold"}>
+                  {" "}
+                  +{nomor}
+                </Text>
+              </Text>
+              <Center>
+                <PinInput
+                  ref={focusTrapRef}
+                  spacing={"md"}
+                  mt={"md"}
+                  onChange={(val) => {
+                    setInputOtp(val);
+                  }}
+                />
+              </Center>
+            </Stack>
+            <Button
+              w={300}
+              loading={loading ? true : false}
+              loaderPosition="center"
+              radius={"md"}
+              compact
+              h={40}
+              c={"black"}
+              bg={MainColor.yellow}
+              color={"yellow"}
+              style={{
+                borderColor: AccentColor.yellow,
+              }}
+              onClick={() => {
+                onVerifikasi();
+              }}
+            >
+              <Text>VERIFIKASI</Text>
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
+      </BackgroundImage>
     </>
   );
 }

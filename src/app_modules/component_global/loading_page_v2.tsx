@@ -47,8 +47,8 @@ export default function ComponentGlobal_V2_LoadingPage() {
     <>
       <LoadingOverlay
         visible
-        overlayColor={MainColor.darkblue}
-        overlayOpacity={0.3}
+        // overlayColor={MainColor.darkblue}
+        overlayOpacity={0.1}
         loader={customLOader}
       />
     </>

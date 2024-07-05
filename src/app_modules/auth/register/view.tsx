@@ -10,8 +10,13 @@ import {
   Center,
   PinInput,
   Stack,
+  BackgroundImage,
 } from "@mantine/core";
-import { IconCircleLetterH, IconCloudLockOpen, IconUserCircle } from "@tabler/icons-react";
+import {
+  IconCircleLetterH,
+  IconCloudLockOpen,
+  IconUserCircle,
+} from "@tabler/icons-react";
 import { gs_nomor } from "../state/state";
 import { useAtom } from "jotai";
 import { useState } from "react";
@@ -28,7 +33,10 @@ import { IconPencilCheck } from "@tabler/icons-react";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { auth_funEditAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
 import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
-import { AccentColor, MainColor } from "@/app_modules/component_global/color/color_pallet";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
 
 export default function Register({ dataOtp }: { dataOtp: any }) {
   const router = useRouter();
@@ -72,85 +80,26 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
   return (
     <>
       {/* <pre>{JSON.stringify(dataOtp,null,2)}</pre> */}
+      <BackgroundImage
+        src={"/aset/global/main_background.png"}
+        h={"100vh"}
+        // pos={"static"}
+      >
+        <Center h={"100vh"}>
+          <Stack h={"100%"} align="center" justify="center" spacing={70}>
+            <Title order={2} c={MainColor.yellow}>
+              REGISTRASI
+            </Title>
 
-      <Center bg={MainColor.darkblue} h={"100vh"}>
-        <Stack h={"100%"} align="center" justify="center" spacing={70}>
-          <Title order={2} c={MainColor.yellow}>
-            REGISTRASI
-          </Title>
+            <IconUserCircle size={100} color="white" />
 
-          <IconUserCircle size={100} color="white" />
-
-          <Stack spacing={"sm"} w={300}>
-            <Text fz={10} c={"white"}>
-              Anda akan terdaftar dengan nomor berikut{" "}
-              <Text inherit span fw={"bold"}>
-                +{nomor}
+            <Stack spacing={"sm"} w={300}>
+              <Text fz={10} c={"white"}>
+                Anda akan terdaftar dengan nomor berikut{" "}
+                <Text inherit span fw={"bold"}>
+                  +{nomor}
+                </Text>
               </Text>
-            </Text>
-            <TextInput
-              ref={focusTrapRef}
-              placeholder="Masukan Username"
-              maxLength={50}
-              error={
-                value.length > 0 && value.length < 5 ? (
-                  <ComponentGlobal_ErrorInput text="Minimal 5 karakter !" />
-                ) : _.values(value).includes(" ") ? (
-                  <Stack spacing={5}>
-                    <ComponentGlobal_ErrorInput text="Tidak boleh ada space" />
-                    <ComponentGlobal_ErrorInput text="Sambungkan huruf meggunakan karakter _" />
-                  </Stack>
-                ) : isValue ? (
-                  <ComponentGlobal_ErrorInput text="Masukan username anda" />
-                ) : (
-                  ""
-                )
-              }
-              onChange={(val) => {
-                val.currentTarget.value.length > 0 ? setIsValue(false) : "";
-                setValue(val.currentTarget.value);
-              }}
-            />
-            <Stack>
-              <Button
-                loading={loading ? true : false}
-                loaderPosition="center"
-                radius={"md"}
-                compact
-                h={40}
-                c={"black"}
-                bg={MainColor.yellow}
-                color={"yellow"}
-                style={{
-                  borderColor: AccentColor.yellow,
-                }}
-                onClick={() => {
-                  onRegistarsi();
-                }}
-              >
-                <Text>DAFTAR</Text>
-              </Button>
-            </Stack>
-          </Stack>
-        </Stack>
-
-        {/* <Stack
-          px={"lg"}
-          spacing={70}
-          w={{ base: 400 }}
-          justify="center"
-          h={"80vh"}
-        >
-          <Center>
-            <IconPencilCheck size={120} />
-          </Center>
-
-          <Stack spacing={"lg"}>
-            <Stack spacing={0}>
-              <Title order={4}>REGISTRASI</Title>
-              <Text fz={"xs"}>Masukan username anda !</Text>
-            </Stack>
-            <Stack spacing={"sm"}>
               <TextInput
                 ref={focusTrapRef}
                 placeholder="Masukan Username"
@@ -174,32 +123,30 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
                   setValue(val.currentTarget.value);
                 }}
               />
-              <Text fz={10} c={"gray"}>
-                Anda akan terdaftar dengan nomor berikut{" "}
-                <Text inherit span fw={"bold"}>
-                  +{nomor}
-                </Text>
-              </Text>
-            </Stack>
-
-            <Stack>
-              <Button
-                loading={loading ? true : false}
-                loaderPosition="center"
-                radius={"md"}
-                compact
-                h={40}
-                color={"teal"}
-                onClick={() => {
-                  onRegistarsi();
-                }}
-              >
-                <Text>DAFTAR</Text>
-              </Button>
+              <Stack>
+                <Button
+                  loading={loading ? true : false}
+                  loaderPosition="center"
+                  radius={"md"}
+                  compact
+                  h={40}
+                  c={"black"}
+                  bg={MainColor.yellow}
+                  color={"yellow"}
+                  style={{
+                    borderColor: AccentColor.yellow,
+                  }}
+                  onClick={() => {
+                    onRegistarsi();
+                  }}
+                >
+                  <Text>DAFTAR</Text>
+                </Button>
+              </Stack>
             </Stack>
           </Stack>
-        </Stack> */}
-      </Center>
+        </Center>
+      </BackgroundImage>
     </>
   );
 }
