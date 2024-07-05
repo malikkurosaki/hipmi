@@ -1,5 +1,3 @@
-"use client";
-
 import { Overlay, Center, Loader } from "@mantine/core";
 
 export default function ComponentGlobal_CardLoadingOverlay({
@@ -16,7 +14,7 @@ export default function ComponentGlobal_CardLoadingOverlay({
           <Loader
             variant={variant ? variant : "dots"}
             size={size ? size : 20}
-            color="gray"
+            color="white"
           />
         </Center>
       </Overlay>

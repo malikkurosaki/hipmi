@@ -1,6 +1,8 @@
 "use client";
 
 import {
+  ActionIcon,
+  Affix,
   BackgroundImage,
   Box,
   Button,
@@ -8,9 +10,12 @@ import {
   Group,
   LoadingOverlay,
   Paper,
+  ScrollArea,
+  SimpleGrid,
   Skeleton,
   Stack,
   Text,
+  rem,
 } from "@mantine/core";
 import { useState } from "react";
 
@@ -23,6 +28,10 @@ import { useShallowEffect } from "@mantine/hooks";
 import { ScrollOnly } from "next-scroll-loader";
 import _ from "lodash";
 import ComponentGlobal_V2_LoadingPage from "../component_global/loading_page_v2";
+import ComponentGlobal_UI_LayoutTamplate from "../component_global/ui/ui_layout_tamplate";
+import ComponentGlobal_UI_HeaderTamplate from "../component_global/ui/ui_header_tamplate";
+import { Icon123, IconPencilPlus, IconX } from "@tabler/icons-react";
+import { AccentColor, MainColor } from "../component_global/color/color_pallet";
 
 const newData = Array(20)
   .fill(0)
@@ -74,9 +83,9 @@ export default function Coba_TestLoading() {
 
   return (
     <>
-      <BackgroundImage src={"/aset/global/main_background.png"}>
-        <Box h={"100vh"}></Box>
-      </BackgroundImage>
+      <ComponentGlobal_UI_LayoutTamplate>
+        <CreateButton />
+      </ComponentGlobal_UI_LayoutTamplate>
     </>
   );
 
@@ -93,6 +102,7 @@ export default function Coba_TestLoading() {
     </>
   );
 
+  // Clone data
   return (
     <>
       <Box mt={"lg"}>
@@ -119,6 +129,116 @@ export default function Coba_TestLoading() {
 
         <pre>{JSON.stringify(data, null, 2)}</pre>
       </Box>
+    </>
+  );
+}
+
+function CreateButton() {
+  return (
+    <>
+      <ActionIcon
+        p={3}
+        variant="filled"
+        radius={"xl"}
+        size={"xl"}
+        style={{
+          position: "absolute",
+          zIndex: 1,
+          bottom: 150,
+          right: 30,
+        }}
+      >
+        <IconPencilPlus size={30} />
+      </ActionIcon>
+
+      {/* <Affix
+        bg={"blue"}
+        withinPortal
+        portalProps={{}}
+        position={{ bottom: rem(150), right: rem(30) }}
+      >
+        <ActionIcon
+          style={{
+            transition: "0.5s",
+            border: `1px solid ${AccentColor.skyblue}`,
+          }}
+          bg={AccentColor.blue}
+          size={"xl"}
+          radius={"xl"}
+          variant="transparent"
+          onClick={() => {}}
+        >
+          <IconPencilPlus color="white" />
+        </ActionIcon>
+      </Affix> */}
+    </>
+  );
+}
+
+function BackgroundImageComponent() {
+  const footer = (
+    <SimpleGrid cols={4}>
+      {Array.from({ length: 4 }).map((e, i) => (
+        <Center key={i} h={"10vh"}>
+          <Stack align="center" c={"white"} spacing={0}>
+            <ActionIcon>
+              <IconX color="white" />
+            </ActionIcon>
+            <Text>Apa</Text>
+          </Stack>
+        </Center>
+      ))}
+    </SimpleGrid>
+  );
+  return (
+    <>
+      <BackgroundImage src={"/aset/global/main_background.png"} h={"100vh"}>
+        {/* Header */}
+        <Box
+          h={"8vh"}
+          style={{
+            zIndex: 98,
+          }}
+          w={"100%"}
+          pos={"sticky"}
+          top={0}
+        >
+          <ComponentGlobal_UI_HeaderTamplate title="Coba" />
+        </Box>
+
+        {/* Children */}
+        <Box h={"82vh"} pos={"static"}>
+          <ScrollArea h={"100%"} px={"md"}>
+            {Array.from({ length: 10 }).map((e, i) => (
+              <Box bg={"blue"} key={i} mb={"md"} py={"lg"}>
+                {i + 1}
+              </Box>
+            ))}
+          </ScrollArea>
+        </Box>
+
+        {/* Footer */}
+        <Box style={{ position: "relative", bottom: 0 }} bg={"red"}>
+          <Box
+            style={{
+              zIndex: 1,
+              borderRadius: "20px 20px 0px 0px",
+              borderTop: `2px solid ${AccentColor.blue}`,
+              borderRight: `1px solid ${AccentColor.blue}`,
+              borderLeft: `1px solid ${AccentColor.blue}`,
+              position: "absolute",
+              width: "100%",
+              backgroundColor: MainColor.darkblue,
+            }}
+            color="blue"
+            // pos={"fixed"}
+            // bottom={0}
+            h={"10vh"}
+          >
+            {footer}
+          </Box>
+        </Box>
+      </BackgroundImage>
     </>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Center, Loader, Stack } from "@mantine/core";
+import { Box, Center, Loader, Stack } from "@mantine/core";
 import _ from "lodash";
 import { MODEL_FORUM_KOMENTAR, MODEL_FORUM_POSTING } from "../model/interface";
 
@@ -23,7 +23,7 @@ export default function Forum_MainDetail({
   dataPosting: MODEL_FORUM_POSTING;
   listKomentar: MODEL_FORUM_KOMENTAR[];
   userLoginId: string;
-  countKomentar: number
+  countKomentar: number;
 }) {
   const [data, setData] = useState(dataPosting);
   const [lsKomentar, setLsKomentar] = useState(listKomentar);
@@ -90,34 +90,37 @@ export default function Forum_MainDetail({
           ""
         )}
 
-        <ScrollOnly
-          height={lsKomentar.length < 5 ? "50vh" : "70vh"}
-          renderLoading={() => (
-            <Center mt={"lg"}>
-              <Loader color={"yellow"} />
-            </Center>
-          )}
-          data={lsKomentar}
-          setData={setLsKomentar}
-          moreData={async () => {
-            const loadData = await forum_funGetAllKomentarById({
-              postingId: data.id,
-              page: activePage + 1,
-            });
-            setActivePage((val) => val + 1);
+        <Box >
+          <ScrollOnly
+          
+            height={"60vh"}
+            renderLoading={() => (
+              <Center mt={"lg"}>
+                <Loader color={"yellow"} />
+              </Center>
+            )}
+            data={lsKomentar}
+            setData={setLsKomentar}
+            moreData={async () => {
+              const loadData = await forum_funGetAllKomentarById({
+                postingId: data.id,
+                page: activePage + 1,
+              });
+              setActivePage((val) => val + 1);
 
-            return loadData;
-          }}
-        >
-          {(item) => (
-            <ComponentForum_KomentarView
-              data={item}
-              setKomentar={setLsKomentar}
-              postingId={data?.id}
-              userLoginId={userLoginId}
-            />
-          )}
-        </ScrollOnly>
+              return loadData;
+            }}
+          >
+            {(item) => (
+              <ComponentForum_KomentarView
+                data={item}
+                setKomentar={setLsKomentar}
+                postingId={data?.id}
+                userLoginId={userLoginId}
+              />
+            )}
+          </ScrollOnly>
+        </Box>
       </Stack>
     </>
   );

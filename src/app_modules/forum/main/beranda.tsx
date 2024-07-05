@@ -151,7 +151,7 @@ export default function Forum_Beranda({
           }}
         >
           {loadingCreate ? (
-            <Loader size={25} />
+            <Loader color={AccentColor.yellow} size={25} />
           ) : (
             <IconPencilPlus color="white" />
           )}

@@ -3,15 +3,24 @@
 import prisma from "@/app/lib/prisma";
 import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 
-export default async function job_getListReject({}: {}) {
-  const userId = await user_getOneUserId();
+export default async function job_getAllStatusReview({
+  page,
+}: {
+  page: number;
+}) {
+  const takeData = 10;
+  const skipData = page * takeData - takeData;
+
+  const authorId = await user_getOneUserId();
   const data = await prisma.job.findMany({
+    take: takeData,
+    skip: skipData,
     orderBy: {
       updatedAt: "desc",
     },
     where: {
       masterStatusId: "2",
-      authorId: userId,
+      authorId: authorId,
       isActive: true,
     },
   });

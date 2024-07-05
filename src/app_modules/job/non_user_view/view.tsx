@@ -5,13 +5,23 @@ import ComponentJob_DetailData from "../component/detail/detail_data";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { data } from "autoprefixer";
 import { MODEL_JOB } from "../model/interface";
+import { AccentColor, MainColor } from "@/app_modules/component_global/color/color_pallet";
 
 export default function Job_NonUserView({ data }: { data: MODEL_JOB }) {
   return (
     <>
-      <Center>
-        <Card shadow="lg" withBorder p={30} w={{ base: 400 }}>
-          <Card.Section px={"xs"} pb={"lg"}>
+      <Center my={"md"} >
+        <Card
+          shadow="lg"
+          withBorder
+          p={"xl"}
+          // w={{ base: 400 }}
+          style={{
+            backgroundColor: MainColor.darkblue,
+            border: `2px solid ${AccentColor.blue}`,
+          }}
+        >
+          <Card.Section px={"xs"} pb={"lg"} c={"white"}>
             <Stack spacing={"xl"}>
               {data.imagesId ? (
                 <Stack align="center">

@@ -47,6 +47,7 @@ export default function HomeView({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [pageId, setPageId] = useState(0);
+  const [isLoadingJob, setLoadingJob] = useState(false);
 
   const listPageOnBox = [
     {
@@ -140,7 +141,11 @@ export default function HomeView({
                     variant="transparent"
                     c={e.link === "" ? "gray.3" : "white"}
                   >
-                    {isLoading && e.id === pageId ? <Loader /> : e.icon}
+                    {isLoading && e.id === pageId ? (
+                      <Loader color={AccentColor.yellow} />
+                    ) : (
+                      e.icon
+                    )}
                   </ActionIcon>
                   <Text c={e.link === "" ? "gray.3" : "white"} fz={"sm"}>
                     {e.name}
@@ -173,6 +178,7 @@ export default function HomeView({
                       "Cooming Soon !!"
                     );
                   } else {
+                    setLoadingJob(true);
                     return router.push(routePageJob.link);
                   }
                 }
@@ -183,7 +189,11 @@ export default function HomeView({
                   size={40}
                   c={routePageJob.link === "" ? "gray.3" : "white"}
                 >
-                  {routePageJob.icon}
+                  {isLoadingJob ? (
+                    <Loader color={AccentColor.yellow} size={20} />
+                  ) : (
+                    routePageJob.icon
+                  )}
                 </ActionIcon>
                 <Text c={routePageJob.link === "" ? "gray.3" : "white"}>
                   {routePageJob.name}

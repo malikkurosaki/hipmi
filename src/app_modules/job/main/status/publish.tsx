@@ -1,19 +1,51 @@
 "use client";
 
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
-import { Stack, Card, Grid, Image, Text } from "@mantine/core";
-import ComponentJob_CardViewStatus from "../../component/card_view_status";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import ComponentJob_CardPreview from "../../component/card_preview";
-import { Job_getListStatusByStatusId } from "../../fun/get/get_list_status_by_status_id";
+import ComponentGlobal_IsEmptyData from "@/app_modules/component_global/is_empty_data";
+import { Center, Loader } from "@mantine/core";
+import _ from "lodash";
+import { ScrollOnly } from "next-scroll-loader";
+import { useState } from "react";
+import ComponentJob_CardStatus from "../../component/card/card_view";
+import job_getAllStatusPublish from "../../fun/get/status/get_list_publish";
 
 export default function Job_Publish({ listPublish }: { listPublish: any }) {
+  const [data, setData] = useState(listPublish);
+  const [activePage, setActivePage] = useState(1);
+
   return (
     <>
-      <ComponentJob_CardViewStatus
-        listData={listPublish}
-        path={RouterJob.detail_publish}
-      />
+      {_.isEmpty(data) ? (
+        <ComponentGlobal_IsEmptyData />
+      ) : (
+        // --- Main component --- //
+        <ScrollOnly
+          height="75vh"
+          renderLoading={() => (
+            <Center mt={"lg"}>
+              <Loader color={"yellow"} />
+            </Center>
+          )}
+          data={data}
+          setData={setData}
+          moreData={async () => {
+            const loadData = await job_getAllStatusPublish({
+              page: activePage + 1,
+            });
+
+            setActivePage((val) => val + 1);
+
+            return loadData;
+          }}
+        >
+          {(item) => (
+            <ComponentJob_CardStatus
+              data={item}
+              path={RouterJob.detail_publish}
+            />
+          )}
+        </ScrollOnly>
+      )}
     </>
   );
 }

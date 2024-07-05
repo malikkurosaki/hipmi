@@ -66,7 +66,7 @@ export default function ComponentGlobal_UI_HeaderTamplate({
               }}
             >
               {isLoading ? (
-                <Loader size={20} />
+                <Loader color={AccentColor.yellow} size={20} />
               ) : iconLeft ? (
                 iconLeft
               ) : (
@@ -85,14 +85,18 @@ export default function ComponentGlobal_UI_HeaderTamplate({
             <Box>{iconRight}</Box>
           ) : (
             <ActionIcon
-              loading={isRightLoading ? true : false}
+              c={"white"}
               variant="transparent"
               onClick={() => {
                 setRightLoading(true);
                 router.push(routerRight);
               }}
             >
-              {iconRight}
+              {isRightLoading ? (
+                <Loader color={AccentColor.yellow} size={20} />
+              ) : (
+                iconRight
+              )}
             </ActionIcon>
           )}
         </Group>
