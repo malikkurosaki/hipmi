@@ -1,7 +1,3 @@
-import UserSearch_MainView from "./main";
-import LayoutUserSearch_MainView from "./main/layout";
+import UserSearch_MainView from "./view_user_seach";
 
-export {
-    UserSearch_MainView,
-    LayoutUserSearch_MainView,
-}
+export { UserSearch_MainView };

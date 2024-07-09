@@ -1,43 +1,49 @@
 "use client";
 
-import {
-  ActionIcon,
-  Box,
-  Center,
-  Group,
-  Image,
-  Loader,
-  LoadingOverlay,
-  Overlay,
-  Paper,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@mantine/core";
-
-import {
-  IconAffiliate,
-  IconBriefcase,
-  IconHeartHandshake,
-  IconPackageImport,
-  IconPresentation,
-  IconUserSearch,
-} from "@tabler/icons-react";
-
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
+import ComponentGlobal_IsEmptyData from "@/app_modules/component_global/is_empty_data";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import {
+  Box,
+  Paper,
+  Stack,
+  SimpleGrid,
+  ActionIcon,
+  Loader,
+  Group,
+  Image,
+  Text,
+  Avatar,
+  Center,
+} from "@mantine/core";
+import {
+  IconPresentation,
+  IconAffiliate,
+  IconPackageImport,
+  IconHeartHandshake,
+  IconBriefcase,
+  IconUserSearch,
+  IconMap2,
+  IconMessages,
+  IconShoppingBag,
+  IconUserCircle,
+} from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { AccentColor, MainColor } from "../component_global/color/color_pallet";
-import ComponentGlobal_IsEmptyData from "../component_global/is_empty_data";
-import { ComponentGlobal_NotifikasiPeringatan } from "../component_global/notif_global/notifikasi_peringatan";
-import { MODEL_JOB } from "../job/model/interface";
-import { MODEL_USER } from "./model/interface";
+import { MODEL_USER } from "../model/interface";
+import { MODEL_JOB } from "@/app_modules/job/model/interface";
+import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 
-export default function HomeView({
+export function Home_UiView({
   dataUser,
   dataJob,
 }: {
@@ -86,7 +92,7 @@ export default function HomeView({
 
   return (
     <>
-      <Box p={"md"}>
+      <Box>
         <Paper
           radius={"xl"}
           mb={"xs"}
@@ -130,7 +136,7 @@ export default function HomeView({
                     } else {
                       setIsLoading(true);
                       setPageId(e.id);
-                      router.push(e.link);
+                      router.push(e.link, { scroll: false });
                     }
                   }
                 }}
@@ -179,13 +185,14 @@ export default function HomeView({
                     );
                   } else {
                     setLoadingJob(true);
-                    return router.push(routePageJob.link);
+                    return router.push(routePageJob.link, { scroll: false });
                   }
                 }
               }}
             >
               <Group>
                 <ActionIcon
+                  variant="transparent"
                   size={40}
                   c={routePageJob.link === "" ? "gray.3" : "white"}
                 >
@@ -226,6 +233,126 @@ export default function HomeView({
             </Stack>
           </Paper>
         </Stack>
+      </Box>
+    </>
+  );
+}
+
+const listHalamanFooter = [
+  {
+    id: 1,
+    name: "Forums",
+    icon: <IconMessages />,
+    link: RouterForum.splash,
+  },
+
+  {
+    id: 2,
+    name: "MarketPlace",
+    icon: <IconShoppingBag />,
+    link: "",
+  },
+  {
+    id: 3,
+    name: "Business Maps",
+    icon: <IconMap2 />,
+    link: "",
+  },
+];
+
+export function Home_UiFooter({ dataUser }: { dataUser: MODEL_USER }) {
+  const router = useRouter();
+  const [isLoadingProfil, setIsLoadingProfile] = useState(false);
+  const [isLoadingPage, setIsLoadingPage] = useState(false);
+  const [pageId, setPageId] = useState(0);
+  return (
+    <>
+      <Box
+        style={{
+          zIndex: 99,
+          borderRadius: "20px 20px 0px 0px",
+        }}
+        w={"100%"}
+        bottom={0}
+        h={"10vh"}
+      >
+        <SimpleGrid cols={4}>
+          {listHalamanFooter.map((e, i) => (
+            <Center h={"10vh"} key={e.id}>
+              <Stack align="center" spacing={0}>
+                <ActionIcon
+                  radius={"xl"}
+                  // loading={isLoadingPage && e.id === pageId ? true : false}
+                  c={e.link === "" ? "gray" : "white"}
+                  variant="transparent"
+                  onClick={() => {
+                    if (dataUser?.Profile === null) {
+                      ComponentGlobal_NotifikasiPeringatan("Lengkapi Profile");
+                    } else {
+                      e.link === ""
+                        ? ComponentGlobal_NotifikasiPeringatan("Cooming Soon")
+                        : (router.push(e.link, { scroll: false }),
+                          setIsLoadingPage(true),
+                          setPageId(e?.id));
+                    }
+                  }}
+                >
+                  {isLoadingPage && e.id === pageId ? (
+                    <Loader color={AccentColor.yellow} size={20} />
+                  ) : (
+                    e.icon
+                  )}
+                </ActionIcon>
+                <Text c={e.link === "" ? "gray" : "white"} fz={"xs"}>
+                  {e.name}
+                </Text>
+              </Stack>
+            </Center>
+          ))}
+
+          <Center h={"10vh"}>
+            <Stack
+              align="center"
+              spacing={2}
+              onClick={() => {
+                setIsLoadingProfile(true);
+                if (dataUser?.Profile === null) {
+                  router.push(RouterProfile.create, { scroll: false });
+                } else {
+                  router.push(
+                    RouterProfile.katalog + `${dataUser?.Profile?.id}`,
+                    { scroll: false }
+                  );
+                }
+              }}
+            >
+              <ActionIcon variant={"transparent"}>
+                {dataUser?.Profile === null ? (
+                  <IconUserCircle color="white" />
+                ) : isLoadingProfil ? (
+                  <Loader color={AccentColor.yellow} size={20} />
+                ) : (
+                  <Avatar
+                    radius={"xl"}
+                    size={25}
+                    sx={{
+                      borderStyle: "solid",
+                      borderWidth: "0.5px",
+                      borderColor: "white",
+                    }}
+                    src={
+                      RouterProfile.api_foto_profile +
+                      `${dataUser?.Profile.imagesId}`
+                    }
+                  />
+                )}
+              </ActionIcon>
+              <Text fz={"xs"} c={"white"}>
+                Profile
+              </Text>
+            </Stack>
+          </Center>
+        </SimpleGrid>
       </Box>
     </>
   );

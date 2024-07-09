@@ -1,6 +1,7 @@
 "use client";
 
 import { MainColor } from "@/app_modules/component_global/color/color_pallet";
+import ComponentGlobal_SplashScreen from "@/app_modules/component_global/splash/splash_global";
 import { BackgroundImage, Center, Image, Paper, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
@@ -11,12 +12,12 @@ export default function SplashScreen({ data }: { data: any }) {
   useShallowEffect(() => {
     if (!data) {
       setTimeout(() => {
-        return router.push("/dev/auth/login");
-      }, 2000);
+        return router.push("/dev/auth/login", { scroll: false });
+      }, 1000);
     } else {
       setTimeout(() => {
-        return router.push("/dev/home");
-      }, 2000);
+        return router.push("/dev/home", { scroll: false });
+      }, 1000);
     }
   }, []);
 

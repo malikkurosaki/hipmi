@@ -28,8 +28,8 @@ import { useShallowEffect } from "@mantine/hooks";
 import { ScrollOnly } from "next-scroll-loader";
 import _ from "lodash";
 import ComponentGlobal_V2_LoadingPage from "../component_global/loading_page_v2";
-import ComponentGlobal_UI_LayoutTamplate from "../component_global/ui/ui_layout_tamplate";
-import ComponentGlobal_UI_HeaderTamplate from "../component_global/ui/ui_header_tamplate";
+import LayoutGlobal_UI_Tamplate from "../component_global/ui/ui_layout_tamplate";
+import LayoutGlobal_UI_HeaderTamplate from "../component_global/ui/ui_header_tamplate";
 import { Icon123, IconPencilPlus, IconX } from "@tabler/icons-react";
 import { AccentColor, MainColor } from "../component_global/color/color_pallet";
 
@@ -83,9 +83,9 @@ export default function Coba_TestLoading() {
 
   return (
     <>
-      <ComponentGlobal_UI_LayoutTamplate>
+      <LayoutGlobal_UI_Tamplate>
         <CreateButton />
-      </ComponentGlobal_UI_LayoutTamplate>
+      </LayoutGlobal_UI_Tamplate>
     </>
   );
 
@@ -203,7 +203,7 @@ function BackgroundImageComponent() {
           pos={"sticky"}
           top={0}
         >
-          <ComponentGlobal_UI_HeaderTamplate title="Coba" />
+          <LayoutGlobal_UI_HeaderTamplate title="Coba" />
         </Box>
 
         {/* Children */}

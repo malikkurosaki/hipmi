@@ -158,7 +158,7 @@ export default function Forum_Beranda({
         </ActionIcon>
       </Affix>
 
-      <Stack spacing={"xl"}>
+      <Stack spacing={"xl"} >
         <TextInput
           radius={"xl"}
           placeholder="Topik forum apa yang anda cari hari ini ?"
@@ -179,7 +179,7 @@ export default function Forum_Beranda({
         ) : (
           // --- Main component --- //
           <ScrollOnly
-            height="83vh"
+            height="85vh"
             renderLoading={() => (
               <Center mt={"lg"}>
                 <Loader color={"yellow"} />

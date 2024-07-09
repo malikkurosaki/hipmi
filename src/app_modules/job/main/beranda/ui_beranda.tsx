@@ -9,6 +9,7 @@ import { ScrollOnly } from "next-scroll-loader";
 import ComponentJob_BerandaCardView from "../../component/beranda/card_view";
 import { job_getAllListPublish } from "../../fun/get/get_all_publish";
 import ComponentJob_CreateButton from "../../component/button/create_button";
+import { IconSearch } from "@tabler/icons-react";
 
 export function Job_UiBeranda({ listData }: { listData: MODEL_JOB[] }) {
   const [data, setData] = useState(listData);
@@ -31,12 +32,14 @@ export function Job_UiBeranda({ listData }: { listData: MODEL_JOB[] }) {
         <ComponentJob_CreateButton />
 
         <TextInput
+
           style={{
             position: "sticky",
             top: 0,
             zIndex: 99,
           }}
           radius={"xl"}
+          icon={<IconSearch/>}
           placeholder="Pekerjaan apa yang anda cari ?"
           onChange={(val) => {
             onSearch(val.currentTarget.value);

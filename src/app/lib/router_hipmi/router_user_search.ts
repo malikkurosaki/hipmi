@@ -1,3 +1,3 @@
 export const RouterUserSearch = {
-    main: "/dev/user_search/main"
+    main: "/dev/user-search"
 }

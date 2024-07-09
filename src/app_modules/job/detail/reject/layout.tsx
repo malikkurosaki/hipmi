@@ -5,8 +5,8 @@ import React from "react";
 import ComponentJob_HeaderTamplate from "../../component/header_tamplate";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import ComponentGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
-import ComponentGlobal_UI_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import LayoutGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import LayoutGlobal_UI_Tamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
 import { IconEdit } from "@tabler/icons-react";
 
 export default function LayoutJob_DetailReject({
@@ -16,11 +16,11 @@ export default function LayoutJob_DetailReject({
 }) {
   return (
     <>
-      <ComponentGlobal_UI_LayoutTamplate
-        header={<ComponentGlobal_UI_HeaderTamplate title="Detail Reject" />}
+      <LayoutGlobal_UI_Tamplate
+        header={<LayoutGlobal_UI_HeaderTamplate title="Detail Reject" />}
       >
         {children}
-      </ComponentGlobal_UI_LayoutTamplate>
+      </LayoutGlobal_UI_Tamplate>
     </>
   );
 }

@@ -26,8 +26,8 @@ import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
-import ComponentGlobal_UI_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
-import ComponentGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import LayoutGlobal_UI_Tamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import LayoutGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
 
 export default function LayoutForum_Main({
   children,
@@ -43,9 +43,9 @@ export default function LayoutForum_Main({
 
   return (
     <>
-      <ComponentGlobal_UI_LayoutTamplate
+      <LayoutGlobal_UI_Tamplate
         header={
-          <ComponentGlobal_UI_HeaderTamplate
+          <LayoutGlobal_UI_HeaderTamplate
             title="FORUM"
             iconRight={
               <ActionIcon
@@ -80,7 +80,7 @@ export default function LayoutForum_Main({
         }
       >
         {children}
-      </ComponentGlobal_UI_LayoutTamplate>
+      </LayoutGlobal_UI_Tamplate>
 
       {/* <AppComponentGlobal_LayoutTamplate
         header={

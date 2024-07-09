@@ -3,8 +3,8 @@
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { MainColor } from "@/app_modules/component_global/color/color_pallet";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import ComponentGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
-import ComponentGlobal_UI_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import LayoutGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import LayoutGlobal_UI_Tamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
 import { ActionIcon, SimpleGrid, Stack, Text } from "@mantine/core";
 import { IconHistory, IconHome, IconReservedLine } from "@tabler/icons-react";
 import { useAtom } from "jotai";
@@ -46,9 +46,9 @@ export default function LayoutJob_Main({
 
   return (
     <>
-      <ComponentGlobal_UI_LayoutTamplate
+      <LayoutGlobal_UI_Tamplate
         header={
-          <ComponentGlobal_UI_HeaderTamplate
+          <LayoutGlobal_UI_HeaderTamplate
             title="JOB"
             routerLeft={RouterHome.main_home}
           />
@@ -118,7 +118,7 @@ export default function LayoutJob_Main({
         }
       >
         {children}
-      </ComponentGlobal_UI_LayoutTamplate>
+      </LayoutGlobal_UI_Tamplate>
     </>
   );
 }

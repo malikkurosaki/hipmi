@@ -1,7 +1,7 @@
 "use client";
 
-import ComponentGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
-import ComponentGlobal_UI_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import LayoutGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import LayoutGlobal_UI_Tamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
 import React from "react";
 
 export default function LayoutJob_MainDetail({
@@ -11,11 +11,11 @@ export default function LayoutJob_MainDetail({
 }) {
   return (
     <>
-      <ComponentGlobal_UI_LayoutTamplate
-        header={<ComponentGlobal_UI_HeaderTamplate title="Detail Job" />}
+      <LayoutGlobal_UI_Tamplate
+        header={<LayoutGlobal_UI_HeaderTamplate title="Detail Job" />}
       >
         {children}
-      </ComponentGlobal_UI_LayoutTamplate>
+      </LayoutGlobal_UI_Tamplate>
     </>
   );
 }

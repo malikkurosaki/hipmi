@@ -3,8 +3,8 @@
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 import React from "react";
 import ComponentForum_HeaderRataKiri from "../../component/header/header_rata_kiri";
-import ComponentGlobal_UI_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
-import ComponentGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import LayoutGlobal_UI_Tamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import LayoutGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
 
 export default function LayoutForum_ReportKomentar({
   children,
@@ -13,13 +13,13 @@ export default function LayoutForum_ReportKomentar({
 }) {
   return (
     <>
-      <ComponentGlobal_UI_LayoutTamplate
+      <LayoutGlobal_UI_Tamplate
         header={
-          <ComponentGlobal_UI_HeaderTamplate title="Mengumpulkan Informasi Komentar" />
+          <LayoutGlobal_UI_HeaderTamplate title="Mengumpulkan Informasi Komentar" />
         }
       >
         {children}
-      </ComponentGlobal_UI_LayoutTamplate>
+      </LayoutGlobal_UI_Tamplate>
       {/* <AppComponentGlobal_LayoutTamplate
         header={
           <ComponentForum_HeaderRataKiri title="Mengumpulkan Informasi Komentar"/>
