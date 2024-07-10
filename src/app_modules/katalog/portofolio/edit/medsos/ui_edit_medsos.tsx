@@ -10,6 +10,10 @@ import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
 
 export default function Portofolio_EditMedsosBisnis({
   dataMedsos,
@@ -23,9 +27,23 @@ export default function Portofolio_EditMedsosBisnis({
   return (
     <>
       {/* <pre>{JSON.stringify(dataMedsos, null, 2)}</pre> */}
-      <Paper shadow="lg" p={"sm"}>
+      <Paper
+        p={"sm"}
+        style={{
+          backgroundColor: AccentColor.darkblue,
+          border: `2px solid ${AccentColor.blue}`,
+          borderRadius: "10px ",
+          padding: "15px",
+          color: "white",
+        }}
+      >
         <Stack px={"sm"}>
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Facebook"
             value={medsos.facebook}
             placeholder="Facebook"
@@ -37,6 +55,11 @@ export default function Portofolio_EditMedsosBisnis({
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Instagram"
             value={medsos.instagram}
             placeholder="Instagram"
@@ -48,6 +71,11 @@ export default function Portofolio_EditMedsosBisnis({
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Tiktok"
             value={medsos.tiktok}
             placeholder="Tiktok"
@@ -59,6 +87,11 @@ export default function Portofolio_EditMedsosBisnis({
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Twitter"
             value={medsos.twitter}
             placeholder="Twitter"
@@ -70,6 +103,11 @@ export default function Portofolio_EditMedsosBisnis({
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Youtube"
             value={medsos.youtube}
             placeholder="Youtube"
@@ -87,6 +125,12 @@ export default function Portofolio_EditMedsosBisnis({
             loading={loading ? true : false}
             loaderPosition="center"
             onClick={() => onUpdate(router, medsos, setLoading)}
+            style={{
+              backgroundColor: MainColor.yellow,
+              border: `2px solid ${AccentColor.yellow}`,
+              transition: "0.5s",
+              color: "black",
+            }}
           >
             Update
           </Button>

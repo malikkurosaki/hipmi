@@ -11,7 +11,7 @@ import {
 import { AccentColor, MainColor } from "../color/color_pallet";
 import React from "react";
 
-export default function LayoutGlobal_UI_Tamplate({
+export default function UIGlobal_LayoutTamplate({
   children,
   header,
   footer,

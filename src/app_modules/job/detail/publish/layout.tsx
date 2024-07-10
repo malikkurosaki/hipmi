@@ -1,7 +1,7 @@
 "use client";
 
-import LayoutGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
-import LayoutGlobal_UI_Tamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
 import React from "react";
 
 export default function LayoutJob_DetailPublish({
@@ -11,11 +11,11 @@ export default function LayoutJob_DetailPublish({
 }) {
   return (
     <>
-      <LayoutGlobal_UI_Tamplate
-        header={<LayoutGlobal_UI_HeaderTamplate title="Detail Publish" />}
+      <UIGlobal_LayoutTamplate
+        header={<UIGlobal_LayoutHeaderTamplate title="Detail Publish" />}
       >
         {children}
-      </LayoutGlobal_UI_Tamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

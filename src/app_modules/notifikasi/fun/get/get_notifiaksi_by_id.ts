@@ -12,7 +12,7 @@ export default async function notifikasi_getByUserId({page}: {page: number }) {
     take: takeData,
     skip: skipData,
     orderBy: {
-      createdAt: "desc",
+      isRead: "asc"
     },
     where: {
       userId: userId,

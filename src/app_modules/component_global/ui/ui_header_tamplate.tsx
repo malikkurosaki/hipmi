@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { AccentColor, MainColor } from "../color/color_pallet";
 
-export default function LayoutGlobal_UI_HeaderTamplate({
+export default function UIGlobal_LayoutHeaderTamplate({
   title,
   posotion,
   // left button

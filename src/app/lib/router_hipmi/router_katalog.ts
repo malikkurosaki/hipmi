@@ -19,8 +19,12 @@ export const RouterProfile = {
 };
 
 export const RouterPortofolio = {
+  main_detail: "/dev/portofolio/main/",
+
   api_logo_porto: "/api/portofolio/logo/",
   create: "/dev/portofolio/create/",
+
+  daftar_portofolio: "/dev/portofolio/daftar-portofolio/",
 
   //edit
   edit_data_bisnis: "/dev/portofolio/edit/data/",

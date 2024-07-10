@@ -1,5 +1,5 @@
-import LayoutGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
-import LayoutGlobal_UI_Tamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
 import { ComponentForum_UiDetailReportKomentar } from "../component/detail_component/ui_report_komentar";
 
 
@@ -10,11 +10,11 @@ export default function Forum_DetailReportKomentar({
 }) {
   return (
     <>
-      <LayoutGlobal_UI_Tamplate
-        header={<LayoutGlobal_UI_HeaderTamplate title="Report Komentar" />}
+      <UIGlobal_LayoutTamplate
+        header={<UIGlobal_LayoutHeaderTamplate title="Report Komentar" />}
       >
         {<ComponentForum_UiDetailReportKomentar dataKomentar={dataKomentar} />}
-      </LayoutGlobal_UI_Tamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

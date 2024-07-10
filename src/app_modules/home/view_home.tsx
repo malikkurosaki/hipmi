@@ -1,5 +1,5 @@
-import LayoutGlobal_UI_HeaderTamplate from "../component_global/ui/ui_header_tamplate";
-import LayoutGlobal_UI_Tamplate from "../component_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "../component_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "../component_global/ui/ui_layout_tamplate";
 import { MODEL_JOB } from "../job/model/interface";
 import {
   ComponentHome_ButtonHeaderLeft,
@@ -19,9 +19,9 @@ export default function HomeView({
 }) {
   return (
     <>
-      <LayoutGlobal_UI_Tamplate
+      <UIGlobal_LayoutTamplate
         header={
-          <LayoutGlobal_UI_HeaderTamplate
+          <UIGlobal_LayoutHeaderTamplate
             title="HIPMI"
             customButtonLeft={
               <ComponentHome_ButtonHeaderLeft dataUser={dataUser} />
@@ -37,7 +37,7 @@ export default function HomeView({
         footer={<Home_UiFooter dataUser={dataUser} />}
       >
         <Home_UiView dataJob={dataJob} dataUser={dataUser} />
-      </LayoutGlobal_UI_Tamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

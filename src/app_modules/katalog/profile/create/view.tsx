@@ -1,8 +1,12 @@
 "use client";
 
-import { myConsole } from "@/app/fun/my_console";
-import { ApiHipmi } from "@/app/lib/api";
-import { Warna } from "@/app/lib/warna";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
+import ComponentGlobal_BoxInformation from "@/app_modules/component_global/box_information";
+import { AccentColor, MainColor } from "@/app_modules/component_global/color/color_pallet";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import {
   AspectRatio,
   Avatar,
@@ -17,25 +21,13 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import { useAtom } from "jotai";
+import { IconAt, IconCamera, IconUpload } from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
-import funCreateNewProfile from "../fun/fun_create_profile";
-import { IconAt, IconCamera, IconUpload } from "@tabler/icons-react";
-import ComponentKatalog_NotedBox from "../../component/noted_box";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { MODEL_PROFILE } from "../model/interface";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import { useForm } from "@mantine/form";
-import { useTimeout } from "@mantine/hooks";
 import { validRegex } from "../../component/regular_expressions";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import funCreateNewProfile from "../fun/fun_create_profile";
+import { MODEL_PROFILE } from "../model/interface";
 
 export default function CreateProfile({ userId }: { userId: any }) {
   const [filePP, setFilePP] = useState<File | null>(null);
@@ -55,7 +47,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
       <Stack px={"sm"} spacing={"xl"}>
         <Box>
           <Stack>
-            <ComponentKatalog_NotedBox informasi="Upload foto profile anda." />
+            <ComponentGlobal_BoxInformation informasi="Upload foto profile anda." />
             <Center>
               {imgPP ? (
                 <Paper shadow="lg" radius={"100%"}>
@@ -100,8 +92,6 @@ export default function CreateProfile({ userId }: { userId: any }) {
                       setImgPP(buffer);
                       setFilePP(files);
                     }
-                    // console.log(buffer, "ini buffer");
-                    // console.log(files, " ini file");
                   } catch (error) {
                     console.log(error);
                   }
@@ -112,10 +102,10 @@ export default function CreateProfile({ userId }: { userId: any }) {
                   <Button
                     {...props}
                     radius={"xl"}
-                    variant="outline"
-                    w={150}
                     leftIcon={<IconCamera />}
-                    compact
+                    bg={MainColor.yellow}
+                    color="yellow"
+                    c={"black"}
                   >
                     Upload
                   </Button>
@@ -127,7 +117,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
 
         <Box>
           <Stack>
-            <ComponentKatalog_NotedBox informasi="Upload foto latar belakang profile anda." />
+            <ComponentGlobal_BoxInformation informasi="Upload foto latar belakang profile anda." />
             <AspectRatio ratio={16 / 9}>
               <Paper radius={"md"} withBorder shadow="lg" bg={"gray.2"}>
                 {imgBG ? (
@@ -171,10 +161,10 @@ export default function CreateProfile({ userId }: { userId: any }) {
                   <Button
                     {...props}
                     radius={"xl"}
-                    variant="outline"
-                    w={150}
                     leftIcon={<IconCamera />}
-                    compact
+                    bg={MainColor.yellow}
+                    color="yellow"
+                    c={"black"}
                   >
                     Upload
                   </Button>
@@ -186,8 +176,11 @@ export default function CreateProfile({ userId }: { userId: any }) {
 
         <Stack mb={"lg"}>
           <TextInput
+            styles={{
+              label: { color: "white" },
+            }}
             withAsterisk
-            label="Nama"
+            label={"Nama"}
             maxLength={50}
             placeholder="Nama lengkap"
             onChange={(val) => {
@@ -198,6 +191,9 @@ export default function CreateProfile({ userId }: { userId: any }) {
             }}
           />
           <TextInput
+            styles={{
+              label: { color: "white" },
+            }}
             withAsterisk
             icon={<IconAt size={15} />}
             label="Email"
@@ -218,6 +214,9 @@ export default function CreateProfile({ userId }: { userId: any }) {
             }}
           />
           <TextInput
+            styles={{
+              label: { color: "white" },
+            }}
             withAsterisk
             label="Alamat"
             maxLength={100}
@@ -231,6 +230,9 @@ export default function CreateProfile({ userId }: { userId: any }) {
           />
 
           <Select
+            styles={{
+              label: { color: "white" },
+            }}
             withAsterisk
             label="Jenis Kelamin"
             placeholder="Pilih satu"
@@ -315,10 +317,14 @@ function ButtonAction({
         loaderPosition="center"
         mt={"md"}
         radius={50}
-        bg={Warna.hijau_muda}
-        color="green"
+        bg={MainColor.yellow}
+        color="yellow"
         onClick={() => {
           onSubmit();
+        }}
+        style={{
+          border: `2px solid ${AccentColor.yellow}`,
+          color: "black",
         }}
       >
         Simpan

@@ -17,8 +17,8 @@ import ComponentJob_HeaderTamplate from "../../component/header_tamplate";
 import { IconDots, IconDotsVertical, IconEdit, IconX } from "@tabler/icons-react";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
-import LayoutGlobal_UI_Tamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
-import LayoutGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
 import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -48,9 +48,9 @@ export default function LayoutJob_DetailDraft({
 
   return (
     <>
-      <LayoutGlobal_UI_Tamplate
+      <UIGlobal_LayoutTamplate
         header={
-          <LayoutGlobal_UI_HeaderTamplate
+          <UIGlobal_LayoutHeaderTamplate
             title="Detail Draft"
             iconRight={
               <ActionIcon variant="transparent" onClick={() => open()}>
@@ -62,7 +62,7 @@ export default function LayoutJob_DetailDraft({
         }
       >
         {children}
-      </LayoutGlobal_UI_Tamplate>
+      </UIGlobal_LayoutTamplate>
 
       <ComponentGlobal_UI_Drawer
         opened={opened}

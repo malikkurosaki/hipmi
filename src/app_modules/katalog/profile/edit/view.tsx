@@ -12,6 +12,7 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/
 import { validRegex } from "../../component/regular_expressions";
 import { Profile_funEditById } from "../fun/update/fun_edit_profile_by_id";
 import { MODEL_PROFILE } from "../model/interface";
+import { MainColor } from "@/app_modules/component_global/color/color_pallet";
 
 export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
   const router = useRouter();
@@ -50,6 +51,11 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
       {/* <pre>{JSON.stringify(dataProfile, null, 2)}</pre> */}
       <Stack px={"sm"}>
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Nomor"
           disabled
@@ -57,6 +63,11 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         />
 
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Username"
           error={
@@ -78,6 +89,11 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         />
 
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Nama"
           placeholder="nama"
@@ -99,6 +115,11 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         />
 
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Email"
           placeholder="email"
@@ -122,6 +143,11 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         />
 
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Alamat"
           placeholder="alamat"
@@ -143,6 +169,11 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         />
 
         <Select
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Jenis Kelamin"
           value={dataProfile?.jenisKelamin}
@@ -161,8 +192,9 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         <Button
           mt={"md"}
           radius={50}
-          bg={Warna.biru}
-          color="cyan"
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
           loading={loading ? true : false}
           loaderPosition="center"
           onClick={() => onUpdate()}

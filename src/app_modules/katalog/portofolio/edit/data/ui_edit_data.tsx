@@ -1,20 +1,22 @@
 "use client";
 
-import { Box, Button, Select, Stack, TextInput, Textarea } from "@mantine/core";
+import {
+  MainColor
+} from "@/app_modules/component_global/color/color_pallet";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { Button, Select, Stack, TextInput, Textarea } from "@mantine/core";
+import _ from "lodash";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Portofolio_funEditDataBisnis } from "../../fun/edit/fun_edit_data_bisnis_by_id";
 import {
   MODEL_PORTOFOLIO,
   MODEL_PORTOFOLIO_BIDANG_BISNIS,
 } from "../../model/interface";
-import { useState } from "react";
-import _ from "lodash";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useRouter } from "next/navigation";
-import { Portofolio_funEditDataBisnis } from "../../fun/edit/fun_edit_data_bisnis_by_id";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
 
 export default function Portofolio_EditDataBisnis({
   dataPorto,
@@ -30,9 +32,14 @@ export default function Portofolio_EditDataBisnis({
   return (
     <>
       {/* <pre>{JSON.stringify(porto, null, 2)}</pre> */}
-      <Stack spacing={50} p={"md"}>
+      <Stack spacing={50} p={"sm"}>
         <Stack>
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             value={value.namaBisnis}
             label="Nama Bisnis"
@@ -53,6 +60,11 @@ export default function Portofolio_EditDataBisnis({
             }}
           />
           <Select
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             value={value.MasterBidangBisnis.id}
             label="Bidang Bisnis"
@@ -71,6 +83,11 @@ export default function Portofolio_EditDataBisnis({
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             value={value.alamatKantor}
             label="Alamat Kantor"
@@ -91,6 +108,11 @@ export default function Portofolio_EditDataBisnis({
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             value={value.tlpn}
             label="Nomor Telepon Kantor"
@@ -113,6 +135,11 @@ export default function Portofolio_EditDataBisnis({
           />
           <Stack spacing={5}>
             <Textarea
+              styles={{
+                label: {
+                  color: "white",
+                },
+              }}
               autosize
               minRows={2}
               maxRows={5}
@@ -142,11 +169,18 @@ export default function Portofolio_EditDataBisnis({
           </Stack>
         </Stack>
         <Button
+          disabled={_.values(value).includes("") ? true : false}
           radius={"xl"}
           loading={loading ? true : false}
           loaderPosition="center"
           onClick={() => {
             onUpdate(router, value as any, setLoading);
+          }}
+          bg={MainColor.yellow}
+          color={"yellow"}
+          c={"black"}
+          style={{
+            transition: "0.5s",
           }}
         >
           Update

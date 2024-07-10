@@ -1,16 +1,16 @@
 import {
-  Drawer,
-  Stack,
-  Group,
   ActionIcon,
+  Drawer,
+  Group,
   SimpleGrid,
+  Stack,
   Text,
-  Box,
 } from "@mantine/core";
-import { IconX, IconEdit } from "@tabler/icons-react";
-import { MainColor, AccentColor } from "../color/color_pallet";
-import React from "react";
+import { IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { AccentColor } from "../color/color_pallet";
+import ComponentGlobal_UI_Loader from "./ui_loader";
 
 interface MODEL_DRAWER {
   id: string;
@@ -25,9 +25,19 @@ export default function ComponentGlobal_UI_Drawer({
 }: {
   opened: boolean;
   close: () => void;
-  component: MODEL_DRAWER[] | any[];
+  component:
+    | {
+        id: string;
+        name: string;
+        icon: string;
+        path: string;
+      }[]
+    | any[];
 }) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [pageId, setPageId] = useState("");
+
   return (
     <>
       <Drawer
@@ -69,12 +79,20 @@ export default function ComponentGlobal_UI_Drawer({
                 <ActionIcon
                   variant="transparent"
                   c="white"
-                  onClick={() => router.push(e.path)}
+                  onClick={() => {
+                    setPageId(e?.id);
+                    setIsLoading(true);
+                    router.push(e?.path);
+                  }}
                 >
-                  {e.icon}
+                  {isLoading && e?.id === pageId ? (
+                    <ComponentGlobal_UI_Loader />
+                  ) : (
+                    e?.icon
+                  )}
                 </ActionIcon>
                 <Text align="center" color="white">
-                  {e.name}
+                  {e?.name}
                 </Text>
               </Stack>
             ))}

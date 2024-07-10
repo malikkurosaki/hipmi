@@ -1,5 +1,5 @@
-import LayoutGlobal_UI_HeaderTamplate from "../component_global/ui/ui_header_tamplate";
-import LayoutGlobal_UI_Tamplate from "../component_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "../component_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "../component_global/ui/ui_layout_tamplate";
 import { Notifikasi_UiView } from "./component/ui_notifiaksi";
 
 export default function Notifikasi_MainView({
@@ -9,11 +9,11 @@ export default function Notifikasi_MainView({
 }) {
   return (
     <>
-      <LayoutGlobal_UI_Tamplate
-        header={<LayoutGlobal_UI_HeaderTamplate title="Notifikasi" />}
+      <UIGlobal_LayoutTamplate
+        header={<UIGlobal_LayoutHeaderTamplate title="Notifikasi" />}
       >
         <Notifikasi_UiView listNotifikasi={listNotifikasi} />
-      </LayoutGlobal_UI_Tamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

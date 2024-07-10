@@ -1,7 +1,7 @@
 "use client";
 
-import LayoutGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
-import LayoutGlobal_UI_Tamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
 import { ComponentKatalog_ButtonHeaderRight } from "../component/button_header_right";
 
 export default function KatalogLayout({
@@ -17,9 +17,9 @@ export default function KatalogLayout({
 }) {
   return (
     <>
-      <LayoutGlobal_UI_Tamplate
+      <UIGlobal_LayoutTamplate
         header={
-          <LayoutGlobal_UI_HeaderTamplate
+          <UIGlobal_LayoutHeaderTamplate
             title="KATALOG"
             customButtonRight={
               <ComponentKatalog_ButtonHeaderRight
@@ -32,7 +32,7 @@ export default function KatalogLayout({
         }
       >
         {children}
-      </LayoutGlobal_UI_Tamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

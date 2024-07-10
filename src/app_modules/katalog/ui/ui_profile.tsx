@@ -15,7 +15,7 @@ import {
   Text,
   ThemeIcon,
 } from "@mantine/core";
-import { MODEL_PROFILE } from "./model/interface";
+import { MODEL_PROFILE } from "../profile/model/interface";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";

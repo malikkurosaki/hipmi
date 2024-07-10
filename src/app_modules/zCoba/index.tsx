@@ -10,7 +10,7 @@ import { useState } from "react";
 
 import { IconPencilPlus } from "@tabler/icons-react";
 import _ from "lodash";
-import LayoutGlobal_UI_Tamplate from "../component_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutTamplate from "../component_global/ui/ui_layout_tamplate";
 
 
 const newData = Array(20)
@@ -41,10 +41,10 @@ export default function Coba_TestLoading() {
 
   return (
     <>
-      <LayoutGlobal_UI_Tamplate>
+      <UIGlobal_LayoutTamplate>
         {/* <CreateButton /> */}
         <Button onClick={() => setOpenDrawer(true)}>Click</Button>
-      </LayoutGlobal_UI_Tamplate>
+      </UIGlobal_LayoutTamplate>
 
     </>
   );
