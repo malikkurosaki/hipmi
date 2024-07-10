@@ -19,7 +19,7 @@ import {
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import moment from "moment";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import {
   IconCircleFilled,
@@ -36,15 +36,15 @@ import ComponentForum_PostingButtonMore from "../more_button/posting_button_more
 import ComponentForum_DetailMoreButton from "../more_button/detail_more_button";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
 import { useDisclosure } from "@mantine/hooks";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { useState } from "react";
 import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_by_id";
 import { forum_funEditStatusPostingById } from "../../fun/edit/fun_edit_status_posting_by_id";
 import { forum_getOnePostingById } from "../../fun/get/get_one_posting_by_id";
 import mqtt_client from "@/util/mqtt_client";
-import { AccentColor, MainColor } from "@/app_modules/component_global/color/color_pallet";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function ComponentForum_DetailHeader({
   data,

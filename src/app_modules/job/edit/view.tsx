@@ -1,9 +1,8 @@
 "use client";
 
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import {
-  Box,
   Button,
   Center,
   FileButton,
@@ -15,31 +14,29 @@ import {
   Stack,
   Text,
   TextInput,
-  Textarea,
-  Title,
+  Title
 } from "@mantine/core";
-import { IconCamera, IconUpload, IconXboxX } from "@tabler/icons-react";
-import { useAtom } from "jotai";
-import _ from "lodash";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { gs_job_hot_menu, gs_job_status } from "../global_state";
-import { MODEL_JOB } from "../model/interface";
 import {
   useDisclosure,
   useShallowEffect,
   useWindowScroll,
 } from "@mantine/hooks";
+import { IconCamera, IconUpload } from "@tabler/icons-react";
+import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { gs_job_hot_menu, gs_job_status } from "../global_state";
+import { MODEL_JOB } from "../model/interface";
 
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { Job_EditById } from "../fun/edit/fun_edit_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import dynamic from "next/dynamic";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import dynamic from "next/dynamic";
+import { Job_EditById } from "../fun/edit/fun_edit_by_id";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");

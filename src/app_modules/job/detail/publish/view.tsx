@@ -4,9 +4,9 @@ import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+} from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { Button, Group, Modal, Paper, Stack, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useAtom } from "jotai";
@@ -16,7 +16,7 @@ import ComponentJob_DetailData from "../../component/detail/detail_data";
 import { Job_funEditArsipById } from "../../fun/edit/fun_edit_arsip_by_id";
 import { gs_job_hot_menu, gs_job_status } from "../../global_state";
 import { MODEL_JOB } from "../../model/interface";
-import ComponentGlobal_UI_Modal from "@/app_modules/component_global/ui/ui_modal";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 
 export default function Job_DetailPublish({ dataJob }: { dataJob: MODEL_JOB }) {
   return (
@@ -93,7 +93,7 @@ function ButtonAction({ jobId }: { jobId: string }) {
         </Stack>
       </Modal> */}
 
-      <ComponentGlobal_UI_Modal
+      <UIGlobal_Modal
         opened={opened}
         close={() => close()}
         title={

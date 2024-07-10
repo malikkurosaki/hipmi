@@ -4,8 +4,8 @@ import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
-import ComponentGlobal_UI_Loader from "@/app_modules/component_global/ui/ui_loader";
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 import {
   ActionIcon,
   Box,
@@ -60,7 +60,7 @@ export function Portofolio_UiListView({
                 }}
               >
                 {loading ? (
-                  <ComponentGlobal_UI_Loader />
+                  <ComponentGlobal_Loader />
                 ) : (
                   <IconPencilPlus color={AccentColor.yellow} />
                 )}
@@ -107,7 +107,7 @@ export function Portofolio_UiListView({
                       </Text>
                       <Stack>
                         {idPorto === e?.id && loadingPorto ? (
-                          <ComponentGlobal_UI_Loader />
+                          <ComponentGlobal_Loader />
                         ) : (
                           <IconCaretRight color="white" size={25} />
                         )}

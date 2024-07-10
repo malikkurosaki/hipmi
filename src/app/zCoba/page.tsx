@@ -1,5 +1,5 @@
-import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
-import UIGlobal_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import Coba_TestLoading from "@/app_modules/zCoba";
 import { Text } from "@mantine/core";
 

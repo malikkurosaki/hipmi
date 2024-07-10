@@ -1,4 +1,4 @@
-import { ComponentGlobal_NotifikasiPeringatan } from "./notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "../notif_global/notifikasi_peringatan";
 
 /**
  * @returns nilai maksimal untuk upload file di semua module

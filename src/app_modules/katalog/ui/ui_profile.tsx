@@ -3,7 +3,7 @@
 import {
   MainColor,
   AccentColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
 import {
   Avatar,
   Box,

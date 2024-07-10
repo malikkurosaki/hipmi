@@ -2,7 +2,7 @@
 
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import {
   ActionIcon,
   Affix,
@@ -22,7 +22,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentColab_CardSectionData from "../component/card_view/card_section_data";
 import ComponentColab_SectionHeaderAuthorName from "../component/card_view/card_section_header_author_name";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
 import ComponentColab_CardSectionHeaderAuthorName from "../component/card_view/card_section_header_author_name";
 import { MODEL_COLLABORATION } from "../model/interface";
 import ComponentColab_JumlahPartisipan from "../component/card_view/card_section_jumlah_partisipan";

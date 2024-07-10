@@ -9,7 +9,7 @@ import {
   IconBrandYoutube,
 } from "@tabler/icons-react";
 import { MODEL_PORTOFOLIO } from "../model/interface";
-import { AccentColor } from "@/app_modules/component_global/color/color_pallet";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export function Portofolio_UiSosialMedia({
   dataPorto,

@@ -1,8 +1,8 @@
 "use client";
 
 import { Warna } from "@/app/lib/warna";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
-import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
+import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
 import { AppShell, Button, Center, Footer } from "@mantine/core";
 import { IconPencilPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";

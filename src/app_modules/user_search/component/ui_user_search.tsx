@@ -1,19 +1,19 @@
 "use client";
 
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import ComponentGlobal_IsEmptyData from "@/app_modules/component_global/is_empty_data";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import {
   ActionIcon,
   Avatar,
   Box,
   Center,
-  Grid,
   Group,
   Loader,
   Stack,
   Text,
-  TextInput,
+  TextInput
 } from "@mantine/core";
 import { IconChevronRight, IconSearch } from "@tabler/icons-react";
 import _ from "lodash";
@@ -21,8 +21,6 @@ import { ScrollOnly } from "next-scroll-loader";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { userSearch_getAllUser } from "../fun/get/get_all_user";
-import { MainColor } from "@/app_modules/component_global/color/color_pallet";
-import ComponentGlobal_UI_Loader from "@/app_modules/component_global/ui/ui_loader";
 
 export function UserSearch_UiView({ listUser }: { listUser: MODEL_USER[] }) {
   const [data, setData] = useState(listUser);
@@ -91,7 +89,6 @@ function CardView({ data }: { data: MODEL_USER }) {
       <Stack
         spacing={"xs"}
         c="white"
-
         py={"xs"}
         onClick={() => {
           setLoading(true);
@@ -125,7 +122,7 @@ function CardView({ data }: { data: MODEL_USER }) {
             <Center>
               <ActionIcon variant="transparent">
                 {loading ? (
-                  <ComponentGlobal_UI_Loader />
+                  <ComponentGlobal_Loader />
                 ) : (
                   <IconChevronRight color="white" />
                 )}

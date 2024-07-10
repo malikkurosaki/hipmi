@@ -4,7 +4,7 @@ import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import {
   ActionIcon,

@@ -1,7 +1,7 @@
 import { Group, Paper, Stack, Text } from "@mantine/core";
 import { MODEL_PORTOFOLIO } from "../model/interface";
-import { AccentColor } from "@/app_modules/component_global/color/color_pallet";
-import ComponentGlobal_UI_Loader from "@/app_modules/component_global/ui/ui_loader";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 import { IconCaretRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -38,7 +38,7 @@ export function ComponentPortofolio_DaftarBoxView({
           </Text>
           <Stack>
             {isLoading ? (
-              <ComponentGlobal_UI_Loader />
+              <ComponentGlobal_Loader />
             ) : (
               <IconCaretRight color="white" size={25} />
             )}

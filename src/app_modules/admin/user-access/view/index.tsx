@@ -17,8 +17,8 @@ import { IconSearch } from "@tabler/icons-react";
 import adminUserAccess_funEditAccess from "../fun/edit/fun_edit_access";
 import { useState } from "react";
 import adminUserAccess_getListUser from "../fun/get/get_list_all_user";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 
 export default function AdminUserAccess_View({ listUser }: { listUser: any }) {
   const [data, setData] = useState<MODEL_USER[]>(listUser.data);

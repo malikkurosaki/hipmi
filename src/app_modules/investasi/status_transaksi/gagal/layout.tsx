@@ -16,7 +16,7 @@ import {
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { gs_investasiFooter } from "../../g_state";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 
 export default function LayoutStatusTransaksiInvestasi_Gagal({
   children,

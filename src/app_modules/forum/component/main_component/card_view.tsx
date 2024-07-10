@@ -4,7 +4,7 @@ import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
 import { ActionIcon, Card, Group, Stack, Text } from "@mantine/core";
 import { IconMessageCircle, IconMessageCircleX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";

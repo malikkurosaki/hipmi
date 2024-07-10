@@ -7,7 +7,7 @@ import { IconCheck, IconTrash, IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { gs_colab_status } from "@/app_modules/colab/global_state";
 import { useAtom } from "jotai";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function Colab_DetailStatusReject() {

@@ -6,13 +6,13 @@ import { useRouter } from "next/navigation";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { useAtom } from "jotai";
 import { gs_job_status } from "../../global_state";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { MODEL_JOB } from "../../model/interface";
 import { Job_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_status_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import mqtt_client from "@/util/mqtt_client";
-import ComponentGlobal_UI_Modal from "@/app_modules/component_global/ui/ui_modal";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
@@ -62,7 +62,7 @@ function ButtonAction({ jobId }: { jobId: string }) {
   }
   return (
     <>
-      <ComponentGlobal_UI_Modal
+      <UIGlobal_Modal
         opened={isOpen}
         close={() => setOpen(false)}
         title={"Anda yakin membatalkan review ?"}

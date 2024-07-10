@@ -17,11 +17,11 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { gs_event_status } from "../../global_state";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { useDisclosure } from "@mantine/hooks";
 import { MODEL_EVENT } from "../../model/interface";
 import { Event_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import ComponentEvent_CatatanReject from "../../component/catatan_reject";
 import { Event_funDeleteById } from "../../fun/delete/fun_delete";
 

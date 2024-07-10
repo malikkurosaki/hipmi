@@ -17,7 +17,7 @@ import {
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import moment from "moment";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { IconEyeCheck, IconZoomCheck } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";

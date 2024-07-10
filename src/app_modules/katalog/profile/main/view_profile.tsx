@@ -31,7 +31,7 @@ import { useState } from "react";
 import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { MODEL_PROFILE } from "../model/interface";
-import { AccentColor, MainColor } from "@/app_modules/component_global/color/color_pallet";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function ProfileView({
   profile,

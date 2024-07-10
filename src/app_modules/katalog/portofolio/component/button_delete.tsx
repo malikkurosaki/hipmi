@@ -1,5 +1,5 @@
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { Button, Group, Modal, Stack, Title } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Portofolio_funDeletePortofolioById } from "../fun/delete/fun_delete_by_id";
 import { MODEL_PORTOFOLIO } from "../model/interface";
 import { useRouter } from "next/navigation";
-import ComponentGlobal_UI_Modal from "@/app_modules/component_global/ui/ui_modal";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 
 export function ComponentPortofolio_ButtonDelete({
   userLoginId,
@@ -38,7 +38,7 @@ export function ComponentPortofolio_ButtonDelete({
         ""
       )}
 
-      <ComponentGlobal_UI_Modal
+      <UIGlobal_Modal
         title={"Anda yakin menghapus portofolio ini ?"}
         opened={openModal}
         close={() => setModal(false)}

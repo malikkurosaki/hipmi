@@ -1,7 +1,7 @@
 import { Modal, Stack, Title, Group, Button, Box } from "@mantine/core";
 import { MainColor, AccentColor } from "../color/color_pallet";
 
-export default function ComponentGlobal_UI_Modal({
+export default function UIGlobal_Modal({
   opened,
   close,
   title,

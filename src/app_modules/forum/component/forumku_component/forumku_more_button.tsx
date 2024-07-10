@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import {
   ActionIcon,
   Button,
@@ -26,7 +26,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import mqtt_client from "@/util/mqtt_client";
 import _ from "lodash";
 import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_by_id";
@@ -35,7 +35,7 @@ import { MODEL_FORUM_POSTING } from "../../model/interface";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function ComponentForum_ForumkuMoreButton({
   authorId,

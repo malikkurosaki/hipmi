@@ -1,6 +1,6 @@
 "use client";
 
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import {
   Badge,
   Button,
@@ -21,7 +21,7 @@ import { gs_vote_status } from "../../global_state";
 import ComponentVote_DetailDataSebelumPublish from "../../component/detail/detail_data_sebelum_publish";
 import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_id";
 import { MODEL_VOTING } from "../../model/interface";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { useState } from "react";
 
 export default function Vote_DetailReview({

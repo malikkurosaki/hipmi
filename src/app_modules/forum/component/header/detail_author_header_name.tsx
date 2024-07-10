@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import moment from "moment";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import {
   IconCircleFilled,

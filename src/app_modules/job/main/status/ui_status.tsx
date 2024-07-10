@@ -10,7 +10,7 @@ import Job_Review from "./review";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function Job_UiStatus({
   listPublish,

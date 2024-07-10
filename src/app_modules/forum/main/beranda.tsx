@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import { AccentColor } from "@/app_modules/component_global/color/color_pallet";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import mqtt_client from "@/util/mqtt_client";
 import {
   ActionIcon,

@@ -24,11 +24,11 @@ import {
   MODEL_VOTING_DAFTAR_NAMA_VOTE,
 } from "../../model/interface";
 import { useState } from "react";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import _ from "lodash";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { Vote_funCreatePilihanVotingById } from "../../fun/create/create_pilihan_voting";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { Vote_funCreateHasil } from "../../fun/create/create_hasil";
 import { Vote_getOnebyId } from "../../fun/get/get_one_by_id";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";

@@ -20,10 +20,10 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import { MODEL_EVENT_PESERTA } from "../../model/interface";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import _ from "lodash";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
 
 export default function Event_Kontribusi({
   listKontribusi,

@@ -27,16 +27,16 @@ import { useRouter } from "next/navigation";
 import _ from "lodash";
 import { useFocusTrap } from "@mantine/hooks";
 import { Auth_funRegister } from "../fun/fun_register";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { IconPencilCheck } from "@tabler/icons-react";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { auth_funEditAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function Register({ dataOtp }: { dataOtp: any }) {
   const router = useRouter();

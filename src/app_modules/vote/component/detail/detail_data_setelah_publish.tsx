@@ -14,7 +14,7 @@ import moment from "moment";
 import { MODEL_VOTING } from "../../model/interface";
 import { IconCircle } from "@tabler/icons-react";
 import _ from "lodash";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 
 export default function ComponentVote_DetailDataSetelahPublish({
   data,

@@ -1,33 +1,23 @@
 "use client";
 
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
 import {
-  ActionIcon,
-  Box,
   Button,
-  Center,
   Group,
-  Loader,
   Paper,
-  Stack,
-  Text,
+  Stack
 } from "@mantine/core";
-import "react-quill/dist/quill.snow.css";
-import "react-quill/dist/quill.bubble.css";
-import { IconPhotoUp } from "@tabler/icons-react";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import "react-quill/dist/quill.bubble.css";
+import "react-quill/dist/quill.snow.css";
 
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import { useState } from "react";
 import { forum_funCreate } from "../fun/create/fun_create";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
-import _ from "lodash";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");
@@ -35,11 +25,11 @@ const ReactQuill = dynamic(
   { ssr: false }
 );
 
-import mqtt_client from "@/util/mqtt_client";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
+import mqtt_client from "@/util/mqtt_client";
 
 export default function Forum_Create() {
   const [value, setValue] = useState("");

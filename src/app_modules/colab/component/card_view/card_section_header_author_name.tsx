@@ -1,6 +1,6 @@
 "use client";
 
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import {
   ActionIcon,
   Avatar,
@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 import ComponentColab_AuthorNameOnHeader from "../header_author_name";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { useRouter } from "next/navigation";
 import { IconDots, IconEdit } from "@tabler/icons-react";
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";

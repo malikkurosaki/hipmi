@@ -12,7 +12,7 @@ import {
 import _ from "lodash";
 import { MODEL_FORUM_KOMENTAR } from "../../model/interface";
 import ComponentForum_KomentarAuthorNameOnHeader from "../komentar_component/komentar_author_header_name";
-import { MainColor } from "@/app_modules/component_global/color/color_pallet";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function ComponentForum_KomentarView({
   data,

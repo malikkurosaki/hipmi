@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { MODEL_JOB } from "../../model/interface";
-import ComponentGlobal_IsEmptyData from "@/app_modules/component_global/is_empty_data";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import { Stack, TextInput, Center, Loader } from "@mantine/core";
 import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";

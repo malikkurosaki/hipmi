@@ -1,6 +1,6 @@
 "use client";
 
-import ComponentGlobal_UI_Loader from "@/app_modules/component_global/ui/ui_loader";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 import { Box, Center } from "@mantine/core";
 import { ScrollOnly } from "next-scroll-loader";
 import { useState } from "react";
@@ -25,7 +25,7 @@ export function Portofolio_UiListDetail({
           height="90vh"
           renderLoading={() => (
             <Center mt={"lg"}>
-              <ComponentGlobal_UI_Loader />
+              <ComponentGlobal_Loader />
             </Center>
           )}
           data={data}

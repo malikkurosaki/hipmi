@@ -1,7 +1,7 @@
 import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
 import { Paper, Title, AspectRatio, Image } from "@mantine/core";
 import { MODEL_PORTOFOLIO } from "../model/interface";
-import { AccentColor } from "@/app_modules/component_global/color/color_pallet";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export function Portofolio_UiDetailLogo({
   dataPorto,

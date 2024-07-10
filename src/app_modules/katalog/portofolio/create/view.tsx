@@ -1,11 +1,11 @@
 "use client";
 
 import { Warna } from "@/app/lib/warna";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import {
   BIDANG_BISNIS_OLD,
   MODEL_PORTOFOLIO_OLD,
@@ -29,11 +29,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentKatalog_NotedBox from "../../component/noted_box";
 import funCreatePortofolio from "../fun/fun_create_portofolio";
-import ComponentGlobal_BoxInformation from "@/app_modules/component_global/box_information";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function CreatePortofolio({
   bidangBisnis,

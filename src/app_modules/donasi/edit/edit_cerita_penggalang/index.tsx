@@ -25,8 +25,8 @@ import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
 import {
   ComponentGlobal_WarningMaxUpload,
   maksimalUploadFile,
-} from "@/app_modules/component_global/variabel_global";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+} from "@/app_modules/_global/component/waring_popup";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 
 export default function EditCeritaPenggalangDonasi({
   dataCerita,

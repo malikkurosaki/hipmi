@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import { AccentColor } from "@/app_modules/component_global/color/color_pallet";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import { Affix, rem, ActionIcon, Loader, Box } from "@mantine/core";
 import { IconPencilPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";

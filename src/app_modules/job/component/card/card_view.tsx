@@ -3,13 +3,13 @@
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
 import { Card, Center, Text } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_JOB } from "../../model/interface";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
 
 export default function ComponentJob_CardStatus({
   data,

@@ -2,7 +2,7 @@
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { Avatar, Badge, Grid, Group, Loader, Stack, Text } from "@mantine/core";
 import { IconCircle } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";

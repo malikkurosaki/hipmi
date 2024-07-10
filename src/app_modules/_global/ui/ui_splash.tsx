@@ -1,10 +1,9 @@
 "use client";
 
-import { Stack, Loader, ActionIcon, ThemeIcon } from "@mantine/core";
-import UIGlobal_LayoutTamplate from "../ui/ui_layout_tamplate";
-import { IconMessages, IconX } from "@tabler/icons-react";
+import { Loader, Stack, ThemeIcon } from "@mantine/core";
+import UIGlobal_LayoutTamplate from "./ui_layout_tamplate";
 
-export default function ComponentGlobal_SplashScreen({ icon }: { icon: any }) {
+export default function UIGlobal_SplashScreen({ icon }: { icon: any }) {
   return (
     <>
       <UIGlobal_LayoutTamplate>

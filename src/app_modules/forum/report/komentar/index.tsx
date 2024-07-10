@@ -1,8 +1,8 @@
 "use client";
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import mqtt_client from "@/util/mqtt_client";
 import { Button, Radio, Stack, Text, Title } from "@mantine/core";
 import { toNumber } from "lodash";
@@ -13,7 +13,7 @@ import { forum_funCreateReportKomentar } from "../../fun/create/fun_create_repor
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import forum_getOneKategoriById from "../../fun/get/get_one_kategori_by_id";
 import { MODEL_FORUM_MASTER_REPORT } from "../../model/interface";

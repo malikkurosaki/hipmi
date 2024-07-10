@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
 import ComponentForum_ForumkuHeaderCard from "./forumku_header";
-import { AccentColor, MainColor } from "@/app_modules/component_global/color/color_pallet";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
 
 
 export default function ComponentForum_ForumkuMainCardView({

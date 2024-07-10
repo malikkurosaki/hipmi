@@ -10,7 +10,7 @@ import { useState } from "react";
 
 import { IconPencilPlus } from "@tabler/icons-react";
 import _ from "lodash";
-import UIGlobal_LayoutTamplate from "../component_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutTamplate from "../_global/ui/ui_layout_tamplate";
 
 
 const newData = Array(20)

@@ -23,8 +23,8 @@ import _ from "lodash";
 import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
 import ComponentDonasi_NotedBox from "../../component/noted_box";
 import { Donasi_funCreateNotif } from "../../fun/create/fun_create_notif";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 
 export default function Donasi_CreateKabar({ donasiId }: { donasiId: string }) {
   const router = useRouter();

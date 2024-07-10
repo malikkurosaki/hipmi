@@ -1,16 +1,16 @@
 "use client";
 
-import UIGlobal_LayoutHeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
 import { ActionIcon, Indicator, Loader, Text } from "@mantine/core";
 import { MODEL_USER } from "../model/interface";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { RouterUserSearch } from "@/app/lib/router_hipmi/router_user_search";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
 import { IconBell, IconUserSearch } from "@tabler/icons-react";
 import { RouterNotifikasi } from "@/app/lib/router_hipmi/router_notifikasi";
 import { useShallowEffect } from "@mantine/hooks";

@@ -1,18 +1,17 @@
 "use client";
 
-import { Warna } from "@/app/lib/warna";
 import { Button, Loader, Select, Stack, TextInput } from "@mantine/core";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { validRegex } from "../../component/regular_expressions";
 import { Profile_funEditById } from "../fun/update/fun_edit_profile_by_id";
 import { MODEL_PROFILE } from "../model/interface";
-import { MainColor } from "@/app_modules/component_global/color/color_pallet";
 
 export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
   const router = useRouter();

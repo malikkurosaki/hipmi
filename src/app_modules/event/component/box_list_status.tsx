@@ -6,7 +6,7 @@ import moment from "moment";
 import { MODEL_EVENT } from "../model/interface";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
 
 export default function ComponentEvent_BoxListStatus({
   data,

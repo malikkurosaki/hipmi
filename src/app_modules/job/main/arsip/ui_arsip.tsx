@@ -4,7 +4,7 @@ import { useState } from "react"
 import { MODEL_JOB } from "../../model/interface"
 import _ from "lodash";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import ComponentGlobal_IsEmptyData from "@/app_modules/component_global/is_empty_data";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import { Box, Center, Loader } from "@mantine/core";
 import { ScrollOnly } from "next-scroll-loader";
 import ComponentJob_CardStatus from "../../component/card/card_view";
