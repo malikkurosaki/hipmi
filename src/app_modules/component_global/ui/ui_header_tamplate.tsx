@@ -11,19 +11,21 @@ import {
 } from "@mantine/core";
 import { IconArrowLeft, IconChevronLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 import { AccentColor, MainColor } from "../color/color_pallet";
 
-export default function ComponentGlobal_UI_HeaderTamplate({
+export default function UIGlobal_LayoutHeaderTamplate({
   title,
   posotion,
   // left button
   hideButtonLeft,
   iconLeft,
   routerLeft,
+  customButtonLeft,
   // right button
   iconRight,
   routerRight,
+  customButtonRight,
 }: {
   title: string;
   posotion?: any;
@@ -31,9 +33,11 @@ export default function ComponentGlobal_UI_HeaderTamplate({
   hideButtonLeft?: boolean;
   iconLeft?: any;
   routerLeft?: any;
+  customButtonLeft?: React.ReactNode;
   // right button
   iconRight?: any;
   routerRight?: any;
+  customButtonRight?: React.ReactNode;
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -53,6 +57,8 @@ export default function ComponentGlobal_UI_HeaderTamplate({
         <Group h={"100%"} position={posotion ? posotion : "apart"} px={"md"}>
           {hideButtonLeft ? (
             <ActionIcon disabled variant="transparent"></ActionIcon>
+          ) : customButtonLeft ? (
+            customButtonLeft
           ) : (
             <ActionIcon
               c={"white"}
@@ -62,7 +68,7 @@ export default function ComponentGlobal_UI_HeaderTamplate({
                 setIsLoading(true);
                 routerLeft === undefined
                   ? router.back()
-                  : router.push(routerLeft);
+                  : router.push(routerLeft, { scroll: false });
               }}
             >
               {isLoading ? (
@@ -79,7 +85,9 @@ export default function ComponentGlobal_UI_HeaderTamplate({
             {title}
           </Title>
 
-          {iconRight === undefined ? (
+          {customButtonRight ? (
+            customButtonRight
+          ) : iconRight === undefined ? (
             <ActionIcon disabled variant="transparent"></ActionIcon>
           ) : routerRight === undefined ? (
             <Box>{iconRight}</Box>

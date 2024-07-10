@@ -1,27 +1,15 @@
-"use client";
 
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
-import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
-import {
-  ActionIcon,
-  AppShell,
-  Group,
-  Header,
-  Text,
-  Title,
-} from "@mantine/core";
-import { IconArrowLeft } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
 
 export default function ProfileLayout({ children }: { children: any }) {
-  const router = useRouter();
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
-        header={<ComponentGlobal_HeaderTamplate title="Buat Profile" />}
+      <UIGlobal_LayoutTamplate
+        header={<UIGlobal_LayoutHeaderTamplate title="Buat Profile" />}
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

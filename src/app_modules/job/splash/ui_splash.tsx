@@ -18,7 +18,7 @@ export function Job_UiSplash() {
     setTimeout(() => {
       setHotMenu(1);
       setStatus("Publish");
-      router.replace(RouterJob.beranda);
+      router.replace(RouterJob.beranda, { scroll: false });
     }, 1000);
   }, []);
   return (

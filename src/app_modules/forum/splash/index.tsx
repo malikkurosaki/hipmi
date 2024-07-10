@@ -2,7 +2,7 @@
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import ComponentGlobal_SplashScreen from "@/app_modules/component_global/splash/splash_global";
-import ComponentGlobal_UI_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
 import {
   Avatar,
   Center,
@@ -20,7 +20,7 @@ export default function Forum_Splash() {
   const router = useRouter();
   useShallowEffect(() => {
     setTimeout(() => {
-      router.replace(RouterForum.beranda);
+      router.replace(RouterForum.beranda, { scroll: false });
     }, 1000);
   }, []);
 

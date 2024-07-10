@@ -4,6 +4,7 @@ import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { HomeView } from "@/app_modules/home";
 import { user_getOneByUserId } from "@/app_modules/home/fun/get/get_one_user_by_id";
 import { job_getTwoForHomeView } from "@/app_modules/job/fun/get/get_two_for_home_view";
+import notifikasi_countUserNotifikasi from "@/app_modules/notifikasi/fun/count/fun_count_by_id";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
@@ -24,9 +25,15 @@ export default async function Page() {
   //   setTimeout(a, 3000);
   // });
 
+  const countNotifikasi = await notifikasi_countUserNotifikasi();
+
   return (
     <>
-      <HomeView dataUser={dataUser as any} dataJob={dataJob as any} />
+      <HomeView
+        dataUser={dataUser as any}
+        dataJob={dataJob as any}
+        countNotifikasi={countNotifikasi}
+      />
     </>
   );
 }

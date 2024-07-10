@@ -1,17 +1,23 @@
 import {
-  Drawer,
-  Stack,
-  Group,
   ActionIcon,
+  Drawer,
+  Group,
   SimpleGrid,
+  Stack,
   Text,
-  Box,
 } from "@mantine/core";
-import { IconX, IconEdit } from "@tabler/icons-react";
-import { MainColor, AccentColor } from "../color/color_pallet";
-import React from "react";
+import { IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { AccentColor } from "../color/color_pallet";
+import ComponentGlobal_UI_Loader from "./ui_loader";
 
+interface MODEL_DRAWER {
+  id: string;
+  name: string;
+  icon: string;
+  path: string;
+}
 export default function ComponentGlobal_UI_Drawer({
   opened,
   close,
@@ -19,9 +25,19 @@ export default function ComponentGlobal_UI_Drawer({
 }: {
   opened: boolean;
   close: () => void;
-  component: any[];
+  component:
+    | {
+        id: string;
+        name: string;
+        icon: string;
+        path: string;
+      }[]
+    | any[];
 }) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [pageId, setPageId] = useState("");
+
   return (
     <>
       <Drawer
@@ -32,10 +48,16 @@ export default function ComponentGlobal_UI_Drawer({
         withCloseButton={false}
         styles={{
           content: {
+            padding: 0,
+            position: "absolute",
+            margin: "auto",
             backgroundColor: "transparent",
+            left: 0,
+            right: 0,
+            width: 500,
           },
           body: {
-            backgroundColor: MainColor.darkblue,
+            backgroundColor: AccentColor.darkblue,
             borderTop: `2px solid ${AccentColor.blue}`,
             borderRight: `1px solid ${AccentColor.blue}`,
             borderLeft: `1px solid ${AccentColor.blue}`,
@@ -51,17 +73,27 @@ export default function ComponentGlobal_UI_Drawer({
               <IconX color="white" />
             </ActionIcon>
           </Group>
-          <SimpleGrid cols={4}>
+          <SimpleGrid cols={component.length < 4 ? component.length : 4}>
             {component.map((e, i) => (
               <Stack key={i} align="center" spacing={"xs"}>
                 <ActionIcon
                   variant="transparent"
                   c="white"
-                  onClick={() => router.push(e.path)}
+                  onClick={() => {
+                    setPageId(e?.id);
+                    setIsLoading(true);
+                    router.push(e?.path);
+                  }}
                 >
-                  {e.icon}
+                  {isLoading && e?.id === pageId ? (
+                    <ComponentGlobal_UI_Loader />
+                  ) : (
+                    e?.icon
+                  )}
                 </ActionIcon>
-                <Text color="white">{e.name}</Text>
+                <Text align="center" color="white">
+                  {e?.name}
+                </Text>
               </Stack>
             ))}
           </SimpleGrid>

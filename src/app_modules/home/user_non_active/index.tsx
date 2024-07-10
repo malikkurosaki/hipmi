@@ -1,7 +1,7 @@
 "use client";
 
 import { Logout } from "@/app_modules/auth";
-import User_Logout from "@/app_modules/auth/logout/view";
+import Component_Logout from "@/app_modules/auth/logout/view";
 import { Center, Group, Skeleton, Stack, Text, Title } from "@mantine/core";
 
 export default function Home_UserNotActive() {
@@ -44,7 +44,7 @@ export default function Home_UserNotActive() {
           <Title order={4} c={"gray"}>
             Tunggu Konfirmasi Admin !
           </Title>
-          <User_Logout />
+          <Component_Logout />
         </Stack>
       </Center>
     </>

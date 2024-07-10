@@ -29,6 +29,7 @@ export async function portofolio_getOneById(portoId: string) {
       Portofolio_MediaSosial: true,
       Profile: {
         select: {
+          userId: true,
           User: {
             select: {
               id: true,

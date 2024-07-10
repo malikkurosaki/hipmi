@@ -1,25 +1,18 @@
 "use client";
 
-import { myConsole } from "@/app/fun/my_console";
-import { ApiHipmi } from "@/app/lib/api";
 import { Warna } from "@/app/lib/warna";
 import { Button, Loader, Select, Stack, TextInput } from "@mantine/core";
-import { useShallowEffect } from "@mantine/hooks";
-import { useAtom } from "jotai";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
 
-import funEditProfile from "../fun/fun_edit_profile";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { MODEL_PROFILE } from "../model/interface";
-import { Profile_funEditById } from "../fun/update/fun_edit_profile_by_id";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { validRegex } from "../../component/regular_expressions";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import { Profile_funEditById } from "../fun/update/fun_edit_profile_by_id";
+import { MODEL_PROFILE } from "../model/interface";
+import { MainColor } from "@/app_modules/component_global/color/color_pallet";
 
 export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
   const router = useRouter();
@@ -58,6 +51,11 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
       {/* <pre>{JSON.stringify(dataProfile, null, 2)}</pre> */}
       <Stack px={"sm"}>
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Nomor"
           disabled
@@ -65,6 +63,11 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         />
 
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Username"
           error={
@@ -86,6 +89,11 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         />
 
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Nama"
           placeholder="nama"
@@ -107,6 +115,11 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         />
 
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Email"
           placeholder="email"
@@ -130,6 +143,11 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         />
 
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Alamat"
           placeholder="alamat"
@@ -151,6 +169,11 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         />
 
         <Select
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Jenis Kelamin"
           value={dataProfile?.jenisKelamin}
@@ -169,8 +192,9 @@ export default function EditProfile({ data }: { data: MODEL_PROFILE }) {
         <Button
           mt={"md"}
           radius={50}
-          bg={Warna.biru}
-          color="cyan"
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
           loading={loading ? true : false}
           loaderPosition="center"
           onClick={() => onUpdate()}

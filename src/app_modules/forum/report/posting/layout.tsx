@@ -1,7 +1,7 @@
 "use client";
 
-import ComponentGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
-import ComponentGlobal_UI_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
 import React from "react";
 
 export default function LayoutForum_ReportPosting({
@@ -11,13 +11,13 @@ export default function LayoutForum_ReportPosting({
 }) {
   return (
     <>
-      <ComponentGlobal_UI_LayoutTamplate
+      <UIGlobal_LayoutTamplate
         header={
-          <ComponentGlobal_UI_HeaderTamplate title="Mengumpulkan Informasi Posting" />
+          <UIGlobal_LayoutHeaderTamplate title="Mengumpulkan Informasi Posting" />
         }
       >
         {children}
-      </ComponentGlobal_UI_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
 
   
     </>

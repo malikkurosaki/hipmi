@@ -4,14 +4,15 @@ import { portofolio_getOneById } from "@/app_modules/katalog/portofolio/fun/get/
 
 export default async function Page({ params }: { params: { id: string } }) {
   const getPorto = await portofolio_getOneById(params.id);
-  const userLoginId = await user_getOneUserId()
-
-
+  const userLoginId = await user_getOneUserId();
 
   return (
     <>
       {/* {JSON.stringify(getPorto)} */}
-      <ViewPortofolio dataPorto={getPorto as any} userLoginId={userLoginId as any} />
+      <ViewPortofolio
+        dataPorto={getPorto as any}
+        userLoginId={userLoginId as any}
+      />
     </>
   );
 }

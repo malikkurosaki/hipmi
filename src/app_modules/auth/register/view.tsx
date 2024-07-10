@@ -66,7 +66,7 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
           if (val.status === 200) {
             ComponentGlobal_NotifikasiBerhasil(res.message);
             setLoading(true);
-            router.push(RouterHome.main_home);
+            router.push(RouterHome.main_home, { scroll: false });
           } else {
             ComponentGlobal_NotifikasiPeringatan(val.message);
           }

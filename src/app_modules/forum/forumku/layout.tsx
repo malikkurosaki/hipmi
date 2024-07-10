@@ -6,8 +6,8 @@ import ComponentForum_HeaderTamplate from "../component/header/header_tamplate";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { IconX } from "@tabler/icons-react";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
-import ComponentGlobal_UI_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
-import ComponentGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
 
 export default function LayoutForum_Forumku({
   children,
@@ -18,16 +18,16 @@ export default function LayoutForum_Forumku({
 }) {
   return (
     <>
-      <ComponentGlobal_UI_LayoutTamplate
+      <UIGlobal_LayoutTamplate
         header={
-          <ComponentGlobal_UI_HeaderTamplate
+          <UIGlobal_LayoutHeaderTamplate
             title={`${username}`}
             iconLeft={<IconX />}
           />
         }
       >
         {children}
-      </ComponentGlobal_UI_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
 
       {/* <AppComponentGlobal_LayoutTamplate
         header={

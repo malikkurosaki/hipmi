@@ -8,21 +8,18 @@ export async function Profile_getOneProfileAndUserById(profileId: string) {
       id: profileId,
     },
     select: {
-        userId: true,
-        User: true,
-        id: true,
-        name: true,
-        email: true,
-        alamat: true,
-        jenisKelamin: true,
-        imagesId: true,
-        imagesBackgroundId: true,
-        ImageProfile: true,
-        ImagesBackground: true
-        
-
-
-    }
+      userId: true,
+      User: true,
+      id: true,
+      name: true,
+      email: true,
+      alamat: true,
+      jenisKelamin: true,
+      imagesId: true,
+      imagesBackgroundId: true,
+      ImageProfile: true,
+      ImagesBackground: true,
+    },
   });
   // console.log(data)
   return data;

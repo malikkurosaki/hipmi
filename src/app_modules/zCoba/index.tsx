@@ -2,36 +2,16 @@
 
 import {
   ActionIcon,
-  Affix,
-  BackgroundImage,
   Box,
   Button,
-  Center,
-  Group,
-  LoadingOverlay,
-  Paper,
-  ScrollArea,
-  SimpleGrid,
-  Skeleton,
-  Stack,
-  Text,
-  rem,
+  Stack
 } from "@mantine/core";
 import { useState } from "react";
 
-import useInfiniteScroll, {
-  ScrollDirection,
-} from "react-easy-infinite-scroll-hook";
-import { createItems, loadMore } from "./utils";
-import { v4 as uuidv4 } from "uuid";
-import { useShallowEffect } from "@mantine/hooks";
-import { ScrollOnly } from "next-scroll-loader";
+import { IconPencilPlus } from "@tabler/icons-react";
 import _ from "lodash";
-import ComponentGlobal_V2_LoadingPage from "../component_global/loading_page_v2";
-import ComponentGlobal_UI_LayoutTamplate from "../component_global/ui/ui_layout_tamplate";
-import ComponentGlobal_UI_HeaderTamplate from "../component_global/ui/ui_header_tamplate";
-import { Icon123, IconPencilPlus, IconX } from "@tabler/icons-react";
-import { AccentColor, MainColor } from "../component_global/color/color_pallet";
+import UIGlobal_LayoutTamplate from "../component_global/ui/ui_layout_tamplate";
+
 
 const newData = Array(20)
   .fill(0)
@@ -56,49 +36,16 @@ const data2 = [
 ];
 
 export default function Coba_TestLoading() {
-  // const [data, setData] = useState<any[]>(newData);
-  // const [isLoading, setIsLoading] = useState(false);
-
-  // return (
-  //   <>
-  //     <ScrollOnly
-  //       height="90vh"
-  //       data={data}
-  //       setData={setData}
-  //       moreData={async () => {
-  //         const newData = Array.from(
-  //           { length: 50 },
-  //           (_, i) => i + data.length + 1
-  //         );
-  //         await new Promise((resolve) => setTimeout(resolve, 2000));
-  //         return newData;
-  //       }}
-  //     >
-  //       {(item) => <div style={{height: 50}}> {item}</div>}
-  //     </ScrollOnly>
-  //   </>
-  // );
-
   const [data, setData] = useState(data2);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   return (
     <>
-      <ComponentGlobal_UI_LayoutTamplate>
-        <CreateButton />
-      </ComponentGlobal_UI_LayoutTamplate>
-    </>
-  );
+      <UIGlobal_LayoutTamplate>
+        {/* <CreateButton /> */}
+        <Button onClick={() => setOpenDrawer(true)}>Click</Button>
+      </UIGlobal_LayoutTamplate>
 
-  return (
-    <>
-      <Box h={"100%"} bg={"blue"}>
-        {Array(50)
-          .fill(0)
-          .map((e, i) => (
-            <Text key={i}>{i + 1}</Text>
-          ))}
-        <ComponentGlobal_V2_LoadingPage />
-      </Box>
     </>
   );
 
@@ -171,74 +118,6 @@ function CreateButton() {
           <IconPencilPlus color="white" />
         </ActionIcon>
       </Affix> */}
-    </>
-  );
-}
-
-function BackgroundImageComponent() {
-  const footer = (
-    <SimpleGrid cols={4}>
-      {Array.from({ length: 4 }).map((e, i) => (
-        <Center key={i} h={"10vh"}>
-          <Stack align="center" c={"white"} spacing={0}>
-            <ActionIcon>
-              <IconX color="white" />
-            </ActionIcon>
-            <Text>Apa</Text>
-          </Stack>
-        </Center>
-      ))}
-    </SimpleGrid>
-  );
-  return (
-    <>
-      <BackgroundImage src={"/aset/global/main_background.png"} h={"100vh"}>
-        {/* Header */}
-        <Box
-          h={"8vh"}
-          style={{
-            zIndex: 98,
-          }}
-          w={"100%"}
-          pos={"sticky"}
-          top={0}
-        >
-          <ComponentGlobal_UI_HeaderTamplate title="Coba" />
-        </Box>
-
-        {/* Children */}
-        <Box h={"82vh"} pos={"static"}>
-          <ScrollArea h={"100%"} px={"md"}>
-            {Array.from({ length: 10 }).map((e, i) => (
-              <Box bg={"blue"} key={i} mb={"md"} py={"lg"}>
-                {i + 1}
-              </Box>
-            ))}
-          </ScrollArea>
-        </Box>
-
-        {/* Footer */}
-        <Box style={{ position: "relative", bottom: 0 }} bg={"red"}>
-          <Box
-            style={{
-              zIndex: 1,
-              borderRadius: "20px 20px 0px 0px",
-              borderTop: `2px solid ${AccentColor.blue}`,
-              borderRight: `1px solid ${AccentColor.blue}`,
-              borderLeft: `1px solid ${AccentColor.blue}`,
-              position: "absolute",
-              width: "100%",
-              backgroundColor: MainColor.darkblue,
-            }}
-            color="blue"
-            // pos={"fixed"}
-            // bottom={0}
-            h={"10vh"}
-          >
-            {footer}
-          </Box>
-        </Box>
-      </BackgroundImage>
     </>
   );
 }
