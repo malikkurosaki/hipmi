@@ -1,8 +1,11 @@
 "use client";
 
-import { myConsole } from "@/app/fun/my_console";
-import { ApiHipmi } from "@/app/lib/api";
 import { Warna } from "@/app/lib/warna";
+import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import {
   BIDANG_BISNIS_OLD,
   MODEL_PORTOFOLIO_OLD,
@@ -16,25 +19,16 @@ import {
   Paper,
   Select,
   Stack,
-  Text,
   TextInput,
-  Textarea,
-  Title,
+  Textarea
 } from "@mantine/core";
+import { IconCamera } from "@tabler/icons-react";
 import _ from "lodash";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
-import funCreatePortofolio from "../fun/fun_create_portofolio";
-import { IconCamera } from "@tabler/icons-react";
 import ComponentKatalog_NotedBox from "../../component/noted_box";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { NotifPeringatan } from "@/app_modules/donasi/component/notifikasi/notif_peringatan";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import funCreatePortofolio from "../fun/fun_create_portofolio";
 
 export default function CreatePortofolio({
   bidangBisnis,

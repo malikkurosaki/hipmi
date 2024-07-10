@@ -1,103 +1,38 @@
 "use client";
 
-import { Logout } from "@/app_modules/auth";
-import {
-  ActionIcon,
-  AppShell,
-  Group,
-  Header,
-  Text,
-  Title,
-} from "@mantine/core";
-import {
-  IconUserSearch,
-  IconAward,
-  IconQrcode,
-  IconArrowLeft,
-  IconPencilPlus,
-  IconChevronLeft,
-  IconDashboard,
-} from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import ComponentKatalog_HeaderTamplate from "../component/header_tamplate";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import { title } from "process";
-import { RouterAdminDashboard } from "@/app/lib/router_hipmi/router_admin";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import LayoutGlobal_UI_HeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import LayoutGlobal_UI_Tamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import { ComponentKatalog_ButtonHeaderRight } from "../component/button_header_right";
 
 export default function KatalogLayout({
   children,
   profileId,
+  userLoginId,
+  authorId,
 }: {
   children: any;
   profileId: any;
+  userLoginId: string;
+  authorId: string;
 }) {
-  const router = useRouter();
-
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <LayoutGlobal_UI_Tamplate
         header={
-          <Header height={50} sx={{ borderStyle: "none" }} bg={"black"}>
-            <Group h={50} position="apart" px={"md"}>
-              <ActionIcon
-                variant="transparent"
-                onClick={() => {
-                  router.back();
-                }}
-              >
-                <IconChevronLeft />
-              </ActionIcon>
-              <Title order={5} c={"white"}>
-                Katalog
-              </Title>
-              <ActionIcon variant="transparent" disabled></ActionIcon>
-              {/* <ActionIcon
-                variant="transparent"
-                onClick={() => router.push(RouterAdminDashboard.splash_admin)}
-              >
-                <IconDashboard />
-              </ActionIcon> */}
-            </Group>
-          </Header>
+          <LayoutGlobal_UI_HeaderTamplate
+            title="KATALOG"
+            customButtonRight={
+              <ComponentKatalog_ButtonHeaderRight
+                profileId={profileId}
+                userLoginId={userLoginId}
+                authorId={authorId as any}
+              />
+            }
+          />
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
-    </>
-  );
-
-  return (
-    <>
-      <AppShell
-        header={
-          <Header height={50} sx={{ borderStyle: "none" }} bg={"black"}>
-            <Group h={50} position="apart" px={"md"}>
-              <ActionIcon
-                variant="transparent"
-                onClick={() => {
-                  router.back();
-                }}
-              >
-                <IconChevronLeft />
-              </ActionIcon>
-              <Title order={5} c={"white"}>
-                Katalog
-              </Title>
-              <ActionIcon variant="transparent" disabled></ActionIcon>
-              {/* <ActionIcon
-                variant="transparent"
-                onClick={() => router.push(RouterAdminDashboard.splash_admin)}
-              >
-                <IconDashboard />
-              </ActionIcon> */}
-            </Group>
-          </Header>
-        }
-      >
-        {children}
-      </AppShell>
+      </LayoutGlobal_UI_Tamplate>
     </>
   );
 }

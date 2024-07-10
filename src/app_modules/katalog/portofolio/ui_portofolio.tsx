@@ -1,38 +1,32 @@
-"use client";
-import {
-  ActionIcon,
-  Box,
-  Center,
-  Grid,
-  Group,
-  Loader,
-  Paper,
-  ScrollArea,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import { useShallowEffect } from "@mantine/hooks";
-import { useState } from "react";
-import _ from "lodash";
-import {
-  IconCaretRight,
-  IconCaretRightFilled,
-  IconChevronRight,
-  IconCirclePlus,
-  IconEyeCheck,
-  IconPencilPlus,
-} from "@tabler/icons-react";
-
-import { MODEL_PORTOFOLIO_Lama } from "@/app_modules/model_global/portofolio";
 import { useRouter } from "next/navigation";
+import { MODEL_PROFILE } from "../profile/model/interface";
+import { MODEL_PORTOFOLIO } from "./model/interface";
+import { useState } from "react";
 import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
 import { Warna } from "@/app/lib/warna";
-import { MODEL_PROFILE } from "../../profile/model/interface";
-import { MODEL_PORTOFOLIO } from "../model/interface";
+import {
+  Paper,
+  Stack,
+  Group,
+  ActionIcon,
+  Title,
+  Box,
+  ScrollArea,
+  Center,
+  SimpleGrid,
+  Grid,
+  Loader,
+  Text,
+} from "@mantine/core";
+import { IconPencilPlus, IconCaretRight } from "@tabler/icons-react";
+import _ from "lodash";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/component_global/color/color_pallet";
+import ComponentGlobal_UI_Loader from "@/app_modules/component_global/ui/ui_loader";
 
-export default function ListPortofolioView({
+export function Portofolio_UiView({
   listPorto,
   profile,
   userLoginId,
@@ -45,25 +39,34 @@ export default function ListPortofolioView({
   const [loading, setLoading] = useState(false);
   const [loadingPorto, setLoadingPorto] = useState(false);
   const [idPorto, setIdPorto] = useState("");
-
   return (
     <>
-      {/* <pre>{JSON.stringify(porto, null, 2)}</pre> */}
-      <Paper p={"md"} shadow="lg" withBorder bg={"gray.1"}>
+      <Box
+        style={{
+          backgroundColor: AccentColor.darkblue,
+          border: `2px solid ${AccentColor.blue}`,
+          borderRadius: "10px ",
+          padding: "15px",
+          color: "white",
+        }}
+      >
         <Stack spacing={"sm"}>
           <Group position="apart">
             <ActionIcon variant="transparent" disabled></ActionIcon>
             <Title order={4}>Portofolio</Title>
             {profile?.User.id === userLoginId ? (
               <ActionIcon
-                loading={loading ? true : false}
                 variant="transparent"
                 onClick={() => {
                   router.push(RouterPortofolio.create + `${profile.id}`);
                   setLoading(true);
                 }}
               >
-                <IconPencilPlus color={Warna.biru} />
+                {loading ? (
+                  <ComponentGlobal_UI_Loader />
+                ) : (
+                  <IconPencilPlus color={AccentColor.yellow} />
+                )}
               </ActionIcon>
             ) : (
               <ActionIcon variant="transparent" disabled></ActionIcon>
@@ -74,10 +77,10 @@ export default function ListPortofolioView({
               _.isEmpty(listPorto)
                 ? 50
                 : listPorto.length === 1
-                ? 100
-                : listPorto.length === 2
-                ? 150
-                : 200
+                  ? 100
+                  : listPorto.length === 2
+                    ? 150
+                    : 200
             }
           >
             <ScrollArea h={"100%"} scrollbarSize={10}>
@@ -132,7 +135,7 @@ export default function ListPortofolioView({
             </ScrollArea>
           </Box>
         </Stack>
-      </Paper>
+      </Box>
     </>
   );
 }

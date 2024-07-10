@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import React from "react";
 import ComponentJob_HeaderTamplate from "../../component/header_tamplate";
-import { IconDots, IconEdit, IconX } from "@tabler/icons-react";
+import { IconDots, IconDotsVertical, IconEdit, IconX } from "@tabler/icons-react";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 import LayoutGlobal_UI_Tamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
@@ -54,7 +54,7 @@ export default function LayoutJob_DetailDraft({
             title="Detail Draft"
             iconRight={
               <ActionIcon variant="transparent" onClick={() => open()}>
-                <IconDots color="white" />
+                <IconDotsVertical color="white" />
               </ActionIcon>
             }
             // routerRight={}

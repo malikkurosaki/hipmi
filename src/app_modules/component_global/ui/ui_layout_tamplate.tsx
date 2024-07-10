@@ -27,11 +27,12 @@ export default function LayoutGlobal_UI_Tamplate({
         h={"100%"}
         style={{
           overflowY: "auto",
+          overflowX: "auto",
           backgroundColor: MainColor.black,
           position: "fixed",
         }}
       >
-        <Container mih={"100vh"} p={0} size={rem(500)} bg={MainColor.darkblue}>
+        <Container mih={"100vh"} p={0} size={rem(500)} bg={MainColor.darkblue} >
           <BackgroundImage
             src={"/aset/global/main_background.png"}
             h={"100vh"}

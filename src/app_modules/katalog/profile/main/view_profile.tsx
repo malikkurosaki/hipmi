@@ -31,6 +31,7 @@ import { useState } from "react";
 import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { MODEL_PROFILE } from "../model/interface";
+import { AccentColor, MainColor } from "@/app_modules/component_global/color/color_pallet";
 
 export default function ProfileView({
   profile,
@@ -44,16 +45,14 @@ export default function ProfileView({
   const [loadingBG, setLoadingBG] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
 
-  // const [data, setData] = useState(profile);
-  // useShallowEffect(() => {
-  //   funGetUserProfile(user.id ?? "").then(setProfile as any);
-  // }, []);
 
-  // if (!profile) return <></>;
   return (
     <>
       {/* <pre>{JSON.stringify(profile, null,2)}</pre> */}
-      <Paper px={"md"} py={"sm"} bg={"gray.1"} shadow="lg" withBorder>
+      <Paper px={"md"} py={"sm"} shadow="lg" style={{
+        backgroundColor: MainColor.darkblue,
+        border: `2px solid ${AccentColor.blue}`,
+      }}>
         {/* Background dan foto */}
 
         {/* Upload Background Profile */}
