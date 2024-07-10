@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import { Card, Stack, Grid, Title, Text, Center } from "@mantine/core";
 import moment from "moment";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import { Card, Stack, Grid, Title, Text, Center } from "@mantine/core";
 import moment from "moment";
 import { MODEL_EVENT } from "../../model/interface";

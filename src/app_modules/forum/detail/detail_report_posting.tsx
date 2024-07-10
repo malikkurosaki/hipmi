@@ -1,5 +1,5 @@
-import UIGlobal_LayoutHeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
-import UIGlobal_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import { Stack, Text } from "@mantine/core";
 import { ComponentForum_UiDetailReportPosting } from "../component/detail_component/ui_report_posting";
 

@@ -15,12 +15,12 @@ import { gs_kodeId, gs_nomor, gs_otp } from "../state/state";
 import { IconLogout } from "@tabler/icons-react";
 import { Warna } from "@/app/lib/warna";
 import { useDisclosure } from "@mantine/hooks";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { auth_Logout } from "../fun/fun_logout";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 import { useState } from "react";
-import ComponentGlobal_UI_Modal from "@/app_modules/component_global/ui/ui_modal";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 
 export default function Component_Logout() {
   const router = useRouter();
@@ -44,7 +44,7 @@ export default function Component_Logout() {
 
   return (
     <>
-      <ComponentGlobal_UI_Modal
+      <UIGlobal_Modal
         title={"Anda yakin ingin keluar ?"}
         buttonKiri={
           <Button

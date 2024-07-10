@@ -2,7 +2,7 @@
 
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import {
   ActionIcon,
   Center,

@@ -4,7 +4,7 @@ import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { Avatar, Button, Center, Grid, Stack, Text } from "@mantine/core";
 import { IconCircleFilled } from "@tabler/icons-react";

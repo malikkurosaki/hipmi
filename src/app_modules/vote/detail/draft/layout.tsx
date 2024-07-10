@@ -5,7 +5,7 @@ import React from "react";
 import ComponentVote_HeaderTamplate from "../../component/header_tamplate";
 import { IconEdit } from "@tabler/icons-react";
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 
 export default function LayoutVote_DetailDraft({
   children,

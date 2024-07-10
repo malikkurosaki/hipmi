@@ -1,35 +1,22 @@
 "use client";
 
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
 import {
   ActionIcon,
   Affix,
-  Avatar,
-  Badge,
   Box,
-  Card,
-  Center,
-  Divider,
-  Grid,
-  Group,
-  Radio,
   Stack,
-  Text,
-  Title,
-  rem,
+  rem
 } from "@mantine/core";
-import { IconCirclePlus, IconPencilPlus } from "@tabler/icons-react";
-import moment from "moment";
-import { useRouter } from "next/navigation";
-import ComponentVote_CardViewPublish from "../component/card_view_publish";
-import { MODEL_VOTING } from "../model/interface";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
-import _ from "lodash";
-import ComponentVote_IsEmptyData from "../component/is_empty_data";
-import { useState } from "react";
 import { useShallowEffect, useWindowScroll } from "@mantine/hooks";
+import { IconPencilPlus } from "@tabler/icons-react";
+import _ from "lodash";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ComponentVote_CardViewPublish from "../component/card_view_publish";
+import ComponentVote_IsEmptyData from "../component/is_empty_data";
 import { Vote_getAllListPublish } from "../fun/get/get_all_list_publish";
+import { MODEL_VOTING } from "../model/interface";
 
 export default function Vote_Beranda({
   dataVote,

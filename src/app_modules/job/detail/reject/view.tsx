@@ -1,12 +1,13 @@
 "use client";
 
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { Button, Group, Modal, Paper, Stack, Title } from "@mantine/core";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { Button, Group, Stack } from "@mantine/core";
 import { useAtom } from "jotai";
 
-import ComponentGlobal_BoxInformation from "@/app_modules/component_global/box_information";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import { useDisclosure } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import ComponentJob_DetailData from "../../component/detail/detail_data";
@@ -14,11 +15,6 @@ import { Job_funDeleteById } from "../../fun/delete/fun_delete_by_id";
 import { Job_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_status_id";
 import { gs_job_status } from "../../global_state";
 import { MODEL_JOB } from "../../model/interface";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
-import ComponentGlobal_UI_Modal from "@/app_modules/component_global/ui/ui_modal";
 
 export default function Job_DetailReject({ dataJob }: { dataJob: MODEL_JOB }) {
   return (
@@ -66,7 +62,7 @@ function ButtonAction({ jobId }: { jobId: string }) {
 
   return (
     <>
-      <ComponentGlobal_UI_Modal
+      <UIGlobal_Modal
         opened={opened}
         close={() => close()}
         title={" Anda yakin ingin menghapus  ?"}

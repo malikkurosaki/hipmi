@@ -1,6 +1,6 @@
 "use client";
 
-import ComponentGlobal_SplashScreen from "@/app_modules/component_global/splash/splash_global";
+import UIGlobal_SplashScreen from "@/app_modules/_global/ui/ui_splash";
 import { useShallowEffect } from "@mantine/hooks";
 import { IconBriefcase } from "@tabler/icons-react";
 import { useAtom } from "jotai";
@@ -23,7 +23,7 @@ export function Job_UiSplash() {
   }, []);
   return (
     <>
-      <ComponentGlobal_SplashScreen icon={<IconBriefcase size={300} />} />
+      <UIGlobal_SplashScreen icon={<IconBriefcase size={300} />} />
     </>
   );
 }

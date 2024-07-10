@@ -1,6 +1,9 @@
 "use client";
 
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import {
   ActionIcon,
   Box,
@@ -11,29 +14,21 @@ import {
   Stack,
   Text,
   TextInput,
-  Textarea,
-  Title,
+  Textarea
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
-import { useCounter } from "@mantine/hooks";
-import { IconHome, IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { useAtom } from "jotai";
+import _ from "lodash";
 import moment from "moment";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Vote_funEditById } from "../fun/edit/fun_edit_by_id";
 import { gs_vote_hotMenu, gs_vote_status } from "../global_state";
-import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
 import {
   MODEL_VOTING,
   MODEL_VOTING_DAFTAR_NAMA_VOTE,
 } from "../model/interface";
-import _, { slice } from "lodash";
-import { Vote_funEditById } from "../fun/edit/fun_edit_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 
 export default function Vote_Edit({
   dataVote,

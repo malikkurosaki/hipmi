@@ -2,32 +2,30 @@
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import {
-  ActionIcon,
   Button,
   Card,
   Group,
   Paper,
   Stack,
-  Text,
+  Text
 } from "@mantine/core";
 import ComponentForum_PostingAuthorNameOnHeader from "../component/header/posting_author_header_name";
 
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import "react-quill/dist/quill.bubble.css";
+import { forum_funCreateKomentar } from "../fun/create/fun_create_komentar";
+import { MODEL_FORUM_POSTING } from "../model/interface";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");
   },
   { ssr: false }
 );
-import "react-quill/dist/quill.bubble.css";
-import { IconPhotoUp } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import { MODEL_FORUM_POSTING } from "../model/interface";
-import { forum_funCreateKomentar } from "../fun/create/fun_create_komentar";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
 
 export default function Forum_Komentar({
   dataPosting,

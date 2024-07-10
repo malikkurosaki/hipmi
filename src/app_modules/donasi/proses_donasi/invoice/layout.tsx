@@ -10,7 +10,7 @@ import { useAtom } from "jotai";
 
 import { title } from "process";
 import { useRouter } from "next/navigation";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 
 export default function LayoutDonasi_InvoiceProses({
   children,

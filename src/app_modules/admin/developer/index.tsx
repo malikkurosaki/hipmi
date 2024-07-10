@@ -21,8 +21,8 @@ import { IconSearch } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import adminDeveloper_funEditUserAksesById from "./fun/edit/fun_edit_user_akses_by_id";
 import adminDeveloper_funGetListAllAdmin from "./fun/get/fun_get_list_all_admin";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import adminDeveloper_funGetListAllUser from "./fun/get/fun_get_list_all_user";
 
 export default function AdminDeveloper({

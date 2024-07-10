@@ -1,28 +1,23 @@
 "use client";
 
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { Stack, Button, Group, Modal, Paper, Title } from "@mantine/core";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { Button, Group, Stack } from "@mantine/core";
 import { useAtom } from "jotai";
 
-import ComponentJob_DetailData from "../../component/detail/detail_data";
-import { gs_job_status } from "../../global_state";
-import { useRouter } from "next/navigation";
-import { useDisclosure } from "@mantine/hooks";
-import { Job_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_status_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { Job_funDeleteById } from "../../fun/delete/fun_delete_by_id";
-import ComponentJob_NotedBox from "../../component/detail/noted_box";
-import { MODEL_JOB } from "../../model/interface";
-import mqtt_client from "@/util/mqtt_client";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
-import ComponentGlobal_BoxInformation from "@/app_modules/component_global/box_information";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+import mqtt_client from "@/util/mqtt_client";
+import { useDisclosure } from "@mantine/hooks";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentGlobal_UI_Modal from "@/app_modules/component_global/ui/ui_modal";
+import ComponentJob_DetailData from "../../component/detail/detail_data";
+import { Job_funDeleteById } from "../../fun/delete/fun_delete_by_id";
+import { Job_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_status_id";
+import { gs_job_status } from "../../global_state";
+import { MODEL_JOB } from "../../model/interface";
 
 export default function Job_DetailDraft({ dataJob }: { dataJob: MODEL_JOB }) {
   return (
@@ -172,7 +167,7 @@ function ButtonAction({ jobId }: { jobId: string }) {
       </Modal> */}
 
       {/* Ajukan */}
-      <ComponentGlobal_UI_Modal
+      <UIGlobal_Modal
         opened={isAjukan}
         close={() => setAjukan(false)}
         title={" Anda sudah yakin akan melakukan pengajuan review kembali ?"}
@@ -200,7 +195,7 @@ function ButtonAction({ jobId }: { jobId: string }) {
       />
 
       {/* Hapus */}
-      <ComponentGlobal_UI_Modal
+      <UIGlobal_Modal
         opened={opened}
         close={() => close()}
         title={"Anda yakin ingin menghapus ?"}

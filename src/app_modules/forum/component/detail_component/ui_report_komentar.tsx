@@ -3,7 +3,7 @@
 import { Stack, Paper, Text, List, Box } from "@mantine/core";
 import { useState } from "react";
 import { MODEL_FORUM_KOMENTAR } from "../../model/interface";
-import { AccentColor, MainColor } from "@/app_modules/component_global/color/color_pallet";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export function ComponentForum_UiDetailReportKomentar({
   dataKomentar,

@@ -10,7 +10,7 @@ import { redirectJobPage } from "./path/job";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
 import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
 
 export function ComponentNotifiaksi_CardView({

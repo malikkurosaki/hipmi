@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import {
   Card,
   Stack,
@@ -17,7 +17,7 @@ import {
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { MODEL_VOTING } from "../model/interface";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 
 export default function ComponentVote_CardViewPublish({
   data,

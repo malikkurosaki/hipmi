@@ -25,11 +25,11 @@ import { useDisclosure, useShallowEffect } from "@mantine/hooks";
 import adminColab_getListAllPublish from "../fun/get/get_list_all_publish";
 import ComponentAdminColab_DetailData from "../component/detail_data";
 import adminColab_getOneByColabId from "../fun/get/get_one_by_colab_id";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import _ from "lodash";
 import { IconBan, IconCheck, IconEye } from "@tabler/icons-react";
 import adminColab_funReportProjectById from "../fun/edit/fun_report_project_by_id";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 
 export default function AdminColab_TablePublish({
   listData,

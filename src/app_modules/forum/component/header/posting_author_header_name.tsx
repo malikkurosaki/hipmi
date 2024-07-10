@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import moment from "moment";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import {
   IconCircleFilled,
@@ -28,7 +28,7 @@ import { IoIosMore } from "react-icons/io";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import ComponentForum_PostingButtonMore from "../more_button/posting_button_more";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
 import { data } from "autoprefixer";
 
 export default function ComponentForum_PostingAuthorNameOnHeader({

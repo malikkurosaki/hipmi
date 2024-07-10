@@ -1,12 +1,12 @@
 "use client";
 
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import {
   MainColor,
   AccentColor,
-} from "@/app_modules/component_global/color/color_pallet";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
 import { Card, Grid, Center, Text } from "@mantine/core";
 import { MODEL_JOB } from "../../model/interface";
 import { useRouter } from "next/navigation";

@@ -1,8 +1,8 @@
 "use client";
 
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import notifikasiToUser_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_user";
 import { Stack, Paper, Group, Button, Divider } from "@mantine/core";
 import { useState } from "react";
@@ -17,7 +17,7 @@ import { forum_funCreateKomentar } from "../../fun/create/fun_create_komentar";
 import { forum_funGetAllKomentarById } from "../../fun/get/get_all_komentar_by_id";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
 import { useRouter } from "next/navigation";
-import { MainColor } from "@/app_modules/component_global/color/color_pallet";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import mqtt_client from "@/util/mqtt_client";
 export default function ComponentForum_DetailCreateKomentar({
   postingId,

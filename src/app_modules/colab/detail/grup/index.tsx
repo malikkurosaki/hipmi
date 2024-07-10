@@ -32,13 +32,13 @@ import { IconArrowUp, IconCircle, IconSend } from "@tabler/icons-react";
 import colab_funCreateMessageByUserId from "../../fun/create/room/fun_create_message_by_user_id";
 import _ from "lodash";
 import ComponentColab_IsEmptyData from "../../component/is_empty_data";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import colab_getMessageByRoomId from "../../fun/get/room_chat/get_message_by_room_id";
 import mqtt_client from "@/util/mqtt_client";
 import useInfiniteScroll, {
   ScrollDirection,
 } from "react-easy-infinite-scroll-hook";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
 
 export default function Colab_DetailGrupDiskusi({
   roomId,

@@ -29,7 +29,7 @@ import { NotifPeringatan } from "../notifikasi/notif_peringatan";
 import { NotifBerhasil } from "../notifikasi/notif_berhasil";
 import { Donasi_findDonaturByTokenId } from "../../fun/get/get_donatur_by_token_id";
 import { useState } from "react";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
 
 export function ComponentDonasi_DetailDataMain({
   donasi,

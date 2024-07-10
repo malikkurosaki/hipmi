@@ -1,7 +1,7 @@
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 import Component_Logout from "@/app_modules/auth/logout/view";
-import { AccentColor } from "@/app_modules/component_global/color/color_pallet";
-import ComponentGlobal_UI_Loader from "@/app_modules/component_global/ui/ui_loader";
 import {
   ActionIcon,
   Drawer,
@@ -12,11 +12,9 @@ import {
 } from "@mantine/core";
 import {
   IconEdit,
-  IconLogout,
-  IconLogout2,
   IconPhotoEdit,
   IconPolaroid,
-  IconX,
+  IconX
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -102,7 +100,7 @@ export function ComponentKatalog_DrawerKatalog({
                     setIsLoading(true)
                   }}
                 >
-                  {isLoading && e.id === pageId ? <ComponentGlobal_UI_Loader /> :  e.icon}
+                  {isLoading && e.id === pageId ? <ComponentGlobal_Loader /> :  e.icon}
                 </ActionIcon>
                 <Text align="center" color="white">
                   {e.name}

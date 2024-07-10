@@ -7,7 +7,7 @@ import ComponentForum_DetailHeader from "./detail_header";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function ComponentForum_DetailForumView({
   data,

@@ -1,15 +1,9 @@
 "use client";
 
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import ComponentGlobal_UI_Drawer from "@/app_modules/component_global/ui/ui_drawer";
-import { ActionIcon, Box } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
-  IconDots,
-  IconDotsVertical,
-  IconEdit,
-  IconPhotoEdit,
-  IconPolaroid,
+  IconDotsVertical
 } from "@tabler/icons-react";
 import { ComponentKatalog_DrawerKatalog } from "./drawer_katalog";
 

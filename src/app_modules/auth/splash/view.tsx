@@ -1,7 +1,7 @@
 "use client";
 
-import { MainColor } from "@/app_modules/component_global/color/color_pallet";
-import ComponentGlobal_SplashScreen from "@/app_modules/component_global/splash/splash_global";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import UIGlobal_SplashScreen from "@/app_modules/_global/ui/ui_splash";
 import { BackgroundImage, Center, Image, Paper, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";

@@ -16,16 +16,16 @@ import React from "react";
 import ComponentJob_HeaderTamplate from "../../component/header_tamplate";
 import { IconDots, IconDotsVertical, IconEdit, IconX } from "@tabler/icons-react";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
-import UIGlobal_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
-import UIGlobal_LayoutHeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
 import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
-import ComponentGlobal_UI_Drawer from "@/app_modules/component_global/ui/ui_drawer";
+} from "@/app_modules/_global/color/color_pallet";
+import UIGlobal_Drawer from "@/app_modules/_global/ui/ui_drawer";
 
 export default function LayoutJob_DetailDraft({
   children,
@@ -64,7 +64,7 @@ export default function LayoutJob_DetailDraft({
         {children}
       </UIGlobal_LayoutTamplate>
 
-      <ComponentGlobal_UI_Drawer
+      <UIGlobal_Drawer
         opened={opened}
         close={close}
         component={listComponent}

@@ -3,7 +3,7 @@
 import { Stack, Title, Grid, Text, Paper, Spoiler } from "@mantine/core";
 import moment from "moment";
 import { MODEL_EVENT } from "../../model/interface";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 
 export default function ComponentEvent_DetailMainData({
   data,

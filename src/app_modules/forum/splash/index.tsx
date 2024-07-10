@@ -1,8 +1,8 @@
 "use client";
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import ComponentGlobal_SplashScreen from "@/app_modules/component_global/splash/splash_global";
-import UIGlobal_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import UIGlobal_SplashScreen from "@/app_modules/_global/ui/ui_splash";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import {
   Avatar,
   Center,
@@ -26,7 +26,7 @@ export default function Forum_Splash() {
 
   return (
     <>
-      <ComponentGlobal_SplashScreen icon={<IconMessages size={300} />} />
+      <UIGlobal_SplashScreen icon={<IconMessages size={300} />} />
     </>
   );
 }

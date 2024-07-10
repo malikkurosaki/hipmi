@@ -1,35 +1,31 @@
 "use client";
 
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import {
   Box,
   Button,
   Center,
-  Grid,
   Group,
   Stack,
   Text,
   TextInput,
-  Textarea,
-  Title,
+  Textarea
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
-import { useCounter } from "@mantine/hooks";
-import { IconHome, IconMinus, IconPlus } from "@tabler/icons-react";
+import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { useAtom } from "jotai";
+import _ from "lodash";
 import moment from "moment";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { gs_vote_hotMenu, gs_vote_status } from "../global_state";
-import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
-import _ from "lodash";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { data } from "autoprefixer";
 import { Vote_funCreate } from "../fun/create/create_vote";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { gs_vote_hotMenu, gs_vote_status } from "../global_state";
 import { MODEL_VOTING } from "../model/interface";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
 
 export default function Vote_Create() {
   const router = useRouter();

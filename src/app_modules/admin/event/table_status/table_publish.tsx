@@ -41,9 +41,9 @@ import moment from "moment";
 import _ from "lodash";
 import { AdminEvent_funEditStatusPublishById } from "../fun/edit/fun_edit_status_publish_by_id";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { AdminEvent_getListTableByStatusId } from "../fun/get/get_list_table_by_status_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { AdminEvent_getListPesertaById } from "../fun/get/get_list_peserta_by_id";
 

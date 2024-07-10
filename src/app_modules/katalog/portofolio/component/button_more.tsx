@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
-import ComponentGlobal_UI_Drawer from "@/app_modules/component_global/ui/ui_drawer";
+import UIGlobal_Drawer from "@/app_modules/_global/ui/ui_drawer";
 import { ActionIcon } from "@mantine/core";
 import {
   IconDots,
@@ -54,7 +54,7 @@ export function ComponentPortofolio_ButtonMore({
         <ActionIcon disabled variant="transparent"></ActionIcon>
       )}
 
-      <ComponentGlobal_UI_Drawer
+      <UIGlobal_Drawer
         opened={openDrawer}
         close={() => setOpenDrawer(false)}
         component={listPage}

@@ -32,8 +32,8 @@ import { MODEL_Investasi } from "../../model/model_investasi";
 import funGantiStatusInvestasi from "../../fun/fun_ganti_status";
 import { useState } from "react";
 import _ from "lodash";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 
 export default function DetailReviewInvestasi({
   dataInvestasi,

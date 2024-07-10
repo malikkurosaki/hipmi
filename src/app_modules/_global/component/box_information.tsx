@@ -1,5 +1,5 @@
 import { Center, Grid, Group, Paper, Stack, Text, Title } from "@mantine/core";
-import { AccentColor, MainColor } from "./color/color_pallet";
+import { AccentColor, MainColor } from "../color/color_pallet";
 
 export default function ComponentGlobal_BoxInformation({
   informasi,

@@ -1,6 +1,6 @@
 "use client";
 
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import { useRouter } from "next/navigation";
 import React from "react";
 import FooterDonasi from "../../component/footer_close_donasi";

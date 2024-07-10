@@ -14,7 +14,7 @@ import "react-quill/dist/quill.bubble.css";
 import { IconPhotoUp } from "@tabler/icons-react";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
 
 import dynamic from "next/dynamic";
 import React, { useState } from "react";

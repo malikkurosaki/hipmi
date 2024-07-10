@@ -1,7 +1,7 @@
 "use client";
 
-import ComponentGlobal_IsEmptyData from "@/app_modules/component_global/is_empty_data";
-import ComponentGlobal_UI_Loader from "@/app_modules/component_global/ui/ui_loader";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 import { gs_job_hot_menu, gs_job_status } from "@/app_modules/job/global_state";
 import { Box, Center } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
@@ -48,7 +48,7 @@ export function Notifikasi_UiView({
             height="92vh"
             renderLoading={() => (
               <Center mt={"lg"}>
-                <ComponentGlobal_UI_Loader />
+                <ComponentGlobal_Loader />
               </Center>
             )}
             data={data}

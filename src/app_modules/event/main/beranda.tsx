@@ -27,12 +27,12 @@ import { useState } from "react";
 import { MODEL_EVENT } from "../model/interface";
 import ComponentEvent_BoxListStatus from "../component/box_list_status";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import _ from "lodash";
 import { IconCirclePlus, IconPencilPlus } from "@tabler/icons-react";
 import ComponentEvent_IsEmptyData from "../component/is_empty_data";
 import { useShallowEffect, useWindowScroll } from "@mantine/hooks";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
 import { Event_getListAllPublish } from "../fun/get/get_list_all_publish";
 
 export default function Event_Beranda({

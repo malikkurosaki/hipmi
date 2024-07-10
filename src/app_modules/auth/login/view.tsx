@@ -19,17 +19,17 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAtom } from "jotai";
 import { gs_kodeId } from "../state/state";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { auth_funLogin } from "@/app_modules/auth/fun/fun_login";
 import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import {
   AccentColor,
   MainColor,
-} from "@/app_modules/component_global/color/color_pallet";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 
 export default function Login() {
   const router = useRouter();

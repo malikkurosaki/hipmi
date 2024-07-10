@@ -14,7 +14,7 @@ import {
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { MODEL_VOTING } from "../model/interface";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 
 export default function ComponentVote_CardViewStatus({
   path,

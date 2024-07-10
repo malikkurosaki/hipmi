@@ -26,7 +26,7 @@ import { useState } from "react";
 import ComponentAdminDonasi_TombolKembali from "../../component/tombol_kembali";
 import { AdminDonasi_funCreatePencairanDana } from "../../fun/create/fun_create_pencairan_dana";
 import { AdminDonasi_AkumulasiPencairanById } from "../../fun/update/fun_update_akumulasi_pencairan";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 import { ComponentAdminGlobal_NotifikasiPeringatan } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_peringatan";
 import { ComponentAdminGlobal_NotifikasiBerhasil } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_berhasil";
 import { ComponentAdminGlobal_NotifikasiGagal } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_gagal";

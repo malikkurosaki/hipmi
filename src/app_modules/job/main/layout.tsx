@@ -1,10 +1,10 @@
 "use client";
 
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import { MainColor } from "@/app_modules/component_global/color/color_pallet";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import UIGlobal_LayoutHeaderTamplate from "@/app_modules/component_global/ui/ui_header_tamplate";
-import UIGlobal_LayoutTamplate from "@/app_modules/component_global/ui/ui_layout_tamplate";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import { ActionIcon, SimpleGrid, Stack, Text } from "@mantine/core";
 import { IconHistory, IconHome, IconReservedLine } from "@tabler/icons-react";
 import { useAtom } from "jotai";

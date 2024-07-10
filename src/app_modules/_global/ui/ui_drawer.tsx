@@ -10,7 +10,7 @@ import { IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AccentColor } from "../color/color_pallet";
-import ComponentGlobal_UI_Loader from "./ui_loader";
+import ComponentGlobal_Loader from "../component/loader";
 
 interface MODEL_DRAWER {
   id: string;
@@ -18,7 +18,7 @@ interface MODEL_DRAWER {
   icon: string;
   path: string;
 }
-export default function ComponentGlobal_UI_Drawer({
+export default function UIGlobal_Drawer({
   opened,
   close,
   component,
@@ -86,7 +86,7 @@ export default function ComponentGlobal_UI_Drawer({
                   }}
                 >
                   {isLoading && e?.id === pageId ? (
-                    <ComponentGlobal_UI_Loader />
+                    <ComponentGlobal_Loader />
                   ) : (
                     e?.icon
                   )}
