@@ -14,7 +14,7 @@ import {
   Stack,
   Text,
   TextInput,
-  Textarea
+  Textarea,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
@@ -29,6 +29,9 @@ import {
   MODEL_VOTING,
   MODEL_VOTING_DAFTAR_NAMA_VOTE,
 } from "../model/interface";
+import { useShallowEffect } from "@mantine/hooks";
+import { Vote_getListDaftarNamaById } from "../fun/get/get_list_daftar_vote_by_id";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function Vote_Edit({
   dataVote,
@@ -40,10 +43,24 @@ export default function Vote_Edit({
   const [data, setData] = useState(dataVote);
   const [pilihanNama, setPilihanNama] = useState(listDaftarVote);
 
+  useShallowEffect(() => {
+    onLoadList();
+  }, []);
+
+  async function onLoadList() {
+    const loadList = await Vote_getListDaftarNamaById(data.id);
+    setPilihanNama(loadList as any);
+  }
+
   return (
     <>
-      <Stack px={"sm"}>
+      <Stack px={"sm"} c={"white"} mb={"xl"}>
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Judul"
           withAsterisk
           placeholder="Judul"
@@ -66,6 +83,11 @@ export default function Vote_Edit({
 
         <Stack spacing={5}>
           <Textarea
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Deskripsi"
             autosize
             minRows={2}
@@ -95,6 +117,11 @@ export default function Vote_Edit({
         </Stack>
 
         <DatePickerInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Jangka Waktu"
           placeholder="Masukan jangka waktu voting"
           withAsterisk
@@ -130,63 +157,66 @@ export default function Vote_Edit({
           <Stack>
             <Stack>
               {pilihanNama.map((e, index) => (
-                <Grid key={index} h="100%" align="center">
-                  <Grid.Col span={10}>
-                    <Box>
-                      <TextInput
-                        label={"Nama Pilihan"}
-                        withAsterisk
-                        placeholder="Nama pilihan"
-                        value={e.value}
-                        maxLength={100}
-                        error={
-                          e.value === "" ? (
-                            <ComponentGlobal_ErrorInput text="Masukan nama pilihan" />
-                          ) : (
-                            ""
-                          )
-                        }
-                        onChange={(v) => {
-                          const cloneData = _.clone(pilihanNama);
-                          cloneData[index].value = v.currentTarget.value;
-                          setPilihanNama([...pilihanNama]);
-                        }}
-                      />
-                    </Box>
-                  </Grid.Col>
-                  <Grid.Col span={2} mt={"md"}>
-                    <ActionIcon
-                      variant="transparent"
-                      radius={"xl"}
-                      disabled={pilihanNama.length < 3 ? true : false}
-                      onClick={() => {
-                        pilihanNama.splice(index, 1);
+                <Group key={index} position="apart" align="center">
+                  <Box w={"85%"}>
+                    <TextInput
+                      styles={{
+                        label: {
+                          color: "white",
+                        },
+                      }}
+                      label={"Nama Pilihan"}
+                      withAsterisk
+                      placeholder="Nama pilihan"
+                      value={e.value}
+                      maxLength={100}
+                      error={
+                        e.value === "" ? (
+                          <ComponentGlobal_ErrorInput text="Masukan nama pilihan" />
+                        ) : (
+                          ""
+                        )
+                      }
+                      onChange={(v) => {
+                        const cloneData = _.clone(pilihanNama);
+                        cloneData[index].value = v.currentTarget.value;
                         setPilihanNama([...pilihanNama]);
                       }}
-                    >
-                      <IconTrash
-                        style={{
-                          transition: "0.5s",
-                        }}
-                        color={pilihanNama.length < 3 ? "gray" : "red"}
-                      />
-                    </ActionIcon>
-                  </Grid.Col>
-                </Grid>
+                    />
+                  </Box>
+                  <ActionIcon
+                    mt={"lg"}
+                    variant="transparent"
+                    radius={"xl"}
+                    disabled={pilihanNama.length < 3 ? true : false}
+                    onClick={() => {
+                      pilihanNama.splice(index, 1);
+                      setPilihanNama([...pilihanNama]);
+                    }}
+                  >
+                    <IconTrash
+                      style={{
+                        transition: "0.5s",
+                      }}
+                      color={pilihanNama.length < 3 ? "gray" : "red"}
+                    />
+                  </ActionIcon>
+                </Group>
               ))}
             </Stack>
 
             <Group position="center">
               <Button
                 disabled={pilihanNama.length >= 4 ? true : false}
-                compact
-                w={100}
                 radius={"xl"}
                 leftIcon={<IconPlus size={15} />}
-                variant="outline"
                 onClick={() => {
                   setPilihanNama([...(pilihanNama as any), { value: "" }]);
                 }}
+                compact
+                bg={MainColor.yellow}
+                color={"yellow"}
+                c={"black"}
               >
                 <Text fz={8}>Tambah List</Text>
               </Button>
@@ -233,12 +263,18 @@ function ButtonAction({
   return (
     <>
       <Button
+        disabled={!data.title || !data.deskripsi ? true : false}
         loaderPosition="center"
         loading={isLoading ? true : false}
         mt={"lg"}
         radius={"xl"}
-        color="green"
         onClick={() => onUpdate()}
+        c={"black"}
+        bg={MainColor.yellow}
+        color="yellow"
+        style={{
+          transition: "0.5s",
+        }}
       >
         Update
       </Button>

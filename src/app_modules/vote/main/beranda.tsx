@@ -5,8 +5,10 @@ import {
   ActionIcon,
   Affix,
   Box,
+  Center,
+  Loader,
   Stack,
-  rem
+  rem,
 } from "@mantine/core";
 import { useShallowEffect, useWindowScroll } from "@mantine/hooks";
 import { IconPencilPlus } from "@tabler/icons-react";
@@ -15,20 +17,19 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentVote_CardViewPublish from "../component/card_view_publish";
 import ComponentVote_IsEmptyData from "../component/is_empty_data";
-import { Vote_getAllListPublish } from "../fun/get/get_all_list_publish";
+import { vote_getAllListPublish } from "../fun/get/get_all_list_publish";
 import { MODEL_VOTING } from "../model/interface";
+import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import job_getAllStatusPublish from "@/app_modules/job/fun/get/status/get_list_publish";
+import { ScrollOnly } from "next-scroll-loader";
 
 export default function Vote_Beranda({
   dataVote,
 }: {
   dataVote: MODEL_VOTING[];
 }) {
-  const router = useRouter();
-
   const [data, setData] = useState(dataVote);
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [scroll, scrollTo] = useWindowScroll();
 
   useShallowEffect(() => {
     onLoad({
@@ -39,46 +40,45 @@ export default function Vote_Beranda({
   }, [setData]);
 
   async function onLoad({ setData }: { setData: (val: any) => void }) {
-    const loadData = await Vote_getAllListPublish();
+    const loadData = await vote_getAllListPublish({ page: 1 });
     setData(loadData);
   }
 
+  const [activePage, setActivePage] = useState(1);
+
   return (
     <>
-      <Affix position={{ bottom: rem(150), right: rem(30) }}>
-        <ActionIcon
-          loading={isLoading ? true : false}
-          opacity={scroll.y > 0 ? 0.5 : ""}
-          style={{
-            transition: "0.5s",
-          }}
-          size={"xl"}
-          radius={"xl"}
-          variant="transparent"
-          bg={"blue"}
-          onClick={() => {
-            setIsLoading(true);
-            router.push(RouterVote.create);
+      {_.isEmpty(data) ? (
+        <ComponentGlobal_IsEmptyData />
+      ) : (
+        // --- Main component --- //
+        <ScrollOnly
+          height="85vh"
+          renderLoading={() => (
+            <Center mt={"lg"}>
+              <Loader color={"yellow"} />
+            </Center>
+          )}
+          data={data}
+          setData={setData}
+          moreData={async () => {
+            const loadData = await vote_getAllListPublish({
+              page: activePage + 1,
+            });
+
+            setActivePage((val) => val + 1);
+
+            return loadData;
           }}
         >
-          <IconPencilPlus color="white" />
-        </ActionIcon>
-      </Affix>
-
-      {_.isEmpty(data) ? (
-        <ComponentVote_IsEmptyData text="Tidak ada data" />
-      ) : (
-        <Stack>
-          {data.map((e, i) => (
-            <Box key={i}>
-              <ComponentVote_CardViewPublish
-                path={RouterVote.main_detail}
-                data={e}
-                authorName={true}
-              />
-            </Box>
-          ))}
-        </Stack>
+          {(item) => (
+            <ComponentVote_CardViewPublish
+              data={item}
+              path={RouterVote.main_detail}
+              authorName={true}
+            />
+          )}
+        </ScrollOnly>
       )}
     </>
   );

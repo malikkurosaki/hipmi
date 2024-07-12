@@ -1,37 +1,36 @@
 "use client";
 
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import {
-  Card,
-  Stack,
-  Center,
-  Title,
+  Avatar,
   Badge,
-  Group,
-  Radio,
-  Grid,
-  Text,
   Box,
   Button,
-  Avatar,
+  Card,
+  Center,
   Divider,
+  Grid,
+  Group,
+  Radio,
+  Stack,
+  Text,
+  Title,
 } from "@mantine/core";
-import moment from "moment";
-import ComponentVote_HasilVoting from "../../component/detail/detail_hasil_voting";
+import _ from "lodash";
+import { useState } from "react";
 import ComponentVote_DaftarKontributorVoter from "../../component/detail/detail_daftar_kontributor";
+import ComponentVote_HasilVoting from "../../component/detail/detail_hasil_voting";
+import { Vote_funCreateHasil } from "../../fun/create/create_hasil";
+import { Vote_getOnebyId } from "../../fun/get/get_one_by_id";
 import {
   MODEL_VOTE_KONTRIBUTOR,
   MODEL_VOTING,
   MODEL_VOTING_DAFTAR_NAMA_VOTE,
 } from "../../model/interface";
-import { useState } from "react";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
-import _ from "lodash";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { Vote_funCreatePilihanVotingById } from "../../fun/create/create_pilihan_voting";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { Vote_funCreateHasil } from "../../fun/create/create_hasil";
-import { Vote_getOnebyId } from "../../fun/get/get_one_by_id";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function Vote_MainDetail({
   dataVote,
@@ -79,8 +78,16 @@ function TampilanDataVoting({
   const [votingNameId, setVotingNameId] = useState("");
   return (
     <>
-      <Card shadow="lg" withBorder p={30}>
-        <Card.Section>
+      <Card
+        p={30}
+        style={{
+          backgroundColor: AccentColor.darkblue,
+          borderRadius: "10px",
+          border: `2px solid ${AccentColor.blue}`,
+          color: "white",
+        }}
+      >
+        <Card.Section mb={"md"}>
           <ComponentGlobal_AuthorNameOnHeader
             authorName={dataVote?.Author.Profile.name}
             imagesId={dataVote?.Author.Profile.imagesId}
@@ -90,31 +97,43 @@ function TampilanDataVoting({
         <Card.Section px={"xs"} py={"sm"}>
           <Stack spacing={"lg"}>
             <Center>
-              <Title order={5}>{dataVote?.title}</Title>
+              <Title order={5} align="center">
+                {dataVote?.title}
+              </Title>
             </Center>
             <Text>{dataVote?.deskripsi}</Text>
 
             <Stack spacing={0}>
-              <Center>
+              <Stack align="center" spacing={"xs"}>
                 <Text fz={10} fw={"bold"}>
                   Batas Voting
                 </Text>
-              </Center>
-              <Badge>
-                <Group>
-                  <Text>
-                    {dataVote?.awalVote.toLocaleDateString(["id-ID"], {
-                      dateStyle: "medium",
-                    })}
-                  </Text>
-                  <Text>-</Text>
-                  <Text>
-                    {dataVote?.akhirVote.toLocaleDateString(["id-ID"], {
-                      dateStyle: "medium",
-                    })}
-                  </Text>
-                </Group>
-              </Badge>
+
+                <Badge
+                  styles={{
+                    root: {
+                      backgroundColor: AccentColor.blue,
+                      border: `1px solid ${AccentColor.skyblue}`,
+                      color: "white",
+                      width: "80%",
+                    },
+                  }}
+                >
+                  <Group>
+                    <Text>
+                      {dataVote?.awalVote.toLocaleDateString(["id-ID"], {
+                        dateStyle: "medium",
+                      })}
+                    </Text>
+                    <Text>-</Text>
+                    <Text>
+                      {dataVote?.akhirVote.toLocaleDateString(["id-ID"], {
+                        dateStyle: "medium",
+                      })}
+                    </Text>
+                  </Group>
+                </Badge>
+              </Stack>
             </Stack>
           </Stack>
         </Card.Section>
@@ -122,7 +141,13 @@ function TampilanDataVoting({
         {/* Voting View */}
         <Card.Section py={"xl"}>
           {isKontributor ? (
-            <Stack align="center" spacing={0}>
+            <Stack
+              align="center"
+              spacing={0}
+              style={{
+                color: "white",
+              }}
+            >
               <Text mb={"sm"} fw={"bold"} fz={"xs"}>
                 Pilihan anda:
               </Text>
@@ -131,8 +156,18 @@ function TampilanDataVoting({
               </Badge>
             </Stack>
           ) : (
-            <Stack spacing={"xl"}>
+            <Stack
+              spacing={"xl"}
+              style={{
+                color: "white",
+              }}
+            >
               <Radio.Group
+                styles={{
+                  label: {
+                    color: "white",
+                  },
+                }}
                 value={votingNameId}
                 onChange={(val) => {
                   setVotingNameId(val);
@@ -146,7 +181,12 @@ function TampilanDataVoting({
                 <Stack px={"md"}>
                   {dataVote?.Voting_DaftarNamaVote.map((v) => (
                     <Box key={v.id}>
-                      <Radio label={v.value} value={v.id} />
+                      <Radio
+                      color="yellow"
+                        styles={{ label: { color: "white" } }}
+                        label={v.value}
+                        value={v.id}
+                      />
                     </Box>
                   ))}
                 </Stack>
@@ -162,6 +202,9 @@ function TampilanDataVoting({
                     onClick={() =>
                       onVote(votingNameId, dataVote?.id as any, setData)
                     }
+                    bg={MainColor.yellow}
+                    color="yellow"
+                    c={"black"}
                   >
                     Vote
                   </Button>

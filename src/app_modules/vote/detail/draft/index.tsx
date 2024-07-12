@@ -13,6 +13,13 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_glo
 import { Vote_funDeleteById } from "../../fun/delete/fun_delete_by_id";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import moment from "moment";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import { useState } from "react";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 
 export default function Vote_DetailDraft({
   dataVote,
@@ -21,7 +28,15 @@ export default function Vote_DetailDraft({
 }) {
   return (
     <>
-      <Stack>
+      <Stack spacing={"xl"}>
+        {dataVote?.catatan ? (
+          <ComponentGlobal_BoxInformation
+            isReport
+            informasi={dataVote?.catatan}
+          />
+        ) : (
+          ""
+        )}
         <ComponentVote_DetailDataSebelumPublish data={dataVote} />
         <ButtonAction voteId={dataVote.id} awalVote={dataVote.awalVote} />
       </Stack>
@@ -38,7 +53,9 @@ function ButtonAction({
 }) {
   const router = useRouter();
   const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
-  const [opened, { open, close }] = useDisclosure(false);
+  const [openModal1, setOpenModal1] = useState(false);
+  const [openModal2, setOpenModal2] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onUpdate() {
     const hariIni = new Date();
@@ -51,6 +68,7 @@ function ButtonAction({
       if (res.status === 200) {
         setTabsStatus("Review");
         ComponentGlobal_NotifikasiBerhasil("Berhasil Ajukan Review", 2000);
+        setIsLoading(true);
         router.back();
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
@@ -75,9 +93,10 @@ function ButtonAction({
       <SimpleGrid cols={2}>
         <Button
           radius={"xl"}
+          bg={MainColor.yellow}
           color="yellow"
           onClick={() => {
-            onUpdate();
+            setOpenModal1(true);
           }}
         >
           Ajukan Review
@@ -86,37 +105,71 @@ function ButtonAction({
           radius={"xl"}
           color="red"
           onClick={() => {
-            open();
+            setOpenModal2(true);
           }}
         >
           Hapus
         </Button>
       </SimpleGrid>
 
-      <Modal opened={opened} onClose={close} centered withCloseButton={false}>
-        <Stack>
-          <Title order={6}>Yakin menghapus vote ini ?</Title>
-          <Group position="center">
-            <Button
-              radius={"xl"}
-              onClick={() => {
-                close();
-              }}
-            >
-              Kembali
-            </Button>
-            <Button
-              radius={"xl"}
-              onClick={() => {
-                onDelete();
-              }}
-              color="red"
-            >
-              Hapus
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
+      {/* MODAL AJUKAN */}
+      <UIGlobal_Modal
+        title={"Anda yakin akan melakukan pengajuan review kembali ?"}
+        opened={openModal1}
+        close={() => setOpenModal1(false)}
+        buttonKiri={
+          <Button
+            radius={"xl"}
+            onClick={() => {
+              setOpenModal1(false);
+            }}
+          >
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            loaderPosition="center"
+            loading={isLoading ? true : false}
+            radius={"xl"}
+            onClick={() => {
+              onUpdate();
+            }}
+            color="yellow"
+            bg={MainColor.yellow}
+          >
+            Ajukan
+          </Button>
+        }
+      />
+
+      {/* MODAL HAPUS */}
+      <UIGlobal_Modal
+        title={"Anda yakin menghapus voting ini ?"}
+        opened={openModal2}
+        close={() => setOpenModal2(false)}
+        buttonKiri={
+          <Button
+            radius={"xl"}
+            onClick={() => {
+              setOpenModal2(false);
+            }}
+          >
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            radius={"xl"}
+            onClick={() => {
+              onDelete();
+            }}
+            color="red"
+          >
+            Hapus
+          </Button>
+        }
+      />
     </>
   );
 }

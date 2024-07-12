@@ -13,11 +13,15 @@ import {
   Text,
   Title,
   Box,
+  Center,
+  Progress,
 } from "@mantine/core";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { MODEL_VOTING } from "../model/interface";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { toNumber } from "lodash";
 
 export default function ComponentVote_CardViewPublish({
   data,
@@ -35,7 +39,19 @@ export default function ComponentVote_CardViewPublish({
   const router = useRouter();
   return (
     <>
-      <Card shadow="lg" withBorder p={30} radius={"md"}>
+      <Card
+        radius={"md"}
+        px={30}
+        pt={authorName ? 30 : 10}
+        pb={authorName ? 100 : 30}
+        mb={"lg"}
+        style={{
+          backgroundColor: AccentColor.darkblue,
+          borderRadius: "10px",
+          border: `2px solid ${AccentColor.blue}`,
+          color: "white",
+        }}
+      >
         {/* Header name */}
         {authorName ? (
           <Card.Section>
@@ -48,6 +64,7 @@ export default function ComponentVote_CardViewPublish({
         ) : (
           ""
         )}
+
         {/* Isi deskripsi */}
         <Card.Section
           py={authorName ? "sm" : 0}
@@ -59,44 +76,59 @@ export default function ComponentVote_CardViewPublish({
             }
           }}
         >
-          <Stack>
-            <Text fw={"bold"}>{data ? data.title : "Judul Voting"}</Text>
-            <Badge>
-              <Group>
-                <Text>
-                  {data
-                    ? data?.awalVote.toLocaleDateString(["id-ID"], {
-                        dateStyle: "medium",
-                      })
-                    : "tgl awal voting"}
-                </Text>
-                <Text>-</Text>
-                <Text>
-                  {data
-                    ? data?.akhirVote.toLocaleDateString(["id-ID"], {
-                        dateStyle: "medium",
-                      })
-                    : "tgl akhir voting"}
-                </Text>
-              </Group>
-            </Badge>
+          <Stack spacing={"xl"}>
+            <Stack align="center">
+              <Text align="center" fw={"bold"}>
+                {data ? data.title : "Judul Voting"}
+              </Text>
+              <Badge
+                styles={{
+                  root: {
+                    backgroundColor: AccentColor.blue,
+                    border: `1px solid ${AccentColor.skyblue}`,
+                    color: "white",
+                    width: "80%",
+                  },
+                }}
+              >
+                <Group>
+                  <Text>
+                    {data
+                      ? data?.awalVote.toLocaleDateString(["id-ID"], {
+                          dateStyle: "medium",
+                        })
+                      : "tgl awal voting"}
+                  </Text>
+                  <Text>-</Text>
+                  <Text>
+                    {data
+                      ? data?.akhirVote.toLocaleDateString(["id-ID"], {
+                          dateStyle: "medium",
+                        })
+                      : "tgl akhir voting"}
+                  </Text>
+                </Group>
+              </Badge>
+            </Stack>
             {data ? (
               <Stack>
-                <Grid>
-                  {data?.Voting_DaftarNamaVote.map((v) => (
-                    <Grid.Col key={v.id} span={"auto"}>
-                      <Stack align="center" spacing={"xs"}>
-                        <Text fz={10} lineClamp={1}>
-                          {v.value}
-                        </Text>
+                {data?.Voting_DaftarNamaVote.map((v, i) => (
+                  <Stack key={v.id} spacing={0}>
+                    <Text>{v.value}</Text>
+                    <Progress radius={"xl"} value={v.jumlah} color="yellow" />
+                  </Stack>
+                  // <Grid.Col key={v.id} span={"auto"}>
+                  //   <Stack align="center" spacing={"xs"}>
+                  //     <Text fz={10} lineClamp={1}>
+                  //       {v.value}
+                  //     </Text>
 
-                        <Avatar radius={100} variant="outline" color="blue">
-                          <Text>{v.jumlah}</Text>
-                        </Avatar>
-                      </Stack>
-                    </Grid.Col>
-                  ))}
-                </Grid>
+                  //     <Avatar radius={100} variant="outline" color="yellow">
+                  //       <Text>{v.jumlah}</Text>
+                  //     </Avatar>
+                  //   </Stack>
+                  // </Grid.Col>
+                ))}
               </Stack>
             ) : (
               <Stack>

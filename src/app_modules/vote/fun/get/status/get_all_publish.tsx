@@ -3,7 +3,9 @@
 import prisma from "@/app/lib/prisma";
 import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 
-export async function vote_getAllListPublish({ page }: { page: number }) {
+export async function vote_getAllPublish({ page }: { page: number }) {
+  const authorId = await user_getOneUserId();
+
   const takeData = 5;
   const skipData = page * takeData - takeData;
 
@@ -15,6 +17,7 @@ export async function vote_getAllListPublish({ page }: { page: number }) {
     },
     where: {
       voting_StatusId: "1",
+      authorId: authorId,
       isActive: true,
       akhirVote: {
         gte: new Date(),
@@ -35,14 +38,6 @@ export async function vote_getAllListPublish({ page }: { page: number }) {
       Voting_DaftarNamaVote: {
         orderBy: {
           createdAt: "asc",
-        },
-      },
-      Author: {
-        select: {
-          id: true,
-          username: true,
-          nomor: true,
-          Profile: true,
         },
       },
     },

@@ -79,42 +79,6 @@ export default function LayoutJob_Main({
               </Stack>
             ))}
           </SimpleGrid>
-          // <Stack justify="center" h={"100%"}>
-          //   <Grid>
-          //     {listFooter.map((e) => (
-          //       <Grid.Col
-          //         key={e.id}
-          //         span={"auto"}
-          //         pt={"md"}
-          //         onClick={() => {
-          //           // setLoading(true);
-          //           // setTimeout(() => router.replace(e.path), 3000);
-          //           router.replace(e.path);
-          //           setHotMenuId(e.id);
-          //           // setTimeout(() => setLoading(false), 1000);
-          //         }}
-          //       >
-          //         <Center>
-          //           <Stack align="center" spacing={0}>
-          //             <ActionIcon
-          //               radius={"xl"}
-          //               variant="transparent"
-          //               c={hotMenuId === e.id ? MainColor.yellow : "white"}
-          //             >
-          //               {e.icon}
-          //             </ActionIcon>
-          //             <Text
-          //               fz={10}
-          //               c={hotMenuId === e.id ? MainColor.yellow : "white"}
-          //             >
-          //               {e.name}
-          //             </Text>
-          //           </Stack>
-          //         </Center>
-          //       </Grid.Col>
-          //     ))}
-          //   </Grid>
-          // </Stack>
         }
       >
         {children}

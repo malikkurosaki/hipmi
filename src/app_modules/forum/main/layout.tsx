@@ -1,33 +1,17 @@
 "use client";
 
+import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import { MODEL_USER } from "@/app_modules/home/model/interface";
 import {
   ActionIcon,
-  AppShell,
   Avatar,
-  Center,
-  Footer,
-  Grid,
-  Group,
-  Header,
-  Loader,
-  Stack,
-  Text,
-  Title,
+  Loader
 } from "@mantine/core";
-import React, { useState } from "react";
-import ComponentForum_HeaderTamplate from "../component/header/header_tamplate";
-import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import { IconChevronLeft, IconCircle, IconHome } from "@tabler/icons-react";
-import router from "next/router";
 import { useRouter } from "next/navigation";
-import { title } from "process";
-import { MODEL_USER } from "@/app_modules/home/model/interface";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
-import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
-import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import React, { useState } from "react";
 
 export default function LayoutForum_Main({
   children,
