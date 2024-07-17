@@ -48,7 +48,7 @@ export default function Vote_MainDetail({
   const [data, setData] = useState(dataVote);
   return (
     <>
-      <Stack>
+      <Stack py={"md"}>
         <TampilanDataVoting
           dataVote={data}
           setData={setData}

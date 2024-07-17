@@ -1,29 +1,22 @@
 "use client";
 
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import {
   Button,
-  Group,
-  Modal,
   SimpleGrid,
-  Stack,
-  Text,
-  Title,
+  Stack
 } from "@mantine/core";
-import ComponentVote_DetailDataSebelumPublish from "../../component/detail/detail_data_sebelum_publish";
-import { useRouter } from "next/navigation";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { useAtom } from "jotai";
-import { gs_vote_status } from "../../global_state";
-import { useDisclosure } from "@mantine/hooks";
-import { MODEL_VOTING } from "../../model/interface";
-import { Vote_funDeleteById } from "../../fun/delete/fun_delete_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_id";
-import ComponentVote_NotedBox from "../../component/noted_box";
-import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentVote_DetailDataSebelumPublish from "../../component/detail/detail_data_sebelum_publish";
+import { Vote_funDeleteById } from "../../fun/delete/fun_delete_by_id";
+import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_id";
+import { gs_vote_status } from "../../global_state";
+import { MODEL_VOTING } from "../../model/interface";
 
 export default function Vote_DetailReject({
   dataVote,

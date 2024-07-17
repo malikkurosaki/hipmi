@@ -3,9 +3,16 @@
 import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 import prisma from "@/app/lib/prisma";
 
-export async function Vote_getAllListRiwayatSaya() {
+export async function Vote_getAllListRiwayatSaya({ page }: { page: number }) {
   const authorId = await user_getOneUserId();
+   const takeData = 5;
+   const skipData = page * takeData - takeData;
+
+
   const data = await prisma.voting.findMany({
+    take: takeData,
+    skip: skipData,
+    
     orderBy: {
       createdAt: "asc",
     },

@@ -274,11 +274,11 @@ export function Home_UiFooter({ dataUser }: { dataUser: MODEL_USER }) {
         }}
         w={"100%"}
         bottom={0}
-        h={"10vh"}
+        h={"9vh"}
       >
         <SimpleGrid cols={4}>
           {listHalamanFooter.map((e, i) => (
-            <Center h={"10vh"} key={e.id}>
+            <Center h={"9vh"} key={e.id}>
               <Stack align="center" spacing={0}>
                 <ActionIcon
                   radius={"xl"}
@@ -310,7 +310,7 @@ export function Home_UiFooter({ dataUser }: { dataUser: MODEL_USER }) {
             </Center>
           ))}
 
-          <Center h={"10vh"}>
+          <Center h={"9vh"}>
             <Stack
               align="center"
               spacing={2}

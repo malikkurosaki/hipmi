@@ -43,7 +43,7 @@ export default function ComponentVote_CardViewPublish({
         radius={"md"}
         px={30}
         pt={authorName ? 30 : 10}
-        pb={authorName ? 100 : 30}
+        pb={30}
         mb={"lg"}
         style={{
           backgroundColor: AccentColor.darkblue,
@@ -114,43 +114,21 @@ export default function ComponentVote_CardViewPublish({
               <Stack>
                 {data?.Voting_DaftarNamaVote.map((v, i) => (
                   <Stack key={v.id} spacing={0}>
-                    <Text>{v.value}</Text>
-                    <Progress radius={"xl"} value={v.jumlah} color="yellow" />
+                    <Group position="apart">
+                      <Text>{v.value}</Text>
+                      <Text>{v.jumlah}</Text>
+                    </Group>
+                    <Progress
+                      size={"xl"}
+                      radius={"xl"}
+                      value={v.jumlah}
+                      color="yellow"
+                    />
                   </Stack>
-                  // <Grid.Col key={v.id} span={"auto"}>
-                  //   <Stack align="center" spacing={"xs"}>
-                  //     <Text fz={10} lineClamp={1}>
-                  //       {v.value}
-                  //     </Text>
-
-                  //     <Avatar radius={100} variant="outline" color="yellow">
-                  //       <Text>{v.jumlah}</Text>
-                  //     </Avatar>
-                  //   </Stack>
-                  // </Grid.Col>
                 ))}
               </Stack>
             ) : (
-              <Stack>
-                <Grid>
-                  <Grid.Col span={6}>
-                    <Stack align="center" spacing={"xs"}>
-                      <Text fz={10}>Voting A</Text>
-                      <Avatar radius={100} variant="outline" color="blue">
-                        2
-                      </Avatar>
-                    </Stack>
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <Stack align="center" spacing={"xs"}>
-                      <Text fz={10}>Voting B</Text>
-                      <Avatar radius={100} variant="outline" color="red">
-                        3
-                      </Avatar>
-                    </Stack>
-                  </Grid.Col>
-                </Grid>
-              </Stack>
+              ""
             )}
           </Stack>
           {pilihanSaya ? (

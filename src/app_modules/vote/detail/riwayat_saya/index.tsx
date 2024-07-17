@@ -15,7 +15,7 @@ export default function Vote_DetailRiwayatSaya({
 }) {
   return (
     <>
-      <Stack>
+      <Stack py={"md"}>
         <ComponentVote_DetailDataSetelahPublish
           data={dataVote}
           authorName={true}

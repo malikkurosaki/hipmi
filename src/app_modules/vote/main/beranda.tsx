@@ -53,7 +53,7 @@ export default function Vote_Beranda({
       ) : (
         // --- Main component --- //
         <ScrollOnly
-          height="85vh"
+          height="82vh"
           renderLoading={() => (
             <Center mt={"lg"}>
               <Loader color={"yellow"} />
