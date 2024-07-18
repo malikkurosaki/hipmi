@@ -79,8 +79,8 @@ function TableStatus({ listPublish }: { listPublish: MODEL_EVENT[] }) {
       <td>{e?.tanggal.toLocaleString("id-ID", { dateStyle: "full" })}</td>
       <td>
         {e.tanggal.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
+          timeStyle: "short",
+          hourCycle: "h24",
         })}
       </td>
       <td>

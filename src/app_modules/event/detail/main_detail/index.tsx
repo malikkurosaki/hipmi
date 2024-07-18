@@ -1,31 +1,19 @@
 "use client";
 
-import {
-  Avatar,
-  Box,
-  Button,
-  Center,
-  Divider,
-  Grid,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import ComponentEvent_DetailData from "../../component/detail/detail_data";
-import { MODEL_EVENT, MODEL_EVENT_PESERTA } from "../../model/interface";
-import _ from "lodash";
-import { Event_funJoinEvent } from "../../fun/create/fun_join_event";
-import { useState } from "react";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { Event_getListPesertaById } from "../../fun/get/get_list_peserta_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import ComponentEvent_DetailMainData from "../../component/detail/detail_main";
+import {
+  Button,
+  Stack
+} from "@mantine/core";
 import { useRouter } from "next/navigation";
-import { Event_countTotalPesertaById } from "../../fun/count/count_total_peserta_by_id";
+import { useState } from "react";
+import ComponentEvent_DetailMainData from "../../component/detail/detail_main";
 import ComponentEvent_ListPeserta from "../../component/detail/list_peserta";
+import { Event_countTotalPesertaById } from "../../fun/count/count_total_peserta_by_id";
+import { Event_funJoinEvent } from "../../fun/create/fun_join_event";
+import { Event_getListPesertaById } from "../../fun/get/get_list_peserta_by_id";
+import { MODEL_EVENT, MODEL_EVENT_PESERTA } from "../../model/interface";
 
 export default function Event_DetailMain({
   dataEvent,
@@ -47,7 +35,7 @@ export default function Event_DetailMain({
 
   return (
     <>
-      <Stack spacing={"lg"}>
+      <Stack spacing={"lg"} py={"md"}>
         <ComponentEvent_DetailMainData data={dataEvent} />
         {isJoin ? (
           <Button disabled radius={"xl"} color="green">

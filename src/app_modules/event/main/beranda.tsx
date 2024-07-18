@@ -14,6 +14,7 @@ import {
   Grid,
   Group,
   Image,
+  Loader,
   Paper,
   Skeleton,
   Stack,
@@ -33,19 +34,22 @@ import { IconCirclePlus, IconPencilPlus } from "@tabler/icons-react";
 import ComponentEvent_IsEmptyData from "../component/is_empty_data";
 import { useShallowEffect, useWindowScroll } from "@mantine/hooks";
 import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
-import { Event_getListAllPublish } from "../fun/get/get_list_all_publish";
+import { event_getListAllPublish } from "../fun/get/get_list_all_publish";
+import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
+import ComponentVote_CardViewPublish from "@/app_modules/vote/component/card_view_publish";
+import { vote_getAllListPublish } from "@/app_modules/vote/fun/get/get_all_list_publish";
+import { ScrollOnly } from "next-scroll-loader";
+import { ComponentEvent_CardBeranda } from "../component/card_view/card_beranda";
 
 export default function Event_Beranda({
   dataEvent,
 }: {
   dataEvent: MODEL_EVENT[];
 }) {
-  const router = useRouter();
   const [data, setData] = useState(dataEvent);
-  const [isLoading, setLoading] = useState(false);
-  const [scroll, scrollTo] = useWindowScroll();
-  const [eventId, setEventId] = useState("");
-  const [visible, setVisible] = useState(false);
+  const [activePage, setActivePage] = useState(1);
 
   useShallowEffect(() => {
     onLoad({
@@ -56,79 +60,42 @@ export default function Event_Beranda({
   }, [setData]);
 
   async function onLoad({ onPublish }: { onPublish: (val: any) => void }) {
-    const loadData = await Event_getListAllPublish();
+    const loadData = await event_getListAllPublish({ page: 1 });
     onPublish(loadData);
   }
 
   return (
     <>
-      <Affix position={{ bottom: rem(150), right: rem(30) }} zIndex={99}>
-        <ActionIcon
-          loading={isLoading ? true : false}
-          opacity={scroll.y > 0 ? 0.5 : ""}
-          style={{
-            transition: "0.5s",
-          }}
-          size={"xl"}
-          radius={"xl"}
-          variant="transparent"
-          bg={"blue"}
-          onClick={() => {
-            setLoading(true);
-            router.push(RouterEvent.create);
-          }}
-        >
-          <IconPencilPlus color="white" />
-        </ActionIcon>
-      </Affix>
-      {_.isEmpty(data) ? (
-        <ComponentEvent_IsEmptyData text="Tidak ada data" />
-      ) : (
-        data.map((e, i) => (
-          <Card key={i} shadow="lg" radius={"md"} withBorder mb={"sm"}>
-            <Card.Section px={"sm"} pt={"sm"}>
-              <ComponentGlobal_AuthorNameOnHeader
-                profileId={e?.Author?.Profile?.id}
-                imagesId={e?.Author?.Profile?.imagesId}
-                authorName={e?.Author?.Profile?.name}
-                isPembatas={true}
-              />
-            </Card.Section>
-            <Card.Section
-              p={"sm"}
-              onClick={() => {
-                setEventId(e?.id);
-                setVisible(true);
-                router.push(RouterEvent.detail_main + e?.id);
+      <Box>
+        <ComponentGlobal_CreateButton path={RouterEvent.create} />
+        {_.isEmpty(data) ? (
+          <ComponentGlobal_IsEmptyData />
+        ) : (
+          <Box>
+            <ScrollOnly
+              height="82vh"
+              renderLoading={() => (
+                <Center mt={"lg"}>
+                  <Loader color={"yellow"} />
+                </Center>
+              )}
+              data={data}
+              setData={setData}
+              moreData={async () => {
+                const loadData = await event_getListAllPublish({
+                  page: activePage + 1,
+                });
+
+                setActivePage((val) => val + 1);
+
+                return loadData;
               }}
             >
-              <Stack>
-                <Grid>
-                  <Grid.Col span={8}>
-                    <Title order={6} truncate>
-                      {e?.title}
-                    </Title>
-                  </Grid.Col>
-                  <Grid.Col span={4}>
-                    <Text fz={"sm"} truncate>
-                      {moment(e?.tanggal).format("ll")}
-                    </Text>
-                  </Grid.Col>
-                </Grid>
-
-                <Text fz={"sm"} lineClamp={2}>
-                  {e?.deskripsi}
-                </Text>
-              </Stack>
-            </Card.Section>
-            {visible && e?.id === eventId ? (
-              <ComponentGlobal_CardLoadingOverlay />
-            ) : (
-              ""
-            )}
-          </Card>
-        ))
-      )}
+              {(item) => <ComponentEvent_CardBeranda data={item} />}
+            </ScrollOnly>
+          </Box>
+        )}
+      </Box>
     </>
   );
 }

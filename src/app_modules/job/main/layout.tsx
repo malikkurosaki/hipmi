@@ -54,7 +54,7 @@ export default function LayoutJob_Main({
           />
         }
         footer={
-          <SimpleGrid cols={3} h={"10vh"} mx={"xs"}>
+          <SimpleGrid cols={3} h={"9vh"} mx={"xs"}>
             {listFooter.map((e, i) => (
               <Stack key={i} align="center" justify="center" spacing={0}>
                 <ActionIcon

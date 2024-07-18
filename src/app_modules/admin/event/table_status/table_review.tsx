@@ -73,8 +73,8 @@ function TableStatus({ listReview }: { listReview: MODEL_EVENT[] }) {
       <td>{e.tanggal.toLocaleString("id-ID", { dateStyle: "full" })}</td>
       <td>
         {e.tanggal.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
+          timeStyle: "short",
+          hourCycle: "h24",
         })}
       </td>
       <td>
@@ -134,7 +134,7 @@ function TableStatus({ listReview }: { listReview: MODEL_EVENT[] }) {
             <Button
               radius={"xl"}
               onClick={() => {
-                onReject(eventId, catatan, setData, close)
+                onReject(eventId, catatan, setData, close);
               }}
             >
               Simpan

@@ -17,6 +17,8 @@ import moment from "moment";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { Event_funDeleteById } from "../../fun/delete/fun_delete";
 import { useDisclosure } from "@mantine/hooks";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 
 export default function Event_DetailDraft({
   dataEvent,
@@ -28,7 +30,10 @@ export default function Event_DetailDraft({
       {/* <pre>{JSON.stringify(dataEvent.catatan)}</pre> */}
       <Stack spacing={"lg"}>
         {dataEvent?.catatan ? (
-          <ComponentEvent_CatatanReject catatan={dataEvent?.catatan} />
+          <ComponentGlobal_BoxInformation
+            isReport
+            informasi={dataEvent?.catatan}
+          />
         ) : (
           ""
         )}
@@ -44,7 +49,8 @@ function ButtonAction({ eventId, tanggal }: { eventId: string; tanggal: any }) {
   const [isLoadingDelete, setLoadingDelete] = useState(false);
   const [isLoadingAjukan, setLoadingAjukan] = useState(false);
   const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
-  const [opened, { open, close }] = useDisclosure(false);
+  const [openModal1, setOpenModal1] = useState(false);
+  const [openModal2, setOpenModal2] = useState(false);
 
   async function onDelete() {
     await Event_funDeleteById(eventId).then((res) => {
@@ -78,36 +84,12 @@ function ButtonAction({ eventId, tanggal }: { eventId: string; tanggal: any }) {
 
   return (
     <>
-      <Modal opened={opened} onClose={close} centered withCloseButton={false}>
-        <Stack>
-          <Title order={6}>Yakin akan menghapus event ini?</Title>
-          <Group position="center">
-            <Button radius={"xl"} onClick={close}>
-              Batal
-            </Button>
-            <Button
-              loaderPosition="center"
-              loading={isLoadingDelete ? true : false}
-              radius={"xl"}
-              onClick={() => {
-                onDelete();
-              }}
-              color="red"
-            >
-              Hapus
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
-
       <Group grow>
         <Button
-          loaderPosition="center"
-          loading={isLoadingAjukan ? true : false}
           radius={"xl"}
           color="yellow"
           onClick={() => {
-            onAjukan();
+            setOpenModal1(true);
           }}
         >
           Ajukan Review
@@ -116,12 +98,62 @@ function ButtonAction({ eventId, tanggal }: { eventId: string; tanggal: any }) {
           radius={"xl"}
           color="red"
           onClick={() => {
-            open();
+            setOpenModal2(true);
           }}
         >
           Hapus
         </Button>
       </Group>
+
+      {/* MODAL AJUKAN */}
+      <UIGlobal_Modal
+        title={"Anda yakin ingin mengajukan event ini?"}
+        opened={openModal1}
+        close={() => setOpenModal1(false)}
+        buttonKiri={
+          <Button radius={"xl"} onClick={() => setOpenModal1(false)}>
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            loaderPosition="center"
+            loading={isLoadingAjukan ? true : false}
+            radius={"xl"}
+            onClick={() => {
+              onAjukan();
+            }}
+            color="yellow"
+          >
+            Ajukan
+          </Button>
+        }
+      />
+
+      {/* MODAL HAPUS */}
+      <UIGlobal_Modal
+        title={"Anda yakin ingin menghapus event ini?"}
+        opened={openModal2}
+        close={() => setOpenModal2(false)}
+        buttonKiri={
+          <Button radius={"xl"} onClick={() => setOpenModal2(false)}>
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            loaderPosition="center"
+            loading={isLoadingDelete ? true : false}
+            radius={"xl"}
+            onClick={() => {
+              onDelete();
+            }}
+            color="red"
+          >
+            Hapus
+          </Button>
+        }
+      />
     </>
   );
 }

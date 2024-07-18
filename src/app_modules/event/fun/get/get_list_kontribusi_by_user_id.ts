@@ -1,11 +1,22 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 
-export async function Event_getListKontibusiByUserId(userId: string) {
+export async function event_getListKontibusiByUserId({page}: {page: number}) {
+  const userLoginId = await user_getOneUserId();
+
+  const takeData = 10;
+  const skipData = page * takeData - takeData;
+
   const data = await prisma.event_Peserta.findMany({
+    take: takeData,
+    skip: skipData,
+    orderBy: {
+      createdAt: "desc",
+    },
     where: {
-      userId: userId,
+      userId: userLoginId,
     },
     select: {
       id: true,

@@ -23,6 +23,7 @@ import { useState } from "react";
 import ComponentForum_BerandaCardView from "../component/main_component/card_view";
 import { forum_new_getAllPosting } from "../fun/get/new_get_all_posting";
 import { MODEL_FORUM_POSTING } from "../model/interface";
+import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
 
 export default function Forum_Beranda({
   listForum,
@@ -134,7 +135,7 @@ export default function Forum_Beranda({
       )}
 
       {/* <pre>{JSON.stringify(listForum, null, 2)}</pre> */}
-      <Affix position={{ bottom: rem(100), right: rem(30) }}>
+      {/* <Affix position={{ bottom: rem(100), right: rem(30) }}>
         <ActionIcon
           opacity={scroll.y > 0 ? 0.5 : ""}
           style={{
@@ -156,9 +157,11 @@ export default function Forum_Beranda({
             <IconPencilPlus color="white" />
           )}
         </ActionIcon>
-      </Affix>
+      </Affix> */}
 
-      <Stack spacing={"xl"} >
+      <ComponentGlobal_CreateButton path={RouterForum.create} />
+
+      <Stack spacing={"xl"}>
         <TextInput
           radius={"xl"}
           placeholder="Topik forum apa yang anda cari hari ini ?"

@@ -1,20 +1,28 @@
 "use client";
 
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 import { ActionIcon, Loader } from "@mantine/core";
 import { IconPencilPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function ComponentGlobal_CreateButton({ path }: { path: string }) {
+export default function ComponentGlobal_CreateButton({
+  path,
+}: {
+  path: string;
+}) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
 
   return (
     <>
       <ActionIcon
-        variant="transparent"
+        // bg={"blue"}
+        // variant="light"
         radius={"xl"}
         size={"xl"}
         style={{
@@ -24,7 +32,7 @@ export default function ComponentGlobal_CreateButton({ path }: { path: string })
           right: 30,
           transition: "0.5s",
           border: `1px solid ${AccentColor.skyblue}`,
-          backgroundColor: AccentColor.blue,
+          backgroundColor: AccentColor.softblue,
           padding: 3,
         }}
         onClick={() => {
@@ -33,7 +41,7 @@ export default function ComponentGlobal_CreateButton({ path }: { path: string })
         }}
       >
         {isLoading ? (
-          <Loader color={AccentColor.yellow} size={25} />
+          <Loader color={AccentColor.blue} size={25} />
         ) : (
           <IconPencilPlus color="white" />
         )}

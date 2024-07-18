@@ -118,13 +118,9 @@ export default function ComponentVote_CardViewPublish({
                       <Text>{v.value}</Text>
                       <Text>{v.jumlah}</Text>
                     </Group>
-                    <Progress
-                      size={"xl"}
-                      radius={"xl"}
-                      value={v.jumlah}
-                      color="yellow"
-                    />
+                    <Progress size={"xl"} radius={"xl"} value={v.jumlah} color="yellow" />
                   </Stack>
+                
                 ))}
               </Stack>
             ) : (

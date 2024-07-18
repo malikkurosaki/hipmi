@@ -10,6 +10,8 @@ import ComponentJob_BerandaCardView from "../../component/beranda/card_view";
 import { job_getAllListPublish } from "../../fun/get/get_all_publish";
 import ComponentJob_CreateButton from "../../component/button/create_button";
 import { IconSearch } from "@tabler/icons-react";
+import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
+import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 
 export function Job_UiBeranda({ listData }: { listData: MODEL_JOB[] }) {
   const [data, setData] = useState(listData);
@@ -29,7 +31,8 @@ export function Job_UiBeranda({ listData }: { listData: MODEL_JOB[] }) {
   return (
     <>
       <Stack my={1} spacing={30}>
-        <ComponentJob_CreateButton />
+        {/* <ComponentJob_CreateButton /> */}
+        <ComponentGlobal_CreateButton path={RouterJob.create}/>
 
         <TextInput
 

@@ -1,17 +1,17 @@
 "use client";
 
-import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import { Affix, Button, Stack, Tabs, rem } from "@mantine/core";
-import { IconCirclePlus } from "@tabler/icons-react";
+import { Stack, Tabs } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { gs_event_status } from "../../global_state";
-import Event_StatusPublish from "./publish";
-import Event_StatusReview from "./review";
 import Event_StatusDraft from "./draft";
+import Event_StatusPublish from "./publish";
 import Event_StatusReject from "./reject";
-import { MODEL_EVENT } from "../../model/interface";
+import Event_StatusReview from "./review";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function Event_StatusPage({
   authorId,
@@ -20,7 +20,7 @@ export default function Event_StatusPage({
   listDraft,
   listReject,
 }: {
-  authorId: string
+  authorId: string;
   listPublish: any;
   listReview: any;
   listDraft: any;
@@ -36,7 +36,7 @@ export default function Event_StatusPage({
     },
     {
       id: 2,
-      path: <Event_StatusReview listReview={listReview} authorId={authorId} />,
+      path: <Event_StatusReview listReview={listReview} />,
       value: "Review",
     },
     {
@@ -52,15 +52,22 @@ export default function Event_StatusPage({
   ];
   return (
     <>
-      
-
       <Tabs
-        color="blue"
         variant="pills"
         radius="xl"
+        mt={1}
         defaultValue="Publish"
         value={tabsStatus}
         onTabChange={setTabsStatus}
+        styles={{
+          tabsList: {
+            backgroundColor: MainColor.darkblue,
+            position: "sticky",
+            top: 0,
+            zIndex: 99,
+          },
+         
+        }}
       >
         <Stack>
           <Tabs.List grow>
@@ -68,8 +75,17 @@ export default function Event_StatusPage({
               <Tabs.Tab
                 key={e.id}
                 value={e.value}
-                bg={tabsStatus === e.value ? "blue" : "gray.1"}
-                fw={tabsStatus === e.value ? "bold" : "normal"}
+                fw={"bold"}
+                c={"black"}
+                style={{
+                  transition: "0.5s",
+                  backgroundColor:
+                    tabsStatus === e.value ? MainColor.yellow : "white",
+                  border:
+                    tabsStatus === e.value
+                      ? `1px solid ${AccentColor.yellow}`
+                      : `1px solid white`,
+                }}
               >
                 {e.value}
               </Tabs.Tab>

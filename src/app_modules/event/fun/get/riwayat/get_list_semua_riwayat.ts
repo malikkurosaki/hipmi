@@ -3,8 +3,14 @@
 import prisma from "@/app/lib/prisma";
 import _ from "lodash";
 
-export async function Event_getListSemuaRiwayat() {
+export async function event_getListSemuaRiwayat({page}: {page: number}) {
+
+  const takeData = 10;
+  const skipData = page * takeData - takeData;
+
   const data = await prisma.event.findMany({
+    take: takeData,
+    skip: skipData,
     orderBy: {
       tanggal: "desc",
     },
