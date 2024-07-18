@@ -22,7 +22,9 @@ export default function ComponentColab_AuthorNameOnHeader({
   const router = useRouter();
   return (
     <>
-      <Stack spacing={"xs"}>
+      <Stack spacing={"xs"} style={{
+        color: "white"
+      }}>
         <Grid>
           <Grid.Col
             span={"content"}
@@ -56,8 +58,11 @@ export default function ComponentColab_AuthorNameOnHeader({
           <Grid.Col span={"content"}>
             <Stack justify="center" h={"100%"}>
               {tglPublish ? (
-                <Text c={"gray"} fz={"xs"}>
-                  {new Intl.DateTimeFormat("id-ID").format(tglPublish)}
+                <Text fz={"xs"}>
+                  {new Intl.DateTimeFormat("id-ID", {
+                    dateStyle: "medium"
+
+                  }).format(tglPublish)}
                 </Text>
               ) : (
                 ""

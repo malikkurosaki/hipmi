@@ -30,7 +30,7 @@ export default function LayoutForum_Main({
       <UIGlobal_LayoutTamplate
         header={
           <UIGlobal_LayoutHeaderTamplate
-            title="FORUM"
+            title="Forum"
             iconRight={
               <ActionIcon
                 radius={"xl"}

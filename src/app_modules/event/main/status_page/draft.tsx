@@ -1,18 +1,14 @@
 "use client";
 
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import { Box, Center, Group, Loader, Paper, Stack, Text, Title } from "@mantine/core";
-import moment from "moment";
-import { useRouter } from "next/navigation";
-import { MODEL_EVENT } from "../../model/interface";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { Box, Center, Loader } from "@mantine/core";
+import _ from "lodash";
+import { ScrollOnly } from "next-scroll-loader";
 import { useState } from "react";
 import ComponentEvent_BoxListStatus from "../../component/box_list_status";
-import _ from "lodash";
-import ComponentEvent_IsEmptyData from "../../component/is_empty_data";
-import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
-import { ScrollOnly } from "next-scroll-loader";
-import { event_getAllReview } from "../../fun/get/status/get_all_review";
 import { event_getAllDraft } from "../../fun/get/status/get_all_draft";
+import { MODEL_EVENT } from "../../model/interface";
 
 export default function Event_StatusDraft({
   listDraft,

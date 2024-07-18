@@ -1,50 +1,57 @@
 "use client";
 
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
-import { Card, Stack } from "@mantine/core";
-import ComponentColab_CardSectionData from "../../component/card_view/card_section_data";
-import ComponentColab_CardSectionHeaderAuthorName from "../../component/card_view/card_section_header_author_name";
-import { MODEL_COLLABORATION_PARTISIPASI } from "../../model/interface";
-import ComponentColab_JumlahPartisipan from "../../component/card_view/card_section_jumlah_partisipan";
-import ComponentColab_IsEmptyData from "../../component/is_empty_data";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { Box, Center, Loader } from "@mantine/core";
 import _ from "lodash";
+import { ScrollOnly } from "next-scroll-loader";
+import { useState } from "react";
+import { ComponentColab_CardSemuaPartisipan } from "../../component/card_view/card_semua_partisipan";
+import colab_getListPartisipasiProyekByAuthorId from "../../fun/get/pasrtisipan/get_list_partisipasi_proyek_by_author_id";
+import { MODEL_COLLABORATION_PARTISIPASI } from "../../model/interface";
 
 export default function Colab_PartisipasiProyek({
   listPartisipasiUser,
 }: {
   listPartisipasiUser: MODEL_COLLABORATION_PARTISIPASI[];
 }) {
-  if (_.isEmpty(listPartisipasiUser))
-    return <ComponentColab_IsEmptyData text="Tidak ikut berpartisipasi" />;
+  const [data, setData] = useState(listPartisipasiUser);
+  const [activePage, setActivePage] = useState(1);
 
   return (
     <>
-      {listPartisipasiUser.map((e, i) => (
-        <Card
-          key={i}
-          withBorder
-          shadow="lg"
-          mb={"lg"}
-          radius={"md"}
-          style={{ borderColor: "indigo", borderWidth: "0.5px" }}
-        >
-          <Stack>
-            <ComponentColab_CardSectionHeaderAuthorName
-              authorName={e?.ProjectCollaboration.Author.Profile.name}
-              imagesId={e?.ProjectCollaboration.Author.Profile.imagesId}
-              profileId={e?.ProjectCollaboration.Author.Profile.id}
-            />
-            <ComponentColab_CardSectionData
-              colabId={e?.ProjectCollaboration.id}
-              path={RouterColab.detail_partisipasi_proyek}
-              data={e?.ProjectCollaboration}
-            />
-            <ComponentColab_JumlahPartisipan
-              jumlah={e?.ProjectCollaboration.ProjectCollaboration_Partisipasi}
-            />
-          </Stack>
-        </Card>
-      ))}
+      {_.isEmpty(data) ? (
+        <ComponentGlobal_IsEmptyData />
+      ) : (
+        // --- Main component --- //
+        <Box>
+          <ScrollOnly
+            height="73vh"
+            renderLoading={() => (
+              <Center mt={"lg"}>
+                <Loader color={"yellow"} />
+              </Center>
+            )}
+            data={data}
+            setData={setData}
+            moreData={async () => {
+              const loadData = await colab_getListPartisipasiProyekByAuthorId({
+                page: activePage + 1,
+              });
+              setActivePage((val) => val + 1);
+
+              return loadData;
+            }}
+          >
+            {(item) => (
+              <ComponentColab_CardSemuaPartisipan
+                data={item}
+                path={RouterColab.detail_partisipasi_proyek}
+              />
+            )}
+          </ScrollOnly>
+        </Box>
+      )}
     </>
   );
 }

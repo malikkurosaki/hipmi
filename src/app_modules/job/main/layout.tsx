@@ -49,7 +49,7 @@ export default function LayoutJob_Main({
       <UIGlobal_LayoutTamplate
         header={
           <UIGlobal_LayoutHeaderTamplate
-            title="JOB"
+            title="Job"
             routerLeft={RouterHome.main_home}
           />
         }

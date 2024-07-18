@@ -3,16 +3,30 @@
 import prisma from "@/app/lib/prisma";
 import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 
-export default async function colab_getListPartisipasiProyekByAuthorId() {
-  const AuthorId = await user_getOneUserId();
+export default async function colab_getListPartisipasiProyekByAuthorId({
+  page,
+}: {
+  page: number;
+}) {
+  const authorId = await user_getOneUserId();
 
-  const get = await prisma.projectCollaboration_Partisipasi.findMany({
+  const takeData = 5;
+  const skipData = page * takeData - takeData;
+
+  const data = await prisma.projectCollaboration_Partisipasi.findMany({
+    take: takeData,
+    skip: skipData,
     orderBy: {
       createdAt: "desc",
     },
     where: {
-      userId: AuthorId,
+      userId: authorId,
       isActive: true,
+      AND: {
+        ProjectCollaboration: {
+          isActive: true,
+        },
+      },
     },
     select: {
       id: true,
@@ -42,6 +56,5 @@ export default async function colab_getListPartisipasiProyekByAuthorId() {
     },
   });
 
-  if (!get) return { status: 400, message: "Gagal mengambil data" };
-  return { data: get, status: 200, message: "Berhasil mengambil data" };
+  return data;
 }

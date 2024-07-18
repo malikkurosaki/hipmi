@@ -39,7 +39,7 @@ export default function Colab_Create({
   });
   return (
     <>
-      <Stack px={"sm"}>
+      <Stack px={"sm"} py={"md"}>
         <TextInput
           maxLength={100}
           styles={{

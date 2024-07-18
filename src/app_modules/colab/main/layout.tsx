@@ -66,18 +66,18 @@ export default function LayoutColab_Main({
       path: RouterColab.grup_diskusi,
       icon: <IconMessages />,
     },
-    {
-      id: 5,
-      name: "Notifikasi",
-      path: RouterColab.notifikasi,
-      icon: cekNotif ? (
-        <Indicator processing color="orange">
-          <IconBell />
-        </Indicator>
-      ) : (
-        <IconBell />
-      ),
-    },
+    // {
+    //   id: 5,
+    //   name: "Notifikasi",
+    //   path: RouterColab.notifikasi,
+    //   icon: cekNotif ? (
+    //     <Indicator processing color="orange">
+    //       <IconBell />
+    //     </Indicator>
+    //   ) : (
+    //     <IconBell />
+    //   ),
+    // },
   ];
 
   return (
@@ -90,7 +90,7 @@ export default function LayoutColab_Main({
           />
         }
         footer={
-          <SimpleGrid cols={4} h={"9vh"} mx={"xs"}>
+          <SimpleGrid cols={listFooter.length} h={"9vh"} mx={"xs"}>
             {listFooter.map((e) => (
               <Stack key={e.id} align="center" justify="center" spacing={0}>
                 <ActionIcon

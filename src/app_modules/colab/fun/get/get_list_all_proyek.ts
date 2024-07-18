@@ -2,8 +2,17 @@
 
 import prisma from "@/app/lib/prisma";
 
-export default async function colab_getListAllProyek() {
+export default async function colab_getListAllProyek({
+  page,
+}: {
+  page: number;
+}) {
+  const takeData = 3;
+  const skipData = page * takeData - takeData;
+
   const data = await prisma.projectCollaboration.findMany({
+    take: takeData,
+    skip: skipData,
     orderBy: {
       createdAt: "desc",
     },

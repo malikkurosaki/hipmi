@@ -19,6 +19,7 @@ import { IconDots, IconEdit } from "@tabler/icons-react";
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
+import UIGlobal_Drawer from "@/app_modules/_global/ui/ui_drawer";
 
 export default function ComponentColab_CardSectionHeaderAuthorName({
   profileId,
@@ -93,10 +94,20 @@ function ButtonAction({
   colabId: string;
 }) {
   const router = useRouter();
-  const [opened, setOpened] = useState(false);
+  const [openDrawe, setOpenDrawer] = useState(false);
+
+  const listPage = [
+    {
+      id: "1",
+      name: "Edit Proyek",
+      icon: <IconEdit />,
+      path: RouterColab.edit + colabId,
+    },
+  ];
+
   return (
     <>
-      <Menu
+      {/* <Menu
         opened={opened}
         onChange={setOpened}
         position="left-start"
@@ -122,7 +133,17 @@ function ButtonAction({
             Edit
           </Menu.Item>
         </Menu.Dropdown>
-      </Menu>
+      </Menu> */}
+
+      <ActionIcon variant="transparent" onClick={() => setOpenDrawer(true)}>
+        {isAuthor ? <IconDots size={20} color="white" /> : ""}
+      </ActionIcon>
+
+      <UIGlobal_Drawer
+        opened={openDrawe}
+        close={() => setOpenDrawer(false)}
+        component={listPage}
+      />
     </>
   );
 }
