@@ -1,17 +1,17 @@
-import AdminForum_Main from "./main";
-import AdminForum_TablePublish from "./child/publish";
-import AdminForum_TableReportKomentar from "./child/report_komentar";
-import AdminForum_TableReportPosting from "./child/report_posting";
-import AdminForum_LihatSemuaKomentar from "./children/semua_komentar";
-import AdminForum_HasilReportPosting from "./hasil_report/posting";
-import AdminForum_HasilReportKomentar from "./hasil_report/komentar";
+import AdminForum_Main from "./main/dashboard";
+import AdminForum_TablePosting from "./sub_menu/table_posting";
+import AdminForum_TableReportPosting from "./sub_menu/table_report_posting";
+import AdminForum_DetailPosting from "./detail/detail_posting";
+import AdminForum_HasilReportPosting from "./sub_detail/hasil_report_posting";
+import AdminForum_HasilReportKomentar from "./sub_detail/hasil_report_komentar";
+import AdminForum_TableReportKomentar from "./sub_menu/table_report_komentar";
 
 export {
   AdminForum_Main,
-  AdminForum_TablePublish,
-  AdminForum_TableReportKomentar,
+  AdminForum_TablePosting as AdminForum_TablePublish,
   AdminForum_TableReportPosting,
-  AdminForum_LihatSemuaKomentar,
+  AdminForum_DetailPosting as AdminForum_LihatSemuaKomentar,
   AdminForum_HasilReportPosting,
   AdminForum_HasilReportKomentar,
+  AdminForum_TableReportKomentar,
 };

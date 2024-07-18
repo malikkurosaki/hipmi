@@ -15,7 +15,7 @@ import React, { useState } from "react";
 
 import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import {
   IconChevronLeft,
   IconGiftCardFilled,

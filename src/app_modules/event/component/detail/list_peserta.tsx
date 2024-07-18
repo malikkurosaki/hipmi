@@ -16,6 +16,7 @@ import _ from "lodash";
 import peserta from "../../main/kontribusi/peserta";
 import { MODEL_EVENT_PESERTA } from "../../model/interface";
 import { useRouter } from "next/navigation";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function ComponentEvent_ListPeserta({
   listPeserta,
@@ -24,10 +25,18 @@ export default function ComponentEvent_ListPeserta({
   listPeserta: MODEL_EVENT_PESERTA[];
   total: number;
 }) {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <>
-      <Paper withBorder mt={"lg"}>
+      <Paper
+        mt={"lg"}
+        p={"md"}
+        style={{
+          border: `2px solid ${AccentColor.blue}`,
+          backgroundColor: AccentColor.darkblue,
+          color: "white",
+        }}
+      >
         <Stack spacing={"md"} p={"md"}>
           <Center>
             <Title order={5}>Daftar Peserta ({total})</Title>

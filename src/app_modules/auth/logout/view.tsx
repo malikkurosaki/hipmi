@@ -1,24 +1,32 @@
 "use client";
 
-import { ActionIcon, Button, Group, Modal, Stack, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Group,
+  Modal,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { gs_kodeId, gs_nomor, gs_otp } from "../state/state";
 import { IconLogout } from "@tabler/icons-react";
 import { Warna } from "@/app/lib/warna";
 import { useDisclosure } from "@mantine/hooks";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { auth_Logout } from "../fun/fun_logout";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 import { useState } from "react";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 
-export default function User_Logout() {
+export default function Component_Logout() {
   const router = useRouter();
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, setOpened] = useState(false);
   const [kodeId, setKodeId] = useAtom(gs_kodeId);
   const [loading, setLoading] = useState(false);
-  const [loading2, setLoading2] = useState(false);
 
   async function onClickLogout() {
     // await auth_Logout(kodeId).then((res) => {
@@ -36,50 +44,52 @@ export default function User_Logout() {
 
   return (
     <>
-      <Modal opened={opened} onClose={toggle} centered withCloseButton={false}>
-        <Stack>
-          <Title order={6}>Anda yakin ingin keluar ?</Title>
-          <Group align="center" position="center">
-            <Button
-              onClick={() => {
-                setLoading(false);
-                toggle();
-              }}
-              radius={50}
-            >
-              Batal
-            </Button>
-            <Button
-              loaderPosition="center"
-              loading={loading2 ? true : false}
-              radius={50}
-              bg={Warna.merah}
-              color="red"
-              onClick={() => {
-                setLoading2(true);
-                onClickLogout();
-              }}
-            >
-              Keluar
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
-      {/* <ActionIcon variant="transparent">
-        <IconLogout color={Warna.merah} onClick={toggle} />
-      </ActionIcon> */}
-      <Button
-        loading={loading ? true : false}
-        loaderPosition="center"
-        radius={"xl"}
-        color={"red"}
-        onClick={() => {
-          setLoading(true);
-          toggle();
-        }}
-      >
-        Logout
-      </Button>
+      <UIGlobal_Modal
+        title={"Anda yakin ingin keluar ?"}
+        buttonKiri={
+          <Button
+            onClick={() => {
+              setLoading(false);
+              setOpened(false);
+            }}
+            radius={50}
+          >
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            loaderPosition="center"
+            loading={loading ? true : false}
+            radius={50}
+            bg={Warna.merah}
+            color="red"
+            onClick={() => {
+              setLoading(true);
+              onClickLogout();
+            }}
+          >
+            Keluar
+          </Button>
+        }
+        opened={opened}
+        close={() => setOpened(false)}
+      />
+
+      <Stack align="center" spacing={"xs"}>
+        <ActionIcon
+          variant="transparent"
+          c="white"
+          onClick={() => {
+            setOpened(true);
+          }}
+        >
+          <IconLogout color="red" />
+        </ActionIcon>
+        <Text fw={"bold"} align="center" color="red">
+          Keluar
+        </Text>
+      </Stack>
     </>
   );
 }

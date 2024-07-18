@@ -1,6 +1,11 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import {
+  ComponentGlobal_WarningMaxUpload,
+  maksimalUploadFile,
+} from "@/app_modules/_global/component/waring_popup";
 import {
   AspectRatio,
   Button,
@@ -15,23 +20,15 @@ import {
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
 import { useAtom } from "jotai";
+import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { gs_donasi_tabs_posting } from "../global_state";
-import ComponentDonasi_NotedBox from "../component/noted_box";
-import { MODEL_DONASI_TEMPORARY } from "../model/interface";
-import _ from "lodash";
 import toast from "react-simple-toasts";
-import { Donasi_funCreate } from "../fun/create/fun_create_donasi";
-import { notifications } from "@mantine/notifications";
+import ComponentDonasi_NotedBox from "../component/noted_box";
 import { NotifPeringatan } from "../component/notifikasi/notif_peringatan";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
-import { tree } from "next/dist/build/templates/app-page";
-import {
-  ComponentGlobal_WarningMaxUpload,
-  maksimalUploadFile,
-} from "@/app_modules/component_global/variabel_global";
-
+import { Donasi_funCreate } from "../fun/create/fun_create_donasi";
+import { gs_donasi_tabs_posting } from "../global_state";
+import { MODEL_DONASI_TEMPORARY } from "../model/interface";
 export default function CreateCeritaPenggalangDonasi({
   dataTemporary,
   userId,

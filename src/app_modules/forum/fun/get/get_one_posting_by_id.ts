@@ -20,13 +20,14 @@ export async function forum_getOnePostingById(postingId: string) {
           Profile: true,
         },
       },
+      
       _count: {
         select: {
           Forum_Komentar: true,
         },
       },
-      ForumMaster_StatusPosting: true
-    
+      ForumMaster_StatusPosting: true,
+      forumMaster_StatusPostingId: true,
     },
   });
 

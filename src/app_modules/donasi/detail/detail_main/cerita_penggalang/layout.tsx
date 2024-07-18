@@ -1,6 +1,6 @@
 "use client";
 
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import ButtonDonasi from "@/app_modules/donasi/component/footer_button_donasi";
 import ComponentDonasi_HeaderTamplate from "@/app_modules/donasi/component/header_tamplate";
 import React from "react";

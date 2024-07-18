@@ -15,7 +15,7 @@ export async function forum_funCreate(value: string) {
     },
   });
 
-  if (!create) return { status: 400, message: "Gagal  menambahkan postingan" };
+  if (!create) return { status: 400, message: "Gagal  memposting" };
   revalidatePath("/dev/forum/main");
-  return { status: 201, message: "Berhasil menambahkan  postingan" };
+  return { status: 201, message: "Berhasil memposting" };
 }

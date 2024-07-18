@@ -47,5 +47,5 @@ export default function App() {
     padding: 8,
   };
 
-  return <Coba />;
+  return <></>;
 }

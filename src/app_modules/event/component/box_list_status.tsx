@@ -6,7 +6,8 @@ import moment from "moment";
 import { MODEL_EVENT } from "../model/interface";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function ComponentEvent_BoxListStatus({
   data,
@@ -22,11 +23,14 @@ export default function ComponentEvent_BoxListStatus({
   return (
     <>
       <Card
-        shadow="lg"
-        radius={"md"}
-        p={"md"}
-        withBorder
-        mb={"sm"}
+        style={{
+          padding: "15px",
+          backgroundColor: AccentColor.darkblue,
+          borderRadius: "10px",
+          border: `2px solid ${AccentColor.blue}`,
+          color: "white",
+          marginBottom: "15px",
+        }}
         onClick={() => {
           setEventId(data?.id);
           setVisible(true);
@@ -34,18 +38,16 @@ export default function ComponentEvent_BoxListStatus({
         }}
       >
         <Stack>
-          <Grid>
-            <Grid.Col span={8}>
-              <Title order={6} truncate>
-                {data.title}
-              </Title>
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <Text fz={"sm"} truncate>
-                {moment(data.tanggal).format("ll")}
-              </Text>
-            </Grid.Col>
-          </Grid>
+          <Group w={"100%"} position="apart">
+            <Title order={5} lineClamp={1} w={"70%"}>
+              {data.title}
+            </Title>
+            <Text align="right" fz={"sm"} lineClamp={1} w={"20%"}>
+              {new Intl.DateTimeFormat("id-ID", {
+                dateStyle: "medium",
+              }).format(data.tanggal)}
+            </Text>
+          </Group>
 
           <Text fz={"sm"} lineClamp={2}>
             {data.deskripsi}

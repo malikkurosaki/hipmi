@@ -1,7 +1,7 @@
 "use client";
 
 import { AspectRatio, Box, Image, Paper, Stack } from "@mantine/core";
-import ComponentGlobalAdmin_BackButton from "../../component_global/back_button";
+import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
 import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 
@@ -13,7 +13,7 @@ export default function AdminDonasi_BuktiTransferPencairan({
   return (
     <>
       <Stack>
-        <ComponentGlobalAdmin_BackButton />
+        <ComponentAdminGlobal_BackButton />
         <BuktiTransfer imageId={imageId} />
       </Stack>
     </>

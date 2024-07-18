@@ -3,10 +3,14 @@
 import prisma from "@/app/lib/prisma";
 import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 
-export default async function colab_getListRoomChatByAuthorId() {
+export default async function colab_getListRoomChatByAuthorId({page}: {page: number}) {
   const userLoginId = await user_getOneUserId();
+  const takeData = 10;
+  const skipData = page * takeData - takeData;
 
   const listRoom = await prisma.projectCollaboration_AnggotaRoomChat.findMany({
+    take: takeData,
+    skip: skipData,
     orderBy: {
       createdAt: "desc",
     },
@@ -32,34 +36,5 @@ export default async function colab_getListRoomChatByAuthorId() {
   // console.log(listRoom);
 
   return listRoom;
-  // const get = await prisma.projectCollaboration_RoomChat.findMany({
-  //   where: {
-  //     userId: userLoginId,
-  //     AND: [
-  //       {
-  //         ProjectCollaboration_AnggotaRoomChat: {
-  //           every: {
-  //             userId: userLoginId,
-  //           },
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   select: {
-  //     id: true,
-  //     name: true,
-  //     // isActive: true,
-  //     // Author: true,
-  //     // userId: true,
-  //     // ProjectCollaboration: true,
-  //     // projectCollaborationId: true,
-  //     ProjectCollaboration_AnggotaRoomChat: {
-  //       select: {
-  //         userId: true,
-  //         User: true,
-  //       },
-  //     },
-  //   },
-  // });
-  // return get;
+
 }

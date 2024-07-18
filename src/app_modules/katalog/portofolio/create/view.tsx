@@ -1,8 +1,11 @@
 "use client";
 
-import { myConsole } from "@/app/fun/my_console";
-import { ApiHipmi } from "@/app/lib/api";
 import { Warna } from "@/app/lib/warna";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import {
   BIDANG_BISNIS_OLD,
   MODEL_PORTOFOLIO_OLD,
@@ -16,25 +19,21 @@ import {
   Paper,
   Select,
   Stack,
-  Text,
   TextInput,
   Textarea,
-  Title,
 } from "@mantine/core";
+import { IconCamera } from "@tabler/icons-react";
 import _ from "lodash";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
-import funCreatePortofolio from "../fun/fun_create_portofolio";
-import { IconCamera } from "@tabler/icons-react";
 import ComponentKatalog_NotedBox from "../../component/noted_box";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { NotifPeringatan } from "@/app_modules/donasi/component/notifikasi/notif_peringatan";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import funCreatePortofolio from "../fun/fun_create_portofolio";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function CreatePortofolio({
   bidangBisnis,
@@ -69,10 +68,15 @@ export default function CreatePortofolio({
     <>
       {/* {JSON.stringify(profileId)} */}
 
-      <Stack px={"sm"} spacing={50}>
+      <Stack px={"sm"} mb={"lg"} spacing={50}>
         <Stack spacing={"sm"}>
-          <ComponentKatalog_NotedBox informasi="Lengkapi Data Bisnis" />
+          <ComponentGlobal_BoxInformation informasi="Lengkapi Data Bisnis" />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             label="Nama Bisnis"
             placeholder="Nama bisnis"
@@ -85,6 +89,11 @@ export default function CreatePortofolio({
             }}
           />
           <Select
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             label="Bidang Bisnis"
             placeholder="Pilih salah satu bidang bisnis"
@@ -100,6 +109,11 @@ export default function CreatePortofolio({
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             label="Alamat Kantor"
             placeholder="Alamat kantor"
@@ -112,6 +126,11 @@ export default function CreatePortofolio({
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             label="Nomor Telepon Kantor"
             placeholder="Nomor telepon kantor"
@@ -125,6 +144,11 @@ export default function CreatePortofolio({
           />
           <Stack spacing={5}>
             <Textarea
+              styles={{
+                label: {
+                  color: "white",
+                },
+              }}
               maxLength={150}
               autosize
               minRows={2}
@@ -147,7 +171,7 @@ export default function CreatePortofolio({
         </Stack>
 
         <Stack>
-          <ComponentKatalog_NotedBox informasi="Upload Logo Bisnis Anda!" />
+          <ComponentGlobal_BoxInformation informasi="Upload Logo Bisnis Anda!" />
           <AspectRatio ratio={16 / 9}>
             <Paper radius={"md"} withBorder>
               <Image alt="Foto" src={img ? img : "/aset/no-img.png"} />
@@ -182,10 +206,10 @@ export default function CreatePortofolio({
                 <Button
                   {...props}
                   radius={"xl"}
-                  variant="outline"
-                  w={150}
                   leftIcon={<IconCamera />}
-                  compact
+                  bg={MainColor.yellow}
+                  color="yellow"
+                  c={"black"}
                 >
                   Upload
                 </Button>
@@ -197,6 +221,11 @@ export default function CreatePortofolio({
         <Stack>
           <ComponentKatalog_NotedBox informasi="Isi hanya pada sosial media yang anda miliki" />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Facebook"
             maxLength={100}
             placeholder="Facebook"
@@ -208,6 +237,11 @@ export default function CreatePortofolio({
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Instagram"
             maxLength={100}
             placeholder="Instagram"
@@ -219,6 +253,11 @@ export default function CreatePortofolio({
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Tiktok"
             maxLength={100}
             placeholder="Tiktok"
@@ -230,6 +269,11 @@ export default function CreatePortofolio({
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Twitter"
             maxLength={100}
             placeholder="Twitter"
@@ -241,6 +285,11 @@ export default function CreatePortofolio({
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Youtube"
             maxLength={100}
             placeholder="Youtube"
@@ -256,8 +305,6 @@ export default function CreatePortofolio({
         <Button
           mt={"md"}
           radius={50}
-          bg={Warna.hijau_muda}
-          color="green"
           loading={loading ? true : false}
           loaderPosition="center"
           onClick={() => {
@@ -270,6 +317,12 @@ export default function CreatePortofolio({
               setLoading,
               setIsFile
             );
+          }}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
+          style={{
+            border: `2px solid ${AccentColor.yellow}`,
           }}
         >
           Simpan

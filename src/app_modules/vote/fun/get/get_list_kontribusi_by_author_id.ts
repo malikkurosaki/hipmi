@@ -3,9 +3,18 @@
 import prisma from "@/app/lib/prisma";
 import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 
-export async function Vote_getAllListKontribusiByAuthorId() {
+export async function vote_getAllListKontribusiByAuthorId({
+  page,
+}: {
+  page: number;
+}) {
+  const takeData = 5;
+  const skipData = page * takeData - takeData;
+
   const authorId = await user_getOneUserId();
   const data = await prisma.voting_Kontributor.findMany({
+    take: takeData,
+    skip: skipData,
     orderBy: {
       createdAt: "asc",
     },

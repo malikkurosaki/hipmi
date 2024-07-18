@@ -1,9 +1,15 @@
 "use client";
 
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import ComponentColab_DetailData from "@/app_modules/colab/component/detail/detail_data";
 import ComponentColab_AuthorNameOnListPartisipan from "@/app_modules/colab/component/detail/header_author_list_partisipan";
-import ComponentColab_AuthorNameOnHeader from "@/app_modules/colab/component/header_author_name";
 import ComponentColab_IsEmptyData from "@/app_modules/colab/component/is_empty_data";
 import colab_funCreateRoomChat from "@/app_modules/colab/fun/create/fun_create_room_chat";
 import { gs_colab_hot_menu } from "@/app_modules/colab/global_state";
@@ -11,10 +17,8 @@ import {
   MODEL_COLLABORATION,
   MODEL_COLLABORATION_PARTISIPASI,
 } from "@/app_modules/colab/model/interface";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
 import {
+  ActionIcon,
   Button,
   Checkbox,
   Drawer,
@@ -28,6 +32,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconX } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
@@ -42,7 +47,18 @@ export default function Colab_DetailProyekSaya({
 }) {
   return (
     <>
-      <Stack px={5} spacing={"xl"}>
+      <Stack
+        px={5}
+        spacing={"xl"}
+        style={{
+          border: `2px solid ${AccentColor.blue}`,
+          backgroundColor: AccentColor.darkblue,
+          color: "white",
+          borderRadius: "10px",
+          marginBottom: "20px",
+          padding: "15px",
+        }}
+      >
         <ComponentColab_DetailData data={dataColab} />
         <CheckBoxPartisipan
           listPartisipan={listPartisipan}
@@ -119,22 +135,31 @@ function CheckBoxPartisipan({
     <>
       <Stack>
         {/* <pre>{JSON.stringify(listPartisipan,null,2)}</pre> */}
-        <Paper withBorder shadow="lg" p={"sm"}>
+        <Paper
+          style={{
+            border: `2px solid ${AccentColor.softblue}`,
+            backgroundColor: AccentColor.blue,
+            color: "white",
+            borderRadius: "10px",
+            marginBottom: "20px",
+            padding: "15px",
+          }}
+        >
           {/* {JSON.stringify(value, null, 2)} */}
           <Stack>
             <Stack spacing={5}>
               <Text c={"red"} fz={10}>
                 *
-                <Text px={"xs"} span inherit c={"gray"}>
+                <Text px={"xs"} span inherit c={"white"}>
                   Pilih user yang akan menjadi tim proyek anda
                 </Text>
               </Text>
-              <Text c={"red"} fz={10}>
+              {/* <Text c={"red"} fz={10}>
                 *
-                <Text px={"xs"} span inherit c={"gray"}>
+                <Text px={"xs"} span inherit c={"white"}>
                   Room chat dapat dibentuk jika ada 2 user yang dipilih
                 </Text>
-              </Text>
+              </Text> */}
             </Stack>
             <ScrollArea h={400} offsetScrollbars>
               <Checkbox.Group value={value} onChange={setValue}>
@@ -185,10 +210,8 @@ function ButtonAction({
     if (nameRoom === "")
       return ComponentGlobal_NotifikasiPeringatan("Isi Nama Grup");
     await colab_funCreateRoomChat(nameRoom, value, colabId).then((res) => {
-      console.log(res);
       if (res.status === 201) {
         setLoading(true);
-        close();
         ComponentGlobal_NotifikasiBerhasil("Berhasil Membuat Grup");
         setHotMenu(4);
         router.push(RouterColab.grup_diskusi);
@@ -206,6 +229,11 @@ function ButtonAction({
         onClick={() => {
           open();
         }}
+        bg={MainColor.yellow}
+        color="yellow"
+        style={{
+          transition: "0.5s",
+        }}
       >
         Buat Ruang Diskusi{" "}
       </Button>
@@ -214,11 +242,36 @@ function ButtonAction({
         opened={opened}
         onClose={close}
         position="bottom"
-        size={150}
+        size={"auto"}
         withCloseButton={false}
+        styles={{
+          content: {
+            padding: 0,
+            position: "absolute",
+            margin: "auto",
+            backgroundColor: "transparent",
+            left: 0,
+            right: 0,
+            width: 500,
+          },
+          body: {
+            backgroundColor: AccentColor.darkblue,
+            borderTop: `2px solid ${AccentColor.blue}`,
+            borderRight: `1px solid ${AccentColor.blue}`,
+            borderLeft: `1px solid ${AccentColor.blue}`,
+            borderRadius: "20px 20px 0px 0px",
+            color: "white",
+            paddingBottom: "5%",
+          },
+        }}
       >
         <Stack>
-          <Title order={6}>Nama Grup Diskusi</Title>
+          <Group position="apart">
+            <Title order={6}>Nama Grup Diskusi</Title>
+            <ActionIcon onClick={close} variant="transparent">
+              <IconX color="white" />
+            </ActionIcon>
+          </Group>
           <TextInput
             placeholder="Masukan nama grup diskusi .."
             radius={"xl"}
@@ -226,16 +279,18 @@ function ButtonAction({
               setNameRoom(val.currentTarget.value);
             }}
           />
-          <Group grow>
-            <Button radius={"xl"} onClick={close}>
-              Batal
-            </Button>
+          <Group position="right">
             <Button
+              disabled={!nameRoom}
               loaderPosition="center"
               loading={loading ? true : false}
               radius={"xl"}
-              color="green"
+              color="yellow"
+              bg={MainColor.yellow}
               onClick={() => onSave()}
+              style={{
+                transition: "0.5s",
+              }}
             >
               Simpan
             </Button>

@@ -1,12 +1,14 @@
 import { Vote_Status } from "@/app_modules/vote";
-import { Vote_getListByStatusId } from "@/app_modules/vote/fun/get/get_list_status_by_status_id";
+import { vote_getAllDraft } from "@/app_modules/vote/fun/get/status/get_all_draft";
+import { vote_getAllPublish } from "@/app_modules/vote/fun/get/status/get_all_publish";
+import { vote_getAllReject } from "@/app_modules/vote/fun/get/status/get_all_reject";
+import { vote_getAllReview } from "@/app_modules/vote/fun/get/status/get_all_review";
 
 export default async function Page() {
-  const listPublish = await Vote_getListByStatusId("1");
-  const listReview = await Vote_getListByStatusId("2");
-  const listDraft = await Vote_getListByStatusId("3");
-  const listReject = await Vote_getListByStatusId("4");
-
+  const listPublish = await vote_getAllPublish({page: 1});
+  const listReview = await vote_getAllReview({page: 1});
+  const listDraft = await vote_getAllDraft({page: 1});
+  const listReject = await vote_getAllReject({page: 1});
 
   return (
     <>

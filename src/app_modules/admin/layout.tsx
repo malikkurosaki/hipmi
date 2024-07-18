@@ -49,6 +49,8 @@ import { listAdminPage } from "./list_page";
 import adminNotifikasi_countNotifikasi from "./notifikasi/fun/count/count_is_read";
 import adminNotifikasi_getByUserId from "./notifikasi/fun/get/get_notifikasi_by_user_id";
 import adminNotifikasi_funUpdateIsReadById from "./notifikasi/fun/update/fun_update_is_read_by_id";
+import adminNotifikasi_findRouterJob from "./notifikasi/route_setting/job";
+import adminNotifikasi_findRouterForum from "./notifikasi/route_setting/forum";
 
 export default function AdminLayout({
   children,
@@ -388,13 +390,25 @@ function DrawerNotifikasi({
               }}
               onClick={async () => {
                 e?.kategoriApp === "JOB" &&
-                  findRouterJob({
+                  adminNotifikasi_findRouterJob({
                     data: e,
                     router: router,
-                    onChangeNavbar2: (val: any) => {
+                    onChangeNavbar: (val: any) => {
                       onChangeNavbar(val);
                     },
-                    onToggleNavbar2: onToggleNavbar,
+                    onToggleNavbar: onToggleNavbar,
+                  });
+
+                e?.kategoriApp === "FORUM" &&
+                  adminNotifikasi_findRouterForum({
+                    data: e,
+                    router: router,
+                    onChangeNavbar(val) {
+                      onChangeNavbar(val);
+                    },
+                    onToggleNavbar(val) {
+                      onToggleNavbar(val);
+                    },
                   });
 
                 const updateIsRead = await adminNotifikasi_funUpdateIsReadById({
@@ -479,36 +493,4 @@ function DrawerNotifikasi({
       </Paper>
     </>
   );
-}
-
-async function findRouterJob({
-  data,
-  router,
-  onChangeNavbar2,
-  onToggleNavbar2,
-}: {
-  data: MODEL_NOTIFIKASI;
-  router: AppRouterInstance;
-  onChangeNavbar2: (val: any) => void;
-  onToggleNavbar2: (val: any) => void;
-}) {
-  const routeName = "/dev/admin/job/child/";
-
-  if (data.status === "Review") {
-    router.push(routeName + _.lowerCase(data.status));
-    onChangeNavbar2({
-      id: 6,
-      childId: 63,
-    });
-  }
-
-  if (data.status === "Draft") {
-    router.push(routeName + "review");
-    onChangeNavbar2({
-      id: 6,
-      childId: 63,
-    });
-  }
-
-  onToggleNavbar2(true);
 }

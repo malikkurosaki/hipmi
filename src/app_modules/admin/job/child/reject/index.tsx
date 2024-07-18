@@ -2,9 +2,9 @@
 
 import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
 import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { MODEL_JOB } from "@/app_modules/job/model/interface";
 import {
   Button,
@@ -249,7 +249,7 @@ function TableStatus({ listReject }: { listReject: any }) {
               verticalSpacing={"md"}
               horizontalSpacing={"md"}
               p={"md"}
-              w={1500}
+              w={"100%"}
               h={"100%"}
               striped
               highlightOnHover

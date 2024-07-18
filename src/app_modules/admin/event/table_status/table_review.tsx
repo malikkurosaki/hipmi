@@ -37,10 +37,10 @@ import _ from "lodash";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { AdminEvent_funEditStatusPublishById } from "../fun/edit/fun_edit_status_publish_by_id";
 import { AdminEvent_getListTableByStatusId } from "../fun/get/get_list_table_by_status_id";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { AdminEvent_funEditCatatanById } from "../fun/edit/fun_edit_status_reject_by_id";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 
 export default function AdminEvent_TableReview({
   listReview,
@@ -73,8 +73,8 @@ function TableStatus({ listReview }: { listReview: MODEL_EVENT[] }) {
       <td>{e.tanggal.toLocaleString("id-ID", { dateStyle: "full" })}</td>
       <td>
         {e.tanggal.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
+          timeStyle: "short",
+          hourCycle: "h24",
         })}
       </td>
       <td>
@@ -134,7 +134,7 @@ function TableStatus({ listReview }: { listReview: MODEL_EVENT[] }) {
             <Button
               radius={"xl"}
               onClick={() => {
-                onReject(eventId, catatan, setData, close)
+                onReject(eventId, catatan, setData, close);
               }}
             >
               Simpan

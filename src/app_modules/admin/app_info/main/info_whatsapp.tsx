@@ -1,20 +1,19 @@
 " use client";
 
 import {
-  Stack,
-  Group,
-  Title,
-  Paper,
   ActionIcon,
-  TextInput,
   Button,
-  Box,
-  Tooltip,
+  Group,
+  Paper,
+  Stack,
+  TextInput,
+  Title,
+  Tooltip
 } from "@mantine/core";
 import { IconEdit, IconPhone } from "@tabler/icons-react";
 import { useState } from "react";
-import { ComponentGlobalAdmin_NotifikasiBerhasil } from "../../component_global/admin_notifikasi/notifikasi_berhasil";
-import { ComponentGlobalAdmin_NotifikasiGagal } from "../../component_global/admin_notifikasi/notifikasi_gagal";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../component_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentAdminGlobal_NotifikasiGagal } from "../../component_global/admin_notifikasi/notifikasi_gagal";
 import adminAppInformation_getNomorAdmin from "../fun/master/get_nomor_admin";
 import adminAppInformation_funUpdateNomorAdmin from "../fun/update/fun_update_nomor";
 
@@ -39,11 +38,11 @@ export default function InformasiWhatApps({ nomorAdmin }: { nomorAdmin: any }) {
       const loadDdata = await adminAppInformation_getNomorAdmin();
       setDataNomor(loadDdata);
       if (loadDdata) {
-        ComponentGlobalAdmin_NotifikasiBerhasil(updt.message);
+        ComponentAdminGlobal_NotifikasiBerhasil(updt.message);
         return;
       }
     } else {
-      ComponentGlobalAdmin_NotifikasiGagal(updt.message);
+      ComponentAdminGlobal_NotifikasiGagal(updt.message);
     }
   }
 

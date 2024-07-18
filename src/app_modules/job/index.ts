@@ -1,8 +1,8 @@
-import Job_Beranda from "./main/beranda";
+import Job_ViewBeranda from "./main/beranda/view_beranda";
 import LayoutJob_Main from "./main/layout";
-import Job_Splash from "./splash/view";
-import Job_Status from "./main/status/view";
-import Job_Arsip from "./main/arsip";
+import Job_ViewSplash from "./splash/view_splash";
+import Job_ViewStatus from "./main/status/view_status";
+import Job_ViewArsip from "./main/arsip/view_arsip";
 import Job_Create from "./create/view";
 import LayoutJob_Create from "./create/layout";
 import Job_DetailPublish from "./detail/publish/view";
@@ -23,11 +23,11 @@ import Job_Edit from "./edit/view";
 import LayoutJob_Edit from "./edit/layout";
 
 export {
-  Job_Beranda,
+  Job_ViewBeranda,
   LayoutJob_Main,
-  Job_Splash,
-  Job_Status,
-  Job_Arsip,
+  Job_ViewSplash,
+  Job_ViewStatus as Job_Status,
+  Job_ViewArsip as Job_Arsip,
   Job_Create,
   LayoutJob_Create,
   Job_DetailPublish,

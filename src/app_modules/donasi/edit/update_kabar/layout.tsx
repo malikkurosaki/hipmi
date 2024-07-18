@@ -17,7 +17,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { Donasi_funDeleteKabar } from "../../fun/delete/fun_delete.kabar";
 import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
 import { NotifGagal } from "../../component/notifikasi/notif_gagal";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 
 export default function LayoutUpdateKabarDonasi({
   children,

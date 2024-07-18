@@ -1,9 +1,8 @@
 "use client";
 
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import {
-  Box,
   Button,
   Center,
   FileButton,
@@ -15,27 +14,29 @@ import {
   Stack,
   Text,
   TextInput,
-  Textarea,
-  Title,
+  Title
 } from "@mantine/core";
-import { IconCamera, IconUpload, IconXboxX } from "@tabler/icons-react";
-import { useAtom } from "jotai";
-import _ from "lodash";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { gs_job_hot_menu, gs_job_status } from "../global_state";
-import { MODEL_JOB } from "../model/interface";
 import {
   useDisclosure,
   useShallowEffect,
   useWindowScroll,
 } from "@mantine/hooks";
+import { IconCamera, IconUpload } from "@tabler/icons-react";
+import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { gs_job_hot_menu, gs_job_status } from "../global_state";
+import { MODEL_JOB } from "../model/interface";
 
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { Job_EditById } from "../fun/edit/fun_edit_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import dynamic from "next/dynamic";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import { Job_EditById } from "../fun/edit/fun_edit_by_id";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");
@@ -55,23 +56,14 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
     if (window && window.document) setReload(true);
   }, []);
 
-  if (!reload)
-    return (
-      <>
-        <Center h={"50vh"}>
-          <Loader />
-        </Center>
-      </>
-    );
-
   return (
     <>
       {!reload ? (
         <Center h={"50vh"}>
-          <Loader />
+          <Loader color={MainColor.yellow} />
         </Center>
       ) : (
-        <Stack px={"sm"} spacing={40}>
+        <Stack py={"md"} spacing={40}>
           <Stack align="center">
             {images ? (
               <Image alt="" src={images} mah={500} maw={200} />
@@ -121,11 +113,13 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
             >
               {(props) => (
                 <Button
-                  compact
                   {...props}
                   radius={"xl"}
-                  variant="outline"
-                  w={150}
+                  w={100}
+                  style={{
+                    backgroundColor: MainColor.yellow,
+                    border: `1px solid ${AccentColor.yellow}`,
+                  }}
                 >
                   <IconCamera />
                 </Button>
@@ -133,8 +127,21 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
             </FileButton>
           </Stack>
 
-          <Stack spacing={"lg"}>
+          <Stack
+            spacing={"lg"}
+            p={"md"}
+            style={{
+              backgroundColor: MainColor.darkblue,
+              border: `2px solid ${AccentColor.blue}`,
+              borderRadius: "5px 5px 5px 5px",
+            }}
+          >
             <TextInput
+              styles={{
+                label: {
+                  color: "white",
+                },
+              }}
               withAsterisk
               label="Judul"
               placeholder="Masukan judul lowongan kerja"
@@ -149,7 +156,7 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
             />
 
             <Stack spacing={3}>
-              <Text fz={"sm"}>
+              <Text fz={"sm"} c={"white"}>
                 Syarat & Ketentuan
                 <Text inherit span c={"red"}>
                   {" "}
@@ -158,6 +165,9 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
               </Text>
               <Stack spacing={5}>
                 <ReactQuill
+                  style={{
+                    backgroundColor: "white",
+                  }}
                   modules={{
                     toolbar: [
                       [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -183,7 +193,7 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
               </Stack>
             </Stack>
             <Stack spacing={3}>
-              <Text fz={"sm"}>
+              <Text fz={"sm"} c={"white"}>
                 Deskripsi
                 <Text inherit span c={"red"}>
                   {" "}
@@ -192,6 +202,9 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
               </Text>
               <Stack spacing={5}>
                 <ReactQuill
+                  style={{
+                    backgroundColor: "white",
+                  }}
                   modules={{
                     toolbar: [
                       [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -253,9 +266,22 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
 
   return (
     <>
-      <Modal opened={opened} onClose={close} centered withCloseButton={false}>
+      <Modal
+        opened={opened}
+        onClose={close}
+        centered
+        withCloseButton={false}
+        styles={{
+          content: {
+            backgroundColor: MainColor.darkblue,
+            border: `2px solid ${AccentColor.blue}`,
+          },
+        }}
+      >
         <Stack>
-          <Title order={6}>Anda yakin menyimpan data ini ?</Title>
+          <Title order={6} c={"white"}>
+            Anda yakin menyimpan data ini ?
+          </Title>
           <Group position="center">
             <Button radius={"xl"} onClick={() => close()}>
               Batal
@@ -287,10 +313,10 @@ function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
             ? true
             : false
         }
+        // bg={"teal"}
         color="teal"
         radius={"xl"}
-        mt={"lg"}
-        mb={70}
+        my={"lg"}
         onClick={() => {
           open();
           scrollTo({ y: 0 });

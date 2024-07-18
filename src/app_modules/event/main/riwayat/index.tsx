@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import { Card, Stack, Grid, Title, Text, Center, Tabs } from "@mantine/core";
 import moment from "moment";
 
@@ -13,6 +13,7 @@ import Event_SemuaRiwayat from "./semua";
 import Event_RiwayatSaya from "./saya";
 import { useAtom } from "jotai";
 import { gs_event_riwayat } from "../../global_state";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function Event_Riwayat({
   dataSemuaRiwayat,
@@ -29,13 +30,13 @@ export default function Event_Riwayat({
       id: 1,
       label: "Semua Riwayat",
       value: "Semua",
-      path: <Event_SemuaRiwayat data={dataSemuaRiwayat as any} />,
+      path: <Event_SemuaRiwayat listData={dataSemuaRiwayat as any} />,
     },
     {
       id: 2,
       label: "Riwayat Saya",
       value: "Saya",
-      path: <Event_RiwayatSaya data={dataRiwayatSaya as any}/>,
+      path: <Event_RiwayatSaya listData={dataRiwayatSaya as any} />,
     },
   ];
 
@@ -47,6 +48,14 @@ export default function Event_Riwayat({
         radius={"xl"}
         onTabChange={setTabsRiwayat}
         value={tabsRiwayat}
+        styles={{
+          tabsList: {
+            backgroundColor: MainColor.darkblue,
+            position: "sticky",
+            top: 0,
+            zIndex: 99,
+          },
+        }}
       >
         <Stack>
           <Tabs.List grow>
@@ -54,8 +63,17 @@ export default function Event_Riwayat({
               <Tabs.Tab
                 key={e.id}
                 value={e.value}
-                bg={tabsRiwayat === e.value ? "blue" : "gray.1"}
-                fw={tabsRiwayat === e.value ? "bold" : "normal"}
+                fw={"bold"}
+                c={"black"}
+                style={{
+                  transition: "0.5s",
+                  backgroundColor:
+                    tabsRiwayat === e.value ? MainColor.yellow : "white",
+                  border:
+                    tabsRiwayat === e.value
+                      ? `1px solid ${AccentColor.yellow}`
+                      : `1px solid white`,
+                }}
               >
                 {e.label}
               </Tabs.Tab>
@@ -68,7 +86,6 @@ export default function Event_Riwayat({
           ))}
         </Stack>
       </Tabs>
-     
     </>
   );
 }

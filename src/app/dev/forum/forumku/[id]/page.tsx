@@ -1,5 +1,5 @@
 import { Forum_Forumku } from "@/app_modules/forum";
-import { forum_getListPostingByAuhtorId } from "@/app_modules/forum/fun/get/get_list_posting_by_author_id";
+import { forum_getAllPostingByAuhtorId } from "@/app_modules/forum/fun/get/get_list_posting_by_author_id";
 import { forum_countOneTotalKomentarById } from "@/app_modules/forum/fun/count/count_one_total_komentar_by_id";
 import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { user_getOneByUserId } from "@/app_modules/home/fun/get/get_one_user_by_id";
@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   //   setTimeout(a, 1000);
   // });
 
-  const dataPosting = await forum_getListPostingByAuhtorId(authorId);
+  const dataPosting = await forum_getAllPostingByAuhtorId({authorId: authorId, page: 1});
   const totalPosting = await forum_countPostingByAuthorId(authorId);
 
   return (

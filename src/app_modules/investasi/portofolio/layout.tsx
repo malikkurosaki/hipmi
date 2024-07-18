@@ -1,6 +1,6 @@
 "use client";
 
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import {
   AppShell,
   Box,

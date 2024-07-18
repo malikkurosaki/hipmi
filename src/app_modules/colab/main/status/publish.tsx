@@ -1,6 +1,6 @@
 "use client";
 
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import { Card, Stack, Grid, Text, Divider, Center, Box } from "@mantine/core";
 import ComponentColab_CardSectionData from "../../component/card_view/card_section_data";
 import ComponentColab_AuthorNameOnHeader from "../../component/header_author_name";

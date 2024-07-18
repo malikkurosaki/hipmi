@@ -1,23 +1,20 @@
 "use client";
-import {
-  Card,
-  Stack,
-  Center,
-  Title,
-  Badge,
-  Group,
-  Radio,
-  Grid,
-  Text,
-  Avatar,
-  Divider,
-  Box,
-} from "@mantine/core";
-import moment from "moment";
-import { MODEL_VOTE_KONTRIBUTOR } from "../../model/interface";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  Avatar,
+  Badge,
+  Card,
+  Center,
+  Divider,
+  Grid,
+  Stack,
+  Text,
+  Title
+} from "@mantine/core";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
+import { MODEL_VOTE_KONTRIBUTOR } from "../../model/interface";
 
 export default function ComponentVote_DaftarKontributorVoter({
   listKontributor,
@@ -27,7 +24,15 @@ export default function ComponentVote_DaftarKontributorVoter({
   const router = useRouter()
   return (
     <>
-      <Card shadow="lg" withBorder p={30}>
+      <Card
+        p={30}
+        style={{
+          backgroundColor: AccentColor.darkblue,
+          borderRadius: "10px",
+          border: `2px solid ${AccentColor.blue}`,
+          color: "white",
+        }}
+      >
         <Card.Section>
           <Stack>
             <Center>
@@ -36,15 +41,22 @@ export default function ComponentVote_DaftarKontributorVoter({
 
             {_.isEmpty(listKontributor) ? (
               <Center>
-                <Text fz={"xs"} fw={"bold"}>- Tidak ada voting -</Text>
+                <Text fz={"xs"} c={"gray"} fw={"bold"}>
+                  - Tidak ada voting -
+                </Text>
               </Center>
             ) : (
               <Stack>
                 {listKontributor?.map((e, i) => (
                   <Stack spacing={"xs"} key={i}>
                     <Grid>
-                      <Grid.Col span={2}
-                      onClick={() => router.push(RouterProfile.katalog + e.Author.Profile.id)}
+                      <Grid.Col
+                        span={2}
+                        onClick={() =>
+                          router.push(
+                            RouterProfile.katalog + e.Author.Profile.id
+                          )
+                        }
                       >
                         <Avatar
                           size={30}

@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { gs_forum_total_komentar } from "../global_state";
 import { forum_countOneTotalKomentarById } from "../fun/count/count_one_total_komentar_by_id";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { IconMessageCircleX } from "@tabler/icons-react";
 
 export default function ComponentForum_MainCardView({

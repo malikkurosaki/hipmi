@@ -1,25 +1,22 @@
 "use client";
 
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import {
   Button,
-  Group,
-  Modal,
   SimpleGrid,
-  Stack,
-  Text,
-  Title,
+  Stack
 } from "@mantine/core";
-import ComponentVote_DetailDataSebelumPublish from "../../component/detail/detail_data_sebelum_publish";
-import { useRouter } from "next/navigation";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
 import { useAtom } from "jotai";
-import { gs_vote_status } from "../../global_state";
-import { useDisclosure } from "@mantine/hooks";
-import { MODEL_VOTING } from "../../model/interface";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ComponentVote_DetailDataSebelumPublish from "../../component/detail/detail_data_sebelum_publish";
 import { Vote_funDeleteById } from "../../fun/delete/fun_delete_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_id";
-import ComponentVote_NotedBox from "../../component/noted_box";
+import { gs_vote_status } from "../../global_state";
+import { MODEL_VOTING } from "../../model/interface";
 
 export default function Vote_DetailReject({
   dataVote,
@@ -29,7 +26,10 @@ export default function Vote_DetailReject({
   return (
     <>
       <Stack spacing={"xl"}>
-        <ComponentVote_NotedBox informasi={dataVote?.catatan} />
+        <ComponentGlobal_BoxInformation
+          isReport
+          informasi={dataVote?.catatan}
+        />
         <ComponentVote_DetailDataSebelumPublish data={dataVote as any} />
         <ButtonAction voteId={dataVote.id} />
       </Stack>
@@ -40,7 +40,10 @@ export default function Vote_DetailReject({
 function ButtonAction({ voteId }: { voteId: string }) {
   const router = useRouter();
   const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
-  const [opened, { open, close }] = useDisclosure(false);
+
+  const [openModal1, setOpenModal1] = useState(false);
+  const [openModal2, setOpenModal2] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onUpdate() {
     await Vote_funEditStatusByStatusId(voteId, "3").then((res) => {
@@ -73,7 +76,7 @@ function ButtonAction({ voteId }: { voteId: string }) {
           radius={"xl"}
           color="orange"
           onClick={() => {
-            onUpdate();
+            setOpenModal1(true);
           }}
         >
           Edit Kembali
@@ -82,37 +85,69 @@ function ButtonAction({ voteId }: { voteId: string }) {
           radius={"xl"}
           color="red"
           onClick={() => {
-            open();
+            setOpenModal2(true);
           }}
         >
           Hapus
         </Button>
       </SimpleGrid>
 
-      <Modal opened={opened} onClose={close} centered withCloseButton={false}>
-        <Stack>
-          <Title order={6}>Yakin menghapus vote ini ?</Title>
-          <Group position="center">
-            <Button
-              radius={"xl"}
-              onClick={() => {
-                close();
-              }}
-            >
-              Kembali
-            </Button>
-            <Button
-              radius={"xl"}
-              onClick={() => {
-                onDelete();
-              }}
-              color="red"
-            >
-              Hapus
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
+      <UIGlobal_Modal
+        title={"Anda akan mengedit kembali voting ini ?"}
+        opened={openModal1}
+        close={() => setOpenModal1(false)}
+        buttonKiri={
+          <Button
+            radius={"xl"}
+            onClick={() => {
+              setOpenModal1(false);
+            }}
+          >
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            loaderPosition="center"
+            loading={isLoading ? true : false}
+            radius={"xl"}
+            onClick={() => {
+              onUpdate();
+            }}
+            color="orange"
+          >
+            Simpan
+          </Button>
+        }
+      />
+
+      {/* MODAL HAPUS */}
+      <UIGlobal_Modal
+        title={"Anda yakin menghapus voting ini ?"}
+        opened={openModal2}
+        close={() => setOpenModal2(false)}
+        buttonKiri={
+          <Button
+            radius={"xl"}
+            onClick={() => {
+              setOpenModal2(false);
+            }}
+          >
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            radius={"xl"}
+            onClick={() => {
+              onDelete();
+            }}
+            color="red"
+          >
+            Hapus
+          </Button>
+        }
+      />
     </>
   );
 }

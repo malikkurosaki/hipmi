@@ -1,22 +1,12 @@
 "use client";
 
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import {
-  Box,
-  Button,
-  Center,
-  Grid,
-  Paper,
-  ScrollArea,
-  Stack,
-  Text,
-  Title,
+  Stack
 } from "@mantine/core";
-import ComponentColab_AuthorNameOnHeader from "../../component/header_author_name";
-import { useState } from "react";
-import ComponentColab_ButtonPartisipasi from "../../component/detail/button_partisipasi";
-import ComponentColab_DetailListPartisipasiUser from "../../component/detail/list_partisipasi_user";
 import ComponentColab_DetailData from "../../component/detail/detail_data";
+import ComponentColab_DetailListPartisipasiUser from "../../component/detail/list_partisipasi_user";
+import ComponentColab_AuthorNameOnHeader from "../../component/header_author_name";
 import { MODEL_COLLABORATION } from "../../model/interface";
 
 export default function Colab_MainDetail({
@@ -32,7 +22,18 @@ export default function Colab_MainDetail({
 }) {
   return (
     <>
-      <Stack px={5} spacing={"xl"}>
+      <Stack
+        px={5}
+        spacing={"xl"}
+        style={{
+          border: `2px solid ${AccentColor.blue}`,
+          backgroundColor: AccentColor.darkblue,
+          color: "white",
+          borderRadius: "10px",
+          marginBottom: "20px",
+          padding: "15px",
+        }}
+      >
         <ComponentColab_AuthorNameOnHeader
           tglPublish={new Date()}
           authorName={dataColab?.Author?.Profile?.name}

@@ -6,5 +6,9 @@ export default async function Page() {
   const countUser = await AdminMainDashboard_CountUser();
   const countPorto = await AdminMainDashboard_CountPOrtofolio();
 
+  // await new Promise((a, b) => {
+  //   setTimeout(a, 4000);
+  // });
+
   return <AdminMain countUser={countUser} countPorto={countPorto} />;
 }
