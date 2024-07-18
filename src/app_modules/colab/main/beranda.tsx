@@ -1,31 +1,22 @@
 "use client";
 
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
-import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import {
   ActionIcon,
   Affix,
   Card,
-  Center,
-  Grid,
-  Paper,
   Stack,
-  Text,
-  Textarea,
-  Title,
-  rem,
+  rem
 } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
 import { IconPencilPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentColab_CardSectionData from "../component/card_view/card_section_data";
-import ComponentColab_SectionHeaderAuthorName from "../component/card_view/card_section_header_author_name";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
 import ComponentColab_CardSectionHeaderAuthorName from "../component/card_view/card_section_header_author_name";
-import { MODEL_COLLABORATION } from "../model/interface";
 import ComponentColab_JumlahPartisipan from "../component/card_view/card_section_jumlah_partisipan";
+import { MODEL_COLLABORATION } from "../model/interface";
+import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
 
 export default function Colab_Beranda({
   listData,
@@ -40,7 +31,7 @@ export default function Colab_Beranda({
 
   return (
     <>
-      <Affix position={{ bottom: rem(150), right: rem(30) }}>
+      {/* <Affix position={{ bottom: rem(150), right: rem(30) }}>
         <ActionIcon
           loading={loadingCreate ? true : false}
           opacity={scroll.y > 0 ? 0.5 : ""}
@@ -58,7 +49,9 @@ export default function Colab_Beranda({
         >
           <IconPencilPlus color="white" />
         </ActionIcon>
-      </Affix>
+      </Affix> */}
+
+      <ComponentGlobal_CreateButton path={RouterColab.create} />
 
       {/* <pre>{JSON.stringify(listData, null, 2)}</pre> */}
 
