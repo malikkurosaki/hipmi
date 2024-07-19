@@ -1,26 +1,58 @@
 "use client";
 
-import { AppShell } from "@mantine/core";
-import React from "react";
-import ComponentEvent_HeaderTamplate from "../../component/header_tamplate";
-import { IconEdit } from "@tabler/icons-react";
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import UIGlobal_Drawer from "@/app_modules/_global/ui/ui_drawer";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import { ActionIcon } from "@mantine/core";
+import { IconDotsVertical, IconEdit } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 export default function LayoutEvent_DetailDraft({
   children,
-  eventId
+  eventId,
 }: {
   children: React.ReactNode;
-  eventId: string
+  eventId: string;
 }) {
+  const router = useRouter();
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  const listPage = [
+    {
+      id: "1",
+      name: "Edit Event",
+      icon: <IconEdit />,
+      path: RouterEvent.edit + eventId,
+    },
+  ];
+
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
-        header={<ComponentEvent_HeaderTamplate title="Detail Draft" icon={<IconEdit/>} route2={RouterEvent.edit + eventId}/>}
+      <UIGlobal_LayoutTamplate
+        header={
+          <UIGlobal_LayoutHeaderTamplate
+            title="Detail Draft"
+            customButtonRight={
+              <ActionIcon
+                variant="transparent"
+                onClick={() => setOpenDrawer(true)}
+              >
+                <IconDotsVertical color="white" />
+              </ActionIcon>
+            }
+          />
+        }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
+
+      <UIGlobal_Drawer
+        opened={openDrawer}
+        close={() => setOpenDrawer(false)}
+        component={listPage}
+      />
     </>
-  )
+  );
 }

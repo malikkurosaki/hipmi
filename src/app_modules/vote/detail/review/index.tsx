@@ -1,28 +1,16 @@
 "use client";
 
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import {
-  Badge,
-  Button,
-  Card,
-  Center,
-  Grid,
-  Group,
-  Radio,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { Button, Stack } from "@mantine/core";
 import { useAtom } from "jotai";
-import moment from "moment";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import { gs_vote_status } from "../../global_state";
+import { useState } from "react";
 import ComponentVote_DetailDataSebelumPublish from "../../component/detail/detail_data_sebelum_publish";
 import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_id";
+import { gs_vote_status } from "../../global_state";
 import { MODEL_VOTING } from "../../model/interface";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { useState } from "react";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 
 export default function Vote_DetailReview({
   dataVote,
@@ -43,6 +31,7 @@ function ButtonAction({ voteId }: { voteId: string }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
+  const [openModal, setOpenModal] = useState(false);
 
   async function onUpdate() {
     await Vote_funEditStatusByStatusId(voteId, "3").then((res) => {
@@ -59,16 +48,36 @@ function ButtonAction({ voteId }: { voteId: string }) {
   return (
     <>
       <Button
-        loaderPosition="center"
-        loading={isLoading ? true : false}
         radius={"xl"}
         color="orange"
-        onClick={() => {8
-          onUpdate();
+        onClick={() => {
+          setOpenModal(true);
         }}
       >
         Batalkan Review
       </Button>
+
+      <UIGlobal_Modal
+        title={"Anda yakin akan membatalkan review?"}
+        opened={openModal}
+        close={() => setOpenModal(false)}
+        buttonKiri={
+          <Button radius={"xl"} onClick={() => setOpenModal(false)}>
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            loaderPosition="center"
+            loading={isLoading ? true : false}
+            radius={"xl"}
+            color="green"
+            onClick={() => onUpdate()}
+          >
+            Simpan
+          </Button>
+        }
+      />
     </>
   );
 }

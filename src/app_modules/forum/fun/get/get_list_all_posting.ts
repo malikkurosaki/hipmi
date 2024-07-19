@@ -1,9 +1,7 @@
 "use server";
 
-import _ from "lodash";
 import prisma from "@/app/lib/prisma";
-import { forum_countOneTotalKomentarById } from "../count/count_one_total_komentar_by_id";
-import { forum_countTotalKomenById } from "../count/count_total_komentar_by_id";
+import _ from "lodash";
 
 export async function forum_getListAllPosting() {
   const get = await prisma.forum_Posting.findMany({

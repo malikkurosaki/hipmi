@@ -6,12 +6,15 @@ import { useRouter } from "next/navigation";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { useAtom } from "jotai";
 import { gs_job_status } from "../../global_state";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { MODEL_JOB } from "../../model/interface";
 import { Job_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_status_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import mqtt_client from "@/util/mqtt_client";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
+import { useDisclosure } from "@mantine/hooks";
+import { useState } from "react";
 
 export default function Job_DetailReview({ dataJob }: { dataJob: MODEL_JOB }) {
   return (
@@ -27,6 +30,8 @@ export default function Job_DetailReview({ dataJob }: { dataJob: MODEL_JOB }) {
 function ButtonAction({ jobId }: { jobId: string }) {
   const router = useRouter();
   const [status, setStatus] = useAtom(gs_job_status);
+  const [opened, { open, close }] = useDisclosure();
+  const [isOpen, setOpen] = useState(false);
 
   async function onAction() {
     const update = await Job_funEditStatusByStatusId(jobId, "3");
@@ -57,12 +62,39 @@ function ButtonAction({ jobId }: { jobId: string }) {
   }
   return (
     <>
+      <UIGlobal_Modal
+        opened={isOpen}
+        close={() => setOpen(false)}
+        title={"Anda yakin membatalkan review ?"}
+        buttonKiri={
+          <Button
+            radius={"xl"}
+            onClick={() => {
+              setOpen(false);
+            }}
+          >
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            radius={"xl"}
+            color="orange"
+            onClick={() => {
+              onAction();
+            }}
+          >
+            Simpan
+          </Button>
+        }
+      />
+
       <Button
         radius={"xl"}
         color="orange"
-        mb={50}
+        my={"xl"}
         onClick={() => {
-          onAction();
+          setOpen(true);
         }}
       >
         Batalkan Review

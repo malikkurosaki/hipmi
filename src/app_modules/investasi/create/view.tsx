@@ -1,7 +1,12 @@
 "use client";
 
-import { ApiHipmi } from "@/app/lib/api";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
+import {
+  ComponentGlobal_WarningMaxUpload,
+  maksimalUploadFile,
+} from "@/app_modules/_global/component/waring_popup";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/model_default_master";
 import {
   AspectRatio,
@@ -12,36 +17,22 @@ import {
   FileButton,
   Group,
   Image,
-  NumberInput,
   Paper,
   Select,
   Stack,
   Text,
-  TextInput,
-  Grid,
-  Tooltip,
-  ActionIcon,
+  TextInput
 } from "@mantine/core";
 import {
-  IconCamera,
-  IconPdf,
-  IconQuestionMark,
-  IconUpload,
+  IconUpload
 } from "@tabler/icons-react";
-import _, { toNumber } from "lodash";
+import { useAtom } from "jotai";
+import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { funCreateInvestasi } from "../fun/fun_create_investasi";
 import toast from "react-simple-toasts";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import { useAtom } from "jotai";
+import { funCreateInvestasi } from "../fun/fun_create_investasi";
 import { gs_StatusPortoInvestasi, gs_investasiFooter } from "../g_state";
-import { useShallowEffect } from "@mantine/hooks";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import {
-  ComponentGlobal_WarningMaxUpload,
-  maksimalUploadFile,
-} from "@/app_modules/component_global/variabel_global";
 
 export default function InvestasiCreate({
   id,

@@ -5,7 +5,7 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function ComponentGlobalAdmin_BackButton({path}:{path?:string}) {
+export default function ComponentAdminGlobal_BackButton({path}:{path?:string}) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
 

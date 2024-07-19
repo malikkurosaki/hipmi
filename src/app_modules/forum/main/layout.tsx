@@ -1,30 +1,17 @@
 "use client";
 
+import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import { MODEL_USER } from "@/app_modules/home/model/interface";
 import {
   ActionIcon,
-  AppShell,
   Avatar,
-  Center,
-  Footer,
-  Grid,
-  Group,
-  Header,
-  Stack,
-  Text,
-  Title,
+  Loader
 } from "@mantine/core";
-import React, { useState } from "react";
-import ComponentForum_HeaderTamplate from "../component/header/header_tamplate";
-import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import { IconChevronLeft, IconCircle, IconHome } from "@tabler/icons-react";
-import router from "next/router";
 import { useRouter } from "next/navigation";
-import { title } from "process";
-import { MODEL_USER } from "@/app_modules/home/model/interface";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import React, { useState } from "react";
 
 export default function LayoutForum_Main({
   children,
@@ -37,27 +24,49 @@ export default function LayoutForum_Main({
   const [hotMenu, setHotMenu] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  if (loading) return <ComponentGlobal_V2_LoadingPage />;
-
-  const listFooter = [
-    {
-      id: 1,
-      name: "Beranda",
-      path: RouterForum.beranda,
-      icon: <IconHome />,
-    },
-
-    {
-      id: 2,
-      name: "ForumKu",
-      path: RouterForum.forumku,
-      icon: <IconCircle />,
-    },
-  ];
 
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <UIGlobal_LayoutTamplate
+        header={
+          <UIGlobal_LayoutHeaderTamplate
+            title="Forum"
+            iconRight={
+              <ActionIcon
+                radius={"xl"}
+                variant="transparent"
+                onClick={() => {
+                  setLoading(true);
+                  router.push(RouterForum.forumku + dataAuthor?.id);
+                }}
+              >
+                {loading ? (
+                  <Loader size={20} />
+                ) : (
+                  <Avatar
+                    radius={"xl"}
+                    size={30}
+                    sx={{
+                      borderStyle: "solid",
+                      borderWidth: "0.5px",
+                      borderColor: "black",
+                    }}
+                    alt="foto"
+                    src={
+                      RouterProfile.api_foto_profile +
+                      dataAuthor?.Profile?.imagesId
+                    }
+                  />
+                )}
+              </ActionIcon>
+            }
+          />
+        }
+      >
+        {children}
+      </UIGlobal_LayoutTamplate>
+
+      {/* <AppComponentGlobal_LayoutTamplate
         header={
           <Header height={50} sx={{ borderStyle: "none" }}>
             <Group h={50} position="apart" px={"md"}>
@@ -72,6 +81,7 @@ export default function LayoutForum_Main({
               </ActionIcon>
 
               <Title order={5}>Forum</Title>
+              
               <ActionIcon
                 loading={loading ? true : false}
                 variant="transparent"
@@ -132,7 +142,7 @@ export default function LayoutForum_Main({
         // }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </AppComponentGlobal_LayoutTamplate> */}
     </>
   );
 }

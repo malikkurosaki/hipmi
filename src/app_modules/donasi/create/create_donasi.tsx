@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import {
   ComponentGlobal_WarningMaxUpload,
   maksimalUploadFile,
-} from "@/app_modules/component_global/variabel_global";
+} from "@/app_modules/_global/component/waring_popup";
 import _ from "lodash";
 import { useState } from "react";
 import toast from "react-simple-toasts";

@@ -1,14 +1,16 @@
 "use client";
 
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 import { Stack, Tabs } from "@mantine/core";
 import { useAtom } from "jotai";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { gs_vote_status } from "../../global_state";
-import Vote_StatusPublish from "./publish";
-import Vote_StatusReview from "./review";
 import Vote_StatusDraft from "./draft";
+import Vote_StatusPublish from "./publish";
 import Vote_StatusReject from "./reject";
+import Vote_StatusReview from "./review";
 
 export default function Vote_Status({
   listPublish,
@@ -21,7 +23,7 @@ export default function Vote_Status({
   listDraft: any[];
   listReject: any[];
 }) {
-  const router = useRouter();
+
   const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
   const listTabs = [
     {
@@ -45,16 +47,27 @@ export default function Vote_Status({
       value: "Reject",
     },
   ];
-  
+
   return (
     <>
       <Tabs
-        color="blue"
+        mt={1}
         variant="pills"
         radius={"xl"}
         defaultValue={"Publish"}
         value={tabsStatus}
         onTabChange={setTabsStatus}
+        styles={{
+          tabsList: {
+            backgroundColor: MainColor.darkblue,
+            position: "sticky",
+            top: 0,
+            zIndex: 99,
+          },
+          panel: {
+            paddingTop: 10,
+          },
+        }}
       >
         <Stack>
           <Tabs.List grow>
@@ -62,8 +75,17 @@ export default function Vote_Status({
               <Tabs.Tab
                 key={e.id}
                 value={e.value}
-                bg={tabsStatus === e.value ? "blue" : "gray.1"}
-                fw={tabsStatus === e.value ? "bold" : "normal"}
+                fw={"bold"}
+                c={"black"}
+                style={{
+                  transition: "0.5s",
+                  backgroundColor:
+                    tabsStatus === e.value ? MainColor.yellow : "white",
+                  border:
+                    tabsStatus === e.value
+                      ? `1px solid ${AccentColor.yellow}`
+                      : `1px solid white`,
+                }}
               >
                 {e.value}
               </Tabs.Tab>

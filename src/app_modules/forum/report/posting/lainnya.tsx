@@ -5,14 +5,18 @@ import { Button, Group, Stack, Textarea } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { forum_funCreateReportPosting } from "../../fun/create/fun_create_report_posting";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { forum_funCreateReportPostingLainnya } from "../../fun/create/fun_create_report_posting_lainnya";
+import mqtt_client from "@/util/mqtt_client";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 
 export default function Forum_ReportPostingLainnya({
-  postingIg,
+  postingId,
+  userLoginId,
 }: {
-  postingIg: string;
+  postingId: string;
+  userLoginId: string;
 }) {
   const [deskripsi, setDeskripsi] = useState("");
   return (
@@ -26,43 +30,74 @@ export default function Forum_ReportPostingLainnya({
             setDeskripsi(val.currentTarget.value);
           }}
         />
-        <ButtonAction postingIg={postingIg} deskripsi={deskripsi} />
+        <ButtonAction
+          postingId={postingId}
+          deskripsi={deskripsi}
+          userLoginId={userLoginId}
+        />
       </Stack>
     </>
   );
 }
 
 function ButtonAction({
-  postingIg,
+  postingId,
   deskripsi,
+  userLoginId,
 }: {
-  postingIg: string;
+  postingId: string;
   deskripsi: string;
+  userLoginId: string;
 }) {
   const router = useRouter();
 
   async function onReport() {
-    await forum_funCreateReportPostingLainnya(postingIg, deskripsi).then(
-      (res) => {
-        if (res.status === 201) {
-          ComponentGlobal_NotifikasiBerhasil(res.message);
-          router.back();
-        } else {
-          ComponentGlobal_NotifikasiGagal(res.message);
-        }
-      }
+    const report = await forum_funCreateReportPostingLainnya(
+      postingId,
+      deskripsi
     );
+    if (report.status === 201) {
+      ComponentGlobal_NotifikasiBerhasil(report.message);
+      router.back();
+
+      const dataNotif = {
+        appId: postingId,
+        pesan: deskripsi,
+        kategoriApp: "FORUM",
+        title: "Lainnya",
+        userId: userLoginId,
+        status: "Report Posting",
+      };
+
+      const createNotifikasi = await notifikasiToAdmin_funCreate({
+        data: dataNotif as any,
+      });
+
+      if (createNotifikasi.status === 201) {
+        mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
+      }
+    } else {
+      ComponentGlobal_NotifikasiGagal(report.message);
+    }
   }
   return (
     <>
       <Group position="apart" grow>
         <Button
           radius={"xl"}
-          onClick={() => router.replace(RouterForum.report_posting + postingIg)}
+          onClick={() => router.replace(RouterForum.report_posting + postingId)}
         >
           Batal
         </Button>
-        <Button radius={"xl"} color="red" onClick={() => onReport()}>
+        <Button
+          style={{
+            transition: "0.5s",
+          }}
+          disabled={deskripsi === "" ? true : false}
+          radius={"xl"}
+          color="orange"
+          onClick={() => onReport()}
+        >
           Report
         </Button>
       </Group>

@@ -12,17 +12,19 @@ export default function Vote_DetailSemuaRiwayat({
   listKontributor,
 }: {
   dataVote: MODEL_VOTING;
-  listKontributor:MODEL_VOTE_KONTRIBUTOR[]
+  listKontributor: MODEL_VOTE_KONTRIBUTOR[];
 }) {
   return (
     <>
-      <Stack>
+      <Stack py={"md"}>
         <ComponentVote_DetailDataSetelahPublish
           data={dataVote}
           authorName={true}
         />
         <ComponentVote_HasilVoting data={dataVote.Voting_DaftarNamaVote} />
-        <ComponentVote_DaftarKontributorVoter listKontributor={listKontributor} />
+        <ComponentVote_DaftarKontributorVoter
+          listKontributor={listKontributor}
+        />
       </Stack>
     </>
   );

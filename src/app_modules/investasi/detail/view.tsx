@@ -36,7 +36,7 @@ import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { gs_TransferValue } from "../g_state";
 import { useAtom } from "jotai";
 import _ from "lodash";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/component_global/author_name_on_header";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 
 export default function DetailInvestasi({
   dataInvestasi,

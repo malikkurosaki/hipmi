@@ -1,9 +1,24 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import { ceil } from "lodash";
 
-export async function adminForum_getListReportPostingById(postingId: string) {
+export async function adminForum_getListReportPostingById({
+  postingId,
+  page,
+}: {
+  postingId: string;
+  page: number;
+}) {
+  const takeData = 10;
+  const skipData = page * takeData - takeData;
+
   const data = await prisma.forum_ReportPosting.findMany({
+    take: takeData,
+    skip: skipData,
+    orderBy: {
+      createdAt: "desc",
+    },
     where: {
       forum_PostingId: postingId,
     },
@@ -13,6 +28,8 @@ export async function adminForum_getListReportPostingById(postingId: string) {
       createdAt: true,
       User: {
         select: {
+          id: true,
+          username: true,
           Profile: {
             select: {
               name: true,
@@ -30,5 +47,16 @@ export async function adminForum_getListReportPostingById(postingId: string) {
     },
   });
 
-  return data;
+  const nCount = await prisma.forum_ReportPosting.count({
+    where: {
+      forum_PostingId: postingId,
+    },
+  });
+
+  const allData = {
+    data: data,
+    nPage: ceil(nCount / takeData),
+  };
+
+  return allData;
 }

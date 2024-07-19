@@ -1,12 +1,10 @@
 "use client";
 
-import { ActionIcon, AppShell, Group, Header, Title } from "@mantine/core";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import React from "react";
-import ComponentForum_HeaderTamplate from "../../component/header/header_tamplate";
-import { IconChevronLeft, IconX } from "@tabler/icons-react";
-import router from "next/router";
 import ComponentForum_HeaderRataKiri from "../../component/header/header_rata_kiri";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
 
 export default function LayoutForum_ReportKomentar({
   children,
@@ -15,13 +13,20 @@ export default function LayoutForum_ReportKomentar({
 }) {
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <UIGlobal_LayoutTamplate
+        header={
+          <UIGlobal_LayoutHeaderTamplate title="Mengumpulkan Informasi Komentar" />
+        }
+      >
+        {children}
+      </UIGlobal_LayoutTamplate>
+      {/* <AppComponentGlobal_LayoutTamplate
         header={
           <ComponentForum_HeaderRataKiri title="Mengumpulkan Informasi Komentar"/>
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </AppComponentGlobal_LayoutTamplate> */}
     </>
   );
 }

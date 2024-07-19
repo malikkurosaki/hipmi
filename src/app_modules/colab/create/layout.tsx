@@ -1,8 +1,8 @@
 "use client";
 
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import React from "react";
-import ComponentColab_HeaderTamplate from "../component/header_tamplate";
 
 export default function LayoutColab_Create({
   children,
@@ -11,11 +11,11 @@ export default function LayoutColab_Create({
 }) {
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
-        header={<ComponentColab_HeaderTamplate title="Tambah Proyek" />}
+      <UIGlobal_LayoutTamplate
+        header={<UIGlobal_LayoutHeaderTamplate title="Tambah Proyek" />}
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

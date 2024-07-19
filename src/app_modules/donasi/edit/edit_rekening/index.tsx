@@ -9,7 +9,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { Donasi_funUpdateRekening } from "../../fun/update/fun_update_rekening";
 import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
 import { NotifGagal } from "../../component/notifikasi/notif_gagal";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 
 export default function Donasi_EditRekening({
   dataDonasi,

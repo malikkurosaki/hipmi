@@ -1,19 +1,16 @@
 "use client";
 import {
-  Card,
-  Stack,
-  Center,
-  Title,
   Badge,
+  Card,
+  Center,
   Group,
-  Radio,
-  Grid,
+  Stack,
   Text,
+  Title
 } from "@mantine/core";
-import moment from "moment";
-import { MODEL_VOTING } from "../../model/interface";
 import { IconCircle } from "@tabler/icons-react";
-import _ from "lodash";
+import { MODEL_VOTING } from "../../model/interface";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function ComponentVote_DetailDataSebelumPublish
 ({
@@ -21,24 +18,42 @@ export default function ComponentVote_DetailDataSebelumPublish
 }: {
   data?: MODEL_VOTING;
 }) {
-
   return (
     <>
-      <Card shadow="lg" withBorder p={30}>
+      <Card
+        p={30}
+        style={{
+          backgroundColor: AccentColor.darkblue,
+          borderRadius: "10px",
+          border: `2px solid ${AccentColor.blue}`,
+          color: "white",
+        }}
+      >
         <Card.Section px={"xs"}>
           <Stack spacing={"lg"}>
             <Center>
-              <Title order={5}>{data?.title}</Title>
+              <Title align="center" order={4}>
+                {data?.title}
+              </Title>
             </Center>
             <Text>{data?.deskripsi}</Text>
 
-            <Stack spacing={0}>
+            <Stack spacing={0} align="center">
               <Center>
                 <Text fz={10} fw={"bold"}>
                   Batas Voting
                 </Text>
               </Center>
-              <Badge>
+              <Badge
+                styles={{
+                  root: {
+                    backgroundColor: AccentColor.blue,
+                    border: `1px solid ${AccentColor.skyblue}`,
+                    color: "white",
+                    width: "80%",
+                  },
+                }}
+              >
                 <Group>
                   <Text>
                     {data?.awalVote.toLocaleDateString(["id-ID"], {

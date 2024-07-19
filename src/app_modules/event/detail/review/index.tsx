@@ -6,38 +6,65 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { gs_event_status } from "../../global_state";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { MODEL_EVENT } from "../../model/interface";
 import { Event_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import ComponentEvent_CatatanReject from "../../component/catatan_reject";
 import { useState } from "react";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 
 export default function Event_DetailReview({
   dataEvent,
 }: {
   dataEvent: MODEL_EVENT;
 }) {
-  const router = useRouter();
-  const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
-  const [isLoading, setLoading] = useState(false);
-
   return (
     <>
       <Stack spacing={"xl"}>
         <ComponentEvent_DetailData data={dataEvent} />
-        <Button
-          loaderPosition="center"
-          loading={isLoading ? true : false}
-          radius={"xl"}
-          color={"orange"}
-          onClick={() =>
-            onClick(router, setTabsStatus, dataEvent.id, setLoading)
-          }
-        >
-          Batalkan Review
-        </Button>
+        <ButtonAction eventId={dataEvent?.id} />
       </Stack>
+    </>
+  );
+}
+
+function ButtonAction({ eventId }: { eventId: string }) {
+  const router = useRouter();
+  const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
+  const [isLoading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  return (
+    <>
+      <Button
+        loaderPosition="center"
+        loading={isLoading ? true : false}
+        radius={"xl"}
+        color={"orange"}
+        onClick={() => setOpenModal(true)}
+      >
+        Batalkan Review
+      </Button>
+
+      <UIGlobal_Modal
+        title={"Anda yakin ingin batalkan review?"}
+        opened={openModal}
+        close={() => setOpenModal(false)}
+        buttonKiri={
+          <Button radius={"xl"} onClick={() => setOpenModal(false)}>
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            radius={"xl"}
+            color={"orange"}
+            onClick={() => onClick(router, setTabsStatus, eventId, setLoading)}
+          >
+            Simpan
+          </Button>
+        }
+      />
     </>
   );
 }

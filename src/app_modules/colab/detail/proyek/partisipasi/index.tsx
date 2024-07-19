@@ -1,5 +1,6 @@
 "use client";
 
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentColab_DetailData from "@/app_modules/colab/component/detail/detail_data";
 import ComponentColab_DetailListPartisipasiUser from "@/app_modules/colab/component/detail/list_partisipasi_user";
 import ComponentColab_AuthorNameOnHeader from "@/app_modules/colab/component/header_author_name";
@@ -15,7 +16,18 @@ export default function Colab_DetailPartisipasiProyek({
 }) {
   return (
     <>
-      <Stack px={5} spacing={"xl"}>
+      <Stack
+        px={5}
+        spacing={"xl"}
+        style={{
+          border: `2px solid ${AccentColor.blue}`,
+          backgroundColor: AccentColor.darkblue,
+          color: "white",
+          borderRadius: "10px",
+          marginBottom: "20px",
+          padding: "15px",
+        }}
+      >
         {/* <pre>{JSON.stringify(dataColab, null,2)}</pre> */}
         <ComponentColab_AuthorNameOnHeader
           authorName={dataColab?.Author.Profile.name}
@@ -24,7 +36,9 @@ export default function Colab_DetailPartisipasiProyek({
           tglPublish={dataColab?.createdAt}
         />
         <ComponentColab_DetailData data={dataColab} />
-        <ComponentColab_DetailListPartisipasiUser listPartisipan={listPartisipan} />
+        <ComponentColab_DetailListPartisipasiUser
+          listPartisipan={listPartisipan}
+        />
       </Stack>
     </>
   );

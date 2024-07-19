@@ -1,13 +1,14 @@
 import { Job_Status } from "@/app_modules/job";
-import { Job_getListStatusByStatusId } from "@/app_modules/job/fun/get/get_list_status_by_status_id";
+import job_getAllStatusDraft from "@/app_modules/job/fun/get/status/get_list_draft";
+import job_getAllStatusPublish from "@/app_modules/job/fun/get/status/get_list_publish";
+import job_getAllStatusReject from "@/app_modules/job/fun/get/status/get_list_reject";
+import job_getAllStatusReview from "@/app_modules/job/fun/get/status/get_list_review";
 
 export default async function Page() {
-  const listPublish = await Job_getListStatusByStatusId("1");
-  const listReview = await Job_getListStatusByStatusId("2");
-  const listDraft = await Job_getListStatusByStatusId("3");
-  const listReject = await Job_getListStatusByStatusId("4");
-
-
+  const listPublish = await job_getAllStatusPublish({page: 1});
+  const listReview = await job_getAllStatusReview({ page: 1 });
+  const listDraft = await job_getAllStatusDraft({ page: 1 });
+  const listReject = await job_getAllStatusReject({page: 1});
 
   return (
     <>

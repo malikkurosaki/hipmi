@@ -7,13 +7,14 @@ import Vote_RiwayatSaya from "./saya";
 import { useAtom } from "jotai";
 import { gs_vote_riwayat } from "../../global_state";
 import { MODEL_VOTING } from "../../model/interface";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function Vote_Riwayat({
   listRiwayat,
   listRiwayatSaya,
 }: {
   listRiwayat: MODEL_VOTING[];
-  listRiwayatSaya: MODEL_VOTING[]
+  listRiwayatSaya: MODEL_VOTING[];
 }) {
   const [tabsRiwayat, setTabsRiwayat] = useAtom(gs_vote_riwayat);
   const listTabs = [
@@ -34,12 +35,23 @@ export default function Vote_Riwayat({
   return (
     <>
       <Tabs
+        mt={1}
         variant="pills"
         radius={"xl"}
-        color="blue"
         defaultValue={"Semua"}
         value={tabsRiwayat}
         onTabChange={setTabsRiwayat}
+        styles={{
+          tabsList: {
+            backgroundColor: MainColor.darkblue,
+            position: "sticky",
+            top: 0,
+            zIndex: 99,
+          },
+          panel: {
+            paddingTop: 10,
+          },
+        }}
       >
         <Stack>
           <Tabs.List grow>
@@ -47,8 +59,17 @@ export default function Vote_Riwayat({
               <Tabs.Tab
                 key={i}
                 value={e.value}
-                bg={tabsRiwayat === e.value ? "blue" : "gray.1"}
-                fw={tabsRiwayat === e.value ? "bold" : "normal"}
+                fw={"bold"}
+                c={"black"}
+                style={{
+                  transition: "0.5s",
+                  backgroundColor:
+                    tabsRiwayat === e.value ? MainColor.yellow : "white",
+                  border:
+                    tabsRiwayat === e.value
+                      ? `1px solid ${AccentColor.yellow}`
+                      : `1px solid white`,
+                }}
               >
                 {e.label}
               </Tabs.Tab>

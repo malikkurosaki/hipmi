@@ -1,17 +1,11 @@
 "use client";
 
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
-import {
-  Button,
-  Select,
-  Stack,
-  TextInput,
-  Textarea
-} from "@mantine/core";
+import { Button, Select, Stack, TextInput, Textarea } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { useAtom } from "jotai";
 import moment from "moment";
@@ -21,6 +15,7 @@ import { useState } from "react";
 import ComponentEvent_ErrorMaximalInput from "../component/error_maksimal_input";
 import { Event_funCreate } from "../fun/create/fun_create";
 import { gs_event_hotMenu, gs_event_status } from "../global_state";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function Event_Create({
   listTipeAcara,
@@ -50,6 +45,11 @@ export default function Event_Create({
       {/* <pre>{JSON.stringify(value, null, 2)}</pre> */}
       <Stack px={"sm"}>
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Judul"
           placeholder="Masukan judul"
           withAsterisk
@@ -62,6 +62,11 @@ export default function Event_Create({
           }}
         />
         <Select
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Tipe Acara"
           placeholder="Pilih Tipe Acara"
@@ -78,6 +83,11 @@ export default function Event_Create({
         />
 
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Lokasi"
           placeholder="Masukan lokasi acara"
           withAsterisk
@@ -90,6 +100,11 @@ export default function Event_Create({
           }}
         />
         <DateTimePicker
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           excludeDate={(date) => {
             return moment(date).diff(Date.now(), "days") < 0;
           }}
@@ -120,6 +135,11 @@ export default function Event_Create({
 
         <Stack spacing={5}>
           <Textarea
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Deskripsi"
             placeholder="Deskripsikan acara yang akan di selenggarakan"
             withAsterisk
@@ -154,9 +174,11 @@ export default function Event_Create({
           loading={isLoading ? true : false}
           radius={"xl"}
           mt={"xl"}
-          onClick={() =>
+          onClick={() => {
             onSave(router, setTabsStatus, value, setHotMenu, setLoading)
-          }
+          }}
+          bg={MainColor.yellow}
+          color="yellow"
         >
           Simpan
         </Button>

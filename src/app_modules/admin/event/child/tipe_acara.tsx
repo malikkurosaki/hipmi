@@ -20,9 +20,9 @@ import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_t
 import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
 import { useState } from "react";
 import { AdminEvent_funCreateTipeAcara } from "../fun/create/fun_create_tipe_acara";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { AdminEvent_getListTipeAcara } from "../fun/get/get_list_tipe_acara";
 import { IconEditCircle, IconTrash } from "@tabler/icons-react";
 import { AdminEvent_funEditTipeAcara } from "../fun/edit/fun_edit_tipe_acara";

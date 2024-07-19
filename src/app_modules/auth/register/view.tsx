@@ -10,8 +10,13 @@ import {
   Center,
   PinInput,
   Stack,
+  BackgroundImage,
 } from "@mantine/core";
-import { IconCircleLetterH, IconCloudLockOpen } from "@tabler/icons-react";
+import {
+  IconCircleLetterH,
+  IconCloudLockOpen,
+  IconUserCircle,
+} from "@tabler/icons-react";
 import { gs_nomor } from "../state/state";
 import { useAtom } from "jotai";
 import { useState } from "react";
@@ -22,12 +27,16 @@ import { useRouter } from "next/navigation";
 import _ from "lodash";
 import { useFocusTrap } from "@mantine/hooks";
 import { Auth_funRegister } from "../fun/fun_register";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { IconPencilCheck } from "@tabler/icons-react";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { auth_funEditAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function Register({ dataOtp }: { dataOtp: any }) {
   const router = useRouter();
@@ -57,7 +66,7 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
           if (val.status === 200) {
             ComponentGlobal_NotifikasiBerhasil(res.message);
             setLoading(true);
-            router.push(RouterHome.main_home);
+            router.push(RouterHome.main_home, { scroll: false });
           } else {
             ComponentGlobal_NotifikasiPeringatan(val.message);
           }
@@ -71,25 +80,26 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
   return (
     <>
       {/* <pre>{JSON.stringify(dataOtp,null,2)}</pre> */}
+      <BackgroundImage
+        src={"/aset/global/main_background.png"}
+        h={"100vh"}
+        // pos={"static"}
+      >
+        <Center h={"100vh"}>
+          <Stack h={"100%"} align="center" justify="center" spacing={70}>
+            <Title order={2} c={MainColor.yellow}>
+              REGISTRASI
+            </Title>
 
-      <Center>
-        <Stack
-          px={"lg"}
-          spacing={70}
-          w={{ base: 400 }}
-          justify="center"
-          h={"80vh"}
-        >
-          <Center>
-            <IconPencilCheck size={120} />
-          </Center>
+            <IconUserCircle size={100} color="white" />
 
-          <Stack spacing={"lg"}>
-            <Stack spacing={0}>
-              <Title order={4}>REGISTRASI</Title>
-              <Text fz={"xs"}>Masukan username anda !</Text>
-            </Stack>
-            <Stack spacing={"sm"}>
+            <Stack spacing={"sm"} w={300}>
+              <Text fz={10} c={"white"}>
+                Anda akan terdaftar dengan nomor berikut{" "}
+                <Text inherit span fw={"bold"}>
+                  +{nomor}
+                </Text>
+              </Text>
               <TextInput
                 ref={focusTrapRef}
                 placeholder="Masukan Username"
@@ -113,32 +123,30 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
                   setValue(val.currentTarget.value);
                 }}
               />
-              <Text fz={10} c={"gray"}>
-                Anda akan terdaftar dengan nomor berikut{" "}
-                <Text inherit span fw={"bold"}>
-                  +{nomor}
-                </Text>
-              </Text>
-            </Stack>
-
-            <Stack>
-              <Button
-                loading={loading ? true : false}
-                loaderPosition="center"
-                radius={"md"}
-                compact
-                h={40}
-                color={"teal"}
-                onClick={() => {
-                  onRegistarsi();
-                }}
-              >
-                <Text>DAFTAR</Text>
-              </Button>
+              <Stack>
+                <Button
+                  loading={loading ? true : false}
+                  loaderPosition="center"
+                  radius={"md"}
+                  compact
+                  h={40}
+                  c={"black"}
+                  bg={MainColor.yellow}
+                  color={"yellow"}
+                  style={{
+                    borderColor: AccentColor.yellow,
+                  }}
+                  onClick={() => {
+                    onRegistarsi();
+                  }}
+                >
+                  <Text>DAFTAR</Text>
+                </Button>
+              </Stack>
             </Stack>
           </Stack>
-        </Stack>
-      </Center>
+        </Center>
+      </BackgroundImage>
     </>
   );
 }

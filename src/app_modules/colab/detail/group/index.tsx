@@ -1,51 +1,48 @@
 "use client";
 
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { MODEL_USER } from "@/app_modules/home/model/interface";
+import mqtt_client from "@/util/mqtt_client";
 import {
   ActionIcon,
   Box,
-  Button,
-  Card,
   Center,
-  Code,
+  Container,
   Grid,
   Group,
-  Header,
   Loader,
   Paper,
-  ScrollArea,
+  rem,
   Stack,
   Text,
   Textarea,
   Title,
 } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
 import {
   IconChevronLeft,
-  IconCircle,
   IconInfoSquareRounded,
   IconSend,
 } from "@tabler/icons-react";
+import _ from "lodash";
 import { useRouter } from "next/navigation";
-import router from "next/router";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import useInfiniteScroll, {
+  ScrollDirection,
+} from "react-easy-infinite-scroll-hook";
+import ComponentColab_IsEmptyData from "../../component/is_empty_data";
+import colab_funCreateMessageByUserId from "../../fun/create/room/fun_create_message_by_user_id";
+import colab_getMessageByRoomId from "../../fun/get/room_chat/get_message_by_room_id";
 import {
   MODEL_COLLABORATION_MESSAGE,
   MODEL_COLLABORATION_ROOM_CHAT,
 } from "../../model/interface";
-import _ from "lodash";
-import ComponentColab_IsEmptyData from "../../component/is_empty_data";
-import colab_getMessageByRoomId from "../../fun/get/room_chat/get_message_by_room_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import colab_funCreateMessageByUserId from "../../fun/create/room/fun_create_message_by_user_id";
-import { useShallowEffect } from "@mantine/hooks";
-import mqtt_client from "@/util/mqtt_client";
-import useInfiniteScroll, {
-  ScrollDirection,
-} from "react-easy-infinite-scroll-hook";
-import toast from "react-simple-toasts";
-import colab_getOneMessageById from "../../fun/get/room_chat/get_one_message_by_id";
-import { MODEL_USER } from "@/app_modules/home/model/interface";
-import { evnPesan } from "@/util/evn";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 
 export default function Colab_GroupChatView({
   userLoginId,
@@ -169,168 +166,184 @@ export default function Colab_GroupChatView({
 
   return (
     <>
-      <Box h={"100vh"}>
-        {/* Header */}
-
-        <Box
-          style={{
-            zIndex: 99,
-          }}
-          w={"100%"}
-          pos={"fixed"}
-          top={0}
-          h={50}
-        >
-          <Stack bg={"gray.2"} h={50} justify="center" px={"sm"}>
-            <Grid grow gutter={"lg"}>
-              <Grid.Col span={2}>
-                <ActionIcon
-                  loading={loadingBack ? true : false}
-                  variant="transparent"
-                  radius={"xl"}
-                  onClick={() => {
-                    setLoadingBack(true);
-                    router.back();
-                  }}
-                >
-                  <IconChevronLeft />
-                </ActionIcon>
-              </Grid.Col>
-              <Grid.Col span={8}>
-                <Center>
-                  <Title order={5} lineClamp={1}>
-                    {selectRoom?.name}
-                  </Title>
-                </Center>
-              </Grid.Col>
-              <Grid.Col span={2}>
-                <Group position="right">
+      <Box
+        w={"100%"}
+        h={"100%"}
+        style={{
+          overflowY: "auto",
+          overflowX: "auto",
+          backgroundColor: MainColor.black,
+          position: "fixed",
+        }}
+      >
+        <Container mih={"100vh"} p={0} size={rem(500)} bg={MainColor.darkblue}>
+          {/* Header */}
+          <Box
+            h={"8vh"}
+            style={{
+              zIndex: 10,
+            }}
+            w={"100%"}
+            pos={"sticky"}
+            top={0}
+            bg={MainColor.darkblue}
+          >
+            <Stack h={50} justify="center" px={"sm"}>
+              <Grid grow gutter={"lg"}>
+                <Grid.Col span={2}>
                   <ActionIcon
-                    loading={loadingInfo ? true : false}
                     variant="transparent"
                     radius={"xl"}
                     onClick={() => {
-                      setLoadingInfo(true);
-                      router.push(RouterColab.info_grup + selectRoom.id);
+                      setLoadingBack(true);
+                      router.back();
                     }}
                   >
-                    <IconInfoSquareRounded />
+                    {loadingBack ? (
+                      <ComponentGlobal_Loader />
+                    ) : (
+                      <IconChevronLeft color="white" />
+                    )}
                   </ActionIcon>
-                </Group>
-              </Grid.Col>
-            </Grid>
-          </Stack>
-        </Box>
-
-        {/* Main View */}
-        <Box py={"xs"} px={"xs"} pos={"static"}>
-          {/* Batas atas */}
-          <Box
-            style={{
-              height: 50,
-            }}
-          />
-
-          {/* Chat View */}
-          <Box h={"80vh"}>
-            <Stack justify="flex-end" h={"100%"}>
-              <div
-                ref={ref as any}
-                style={{
-                  overflowY: "auto",
-                }}
-              >
-                {isLoading && (
+                </Grid.Col>
+                <Grid.Col span={8}>
                   <Center>
-                    <Loader size={20} color="gray" />
+                    <Title c={"white"} order={5} lineClamp={1}>
+                      {selectRoom?.name}
+                    </Title>
                   </Center>
-                )}
-                {_.isEmpty(data) ? (
-                  <ComponentColab_IsEmptyData text="Belum ada pesan" />
-                ) : (
-                  data.map((e, i) => (
-                    <Box key={i}>
-                      {userLoginId === e?.User?.id ? (
-                        <Group position="right">
-                          <Paper key={e?.id} bg={"blue.2"} p={"sm"} mt={"sm"}>
-                            <Stack spacing={0}>
-                              <Text lineClamp={1} fw={"bold"} fz={"xs"}>
-                                {e?.User?.Profile?.name}
-                              </Text>
-                              <div
-                                dangerouslySetInnerHTML={{ __html: e?.message }}
-                              />
-
-                              {/* <Group spacing={"xs"}>
-                                <Text fz={7}>
-                                  {new Intl.DateTimeFormat("id-ID", {
-                                    timeStyle: "medium",
-                                  }).format(e.createdAt)}
-                                </Text>
-                                <IconCircle size={3} />
-                                <Text fz={7}>
-                                  {new Intl.DateTimeFormat("id-ID", {
-                                    dateStyle: "medium",
-                                  }).format(e.createdAt)}
-                                </Text>
-                              </Group> */}
-                            </Stack>
-                          </Paper>
-                        </Group>
+                </Grid.Col>
+                <Grid.Col span={2}>
+                  <Group position="right">
+                    <ActionIcon
+                      variant="transparent"
+                      radius={"xl"}
+                      onClick={() => {
+                        setLoadingInfo(true);
+                        router.push(RouterColab.info_grup + selectRoom.id, {scroll: false});
+                      }}
+                    >
+                      {loadingInfo ? (
+                        <ComponentGlobal_Loader />
                       ) : (
-                        <Group>
-                          <Paper key={e?.id} bg={"cyan.2"} p={"sm"} mt={"sm"}>
-                            <Stack spacing={0}>
-                              <Text lineClamp={1} fw={"bold"} fz={"xs"}>
-                                {e?.User?.Profile?.name}
-                              </Text>
-                              <div
-                                dangerouslySetInnerHTML={{ __html: e?.message }}
-                              />
-                              {/* <Group spacing={"xs"}>
-                                <Text fz={7}>
-                                  {new Intl.DateTimeFormat("id-ID", {
-                                    timeStyle: "medium",
-                                  }).format(e.createdAt)}
-                                </Text>
-                                <IconCircle size={3} />
-                                <Text fz={7}>
-                                  {new Intl.DateTimeFormat("id-ID", {
-                                    dateStyle: "medium",
-                                  }).format(e.createdAt)}
-                                </Text>
-                              </Group> */}
-                            </Stack>
-                          </Paper>
-                        </Group>
+                        <IconInfoSquareRounded color="white" />
                       )}
-                    </Box>
-                  ))
-                )}
-              </div>
+                    </ActionIcon>
+                  </Group>
+                </Grid.Col>
+              </Grid>
             </Stack>
           </Box>
 
-          {/* Batas bawah */}
+          {/* Main View */}
+          <Box
+            py={"xs"}
+            px={"xs"}
+            pos={"static"}
+            style={{ zIndex: 0 }}
+            h={"82vh"}
+          >
+            {/* Chat View */}
+            <Box h={"100%"}>
+              <Stack justify="flex-end" h={"100%"}>
+                <div
+                  ref={ref as any}
+                  style={{
+                    overflowY: "auto",
+                  }}
+                >
+                  {_.isEmpty(data) ? (
+                    isLoading ? (
+                      <Center>
+                        <Loader size={20} color="yellow" />
+                      </Center>
+                    ) : (
+                      <ComponentColab_IsEmptyData text="Belum ada pesan" />
+                    )
+                  ) : (
+                    data.map((e, i) => (
+                      <Box key={i}>
+                        {userLoginId === e?.User?.id ? (
+                          <Group position="right">
+                            <Paper key={e?.id} bg={"blue.2"} p={"sm"} mt={"sm"}>
+                              <Stack spacing={0}>
+                                <Text lineClamp={1} fw={"bold"} fz={"xs"}>
+                                  {e?.User?.Profile?.name}
+                                </Text>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: e?.message,
+                                  }}
+                                />
+
+                                {/* <Group spacing={"xs"}>
+                                <Text fz={7}>
+                                  {new Intl.DateTimeFormat("id-ID", {
+                                    timeStyle: "medium",
+                                  }).format(e.createdAt)}
+                                </Text>
+                                <IconCircle size={3} />
+                                <Text fz={7}>
+                                  {new Intl.DateTimeFormat("id-ID", {
+                                    dateStyle: "medium",
+                                  }).format(e.createdAt)}
+                                </Text>
+                              </Group> */}
+                              </Stack>
+                            </Paper>
+                          </Group>
+                        ) : (
+                          <Group>
+                            <Paper key={e?.id} bg={"cyan.2"} p={"sm"} mt={"sm"}>
+                              <Stack spacing={0}>
+                                <Text lineClamp={1} fw={"bold"} fz={"xs"}>
+                                  {e?.User?.Profile?.name}
+                                </Text>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: e?.message,
+                                  }}
+                                />
+                                {/* <Group spacing={"xs"}>
+                                <Text fz={7}>
+                                  {new Intl.DateTimeFormat("id-ID", {
+                                    timeStyle: "medium",
+                                  }).format(e.createdAt)}
+                                </Text>
+                                <IconCircle size={3} />
+                                <Text fz={7}>
+                                  {new Intl.DateTimeFormat("id-ID", {
+                                    dateStyle: "medium",
+                                  }).format(e.createdAt)}
+                                </Text>
+                              </Group> */}
+                              </Stack>
+                            </Paper>
+                          </Group>
+                        )}
+                      </Box>
+                    ))
+                  )}
+                </div>
+              </Stack>
+            </Box>
+          </Box>
+
+          {/* Footer */}
           <Box
             style={{
+              position: "relative",
+              bottom: 0,
               height: "10vh",
+              zIndex: 10,
+              // borderRadius: "20px 20px 0px 0px",
+              borderTop: `2px solid ${AccentColor.blue}`,
+              borderRight: `1px solid ${AccentColor.blue}`,
+              borderLeft: `1px solid ${AccentColor.blue}`,
             }}
-          />
-        </Box>
-
-        {/* Footer */}
-        <Box
-          style={{
-            zIndex: 98,
-          }}
-          w={"100%"}
-          pos={"fixed"}
-          bottom={0}
-          h={"10vh"}
-          bg={"gray.2"}
-        >
-          {/* <Button
+            bg={AccentColor.darkblue}
+          >
+            {/* <Button
             onClick={() => {
               const d: { [key: string]: any } = _.clone(data[0]);
               setData([...data, d]);
@@ -338,34 +351,39 @@ export default function Colab_GroupChatView({
           >
             KIzRIM PESAN
           </Button> */}
-          <Stack justify="center" h={"100%"} px={"sm"}>
-            <Grid align="center">
-              <Grid.Col span={"auto"}>
-                <Textarea
-                  minRows={1}
-                  radius={"md"}
-                  placeholder="Ketik pesan anda..."
-                  value={msg}
-                  onChange={(val) => setMsg(val.currentTarget.value)}
-                />
-              </Grid.Col>
-              <Grid.Col span={"content"}>
-                <ActionIcon
-                  disabled={msg === "" ? true : false}
-                  variant="filled"
-                  bg={"cyan"}
-                  radius={"xl"}
-                  size={"xl"}
-                  onClick={() => {
-                    onSend();
-                  }}
-                >
-                  <IconSend size={20} />
-                </ActionIcon>
-              </Grid.Col>
-            </Grid>
-          </Stack>
-        </Box>
+            <Stack justify="center" h={"100%"} px={"sm"}>
+              <Grid align="center">
+                <Grid.Col span={"auto"}>
+                  <Textarea
+                    minRows={1}
+                    radius={"md"}
+                    placeholder="Ketik pesan anda..."
+                    value={msg}
+                    onChange={(val) => setMsg(val.currentTarget.value)}
+                  />
+                </Grid.Col>
+                <Grid.Col span={"content"}>
+                  <ActionIcon
+                    disabled={msg === "" ? true : false}
+                    variant="filled"
+                    bg={AccentColor.softblue}
+                    color={"cyan"}
+                    radius={"xl"}
+                    size={"xl"}
+                    onClick={() => {
+                      onSend();
+                    }}
+                    style={{
+                      transition: "0.5s",
+                    }}
+                  >
+                    <IconSend size={20} />
+                  </ActionIcon>
+                </Grid.Col>
+              </Grid>
+            </Stack>
+          </Box>
+        </Container>
       </Box>
     </>
   );

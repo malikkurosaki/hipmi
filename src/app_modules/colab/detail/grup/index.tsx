@@ -1,44 +1,30 @@
 "use client";
 
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import mqtt_client from "@/util/mqtt_client";
 import {
   ActionIcon,
   Affix,
-  Badge,
   Box,
-  Button,
   Center,
-  Flex,
   Grid,
   Group,
   Loader,
   Paper,
-  ScrollArea,
   Stack,
   Text,
-  TextInput,
   Textarea,
-  Transition,
-  rem,
+  rem
 } from "@mantine/core";
 import {
-  useScrollIntoView,
-  useShallowEffect,
-  useWindowScroll,
+  useShallowEffect
 } from "@mantine/hooks";
-import { useAtom } from "jotai";
-import { useCallback, useState } from "react";
-import { gs_colab_pesan } from "../../global_state";
-import { IconArrowUp, IconCircle, IconSend } from "@tabler/icons-react";
-import colab_funCreateMessageByUserId from "../../fun/create/room/fun_create_message_by_user_id";
+import { IconCircle, IconSend } from "@tabler/icons-react";
 import _ from "lodash";
+import { useState } from "react";
 import ComponentColab_IsEmptyData from "../../component/is_empty_data";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import colab_funCreateMessageByUserId from "../../fun/create/room/fun_create_message_by_user_id";
 import colab_getMessageByRoomId from "../../fun/get/room_chat/get_message_by_room_id";
-import mqtt_client from "@/util/mqtt_client";
-import useInfiniteScroll, {
-  ScrollDirection,
-} from "react-easy-infinite-scroll-hook";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
 
 export default function Colab_DetailGrupDiskusi({
   roomId,

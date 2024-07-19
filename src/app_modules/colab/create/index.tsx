@@ -17,10 +17,12 @@ import {
   MODEL_COLLABORATION_MASTER,
 } from "../model/interface";
 import colab_funCreateProyek from "../fun/create/fun_create_proyek";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import _ from "lodash";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 
 export default function Colab_Create({
   listIndustri,
@@ -37,8 +39,14 @@ export default function Colab_Create({
   });
   return (
     <>
-      <Stack px={"sm"}>
+      <Stack px={"sm"} py={"md"}>
         <TextInput
+          maxLength={100}
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Judul"
           withAsterisk
           placeholder="Masukan judul proyek"
@@ -51,6 +59,12 @@ export default function Colab_Create({
         />
 
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
+          maxLength={100}
           label="Lokasi"
           withAsterisk
           placeholder="Masukan lokasi proyek"
@@ -63,6 +77,11 @@ export default function Colab_Create({
         />
 
         <Select
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           placeholder="Pilih kategori industri"
           label="Pilih Industri"
           withAsterisk
@@ -96,30 +115,55 @@ export default function Colab_Create({
           }}
         /> */}
 
-        <Textarea
-          label="Tujuan Proyek"
-          placeholder="Masukan tujuan proyek"
-          withAsterisk
-          minRows={5}
-          onChange={(val) => {
-            setValue({
-              ...value,
-              purpose: val.currentTarget.value,
-            });
-          }}
-        />
+        <Stack spacing={5}>
+          <Textarea
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
+            maxLength={500}
+            label="Tujuan Proyek"
+            placeholder="Masukan tujuan proyek"
+            withAsterisk
+            minRows={5}
+            onChange={(val) => {
+              setValue({
+                ...value,
+                purpose: val.currentTarget.value,
+              });
+            }}
+          />
+          <ComponentGlobal_InputCountDown
+            lengthInput={value.purpose.length}
+            maxInput={500}
+          />
+        </Stack>
 
-        <Textarea
-          label="Keuntungan "
-          placeholder="Masukan keuntungan dalam proyek"
-          minRows={5}
-          onChange={(val) => {
-            setValue({
-              ...value,
-              benefit: val.currentTarget.value,
-            });
-          }}
-        />
+        <Stack spacing={5}>
+          <Textarea
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
+            maxLength={500}
+            label="Keuntungan "
+            placeholder="Masukan keuntungan dalam proyek"
+            minRows={5}
+            onChange={(val) => {
+              setValue({
+                ...value,
+                benefit: val.currentTarget.value,
+              });
+            }}
+          />
+          <ComponentGlobal_InputCountDown
+            lengthInput={value.benefit.length}
+            maxInput={500}
+          />
+        </Stack>
+
         <ButtonAction value={value as any} />
       </Stack>
     </>
@@ -154,14 +198,30 @@ function ButtonAction({ value }: { value: any }) {
     });
   }
 
+  // console.log(value);
+
   return (
     <>
       <Button
+        disabled={
+          !value.title ||
+          !value.lokasi ||
+          !value.purpose ||
+          !value.benefit ||
+          value.projectCollaborationMaster_IndustriId === 0
+            ? true
+            : false
+        }
         loaderPosition="center"
         loading={loading ? true : false}
         mt={"xl"}
         radius={"xl"}
         onClick={() => onSave()}
+        bg={MainColor.yellow}
+        color={"yellow"}
+        style={{
+          transition: "0.5s",
+        }}
       >
         Simpan
       </Button>

@@ -1,35 +1,32 @@
 "use client";
 
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import {
   Box,
   Button,
   Center,
-  Grid,
   Group,
   Stack,
   Text,
   TextInput,
   Textarea,
-  Title,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
-import { useCounter } from "@mantine/hooks";
-import { IconHome, IconMinus, IconPlus } from "@tabler/icons-react";
+import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { useAtom } from "jotai";
+import _ from "lodash";
 import moment from "moment";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { gs_vote_hotMenu, gs_vote_status } from "../global_state";
-import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
-import _ from "lodash";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { data } from "autoprefixer";
 import { Vote_funCreate } from "../fun/create/create_vote";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { gs_vote_hotMenu, gs_vote_status } from "../global_state";
 import { MODEL_VOTING } from "../model/interface";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function Vote_Create() {
   const router = useRouter();
@@ -40,12 +37,9 @@ export default function Vote_Create() {
   const [data, setData] = useState({
     title: "",
     deskripsi: "",
-    awalVote: Date,
-    akhirVote: Date,
+    awalVote: "",
+    akhirVote: "",
   });
-
-  // const [range, setRange] = useState({
-  // });
 
   const [listVote, setListVote] = useState([
     {
@@ -60,9 +54,14 @@ export default function Vote_Create() {
 
   return (
     <>
-      <Stack px={"sm"} spacing={"xl"}>
+      <Stack px={"sm"} spacing={"xl"} mb={"xl"}>
         <Stack>
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Judul"
             withAsterisk
             placeholder="Masukan judul"
@@ -76,6 +75,11 @@ export default function Vote_Create() {
           />
           <Stack spacing={5}>
             <Textarea
+              styles={{
+                label: {
+                  color: "white",
+                },
+              }}
               label="Deskripsi"
               autosize
               minRows={2}
@@ -97,6 +101,11 @@ export default function Vote_Create() {
           </Stack>
 
           <DatePickerInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Jangka Waktu"
             placeholder="Masukan jangka waktu voting"
             withAsterisk
@@ -122,11 +131,16 @@ export default function Vote_Create() {
             </Text>
           </Center>
 
-          <Stack>
+          <Stack spacing={"xl"}>
             <Stack>
               {listVote.map((e, index) => (
                 <Box key={index}>
                   <TextInput
+                    styles={{
+                      label: {
+                        color: "white",
+                      },
+                    }}
                     label={e.name}
                     withAsterisk
                     maxLength={100}
@@ -144,31 +158,33 @@ export default function Vote_Create() {
             <Group position="center">
               <Button
                 disabled={listVote.length >= 4 ? true : false}
-                compact
-                w={100}
                 radius={"xl"}
                 leftIcon={<IconPlus size={15} />}
-                variant="outline"
                 onClick={() => {
                   setListVote([
                     ...listVote,
                     { name: "Nama Voting", value: "" },
                   ]);
                 }}
+                compact
+                bg={MainColor.yellow}
+                color={"yellow"}
+                c={"black"}
               >
                 <Text fz={8}>Tambah List</Text>
               </Button>
 
               <Button
                 disabled={listVote.length <= 2 ? true : false}
-                compact
-                w={100}
                 radius={"xl"}
                 leftIcon={<IconMinus size={15} />}
-                variant="outline"
                 onClick={() => {
                   setListVote([...listVote.slice(0, -1)]);
                 }}
+                compact
+                bg={MainColor.yellow}
+                color={"yellow"}
+                c={"black"}
               >
                 <Text fz={8}>Kurangi List</Text>
               </Button>
@@ -177,7 +193,15 @@ export default function Vote_Create() {
         </Stack>
 
         <Button
-          // disabled
+          disabled={
+            !data.title ||
+            !data.deskripsi ||
+            !data.awalVote ||
+            !data.akhirVote ||
+            listVote.map((e, i) => e.value).includes("")
+              ? true
+              : false
+          }
           loaderPosition="center"
           loading={isLoading ? true : false}
           mt={"lg"}
@@ -191,6 +215,12 @@ export default function Vote_Create() {
               listVote,
               setIsLoading
             );
+          }}
+          c={"black"}
+          bg={MainColor.yellow}
+          color="yellow"
+          style={{
+            transition: "0.5s",
           }}
         >
           Simpan
@@ -226,7 +256,7 @@ async function onSave(
 
   await Vote_funCreate(data, listVote).then((res) => {
     if (res.status === 201) {
-      setHotMenu(1);
+      setHotMenu(2);
       setTabsStatus("Review");
       router.replace(RouterVote.status);
       ComponentGlobal_NotifikasiBerhasil(res.message);

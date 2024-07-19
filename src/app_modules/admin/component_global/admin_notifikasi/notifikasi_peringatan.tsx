@@ -8,7 +8,7 @@ import { IconAlertTriangle } from "@tabler/icons-react";
  * @type string
  * @returns notifikasi peringatan
  */
-export async function ComponentGlobalAdmin_NotifikasiPeringatan(
+export async function ComponentAdminGlobal_NotifikasiPeringatan(
   text: string,
   durasi?: number
 ) {

@@ -5,7 +5,7 @@ import Forum_Forumku from "./forumku";
 import Forum_Create from "./create";
 import LayoutForum_Create from "./create/layout";
 import LayoutForum_Forumku from "./forumku/layout";
-import Forum_Detail from "./detail";
+import Forum_MainDetail from "./detail/main_detail";
 import LayoutForum_Detail from "./detail/layout";
 import Forum_Komentar from "./komentar";
 import LayoutForum_Komentar from "./komentar/layout";
@@ -19,6 +19,8 @@ import Forum_ReportKomentar from "./report/komentar";
 import LayoutForum_ReportKomentar from "./report/komentar/layout";
 import Forum_ReportPostingLainnya from "./report/posting/lainnya";
 import Forum_ReportKomentarLainnya from "./report/komentar/lainnya";
+import Forum_DetailReportKomentar from "./detail/detail_report_komentar";
+import Forum_DetailReportPosting from "./detail/detail_report_posting";
 
 export {
   Forum_Splash,
@@ -28,7 +30,7 @@ export {
   Forum_Create,
   LayoutForum_Create,
   LayoutForum_Forumku,
-  Forum_Detail,
+  Forum_MainDetail as Forum_Detail,
   LayoutForum_Detail,
   Forum_Komentar,
   LayoutForum_Komentar,
@@ -42,4 +44,6 @@ export {
   LayoutForum_ReportKomentar,
   Forum_ReportPostingLainnya,
   Forum_ReportKomentarLainnya,
+  Forum_DetailReportKomentar,
+  Forum_DetailReportPosting,
 };

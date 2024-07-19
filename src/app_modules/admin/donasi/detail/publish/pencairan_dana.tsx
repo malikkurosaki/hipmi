@@ -26,10 +26,10 @@ import { useState } from "react";
 import ComponentAdminDonasi_TombolKembali from "../../component/tombol_kembali";
 import { AdminDonasi_funCreatePencairanDana } from "../../fun/create/fun_create_pencairan_dana";
 import { AdminDonasi_AkumulasiPencairanById } from "../../fun/update/fun_update_akumulasi_pencairan";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
-import { ComponentGlobalAdmin_NotifikasiPeringatan } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_peringatan";
-import { ComponentGlobalAdmin_NotifikasiBerhasil } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_berhasil";
-import { ComponentGlobalAdmin_NotifikasiGagal } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_gagal";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import { ComponentAdminGlobal_NotifikasiPeringatan } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_peringatan";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentAdminGlobal_NotifikasiGagal } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_gagal";
 import { AdminDonasi_getOneById } from "../../fun/get/get_one_by_id";
 
 export default function AdminDonasi_PencairanDana({
@@ -305,9 +305,9 @@ async function onSave({
   };
 
   if (_.values(body).includes(""))
-    return ComponentGlobalAdmin_NotifikasiPeringatan("Lengkapi Data");
+    return ComponentAdminGlobal_NotifikasiPeringatan("Lengkapi Data");
   if (!file)
-    return ComponentGlobalAdmin_NotifikasiPeringatan(
+    return ComponentAdminGlobal_NotifikasiPeringatan(
       "Lampirkan Bukti Transfer"
     );
 
@@ -324,9 +324,9 @@ async function onSave({
           if (res.status === 200) {
             const loadData = await AdminDonasi_getOneById(donasiId);
             onSuccess1(loadData);
-            ComponentGlobalAdmin_NotifikasiBerhasil(res.message);
+            ComponentAdminGlobal_NotifikasiBerhasil(res.message);
           } else {
-            ComponentGlobalAdmin_NotifikasiGagal(res.message);
+            ComponentAdminGlobal_NotifikasiGagal(res.message);
           }
         });
       } else {

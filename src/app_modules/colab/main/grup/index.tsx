@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Box,
   Center,
   Grid,
   Group,
@@ -21,64 +22,52 @@ import {
 import { useState } from "react";
 import _ from "lodash";
 import ComponentColab_IsEmptyData from "../../component/is_empty_data";
+import { ComponentColab_CardGrup } from "../../component/card_view/crad_grup";
+import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { ScrollOnly } from "next-scroll-loader";
+import colab_getListAllProyek from "../../fun/get/get_list_all_proyek";
+import colab_getListRoomChatByAuthorId from "../../fun/get/room_chat/get_list_room_by_author_id";
 
 export default function Colab_GrupDiskus({
   listRoom,
 }: {
-  listRoom?: MODEL_COLLABORATION_ANGGOTA_ROOM_CHAT[];
+  listRoom: MODEL_COLLABORATION_ANGGOTA_ROOM_CHAT[];
 }) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [idRoom, setIdRoom] = useState("");
-
-  if (_.isEmpty(listRoom))
-    return <ComponentColab_IsEmptyData text="Tidak Ada Data" />;
+  const [data, setData] = useState(listRoom);
+  const [activePage, setActivePage] = useState(1);
 
   return (
     <>
-      <Stack>
-        {listRoom?.map((e, i) => (
-          <Paper
-            key={i}
-            withBorder
-            shadow="lg"
-            p={"md"}
-            onClick={() => {
-              router.push(
-                RouterColab.group_chat + e?.ProjectCollaboration_RoomChat.id
-              );
-              setIdRoom(e?.ProjectCollaboration_RoomChat.id);
-              setLoading(true);
-            }}
-          >
-            <Grid align="center" h={"100%"}>
-              <Grid.Col span={"auto"}>
-                <Stack spacing={0}>
-                  <Text fw={"bold"} lineClamp={1}>
-                    {e?.ProjectCollaboration_RoomChat?.name}
-                  </Text>
-                  <Text fz={"xs"} c={"gray"}>
-                    {
-                      e?.ProjectCollaboration_RoomChat
-                        ?.ProjectCollaboration_AnggotaRoomChat.length
-                    }{" "}
-                    Anggota
-                  </Text>
-                </Stack>
-              </Grid.Col>
-              <Grid.Col span={"content"}>
-                <Center>
-                  {e?.ProjectCollaboration_RoomChat?.id === idRoom ? (
-                    <Loader color="gray" size={20} />
-                  ) : (
-                    <IconChevronRight color="gray" />
-                  )}
+      <Box>
+        {_.isEmpty(data) ? (
+          <ComponentGlobal_IsEmptyData />
+        ) : (
+          <Box>
+            <ScrollOnly
+              height="82vh"
+              renderLoading={() => (
+                <Center mt={"lg"}>
+                  <Loader color={"yellow"} />
                 </Center>
-              </Grid.Col>
-            </Grid>
-          </Paper>
-        ))}
-      </Stack>
+              )}
+              data={data}
+              setData={setData}
+              moreData={async () => {
+                const loadData = await colab_getListRoomChatByAuthorId({
+                  page: activePage + 1,
+                });
+
+                setActivePage((val) => val + 1);
+
+                return loadData;
+              }}
+            >
+              {(item) => <ComponentColab_CardGrup data={item} />}
+            </ScrollOnly>
+          </Box>
+        )}
+      </Box>
     </>
   );
 }

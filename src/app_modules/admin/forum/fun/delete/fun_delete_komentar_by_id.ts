@@ -14,6 +14,5 @@ export async function adminForum_funDeleteKomentarById(komentarId: string) {
   });
 
   if (!delTemporary) return { status: 400, message: "Gagal Dihapus" };
-  revalidatePath("/dev/admin/forum/children/semua-komentar");
   return { status: 200, message: "Berhasil Dihapus" };
 }

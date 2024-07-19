@@ -3,8 +3,8 @@
 import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
 import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
 import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { MODEL_JOB } from "@/app_modules/job/model/interface";
 import mqtt_client from "@/util/mqtt_client";
 import {
@@ -37,7 +37,7 @@ import { AdminJob_funEditCatatanById } from "../../fun/edit/fun_edit_catatan_by_
 import { AdminJob_funEditStatusPublishById } from "../../fun/edit/fun_edit_status_publish_by_id";
 import adminJob_getListReview from "../../fun/get/get_list_review";
 import { IconPhotoCheck } from "@tabler/icons-react";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 
 export default function AdminJob_TableReview({
   dataReview,
@@ -278,7 +278,7 @@ function TableStatus({ listReview }: { listReview: any }) {
               verticalSpacing={"md"}
               horizontalSpacing={"md"}
               p={"md"}
-              w={1500}
+              w={"100%"}
               h={"100%"}
               striped
               highlightOnHover
@@ -375,6 +375,7 @@ async function onReject({
   if (reject.status === 200) {
     const loadData = await adminJob_getListReview({ page: 1 });
     onLoadData(loadData);
+
     ComponentGlobal_NotifikasiBerhasil(reject.message);
 
     const dataNotif = {
@@ -393,7 +394,7 @@ async function onReject({
     if (notif.status === 201) {
       mqtt_client.publish(
         "USER",
-        JSON.stringify({ userId: reject?.data?.authorId, count: 1 })
+        JSON.stringify({ userId: dataNotif.userId, count: 1 })
       );
     }
   } else {

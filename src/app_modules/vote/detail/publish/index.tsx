@@ -27,7 +27,7 @@ export default function Vote_DetailPublish({
 }) {
   return (
     <>
-      <Stack>
+      <Stack py={"md"}>
         {/* <ComponentVote_DetailStatus /> */}
         <ComponentVote_DetailDataSetelahPublish data={dataVote} />
         <ComponentVote_HasilVoting data={dataVote.Voting_DaftarNamaVote} />

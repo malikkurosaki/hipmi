@@ -1,6 +1,6 @@
 "use client";
 
-import ComponentGlobal_HeaderTamplate from "@/app_modules/component_global/header_tamplate";
+import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
 import {
   ActionIcon,
   AppShell,
@@ -26,7 +26,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { gs_investasiFooter } from "../g_state";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 
 export default function LayoutMainInvestasi({
   children,

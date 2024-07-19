@@ -1,30 +1,21 @@
 "use client";
 
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import {
-  Stack,
-  TextInput,
-  Textarea,
-  Button,
-  Select,
-  Text,
-  Group,
-} from "@mantine/core";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
+import { Button, Select, Stack, TextInput, Textarea } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
+import _ from "lodash";
+import moment from "moment";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import { MODEL_EVENT } from "../model/interface";
 import { useState } from "react";
-import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
 import { Event_funEditById } from "../fun/edit/fun_edit_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import moment from "moment";
-import _ from "lodash";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { IconAlertTriangle } from "@tabler/icons-react";
-import ComponentEvent_ErrorMaximalInput from "../component/error_maksimal_input";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import { MODEL_EVENT } from "../model/interface";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function Event_Edit({
   dataEvent,
@@ -48,6 +39,11 @@ export default function Event_Edit({
       {/* <pre>{JSON.stringify(value, null, 2)}</pre> */}
       <Stack px={"sm"}>
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Judul"
           placeholder="judul"
           withAsterisk
@@ -70,6 +66,11 @@ export default function Event_Edit({
         />
 
         <Select
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Tipe Acara"
           placeholder="Pilih Tipe Acara"
@@ -89,6 +90,11 @@ export default function Event_Edit({
         />
 
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Lokasi"
           placeholder="lokasi acara"
           withAsterisk
@@ -110,6 +116,11 @@ export default function Event_Edit({
           }}
         />
         <DateTimePicker
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           excludeDate={(date) => {
             return moment(date).diff(Date.now(), "days") < 0;
           }}
@@ -137,6 +148,11 @@ export default function Event_Edit({
 
         <Stack spacing={5}>
           <Textarea
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Deskripsi"
             placeholder="Deskripsikan acara yang akan di selenggarakan"
             withAsterisk
@@ -182,6 +198,8 @@ export default function Event_Edit({
           radius={"xl"}
           mt={"xl"}
           onClick={() => onUpdate(router, value, setLoading)}
+          bg={MainColor.yellow}
+          color="yellow"
         >
           Update
         </Button>

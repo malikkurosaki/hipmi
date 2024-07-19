@@ -1,39 +1,59 @@
 "use client";
 
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import { Box, Center, Group, Paper, Stack, Text, Title } from "@mantine/core";
-import moment from "moment";
-import { useRouter } from "next/navigation";
-import { MODEL_EVENT } from "../../model/interface";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { Box, Center, Loader } from "@mantine/core";
+import _ from "lodash";
+import { ScrollOnly } from "next-scroll-loader";
 import { useState } from "react";
 import ComponentEvent_BoxListStatus from "../../component/box_list_status";
-import _ from "lodash";
-import { useShallowEffect } from "@mantine/hooks";
-import { Event_getListByStatusId } from "../../fun/get/get_list_event_by_status_id";
-import ComponentEvent_IsEmptyData from "../../component/is_empty_data";
+import { event_getAllReview } from "../../fun/get/status/get_all_review";
+import { MODEL_EVENT } from "../../model/interface";
 
 export default function Event_StatusReview({
   listReview,
-  authorId,
+
 }: {
   listReview: MODEL_EVENT[];
-  authorId: string;
+
 }) {
-  const router = useRouter();
+  const [data, setData] = useState(listReview);
+  const [activePage, setActivePage] = useState(1);
 
-
- if (_.isEmpty(listReview))
-    return <ComponentEvent_IsEmptyData text="Tidak ada data"/>
   return (
     <>
-      {listReview.map((e, i) => (
-        <Box key={e.id}>
-          <ComponentEvent_BoxListStatus
-            data={e}
-            path={RouterEvent.detail_review}
-          />
+      {_.isEmpty(data) ? (
+        <ComponentGlobal_IsEmptyData />
+      ) : (
+        // --- Main component --- //
+        <Box>
+          <ScrollOnly
+            height="75vh"
+            renderLoading={() => (
+              <Center mt={"lg"}>
+                <Loader color={"yellow"} />
+              </Center>
+            )}
+            data={data}
+            setData={setData}
+            moreData={async () => {
+              const loadData = await event_getAllReview({
+                page: activePage + 1,
+              });
+              setActivePage((val) => val + 1);
+
+              return loadData;
+            }}
+          >
+            {(item) => (
+              <ComponentEvent_BoxListStatus
+                data={item}
+                path={RouterEvent.detail_review}
+              />
+            )}
+          </ScrollOnly>
         </Box>
-      ))}
+      )}
     </>
   );
 }
