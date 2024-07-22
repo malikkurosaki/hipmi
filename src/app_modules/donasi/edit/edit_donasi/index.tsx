@@ -1,39 +1,35 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import {
-  Stack,
-  Select,
-  AspectRatio,
-  Paper,
-  Center,
-  Button,
-  TextInput,
-  Image,
-  FileButton,
-  Modal,
-  Group,
-  Title,
-  Text,
-} from "@mantine/core";
-import { IconCamera } from "@tabler/icons-react";
-import { useAtom } from "jotai";
-import { useRouter } from "next/navigation";
-import { gs_donasi_tabs_posting } from "../../global_state";
-import toast from "react-simple-toasts";
-import { MODEL_DONASI, MODEL_DONASI_ALL_MASTER } from "../../model/interface";
-import { useState } from "react";
-import { Donasi_funUpdateDonasi } from "../../fun/update/fun_update_donasi";
-import { useDisclosure } from "@mantine/hooks";
-import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
-import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
-import _ from "lodash";
-import { Donasi_getOneById } from "../../fun/get/get_one_donasi_by_id";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 import {
   ComponentGlobal_WarningMaxUpload,
   maksimalUploadFile,
 } from "@/app_modules/_global/component/waring_popup";
-import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import {
+  AspectRatio,
+  Button,
+  Center,
+  FileButton,
+  Image,
+  Paper,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { IconCamera } from "@tabler/icons-react";
+import { useAtom } from "jotai";
+import _ from "lodash";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
+import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
+import { Donasi_funUpdateDonasi } from "../../fun/update/fun_update_donasi";
+import { gs_donasi_tabs_posting } from "../../global_state";
+import { MODEL_DONASI, MODEL_DONASI_ALL_MASTER } from "../../model/interface";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function EditDonasi({
   dataDonasi,
@@ -62,6 +58,11 @@ export default function EditDonasi({
       {/* <pre>{JSON.stringify(donasi, null, 2)}</pre> */}
       <Stack spacing={"md"} px={"md"}>
         <Select
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Kategori"
           placeholder="Pilih kategori penggalangan dana"
           value={value.DonasiMaster_Ketegori.id}
@@ -80,8 +81,15 @@ export default function EditDonasi({
           }
         />
         <Stack>
-          <AspectRatio ratio={16 / 9}>
-            <Paper radius={"md"}>
+          <AspectRatio ratio={1 / 1} mah={300}>
+            <Paper
+              style={{
+                border: `2px solid ${AccentColor.blue}`,
+                backgroundColor: AccentColor.darkblue,
+                padding: "10px",
+                borderRadius: "10px",
+              }}
+            >
               <Image
                 alt="Foto"
                 src={
@@ -89,6 +97,7 @@ export default function EditDonasi({
                     ? updateImage
                     : RouterDonasi.api_gambar + `${value.imagesId}`
                 }
+                maw={200}
               />
             </Paper>
           </AspectRatio>
@@ -114,12 +123,12 @@ export default function EditDonasi({
             >
               {(props) => (
                 <Button
-                  compact
                   {...props}
                   radius={"xl"}
-                  variant="outline"
                   leftIcon={<IconCamera />}
-                  w={150}
+                  bg={MainColor.yellow}
+                  color="yellow"
+                  c={"black"}
                 >
                   Upload
                 </Button>
@@ -129,6 +138,11 @@ export default function EditDonasi({
         </Stack>
         <Stack>
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             label="Judul Donasi"
             placeholder="Contoh: Renovasi Masjid pada kampung, dll"
@@ -149,6 +163,11 @@ export default function EditDonasi({
             }
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             icon={<Text fw={"bold"}>Rp.</Text>}
             min={0}
             withAsterisk
@@ -184,6 +203,11 @@ export default function EditDonasi({
             }}
           />
           <Select
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Durasi"
             placeholder="Jangka waktu penggalangan dana"
             withAsterisk
@@ -214,6 +238,9 @@ export default function EditDonasi({
           onClick={() => {
             onUpdate(value, file as any, router);
           }}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
         >
           Update
         </Button>

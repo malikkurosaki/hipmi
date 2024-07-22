@@ -1,13 +1,9 @@
 "use client";
 
+import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import { Warna } from "@/app/lib/warna";
 import {
-  ActionIcon,
-  Avatar,
-  Box,
-  Button,
   Center,
-  CopyButton,
-  Grid,
   Group,
   Loader,
   Paper,
@@ -15,26 +11,27 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import invoice from "../invoice";
-import { MODEL_DONASI_INVOICE } from "../../model/interface";
-import { useState } from "react";
 import { useInterval, useShallowEffect } from "@mantine/hooks";
-import { redirect, useRouter } from "next/navigation";
-import { Donasi_getOneInvoiceById } from "../../fun/get/get_one_invoice_by_id";
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { useAtom } from "jotai";
-import { gs_donasi_hot_menu } from "../../global_state";
-import moment from "moment";
 import { IconBrandWhatsapp } from "@tabler/icons-react";
-import { Warna } from "@/app/lib/warna";
+import { useAtom } from "jotai";
+import moment from "moment";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { useState } from "react";
+import { Donasi_getOneInvoiceById } from "../../fun/get/get_one_invoice_by_id";
+import { gs_donasi_hot_menu } from "../../global_state";
+import { MODEL_DONASI_INVOICE } from "../../model/interface";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function Donasi_ProsesTransaksi({
   dataInvoice,
   nomorAdmin,
 }: {
   dataInvoice: MODEL_DONASI_INVOICE;
-  nomorAdmin: any
+  nomorAdmin: any;
 }) {
   const [invoice, setInvoice] = useState(dataInvoice);
   const [hotMenu, setHotMenu] = useAtom(gs_donasi_hot_menu);
@@ -82,14 +79,32 @@ export default function Donasi_ProsesTransaksi({
   return (
     <>
       <Stack>
-        <Paper p={"sm"} withBorder>
+        <Paper
+          style={{
+            backgroundColor: AccentColor.blue,
+            border: `2px solid ${AccentColor.darkblue}`,
+            padding: "15px",
+            cursor: "pointer",
+            borderRadius: "10px",
+            color: "white",
+          }}
+        >
           <Stack spacing={"md"}>
-            <Paper bg={"gray.1"} p={"sm"} radius={"md"}>
+            <Paper
+              style={{
+                backgroundColor: MainColor.darkblue,
+                border: `2px solid ${AccentColor.darkblue}`,
+                padding: "15px",
+                cursor: "pointer",
+                borderRadius: "10px",
+                color: "white",
+              }}
+            >
               <Stack align="center" justify="center">
                 <Title order={6}>Admin sedang memproses transaksimu</Title>
                 <Paper radius={1000} w={100} h={100}>
                   <Center h={"100%"}>
-                    <Loader size={"lg"} color="orange" variant="bars" />
+                    <Loader size={"lg"} color="yellow" variant="bars" />
                   </Center>
                 </Paper>
                 <Title order={6}>Mohon menunggu !</Title>
@@ -97,8 +112,26 @@ export default function Donasi_ProsesTransaksi({
             </Paper>
           </Stack>
         </Paper>
-        <Paper p={"sm"} withBorder>
-          <Paper bg={"gray.1"} p={5} radius={"md"}>
+        <Paper
+          style={{
+            backgroundColor: AccentColor.blue,
+            border: `2px solid ${AccentColor.darkblue}`,
+            padding: "15px",
+            cursor: "pointer",
+            borderRadius: "10px",
+            color: "white",
+          }}
+        >
+          <Paper
+            style={{
+              backgroundColor: AccentColor.darkblue,
+              border: `2px solid ${AccentColor.darkblue}`,
+              padding: "15px",
+              cursor: "pointer",
+              borderRadius: "10px",
+              color: "white",
+            }}
+          >
             <Group position="center">
               <Stack spacing={0}>
                 <Text fz={"xs"} fs={"italic"}>
@@ -115,9 +148,7 @@ export default function Donasi_ProsesTransaksi({
                   textDecoration: "none",
                 }}
                 target="_blank"
-                href={
-                  `https://wa.me/+${nomorAdmin.nomor}?text=Hallo Admin , Saya ada kendala dalam proses transfer donasi!`
-                }
+                href={`https://wa.me/+${nomorAdmin.nomor}?text=Hallo Admin , Saya ada kendala dalam proses transfer donasi!`}
               >
                 <IconBrandWhatsapp size={40} color={Warna.hijau_cerah} />
               </Link>

@@ -5,6 +5,7 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { gs_proses_donasi } from "../global_state";
 import { useState } from "react";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function ButtonDonasi({ donasiId }: { donasiId: string }) {
   const router = useRouter();
@@ -24,7 +25,11 @@ export default function ButtonDonasi({ donasiId }: { donasiId: string }) {
 
   return (
     <>
-      <Footer height={70} px={"md"} sx={{ borderStyle: "none" }}>
+      <Footer
+        height={70}
+        px={"md"}
+        sx={{ borderStyle: "none", backgroundColor: "transparent" }}
+      >
         <Center h={70}>
           <Button
             loaderPosition="center"
@@ -32,6 +37,9 @@ export default function ButtonDonasi({ donasiId }: { donasiId: string }) {
             w={"100%"}
             radius={"xl"}
             onClick={() => onClick()}
+            bg={MainColor.yellow}
+            color="yellow"
+            c={"black"}
           >
             Donasi
           </Button>

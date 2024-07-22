@@ -20,18 +20,12 @@ export async function Donasi_funCreate(req: MODEL_DONASI, file: FormData) {
       imagesId: body.imagesId,
       authorId: body.authorId,
       namaBank: body.namaBank,
-      rekening: body.rekening
+      rekening: body.rekening,
     },
   });
 
   if (!dataDonasi) return { status: 400, message: "Gagal disimpan" };
-  await Donasi_funDeleteTemporaryCreate(body.id).then((res) => {
-    if (res.status === 200) {
-      console.log(res.message);
-    } else {
-      console.log(res.message);
-    }
-  });
+  await Donasi_funDeleteTemporaryCreate(body.id);
 
   const dataImage: any = file.get("file");
   const fileName = dataImage.name;

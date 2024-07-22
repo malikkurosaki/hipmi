@@ -1,36 +1,30 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import {
   AspectRatio,
-  Avatar,
   Badge,
   Box,
-  Button,
-  Card,
-  Center,
-  Divider,
   Grid,
   Group,
   Image,
   Paper,
   Progress,
-  SimpleGrid,
   Stack,
-  Text,
-  Title,
+  Text
 } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
-import { useRouter } from "next/navigation";
-import { MODEL_DONASI_INVOICE } from "../model/interface";
-import { useState } from "react";
-import TampilanRupiahDonasi from "../component/tampilan_rupiah";
-import ComponentDonasi_TampilanHitungMundur from "../component/tampilan_hitung_mundur";
-import moment from "moment";
-import toast from "react-simple-toasts";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import _ from "lodash";
-import ComponentDonasi_IsEmptyData from "../component/is_empty_data";
+import moment from "moment";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-simple-toasts";
+import ComponentDonasi_TampilanHitungMundur from "../component/tampilan_hitung_mundur";
+import TampilanRupiahDonasi from "../component/tampilan_rupiah";
+import { MODEL_DONASI_INVOICE } from "../model/interface";
 
 export default function DonasiSayaDonasi({
   listInvoice,
@@ -42,71 +36,70 @@ export default function DonasiSayaDonasi({
   const { height, width } = useViewportSize();
 
   if (_.isEmpty(listInvoice))
-    return <ComponentDonasi_IsEmptyData text="Tidak ada data" />;
+    return <ComponentGlobal_IsEmptyData />;
 
   return (
     <>
-      <SimpleGrid
-        cols={4}
-        spacing="lg"
-        breakpoints={[
-          { maxWidth: "62rem", cols: 3, spacing: "md" },
-          { maxWidth: "48rem", cols: 2, spacing: "sm" },
-          { maxWidth: "36rem", cols: 1, spacing: "sm" },
-        ]}
-      >
-        {invoice.map((e, i) => (
-          <Box
-            key={i}
-            onClick={() =>
-              onClick(router, e.donasiMaster_StatusInvoiceId, e.id, e.Donasi.id)
-            }
-          >
-            <Stack>
-              <Grid>
-                <Grid.Col span={5}>
-                  <Stack spacing={5}>
-                    <Stack spacing={0}>
-                      <Text fz={"xs"} fw={"bold"} truncate>
-                        {e.Donasi.title}
-                      </Text>
-                      <ComponentDonasi_TampilanHitungMundur
-                        durasi={e.Donasi.DonasiMaster_Durasi.name}
-                        publishTime={e.Donasi.publishTime}
-                        textSize={10}
-                      />
-                    </Stack>
-                    <Progress value={+e.Donasi.progres} color="orange" />
-                    <Group position="apart">
-                      <Stack spacing={0}>
-                        <Text fz={10}>Donasi Saya</Text>
-                        <Text fz={10} fw={"bold"} c={"orange"} truncate>
-                          <TampilanRupiahDonasi nominal={+e.nominal} />
-                        </Text>
-                      </Stack>
-                    </Group>
-                    <Badge size="xs" variant="dot">
-                      <Text>{e.DonasiMaster_StatusInvoice.name}</Text>
-                    </Badge>
+      {invoice.map((e, i) => (
+        <Box
+          style={{
+            backgroundColor: AccentColor.blue,
+            border: `2px solid ${AccentColor.darkblue}`,
+            padding: "15px",
+            cursor: "pointer",
+            borderRadius: "10px",
+            color: "white",
+            marginBottom: "15px",
+          }}
+          key={i}
+          onClick={() =>
+            onClick(router, e.donasiMaster_StatusInvoiceId, e.id, e.Donasi.id)
+          }
+        >
+          <Stack>
+            <Grid>
+              <Grid.Col span={5}>
+                <Stack spacing={5}>
+                  <Stack spacing={0}>
+                    <Text fz={"xs"} fw={"bold"} truncate>
+                      {e.Donasi.title}
+                    </Text>
+                    <ComponentDonasi_TampilanHitungMundur
+                      durasi={e.Donasi.DonasiMaster_Durasi.name}
+                      publishTime={e.Donasi.publishTime}
+                      textSize={10}
+                    />
                   </Stack>
-                </Grid.Col>
-                <Grid.Col span={7}>
-                  <AspectRatio ratio={16 / 9}>
-                    <Paper radius={"md"}>
-                      <Image
-                        alt="Foto"
-                        src={RouterDonasi.api_gambar + `${e.Donasi.imagesId}`}
-                        radius={"md"}
-                      />
-                    </Paper>
-                  </AspectRatio>
-                </Grid.Col>
-              </Grid>
-              {width > 575 ? "" : <Divider />}
-            </Stack>
-          </Box>
-        ))}
-      </SimpleGrid>
+                  <Progress value={+e.Donasi.progres} color="orange" />
+                  <Group position="apart">
+                    <Stack spacing={0}>
+                      <Text fz={10}>Donasi Saya</Text>
+                      <Text fz={10} fw={"bold"} c={"orange"} truncate>
+                        <TampilanRupiahDonasi nominal={+e.nominal} />
+                      </Text>
+                    </Stack>
+                  </Group>
+                  <Badge size="xs" variant="filled" color="yellow">
+                    <Text>{e.DonasiMaster_StatusInvoice.name}</Text>
+                  </Badge>
+                </Stack>
+              </Grid.Col>
+              <Grid.Col span={7}>
+                <AspectRatio ratio={16 / 9}>
+                  <Paper radius={"md"}>
+                    <Image
+                      alt="Foto"
+                      src={RouterDonasi.api_gambar + `${e.Donasi.imagesId}`}
+                      radius={"md"}
+                    />
+                  </Paper>
+                </AspectRatio>
+              </Grid.Col>
+            </Grid>
+            {/* {width > 575 ? "" : <Divider />} */}
+          </Stack>
+        </Box>
+      ))}
     </>
   );
 }

@@ -10,6 +10,7 @@ import { Donasi_funUpdateRekening } from "../../fun/update/fun_update_rekening";
 import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
 import { NotifGagal } from "../../component/notifikasi/notif_gagal";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function Donasi_EditRekening({
   dataDonasi,
@@ -25,6 +26,11 @@ export default function Donasi_EditRekening({
       <Stack spacing={"xl"}>
         <Stack spacing={"sm"}>
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             label="Nama Bank"
             placeholder="Masukan Nama Bank"
@@ -44,6 +50,11 @@ export default function Donasi_EditRekening({
             }
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             type="number"
             label="Nomor Rekening"
@@ -75,6 +86,9 @@ export default function Donasi_EditRekening({
           }
           radius={"xl"}
           onClick={() => onUpdate(router, donasi, setLoading)}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
         >
           Update
         </Button>

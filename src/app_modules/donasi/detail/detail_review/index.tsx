@@ -2,39 +2,20 @@
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
-  Stack,
-  AspectRatio,
-  Paper,
-  Title,
-  Progress,
-  Grid,
-  Group,
-  Divider,
-  ActionIcon,
-  Avatar,
-  Text,
-  Image,
   Button,
+  Stack
 } from "@mantine/core";
-import {
-  IconClover,
-  IconMail,
-  IconMoneybag,
-  IconCircleChevronRight,
-  IconMessageChatbot,
-} from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import ComponentDonasi_NotedBox from "../../component/noted_box";
 import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_dana/detail_data_donasi";
+import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
+import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
+import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
+import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
 import { gs_donasi_tabs_posting } from "../../global_state";
 import { MODEL_DONASI } from "../../model/interface";
-import { useState } from "react";
-import TampilanRupiahDonasi from "../../component/tampilan_rupiah";
-import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
-import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
-import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
-import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
-import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_dana/detail_data_donasi";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function DetailReviewDonasi({
   dataDonasi,
@@ -45,7 +26,7 @@ export default function DetailReviewDonasi({
 
   return (
     <>
-      <Stack spacing={"xl"}>
+      <Stack spacing={"xl"} py={"md"}>
         <ComponentDonasi_DetailDataGalangDana donasi={donasi} />
         <ComponentDonasi_CeritaPenggalangMain donasi={donasi} />
         <ButtonBatalReview donasi={donasi} />
@@ -81,8 +62,8 @@ function ButtonBatalReview({ donasi }: { donasi: MODEL_DONASI }) {
         loaderPosition="center"
         loading={isLoading ? true : false}
         radius={"xl"}
-        bg={"red"}
-        color="red"
+        bg={"orange"}
+        color="orange"
         onClick={() => onCLick()}
       >
         Batalkan Review

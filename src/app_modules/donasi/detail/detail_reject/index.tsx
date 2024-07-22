@@ -2,42 +2,28 @@
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
-  Stack,
-  AspectRatio,
-  Paper,
-  Title,
-  Progress,
-  Grid,
-  Group,
-  Divider,
-  ActionIcon,
-  Avatar,
-  Text,
-  Image,
   Button,
-  Spoiler,
+  Group,
   Modal,
+  Paper,
+  Spoiler,
+  Stack,
+  Title,
 } from "@mantine/core";
-import {
-  IconClover,
-  IconMail,
-  IconMoneybag,
-  IconCircleChevronRight,
-  IconMessageChatbot,
-} from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import ComponentDonasi_NotedBox from "../../component/noted_box";
-import { useAtom } from "jotai";
-import { gs_donasi_tabs_posting } from "../../global_state";
 import { useDisclosure } from "@mantine/hooks";
+import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { MODEL_DONASI } from "../../model/interface";
-import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
+import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_dana/detail_data_donasi";
+import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
 import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
 import { NotifGagal } from "../../component/notifikasi/notif_gagal";
-import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
-import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_dana/detail_data_donasi";
 import { Donasi_funDeleteDonasiById } from "../../fun/delete/fin_delete_donasi_by_id";
+import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
+import { gs_donasi_tabs_posting } from "../../global_state";
+import { MODEL_DONASI } from "../../model/interface";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 
 export default function DetailRejectDonasi({
   dataReject,
@@ -47,8 +33,8 @@ export default function DetailRejectDonasi({
   const [donasi, setDonasi] = useState(dataReject);
   return (
     <>
-      <Stack spacing={"xl"}>
-        <AlasanPenolakan catatan={donasi.catatan} />
+      <Stack spacing={"xl"} py={"md"}>
+        <ComponentGlobal_BoxInformation isReport informasi={donasi.catatan} />
         <ComponentDonasi_DetailDataGalangDana donasi={donasi} />
         <ComponentDonasi_CeritaPenggalangMain donasi={donasi} />
         <ButtonAction donasiId={donasi.id} />
@@ -79,7 +65,8 @@ function ButtonAction({ donasiId }: { donasiId: string }) {
     gs_donasi_tabs_posting
   );
   const router = useRouter();
-  const [opened, { open, close }] = useDisclosure(false);
+  // const [opened, { open, close }] = useDisclosure(false);
+  const [openModal, setOpenModal] = useState(false);
 
   async function onCLick() {
     await Donasi_funGantiStatus(donasiId, "3").then((res) => {
@@ -105,13 +92,12 @@ function ButtonAction({ donasiId }: { donasiId: string }) {
   }
   return (
     <>
-      <Group position="center">
+      <Group grow>
         <Button
           radius={"xl"}
           bg={"orange"}
           color="orange"
           onClick={() => onCLick()}
-          compact
         >
           Edit Donasi
         </Button>
@@ -119,32 +105,27 @@ function ButtonAction({ donasiId }: { donasiId: string }) {
           radius={"xl"}
           bg={"red"}
           color="red"
-          onClick={() => open()}
-          compact
+          onClick={() => setOpenModal(true)}
         >
           Hapus Donasi
         </Button>
       </Group>
-      <Modal
-        opened={opened}
-        onClose={close}
-        centered
-        title="Yakin menghapus Penggalanagn Dana ini ?"
-      >
-        <Group position="center">
-          <Button radius={"xl"} variant="outline" onClick={close}>
+
+      <UIGlobal_Modal
+        title={"Anda yakin ingin menghapus donasi ini ?"}
+        opened={openModal}
+        close={() => setOpenModal(false)}
+        buttonKiri={
+          <Button radius={"xl"} onClick={() => setOpenModal(false)}>
             Batal
           </Button>
-          <Button
-            radius={"xl"}
-            variant="outline"
-            color="red"
-            onClick={() => onDelete()}
-          >
+        }
+        buttonKanan={
+          <Button radius={"xl"} color="red" onClick={() => onDelete()}>
             Hapus
           </Button>
-        </Group>
-      </Modal>
+        }
+      />
     </>
   );
 }

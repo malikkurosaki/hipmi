@@ -1,50 +1,39 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import {
-  Stack,
-  AspectRatio,
-  Paper,
-  Title,
-  Progress,
-  Grid,
-  Group,
-  Divider,
-  ActionIcon,
-  Avatar,
-  Text,
-  Image,
-  Button,
-} from "@mantine/core";
-import {
-  IconClover,
-  IconMail,
-  IconMoneybag,
-  IconCircleChevronRight,
-  IconMessageChatbot,
-} from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import ComponentDonasi_NotedBox from "../../component/noted_box";
+import { Button, Stack } from "@mantine/core";
 import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_dana/detail_data_donasi";
+import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
+import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
+import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
+import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
 import { gs_donasi_tabs_posting } from "../../global_state";
 import { MODEL_DONASI } from "../../model/interface";
 import { useState } from "react";
-import TampilanRupiahDonasi from "../../component/tampilan_rupiah";
-import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
-import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
-import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
-import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
 import { useShallowEffect } from "@mantine/hooks";
-import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_dana/detail_data_donasi";
+import { Donasi_getOneById } from "../../fun/get/get_one_donasi_by_id";
 
 export default function DetailDraftDonasi({
   dataDonasi,
 }: {
   dataDonasi: MODEL_DONASI;
 }) {
+  // const [data, setData] = useState(dataDonasi);
+
+  // useShallowEffect(() => {
+  //   loadData({ id: dataDonasi.id });
+  // }, [dataDonasi.id]);
+
+  // async function loadData({ id }: { id: string }) {
+  //   const loadData = await Donasi_getOneById(id);
+  //   setData(loadData as any);
+  // }
+
   return (
     <>
-      <Stack spacing={"xl"}>
+      <Stack spacing={"xl"} py={"md"}>
         <ComponentDonasi_DetailDataGalangDana donasi={dataDonasi} />
         <ComponentDonasi_CeritaPenggalangMain donasi={dataDonasi} />
         <ButtonAjukanPenggalangan dataDonasi={dataDonasi} />

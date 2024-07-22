@@ -1,64 +1,71 @@
 "use client";
 
-import { Stack, Tabs } from "@mantine/core";
+import {
+  Stack,
+  Tabs,
+  Text
+} from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { gs_event_status } from "../../global_state";
-import Event_StatusDraft from "./draft";
-import Event_StatusPublish from "./publish";
-import Event_StatusReject from "./reject";
-import Event_StatusReview from "./review";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
+import { gs_donasi_tabs_posting } from "../../global_state";
+import PostingDraftDonasi from "./draft";
+import PostingPublishDonasi from "./publish";
+import PostingRejectDonasi from "./reject";
+import PostingReviewDonasi from "./review";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
 
-export default function Event_StatusPage({
-  authorId,
+export default function GalangDanaDonasi({
   listPublish,
   listReview,
   listDraft,
   listReject,
 }: {
-  authorId: string;
   listPublish: any;
   listReview: any;
   listDraft: any;
   listReject: any;
 }) {
   const router = useRouter();
-  const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
-  const listTabs = [
+  const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
+    gs_donasi_tabs_posting
+  );
+
+  const listPosting = [
     {
       id: 1,
-      path: <Event_StatusPublish listPublish={listPublish} />,
       value: "Publish",
+      path: <PostingPublishDonasi listPublish={listPublish} />,
+      color: "green",
     },
     {
       id: 2,
-      path: <Event_StatusReview listReview={listReview} />,
       value: "Review",
+      path: <PostingReviewDonasi listReview={listReview} />,
+      color: "yellow",
     },
     {
       id: 3,
-      path: <Event_StatusDraft listDraft={listDraft} />,
       value: "Draft",
+      path: <PostingDraftDonasi listDraft={listDraft} />,
+      color: "red",
     },
     {
       id: 4,
-      path: <Event_StatusReject listReject={listReject} />,
       value: "Reject",
+      path: <PostingRejectDonasi listReject={listReject} />,
+      color: "red",
     },
   ];
+
   return (
     <>
       <Tabs
+        color="orange"
         variant="pills"
         radius="xl"
-        mt={1}
         defaultValue="Publish"
-        value={tabsStatus}
-        onTabChange={setTabsStatus}
+        value={tabsPostingDonasi}
+        onTabChange={setTabsPostingDonasi}
         styles={{
           tabsList: {
             backgroundColor: MainColor.darkblue,
@@ -70,7 +77,7 @@ export default function Event_StatusPage({
       >
         <Stack>
           <Tabs.List grow>
-            {listTabs.map((e) => (
+            {listPosting.map((e, i) => (
               <Tabs.Tab
                 key={e.id}
                 value={e.value}
@@ -79,9 +86,9 @@ export default function Event_StatusPage({
                 style={{
                   transition: "0.5s",
                   backgroundColor:
-                    tabsStatus === e.value ? MainColor.yellow : "white",
+                    tabsPostingDonasi === e.value ? MainColor.yellow : "white",
                   border:
-                    tabsStatus === e.value
+                    tabsPostingDonasi === e.value
                       ? `1px solid ${AccentColor.yellow}`
                       : `1px solid white`,
                 }}
@@ -90,8 +97,8 @@ export default function Event_StatusPage({
               </Tabs.Tab>
             ))}
           </Tabs.List>
-          {listTabs.map((e) => (
-            <Tabs.Panel key={e.id} value={e.value}>
+          {listPosting.map((e, i) => (
+            <Tabs.Panel key={e.id} value={e.value} pt="xs">
               {e.path}
             </Tabs.Panel>
           ))}

@@ -1,12 +1,11 @@
 "use client";
 
+import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
-  Box,
   Button,
   Center,
   CopyButton,
   FileButton,
-  FileInput,
   Grid,
   Group,
   Paper,
@@ -14,21 +13,22 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { IconCamera, IconCircleCheck } from "@tabler/icons-react";
 import { useAtom } from "jotai";
-import { gs_donasi_hot_menu, gs_proses_donasi } from "../../global_state";
-import { MODEL_DONASI, MODEL_DONASI_INVOICE } from "../../model/interface";
-import { useState } from "react";
-import TampilanRupiahDonasi from "../../component/tampilan_rupiah";
-import ComponentDonasi_TampilanHitungMundur from "../../component/tampilan_hitung_mundur";
-import { useRouter } from "next/navigation";
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { Donasi_funUpdateStatusInvoice } from "../../fun/update/fun_update_status_invoice";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
 import { NotifGagal } from "../../component/notifikasi/notif_gagal";
+import TampilanRupiahDonasi from "../../component/tampilan_rupiah";
 import { Donasi_funUploadBuktiTransferById } from "../../fun/update/fun_update_invoice";
-import { buffer } from "stream/consumers";
-import { IconCamera, IconCheck, IconCircleCheck } from "@tabler/icons-react";
+import { Donasi_funUpdateStatusInvoice } from "../../fun/update/fun_update_status_invoice";
+import { gs_donasi_hot_menu } from "../../global_state";
+import { MODEL_DONASI_INVOICE } from "../../model/interface";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function Donasi_InvoiceProses({
   dataInvoice,
@@ -43,8 +43,18 @@ export default function Donasi_InvoiceProses({
 
   return (
     <>
-      <Stack spacing={"lg"}>
-        <Stack spacing={0}>
+      <Stack spacing={"lg"} py={"md"}>
+        <Stack
+          spacing={0}
+          style={{
+            backgroundColor: AccentColor.blue,
+            border: `2px solid ${AccentColor.darkblue}`,
+            padding: "15px",
+            cursor: "pointer",
+            borderRadius: "10px",
+            color: "white",
+          }}
+        >
           <Title order={5}>Mohon transfer ke rekening dibawah</Title>
           <Group spacing={"xs"}>
             <Text>untuk diteruskan ke </Text>
@@ -52,17 +62,38 @@ export default function Donasi_InvoiceProses({
           </Group>
         </Stack>
 
-        <Paper p={"sm"} withBorder>
+        <Paper
+          style={{
+            backgroundColor: AccentColor.blue,
+            border: `2px solid ${AccentColor.darkblue}`,
+            padding: "15px",
+            cursor: "pointer",
+            borderRadius: "10px",
+            color: "white",
+            marginBottom: "15px",
+          }}
+        >
           <Stack spacing={"md"}>
             <Stack spacing={0}>
               <Text>Bank {invoice.DonasiMaster_Bank.name}</Text>
               <Text>PT. Himpunan Pengusaha Badung</Text>
             </Stack>
-            <Paper bg={"gray.1"} p={"sm"} radius={"md"}>
+            <Paper
+              style={{
+                backgroundColor: AccentColor.softblue,
+                border: `2px solid ${AccentColor.blue}`,
+                padding: "15px",
+                cursor: "pointer",
+                borderRadius: "10px",
+                color: "white",
+              }}
+            >
               <Grid>
                 <Grid.Col span={8}>
                   <Group position="left" align="center" h={"100%"}>
-                    <Title order={4}>{invoice.DonasiMaster_Bank.norek}</Title>
+                    <Title order={4} color={MainColor.yellow}>
+                      {invoice.DonasiMaster_Bank.norek}
+                    </Title>
                   </Group>
                 </Grid.Col>
                 <Grid.Col span={4}>
@@ -70,10 +101,12 @@ export default function Donasi_InvoiceProses({
                     <CopyButton value={invoice.DonasiMaster_Bank.norek}>
                       {({ copied, copy }) => (
                         <Button
-                          color={copied ? "teal" : "blue"}
-                          variant="outline"
+                          style={{
+                            transition: "0.5s",
+                          }}
                           radius={"xl"}
                           onClick={copy}
+                          color={copied ? "teal" : "yellow"}
                         >
                           {copied ? "Berhasil" : "Salin"}
                         </Button>
@@ -86,16 +119,35 @@ export default function Donasi_InvoiceProses({
           </Stack>
         </Paper>
 
-        <Paper p={"sm"} withBorder>
+        <Paper
+          style={{
+            backgroundColor: AccentColor.blue,
+            border: `2px solid ${AccentColor.darkblue}`,
+            padding: "15px",
+            cursor: "pointer",
+            borderRadius: "10px",
+            color: "white",
+            marginBottom: "15px",
+          }}
+        >
           <Stack spacing={"md"}>
             <Stack spacing={0}>
               <Text>Jumlah transfer</Text>
             </Stack>
-            <Paper bg={"gray.1"} p={"sm"} radius={"md"}>
+            <Paper
+              style={{
+                backgroundColor: AccentColor.softblue,
+                border: `2px solid ${AccentColor.blue}`,
+                padding: "15px",
+                cursor: "pointer",
+                borderRadius: "10px",
+                color: "white",
+              }}
+            >
               <Grid>
                 <Grid.Col span={8}>
                   <Group position="left" align="center" h={"100%"}>
-                    <Title order={4}>
+                    <Title order={4} color="white">
                       <TampilanRupiahDonasi nominal={+(+invoice.nominal)} />
                     </Title>
                   </Group>
@@ -105,9 +157,12 @@ export default function Donasi_InvoiceProses({
                     <CopyButton value={"" + +invoice.nominal}>
                       {({ copied, copy }) => (
                         <Button
-                          color={copied ? "teal" : "blue"}
-                          variant="outline"
+                          style={{
+                            transition: "0.5s",
+                          }}
+                          variant="filled"
                           radius={"xl"}
+                          color={copied ? "teal" : "yellow"}
                           onClick={copy}
                         >
                           {copied ? "Berhasil" : "Salin"}
@@ -118,13 +173,23 @@ export default function Donasi_InvoiceProses({
                 </Grid.Col>
               </Grid>
             </Paper>
-            <Text fz={"xs"} c={"gray"}>
+            {/* <Text fz={"xs"} c={"gray"}>
               Sudah termasuk biaya admin Rp. 2.500,-
-            </Text>
+            </Text> */}
           </Stack>
         </Paper>
 
-        <Paper p={"md"} withBorder>
+        <Paper
+          style={{
+            backgroundColor: AccentColor.blue,
+            border: `2px solid ${AccentColor.darkblue}`,
+            padding: "15px",
+            cursor: "pointer",
+            borderRadius: "10px",
+            color: "white",
+            marginBottom: "15px",
+          }}
+        >
           <Stack spacing={"sm"}>
             <Center>
               <FileButton
@@ -147,9 +212,9 @@ export default function Donasi_InvoiceProses({
                   <Button
                     {...props}
                     radius={"xl"}
-                    variant="outline"
-                    w={150}
                     leftIcon={<IconCamera />}
+                    bg={MainColor.yellow}
+                    color="yellow"
                   >
                     Upload
                   </Button>
@@ -178,8 +243,9 @@ export default function Donasi_InvoiceProses({
         {file !== null ? (
           <Button
             radius={"xl"}
-            bg={"orange"}
-            color="orange"
+            bg={MainColor.yellow}
+            color="yellow"
+            c={"black"}
             onClick={() => onClick(router, invoice.id, setActive)}
           >
             Saya Sudah Transfer

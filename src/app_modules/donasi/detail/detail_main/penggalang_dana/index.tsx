@@ -2,7 +2,7 @@
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import ComponentDonasi_BoxPublish from "@/app_modules/donasi/component/box_publish";
+import ComponentDonasi_CardPublish from "@/app_modules/donasi/component/card_view/box_publish";
 import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import {
   MODEL_DONASI,
@@ -11,7 +11,6 @@ import {
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import {
   AspectRatio,
-  Avatar,
   Box,
   Center,
   Divider,
@@ -23,18 +22,15 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import {
   IconBrandGmail,
-  IconHome,
   IconMoodSmile,
-  IconPhone,
-  IconRecordMail,
+  IconPhone
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import router from "next/router";
 import { useState } from "react";
 
 export default function PenggalangDanaDonasi({
@@ -46,12 +42,16 @@ export default function PenggalangDanaDonasi({
 
   return (
     <>
-      <Stack >
+      <Stack>
         <InformasiPenggalang value={value as any} />
-        <ComponentDonasi_BoxPublish
-          dataDonasi={value.Donasi}
-          path={RouterDonasi.detail_publish}
-        />
+        {value.Donasi.map((e, i) => (
+          <Box key={i}>
+            <ComponentDonasi_CardPublish
+              data={e}
+              path={RouterDonasi.detail_publish}
+            />
+          </Box>
+        ))}
       </Stack>
     </>
   );

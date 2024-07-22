@@ -27,6 +27,11 @@ import {
   maksimalUploadFile,
 } from "@/app_modules/_global/component/waring_popup";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 
 export default function EditCeritaPenggalangDonasi({
   dataCerita,
@@ -46,29 +51,49 @@ export default function EditCeritaPenggalangDonasi({
   return (
     <>
       {/* <pre>{JSON.stringify(value, null, 2)}</pre> */}
-      <Stack spacing={"md"} px={"md"}>
-        <Textarea
-          autosize
-          minRows={2}
-          maxRows={7}
-          withAsterisk
-          label="Pembukaan"
-          placeholder="Pembuka dari isi cerita"
-          value={value.pembukaan}
-          error={
-            value.pembukaan === "" ? (
-              <ComponentGlobal_ErrorInput text="Masukan pembukaan cerita" />
-            ) : (
-              ""
-            )
-          }
-          onChange={(val) =>
-            setValue({
-              ...value,
-              pembukaan: val.target.value,
-            })
-          }
-        />
+      <Stack
+        spacing={"md"}
+        style={{
+          padding: "15px",
+          border: `2px solid ${AccentColor.blue}`,
+          backgroundColor: AccentColor.darkblue,
+          borderRadius: "10px",
+          color: "white",
+        }}
+      >
+        <Stack spacing={5}>
+          <Textarea
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
+            autosize
+            minRows={2}
+            maxRows={7}
+            withAsterisk
+            label="Pembukaan"
+            placeholder="Pembuka dari isi cerita"
+            value={value.pembukaan}
+            error={
+              value.pembukaan === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan pembukaan cerita" />
+              ) : (
+                ""
+              )
+            }
+            onChange={(val) =>
+              setValue({
+                ...value,
+                pembukaan: val.target.value,
+              })
+            }
+          />
+          <ComponentGlobal_InputCountDown
+            lengthInput={value.pembukaan.length}
+            maxInput={300}
+          />
+        </Stack>
 
         <Stack spacing={"lg"}>
           <Center>
@@ -93,20 +118,27 @@ export default function EditCeritaPenggalangDonasi({
             >
               {(props) => (
                 <Button
-                  compact
                   {...props}
                   radius={"xl"}
-                  variant="outline"
-                  w={150}
                   leftIcon={<IconCamera />}
+                  bg={MainColor.yellow}
+                  color="yellow"
+                  c={"black"}
                 >
                   Upload
                 </Button>
               )}
             </FileButton>
           </Center>
-          <AspectRatio ratio={16 / 9}>
-            <Paper radius={"md"}>
+          <AspectRatio ratio={1 / 1} mah={300}>
+            <Paper
+              style={{
+                border: `2px solid ${AccentColor.blue}`,
+                backgroundColor: AccentColor.darkblue,
+                padding: "10px",
+                borderRadius: "10px",
+              }}
+            >
               <Image
                 alt="Foto"
                 src={
@@ -115,33 +147,45 @@ export default function EditCeritaPenggalangDonasi({
                     : RouterDonasi.api_image_cerita +
                       value.imageCeritaDonasi.url
                 }
+                maw={200}
               />
             </Paper>
           </AspectRatio>
         </Stack>
 
-        <Textarea
-          autosize
-          minRows={2}
-          maxRows={7}
-          withAsterisk
-          label="Cerita"
-          placeholder="Ceritakan alasan mengapa harus membuat Penggalangan Dana"
-          value={value.cerita}
-          error={
-            value.cerita === "" ? (
-              <ComponentGlobal_ErrorInput text="Masukan pembukaan cerita" />
-            ) : (
-              ""
-            )
-          }
-          onChange={(val) =>
-            setValue({
-              ...value,
-              cerita: val.target.value,
-            })
-          }
-        />
+        <Stack spacing={5}>
+          <Textarea
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
+            autosize
+            minRows={2}
+            maxRows={7}
+            withAsterisk
+            label="Cerita"
+            placeholder="Ceritakan alasan mengapa harus membuat Penggalangan Dana"
+            value={value.cerita}
+            error={
+              value.cerita === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan pembukaan cerita" />
+              ) : (
+                ""
+              )
+            }
+            onChange={(val) =>
+              setValue({
+                ...value,
+                cerita: val.target.value,
+              })
+            }
+          />
+          <ComponentGlobal_InputCountDown
+            lengthInput={value.cerita.length}
+            maxInput={300}
+          />
+        </Stack>
 
         <Button
           style={{
@@ -155,6 +199,9 @@ export default function EditCeritaPenggalangDonasi({
           w={"100%"}
           radius={"xl"}
           onClick={() => onUpdate(router, value, file as any)}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
         >
           Update
         </Button>

@@ -1,14 +1,15 @@
 "use client";
 
 import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
-import { Warna } from "@/app/lib/warna";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 import { gs_donasi_hot_menu } from "@/app_modules/donasi/global_state";
 import { gs_investasiFooter } from "@/app_modules/investasi/g_state";
 import {
   AspectRatio,
-  Button,
-  Center,
-  Flex,
   Grid,
   Image,
   Loader,
@@ -21,7 +22,6 @@ import { IconChevronRight } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
 
 export default function MainCrowd() {
   const router = useRouter();
@@ -29,22 +29,38 @@ export default function MainCrowd() {
   const [donasiHotMenu, setDonasiHotMenu] = useAtom(gs_donasi_hot_menu);
   const [loadingInv, setLoadingInv] = useState(false);
   const [loadingDon, setLoadingDon] = useState(false);
+
   return (
     <>
       <Stack>
         <Paper>
-          <AspectRatio ratio={16 / 9}>
+          {/* <AspectRatio ratio={16 / 9}>
             <Paper radius={"md"}>
-              <Image alt="" src={"/aset/investasi/logo-crowd-panjang.png"} />
             </Paper>
-          </AspectRatio>
+          </AspectRatio> */}
+          <Image
+            alt="Logo"
+            src={"/aset/investasi/logo-crowd-panjang.png"}
+            mah={"100%"}
+            styles={{
+              image: {
+                borderRadius: "20px",
+              },
+            }}
+          />
         </Paper>
+
         <Stack>
+          {/* INVESTASI */}
           <Paper
-            shadow="lg"
-            p={"md"}
-            radius={"md"}
-            bg={"teal.4"}
+            style={{
+              cursor: "pointer",
+              padding: "15px",
+              border: `2px solid ${AccentColor.blue}`,
+              borderRadius: "10px",
+              backgroundColor: MainColor.darkblue,
+              color: "white",
+            }}
             onClick={() => {
               setLoadingInv(true);
               router.push(RouterCrowd.investasi);
@@ -61,16 +77,26 @@ export default function MainCrowd() {
               </Grid.Col>
               <Grid.Col span={2}>
                 <Stack h={"100%"} justify="center" align="center">
-                  {loadingInv ? <Loader /> : <IconChevronRight />}
+                  {loadingInv ? (
+                    <ComponentGlobal_Loader />
+                  ) : (
+                    <IconChevronRight />
+                  )}
                 </Stack>
               </Grid.Col>
             </Grid>
           </Paper>
+
+          {/* DONASI */}
           <Paper
-            shadow="lg"
-            bg={"blue.3"}
-            radius={"md"}
-            p={"md"}
+            style={{
+              cursor: "pointer",
+              padding: "15px",
+              border: `2px solid ${AccentColor.blue}`,
+              borderRadius: "10px",
+              backgroundColor: MainColor.darkblue,
+              color: "white",
+            }}
             onClick={() => {
               setLoadingDon(true);
               router.push(RouterCrowd.donasi);
@@ -87,7 +113,11 @@ export default function MainCrowd() {
               </Grid.Col>
               <Grid.Col span={2}>
                 <Stack h={"100%"} justify="center" align="center">
-                  {loadingDon ? <Loader /> : <IconChevronRight />}
+                  {loadingDon ? (
+                    <ComponentGlobal_Loader />
+                  ) : (
+                    <IconChevronRight />
+                  )}
                 </Stack>
               </Grid.Col>
             </Grid>
