@@ -30,6 +30,11 @@ import { NotifBerhasil } from "../notifikasi/notif_berhasil";
 import { Donasi_findDonaturByTokenId } from "../../fun/get/get_donatur_by_token_id";
 import { useState } from "react";
 import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 
 export function ComponentDonasi_DetailDataMain({
   donasi,
@@ -47,13 +52,20 @@ export function ComponentDonasi_DetailDataMain({
 
   return (
     <>
-      <Stack px={"xs"}>
+      <Stack
+        style={{
+          padding: "15px",
+          border: `2px solid ${AccentColor.blue}`,
+          backgroundColor: AccentColor.darkblue,
+          borderRadius: "10px",
+          color: "white",
+        }}
+      >
         <Stack>
           <Center>
             <Image
-              mah={500}
-              maw={"auto"}
-              radius={"md"}
+              maw={200}
+              radius={"xs"}
               alt="Foto"
               src={RouterDonasi.api_gambar + `${donasi.imagesId}`}
             />
@@ -86,7 +98,12 @@ export function ComponentDonasi_DetailDataMain({
               </Stack>
               <Stack spacing={0}>
                 <Text fz={12}>Kategori</Text>
-                <Title order={4} c="blue">
+                <Title
+                  order={4}
+                  style={{
+                    color: MainColor.yellow,
+                  }}
+                >
                   {donasi.DonasiMaster_Ketegori.name}
                 </Title>
               </Stack>
@@ -102,19 +119,25 @@ export function ComponentDonasi_DetailDataMain({
                 router.push(RouterDonasi.donatur + `${donasi.id}`);
               }}
             >
-              <Stack align="center" spacing={"xs"}>
-                <Group>
+              <Stack
+                align="center"
+                spacing={"xs"}
+                style={{
+                  color: MainColor.yellow,
+                }}
+              >
+                <Group align="center" h={"100%"}>
                   {isLoadingDonatur ? (
-                    <Loader size={25} />
+                    <ComponentGlobal_Loader size={25} />
                   ) : (
-                    <IconClover color="skyblue" />
+                    <IconClover />
                   )}
 
-                  <Title order={6} c={"blue"}>
-                    {countDonatur}
-                  </Title>
+                  <Title order={6}>{countDonatur}</Title>
                 </Group>
-                <Text fz={"xs"}>Donatur</Text>
+                <Text fz={"xs"} c={"white"}>
+                  Donatur
+                </Text>
               </Stack>
             </Grid.Col>
             <Divider orientation="vertical" />
@@ -127,9 +150,13 @@ export function ComponentDonasi_DetailDataMain({
             >
               <Stack spacing={"sm"} align="center">
                 {isLoadingKabar ? (
-                  <Loader size={25} />
+                  <ComponentGlobal_Loader size={25} />
                 ) : (
-                  <IconMessageChatbot color="skyblue" />
+                  <IconMessageChatbot
+                    style={{
+                      color: MainColor.yellow,
+                    }}
+                  />
                 )}
                 <Text fz={"xs"}>Kabar Terbaru</Text>
               </Stack>
@@ -144,9 +171,13 @@ export function ComponentDonasi_DetailDataMain({
             >
               <Stack spacing={"sm"} align="center">
                 {isLoadingPencairan ? (
-                  <Loader size={25} />
+                  <ComponentGlobal_Loader size={25} />
                 ) : (
-                  <IconMoneybag color="skyblue" />
+                  <IconMoneybag
+                    style={{
+                      color: MainColor.yellow,
+                    }}
+                  />
                 )}
                 <Text fz={"xs"}>Pencairan Dana</Text>
               </Stack>

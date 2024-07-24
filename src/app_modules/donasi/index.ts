@@ -1,6 +1,6 @@
 import MainDonasi from "./main/beranda";
 import LayoutDonasi from "./main/layout";
-import GalangDanaDonasi from "./main/galang_dana";
+import GalangDanaDonasi from "./main/galang_dana/ui_galang_dana";
 import DonasiSayaDonasi from "./main/donasi_saya";
 import CreateDonasi from "./create/create_donasi";
 import LayoutCreateDonasi from "./create/layout";

@@ -27,6 +27,8 @@ import { Vote_funCreate } from "../fun/create/create_vote";
 import { gs_vote_hotMenu, gs_vote_status } from "../global_state";
 import { MODEL_VOTING } from "../model/interface";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
 
 export default function Vote_Create() {
   const router = useRouter();
@@ -254,15 +256,36 @@ async function onSave(
 
   // console.log("berhasil");
 
-  await Vote_funCreate(data, listVote).then((res) => {
-    if (res.status === 201) {
+  const res = await Vote_funCreate(data, listVote);
+  if (res.status === 201) {
+    const dataNotif: any = {
+      appId: res.data?.id as any,
+      status: res.data?.Voting_Status?.name as any,
+      userId: res.data?.authorId as any,
+      pesan: res.data?.title as any,
+      kategoriApp: "VOTING",
+      title: "Voting baru",
+    };
+
+    const notif = await notifikasiToAdmin_funCreate({
+      data: dataNotif as any,
+    });
+
+    if (notif.status === 201) {
+      mqtt_client.publish(
+        "ADMIN",
+        JSON.stringify({
+          count: 1,
+        })
+      );
+      
       setHotMenu(2);
       setTabsStatus("Review");
       router.replace(RouterVote.status);
       ComponentGlobal_NotifikasiBerhasil(res.message);
       setIsLoading(true);
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
     }
-  });
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }

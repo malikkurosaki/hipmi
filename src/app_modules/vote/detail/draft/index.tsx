@@ -1,25 +1,23 @@
 "use client";
 
-import { Button, Group, Modal, SimpleGrid, Stack, Title } from "@mantine/core";
-import ComponentVote_DetailDataSebelumPublish from "../../component/detail/detail_data_sebelum_publish";
-import { useRouter } from "next/navigation";
-import { useAtom } from "jotai";
-import { gs_vote_status } from "../../global_state";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { useDisclosure } from "@mantine/hooks";
-import { MODEL_VOTING } from "../../model/interface";
-import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import { Vote_funDeleteById } from "../../fun/delete/fun_delete_by_id";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import moment from "moment";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
-import { useState } from "react";
-import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
+import { Button, SimpleGrid, Stack } from "@mantine/core";
+import { useAtom } from "jotai";
+import moment from "moment";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ComponentVote_DetailDataSebelumPublish from "../../component/detail/detail_data_sebelum_publish";
+import { Vote_funDeleteById } from "../../fun/delete/fun_delete_by_id";
+import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_id";
+import { gs_vote_status } from "../../global_state";
+import { MODEL_VOTING } from "../../model/interface";
+import mqtt_client from "@/util/mqtt_client";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 
 export default function Vote_DetailDraft({
   dataVote,
@@ -64,16 +62,36 @@ function ButtonAction({
     if (cekHari < 0)
       return ComponentGlobal_NotifikasiPeringatan("Tanggal Voting Lewat");
 
-    await Vote_funEditStatusByStatusId(voteId, "2").then((res) => {
-      if (res.status === 200) {
+    const res = await Vote_funEditStatusByStatusId(voteId, "2");
+    if (res.status === 200) {
+      const dataNotif: any = {
+        appId: res.data?.id as any,
+        status: res.data?.Voting_Status?.name as any,
+        userId: res.data?.authorId as any,
+        pesan: res.data?.title as any,
+        kategoriApp: "VOTING",
+        title: "Mengajukan review",
+      };
+
+      const notif = await notifikasiToAdmin_funCreate({
+        data: dataNotif as any,
+      });
+
+      if (notif.status === 201) {
+        mqtt_client.publish(
+          "ADMIN",
+          JSON.stringify({
+            count: 1,
+          })
+        );
         setTabsStatus("Review");
         ComponentGlobal_NotifikasiBerhasil("Berhasil Ajukan Review", 2000);
         setIsLoading(true);
         router.back();
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
       }
-    });
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+    }
   }
 
   async function onDelete() {

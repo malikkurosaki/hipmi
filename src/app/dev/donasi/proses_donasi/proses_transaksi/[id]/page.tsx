@@ -6,7 +6,6 @@ export default async function Page({ params }: { params: { id: string } }) {
   // console.log(params.id)
   const dataInvoice = await Donasi_getOneInvoiceById(params.id);
   const nomorAdmin = await donasi_getMasterNomorAdmin();
-  console.log(nomorAdmin);
 
   return (
     <>

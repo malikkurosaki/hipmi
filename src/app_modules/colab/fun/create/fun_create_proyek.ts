@@ -12,7 +12,7 @@ export default async function colab_funCreateProyek(
 ) {
   const AuthorId = await user_getOneUserId();
 
-  const create = await prisma.projectCollaboration.create({
+  const data = await prisma.projectCollaboration.create({
     data: {
       title: value.title,
       lokasi: value.lokasi,
@@ -25,7 +25,7 @@ export default async function colab_funCreateProyek(
     },
   });
 
-  if (!create) return { status: 400, message: "Gagal Membuat Proyek" };
+  if (!data) return { status: 400, message: "Gagal Membuat Proyek" };
   revalidatePath(RouterColab.beranda);
-  return { status: 201, message: "Berhasil Membuar Proyek" };
+  return { data, status: 201, message: "Berhasil Membuar Proyek" };
 }

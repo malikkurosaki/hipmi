@@ -12,6 +12,10 @@ import { Donasi_getNamaBank } from "../../fun/get/get_nama_bank";
 import { Donasi_funCreateInvoice } from "../../fun/create/fun_create_invoice";
 import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
 import { NotifGagal } from "../../component/notifikasi/notif_gagal";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function Donasi_MetodePembayaran({
   listBank,
@@ -58,17 +62,39 @@ export default function Donasi_MetodePembayaran({
       <Stack>
         {/* <pre>{JSON.stringify(prosesDonasi, null, 2)}</pre> */}
 
-        <Radio.Group value={pilihBank} onChange={setPilihBank} withAsterisk>
+        <Radio.Group
+          value={pilihBank}
+          onChange={setPilihBank}
+          withAsterisk
+          color="yellow"
+          
+        >
           {bank.map((e, i) => (
             <Paper
               key={e.id}
-              withBorder
-              radius={"md"}
-              p={"sm"}
-              shadow="lg"
-              mb={"xs"}
+              style={{
+                backgroundColor: AccentColor.blue,
+                border: `2px solid ${AccentColor.darkblue}`,
+                padding: "15px",
+                cursor: "pointer",
+                borderRadius: "10px",
+                color: "white",
+                marginBottom: "15px",
+              }}
             >
-              <Radio value={e.id} label={<Title order={6}>{e.name}</Title>} />
+              <Radio
+              styles={{
+                radio: {
+                  color: "yellow"
+                }
+              }}
+                value={e.id}
+                label={
+                  <Title order={6} color="white">
+                    {e.name}
+                  </Title>
+                }
+              />
             </Paper>
           ))}
         </Radio.Group>
@@ -81,8 +107,10 @@ export default function Donasi_MetodePembayaran({
           radius={"xl"}
           onClick={() => {
             onProses();
-
           }}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
         >
           Pilih
         </Button>

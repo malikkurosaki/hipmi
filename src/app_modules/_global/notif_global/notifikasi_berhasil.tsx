@@ -21,7 +21,9 @@ export async function ComponentGlobal_NotifikasiBerhasil(
   return notifications.show({
     message: (
       <Center>
-        <Text fw={"bold"}>{text}</Text>
+        <Text align="center" fw={"bold"}>
+          {text}
+        </Text>
       </Center>
     ),
     color: "green",

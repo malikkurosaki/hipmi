@@ -1,22 +1,14 @@
 "use client";
 
 import {
-  ActionIcon,
-  Box,
-  Center,
   Divider,
   Grid,
   Group,
   Paper,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
-import Admin_Investasi from "../../investasi/main/view";
-import { IconChevronsRight } from "@tabler/icons-react";
-import router from "next/router";
-import * as echarts from 'echarts';
-import EChartsReact from "echarts-for-react";
 
 
 export default function AdminMain({countUser, countPorto}: {countUser: number, countPorto: number} ) {

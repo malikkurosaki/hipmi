@@ -1,73 +1,41 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { Warna } from "@/app/lib/warna";
-import {
-  ActionIcon,
-  Affix,
-  AspectRatio,
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Card,
-  CardSection,
-  Center,
-  Divider,
-  Grid,
-  Group,
-  Image,
-  Paper,
-  Progress,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title,
-  rem,
-} from "@mantine/core";
-import { useViewportSize, useWindowScroll } from "@mantine/hooks";
-import { useRouter } from "next/navigation";
-import { MODEL_DONASI } from "../model/interface";
-import { useState } from "react";
-import ComponentDonasi_BoxPublish from "../component/box_publish";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { ActionIcon, Affix, Box, rem } from "@mantine/core";
+import { useWindowScroll } from "@mantine/hooks";
 import { IconPencilPlus } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ComponentDonasi_CardPublish from "../component/card_view/box_publish";
+import { MODEL_DONASI } from "../model/interface";
+import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
+import _ from "lodash";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 
 export default function MainDonasi({
   listDonasi,
 }: {
   listDonasi: MODEL_DONASI[];
 }) {
-  const router = useRouter();
-  const [isLoading, setLoading] = useState(false);
-  const [scroll, scrollTo] = useWindowScroll();
+  const [data, setData] = useState(listDonasi);
 
   return (
     <>
-      <Affix position={{ bottom: rem(150), right: rem(30) }}>
-        <ActionIcon
-          loading={isLoading ? true : false}
-          opacity={scroll.y > 0 ? 0.5 : ""}
-          style={{
-            transition: "0.5s",
-          }}
-          size={"xl"}
-          radius={"xl"}
-          variant="transparent"
-          bg={"orange"}
-          onClick={() => {
-            setLoading(true);
-            router.push(RouterDonasi.create_donasi);
-          }}
-        >
-          <IconPencilPlus color="white" />
-        </ActionIcon>
-      </Affix>
-
-      <ComponentDonasi_BoxPublish
-        dataDonasi={listDonasi}
-        path={RouterDonasi.detail_main}
-      />
+      <Box>
+        <ComponentGlobal_CreateButton path={RouterDonasi.create_donasi} />
+        {_.isEmpty(data) ? (
+          <ComponentGlobal_IsEmptyData />
+        ) : (
+          data.map((e, i) => (
+            <Box key={i}>
+              <ComponentDonasi_CardPublish
+                data={e as any}
+                path={RouterDonasi.detail_main}
+              />
+            </Box>
+          ))
+        )}
+      </Box>
     </>
   );
 }

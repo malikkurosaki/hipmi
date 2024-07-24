@@ -12,17 +12,18 @@ import {
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
+import { redirectVotingPage } from "./path/voting";
 
 export function ComponentNotifiaksi_CardView({
   data,
   onLoadData,
   activePage,
-  onSetJob,
+  onSetMenu,
 }: {
   data: MODEL_NOTIFIKASI;
   onLoadData: (val: any) => void;
   activePage: number;
-  onSetJob: (val: any) => void;
+  onSetMenu: (val: any) => void;
 }) {
   const router = useRouter();
   return (
@@ -45,7 +46,7 @@ export function ComponentNotifiaksi_CardView({
               data: data,
               router: router,
               onSetPage(val) {
-                onSetJob(val);
+                onSetMenu(val);
               },
             });
 
@@ -53,6 +54,15 @@ export function ComponentNotifiaksi_CardView({
             redirectDetailForumPage({
               data: data,
               router: router,
+            });
+
+          data?.kategoriApp === "VOTING" &&
+            redirectVotingPage({
+              data: data,
+              router: router,
+              onSetPage(val) {
+                onSetMenu(val);
+              },
             });
 
           const updateIsRead = await notifikasi_funUpdateIsReadById({
