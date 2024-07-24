@@ -48,7 +48,7 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
             if (res.role === "1") {
               ComponentGlobal_NotifikasiBerhasil(res.message);
               setLoading(true);
-              router.push(RouterHome.main_home, {scroll: false});
+              router.push(RouterHome.main_home, { scroll: false });
             } else {
               router.push(RouterAdminDashboard.splash_admin);
             }
@@ -102,6 +102,7 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
               </Text>
               <Center>
                 <PinInput
+                  type={"number"}
                   ref={focusTrapRef}
                   spacing={"md"}
                   mt={"md"}
