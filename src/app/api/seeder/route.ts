@@ -29,6 +29,7 @@ import nomor_admin from "../../../bin/seeder/nomor_admin.json";
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
   if (dev === "DEV-HIPMI") {
+    
     for (let i of userRole) {
       const data = await prisma.masterUserRole.upsert({
         where: {

@@ -66,7 +66,6 @@ export default function Event_StatusPage({
             top: 0,
             zIndex: 99,
           },
-         
         }}
       >
         <Stack>

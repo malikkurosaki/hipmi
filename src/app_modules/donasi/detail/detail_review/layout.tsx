@@ -1,11 +1,8 @@
 "use client";
 
-import { AppShell } from "@mantine/core";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import React from "react";
-import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
-import { IconEdit, IconMessageShare } from "@tabler/icons-react";
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 
 export default  function LayoutDetailReviewDonasi({
   children,
@@ -15,9 +12,9 @@ export default  function LayoutDetailReviewDonasi({
   
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate header={<ComponentDonasi_HeaderTamplate title="Detail Review"  />}>
+      <UIGlobal_LayoutTamplate header={<UIGlobal_LayoutHeaderTamplate title="Detail Review"  />}>
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

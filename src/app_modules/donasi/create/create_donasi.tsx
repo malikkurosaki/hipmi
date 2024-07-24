@@ -11,12 +11,17 @@ import {
   Select,
   Stack,
   Text,
-  TextInput
+  TextInput,
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import {
   ComponentGlobal_WarningMaxUpload,
   maksimalUploadFile,
@@ -24,11 +29,11 @@ import {
 import _ from "lodash";
 import { useState } from "react";
 import toast from "react-simple-toasts";
-import ComponentDonasi_NotedBox from "../component/noted_box";
 import { NotifPeringatan } from "../component/notifikasi/notif_peringatan";
 import Donasi_funCreateTemporary from "../fun/create/fun_create_donasi_temporary";
 import { gs_donasi_tabs_posting } from "../global_state";
 import { MODEL_DONASI_ALL_MASTER } from "../model/interface";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 
 export default function CreateDonasi({
   masterKategori,
@@ -75,16 +80,21 @@ export default function CreateDonasi({
         setTabsPostingDonasi("Review");
         router.push(RouterDonasi.create_cerita_penggalang + `${res.donasiId}`);
       } else {
-        toast(res.message);
+        return ComponentGlobal_NotifikasiGagal(res.message);
       }
     });
   }
 
   return (
     <>
-      <Stack spacing={"md"} px={"md"}>
-        <ComponentDonasi_NotedBox informasi="Lengkapi semua data di bawah untuk selanjutnya mengisi cerita Penggalangan Dana!" />
+      <Stack spacing={"md"} px={"xs"}>
+        <ComponentGlobal_BoxInformation informasi="Lengkapi semua data di bawah untuk selanjutnya mengisi cerita Penggalangan Dana!" />
         <Select
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Kategori"
           placeholder="Pilih kategori penggalangan dana"
           withAsterisk
@@ -102,6 +112,11 @@ export default function CreateDonasi({
 
         <Stack>
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             label="Judul Donasi"
             placeholder="Contoh: Renovasi Masjid pada kampung, dll"
@@ -111,6 +126,11 @@ export default function CreateDonasi({
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             icon={<Text fw={"bold"}>Rp.</Text>}
             min={0}
             withAsterisk
@@ -141,6 +161,11 @@ export default function CreateDonasi({
             }}
           />
           <Select
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Durasi"
             placeholder="Jangka waktu penggalangan dana"
             withAsterisk
@@ -175,12 +200,12 @@ export default function CreateDonasi({
             >
               {(props) => (
                 <Button
-                  compact
                   {...props}
                   radius={"xl"}
-                  variant="outline"
-                  w={150}
                   leftIcon={<IconCamera />}
+                  bg={MainColor.yellow}
+                  color="yellow"
+                  c={"black"}
                 >
                   Upload
                 </Button>
@@ -188,17 +213,25 @@ export default function CreateDonasi({
             </FileButton>
           </Center>
           {imageDonasi ? (
-            <AspectRatio ratio={1 / 1} onChange={(val) => console.log(val)}>
-              <Paper radius={"sm"} withBorder>
+            <AspectRatio ratio={1 / 1} mah={300}>
+              <Paper
+                style={{
+                  border: `2px solid ${AccentColor.blue}`,
+                  backgroundColor: AccentColor.darkblue,
+                  padding: "10px",
+                  borderRadius: "10px",
+                }}
+              >
                 <Image
                   alt="Foto"
                   src={imageDonasi ? imageDonasi : "/aset/no-img.png"}
+                  maw={200}
                 />
               </Paper>
             </AspectRatio>
           ) : (
             <Center>
-              <Text fs={"italic"} fz={10}>
+              <Text fs={"italic"} fz={10} c={"white"}>
                 Upload poster atau gambar penggalangan !
               </Text>
             </Center>
@@ -216,6 +249,9 @@ export default function CreateDonasi({
           my={"lg"}
           radius={"xl"}
           onClick={() => onCreate()}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
         >
           Selanjutnya
         </Button>

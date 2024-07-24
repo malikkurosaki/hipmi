@@ -1,3 +1,4 @@
+import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { Vote_MainDetail } from "@/app_modules/vote";
 import { Vote_cekKontributorById } from "@/app_modules/vote/fun/get/cek_kontributor_by_id";
 import { Vote_getHasilVoteById } from "@/app_modules/vote/fun/get/get_list_hasil_by_id";
@@ -12,7 +13,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const isKontributor = await Vote_cekKontributorById(voteId);
   const pilihanKontributor = await Vote_getOnePilihanVotingByUserId(voteId);
   const listKontributor = await Vote_getListKontributorById(voteId);
-
+  const userLoginId = await user_getOneUserId();
 
   return (
     <>
@@ -22,6 +23,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         isKontributor={isKontributor}
         pilihanKontributor={pilihanKontributor as any}
         listKontributor={listKontributor as any}
+        userLoginId={userLoginId}
       />
     </>
   );

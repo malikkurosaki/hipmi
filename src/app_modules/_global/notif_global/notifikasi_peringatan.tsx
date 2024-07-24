@@ -15,7 +15,9 @@ export async function ComponentGlobal_NotifikasiPeringatan(
   return notifications.show({
     message: (
       <Center>
-        <Text fw={"bold"}>{text}</Text>
+        <Text align="center" fw={"bold"}>
+          {text}
+        </Text>
       </Center>
     ),
     color: "yellow.1",
@@ -24,9 +26,7 @@ export async function ComponentGlobal_NotifikasiPeringatan(
     style: {
       borderWidth: "0.5px",
       borderStyle: "solid",
-      borderColor: "red"
-
-
+      borderColor: "red",
     },
 
     icon: (

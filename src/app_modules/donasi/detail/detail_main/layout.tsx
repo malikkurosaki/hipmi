@@ -1,10 +1,9 @@
 "use client";
 
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
-import { Footer, Stack } from "@mantine/core";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import React from "react";
 import ButtonDonasi from "../../component/footer_button_donasi";
-import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
 
 export default function LayoutDetailMainDonasi({
   children,
@@ -15,18 +14,12 @@ export default function LayoutDetailMainDonasi({
 }) {
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
-        header={<ComponentDonasi_HeaderTamplate title="Detail Donasi" />}
-        footer={
-          <Footer height={"10vh"}>
-            <Stack justify="center" h={"100%"}>
-              <ButtonDonasi donasiId={donasiId} />
-            </Stack>
-          </Footer>
-        }
+      <UIGlobal_LayoutTamplate
+        header={<UIGlobal_LayoutHeaderTamplate title="Detail Donasi" />}
+        footer={<ButtonDonasi donasiId={donasiId} />}
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

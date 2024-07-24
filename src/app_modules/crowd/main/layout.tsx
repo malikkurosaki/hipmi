@@ -1,8 +1,8 @@
 "use client";
 
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
-import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
-import { useRouter } from "next/navigation";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import React from "react";
 
 export default function LayoutMainCrowd({
@@ -10,19 +10,18 @@ export default function LayoutMainCrowd({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <UIGlobal_LayoutTamplate
         header={
-          <ComponentGlobal_HeaderTamplate
-            route="/dev/home"
-            title="HIPMI Crowd Funding"
+          <UIGlobal_LayoutHeaderTamplate
+            title="Crowd Funding"
+            routerLeft={RouterHome.main_home}
           />
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

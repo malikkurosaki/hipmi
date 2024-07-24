@@ -16,6 +16,7 @@ export async function Vote_funCreateHasil(
     },
     select: {
       jumlah: true,
+      value: true,
     },
   });
 
@@ -31,16 +32,30 @@ export async function Vote_funCreateHasil(
   });
   if (!updt) return { status: 400, message: "Gagal Update" };
 
-  const create = await prisma.voting_Kontributor.create({
+  const createKontributor = await prisma.voting_Kontributor.create({
     data: {
       voting_DaftarNamaVoteId: pilihanVotingId,
       votingId: votingId,
       authorId: authorId,
     },
+    select: {
+      Voting: {
+        select: {
+          id: true,
+          title: true,
+          authorId: true,
+        },
+      },
+    },
   });
-  if (!create) return { status: 400, message: "Gagal Menjadi Kontributor" };
 
-
+  if (!createKontributor)
+    return { status: 400, message: "Gagal Menjadi Kontributor" };
   revalidatePath("/dev/vote/detail/main/");
-  return { status: 201, message: "Berhasil Voting" };
+  return {
+    data: createKontributor,
+    pilihan: get.value,
+    status: 201,
+    message: "Berhasil Voting",
+  };
 }

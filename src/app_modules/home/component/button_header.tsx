@@ -15,6 +15,7 @@ import { IconBell, IconUserSearch } from "@tabler/icons-react";
 import { RouterNotifikasi } from "@/app/lib/router_hipmi/router_notifikasi";
 import { useShallowEffect } from "@mantine/hooks";
 import notifikasi_countUserNotifikasi from "@/app_modules/notifikasi/fun/count/fun_count_by_id";
+import mqtt_client from "@/util/mqtt_client";
 
 export function ComponentHome_ButtonHeaderLeft({
   dataUser,
@@ -59,17 +60,41 @@ export function ComponentHome_ButtonHeaderRight({
   const [count, setCount] = useState(countNotifikasi);
   const [isLoadingBell, setIsLoadingBell] = useState(false);
 
+  // useShallowEffect(() => {
+  //   onLoadNotifkasi({
+  //     onLoad(val) {
+  //       setCount(val);
+  //     },
+  //   });
+  // }, []);
+
+  // async function onLoadNotifkasi({ onLoad }: { onLoad: (val: any) => void }) {
+  //   const loadNotifikasi = await notifikasi_countUserNotifikasi();
+  //   onLoad(loadNotifikasi);
+  // }
+
   useShallowEffect(() => {
-    onLoadNotifkasi({
+    mqtt_client.subscribe("USER");
+
+    mqtt_client.on("message", (topic: any, message: any) => {
+      // console.log(topic);
+      const data = JSON.parse(message.toString());
+
+      if (data.userId === dataUser.id) {
+        setCount(count + data.count);
+      }
+    });
+
+    onLoadNotifikasi({
       onLoad(val) {
         setCount(val);
       },
     });
-  }, []);
+  }, [count]);
 
-  async function onLoadNotifkasi({ onLoad }: { onLoad: (val: any) => void }) {
-    const loadNotifikasi = await notifikasi_countUserNotifikasi();
-    onLoad(loadNotifikasi);
+  async function onLoadNotifikasi({ onLoad }: { onLoad: (val: any) => void }) {
+    const loadNotif = await notifikasi_countUserNotifikasi();
+    onLoad(loadNotif);
   }
 
   return (

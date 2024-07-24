@@ -8,10 +8,14 @@ export default async function adminNotifikasi_getByUserId() {
   const adminId = await user_getOneUserId();
 
   const data = await prisma.notifikasi.findMany({
-   
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy: [
+      {
+        isRead: "asc",
+      },
+      {
+        createdAt: "desc",
+      },
+    ],
     where: {
       adminId: adminId,
       userRoleId: "2",

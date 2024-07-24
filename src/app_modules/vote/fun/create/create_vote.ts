@@ -16,6 +16,16 @@ export async function Vote_funCreate(req: MODEL_VOTING, listVote: any[]) {
       akhirVote: req.akhirVote,
       authorId: authorId,
     },
+    select: {
+      id: true,
+      title: true,
+      Voting_Status: {
+        select: {
+          name: true,
+        },
+      },
+      authorId: true,
+    },
   });
 
   if (!create) return { status: 400, message: "Gagal Membuat Vote" };
@@ -35,6 +45,7 @@ export async function Vote_funCreate(req: MODEL_VOTING, listVote: any[]) {
   revalidatePath("/dev/vote/main/status");
 
   return {
+    data: create,
     status: 201,
     message: "Berhasil Membuat Vote",
   };
