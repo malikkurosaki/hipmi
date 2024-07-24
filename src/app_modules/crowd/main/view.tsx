@@ -6,6 +6,7 @@ import {
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { gs_donasi_hot_menu } from "@/app_modules/donasi/global_state";
 import { gs_investasiFooter } from "@/app_modules/investasi/g_state";
 import {
@@ -62,9 +63,13 @@ export default function MainCrowd() {
               color: "white",
             }}
             onClick={() => {
-              setLoadingInv(true);
-              router.push(RouterCrowd.investasi);
-              setChangeColor(0);
+              // setLoadingInv(true);
+              // router.push(RouterCrowd.investasi);
+              // setChangeColor(0);
+              ComponentGlobal_NotifikasiPeringatan(
+                "Sementara ini sedang maintenance",
+                3000
+              );
             }}
           >
             <Grid>
@@ -98,9 +103,13 @@ export default function MainCrowd() {
               color: "white",
             }}
             onClick={() => {
-              setLoadingDon(true);
-              router.push(RouterCrowd.donasi);
-              setDonasiHotMenu(0);
+              // setLoadingDon(true);
+              // router.push(RouterCrowd.donasi);
+              // setDonasiHotMenu(0);
+                ComponentGlobal_NotifikasiPeringatan(
+                  "Sementara ini sedang maintenance",
+                  3000
+                );
             }}
           >
             <Grid>
