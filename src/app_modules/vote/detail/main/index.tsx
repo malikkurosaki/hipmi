@@ -1,18 +1,19 @@
 "use client";
 
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import notifikasiToUser_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_user";
 import {
-  Avatar,
   Badge,
   Box,
   Button,
   Card,
   Center,
-  Divider,
-  Grid,
   Group,
   Radio,
   Stack,
@@ -25,12 +26,8 @@ import ComponentVote_DaftarKontributorVoter from "../../component/detail/detail_
 import ComponentVote_HasilVoting from "../../component/detail/detail_hasil_voting";
 import { Vote_funCreateHasil } from "../../fun/create/create_hasil";
 import { Vote_getOnebyId } from "../../fun/get/get_one_by_id";
-import {
-  MODEL_VOTE_KONTRIBUTOR,
-  MODEL_VOTING,
-  MODEL_VOTING_DAFTAR_NAMA_VOTE,
-} from "../../model/interface";
-import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
+import { MODEL_VOTING } from "../../model/interface";
+import mqtt_client from "@/util/mqtt_client";
 
 export default function Vote_MainDetail({
   dataVote,
@@ -38,12 +35,14 @@ export default function Vote_MainDetail({
   isKontributor,
   pilihanKontributor,
   listKontributor,
+  userLoginId,
 }: {
   dataVote: MODEL_VOTING;
   hasilVoting: any;
   isKontributor: boolean;
   pilihanKontributor: string;
   listKontributor: any[];
+  userLoginId: string;
 }) {
   const [data, setData] = useState(dataVote);
   return (
@@ -54,6 +53,7 @@ export default function Vote_MainDetail({
           setData={setData}
           isKontributor={isKontributor}
           pilihanKontributor={pilihanKontributor}
+          userLoginId={userLoginId}
         />
         <ComponentVote_HasilVoting data={data.Voting_DaftarNamaVote} />
         <ComponentVote_DaftarKontributorVoter
@@ -69,11 +69,13 @@ function TampilanDataVoting({
   setData,
   isKontributor,
   pilihanKontributor,
+  userLoginId,
 }: {
   dataVote?: MODEL_VOTING;
   setData: any;
   isKontributor: boolean;
   pilihanKontributor: any;
+  userLoginId: string;
 }) {
   const [votingNameId, setVotingNameId] = useState("");
   return (
@@ -182,7 +184,7 @@ function TampilanDataVoting({
                   {dataVote?.Voting_DaftarNamaVote.map((v) => (
                     <Box key={v.id}>
                       <Radio
-                      color="yellow"
+                        color="yellow"
                         styles={{ label: { color: "white" } }}
                         label={v.value}
                         value={v.id}
@@ -200,7 +202,12 @@ function TampilanDataVoting({
                   <Button
                     radius={"xl"}
                     onClick={() =>
-                      onVote(votingNameId, dataVote?.id as any, setData)
+                      onVote(
+                        votingNameId,
+                        dataVote?.id as any,
+                        setData,
+                        userLoginId
+                      )
                     }
                     bg={MainColor.yellow}
                     color="yellow"
@@ -218,141 +225,46 @@ function TampilanDataVoting({
   );
 }
 
-async function onVote(pilihanVotingId: string, voteId: string, setData: any) {
-  await Vote_funCreateHasil(pilihanVotingId, voteId).then(async (res) => {
-    if (res.status === 201) {
-      await Vote_getOnebyId(voteId).then((val) => {
-        setData(val);
-        ComponentGlobal_NotifikasiBerhasil(res.message);
+async function onVote(
+  pilihanVotingId: string,
+  voteId: string,
+  setData: any,
+  userLoginId: string
+) {
+  const res = await Vote_funCreateHasil(pilihanVotingId, voteId);
+  if (res.status === 201) {
+    await Vote_getOnebyId(voteId).then((val) => {
+      setData(val);
+      ComponentGlobal_NotifikasiBerhasil(res.message);
+    });
+    
+    if (userLoginId !== res?.data?.Voting?.authorId) {
+      const dataNotif = {
+        appId: res?.data?.Voting?.id,
+        userId: res?.data?.Voting?.authorId,
+        pesan: res?.pilihan,
+        status: "Voting Masuk",
+        kategoriApp: "VOTING",
+        title: "User lain telah melakukan voting !",
+      };
+
+      const createNotifikasi = await notifikasiToUser_funCreate({
+        data: dataNotif as any,
       });
-    } else {
-      ComponentGlobal_NotifikasiPeringatan(res.message);
+
+      if (createNotifikasi.status === 201) {
+        mqtt_client.publish(
+          "USER",
+          JSON.stringify({
+            userId: dataNotif.userId,
+            count: 1,
+          })
+        );
+      }
     }
-  });
-}
 
-function TampilanHasil({
-  data,
-  hasil,
-}: {
-  data: MODEL_VOTING_DAFTAR_NAMA_VOTE[];
-  hasil: any;
-}) {
-  return (
-    <>
-      <Card shadow="lg" withBorder p={30}>
-        <Card.Section>
-          <Stack>
-            <Center>
-              <Title order={5}>Hasil Voting</Title>
-            </Center>
-
-            {/* <pre>{JSON.stringify(data, null,2)}</pre> */}
-
-            <Grid justify="center">
-              {data.map((e) => (
-                <Grid.Col key={e.id} span={data.length >= 4 ? 6 : 4}>
-                  <Stack align="center">
-                    <Avatar
-                      radius={100}
-                      size={70}
-                      variant="outline"
-                      color="blue"
-                    >
-                      <Text>
-                        {e.jumlah}
-                        {/* {hasil.filter((i: any) => i.idDaftarNama == "clsijw6ur0002x5loqsq6g4id")} */}
-                      </Text>
-                    </Avatar>
-                    <Text>{e.value}</Text>
-                  </Stack>
-                </Grid.Col>
-              ))}
-            </Grid>
-          </Stack>
-        </Card.Section>
-      </Card>
-    </>
-  );
-}
-
-function TampilanListKontributor({
-  lisKontributor,
-}: {
-  lisKontributor: MODEL_VOTE_KONTRIBUTOR[];
-}) {
-  return (
-    <>
-      <Card shadow="lg" withBorder p={30}>
-        <Card.Section>
-          <Stack>
-            <Center>
-              <Title order={5}>Daftar Voting</Title>
-            </Center>
-            {lisKontributor.map((e, i) => (
-              <Stack spacing={"xs"} key={i}>
-                <Grid>
-                  <Grid.Col span={2}>
-                    <Avatar
-                      size={30}
-                      sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-                      radius={"xl"}
-                      bg={"gray.1"}
-                      src={
-                        e
-                          ? RouterProfile.api_foto_profile +
-                            e.Author.Profile.imagesId
-                          : "/aset/global/avatar.png"
-                      }
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <Stack justify="center" h={"100%"}>
-                      <Text truncate fz={"sm"} fw={"bold"}>
-                        {e ? e.Author.Profile.name : "Nama author"}
-                      </Text>
-                    </Stack>
-                  </Grid.Col>
-                  <Grid.Col span={4}>
-                    <Badge w={100}>
-                      <Text truncate>{e.Voting_DaftarNamaVote.value}</Text>
-                    </Badge>
-                  </Grid.Col>
-                </Grid>
-                <Divider />
-              </Stack>
-            ))}
-            {/* {lisKontributor.map((e) => (
-              <Stack key={e.id}>
-                <Group position="apart">
-                  <Group>
-                    <Avatar
-                      size={30}
-                      sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-                      radius={"xl"}
-                      bg={"gray.1"}
-                      src={
-                        e
-                          ? RouterProfile.api_foto_profile +
-                            e.Author.Profile.imagesId
-                          : "/aset/global/avatar.png"
-                      }
-                    />
-                    <Text truncate fz={"sm"} fw={"bold"}>
-                      {e ? e.Author.Profile.name : "Nama author"}
-                    </Text>
-                  </Group>
-                  <Badge>
-                    <Text truncate>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum minus libero, ullam ipsum quasi labore iure doloremque sunt et mollitia dolorem laborum quisquam, dolores quis deserunt id. Ipsa, minus temporibus.</Text>
-                  </Badge>
-                </Group>
-                <Divider />
-              </Stack>
-            ))} */}
-          </Stack>
-        </Card.Section>
-      </Card>
-      {/* <pre>{JSON.stringify(lisKontributor, null, 2)}</pre> */}
-    </>
-  );
+    
+  } else {
+    ComponentGlobal_NotifikasiPeringatan(res.message);
+  }
 }

@@ -1,19 +1,13 @@
 "use client";
 
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
-import { AdminEvent_getListPesertaById } from "@/app_modules/admin/event/fun/get/get_list_peserta_by_id";
 import { MODEL_VOTING } from "@/app_modules/vote/model/interface";
 import {
-  Avatar,
   Box,
   Button,
   Center,
-  Divider,
-  Grid,
   Group,
   Modal,
-  Paper,
   ScrollArea,
   Spoiler,
   Stack,
@@ -23,20 +17,20 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconBan } from "@tabler/icons-react";
-import { IconEyeShare } from "@tabler/icons-react";
+import { IconBan, IconEyeShare } from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
-import { AdminVote_funEditStatusPublishById } from "../../fun/edit/fun_edit_status_publish_by_id";
-import toast from "react-simple-toasts";
-import { AdminVote_getListTableByStatusId } from "../../fun/get/get_list_table_by_status_id";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import { AdminEvent_funEditCatatanById } from "../../fun/edit/fun_edit_status_reject_by_id";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import moment from "moment";
+import { useState } from "react";
+import { AdminVote_funEditStatusPublishById } from "../../fun/edit/fun_edit_status_publish_by_id";
+import { AdminEvent_funEditCatatanById } from "../../fun/edit/fun_edit_status_reject_by_id";
+import { AdminVote_getListTableByStatusId } from "../../fun/get/get_list_table_by_status_id";
+import mqtt_client from "@/util/mqtt_client";
+import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
 
 export default function AdminVote_TableReview({
   listVote,
@@ -255,17 +249,36 @@ async function onPublish(
     return ComponentGlobal_NotifikasiPeringatan("Tanggal Voting Lewat");
 
   setVotingId(voteId);
-  await AdminVote_funEditStatusPublishById(voteId).then(async (res) => {
-    if (res.status === 200) {
-      await AdminVote_getListTableByStatusId("2").then((val) => {
-        setData(val);
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-        setLoadingPublish(true);
-      });
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
+  const res = await AdminVote_funEditStatusPublishById(voteId);
+  if (res.status === 200) {
+    const dataNotif = {
+      appId: res.data?.id,
+      status: res.data?.Voting_Status?.name as any,
+      userId: res.data?.authorId as any,
+      pesan: res.data?.title as any,
+      kategoriApp: "VOTING",
+      title: "Voting publish",
+    };
+
+    const notif = await adminNotifikasi_funCreateToUser({
+      data: dataNotif as any,
+    });
+
+    if (notif.status === 201) {
+      mqtt_client.publish(
+        "USER",
+        JSON.stringify({ userId: res?.data?.authorId, count: 1 })
+      );
     }
-  });
+
+    await AdminVote_getListTableByStatusId("2").then((val) => {
+      setData(val);
+      ComponentGlobal_NotifikasiBerhasil(res.message);
+      setLoadingPublish(true);
+    });
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }
 
 async function onReject(
@@ -279,16 +292,36 @@ async function onReject(
     id: voteId,
     catatan: catatan,
   };
-  await AdminEvent_funEditCatatanById(data as any).then(async (res) => {
-    if (res.status === 200) {
-      await AdminVote_getListTableByStatusId("2").then((val) => {
-        setData(val);
-        setSaveLoading(true);
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-        close();
-      });
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
+
+  const res = await AdminEvent_funEditCatatanById(data as any);
+  if (res.status === 200) {
+    const dataNotif = {
+      appId: res.data?.id,
+      status: res.data?.Voting_Status?.name as any,
+      userId: res.data?.authorId as any,
+      pesan: res.data?.title as any,
+      kategoriApp: "VOTING",
+      title: "Voting anda di tolak !",
+    };
+
+    const notif = await adminNotifikasi_funCreateToUser({
+      data: dataNotif as any,
+    });
+
+    if (notif.status === 201) {
+      mqtt_client.publish(
+        "USER",
+        JSON.stringify({ userId: res?.data?.authorId, count: 1 })
+      );
     }
-  });
+
+    await AdminVote_getListTableByStatusId("2").then((val) => {
+      setData(val);
+      setSaveLoading(true);
+      ComponentGlobal_NotifikasiBerhasil(res.message);
+      close();
+    });
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }

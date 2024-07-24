@@ -11,6 +11,8 @@ import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_
 import { gs_vote_status } from "../../global_state";
 import { MODEL_VOTING } from "../../model/interface";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
+import mqtt_client from "@/util/mqtt_client";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 
 export default function Vote_DetailReview({
   dataVote,
@@ -34,16 +36,36 @@ function ButtonAction({ voteId }: { voteId: string }) {
   const [openModal, setOpenModal] = useState(false);
 
   async function onUpdate() {
-    await Vote_funEditStatusByStatusId(voteId, "3").then((res) => {
-      if (res.status === 200) {
+    const res = await Vote_funEditStatusByStatusId(voteId, "3");
+    if (res.status === 200) {
+      const dataNotif: any = {
+        appId: res.data?.id as any,
+        status: res.data?.Voting_Status?.name as any,
+        userId: res.data?.authorId as any,
+        pesan: res.data?.title as any,
+        kategoriApp: "VOTING",
+        title: "Membatalkan review",
+      };
+
+      const notif = await notifikasiToAdmin_funCreate({
+        data: dataNotif as any,
+      });
+
+      if (notif.status === 201) {
+        mqtt_client.publish(
+          "ADMIN",
+          JSON.stringify({
+            count: 1,
+          })
+        );
         setTabsStatus("Draft");
         ComponentGlobal_NotifikasiBerhasil("Berhasil Batalkan Review", 2000);
         router.back();
         setIsLoading(true);
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
       }
-    });
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+    }
   }
   return (
     <>

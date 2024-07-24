@@ -51,6 +51,7 @@ import adminNotifikasi_getByUserId from "./notifikasi/fun/get/get_notifikasi_by_
 import adminNotifikasi_funUpdateIsReadById from "./notifikasi/fun/update/fun_update_is_read_by_id";
 import adminNotifikasi_findRouterJob from "./notifikasi/route_setting/job";
 import adminNotifikasi_findRouterForum from "./notifikasi/route_setting/forum";
+import { adminNotifikasi_findRouterVoting } from "./notifikasi/route_setting/voting";
 
 export default function AdminLayout({
   children,
@@ -297,6 +298,7 @@ export default function AdminLayout({
       >
         {children}
       </AppShell>
+
       {/* Drawer Mobile View */}
       <Drawer opened={opened} onClose={() => setOpened(false)} size={"50%"}>
         <Stack spacing={"xl"}>
@@ -389,6 +391,7 @@ function DrawerNotifikasi({
                 },
               }}
               onClick={async () => {
+                // JOB
                 e?.kategoriApp === "JOB" &&
                   adminNotifikasi_findRouterJob({
                     data: e,
@@ -399,8 +402,22 @@ function DrawerNotifikasi({
                     onToggleNavbar: onToggleNavbar,
                   });
 
+                // FORUM
                 e?.kategoriApp === "FORUM" &&
                   adminNotifikasi_findRouterForum({
+                    data: e,
+                    router: router,
+                    onChangeNavbar(val) {
+                      onChangeNavbar(val);
+                    },
+                    onToggleNavbar(val) {
+                      onToggleNavbar(val);
+                    },
+                  });
+
+                // VOTE
+                e?.kategoriApp === "VOTING" &&
+                  adminNotifikasi_findRouterVoting({
                     data: e,
                     router: router,
                     onChangeNavbar(val) {

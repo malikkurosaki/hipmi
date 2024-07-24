@@ -23,6 +23,7 @@ import _ from "lodash";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import mqtt_client from "@/util/mqtt_client";
 
 export default function Colab_Create({
   listIndustri,
@@ -184,18 +185,24 @@ function ButtonAction({ value }: { value: any }) {
       return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
     if (value.projectCollaborationMaster_IndustriId === 0)
       return ComponentGlobal_NotifikasiPeringatan("Pilih Industri");
-    // if (value.jumlah_partisipan < 2)
-    //   return ComponentGlobal_NotifikasiPeringatan("Minimal Ada 2 Partisipan");
 
-    await colab_funCreateProyek(value).then((res) => {
-      if (res.status === 201) {
-        setLoading(true);
-        router.back();
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
-      }
-    });
+    const res = await colab_funCreateProyek(value);
+    if (res.status === 201) {
+      //  const dataNotif: any = {
+      //    appId: res.data?.id as any,
+      //    kategoriApp: "VOTING",
+      //    status: create.data?.MasterStatus?.name as any,
+      //    userId: create.data?.authorId as any,
+      //    pesan: create.data?.title as any,
+      //    title: "Job baru",
+      //  };
+
+      setLoading(true);
+      router.back();
+      ComponentGlobal_NotifikasiBerhasil(res.message);
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+    }
   }
 
   // console.log(value);

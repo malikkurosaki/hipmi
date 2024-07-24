@@ -12,6 +12,10 @@ import { useState } from "react";
 import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
 import { MODEL_NOTIFIKASI } from "../model/interface";
 import { ComponentNotifiaksi_CardView } from "./card_view";
+import {
+  gs_vote_hotMenu,
+  gs_vote_status,
+} from "@/app_modules/vote/global_state";
 
 export function Notifikasi_UiView({
   listNotifikasi,
@@ -24,19 +28,21 @@ export function Notifikasi_UiView({
   // JOB
   const [jobMenuId, setJobMenuId] = useAtom(gs_job_hot_menu);
   const [jobStatus, setJobStatus] = useAtom(gs_job_status);
+  const [voteMenu, setVoteMenu] = useAtom(gs_vote_hotMenu);
+  const [voeStatus, setVoteStatus] = useAtom(gs_vote_status);
 
-    useShallowEffect(() => {
-      onLoadData({
-        onLoad(val) {
-          setData(val);
-        },
-      });
-    }, []);
+  useShallowEffect(() => {
+    onLoadData({
+      onLoad(val) {
+        setData(val);
+      },
+    });
+  }, []);
 
-    async function onLoadData({ onLoad }: { onLoad: (val: any) => void }) {
-      const loadData = await notifikasi_getByUserId({ page: 1 });
-      onLoad(loadData);
-    }
+  async function onLoadData({ onLoad }: { onLoad: (val: any) => void }) {
+    const loadData = await notifikasi_getByUserId({ page: 1 });
+    onLoad(loadData);
+  }
 
   return (
     <>
@@ -67,9 +73,15 @@ export function Notifikasi_UiView({
                 data={item}
                 onLoadData={(val) => setData(val)}
                 activePage={activePage}
-                onSetJob={(val) => {
-                  setJobMenuId(val.menuId);
-                  setJobStatus(val.status);
+                onSetMenu={(val) => {
+                  if (item?.kategoriApp === "JOB") {
+                    setJobMenuId(val.menuId);
+                    setJobStatus(val.status);
+                  }
+                  if (item?.kategoriApp === "VOTING") {
+                    setVoteMenu(val.menuId);
+                    setVoteStatus(val.status);
+                  }
                 }}
               />
             )}
