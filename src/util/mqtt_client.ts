@@ -5,6 +5,6 @@ declare global {
 }
 
 const mqtt_client =
-  globalThis.mqtt_client || mqtt.connect("ws://wibudev.com:3003");
+  globalThis.mqtt_client || mqtt.connect("wss://io.wibudev.com");
 
 export default mqtt_client;
