@@ -1,24 +1,22 @@
 "use client";
 
-import { Button, Group, Modal, Stack, Title } from "@mantine/core";
+import { Button, Group, Stack } from "@mantine/core";
 import ComponentEvent_DetailData from "../../component/detail/detail_data";
-
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useAtom } from "jotai";
-import { gs_event_status } from "../../global_state";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { MODEL_EVENT } from "../../model/interface";
-import { Event_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import React, { useState } from "react";
-import ComponentEvent_CatatanReject from "../../component/catatan_reject";
-import { useRouter } from "next/navigation";
-import moment from "moment";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { Event_funDeleteById } from "../../fun/delete/fun_delete";
-import { useDisclosure } from "@mantine/hooks";
-import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
+import { useAtom } from "jotai";
+import moment from "moment";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Event_funDeleteById } from "../../fun/delete/fun_delete";
+import { Event_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
+import { gs_event_status } from "../../global_state";
+import { MODEL_EVENT } from "../../model/interface";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
 
 export default function Event_DetailDraft({
   dataEvent,
@@ -70,16 +68,36 @@ function ButtonAction({ eventId, tanggal }: { eventId: string; tanggal: any }) {
     if (moment(tanggal.toISOString().toString()).diff(moment(), "minutes") < 0)
       return ComponentGlobal_NotifikasiPeringatan("Waktu acara telah lewat");
 
-    await Event_funEditStatusById("2", eventId).then((res) => {
-      if (res.status === 200) {
+    const res = await Event_funEditStatusById("2", eventId);
+    if (res.status === 200) {
+      const dataNotif: any = {
+        appId: res.data?.id as any,
+        status: res.data?.EventMaster_Status?.name as any,
+        userId: res.data?.authorId as any,
+        pesan: res.data?.title as any,
+        kategoriApp: "EVENT",
+        title: "Mengajukan review",
+      };
+
+      const notif = await notifikasiToAdmin_funCreate({
+        data: dataNotif as any,
+      });
+
+      if (notif.status === 201) {
+        mqtt_client.publish(
+          "ADMIN",
+          JSON.stringify({
+            count: 1,
+          })
+        );
         ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
         setTabsStatus("Review");
         setLoadingAjukan(true);
         router.back();
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
       }
-    });
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+    }
   }
 
   return (

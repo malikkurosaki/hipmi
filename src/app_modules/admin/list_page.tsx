@@ -9,24 +9,20 @@ import { RouterAdminVote } from "@/app/lib/router_admin/router_admin_vote";
 import { RouterAdminUserAccess } from "@/app/lib/router_admin/router_admn_user_acces";
 import { RouterAdminAppInformation } from "@/app/lib/router_admin/router_app_information";
 import {
-  RouterAdminDashboard,
-  RouterAdminDonasi_OLD,
-  RouterAdminInvestasi_OLD,
+  RouterAdminDashboard
 } from "@/app/lib/router_hipmi/router_admin";
 import {
   IconAffiliate,
   IconBriefcase,
   IconDashboard,
   IconDeviceMobile,
-  IconMessages,
-  IconUserCog,
-} from "@tabler/icons-react";
-import {
   IconHeartHandshake,
   IconHome,
+  IconMessages,
   IconMoneybag,
   IconPackageImport,
   IconPresentation,
+  IconUserCog,
 } from "@tabler/icons-react";
 
 export const listAdminPage = [

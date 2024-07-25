@@ -11,9 +11,8 @@ export async function AdminEvent_getListTableByStatusId(statudId: string) {
       where: {
         eventMaster_StatusId: "1",
         tanggal: {
-          gte: new Date
-        }
-
+          gte: new Date(),
+        },
       },
       select: {
         id: true,
@@ -52,10 +51,11 @@ export async function AdminEvent_getListTableByStatusId(statudId: string) {
   if (statudId === "2") {
     const getReview = await prisma.event.findMany({
       orderBy: {
-        createdAt: "desc",
+        updatedAt: "desc",
       },
       where: {
         eventMaster_StatusId: "2",
+        active: true,
       },
       select: {
         id: true,

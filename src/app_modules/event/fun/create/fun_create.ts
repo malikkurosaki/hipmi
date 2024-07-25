@@ -14,11 +14,22 @@ export async function Event_funCreate(req: MODEL_EVENT) {
       tanggal: req.tanggal,
       authorId: req.authorId,
     },
+    select: {
+      id: true,
+      title: true,
+      EventMaster_Status: {
+        select: {
+          name: true,
+        }
+      },
+      authorId: true,
+    }
   });
 
   if (!res) return { status: 400, message: "Gagal Disimpan" };
   revalidatePath("/dev/event/main/status_page");
   return {
+    data: res,
     status: 201,
     message: "Berhasil Disimpan",
   };

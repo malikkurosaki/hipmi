@@ -52,6 +52,7 @@ import adminNotifikasi_funUpdateIsReadById from "./notifikasi/fun/update/fun_upd
 import adminNotifikasi_findRouterJob from "./notifikasi/route_setting/job";
 import adminNotifikasi_findRouterForum from "./notifikasi/route_setting/forum";
 import { adminNotifikasi_findRouterVoting } from "./notifikasi/route_setting/voting";
+import { adminNotifikasi_findRouterEvent } from "./notifikasi/route_setting/event";
 
 export default function AdminLayout({
   children,
@@ -418,6 +419,18 @@ function DrawerNotifikasi({
                 // VOTE
                 e?.kategoriApp === "VOTING" &&
                   adminNotifikasi_findRouterVoting({
+                    data: e,
+                    router: router,
+                    onChangeNavbar(val) {
+                      onChangeNavbar(val);
+                    },
+                    onToggleNavbar(val) {
+                      onToggleNavbar(val);
+                    },
+                  });
+
+                e?.kategoriApp === "EVENT" &&
+                  adminNotifikasi_findRouterEvent({
                     data: e,
                     router: router,
                     onChangeNavbar(val) {
