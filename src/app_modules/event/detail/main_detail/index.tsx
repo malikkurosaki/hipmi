@@ -2,10 +2,7 @@
 
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import {
-  Button,
-  Stack
-} from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentEvent_DetailMainData from "../../component/detail/detail_main";
@@ -14,6 +11,8 @@ import { Event_countTotalPesertaById } from "../../fun/count/count_total_peserta
 import { Event_funJoinEvent } from "../../fun/create/fun_join_event";
 import { Event_getListPesertaById } from "../../fun/get/get_list_peserta_by_id";
 import { MODEL_EVENT, MODEL_EVENT_PESERTA } from "../../model/interface";
+import mqtt_client from "@/util/mqtt_client";
+import notifikasiToUser_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_user";
 
 export default function Event_DetailMain({
   dataEvent,
@@ -79,18 +78,43 @@ async function onJoin(
     eventId: eventId,
   };
 
-  await Event_funJoinEvent(body as any).then(async (res) => {
-    if (res.status === 200) {
-      await Event_getListPesertaById(eventId).then(async (val) => {
-        await Event_countTotalPesertaById(eventId).then((ttl) => {
-          setPeserta(val);
-          setTotal(ttl);
-          setLoading(true);
-          ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
-        });
+  const userLoginId = userId;
+
+  const res = await Event_funJoinEvent(body as any);
+  if (res.status === 200) {
+    if (userLoginId !== res.data?.Event?.authorId) {
+      const dataNotif = {
+        appId: res?.data?.Event?.id,
+        userId: res?.data?.Event?.authorId,
+        pesan: res?.data?.Event?.title,
+        status: "Peserta event",
+        kategoriApp: "EVENT",
+        title: "Peserta baru telah masuk !",
+      };
+
+      const createNotifikasi = await notifikasiToUser_funCreate({
+        data: dataNotif as any,
       });
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
+
+      if (createNotifikasi.status === 201) {
+        mqtt_client.publish(
+          "USER",
+          JSON.stringify({
+            userId: dataNotif.userId,
+            count: 1,
+          })
+        );
+      }
     }
-  });
+
+    const resPeserta = await Event_getListPesertaById(eventId);
+    setPeserta(resPeserta);
+
+    const resTotal = await Event_countTotalPesertaById(eventId);
+    setTotal(resTotal);
+    setLoading(true);
+    ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }

@@ -37,7 +37,7 @@ export default function Event_Edit({
   return (
     <>
       {/* <pre>{JSON.stringify(value, null, 2)}</pre> */}
-      <Stack px={"sm"}>
+      <Stack px={"xl"}>
         <TextInput
           styles={{
             label: {

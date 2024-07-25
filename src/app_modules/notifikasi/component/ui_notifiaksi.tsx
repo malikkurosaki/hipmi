@@ -16,6 +16,10 @@ import {
   gs_vote_hotMenu,
   gs_vote_status,
 } from "@/app_modules/vote/global_state";
+import {
+  gs_event_hotMenu,
+  gs_event_status,
+} from "@/app_modules/event/global_state";
 
 export function Notifikasi_UiView({
   listNotifikasi,
@@ -29,20 +33,22 @@ export function Notifikasi_UiView({
   const [jobMenuId, setJobMenuId] = useAtom(gs_job_hot_menu);
   const [jobStatus, setJobStatus] = useAtom(gs_job_status);
   const [voteMenu, setVoteMenu] = useAtom(gs_vote_hotMenu);
-  const [voeStatus, setVoteStatus] = useAtom(gs_vote_status);
+  const [voteStatus, setVoteStatus] = useAtom(gs_vote_status);
+  const [eventMenu, setEventMenu] = useAtom(gs_event_hotMenu);
+  const [eventStatus, setEventStatus] = useAtom(gs_event_status);
 
-  useShallowEffect(() => {
-    onLoadData({
-      onLoad(val) {
-        setData(val);
-      },
-    });
-  }, []);
+  // useShallowEffect(() => {
+  //   onLoadData({
+  //     onLoad(val) {
+  //       setData(val);
+  //     },
+  //   });
+  // }, []);
 
-  async function onLoadData({ onLoad }: { onLoad: (val: any) => void }) {
-    const loadData = await notifikasi_getByUserId({ page: 1 });
-    onLoad(loadData);
-  }
+  // async function onLoadData({ onLoad }: { onLoad: (val: any) => void }) {
+  //   const loadData = await notifikasi_getByUserId({ page: 1 });
+  //   onLoad(loadData);
+  // }
 
   return (
     <>
@@ -71,16 +77,22 @@ export function Notifikasi_UiView({
             {(item) => (
               <ComponentNotifiaksi_CardView
                 data={item}
-                onLoadData={(val) => setData(val)}
+                onLoadData={setData}
                 activePage={activePage}
                 onSetMenu={(val) => {
                   if (item?.kategoriApp === "JOB") {
                     setJobMenuId(val.menuId);
                     setJobStatus(val.status);
                   }
+                  
                   if (item?.kategoriApp === "VOTING") {
                     setVoteMenu(val.menuId);
                     setVoteStatus(val.status);
+                  }
+
+                  if (item?.kategoriApp === "EVENT") {
+                    setEventMenu(val.menuId);
+                    setEventStatus(val.status);
                   }
                 }}
               />

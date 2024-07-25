@@ -1,12 +1,13 @@
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import { Card, Stack, Grid, Title, Text, Group } from "@mantine/core";
-import moment from "moment";
-import router from "next/router";
+import { Card, Group, Stack, Text, Title } from "@mantine/core";
+
+import { useRouter } from "next/navigation";
 import { MODEL_EVENT } from "../../model/interface";
 
 export function ComponentEvent_CardRiwayat({ data }: { data: MODEL_EVENT }) {
+  const router = useRouter();
   return (
     <>
       <Card
