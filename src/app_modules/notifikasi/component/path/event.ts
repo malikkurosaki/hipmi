@@ -30,7 +30,7 @@ export function redirectEventPage({
     router.push(path, { scroll: false });
   }
 
-  if (data.status === "Peserta event") {
+  if (data.status === "Peserta Event") {
     router.push(RouterEvent.detail_main + data.appId, { scroll: false });
   }
 }

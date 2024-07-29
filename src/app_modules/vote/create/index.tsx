@@ -128,7 +128,7 @@ export default function Vote_Create() {
 
         <Stack spacing={0}>
           <Center>
-            <Text fw={"bold"} fz={"sm"}>
+            <Text fw={"bold"} fz={"sm"} c={"white"}>
               Daftar Pilihan
             </Text>
           </Center>

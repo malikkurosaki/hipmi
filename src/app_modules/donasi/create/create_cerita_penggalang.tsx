@@ -95,7 +95,7 @@ export default function CreateCeritaPenggalangDonasi({
   }
   return (
     <>
-      <Stack spacing={50} px={"md"} py={"md"}>
+      <Stack spacing={50} px={"xl"} py={"md"}>
         {/* <pre>{JSON.stringify(dataTempo, null, 2)}</pre> */}
         <Stack spacing={"sm"}>
           <ComponentGlobal_BoxInformation informasi="Ceritakan dengan jujur & benar mengapa Penggalanagn Dana ini harus diadakan!" />

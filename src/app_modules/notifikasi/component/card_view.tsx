@@ -14,6 +14,7 @@ import {
 import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
 import { redirectVotingPage } from "./path/voting";
 import { redirectEventPage } from "./path/event";
+import { redirectDetailCollaborationPage } from "./path/collaboration";
 
 export function ComponentNotifiaksi_CardView({
   data,
@@ -42,7 +43,6 @@ export function ComponentNotifiaksi_CardView({
         }}
         my={"xs"}
         onClick={async () => {
-          
           await notifikasi_funUpdateIsReadById({
             notifId: data?.id,
           });
@@ -53,6 +53,7 @@ export function ComponentNotifiaksi_CardView({
           //   });
           //   onLoadData(loadData);
           // }
+          console.log(data.status);
 
           data?.kategoriApp === "JOB" &&
             redirectJobPage({
@@ -85,6 +86,12 @@ export function ComponentNotifiaksi_CardView({
               onSetPage(val) {
                 onSetMenu(val);
               },
+            });
+
+          data?.kategoriApp === "COLLABORATION" &&
+            redirectDetailCollaborationPage({
+              data: data,
+              router: router,
             });
         }}
       >

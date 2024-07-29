@@ -17,6 +17,7 @@ import {
   MODEL_COLLABORATION,
   MODEL_COLLABORATION_PARTISIPASI,
 } from "@/app_modules/colab/model/interface";
+import { notifikasiToUser_CreateGroupCollaboration } from "@/app_modules/notifikasi/fun/create/create_notif_to_user_collaboration";
 import {
   ActionIcon,
   Button,
@@ -37,6 +38,8 @@ import { useAtom } from "jotai";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import mqtt_client from "@/util/mqtt_client";
+
 
 export default function Colab_DetailProyekSaya({
   dataColab,
@@ -77,59 +80,6 @@ function CheckBoxPartisipan({
   colabId: string;
 }) {
   const [value, setValue] = useState<string[]>([]);
-
-  const listCheck = [
-    {
-      id: 1,
-      value: "satu",
-      label: "Satu",
-    },
-    {
-      id: 2,
-      value: "dua",
-      label: "Dua",
-    },
-    {
-      id: 3,
-      value: "tiga",
-      label: "Tiga",
-    },
-    {
-      id: 4,
-      value: "empat",
-      label: "Empat",
-    },
-    {
-      id: 5,
-      value: "lima",
-      label: "Lima",
-    },
-    {
-      id: 6,
-      value: "enam",
-      label: "Enam",
-    },
-    {
-      id: 7,
-      value: "tujuh",
-      label: "Tujuh",
-    },
-    {
-      id: 8,
-      value: "delapan",
-      label: "Delapan",
-    },
-    {
-      id: 9,
-      value: "sembilan",
-      label: "Sembilan",
-    },
-    {
-      id: 10,
-      value: "sepuluh",
-      label: "Sepuluh",
-    },
-  ];
 
   return (
     <>
@@ -208,17 +158,29 @@ function ButtonAction({
 
   async function onSave() {
     if (nameRoom === "")
-      return ComponentGlobal_NotifikasiPeringatan("Isi Nama Grup");
-    await colab_funCreateRoomChat(nameRoom, value, colabId).then((res) => {
-      if (res.status === 201) {
-        setLoading(true);
-        ComponentGlobal_NotifikasiBerhasil("Berhasil Membuat Grup");
-        setHotMenu(4);
-        router.push(RouterColab.grup_diskusi);
-      } else {
-        ComponentGlobal_NotifikasiGagal("Gagal Membuat Grup");
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Nama Grup");
+
+    // await notifikasiToUser_CreateGroupCollaboration({ colabId: colabId });
+
+    const res = await colab_funCreateRoomChat(nameRoom, value, colabId);
+    if (res.status === 201) {
+      for (let a of value) {
+        mqtt_client.publish(
+          "USER",
+          JSON.stringify({
+            userId: a,
+            count: 1,
+          })
+        );
       }
-    });
+
+      setLoading(true);
+      ComponentGlobal_NotifikasiBerhasil("Berhasil Membuat Grup");
+      setHotMenu(4);
+      router.push(RouterColab.grup_diskusi);
+    } else {
+      ComponentGlobal_NotifikasiGagal("Gagal Membuat Grup");
+    }
   }
 
   return (
@@ -231,6 +193,7 @@ function ButtonAction({
         }}
         bg={MainColor.yellow}
         color="yellow"
+        c={"black"}
         style={{
           transition: "0.5s",
         }}
@@ -286,6 +249,7 @@ function ButtonAction({
               loading={loading ? true : false}
               radius={"xl"}
               color="yellow"
+              c={"black"}
               bg={MainColor.yellow}
               onClick={() => onSave()}
               style={{

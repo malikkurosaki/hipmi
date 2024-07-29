@@ -1,31 +1,24 @@
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import {
-  Card,
-  CardSection,
   AspectRatio,
   Box,
-  Title,
-  Slider,
   Divider,
-  Group,
-  Badge,
-  Image,
-  Text,
-  Center,
   Grid,
-  Stack,
+  Group,
+  Image,
   Paper,
+  Stack,
+  Text,
 } from "@mantine/core";
-import { useRouter } from "next/navigation";
-import {
-  MODEL_Investasi,
-  MODEL_Status_investasi,
-} from "../model/model_investasi";
+import { IconChecklist, IconCircleCheck } from "@tabler/icons-react";
 import _ from "lodash";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { IconChecklist, IconCircleCheck } from "@tabler/icons-react";
 import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
+import { MODEL_Investasi } from "../model/model_investasi";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function Publish({ data }: { data: MODEL_Investasi[] }) {
   const router = useRouter();
@@ -34,7 +27,7 @@ export default function Publish({ data }: { data: MODEL_Investasi[] }) {
   if (_.isEmpty(data))
     return (
       <>
-        <ComponentInvestasi_IsEmptyData text="Tidak ada data" />
+        <ComponentGlobal_IsEmptyData />
       </>
     );
 
@@ -43,12 +36,17 @@ export default function Publish({ data }: { data: MODEL_Investasi[] }) {
       {data.map((e) => (
         <Paper
           key={e.id}
-          withBorder
-          mb={"md"}
-          p={"xs"}
           onClick={() =>
             router.push(RouterInvestasi.detail_publish + `${e.id}`)
           }
+          style={{
+            padding: "15px",
+            backgroundColor: AccentColor.darkblue,
+            borderRadius: "10px",
+            border: `2px solid ${AccentColor.blue}`,
+            color: "white",
+            marginBottom: "15px",
+          }}
         >
           <Grid>
             <Grid.Col span={8}>
@@ -101,9 +99,13 @@ export default function Publish({ data }: { data: MODEL_Investasi[] }) {
                     <Box>
                       Sisa Waktu : {}
                       {Number(e.MasterPencarianInvestor.name) -
-                        moment(new Date()).diff(new Date(e.countDown), "days")} hari
+                        moment(new Date()).diff(
+                          new Date(e.countDown),
+                          "days"
+                        )}{" "}
+                      hari
                     </Box>
-                  )} 
+                  )}
                 </Group>
               </Group>
             )}

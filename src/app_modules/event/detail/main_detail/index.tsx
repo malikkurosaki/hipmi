@@ -87,7 +87,7 @@ async function onJoin(
         appId: res?.data?.Event?.id,
         userId: res?.data?.Event?.authorId,
         pesan: res?.data?.Event?.title,
-        status: "Peserta event",
+        status: "Peserta Event",
         kategoriApp: "EVENT",
         title: "Peserta baru telah masuk !",
       };

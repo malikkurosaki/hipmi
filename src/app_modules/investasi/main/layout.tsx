@@ -1,14 +1,15 @@
 "use client";
 
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
 import {
   ActionIcon,
-  AppShell,
   Center,
   Flex,
   Footer,
   Grid,
-  Group,
+  SimpleGrid,
   Stack,
   Text,
 } from "@mantine/core";
@@ -16,17 +17,18 @@ import {
   IconCash,
   IconChartHistogram,
   IconChartPie,
-  IconChartPieFilled,
-  IconMoneybag,
   IconNotes,
-  IconPencilPlus,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { gs_investasiFooter } from "../g_state";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
 
 export default function LayoutMainInvestasi({
   children,
@@ -65,49 +67,79 @@ export default function LayoutMainInvestasi({
 
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <UIGlobal_LayoutTamplate
         header={
-          <ComponentGlobal_HeaderTamplate
-            route="/dev/crowd/main"
+          <UIGlobal_LayoutHeaderTamplate
+            routerLeft={RouterCrowd.main}
             title="Investasi"
             // icon={<IconPencilPlus />}
             // route2={"/dev/investasi/create"}
           />
         }
         footer={
-          <Footer height={"10vh"} bg={"black"}>
-            <Grid align="center" h={"10vh"} pt={"xs"} grow>
-              {/* Tampilan Bursa */}
-              {listFooter.map((e, k) => (
-                <Grid.Col
-                  key={e.id}
-                  span={3}
-                  onClick={() => {
-                    router.push(e.route);
-                    setActive(k);
-                  }}
+          <SimpleGrid cols={listFooter.length} h={"9vh"} mx={"xs"}>
+            {listFooter.map((e, i) => (
+              <Stack key={i} align="center" justify="center" spacing={0}>
+                <ActionIcon
+                  // disabled={e.path === "" ? true : false}
+                  variant="transparent"
+                  c={active === i ? MainColor.yellow : "white"}
+                  onClick={
+                    () => {
+                      router.push(e.route);
+                      setActive(i);
+                    }
+                    // e.route === ""
+                    //   ? ComponentGlobal_NotifikasiPeringatan("Cooming Soon")
+                    //   : (router.replace(e.route), setActive(i))
+                  }
                 >
-                  <Center h={"100%"}>
-                    <Flex direction={"column"} align={"center"} w={"100%"}>
-                      <ActionIcon
-                        variant="transparent"
-                        c={active === k ? "blue" : "white"}
-                      >
-                        {e.icon}
-                      </ActionIcon>
-                      <Text c={active === k ? "blue" : "white"} fz={"xs"}>
-                        {e.name}
-                      </Text>
-                    </Flex>
-                  </Center>
-                </Grid.Col>
-              ))}
-            </Grid>
-          </Footer>
+                  {e.icon}
+                </ActionIcon>
+                <Text
+                  c={active === i ? MainColor.yellow : "white"}
+                  fz={"xs"}
+                  lineClamp={1}
+                >
+                  {e.name}
+                </Text>
+              </Stack>
+            ))}
+          </SimpleGrid>
+
+          // <Footer height={"10vh"} bg={"black"}>
+          //   <Grid align="center" h={"10vh"} pt={"xs"} grow>
+
+          //     {listFooter.map((e, k) => (
+          //       <Grid.Col
+          //         key={e.id}
+          //         span={3}
+          //         onClick={() => {
+          //           router.push(e.route);
+          //           setActive(k);
+          //         }}
+          //       >
+          //         <Center h={"100%"}>
+          //           <Flex direction={"column"} align={"center"} w={"100%"}>
+          //             <ActionIcon
+          //               variant="transparent"
+          //               c={active === k ? "blue" : "white"}
+          //             >
+          //               {e.icon}
+          //             </ActionIcon>
+          //             <Text c={active === k ? "blue" : "white"} fz={"xs"}>
+          //               {e.name}
+          //             </Text>
+          //           </Flex>
+          //         </Center>
+          //       </Grid.Col>
+          //     ))}
+          //   </Grid>
+          // </Footer>
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

@@ -2,9 +2,9 @@
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
 import mqtt_client from "@/util/mqtt_client";
 import {
-  ActionIcon,
   Affix,
   Button,
   Center,
@@ -15,7 +15,7 @@ import {
   rem,
 } from "@mantine/core";
 import { useShallowEffect, useWindowScroll } from "@mantine/hooks";
-import { IconPencilPlus, IconSearchOff } from "@tabler/icons-react";
+import { IconSearchOff } from "@tabler/icons-react";
 import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";
 import { useRouter } from "next/navigation";
@@ -23,7 +23,6 @@ import { useState } from "react";
 import ComponentForum_BerandaCardView from "../component/main_component/card_view";
 import { forum_new_getAllPosting } from "../fun/get/new_get_all_posting";
 import { MODEL_FORUM_POSTING } from "../model/interface";
-import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
 
 export default function Forum_Beranda({
   listForum,
@@ -133,31 +132,6 @@ export default function Forum_Beranda({
           />
         </Affix>
       )}
-
-      {/* <pre>{JSON.stringify(listForum, null, 2)}</pre> */}
-      {/* <Affix position={{ bottom: rem(100), right: rem(30) }}>
-        <ActionIcon
-          opacity={scroll.y > 0 ? 0.5 : ""}
-          style={{
-            transition: "0.5s",
-            border: `1px solid ${AccentColor.skyblue}`,
-          }}
-          size={"xl"}
-          radius={"xl"}
-          variant="transparent"
-          bg={AccentColor.blue}
-          onClick={() => {
-            setLoadingCreate(true);
-            router.push(RouterForum.create);
-          }}
-        >
-          {loadingCreate ? (
-            <Loader color={AccentColor.yellow} size={25} />
-          ) : (
-            <IconPencilPlus color="white" />
-          )}
-        </ActionIcon>
-      </Affix> */}
 
       <ComponentGlobal_CreateButton path={RouterForum.create} />
 

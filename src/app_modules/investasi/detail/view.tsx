@@ -2,10 +2,11 @@
 
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
+import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 import {
   ActionIcon,
   AspectRatio,
-  Avatar,
   Box,
   Button,
   Center,
@@ -15,10 +16,9 @@ import {
   Image,
   Paper,
   Progress,
-  Slider,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
 import {
   IconBookDownload,
@@ -27,16 +27,13 @@ import {
   IconSpeakerphone,
   IconXboxX,
 } from "@tabler/icons-react";
+import { useAtom } from "jotai";
+import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { MODEL_Investasi } from "../model/model_investasi";
-import moment from "moment";
-import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { gs_TransferValue } from "../g_state";
-import { useAtom } from "jotai";
-import _ from "lodash";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
+import { MODEL_Investasi } from "../model/model_investasi";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function DetailInvestasi({
   dataInvestasi,
@@ -92,7 +89,16 @@ export default function DetailInvestasi({
 
   return (
     <>
-      <Box px={"sm"}>
+      <Box
+        style={{
+          padding: "15px",
+          backgroundColor: AccentColor.darkblue,
+          borderRadius: "10px",
+          border: `2px solid ${AccentColor.blue}`,
+          color: "white",
+          marginBottom: "15px",
+        }}
+      >
         {/* Foto username dan sisa waktu */}
         <Group position="apart" mb={"md"}>
           {/* <pre>{JSON.stringify(dataUser, null, 2)}</pre> */}

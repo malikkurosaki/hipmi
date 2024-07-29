@@ -1,29 +1,18 @@
 "use client";
 
-import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
-import {
-  Button,
-  NumberInput,
-  Select,
-  Stack,
-  Text,
-  TextInput,
-  Textarea,
-} from "@mantine/core";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import {
-  MODEL_COLLABORATION,
-  MODEL_COLLABORATION_MASTER,
-} from "../model/interface";
-import colab_funCreateProyek from "../fun/create/fun_create_proyek";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import _ from "lodash";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { Button, Select, Stack, TextInput, Textarea } from "@mantine/core";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import colab_funCreateProyek from "../fun/create/fun_create_proyek";
+import { MODEL_COLLABORATION_MASTER } from "../model/interface";
 import mqtt_client from "@/util/mqtt_client";
+import { useHookstate } from "@hookstate/core";
+import { useGsCollabCreate } from "../global_state/state";
 
 export default function Colab_Create({
   listIndustri,
@@ -40,7 +29,7 @@ export default function Colab_Create({
   });
   return (
     <>
-      <Stack px={"sm"} py={"md"}>
+      <Stack px={"xl"} py={"md"}>
         <TextInput
           maxLength={100}
           styles={{
@@ -176,7 +165,12 @@ function ButtonAction({ value }: { value: any }) {
   const [loading, setLoading] = useState(false);
 
   async function onSave() {
-    // console.log(value.jumlah_partisipan);
+    mqtt_client.publish(
+      "Colab_create",
+      JSON.stringify({ isNewPost: true, count: 1 })
+    );
+
+    console.log(value.jumlah_partisipan);
     if (value.title === "")
       return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
     if (value.lokasi === "")
@@ -188,15 +182,6 @@ function ButtonAction({ value }: { value: any }) {
 
     const res = await colab_funCreateProyek(value);
     if (res.status === 201) {
-      //  const dataNotif: any = {
-      //    appId: res.data?.id as any,
-      //    kategoriApp: "VOTING",
-      //    status: create.data?.MasterStatus?.name as any,
-      //    userId: create.data?.authorId as any,
-      //    pesan: create.data?.title as any,
-      //    title: "Job baru",
-      //  };
-
       setLoading(true);
       router.back();
       ComponentGlobal_NotifikasiBerhasil(res.message);
@@ -223,9 +208,12 @@ function ButtonAction({ value }: { value: any }) {
         loading={loading ? true : false}
         mt={"xl"}
         radius={"xl"}
-        onClick={() => onSave()}
+        onClick={() => {
+          onSave();
+        }}
         bg={MainColor.yellow}
         color={"yellow"}
+        c={"black"}
         style={{
           transition: "0.5s",
         }}
