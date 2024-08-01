@@ -15,15 +15,27 @@ import {
 import moment from "moment";
 import { MODEL_DONASI_KABAR } from "../../model/interface";
 import { useState } from "react";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function DetailKabarDonasi({dataDonasi}: {dataDonasi: MODEL_DONASI_KABAR}) {
   const [kabar, setKabar] = useState(dataDonasi)
   return (
     <>
-     <Stack>
+      <Stack
+        style={{
+          backgroundColor: AccentColor.darkblue,
+          border: `2px solid ${AccentColor.blue}`,
+          padding: "20px",
+          borderRadius: "10px",
+          color: "white",
+          marginBottom: "15px",
+        }}
+      >
         <Stack>
-          <Text fz={"xs"}>{moment(Date.now()).format("ll")}</Text>
-          <Title order={5}>{kabar.title}</Title>
+          <Group position="right">
+            <Text fz={"xs"}>{moment(Date.now()).format("ll")}</Text>
+          </Group>
+          <Title align="center" order={4}>{kabar.title}</Title>
           {kabar.imagesId === null ? (
             ""
           ) : (

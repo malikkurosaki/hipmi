@@ -106,10 +106,10 @@ export default function MainCrowd() {
               // setLoadingDon(true);
               // router.push(RouterCrowd.donasi);
               // setDonasiHotMenu(0);
-                ComponentGlobal_NotifikasiPeringatan(
-                  "Sementara ini sedang maintenance",
-                  3000
-                );
+              ComponentGlobal_NotifikasiPeringatan(
+                "Sementara ini sedang maintenance",
+                3000
+              );
             }}
           >
             <Grid>

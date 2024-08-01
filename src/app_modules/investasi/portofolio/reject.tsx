@@ -1,28 +1,19 @@
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import {
-  Card,
-  CardSection,
   AspectRatio,
   Box,
-  Title,
-  Divider,
-  Group,
-  Badge,
-  Image,
-  Text,
-  Center,
   Grid,
-  Stack,
+  Image,
   Paper,
+  Stack,
+  Text,
 } from "@mantine/core";
-import { useRouter } from "next/navigation";
-import {
-  MODEL_Investasi,
-  MODEL_Status_investasi,
-} from "../model/model_investasi";
-import { useState } from "react";
 import _ from "lodash";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
+import { MODEL_Investasi } from "../model/model_investasi";
+import { ComponentInvestasi_CardStatus } from "../component/detail/card_status";
 
 export default function Reject({ data }: { data: MODEL_Investasi[] }) {
   const [investasi, setInvestasi] = useState(data);
@@ -37,40 +28,13 @@ export default function Reject({ data }: { data: MODEL_Investasi[] }) {
 
   return (
     <>
-
       {investasi.map((e) => (
-        <Paper
-          key={e.id}
-          withBorder
-          mb={"md"}
-          p={"xs"}
-          onClick={() => router.push(RouterInvestasi.detail_reject + `${e.id}`)}
-        >
-          <Grid>
-            <Grid.Col span={8}>
-              <Text fw={"bold"}> {_.capitalize(e.title)}</Text>
-              <Stack spacing={0}>
-                <Text fz={10}>Target Dana:</Text>
-              <Text>
-                Rp. {new Intl.NumberFormat("id-ID", {
-                  maximumSignificantDigits: 10,
-                }).format(+e.targetDana)}
-              </Text>
-              </Stack>
-            </Grid.Col>
-
-            <Grid.Col span={4}>
-              <AspectRatio ratio={16 / 9}>
-                <Paper radius={"md"}>
-                  <Image
-                    alt=""
-                    src={RouterInvestasi.api_gambar + `${e.imagesId}`}
-                  />
-                </Paper>
-              </AspectRatio>
-            </Grid.Col>
-          </Grid>
-        </Paper>
+        <Box key={e.id}>
+          <ComponentInvestasi_CardStatus
+            data={e}
+            path={RouterInvestasi.detail_reject}
+          />
+        </Box>
       ))}
     </>
   );

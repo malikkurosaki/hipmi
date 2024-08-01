@@ -6,35 +6,34 @@ import moment from "moment";
 
 import { MODEL_DONASI_KABAR } from "../../model/interface";
 import { useRouter } from "next/navigation";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function ComponentDonasi_ListKabar({
   kabar,
-  route
+  route,
 }: {
   kabar: MODEL_DONASI_KABAR;
-  route: string
+  route: string;
 }) {
   const router = useRouter();
   return (
     <>
-      <Paper bg={"gray.1"} p={"md"}>
+      <Paper
+        style={{
+          backgroundColor: AccentColor.blue,
+          border: `2px solid ${AccentColor.darkblue}`,
+          padding: "15px",
+          cursor: "pointer",
+          borderRadius: "10px",
+          color: "white",
+          marginBottom: "5px",
+        }}
+        onClick={() => router.push(route + `${kabar.id}`)}
+      >
         <Stack>
           <Text fz={"xs"}>{moment(kabar.createdAt).format("ll")}</Text>
 
-          <Stack>
-            <Title order={5}>{kabar.title}</Title>
-            <Stack spacing={0}>
-              <Text lineClamp={2}>{kabar.deskripsi}</Text>
-              <Text
-                c={"blue"}
-                onClick={() =>
-                  router.push(route + `${kabar.id}`)
-                }
-              >
-                Buka Kabar
-              </Text>
-            </Stack>
-          </Stack>
+          <Title order={5}>{kabar.title}</Title>
         </Stack>
       </Paper>
     </>

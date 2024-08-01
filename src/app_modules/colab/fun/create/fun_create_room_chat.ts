@@ -32,6 +32,20 @@ export default async function colab_funCreateRoomChat(
 
     if (!createAnggota)
       return { status: 400, message: "Gagal Menambah Anggota" };
+
+    const createdNotifikasi = await prisma.notifikasi.create({
+      data: {
+        userId: v,
+        appId: createRoom.id,
+        status: "Collaboration Group",
+        title: "Grup Kolaborasi Baru",
+        pesan: createRoom.name,
+        kategoriApp: "COLLABORATION",
+        userRoleId: "1",
+      },
+    });
+    if (!createdNotifikasi)
+      return { status: 400, message: "Gagal mengirim notifikasi" };
   }
 
   const createForAuthor =

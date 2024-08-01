@@ -55,6 +55,8 @@ import { RouterAdminDonasi } from "@/app/lib/router_admin/router_admin_donasi";
 import adminDonasi_funUpdateStatusDanTotal from "../../fun/update/fun_update_status_dan_total";
 import { ComponentAdminGlobal_NotifikasiBerhasil } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_berhasil";
 import { ComponentAdminGlobal_NotifikasiGagal } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_gagal";
+import mqtt_client from "@/util/mqtt_client";
+import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
 
 export default function AdminDonasi_DetailPublish({
   dataPublish,
@@ -266,7 +268,6 @@ function TampilanListDonatur({
   donatur: any;
   listMasterStatus: MODEL_NEW_DEFAULT_MASTER[];
   dataDonasi: MODEL_DONASI;
-
   onSuccessDonasi: (val: any) => void;
 }) {
   const router = useRouter();
@@ -509,6 +510,57 @@ function ButtonAccept({
       target: target,
     });
     if (updateStatus.status == 200) {
+      const dataNotif = {
+        appId: updateStatus.data?.id,
+        userId: updateStatus.data?.authorId,
+        pesan: updateStatus.data?.Donasi?.title,
+        status: updateStatus.data?.DonasiMaster_StatusInvoice?.name,
+        kategoriApp: "DONASI",
+        title: "Terimakasih, Donasi anda telah diterima",
+      };
+
+      const notif = await adminNotifikasi_funCreateToUser({
+        data: dataNotif as any,
+      });
+
+      if (notif.status === 201) {
+        mqtt_client.publish(
+          "USER",
+          JSON.stringify({ userId: updateStatus?.data?.authorId, count: 1 })
+        );
+
+        mqtt_client.publish(
+          "donasi_invoice",
+          JSON.stringify({
+            invoiceId: invoiceId,
+            statusInvoiceId: "1",
+          })
+        );
+      }
+
+      const dataNotifToAuthorDonasi = {
+        appId: updateStatus.data?.Donasi?.id,
+        userId: updateStatus.data?.Donasi?.authorId,
+        pesan: updateStatus.data?.Donasi?.title,
+        status: "Donatur Baru",
+        kategoriApp: "DONASI",
+        title: "Ada donatur baru",
+      };
+
+      const notifToAuthorDonasi = await adminNotifikasi_funCreateToUser({
+        data: dataNotifToAuthorDonasi as any,
+      });
+
+      if (notifToAuthorDonasi.status === 201) {
+        mqtt_client.publish(
+          "USER",
+          JSON.stringify({
+            userId: updateStatus?.data?.Donasi?.authorId,
+            count: 1,
+          })
+        );
+      }
+
       const updateData = await AdminDonasi_getOneById(donasiId);
       onSuccessDonasi(updateData as any);
       const updatelistDonatur = await adminDonasi_getListDonatur({
@@ -516,7 +568,6 @@ function ButtonAccept({
         page: 1,
       });
       onSuccessDonatur(updatelistDonatur);
-
       ComponentAdminGlobal_NotifikasiBerhasil(updateStatus.message);
     } else {
       ComponentAdminGlobal_NotifikasiGagal(updateStatus.message);

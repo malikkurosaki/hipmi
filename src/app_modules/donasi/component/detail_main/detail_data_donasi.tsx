@@ -62,23 +62,30 @@ export function ComponentDonasi_DetailDataMain({
         }}
       >
         <Stack>
-          <Center>
+          <AspectRatio ratio={1 / 1} mx={"sm"} mah={300}>
+            <Image
+              alt="Foto"
+              src={RouterDonasi.api_image + `${donasi?.imageDonasi?.url}`}
+              radius={"sm"}
+            />
+          </AspectRatio>
+          {/* <Center>
             <Image
               maw={200}
               radius={"xs"}
               alt="Foto"
-              src={RouterDonasi.api_gambar + `${donasi.imagesId}`}
+              src={RouterDonasi?.api_gambar + `${donasi?.imagesId}`}
             />
-          </Center>
+          </Center> */}
           {/* <AspectRatio ratio={16 / 9}>
             <Paper radius={"md"}>
             </Paper>
           </AspectRatio> */}
           <Stack spacing={0} mt={"lg"}>
-            <Title order={4}>{donasi.title}</Title>
+            <Title order={4}>{donasi?.title}</Title>
             <ComponentDonasi_TampilanHitungMundur
-              durasi={donasi.DonasiMaster_Durasi.name}
-              publishTime={donasi.publishTime}
+              durasi={donasi?.DonasiMaster_Durasi.name}
+              publishTime={donasi?.publishTime}
             />
           </Stack>
           <Stack spacing={0}>
@@ -86,12 +93,12 @@ export function ComponentDonasi_DetailDataMain({
               <Stack spacing={0}>
                 <Text fz={12}>Dana terkumpul</Text>
                 <Title order={4} c="blue">
-                  <TampilanRupiahDonasi nominal={+donasi.terkumpul} />
+                  <TampilanRupiahDonasi nominal={+donasi?.terkumpul} />
                 </Title>
                 <Group>
                   <Text fz={10}>Dari total</Text>{" "}
                   <TampilanRupiahDonasi
-                    nominal={+donasi.target}
+                    nominal={+donasi?.target}
                     fontSize={10}
                   />
                 </Group>
@@ -104,12 +111,12 @@ export function ComponentDonasi_DetailDataMain({
                     color: MainColor.yellow,
                   }}
                 >
-                  {donasi.DonasiMaster_Ketegori.name}
+                  {donasi?.DonasiMaster_Ketegori.name}
                 </Title>
               </Stack>
             </Group>
           </Stack>
-          <Progress value={+donasi.progres} animate />
+          <Progress value={+donasi?.progres} color="yellow" size={"lg"} />
 
           <Grid>
             <Grid.Col
@@ -145,7 +152,7 @@ export function ComponentDonasi_DetailDataMain({
               span={"auto"}
               onClick={() => {
                 setLoadingKabar(true);
-                router.push(RouterDonasi.kabar + `${donasi.id}`);
+                router.push(RouterDonasi.kabar + `${donasi?.id}`);
               }}
             >
               <Stack spacing={"sm"} align="center">

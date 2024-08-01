@@ -1,25 +1,18 @@
 "use client";
 
-import {
-  Stack,
-  TextInput,
-  Select,
-  Textarea,
-  Button,
-  Text,
-} from "@mantine/core";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { Button, Select, Stack, Textarea, TextInput } from "@mantine/core";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
+import colab_funEditById from "../fun/edit/fun_edit_by_id";
 import {
   MODEL_COLLABORATION,
   MODEL_COLLABORATION_MASTER,
 } from "../model/interface";
-import colab_funEditById from "../fun/edit/fun_edit_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function Colab_Edit({
   selectedData,
@@ -31,7 +24,7 @@ export default function Colab_Edit({
   const [value, setValue] = useState(selectedData);
   return (
     <>
-      <Stack px={"sm"} py={"md"}>
+      <Stack px={"xl"} py={"md"}>
         {/* <pre>{JSON.stringify(value, null, 2)}</pre> */}
         <TextInput
           maxLength={100}
@@ -217,6 +210,7 @@ function ButtonAction({ value }: { value: any }) {
         onClick={() => onUpdate()}
         bg={MainColor.yellow}
         color={"yellow"}
+        c={"black"}
         style={{
           transition: "0.5s",
         }}

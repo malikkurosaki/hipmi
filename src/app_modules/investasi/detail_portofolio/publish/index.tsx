@@ -33,6 +33,7 @@ import { MODEL_Investasi } from "../../model/model_investasi";
 import { useState } from "react";
 import moment from "moment";
 import _ from "lodash";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function DetailPublishInvestasi({
   dataInvestasi,
@@ -64,16 +65,38 @@ export default function DetailPublishInvestasi({
   ];
 
   return (
-    <>
+    <Stack
+      style={{
+        paddingInline: "15px",
+        paddingBlock: "15px",
+        backgroundColor: AccentColor.darkblue,
+        border: `2px solid ${AccentColor.blue}`,
+        borderRadius: "10px",
+        color: "white",
+        marginBottom: "15px",
+      }}
+    >
       {Number(investasi.MasterPencarianInvestor.name) -
         moment(new Date()).diff(new Date(investasi.countDown), "days") <=
       0 ? (
-        <Group position="center" mb={"sm"}>
+        <Group
+          position="center"
+          mb={"sm"}
+          style={{
+            color: "white",
+          }}
+        >
           <IconCircleCheck color="green" />
           <Text c={"green"}>Selesai</Text>
         </Group>
       ) : (
-        <Group mb={"sm"} position="center">
+        <Group
+          mb={"sm"}
+          position="center"
+          style={{
+            color: "white",
+          }}
+        >
           <Text>
             Sisa waktu :{" "}
             {Number(investasi.MasterPencarianInvestor.name) -
@@ -86,14 +109,15 @@ export default function DetailPublishInvestasi({
         </Group>
       )}
 
-      <Paper withBorder mb={"md"}>
-        <AspectRatio ratio={16 / 9}>
-          <Image
-            alt=""
-            src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
-          />
-        </AspectRatio>
-      </Paper>
+      <AspectRatio ratio={1 / 1} mx={"sm"} mah={300}>
+        <Image
+          alt=""
+          src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
+          radius={"sm"}
+          height={300}
+          width={"100%"}
+        />
+      </AspectRatio>
 
       {/* Title dan Persentase */}
       <Box mb={"md"}>
@@ -202,6 +226,6 @@ export default function DetailPublishInvestasi({
           </Grid.Col>
         ))}
       </Grid>
-    </>
+    </Stack>
   );
 }

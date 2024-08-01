@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { MODEL_DONASI_KABAR } from "../../model/interface";
 import { useState } from "react";
 import ComponentDonasi_ListKabar from "../../component/detail_main/list_kabar";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function ListKabarDonasi({
   donasiId,
@@ -41,24 +42,20 @@ export default function ListKabarDonasi({
           leftIcon={<IconCirclePlus />}
           radius={"xl"}
           onClick={() => router.push(RouterDonasi.create_kabar + `${donasiId}`)}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
         >
           Tambah Kabar
         </Button>
-        <SimpleGrid
-          cols={4}
-          spacing="lg"
-          breakpoints={[
-            { maxWidth: "62rem", cols: 3, spacing: "md" },
-            { maxWidth: "48rem", cols: 2, spacing: "sm" },
-            { maxWidth: "36rem", cols: 1, spacing: "sm" },
-          ]}
-        >
-          {kabar.map((e, i) => (
-           <Box key={i}>
-            <ComponentDonasi_ListKabar kabar={e} route={RouterDonasi.update_kabar}/>
-           </Box>
-          ))}
-        </SimpleGrid>
+        {kabar.map((e, i) => (
+          <Box key={i}>
+            <ComponentDonasi_ListKabar
+              kabar={e}
+              route={RouterDonasi.update_kabar}
+            />
+          </Box>
+        ))}
       </Stack>
     </>
   );

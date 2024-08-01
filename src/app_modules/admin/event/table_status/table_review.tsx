@@ -1,8 +1,6 @@
 "use client";
 
-import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import {
-  ActionIcon,
   Box,
   Button,
   Center,
@@ -11,37 +9,27 @@ import {
   Spoiler,
   Stack,
   Table,
-  Text,
-  TextInput,
   Textarea,
   Title,
 } from "@mantine/core";
-import {
-  IconBan,
-  IconChevronLeft,
-  IconEyeCheck,
-  IconEyeShare,
-  IconShare,
-} from "@tabler/icons-react";
+import { IconBan, IconEyeShare } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
 import { useDisclosure } from "@mantine/hooks";
 
-import { useState } from "react";
-import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
-import ComponentAdminDonasi_TombolKembali from "../../donasi/component/tombol_kembali";
-import { MODEL_EVENT } from "@/app_modules/event/model/interface";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
-import moment from "moment";
-import _ from "lodash";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { AdminEvent_funEditStatusPublishById } from "../fun/edit/fun_edit_status_publish_by_id";
-import { AdminEvent_getListTableByStatusId } from "../fun/get/get_list_table_by_status_id";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import { AdminEvent_funEditCatatanById } from "../fun/edit/fun_edit_status_reject_by_id";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-
+import { MODEL_EVENT } from "@/app_modules/event/model/interface";
+import mqtt_client from "@/util/mqtt_client";
+import _ from "lodash";
+import moment from "moment";
+import { useState } from "react";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import adminNotifikasi_funCreateToUser from "../../notifikasi/fun/create/fun_create_notif_user";
+import { AdminEvent_funEditStatusPublishById } from "../fun/edit/fun_edit_status_publish_by_id";
+import { AdminEvent_funEditCatatanById } from "../fun/edit/fun_edit_status_reject_by_id";
+import { AdminEvent_getListTableByStatusId } from "../fun/get/get_list_table_by_status_id";
 export default function AdminEvent_TableReview({
   listReview,
 }: {
@@ -197,16 +185,35 @@ async function onPublish(eventId: string, setData: any, tanggal: Date) {
       "Waktu acara telah lewat, Report untuk memberitahu user !"
     );
 
-  await AdminEvent_funEditStatusPublishById(eventId, "1").then(async (res) => {
-    if (res.status === 200) {
-      await AdminEvent_getListTableByStatusId("2").then((res) => {
-        setData(res);
-        ComponentGlobal_NotifikasiBerhasil("Berhasil update status");
-      });
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
+  const res = await AdminEvent_funEditStatusPublishById(eventId, "1");
+  if (res.status === 200) {
+    const dataNotif = {
+      appId: res.data?.id,
+      status: res.data?.EventMaster_Status?.name as any,
+      userId: res.data?.authorId as any,
+      pesan: res.data?.title as any,
+      kategoriApp: "EVENT",
+      title: "Event publish",
+    };
+
+    const notif = await adminNotifikasi_funCreateToUser({
+      data: dataNotif as any,
+    });
+
+    if (notif.status === 201) {
+      mqtt_client.publish(
+        "USER",
+        JSON.stringify({ userId: res?.data?.authorId, count: 1 })
+      );
     }
-  });
+
+    await AdminEvent_getListTableByStatusId("2").then((res) => {
+      setData(res);
+      ComponentGlobal_NotifikasiBerhasil("Berhasil update status");
+    });
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }
 
 async function onReject(
@@ -222,15 +229,34 @@ async function onReject(
     catatan: catatan,
   };
 
-  await AdminEvent_funEditCatatanById(body as any, "4").then(async (res) => {
-    if (res.status === 200) {
-      await AdminEvent_getListTableByStatusId("2").then((val) => {
-        setData(val);
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-        close();
-      });
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
+  const res  = await AdminEvent_funEditCatatanById(body as any, "4");
+  if (res.status === 200) {
+    const dataNotif = {
+      appId: res.data?.id,
+      status: res.data?.EventMaster_Status?.name as any,
+      userId: res.data?.authorId as any,
+      pesan: res.data?.title as any,
+      kategoriApp: "EVENT",
+      title: "Event anda di tolak !",
+    };
+
+    const notif = await adminNotifikasi_funCreateToUser({
+      data: dataNotif as any,
+    });
+
+    if (notif.status === 201) {
+      mqtt_client.publish(
+        "USER",
+        JSON.stringify({ userId: res?.data?.authorId, count: 1 })
+      );
     }
-  });
+
+    await AdminEvent_getListTableByStatusId("2").then((val) => {
+      setData(val);
+      ComponentGlobal_NotifikasiBerhasil(res.message);
+      close();
+    });
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }

@@ -1,47 +1,42 @@
 "use client";
 
-import { ApiHipmi } from "@/app/lib/api";
-import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/model_default_master";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { Warna } from "@/app/lib/warna";
 import {
   ActionIcon,
   Affix,
   AspectRatio,
-  Badge,
   Box,
   Button,
   Card,
   CardSection,
   Center,
   Divider,
-  Flex,
   Grid,
   Group,
   Image,
   Paper,
   Progress,
-  Slider,
   Stack,
   Text,
   Title,
   rem,
 } from "@mantine/core";
-import { useRouter } from "next/navigation";
-import dataDummy from "../dummy/data_dummy.json";
-import moment from "moment";
+import { useWindowScroll } from "@mantine/hooks";
 import {
-  IconCheck,
   IconCircleCheck,
   IconPencilPlus,
   IconXboxX,
 } from "@tabler/icons-react";
-import { MODEL_Investasi } from "../model/model_investasi";
 import _ from "lodash";
+import moment from "moment";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useShallowEffect, useWindowScroll } from "@mantine/hooks";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import { Warna } from "@/app/lib/warna";
 import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
-import { RouterJob } from "@/app/lib/router_hipmi/router_job";
+import { MODEL_Investasi } from "../model/model_investasi";
+import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 
 export default function MainInvestasi({
   listData,
@@ -66,7 +61,7 @@ export default function MainInvestasi({
 
   return (
     <>
-      <Affix position={{ bottom: rem(150), right: rem(30) }}>
+      {/* <Affix position={{ bottom: rem(150), right: rem(30) }}>
         <ActionIcon
           loading={isLoading ? true : false}
           opacity={scroll.y > 0 ? 0.5 : ""}
@@ -84,20 +79,29 @@ export default function MainInvestasi({
         >
           <IconPencilPlus color="white" />
         </ActionIcon>
-      </Affix>
+      </Affix> */}
+
+      <ComponentGlobal_CreateButton path={RouterInvestasi.create} />
 
       {_.isEmpty(investasi) && _.isEmpty(invesDone) && _.isEmpty(invesFail) ? (
-        <ComponentInvestasi_IsEmptyData text="Tidak ada data" />
+        <ComponentGlobal_IsEmptyData />
       ) : (
         investasi.map((e) => (
           <Card
-            // sx={{ borderStyle: "solid", borderColor: "black", borderWidth: "0.5px" }}
-            radius={"sm"}
             key={e.id}
-            mb={"lg"}
-            withBorder
-            p={"xl"}
-            shadow="lg"
+            style={{
+              padding: "15px",
+              backgroundColor: AccentColor.darkblue,
+              borderRadius: "10px",
+              border: `2px solid ${AccentColor.blue}`,
+              color: "white",
+              marginBottom: "15px",
+              marginInline: "15px",
+            }}
+            onClick={() => {
+              setLoadingDetail(true);
+              router.push(RouterInvestasi.detail + `${e.id}`);
+            }}
           >
             <CardSection>
               <AspectRatio ratio={16 / 9}>
@@ -176,8 +180,8 @@ export default function MainInvestasi({
             </CardSection>
             <Divider color="gray.4" />
             <CardSection p={"md"}>
-              <Group position="apart">
-                <Button
+              <Group position="right">
+                {/* <Button
                   loaderPosition="center"
                   loading={isLoadingDetail ? true : false}
                   radius={"xl"}
@@ -190,7 +194,7 @@ export default function MainInvestasi({
                   }}
                 >
                   Detail
-                </Button>
+                </Button> */}
 
                 {e.progress === "100" ? (
                   <Group position="right" spacing={"xs"}>

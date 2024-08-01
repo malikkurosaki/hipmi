@@ -10,9 +10,11 @@ export async function event_getListAllPublish({ page }: { page: number }) {
   const data = await prisma.event.findMany({
     take: takeData,
     skip: skipData,
-    orderBy: {
-      tanggal: "desc",
-    },
+    orderBy: [
+      {
+        tanggal: "desc",
+      },
+    ],
     where: {
       active: true,
       eventMaster_StatusId: "1",

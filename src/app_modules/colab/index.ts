@@ -19,7 +19,6 @@ import Colab_DetailPartisipasiProyek from "./detail/proyek/partisipasi";
 import LayoutColab_DetailPartisipasiProyek from "./detail/proyek/partisipasi/layout";
 import Colab_GrupDiskus from "./main/grup";
 import Colab_DetailGrupDiskusi from "./detail/grup";
-import LayoutColab_DetailGrupDiskusi from "./detail/grup/layout";
 import Colab_NotifikasiView from "./main/pemberitahuan";
 import Colab_DetailProyekSaya from "./detail/proyek/saya";
 import LayoutColab_DetailProyekSaya from "./detail/proyek/saya/layout";
@@ -49,7 +48,6 @@ export {
   LayoutColab_DetailPartisipasiProyek,
   Colab_GrupDiskus,
   Colab_DetailGrupDiskusi,
-  LayoutColab_DetailGrupDiskusi,
   Colab_NotifikasiView,
   Colab_DetailProyekSaya,
   LayoutColab_DetailProyekSaya,

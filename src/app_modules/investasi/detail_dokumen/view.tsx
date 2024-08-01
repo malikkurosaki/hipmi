@@ -6,6 +6,7 @@ import Link from "next/link";
 import { MODEL_Investasi } from "../model/model_investasi";
 import { useState } from "react";
 import _ from "lodash";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 
 export default function DetailDokumenInvestasi({
   dataInvestasi,
@@ -44,9 +45,7 @@ export default function DetailDokumenInvestasi({
       </Link>
        ))
       ) : (
-        <Center>
-          <Title order={6}>Tidak Ada File</Title>
-        </Center>
+       <ComponentGlobal_IsEmptyData/>
       )}
     </>
   );

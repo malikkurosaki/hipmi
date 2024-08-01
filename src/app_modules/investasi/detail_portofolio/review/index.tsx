@@ -34,6 +34,8 @@ import { useState } from "react";
 import _ from "lodash";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentInvestasi_DetailDataNonPublish } from "../../component/detail/detai_data_non_publish";
 
 export default function DetailReviewInvestasi({
   dataInvestasi,
@@ -44,7 +46,7 @@ export default function DetailReviewInvestasi({
   const [isLoading, setLoading] = useState(false);
 
   const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
-  const [investasi, setInvestasi] = useState<MODEL_Investasi>(dataInvestasi);
+  const [data, setData] = useState<MODEL_Investasi>(dataInvestasi);
 
   const listBox = [
     {
@@ -68,131 +70,37 @@ export default function DetailReviewInvestasi({
   ];
 
   async function onsubmit() {
-    await funGantiStatusInvestasi(investasi.id, "1")
-      .then((val) => {
-        if (val.status === 200) {
-          ComponentGlobal_NotifikasiBerhasil("Review Dibatalkan");
-          router.push(RouterInvestasi.portofolio);
-          setActiveTab("Draft");
-        } else {
-          ComponentGlobal_NotifikasiPeringatan("Error");
-        }
-      });
+    await funGantiStatusInvestasi(data.id, "1").then((val) => {
+      if (val.status === 200) {
+        ComponentGlobal_NotifikasiBerhasil("Review Dibatalkan");
+        router.push(RouterInvestasi.portofolio);
+        setActiveTab("Draft");
+      } else {
+        ComponentGlobal_NotifikasiPeringatan("Error");
+      }
+    });
   }
 
   return (
     <>
-      <Stack>
-        <Paper withBorder>
-          <AspectRatio ratio={16 / 9}>
-            <Image
-              alt=""
-              src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
-            />
-          </AspectRatio>
-        </Paper>
-
-        {/* Title dan Persentase */}
-        <Center>
-          <Title order={4}>{_.capitalize(investasi.title)}</Title>
-        </Center>
-
-        {/* Rincian Data */}
-        <Grid p={"md"}>
-          <Grid.Col span={6}>
-            <Stack>
-              <Box>
-                <Text>Dana Dibutuhkan</Text>
-                <Text>
-                  Rp.{" "}
-                  {new Intl.NumberFormat("id-ID", {
-                    maximumSignificantDigits: 20,
-                  }).format(+investasi.targetDana)}
-                </Text>
-              </Box>
-              <Box>
-                <Text>Harga Per Lembar</Text>
-                <Text>
-                  Rp.{" "}
-                  {new Intl.NumberFormat("id-ID", {
-                    maximumSignificantDigits: 10,
-                  }).format(+investasi.hargaLembar)}
-                </Text>
-              </Box>
-              <Box>
-                <Text>Jadwal Pembagian</Text>
-                <Text>{investasi.MasterPembagianDeviden.name} Bulan </Text>
-              </Box>
-              <Box>
-                <Text>Pencarian Investor</Text>
-                <Text>{investasi.MasterPencarianInvestor.name} Hari </Text>
-              </Box>
-            </Stack>
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <Stack>
-              <Box>
-                <Text>ROI</Text>
-                <Text>{investasi.roi} %</Text>
-              </Box>
-              <Box>
-                <Text>Total Lembar</Text>
-                <Text>
-                  {new Intl.NumberFormat("id-ID", {
-                    maximumSignificantDigits: 10,
-                  }).format(+investasi.totalLembar)}{" "}
-                  lembar
-                </Text>
-              </Box>
-              <Box>
-                <Text>Pembagian Deviden</Text>
-                <Text>{investasi.MasterPeriodeDeviden.name}</Text>
-              </Box>
-            </Stack>
-          </Grid.Col>
-        </Grid>
-
-        {/* List Box */}
-        <Grid>
-          {listBox.map((e) => (
-            <Grid.Col
-              span={"auto"}
-              key={e.id}
-              onClick={() => router.push(e.route + `${investasi.id}`)}
-            >
-              <Center>
-                <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
-                  <Flex
-                    direction={"column"}
-                    align={"center"}
-                    justify={"center"}
-                  >
-                    <Text fz={12}>{e.name}</Text>
-                    <ActionIcon variant="transparent" size={60}>
-                      {e.icon}
-                    </ActionIcon>
-                  </Flex>
-                </Paper>
-              </Center>
-            </Grid.Col>
-          ))}
-        </Grid>
-
+      <Stack spacing={"xl"} mb={"lg"}>
+        <ComponentInvestasi_DetailDataNonPublish data={data} />
         {/* Tombol Ajukan */}
-        <Button
-          style={{
-            transition: "0.5s",
-          }}
-          loaderPosition="center"
-          loading={isLoading ? true : false}
-          my={"xl"}
-          radius={50}
-          bg={"orange"}
-          color="yellow"
-          onClick={() => onsubmit()}
-        >
-          Batalkan Review
-        </Button>
+        <Stack>
+          <Button
+            style={{
+              transition: "0.5s",
+            }}
+            loaderPosition="center"
+            loading={isLoading ? true : false}
+            radius={50}
+            bg={"orange"}
+            color="yellow"
+            onClick={() => onsubmit()}
+          >
+            Batalkan Review
+          </Button>
+        </Stack>
       </Stack>
     </>
   );

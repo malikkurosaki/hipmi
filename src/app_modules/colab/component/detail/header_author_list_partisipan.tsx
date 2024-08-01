@@ -128,7 +128,7 @@ export default function ComponentColab_AuthorNameOnListPartisipan({
                   radius={"xl"}
                   variant="transparent"
                 >
-                  <IconCaretRight color={opened ? "blue" : "gray"} />
+                  <IconCaretRight color={"white"} />
                 </ActionIcon>
               ) : (
                 ""

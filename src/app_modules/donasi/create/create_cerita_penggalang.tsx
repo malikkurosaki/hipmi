@@ -1,11 +1,17 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 import {
   ComponentGlobal_WarningMaxUpload,
   maksimalUploadFile,
 } from "@/app_modules/_global/component/waring_popup";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import {
   AspectRatio,
   Button,
@@ -23,17 +29,13 @@ import { useAtom } from "jotai";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
-import ComponentDonasi_NotedBox from "../component/noted_box";
 import { NotifPeringatan } from "../component/notifikasi/notif_peringatan";
 import { Donasi_funCreate } from "../fun/create/fun_create_donasi";
 import { gs_donasi_hot_menu, gs_donasi_tabs_posting } from "../global_state";
 import { MODEL_DONASI_TEMPORARY } from "../model/interface";
-import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import mqtt_client from "@/util/mqtt_client";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 export default function CreateCeritaPenggalangDonasi({
   dataTemporary,
   userId,
@@ -82,20 +84,41 @@ export default function CreateCeritaPenggalangDonasi({
       },
     };
 
-    await Donasi_funCreate(body as any, gambar).then((res) => {
-      if (res.status === 201) {
+    const res = await Donasi_funCreate(body as any, gambar);
+    if (res.status === 201) {
+      const dataNotif: any = {
+        appId: res.data?.id as any,
+        status: res.data?.DonasiMaster_Status?.name as any,
+        userId: res.data?.authorId as any,
+        pesan: res.data?.title as any,
+        kategoriApp: "DONASI",
+        title: "Donasi baru",
+      };
+      
+      const notif = await notifikasiToAdmin_funCreate({
+        data: dataNotif as any,
+      });
+
+      if (notif.status === 201) {
+        mqtt_client.publish(
+          "ADMIN",
+          JSON.stringify({
+            count: 1,
+          })
+        );
         setLoading(true);
-        router.push(RouterDonasi.page_pop_up_create, { scroll: false });
         setTabsPostingDonasi("Review");
         setDonasiHotMenu(1);
-      } else {
-        toast(res.message);
+        ComponentGlobal_NotifikasiBerhasil(res.message);
+        router.push(RouterDonasi.main_galang_dana, { scroll: false });
       }
-    });
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+    }
   }
   return (
     <>
-      <Stack spacing={50} px={"md"} py={"md"}>
+      <Stack spacing={50} px={"xl"} py={"md"}>
         {/* <pre>{JSON.stringify(dataTempo, null, 2)}</pre> */}
         <Stack spacing={"sm"}>
           <ComponentGlobal_BoxInformation informasi="Ceritakan dengan jujur & benar mengapa Penggalanagn Dana ini harus diadakan!" />

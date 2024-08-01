@@ -1,199 +1,347 @@
 "use client";
 
+import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { MODEL_USER } from "@/app_modules/home/model/interface";
 import mqtt_client from "@/util/mqtt_client";
 import {
   ActionIcon,
-  Affix,
   Box,
   Center,
+  Container,
+  Flex,
   Grid,
   Group,
   Loader,
   Paper,
+  rem,
   Stack,
   Text,
   Textarea,
-  rem
+  Title,
 } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
 import {
-  useShallowEffect
-} from "@mantine/hooks";
-import { IconCircle, IconSend } from "@tabler/icons-react";
+  IconChevronLeft,
+  IconCircle,
+  IconInfoSquareRounded,
+  IconSend,
+} from "@tabler/icons-react";
 import _ from "lodash";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import useInfiniteScroll, {
+  ScrollDirection,
+} from "react-easy-infinite-scroll-hook";
 import ComponentColab_IsEmptyData from "../../component/is_empty_data";
 import colab_funCreateMessageByUserId from "../../fun/create/room/fun_create_message_by_user_id";
 import colab_getMessageByRoomId from "../../fun/get/room_chat/get_message_by_room_id";
+import {
+  MODEL_COLLABORATION_MESSAGE,
+  MODEL_COLLABORATION_ROOM_CHAT,
+} from "../../model/interface";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { ScrollOnly } from "next-scroll-loader";
 
 export default function Colab_DetailGrupDiskusi({
-  roomId,
-  listMsg,
   userLoginId,
+  listMsg,
+  selectRoom,
+  dataUserLogin,
+  roomId,
 }: {
-  roomId: string;
-  listMsg?: any[];
   userLoginId: string;
+  listMsg: any;
+  selectRoom: MODEL_COLLABORATION_ROOM_CHAT;
+  dataUserLogin: MODEL_USER;
+  roomId: string;
 }) {
   const [msg, setMsg] = useState("");
-  const [data, setData] = useState<any[]>(listMsg as any);
-  const [page, setPage] = useState(1);
+  const [newMessage, setNewMessage] = useState<any>();
+  const [data, setData] = useState<any[]>(listMsg);
+  const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isGet, setIsGet] = useState(true);
+  const [newMessageId, setIdMessage] = useState("");
 
-  // const next = async (direction: ScrollDirection) => {
-  //   try {
-  //     setIsLoading(true);
-  //     await new Promise((a) => setTimeout(a, 100));
+  const [activePage, setActivePage] = useState(1);
 
-  //     setPage(page + 1);
-  //     const newData = await colab_getMessageByRoomId(roomId, page + 1);
-
-  //     console.log(newData);
-
-  //     if (_.isEmpty(newData)) {
-  //       setIsGet(false);
-  //     } else {
-  //       setData((prev) => (direction === "up" ? [...newData, ...prev] : []));
+  // async function onSend() {
+  //   await colab_funCreateMessageByUserId(msg, selectRoom.id).then(
+  //     async (res) => {
+  //       if (res.status === 200) {
+  //         setIdMessage(res.data?.id as any);
+  //         setMsg("");
+  //         const kiriman: MODEL_COLLABORATION_MESSAGE = {
+  //           createdAt: new Date(),
+  //           id: newMessageId,
+  //           isActive: true,
+  //           message: msg,
+  //           isFile: false,
+  //           updatedAt: new Date(),
+  //           userId: dataUserLogin.id,
+  //           User: {
+  //             id: dataUserLogin.id,
+  //             Profile: {
+  //               id: dataUserLogin.Profile?.id as any,
+  //               name: dataUserLogin.Profile?.name as any,
+  //             },
+  //           },
+  //         };
+  //         mqtt_client.publish(selectRoom.id, JSON.stringify(kiriman));
+  //       } else {
+  //         ComponentGlobal_NotifikasiGagal(res.message);
+  //       }
   //     }
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+  //   );
+  // }
 
-  // const ref = useInfiniteScroll({
-  //   next,
-  //   rowCount: data.length,
-  //   hasMore: { up: isGet },
-  //   scrollThreshold: 0.1,
-  //   initialScroll: { top: 100 },
-  // });
+  // useShallowEffect(() => {
+  //   mqtt_client.subscribe(selectRoom.id);
+  //   // mqtt_client.on("message", (topic: any, message: any) => {
+  //   //   onList(message.toString());
+  //   // });
 
-  useShallowEffect(() => {
-    mqtt_client.subscribe(roomId);
+  //   mqtt_client.on("message", (topic: any, message: any) => {
+  //     let dd = _.clone(data);
+  //     const a = [...dd, JSON.parse(message)];
+  //     // console.log(dd.length);
+  //     setData(a);
+  //   });
+  // }, [data]);
 
-    mqtt_client.on("message", (data: any, msg: any) => {
-      onList(setData);
-    });
-  }, [setData]);
+  // async function onList(message: any) {
+  //   const kiriman: MODEL_COLLABORATION_MESSAGE = {
+  //     createdAt: new Date(),
+  //     id: newMessageId,
+  //     isActive: true,
+  //     message: message,
+  //     isFile: false,
+  //     updatedAt: new Date(),
+  //     userId: dataUserLogin.id,
+  //     User: {
+  //       id: dataUserLogin.id,
+  //       Profile: {
+  //         id: dataUserLogin.Profile?.id as any,
+  //         name: dataUserLogin.Profile?.name as any,
+  //       },
+  //     },
+  //   };
 
-  async function onList(setData: any) {
-    await colab_getMessageByRoomId({ page: page, roomId: roomId }).then((val) =>
-      setData(val)
-    );
-  }
+  //   const dataLama = _.clone(data);
+  //   setData([...dataLama, { ...kiriman }]);
 
-  async function onSend() {
-    await colab_funCreateMessageByUserId(msg, roomId).then(async (res) => {
-      if (res.status === 200) {
-        mqtt_client.publish(roomId, msg);
-        setMsg("");
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
-      }
-    });
-  }
-
-
+  // }
 
   return (
     <>
-      <Box h={"80vh"} bg={"blue.1"}>
-        <Stack justify="flex-end" h={"100%"}>
-          <div
-            style={{
-              // overflow: "scroll",
-              overflowY: "auto",
-              // height: "100vh",
-              // justifyContent: "flex-end",
-              // flexDirection: "column",
-              // display: "flex",
-            }}
-          >
-            {isLoading && (
-              <Center>
-                <Loader size={20} color="gray" />
-              </Center>
-            )}
-            {_.isEmpty(data) ? (
-              <ComponentColab_IsEmptyData text="Belum ada pesan" />
-            ) : (
-              data.map((e, i) => (
-                <Box key={i}>
-                  {userLoginId === e?.User?.id ? (
-                    <Group position="right">
-                      <Paper key={e.id} bg={"blue.2"} p={"sm"} mt={"sm"}>
-                        <Stack spacing={0}>
-                          <Text lineClamp={1} fw={"bold"} fz={"xs"}>
-                            {e.User.Profile.name}
-                          </Text>
-                          <div
-                            dangerouslySetInnerHTML={{ __html: e.message }}
-                          />
+      <Box
+        w={"100%"}
+        h={"100%"}
+        style={{
+          overflowY: "auto",
+          overflowX: "auto",
+          backgroundColor: MainColor.black,
+          position: "fixed",
+        }}
+      >
+        <Container mih={"100vh"} p={0} size={rem(500)} bg={MainColor.darkblue}>
+          {/* Header */}
+          <HeaderGrup selectRoom={selectRoom} />
 
-                          <Group spacing={"xs"}>
-                            <Text fz={7}>
-                              {new Intl.DateTimeFormat("id-ID", {
-                                timeStyle: "medium",
-                              }).format(e.createdAt)}
-                            </Text>
-                            <IconCircle size={3} />
-                            <Text fz={7}>
-                              {new Intl.DateTimeFormat("id-ID", {
-                                dateStyle: "medium",
-                              }).format(e.createdAt)}
-                            </Text>
-                          </Group>
-                        </Stack>
-                      </Paper>
-                    </Group>
-                  ) : (
-                    <Group>
-                      <Paper key={e.id} bg={"cyan.2"} p={"sm"} mt={"sm"}>
-                        <Stack spacing={0}>
-                          <Text lineClamp={1} fw={"bold"} fz={"xs"}>
-                            {e.User.Profile.name}
-                          </Text>
-                          <div
-                            dangerouslySetInnerHTML={{ __html: e.message }}
-                          />
-                          <Group spacing={"xs"}>
-                            <Text fz={7}>
-                              {new Intl.DateTimeFormat("id-ID", {
-                                timeStyle: "medium",
-                              }).format(e.createdAt)}
-                            </Text>
-                            <IconCircle size={3} />
-                            <Text fz={7}>
-                              {new Intl.DateTimeFormat("id-ID", {
-                                dateStyle: "medium",
-                              }).format(e.createdAt)}
-                            </Text>
-                          </Group>
-                        </Stack>
-                      </Paper>
-                    </Group>
+          {/* Main View */}
+          <Box
+            py={"xs"}
+            px={"xs"}
+            pos={"static"}
+            style={{ zIndex: 0 }}
+            h={"82vh"}
+          >
+            {/* Chat View */}
+            {_.isEmpty(data) ? (
+              <ComponentGlobal_IsEmptyData />
+            ) : (
+              // --- Main component --- //
+              <Box bg={"red"}>
+                <ScrollOnly
+                  height="80vh"
+                  renderLoading={() => (
+                    <Center mt={"lg"}>
+                      <Loader color={"yellow"} />
+                    </Center>
                   )}
-                </Box>
-              ))
+                  data={data}
+                  setData={setData}
+                  moreData={async () => {
+                    let loadData = await colab_getMessageByRoomId({
+                      roomId: roomId,
+                      page: 1,
+                    });
+                    setActivePage((val) => val + 1);
+
+                    return loadData;
+                  }}
+                >
+                  {(item) => (
+                    <Flex >{item.message}</Flex>
+                    // <Flex bg={"cyan"} align={"flex-end"}>
+                    //   {userLoginId === item?.User?.id ? (
+                    //     <Group position="right">
+                    //       <Paper
+                    //         key={item?.id}
+                    //         bg={"blue.2"}
+                    //         p={"sm"}
+                    //         mt={"sm"}
+                    //       >
+                    //         <Stack spacing={0}>
+                    //           <Text lineClamp={1} fw={"bold"} fz={"xs"}>
+                    //             {item?.User?.Profile?.name}
+                    //           </Text>
+                    //           <div
+                    //             dangerouslySetInnerHTML={{
+                    //               __html: item?.message,
+                    //             }}
+                    //           />
+                    //         </Stack>
+                    //       </Paper>
+                    //     </Group>
+                    //   ) : (
+                    //     <Group>
+                    //       <Paper
+                    //         key={item?.id}
+                    //         bg={"cyan.2"}
+                    //         p={"sm"}
+                    //         mt={"sm"}
+                    //       >
+                    //         <Stack spacing={0}>
+                    //           <Text lineClamp={1} fw={"bold"} fz={"xs"}>
+                    //             {item?.User?.Profile?.name}
+                    //           </Text>
+                    //           <div
+                    //             dangerouslySetInnerHTML={{
+                    //               __html: item?.message,
+                    //             }}
+                    //           />
+                    //         </Stack>
+                    //       </Paper>
+                    //     </Group>
+                    //   )}
+                    // </Flex>
+                  )}
+                </ScrollOnly>
+              </Box>
             )}
-            {/* {isLoading && (
+          </Box>
+
+          {/* Footer */}
+          <FooterGrup msg={msg} setMsg={setMsg} />
+        </Container>
+      </Box>
+    </>
+  );
+}
+
+function HeaderGrup({
+  selectRoom,
+}: {
+  selectRoom: MODEL_COLLABORATION_ROOM_CHAT;
+}) {
+  const router = useRouter();
+  const [loadingBack, setLoadingBack] = useState(false);
+  const [loadingInfo, setLoadingInfo] = useState(false);
+  return (
+    <>
+      <Box
+        h={"8vh"}
+        style={{
+          zIndex: 10,
+        }}
+        w={"100%"}
+        pos={"sticky"}
+        top={0}
+        bg={MainColor.darkblue}
+      >
+        <Stack h={"100%"} justify="center" px={"sm"}>
+          <Grid grow gutter={"lg"}>
+            <Grid.Col span={2}>
+              <ActionIcon
+                variant="transparent"
+                radius={"xl"}
+                onClick={() => {
+                  setLoadingBack(true);
+                  router.back();
+                }}
+              >
+                {loadingBack ? (
+                  <ComponentGlobal_Loader />
+                ) : (
+                  <IconChevronLeft color="white" />
+                )}
+              </ActionIcon>
+            </Grid.Col>
+            <Grid.Col span={8}>
               <Center>
-                <Loader variant="bars" size={20} color="gray" />
+                <Title c={"white"} order={5} lineClamp={1}>
+                  {selectRoom?.name}
+                </Title>
               </Center>
-            )} */}
-          </div>
+            </Grid.Col>
+            <Grid.Col span={2}>
+              <Group position="right">
+                <ActionIcon
+                  variant="transparent"
+                  radius={"xl"}
+                  onClick={() => {
+                    setLoadingInfo(true);
+                    router.push(RouterColab.info_grup + selectRoom.id, {
+                      scroll: false,
+                    });
+                  }}
+                >
+                  {loadingInfo ? (
+                    <ComponentGlobal_Loader />
+                  ) : (
+                    <IconInfoSquareRounded color="white" />
+                  )}
+                </ActionIcon>
+              </Group>
+            </Grid.Col>
+          </Grid>
         </Stack>
       </Box>
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+    </>
+  );
+}
 
-      <Affix
-        bg={"gray.2"}
-        h={"10vh"}
-        position={{ bottom: rem(0) }}
-        w={"100%"}
-        zIndex={99}
-        p={"xs"}
+function FooterGrup({
+  msg,
+  setMsg,
+}: {
+  msg: string;
+  setMsg: (val: any) => any;
+}) {
+  async function onSend() {
+    console.log(msg);
+  }
+  return (
+    <>
+      <Box
+        style={{
+          position: "relative",
+          bottom: 0,
+          height: "10vh",
+          zIndex: 10,
+          // borderRadius: "20px 20px 0px 0px",
+          borderTop: `2px solid ${AccentColor.blue}`,
+          borderRight: `1px solid ${AccentColor.blue}`,
+          borderLeft: `1px solid ${AccentColor.blue}`,
+        }}
+        bg={AccentColor.darkblue}
       >
         <Stack justify="center" h={"100%"} px={"sm"}>
           <Grid align="center">
@@ -210,11 +358,15 @@ export default function Colab_DetailGrupDiskusi({
               <ActionIcon
                 disabled={msg === "" ? true : false}
                 variant="filled"
-                bg={"cyan"}
+                bg={AccentColor.softblue}
+                color={"cyan"}
                 radius={"xl"}
                 size={"xl"}
                 onClick={() => {
-                  onSend();
+                  onSend()
+                }}
+                style={{
+                  transition: "0.5s",
                 }}
               >
                 <IconSend size={20} />
@@ -222,216 +374,7 @@ export default function Colab_DetailGrupDiskusi({
             </Grid.Col>
           </Grid>
         </Stack>
-      </Affix>
+      </Box>
     </>
   );
-
-  // "use client";
-
-  // import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
-  // import {
-  //   ActionIcon,
-  //   Box,
-  //   Button,
-  //   Card,
-  //   Center,
-  //   Code,
-  //   Grid,
-  //   Group,
-  //   Header,
-  //   Loader,
-  //   Paper,
-  //   ScrollArea,
-  //   Stack,
-  //   Text,
-  //   Textarea,
-  //   Title,
-  // } from "@mantine/core";
-  // import {
-  //   IconChevronLeft,
-  //   IconCircle,
-  //   IconInfoSquareRounded,
-  //   IconSend,
-  // } from "@tabler/icons-react";
-  // import { useRouter } from "next/navigation";
-  // import router from "next/router";
-  // import { useRef, useState } from "react";
-  // import {
-  //   MODEL_COLLABORATION_MESSAGE,
-  //   MODEL_COLLABORATION_ROOM_CHAT,
-  // } from "../../model/interface";
-  // import _ from "lodash";
-  // import ComponentColab_IsEmptyData from "../../component/is_empty_data";
-  // import colab_getMessageByRoomId from "../../fun/get/room_chat/get_message_by_room_id";
-  // import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-  // import colab_funCreateMessageByUserId from "../../fun/create/room/fun_create_message_by_user_id";
-  // import { useShallowEffect } from "@mantine/hooks";
-  // import mqtt_client from "@/util/mqtt_client";
-  // import useInfiniteScroll, {
-  //   ScrollDirection,
-  // } from "react-easy-infinite-scroll-hook";
-  // import toast from "react-simple-toasts";
-  // import colab_getOneMessageById from "../../fun/get/room_chat/get_one_message_by_id";
-
-  // const list = Array(100).fill(0);
-  // export default function ColabViewChat({
-  //   userLoginId,
-  //   listMsg,
-  //   dataRoom,
-  // }: {
-  //   userLoginId: string;
-  //   listMsg: any;
-  //   dataRoom?: MODEL_COLLABORATION_ROOM_CHAT;
-  // }) {
-  //   // Tamplate app layout
-  //   const router = useRouter();
-  //   const [loadingBack, setLoadingBack] = useState(false);
-  //   const [loadingInfo, setLoadingInfo] = useState(false);
-
-  //   // State message
-  //   const [msg, setMsg] = useState("");
-  //   const [data, setData] = useState(listMsg);
-
-  //   const [ls, setLs] = useState(list);
-
-  //   const viewport = useRef<HTMLDivElement>(null);
-
-  //   const scrollBottom = () => {
-  //     viewport.current?.scrollTo({
-  //       top: viewport.current.scrollHeight,
-  //       behavior: "smooth",
-  //     });
-  //   };
-
-  //   // Kirim pesan
-  //   async function onSend() {
-  //     setMsg("");
-  //     setLs([...[msg], ...ls]);
-  //     scrollBottom();
-  //   }
-
-  //   return (
-  //     <>
-  //       <Box h={"100vh"}>
-  //         {/* Header */}
-
-  //         <Box
-  //           style={{
-  //             zIndex: 99,
-  //           }}
-  //           w={"100%"}
-  //           pos={"fixed"}
-  //           top={0}
-  //           h={"7vh"}
-  //         >
-  //           <Stack bg={"gray.2"} h={"100%"} justify="center" px={"sm"}>
-  //             <Grid grow gutter={"lg"}>
-  //               <Grid.Col span={2}>
-  //                 <ActionIcon
-  //                   loading={loadingBack ? true : false}
-  //                   variant="transparent"
-  //                   radius={"xl"}
-  //                   onClick={() => {
-  //                     setLoadingBack(true);
-  //                     router.back();
-  //                   }}
-  //                 >
-  //                   <IconChevronLeft />
-  //                 </ActionIcon>
-  //               </Grid.Col>
-  //               <Grid.Col span={8}>
-  //                 <Center>
-  //                   <Title order={5} lineClamp={1}>
-  //                     {dataRoom?.name}
-  //                   </Title>
-  //                 </Center>
-  //               </Grid.Col>
-  //               <Grid.Col span={2}>
-  //                 <Group position="right">
-  //                   <ActionIcon
-  //                     loading={loadingInfo ? true : false}
-  //                     variant="transparent"
-  //                     radius={"xl"}
-  //                     onClick={() => {
-  //                       setLoadingInfo(true);
-  //                       router.push(RouterColab.info_grup + dataRoom?.id);
-  //                     }}
-  //                   >
-  //                     <IconInfoSquareRounded />
-  //                   </ActionIcon>
-  //                 </Group>
-  //               </Grid.Col>
-  //             </Grid>
-  //           </Stack>
-  //         </Box>
-
-  //         {/* Main View */}
-
-  //         <Box pos={"static"}>
-  //           <Box
-  //             style={{
-  //               height: "7vh",
-  //             }}
-  //           />
-  //           {/* Chat View */}
-  //           <Box h={"83vh"} bg={"blue"}>
-  //             <ScrollArea h={"100%"} viewportRef={viewport}>
-  //               {ls.map((e, i) => (
-  //                 <Text key={i}>{`${e + 1 + i++}`}</Text>
-  //               ))}
-  //             </ScrollArea>
-  //           </Box>
-
-  //           <Box
-  //             style={{
-  //               height: "10vh",
-  //             }}
-  //           />
-  //         </Box>
-
-  //         {/* Footer */}
-  //         <Box
-  //           style={{
-  //             zIndex: 98,
-  //           }}
-  //           w={"100%"}
-  //           pos={"fixed"}
-  //           bottom={0}
-  //           h={"10vh"}
-  //           bg={"gray.2"}
-  //         >
-  //           <Stack justify="center" h={"100%"} px={"sm"}>
-  //             <Grid align="center">
-  //               <Grid.Col span={"auto"}>
-  //                 <Textarea
-  //                   minRows={1}
-  //                   radius={"md"}
-  //                   placeholder="Ketik pesan anda..."
-  //                   onChange={(val) => {
-  //                     setMsg(val.currentTarget.value);
-  //                   }}
-  //                 />
-  //               </Grid.Col>
-  //               <Grid.Col span={"content"}>
-  //                 <ActionIcon
-  //                   disabled={msg ? false : true}
-  //                   variant="filled"
-  //                   bg={"cyan"}
-  //                   radius={"xl"}
-  //                   size={"xl"}
-  //                   onClick={() => {
-  //                     onSend();
-  //                   }}
-  //                 >
-  //                   <IconSend size={20} />
-  //                 </ActionIcon>
-  //               </Grid.Col>
-  //             </Grid>
-  //           </Stack>
-  //         </Box>
-  //       </Box>
-  //     </>
-  //   );
-  // }
-
 }

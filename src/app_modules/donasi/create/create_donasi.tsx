@@ -26,14 +26,13 @@ import {
   ComponentGlobal_WarningMaxUpload,
   maksimalUploadFile,
 } from "@/app_modules/_global/component/waring_popup";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import _ from "lodash";
 import { useState } from "react";
-import toast from "react-simple-toasts";
 import { NotifPeringatan } from "../component/notifikasi/notif_peringatan";
 import Donasi_funCreateTemporary from "../fun/create/fun_create_donasi_temporary";
 import { gs_donasi_tabs_posting } from "../global_state";
 import { MODEL_DONASI_ALL_MASTER } from "../model/interface";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 
 export default function CreateDonasi({
   masterKategori,
@@ -87,7 +86,7 @@ export default function CreateDonasi({
 
   return (
     <>
-      <Stack spacing={"md"} px={"xs"}>
+      <Stack spacing={"md"} px={"xl"}>
         <ComponentGlobal_BoxInformation informasi="Lengkapi semua data di bawah untuk selanjutnya mengisi cerita Penggalangan Dana!" />
         <Select
           styles={{

@@ -7,7 +7,6 @@ export async function AdminEvent_funEditStatusPublishById(
   eventId: string,
   statusId: string
 ) {
-  console.log(eventId);
   const updt = await prisma.event.update({
     where: {
       id: eventId,
@@ -15,11 +14,22 @@ export async function AdminEvent_funEditStatusPublishById(
     data: {
       eventMaster_StatusId: statusId,
     },
+    select: {
+      id: true,
+      title: true,
+      authorId: true,
+      EventMaster_Status: {
+        select: {
+          name: true,
+        },
+      },
+    }
   });
 
   if (!updt) return { status: 400, message: "Update Gagal" };
   revalidatePath("/dev/admin/event/main");
   return {
+    data: updt,
     status: 200,
     message: "Berhasil Update Status",
   };

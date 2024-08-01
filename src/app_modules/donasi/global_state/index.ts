@@ -2,6 +2,7 @@ import { atomWithStorage } from "jotai/utils";
 
 /**
  * @param index 0 - 2
+ * @type number
  * @returns global state hot menu donasi
  */
 export const gs_donasi_hot_menu = atomWithStorage("gs_donasi_hot_menu", 0);

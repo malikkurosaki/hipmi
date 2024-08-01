@@ -8,13 +8,31 @@ export interface MODEL_NOTIFIKASI {
   appId: string;
   kategoriApp: string;
   isRead: boolean;
-  title: string,
+  title: string;
   pesan: string;
   User: MODEL_USER;
   userId: string;
   Admin: MODEL_USER;
   adminId: string;
-  status?: string;
+  status?:
+    | "Publish"
+    | "Reject"
+    | "Review"
+    | "Draft"
+    | "Voting Masuk"
+    | "Voting Selesai"
+    | "Voting Selesai"
+    | "Peserta Event"
+    | "Report Komentar"
+    | "Report Posting"
+    | "Partisipan Project"
+    | "Collaboration Group"
+    | "Menunggu"
+    | "Proses"
+    | "Berhasil"
+    | "Gagal"
+    | "Donatur Baru";
+
   Role: MODEL_NEW_DEFAULT_MASTER;
   userRoleId: String;
 }

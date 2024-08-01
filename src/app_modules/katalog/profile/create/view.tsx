@@ -303,7 +303,8 @@ function ButtonAction({
       if (res.status === 201) {
         setLoading(true);
         ComponentGlobal_NotifikasiBerhasil("Berhasil Membuat Profile", 3000);
-        setTimeout(() => router.push(RouterHome.main_home), 2000);
+        // setTimeout(() => router.push(RouterHome.main_home), 2000);
+        router.push(RouterHome.main_home);
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }

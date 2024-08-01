@@ -13,6 +13,9 @@ import {
 } from "@/app_modules/_global/color/color_pallet";
 import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
 import { redirectVotingPage } from "./path/voting";
+import { redirectEventPage } from "./path/event";
+import { redirectDetailCollaborationPage } from "./path/collaboration";
+import { redirectDonasiPage } from "./path/donasi";
 
 export function ComponentNotifiaksi_CardView({
   data,
@@ -41,6 +44,18 @@ export function ComponentNotifiaksi_CardView({
         }}
         my={"xs"}
         onClick={async () => {
+          await notifikasi_funUpdateIsReadById({
+            notifId: data?.id,
+          });
+
+          // if (updateIsRead.status === 200) {
+          //   const loadData = await notifikasi_getByUserId({
+          //     page: activePage + 1,
+          //   });
+          //   onLoadData(loadData);
+          // }
+
+
           data?.kategoriApp === "JOB" &&
             redirectJobPage({
               data: data,
@@ -65,16 +80,29 @@ export function ComponentNotifiaksi_CardView({
               },
             });
 
-          const updateIsRead = await notifikasi_funUpdateIsReadById({
-            notifId: data?.id,
-          });
+          data?.kategoriApp === "EVENT" &&
+            redirectEventPage({
+              data: data,
+              router: router,
+              onSetPage(val) {
+                onSetMenu(val);
+              },
+            });
 
-          if (updateIsRead.status === 200) {
-            // console.log(updateIsRead.status);
-            // const loadData = await notifikasi_getByUserId({ page: activePage });
-            // onLoadData(loadData);
-            // console.log("berhasil load")
-          }
+          data?.kategoriApp === "COLLABORATION" &&
+            redirectDetailCollaborationPage({
+              data: data,
+              router: router,
+            });
+
+          data.kategoriApp === "DONASI" &&
+            redirectDonasiPage({
+              data: data,
+              router: router,
+              onSetPage(val) {
+                onSetMenu(val);
+              },
+            });
         }}
       >
         {/* <pre>{JSON.stringify(e, null, 2)}</pre> */}

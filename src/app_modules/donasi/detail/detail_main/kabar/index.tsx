@@ -1,25 +1,11 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import ComponentDonasi_ListKabar from "@/app_modules/donasi/component/detail_main/list_kabar";
-import ComponentDonasi_IsEmptyData from "@/app_modules/donasi/component/is_empty_data";
 import { MODEL_DONASI_KABAR } from "@/app_modules/donasi/model/interface";
-import {
-  ActionIcon,
-  Avatar,
-  Box,
-  Group,
-  Paper,
-  SimpleGrid,
-  Spoiler,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import { IconCircleChevronRight } from "@tabler/icons-react";
+import { Box } from "@mantine/core";
 import _ from "lodash";
-import moment from "moment";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function KabarDonasi({
@@ -27,31 +13,21 @@ export default function KabarDonasi({
 }: {
   listKabar: MODEL_DONASI_KABAR[];
 }) {
-  const router = useRouter();
+
   const [kabar, setKabar] = useState(listKabar);
 
-  if (_.isEmpty(kabar)) return <ComponentDonasi_IsEmptyData />;
+  if (_.isEmpty(kabar)) return <ComponentGlobal_IsEmptyData />;
 
   return (
     <>
-      <SimpleGrid
-        cols={4}
-        spacing="lg"
-        breakpoints={[
-          { maxWidth: "62rem", cols: 3, spacing: "md" },
-          { maxWidth: "48rem", cols: 2, spacing: "sm" },
-          { maxWidth: "36rem", cols: 1, spacing: "sm" },
-        ]}
-      >
-        {kabar.map((e, i) => (
-          <Box key={i}>
-            <ComponentDonasi_ListKabar
-              kabar={e}
-              route={RouterDonasi.detail_kabar}
-            />
-          </Box>
-        ))}
-      </SimpleGrid>
+      {kabar.map((e, i) => (
+        <Box key={i}>
+          <ComponentDonasi_ListKabar
+            kabar={e}
+            route={RouterDonasi.detail_kabar}
+          />
+        </Box>
+      ))}
     </>
   );
 }

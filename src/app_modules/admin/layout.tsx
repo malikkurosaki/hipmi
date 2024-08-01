@@ -52,6 +52,8 @@ import adminNotifikasi_funUpdateIsReadById from "./notifikasi/fun/update/fun_upd
 import adminNotifikasi_findRouterJob from "./notifikasi/route_setting/job";
 import adminNotifikasi_findRouterForum from "./notifikasi/route_setting/forum";
 import { adminNotifikasi_findRouterVoting } from "./notifikasi/route_setting/voting";
+import { adminNotifikasi_findRouterEvent } from "./notifikasi/route_setting/event";
+import adminNotifikasi_findRouterDonasi from "./notifikasi/route_setting/donasi";
 
 export default function AdminLayout({
   children,
@@ -427,6 +429,29 @@ function DrawerNotifikasi({
                       onToggleNavbar(val);
                     },
                   });
+
+                e?.kategoriApp === "EVENT" &&
+                  adminNotifikasi_findRouterEvent({
+                    data: e,
+                    router: router,
+                    onChangeNavbar(val) {
+                      onChangeNavbar(val);
+                    },
+                    onToggleNavbar(val) {
+                      onToggleNavbar(val);
+                    },
+                  });
+
+                  e.kategoriApp === "DONASI" && adminNotifikasi_findRouterDonasi({
+                    data: e,
+                    router: router,
+                    onChangeNavbar(val) {
+                      onChangeNavbar(val);
+                    },
+                    onToggleNavbar(val) {
+                      onToggleNavbar(val);
+                    },
+                  })
 
                 const updateIsRead = await adminNotifikasi_funUpdateIsReadById({
                   notifId: e?.id,

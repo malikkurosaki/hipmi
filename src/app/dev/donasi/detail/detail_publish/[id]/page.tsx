@@ -8,7 +8,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const countDonatur= await Donasi_getCountDonatur(params.id)
   const userLoginId = await user_getOneUserId();
 
-  console.log(userLoginId)
+  // console.log(userLoginId)
 
   return (
     <>

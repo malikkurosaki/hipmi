@@ -22,7 +22,7 @@ export default function DetailPublishDonasi({
   return (
     <>
       {/* <pre>{JSON.stringify(donasi,null,2)}</pre> */}
-      <Stack spacing={40}>
+      <Stack spacing={"xl"} pb={"lg"}>
         <ComponentDonasi_DetailDataMain donasi={donasi} countDonatur={countDonatur} userLoginId={userLoginId}/>
         <ComponentDonasi_InformasiPenggalangMain author={donasi.Author}/>
         <ComponentDonasi_CeritaPenggalangMain donasi={donasi} />

@@ -35,11 +35,9 @@ export default function ComponentDonasi_DetailDataGalangDana({
       >
         <Stack>
           <AspectRatio
-            ratio={9 / 16}
+            ratio={1 / 1}
             mx={"sm"}
             mah={300}
-            // bg={"blue"}
-            style={{}}
           >
             <Image
               alt="Foto"

@@ -153,7 +153,7 @@ export function Home_UiView({
                       e.icon
                     )}
                   </ActionIcon>
-                  <Text c={e.link === "" ? "gray.3" : "white"} fz={"sm"}>
+                  <Text c={e.link === "" ? "gray.3" : "white"} fz={"xs"}>
                     {e.name}
                   </Text>
                 </Stack>
@@ -162,7 +162,6 @@ export function Home_UiView({
           </SimpleGrid>
 
           {/* Job View */}
-
           <Paper
             p={"md"}
             w={"100%"}
@@ -218,10 +217,15 @@ export function Home_UiView({
                           <IconUserSearch size={20} color="white" />
                         </Stack>
                         <Stack spacing={0} w={"80%"}>
-                          <Text c={MainColor.yellow} fw={"bold"}>
+                          <Text
+                            lineClamp={1}
+                            fz={"sm"}
+                            c={MainColor.yellow}
+                            fw={"bold"}
+                          >
                             {e?.Author.username}
                           </Text>
-                          <Text c={"white"} lineClamp={2} fz={"sm"}>
+                          <Text fz={"sm"} c={"white"} lineClamp={2}>
                             {e?.title}
                           </Text>
                         </Stack>
@@ -303,7 +307,11 @@ export function Home_UiFooter({ dataUser }: { dataUser: MODEL_USER }) {
                     e.icon
                   )}
                 </ActionIcon>
-                <Text c={e.link === "" ? "gray" : "white"} fz={"xs"}>
+                <Text
+                  lineClamp={1}
+                  c={e.link === "" ? "gray" : "white"}
+                  fz={10}
+                >
                   {e.name}
                 </Text>
               </Stack>
@@ -347,7 +355,7 @@ export function Home_UiFooter({ dataUser }: { dataUser: MODEL_USER }) {
                   />
                 )}
               </ActionIcon>
-              <Text fz={"xs"} c={"white"}>
+              <Text fz={10} c={"white"}>
                 Profile
               </Text>
             </Stack>

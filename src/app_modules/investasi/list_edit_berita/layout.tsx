@@ -7,6 +7,8 @@ import { IconPencilPlus } from "@tabler/icons-react";
 import React from "react";
 import getOneInvestasiById from "../fun/get_one_investasi_by_id";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
 
 export default function LayoutListEditBeritaInvestasi({
   children,
@@ -17,17 +19,17 @@ export default function LayoutListEditBeritaInvestasi({
 }) {
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <UIGlobal_LayoutTamplate
         header={
-          <ComponentGlobal_HeaderTamplate
+          <UIGlobal_LayoutHeaderTamplate
             title="List Berita"
-            icon={<IconPencilPlus />}
-            route2={RouterInvestasi.create_berita + `${idInves}`}
+            iconRight={<IconPencilPlus />}
+            routerRight={RouterInvestasi.create_berita + `${idInves}`}
           />
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

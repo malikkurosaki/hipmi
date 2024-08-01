@@ -1,14 +1,10 @@
 "use client";
 
-import { Warna } from "@/app/lib/warna";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
-import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
-import { AppShell, Button, Center, Footer } from "@mantine/core";
-import { IconPencilPlus } from "@tabler/icons-react";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import { useRouter } from "next/navigation";
 
 import React from "react";
-import toast from "react-simple-toasts";
 
 export default function LayoutCreateBeritaInvestasi({
   children,
@@ -20,16 +16,11 @@ export default function LayoutCreateBeritaInvestasi({
   const router = useRouter();
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
-        header={<ComponentGlobal_HeaderTamplate title="Buat Berita" />}
-        // footer={
-        //   <Footer height={70} sx={{ borderStyle: "none" }}>
-
-        //   </Footer>
-        // }
+      <UIGlobal_LayoutTamplate
+        header={<UIGlobal_LayoutHeaderTamplate title="Buat Berita" />}
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

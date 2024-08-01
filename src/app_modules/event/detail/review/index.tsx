@@ -1,18 +1,19 @@
 "use client";
 
-import { Button, Stack } from "@mantine/core";
-import ComponentEvent_DetailData from "../../component/detail/detail_data";
-import { useRouter } from "next/navigation";
-import { useAtom } from "jotai";
-import { gs_event_status } from "../../global_state";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { MODEL_EVENT } from "../../model/interface";
-import { Event_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import ComponentEvent_CatatanReject from "../../component/catatan_reject";
-import { useState } from "react";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
+import { Button, Stack } from "@mantine/core";
+import { useAtom } from "jotai";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ComponentEvent_DetailData from "../../component/detail/detail_data";
+import { Event_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
+import { gs_event_status } from "../../global_state";
+import { MODEL_EVENT } from "../../model/interface";
 
 export default function Event_DetailReview({
   dataEvent,
@@ -75,14 +76,35 @@ async function onClick(
   eventId: string,
   setLoading: any
 ) {
-  await Event_funEditStatusById("3", eventId).then((res) => {
-    if (res.status === 200) {
+  const res = await Event_funEditStatusById("3", eventId);
+  if (res.status === 200) {
+    const dataNotif: any = {
+      appId: res.data?.id as any,
+      status: res.data?.EventMaster_Status?.name as any,
+      userId: res.data?.authorId as any,
+      pesan: res.data?.title as any,
+      kategoriApp: "EVENT",
+      title: "Membatalkan review",
+    };
+
+    const notif = await notifikasiToAdmin_funCreate({
+      data: dataNotif as any,
+    });
+
+    if (notif.status === 201) {
+      mqtt_client.publish(
+        "ADMIN",
+        JSON.stringify({
+          count: 1,
+        })
+      );
+
       ComponentGlobal_NotifikasiBerhasil(res.message, 1500);
       setTabsStatus("Draft");
       setLoading(true);
       router.back();
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
     }
-  });
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }

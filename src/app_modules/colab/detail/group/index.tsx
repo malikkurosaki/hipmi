@@ -387,35 +387,4 @@ export default function Colab_GroupChatView({
       </Box>
     </>
   );
-
-  // return (
-  //   <Stack bg={"dark"}>
-  //     <Button
-  //       onClick={() => {
-  //         const dd = _.clone(data[0]);
-  //         dd.message = "apa kabar";
-  //         console.log(dd);
-  //         mqtt_client.publish(selectRoom.id, JSON.stringify(dd));
-  //       }}
-  //     >
-  //       kirim pesan
-  //     </Button>
-  //     <div
-  //       ref={ref as any}
-  //       style={{
-  //         overflowY: "auto",
-  //       }}
-  //     >
-  //       {data.map((v, k) => (
-  //         <Stack key={k}>
-  //           <Card withBorder shadow="md" mt={"md"}>
-  //             <Code>
-  //               <pre>{JSON.stringify(v, null, 2)}</pre>
-  //             </Code>
-  //           </Card>
-  //         </Stack>
-  //       ))}
-  //     </div>
-  //   </Stack>
-  // );
 }

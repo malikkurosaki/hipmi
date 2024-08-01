@@ -42,14 +42,14 @@ export default function ComponentDonasi_CeritaPenggalangMain({
             <Group position="apart">
               <Text>
                 {new Intl.DateTimeFormat("id-ID", { dateStyle: "full" }).format(
-                  donasi.createdAt
+                  donasi?.createdAt
                 )}
               </Text>
               <ActionIcon
                 variant="transparent"
                 onClick={() => {
                   setLoading(true);
-                  router.push(RouterDonasi.cerita_penggalang + `${donasi.id}`);
+                  router.push(RouterDonasi.cerita_penggalang + `${donasi?.id}`);
                 }}
               >
                 {isLoading ? (
@@ -63,7 +63,7 @@ export default function ComponentDonasi_CeritaPenggalangMain({
                 )}
               </ActionIcon>
             </Group>
-            <Text lineClamp={4}>{donasi.CeritaDonasi.cerita}</Text>
+            <Text lineClamp={4}>{donasi?.CeritaDonasi.cerita}</Text>
             {/* <Text c={"blue"}>Baca selengkapnya</Text> */}
           </Stack>
         </Paper>

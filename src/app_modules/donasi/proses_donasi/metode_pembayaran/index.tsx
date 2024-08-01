@@ -16,6 +16,10 @@ import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import mqtt_client from "@/util/mqtt_client";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 
 export default function Donasi_MetodePembayaran({
   listBank,
@@ -42,19 +46,39 @@ export default function Donasi_MetodePembayaran({
 
     // console.log(body)
 
-    await Donasi_funCreateInvoice(body).then((res) => {
-      if (res.status === 200) {
+    const res = await Donasi_funCreateInvoice(body);
+    if (res.status === 200) {
+      const dataNotif = {
+        appId: res.data?.Donasi?.id as any,
+        userId: res.data?.Donasi?.authorId as any,
+        pesan: res.data?.Donasi?.title as any,
+        status: res.data?.DonasiMaster_StatusInvoice?.name,
+        kategoriApp: "DONASI",
+        title: "Donatur mengirim invoice",
+      };
+
+      const notif = await notifikasiToAdmin_funCreate({
+        data: dataNotif as any,
+      });
+
+      if (notif.status === 201) {
+        mqtt_client.publish(
+          "ADMIN",
+          JSON.stringify({
+            count: 1,
+          })
+        );
         setLoading(true);
-        NotifBerhasil(res.message);
-        router.push(RouterDonasi.invoice + `${res.invoiceId}`);
+        ComponentGlobal_NotifikasiBerhasil(res.message);
         setProsesDonasi({
           ...prosesDonasi,
           nominal: "",
         });
-      } else {
-        NotifGagal(res.message);
+        router.push(RouterDonasi.invoice + `${res.data?.id}`);
       }
-    });
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+    }
   }
 
   return (
@@ -67,7 +91,6 @@ export default function Donasi_MetodePembayaran({
           onChange={setPilihBank}
           withAsterisk
           color="yellow"
-          
         >
           {bank.map((e, i) => (
             <Paper
@@ -83,11 +106,11 @@ export default function Donasi_MetodePembayaran({
               }}
             >
               <Radio
-              styles={{
-                radio: {
-                  color: "yellow"
-                }
-              }}
+                styles={{
+                  radio: {
+                    color: "yellow",
+                  },
+                }}
                 value={e.id}
                 label={
                   <Title order={6} color="white">

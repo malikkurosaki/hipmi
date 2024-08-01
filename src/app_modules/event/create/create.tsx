@@ -16,6 +16,8 @@ import ComponentEvent_ErrorMaximalInput from "../component/error_maksimal_input"
 import { Event_funCreate } from "../fun/create/fun_create";
 import { gs_event_hotMenu, gs_event_status } from "../global_state";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import mqtt_client from "@/util/mqtt_client";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 
 export default function Event_Create({
   listTipeAcara,
@@ -43,7 +45,7 @@ export default function Event_Create({
   return (
     <>
       {/* <pre>{JSON.stringify(value, null, 2)}</pre> */}
-      <Stack px={"sm"}>
+      <Stack px={"xl"}>
         <TextInput
           styles={{
             label: {
@@ -175,7 +177,7 @@ export default function Event_Create({
           radius={"xl"}
           mt={"xl"}
           onClick={() => {
-            onSave(router, setTabsStatus, value, setHotMenu, setLoading)
+            onSave(router, setTabsStatus, value, setHotMenu, setLoading);
           }}
           bg={MainColor.yellow}
           color="yellow"
@@ -205,15 +207,36 @@ async function onSave(
   // )
   //   return null;
 
-  await Event_funCreate(value).then((res) => {
-    if (res.status === 201) {
+  const res = await Event_funCreate(value);
+  if (res.status === 201) {
+    const dataNotif: any = {
+      appId: res.data?.id as any,
+      status: res.data?.EventMaster_Status?.name as any,
+      userId: res.data?.authorId as any,
+      pesan: res.data?.title as any,
+      kategoriApp: "EVENT",
+      title: "Event baru",
+    };
+
+    const notif = await notifikasiToAdmin_funCreate({
+      data: dataNotif as any,
+    });
+
+    if (notif.status === 201) {
+      mqtt_client.publish(
+        "ADMIN",
+        JSON.stringify({
+          count: 1,
+        })
+      );
+
       ComponentGlobal_NotifikasiBerhasil(res.message);
       setTabsStatus("Review");
       setHotMenu(1);
       setLoading(true);
       router.push(RouterEvent.status_page);
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
     }
-  });
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }

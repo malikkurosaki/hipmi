@@ -18,6 +18,8 @@ import { Donasi_funDeleteKabar } from "../../fun/delete/fun_delete.kabar";
 import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
 import { NotifGagal } from "../../component/notifikasi/notif_gagal";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
 
 export default function LayoutUpdateKabarDonasi({
   children,
@@ -30,28 +32,25 @@ export default function LayoutUpdateKabarDonasi({
 
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
-        header={<ComponentDonasi_HeaderTamplate title="Update Kabar" />}
+      <UIGlobal_LayoutTamplate
+        header={<UIGlobal_LayoutHeaderTamplate title="Update Kabar" />}
         footer={
-          <Footer height={70}>
-            <Group align="center" h={"100%"} position="center" spacing={"xl"}>
-              {/* <Button radius={"xl"} variant="outline" color="green">
+          <Group align="center" h={"100%"} position="center" spacing={"xl"}>
+            {/* <Button radius={"xl"} variant="outline" color="green">
                 Edit
               </Button> */}
-              <Button
-                radius={"xl"}
-                variant="outline"
-                color="red"
-                onClick={() => onDelete(router, kabarId)}
-              >
-                Hapus
-              </Button>
-            </Group>
-          </Footer>
+            <Button
+              radius={"xl"}
+              color="red"
+              onClick={() => onDelete(router, kabarId)}
+            >
+              Hapus
+            </Button>
+          </Group>
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }
