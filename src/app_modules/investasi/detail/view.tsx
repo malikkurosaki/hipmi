@@ -89,7 +89,7 @@ export default function DetailInvestasi({
 
   return (
     <>
-      <Box
+      <Stack
         style={{
           padding: "15px",
           backgroundColor: AccentColor.darkblue,
@@ -161,18 +161,19 @@ export default function DetailInvestasi({
           )}
         </Group>
 
-        <Paper withBorder mb={"md"} p={"xs"}>
-          <AspectRatio ratio={1 / 1}>
-            <Image
-              alt=""
-              src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
-            />
-          </AspectRatio>
-        </Paper>
+        <AspectRatio ratio={1 / 1} mx={"sm"} mah={300}>
+          <Image
+            alt=""
+            src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
+            radius={"sm"}
+            height={300}
+            width={"100%"}
+          />
+        </AspectRatio>
 
         {/* Title dan Progress */}
         <Box mb={"md"}>
-          <Title order={4} mb={"xs"}>
+          <Title order={3} mb={"xs"} align="center">
             {investasi.title}
           </Title>
           <Progress
@@ -328,7 +329,7 @@ export default function DetailInvestasi({
             )}
           </Box>
         )}
-      </Box>
+      </Stack>
     </>
   );
 }

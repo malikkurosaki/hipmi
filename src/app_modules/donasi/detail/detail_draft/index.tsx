@@ -11,9 +11,10 @@ import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
 import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
 import { gs_donasi_tabs_posting } from "../../global_state";
 import { MODEL_DONASI } from "../../model/interface";
-import { useState } from "react";
-import { useShallowEffect } from "@mantine/hooks";
-import { Donasi_getOneById } from "../../fun/get/get_one_donasi_by_id";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import mqtt_client from "@/util/mqtt_client";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 
 export default function DetailDraftDonasi({
   dataDonasi,
@@ -52,15 +53,31 @@ function ButtonAjukanPenggalangan({
     gs_donasi_tabs_posting
   );
   async function onCLick() {
-    await Donasi_funGantiStatus(dataDonasi.id, "2").then((res) => {
-      if (res.status === 200) {
-        router.push(RouterDonasi.main_galang_dana);
+    const res = await Donasi_funGantiStatus(dataDonasi.id, "2");
+    if (res.status === 200) {
+      const dataNotif = {
+        appId: res.data?.id as any,
+        status: res.data?.DonasiMaster_Status?.name as any,
+        userId: res.data?.authorId as any,
+        pesan: res.data?.title as any,
+        kategoriApp: "DONASI",
+        title: "Mengajukan review",
+      };
+
+      const notif = await notifikasiToAdmin_funCreate({
+        data: dataNotif as any,
+      });
+
+      if (notif.status === 201) {
+        mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
+
         setTabsPostingDonasi("Review");
-        NotifBerhasil("Berhasil Diajukan");
-      } else {
-        NotifPeringatan(res.message);
+        ComponentGlobal_NotifikasiBerhasil("Berhasil Diajukan");
+        router.push(RouterDonasi.main_galang_dana);
       }
-    });
+    } else {
+      ComponentGlobal_NotifikasiPeringatan(res.message);
+    }
   }
   return (
     <>

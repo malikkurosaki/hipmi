@@ -19,11 +19,22 @@ export async function AdminDonasi_funUpdateStatusReject(
       donasiMaster_StatusDonasiId: statusId,
       catatan: catatan,
     },
+    select: {
+      id: true,
+      title: true,
+      authorId: true,
+      DonasiMaster_Status: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
 
   if (!data) return { status: 400, message: "Data tidak ditemukan" };
   revalidatePath(RouterAdminDonasi.table_review);
   return {
+    data: data,
     status: 200,
     message: "Status berhasil diganti",
   };

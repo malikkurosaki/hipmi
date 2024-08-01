@@ -1,14 +1,14 @@
 "use client";
 
-import { Paper, Grid, Center, Text, Title } from "@mantine/core";
+import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { Center, Group, Paper, Text, Title } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import Link from "next/link";
-import {
-  MODEL_Investasi,
-  Model_Prospektus_Investasi,
-} from "../model/model_investasi";
 import { useState } from "react";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import {
+  MODEL_Investasi
+} from "../model/model_investasi";
 
 export default function DetailPropektus({
   dataInvestasi,
@@ -21,21 +21,28 @@ export default function DetailPropektus({
     <>
       {prospek.ProspektusInvestasi !== null ? (
         <Link
-          href={RouterInvestasi.api_file_prospektus + `${prospek.ProspektusInvestasi.id}`}
+          href={
+            RouterInvestasi.api_file_prospektus +
+            `${prospek.ProspektusInvestasi.id}`
+          }
           target="_blank"
           style={{ textDecorationLine: "none" }}
         >
-          <Paper w={"100%"} bg={"gray"} mb={"md"}>
-            <Grid align="center" justify="center" px={"sm"}>
-              <Grid.Col span={10}>
-                <Text>Prospektus_{prospek.title}</Text>
-              </Grid.Col>
-              <Grid.Col span={2}>
-                <Center>
-                  <IconChevronRight />
-                </Center>
-              </Grid.Col>
-            </Grid>
+          <Paper
+            style={{
+              padding:"15px",
+              backgroundColor: AccentColor.darkblue,
+              border: `2px solid ${AccentColor.blue}`,
+              borderRadius: "10px",
+              color: "white",
+            }}
+          >
+            <Group position="apart">
+              <Text w={"80%"} lineClamp={1}>Prospektus_{prospek.title}</Text>
+              <Center>
+                <IconChevronRight />
+              </Center>
+            </Group>
           </Paper>
         </Link>
       ) : (

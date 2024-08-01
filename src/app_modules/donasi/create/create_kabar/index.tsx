@@ -9,6 +9,7 @@ import {
   Image,
   Paper,
   Stack,
+  Text,
   TextInput,
   Textarea,
 } from "@mantine/core";
@@ -25,6 +26,13 @@ import ComponentDonasi_NotedBox from "../../component/noted_box";
 import { Donasi_funCreateNotif } from "../../fun/create/fun_create_notif";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 
 export default function Donasi_CreateKabar({ donasiId }: { donasiId: string }) {
   const router = useRouter();
@@ -36,21 +44,33 @@ export default function Donasi_CreateKabar({ donasiId }: { donasiId: string }) {
   });
   return (
     <>
-      <Stack>
-        <ComponentDonasi_NotedBox informasi="Gambar tidak wajib di isi ! Hanya upload jika di butuhkan." />
+      <Stack px={"lg"} pb={"lg"}>
+        <ComponentGlobal_BoxInformation informasi="Gambar tidak wajib di isi ! Hanya upload jika di butuhkan." />
 
         <TextInput
+          maxLength={100}
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Judul"
           withAsterisk
           placeholder="Masukan judul kabar"
           onChange={(val) => {
             setKabar({
               ...kabar,
-              judul: val.target.value,
+              judul: _.startCase(val.target.value),
             });
           }}
         />
         <Textarea
+          maxLength={500}
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Deskripsi"
           withAsterisk
           placeholder="Masukan deskripsi kabar"
@@ -61,15 +81,36 @@ export default function Donasi_CreateKabar({ donasiId }: { donasiId: string }) {
             });
           }}
         />
+        <ComponentGlobal_InputCountDown
+          lengthInput={kabar.deskripsi.length}
+          maxInput={500}
+        />
+
         <Stack>
-          <AspectRatio ratio={16 / 9}>
-            <Paper radius={"md"}>
-              <Image
-                alt="Foto"
-                src={imageKabar ? imageKabar : "/aset/no-img.png"}
-              />
-            </Paper>
-          </AspectRatio>
+          {imageKabar ? (
+            <AspectRatio ratio={1 / 1} mah={300}>
+              <Paper
+                style={{
+                  border: `2px solid ${AccentColor.blue}`,
+                  backgroundColor: AccentColor.darkblue,
+                  padding: "10px",
+                  borderRadius: "10px",
+                }}
+              >
+                <Image
+                  alt="Foto"
+                  src={imageKabar ? imageKabar : "/aset/no-img.png"}
+                  maw={300}
+                />
+              </Paper>
+            </AspectRatio>
+          ) : (
+            <Center>
+              <Text fs={"italic"} fz={10} c={"white"}>
+                Upload gambar kabar !
+              </Text>
+            </Center>
+          )}
           <Center>
             <FileButton
               onChange={async (files: any | null) => {
@@ -91,10 +132,10 @@ export default function Donasi_CreateKabar({ donasiId }: { donasiId: string }) {
                 <Button
                   {...props}
                   radius={"xl"}
-                  variant="outline"
-                  w={150}
                   leftIcon={<IconCamera />}
-                  compact
+                  bg={MainColor.yellow}
+                  color="yellow"
+                  c={"black"}
                 >
                   Upload
                 </Button>
@@ -103,8 +144,15 @@ export default function Donasi_CreateKabar({ donasiId }: { donasiId: string }) {
           </Center>
         </Stack>
         <Button
+          style={{
+            transition: "0.5s",
+          }}
+          disabled={_.values(kabar).includes("") ? true : false}
           radius={"xl"}
           mt={"lg"}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
           onClick={() => onSave(router, donasiId, kabar, file as any)}
         >
           Simpan
@@ -131,24 +179,17 @@ async function onSave(
     deskripsi: kabar.deskripsi,
   };
 
-  if (_.values(body).includes("")) return NotifPeringatan("Lengkapi Data");
+  if (_.values(body).includes(""))
+    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
   // if (!file) return NotifPeringatan("Lengkapi Gambar");
 
   const gambar = new FormData();
   gambar.append("file", file as any);
 
-  await Donasi_funCreateKabar(body as any, gambar).then(async (res) => {
-    if (res.status === 200) {
-      await Donasi_funCreateNotif(body.donasiId, res.kabarId as any).then(
-        (val) => {
-          if (val.status === 200) {
-            ComponentGlobal_NotifikasiBerhasil(res.message);
-            router.back();
-          }
-        }
-      );
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
-    }
-  });
+  const res = await Donasi_funCreateKabar(body as any, gambar);
+  if (res.status === 200) {
+    // Notif ke setiap donatur
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }

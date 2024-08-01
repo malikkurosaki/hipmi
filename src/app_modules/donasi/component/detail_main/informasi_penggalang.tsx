@@ -73,14 +73,15 @@ export default function ComponentDonasi_InformasiPenggalangMain({
             <Group>
               <Avatar radius={"xl"} variant="filled" bg={"blue"}>
                 {(() => {
-                  const usr = author.username;
-                  const splt = usr.split("");
+                  // return null
+                  const usr = author?.username;
+                  const splt = usr?.split("");
                   const Up = _.upperCase(splt[0]);
 
                   return Up;
                 })()}
               </Avatar>
-              <Text>{author.username}</Text>
+              <Text>{author?.username}</Text>
             </Group>
             <ComponentGlobal_BoxInformation
               informasi="Semua dana yang terkumpul akan disalurkan ke penggalang dana,

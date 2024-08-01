@@ -229,7 +229,7 @@ async function onReject(
     catatan: catatan,
   };
 
-  const res = await AdminEvent_funEditCatatanById(body as any, "4");
+  const res  = await AdminEvent_funEditCatatanById(body as any, "4");
   if (res.status === 200) {
     const dataNotif = {
       appId: res.data?.id,

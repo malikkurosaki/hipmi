@@ -26,7 +26,7 @@ export default function LayoutDetailPublishDonasi({
   const listPage = [
     {
       id: "1",
-      name: "Kabar",
+      name: "Daftar Kabar",
       icon: <IconMessageShare />,
       path: RouterDonasi.list_kabar + donasiId,
     },

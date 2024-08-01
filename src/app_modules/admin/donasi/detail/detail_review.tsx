@@ -35,6 +35,8 @@ import { AdminDonasi_funUpdateStatusReject } from "../fun/update/fun_status_reje
 import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
 import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_detail_donasi";
 import ComponentAdminDonasi_CeritaPenggalangDana from "../component/tampilan_detail_cerita";
+import mqtt_client from "@/util/mqtt_client";
+import adminNotifikasi_funCreateToUser from "../../notifikasi/fun/create/fun_create_notif_user";
 
 export default function AdminDonasi_DetailReview({
   dataReview,
@@ -80,22 +82,36 @@ function ButtonOnHeader({
   const [catatan, setCatatan] = useState("");
 
   async function onPulish() {
-    await AdminDonasi_funUpdateStatusPublish(donasi.id, "1").then(
-      async (res) => {
-        if (res.status === 200) {
-          const newData = await AdminDonasi_getOneById(donasi?.id);
-          setData(newData);
-          ComponentAdminGlobal_NotifikasiBerhasil(
-            "Berhasil Mengubah Status Donasi"
-          );
-          setLoadingPublish(true);
-        } else {
-          ComponentAdminGlobal_NotifikasiPeringatan(
-            "Gagal Mengubah Status Donasi"
-          );
-        }
+    const res = await AdminDonasi_funUpdateStatusPublish(donasi.id, "1");
+    if (res.status === 200) {
+      const dataNotif = {
+        appId: res.data?.id,
+        status: res.data?.DonasiMaster_Status?.name as any,
+        userId: res.data?.authorId as any,
+        pesan: res.data?.title as any,
+        kategoriApp: "DONASI",
+        title: "Donasi publish",
+      };
+
+      const notif = await adminNotifikasi_funCreateToUser({
+        data: dataNotif as any,
+      });
+
+      if (notif.status === 201) {
+        mqtt_client.publish(
+          "USER",
+          JSON.stringify({ userId: res?.data?.authorId, count: 1 })
+        );
+        const newData = await AdminDonasi_getOneById(donasi?.id);
+        setData(newData);
+        ComponentAdminGlobal_NotifikasiBerhasil(
+          "Berhasil Mengubah Status Donasi"
+        );
+        setLoadingPublish(true);
       }
-    );
+    } else {
+      ComponentAdminGlobal_NotifikasiPeringatan("Gagal Mengubah Status Donasi");
+    }
   }
 
   async function onReject() {
@@ -104,19 +120,40 @@ function ButtonOnHeader({
         "Lengkapi Alasan Penolakan"
       );
 
-    await AdminDonasi_funUpdateStatusReject(donasi.id, "4", catatan).then(
-      async (res) => {
-        if (res.status === 200) {
-          const newData = await AdminDonasi_getOneById(donasi?.id);
-          setData(newData);
-          close();
-          ComponentAdminGlobal_NotifikasiBerhasil(res.message);
-          setLoadingReject(true);
-        } else {
-          ComponentAdminGlobal_NotifikasiGagal(res.message);
-        }
-      }
+    const res = await AdminDonasi_funUpdateStatusReject(
+      donasi.id,
+      "4",
+      catatan
     );
+    if (res.status === 200) {
+      const dataNotif = {
+        appId: res.data?.id,
+        status: res.data?.DonasiMaster_Status?.name as any,
+        userId: res.data?.authorId as any,
+        pesan: res.data?.title as any,
+        kategoriApp: "DONASI",
+        title: "Donasi anda di tolak !",
+      };
+
+      const notif = await adminNotifikasi_funCreateToUser({
+        data: dataNotif as any,
+      });
+
+      if (notif.status === 201) {
+        mqtt_client.publish(
+          "USER",
+          JSON.stringify({ userId: res?.data?.authorId, count: 1 })
+        );
+      }
+
+      const newData = await AdminDonasi_getOneById(donasi?.id);
+      setData(newData);
+      close();
+      ComponentAdminGlobal_NotifikasiBerhasil(res.message);
+      setLoadingReject(true);
+    } else {
+      ComponentAdminGlobal_NotifikasiGagal(res.message);
+    }
   }
 
   return (
@@ -190,5 +227,3 @@ function ButtonOnHeader({
     </>
   );
 }
-
-

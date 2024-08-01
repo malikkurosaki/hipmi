@@ -29,6 +29,10 @@ import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
 
 export default function Donasi_InvoiceProses({
   dataInvoice,
@@ -80,7 +84,7 @@ export default function Donasi_InvoiceProses({
             </Stack>
             <Paper
               style={{
-                backgroundColor: AccentColor.softblue,
+                backgroundColor: AccentColor.darkblue,
                 border: `2px solid ${AccentColor.blue}`,
                 padding: "15px",
                 cursor: "pointer",
@@ -107,6 +111,7 @@ export default function Donasi_InvoiceProses({
                           radius={"xl"}
                           onClick={copy}
                           color={copied ? "teal" : "yellow"}
+                          c={"black"}
                         >
                           {copied ? "Berhasil" : "Salin"}
                         </Button>
@@ -136,7 +141,7 @@ export default function Donasi_InvoiceProses({
             </Stack>
             <Paper
               style={{
-                backgroundColor: AccentColor.softblue,
+                backgroundColor: AccentColor.darkblue,
                 border: `2px solid ${AccentColor.blue}`,
                 padding: "15px",
                 cursor: "pointer",
@@ -163,6 +168,7 @@ export default function Donasi_InvoiceProses({
                           variant="filled"
                           radius={"xl"}
                           color={copied ? "teal" : "yellow"}
+                          c={"black"}
                           onClick={copy}
                         >
                           {copied ? "Berhasil" : "Salin"}
@@ -215,6 +221,7 @@ export default function Donasi_InvoiceProses({
                     leftIcon={<IconCamera />}
                     bg={MainColor.yellow}
                     color="yellow"
+                    c={"black"}
                   >
                     Upload
                   </Button>
@@ -271,15 +278,35 @@ async function onClick(
   invoiceId: string,
   setActive: any
 ) {
-  await Donasi_funUpdateStatusInvoice(invoiceId, "2").then((res) => {
-    if (res.status === 200) {
-      NotifBerhasil(res.message);
+  const res = await Donasi_funUpdateStatusInvoice(invoiceId, "2");
+  if (res.status === 200) {
+    const dataNotif: any = {
+      appId: res.data?.Donasi?.id as any,
+      userId: res.data?.Donasi?.authorId as any,
+      pesan: res.data?.Donasi?.title as any,
+      status: res.data?.DonasiMaster_StatusInvoice?.name,
+      kategoriApp: "DONASI",
+      title: "Donatur melakukan transfer",
+    };
+
+    const notif = await notifikasiToAdmin_funCreate({
+      data: dataNotif as any,
+    });
+
+    if (notif.status === 201) {
+      mqtt_client.publish(
+        "ADMIN",
+        JSON.stringify({
+          count: 1,
+        })
+      );
+      ComponentGlobal_NotifikasiBerhasil(res.message);
       setActive(2);
       router.push(RouterDonasi.proses_transaksi + `${invoiceId}`);
-    } else {
-      NotifGagal(res.message);
     }
-  });
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }
 
 async function onUpload(invoiceId: string, file: FormData) {

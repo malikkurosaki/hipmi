@@ -26,7 +26,13 @@ export interface MODEL_NOTIFIKASI {
     | "Report Komentar"
     | "Report Posting"
     | "Partisipan Project"
-    | "Collaboration Group";
+    | "Collaboration Group"
+    | "Menunggu"
+    | "Proses"
+    | "Berhasil"
+    | "Gagal"
+    | "Donatur Baru";
+
   Role: MODEL_NEW_DEFAULT_MASTER;
   userRoleId: String;
 }

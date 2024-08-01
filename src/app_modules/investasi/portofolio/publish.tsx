@@ -24,12 +24,7 @@ export default function Publish({ data }: { data: MODEL_Investasi[] }) {
   const router = useRouter();
   const [sisaWaktu, setSisaWaktu] = useState();
 
-  if (_.isEmpty(data))
-    return (
-      <>
-        <ComponentGlobal_IsEmptyData />
-      </>
-    );
+  if (_.isEmpty(data)) return <ComponentGlobal_IsEmptyData />;
 
   return (
     <>

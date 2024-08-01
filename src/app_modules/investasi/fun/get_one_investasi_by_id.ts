@@ -6,6 +6,8 @@ export default async function getOneInvestasiById(id: string) {
   const data = await prisma.investasi.findUnique({
     where: {
       id: id,
+      
+
     },
     select: {
       id: true,

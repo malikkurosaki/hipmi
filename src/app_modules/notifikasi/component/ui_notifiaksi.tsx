@@ -20,6 +20,10 @@ import {
   gs_event_hotMenu,
   gs_event_status,
 } from "@/app_modules/event/global_state";
+import {
+  gs_donasi_hot_menu,
+  gs_donasi_tabs_posting,
+} from "@/app_modules/donasi/global_state";
 
 export function Notifikasi_UiView({
   listNotifikasi,
@@ -36,6 +40,8 @@ export function Notifikasi_UiView({
   const [voteStatus, setVoteStatus] = useAtom(gs_vote_status);
   const [eventMenu, setEventMenu] = useAtom(gs_event_hotMenu);
   const [eventStatus, setEventStatus] = useAtom(gs_event_status);
+  const [donasiMenu, setDonasiMenu] = useAtom(gs_donasi_hot_menu);
+  const [donasiStatus, setDonasiStatus] = useAtom(gs_donasi_tabs_posting);
 
   // useShallowEffect(() => {
   //   onLoadData({
@@ -84,7 +90,7 @@ export function Notifikasi_UiView({
                     setJobMenuId(val.menuId);
                     setJobStatus(val.status);
                   }
-                  
+
                   if (item?.kategoriApp === "VOTING") {
                     setVoteMenu(val.menuId);
                     setVoteStatus(val.status);
@@ -93,6 +99,11 @@ export function Notifikasi_UiView({
                   if (item?.kategoriApp === "EVENT") {
                     setEventMenu(val.menuId);
                     setEventStatus(val.status);
+                  }
+
+                  if (item?.kategoriApp === "DONASI") {
+                    setDonasiMenu(val.menuId);
+                    setDonasiStatus(val.status);
                   }
                 }}
               />

@@ -24,7 +24,6 @@ export default async function Page() {
   const pembagianDeviden = await getPembagianDeviden();
   const statusInvestasi = await getStatusInvestasi();
 
-
   return (
     <>
       <InvestasiCreate

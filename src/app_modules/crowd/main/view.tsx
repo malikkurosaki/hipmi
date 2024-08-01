@@ -63,13 +63,13 @@ export default function MainCrowd() {
               color: "white",
             }}
             onClick={() => {
-              setLoadingInv(true);
-              router.push(RouterCrowd.investasi);
-              setChangeColor(0);
-              // ComponentGlobal_NotifikasiPeringatan(
-              //   "Sementara ini sedang maintenance",
-              //   3000
-              // );
+              // setLoadingInv(true);
+              // router.push(RouterCrowd.investasi);
+              // setChangeColor(0);
+              ComponentGlobal_NotifikasiPeringatan(
+                "Sementara ini sedang maintenance",
+                3000
+              );
             }}
           >
             <Grid>
@@ -103,13 +103,13 @@ export default function MainCrowd() {
               color: "white",
             }}
             onClick={() => {
-              setLoadingDon(true);
-              router.push(RouterCrowd.donasi);
-              setDonasiHotMenu(0);
-                // ComponentGlobal_NotifikasiPeringatan(
-                //   "Sementara ini sedang maintenance",
-                //   3000
-                // );
+              // setLoadingDon(true);
+              // router.push(RouterCrowd.donasi);
+              // setDonasiHotMenu(0);
+              ComponentGlobal_NotifikasiPeringatan(
+                "Sementara ini sedang maintenance",
+                3000
+              );
             }}
           >
             <Grid>

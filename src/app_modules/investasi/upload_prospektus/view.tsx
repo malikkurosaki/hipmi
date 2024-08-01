@@ -17,6 +17,10 @@ import { useState } from "react";
 import toast from "react-simple-toasts";
 import funUploadProspektusInvestasi from "../fun/fun_upload_prospek";
 import funLoadDataInvestasi from "../fun/fun_load_data";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function UploadProspektusInvestasi({
   idInves,
@@ -37,7 +41,6 @@ export default function UploadProspektusInvestasi({
       if (res.status === 201) {
         toast("Berhasil upload");
         router.back();
-       
       } else {
         toast(res.message);
       }
@@ -46,7 +49,7 @@ export default function UploadProspektusInvestasi({
 
   return (
     <>
-      <Stack>
+      <Stack px={"md"}>
         <Group position="center" px={"md"}>
           <FileButton
             onChange={async (file: any) => {
@@ -62,8 +65,9 @@ export default function UploadProspektusInvestasi({
             {(props) => (
               <Button
                 {...props}
-                bg={Warna.hijau_muda}
-                color="green"
+                bg={MainColor.yellow}
+                color="yellow"
+                c={"black"}
                 radius={50}
               >
                 Upload File
@@ -74,29 +78,51 @@ export default function UploadProspektusInvestasi({
 
         <Box my={"lg"}>
           {!file ? (
-            <Paper radius={20}>
+            <Paper
+              radius={20}
+              style={{
+                border: `2px solid gray`,
+                backgroundColor: "gray",
+                padding: "10px",
+                borderRadius: "10px",
+              }}
+            >
               <AspectRatio ratio={2 / 4} mah={300} maw={200} mx={"auto"}>
-                <Image alt="" src={"/aset/no-file.png"} />
+                <Image
+                  color="gray"
+                  alt=""
+                  opacity={0.1}
+                  src={"/aset/pdf-icon.png"}
+                />
               </AspectRatio>
             </Paper>
           ) : (
-            <Paper radius={20}>
+            <Paper
+              radius={20}
+              style={{
+                border: `2px solid ${AccentColor.softblue}`,
+                backgroundColor: AccentColor.blue,
+                padding: "10px",
+                borderRadius: "10px",
+              }}
+            >
               <AspectRatio ratio={2 / 4} mah={300} maw={200} mx={"auto"}>
                 <Image alt="" src={"/aset/pdf-icon.png"} />
               </AspectRatio>
             </Paper>
           )}
         </Box>
-        <Center>
+        <Stack>
           <Button
-            w={300}
             radius={50}
-            bg={Warna.biru}
+            bg={MainColor.yellow}
+            color="yellow"
+            c={"black"}
             onClick={() => onUpload()}
           >
             Simpan
           </Button>
-        </Center>
+        </Stack>
       </Stack>
     </>
   );

@@ -10,17 +10,19 @@ import React from "react";
 export default function LayoutCeritaPenggalangDonasi({
   children,
   statusDonasiId,
-  donasiId
+  donasiId,
 }: {
   children: React.ReactNode;
   statusDonasiId: string;
-  donasiId: string
+  donasiId: string;
 }) {
   if (statusDonasiId !== "1") {
     return (
       <>
         <UIGlobal_LayoutTamplate
-          header={<UIGlobal_LayoutHeaderTamplate title="Cerita Penggalang Dana" />}
+          header={
+            <UIGlobal_LayoutHeaderTamplate title="Cerita Penggalang Dana" />
+          }
         >
           {children}
         </UIGlobal_LayoutTamplate>
@@ -28,11 +30,11 @@ export default function LayoutCeritaPenggalangDonasi({
     );
   }
   return (
-    <AppComponentGlobal_LayoutTamplate
-      header={<ComponentDonasi_HeaderTamplate title="Cerita Penggalang Dana" />}
-      footer={<ButtonDonasi donasiId={donasiId}/>}
+    <UIGlobal_LayoutTamplate
+      header={<UIGlobal_LayoutHeaderTamplate title="Cerita Penggalang Dana" />}
+      footer={<ButtonDonasi donasiId={donasiId} />}
     >
       {children}
-    </AppComponentGlobal_LayoutTamplate>
+    </UIGlobal_LayoutTamplate>
   );
 }

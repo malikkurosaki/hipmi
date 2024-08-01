@@ -27,14 +27,16 @@ export default async function Donasi_getByStatus(
         publishTime: true,
         DonasiMaster_Durasi: true,
         terkumpul: true,
-
-      }
+      },
     });
     return getReview;
   }
 
   if (status === "2") {
     const getReview = await prisma.donasi.findMany({
+      orderBy: {
+        updatedAt: "desc",
+      },
       where: {
         authorId: authorId,
         donasiMaster_StatusDonasiId: "2",
@@ -67,9 +69,7 @@ export default async function Donasi_getByStatus(
         publishTime: true,
         DonasiMaster_Durasi: true,
         catatan: true,
-
-      }
-
+      },
     });
 
     return getReview;

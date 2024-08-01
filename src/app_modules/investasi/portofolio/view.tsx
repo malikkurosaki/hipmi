@@ -1,23 +1,21 @@
 "use client";
 
-import {
-  Stack,
-  Tabs
-} from "@mantine/core";
+import { Stack, Tabs } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useAtom } from "jotai";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { gs_StatusPortoInvestasi } from "../g_state";
-import {
-  MODEL_Status_investasi
-} from "../model/model_investasi";
+import { MODEL_Status_investasi } from "../model/model_investasi";
 import Draft from "./draft";
 import Publish from "./publish";
 import Reject from "./reject";
 import Review from "./review";
-import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function PortofolioInvestasi({
   listStatusInvestasi,
@@ -79,16 +77,16 @@ export default function PortofolioInvestasi({
             ))}
           </Tabs.List>
 
-          <Tabs.Panel key={"1"} value="Draft">
+          <Tabs.Panel value="Draft">
             <Draft data={dataDraft as any} />
           </Tabs.Panel>
-          <Tabs.Panel key={"2"} value="Review">
+          <Tabs.Panel value="Review">
             <Review data={dataReview as any} />
           </Tabs.Panel>
-          <Tabs.Panel key={"3"} value="Publish">
+          <Tabs.Panel value="Publish">
             <Publish data={dataPublish as any} />
           </Tabs.Panel>
-          <Tabs.Panel key={"4"} value="Reject">
+          <Tabs.Panel value="Reject">
             <Reject data={dataReject as any} />
           </Tabs.Panel>
         </Stack>

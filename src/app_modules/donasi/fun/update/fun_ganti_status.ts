@@ -22,6 +22,16 @@ export async function Donasi_funGantiStatus(
     data: {
       donasiMaster_StatusDonasiId: statusId,
     },
+    select: {
+      id: true,
+      title: true,
+      authorId: true,
+      DonasiMaster_Status: {
+        select: {
+          name: true,
+        },
+      },
+    }
   });
 
 
@@ -29,6 +39,7 @@ export async function Donasi_funGantiStatus(
 
   revalidatePath(RouterDonasi.main_galang_dana)
   return {
+    data: data,
     status: 200,
     message: "Status berhasil diganti",
   };

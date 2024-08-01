@@ -18,7 +18,7 @@ export async function auth_funValidasi(nomor: string) {
       id: true,
       nomor: true,
       username: true,
-      masterUserRoleId: true
+      masterUserRoleId: true,
     },
   });
 
@@ -37,13 +37,15 @@ export async function auth_funValidasi(nomor: string) {
     cookies().set({
       name: "ssn",
       value: res,
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 60 * 60 * 24 * 30,
     });
 
     revalidatePath(RouterHome.main_home);
   }
 
-
-
-  return { status: 200, message: "Nomor Terverifikasi", role: cek.masterUserRoleId };
+  return {
+    status: 200,
+    message: "Nomor Terverifikasi",
+    role: cek.masterUserRoleId,
+  };
 }

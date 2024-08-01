@@ -32,6 +32,8 @@ import { MODEL_Investasi } from "../../model/model_investasi";
 import { useState } from "react";
 import _ from "lodash";
 import funGantiStatusInvestasi from "../../fun/fun_ganti_status";
+import { ComponentInvestasi_DetailDataNonPublish } from "../../component/detail/detai_data_non_publish";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function DetailDraftInvestasi({
   dataInvestasi,
@@ -40,7 +42,7 @@ export default function DetailDraftInvestasi({
 }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
-  const [investasi, setInvestasi] = useState<MODEL_Investasi>(dataInvestasi);
+  // const [investasi, setInvestasi] = useState<MODEL_Investasi>(dataInvestasi);
 
   const listBox = [
     {
@@ -64,7 +66,7 @@ export default function DetailDraftInvestasi({
   ];
 
   async function onsubmit() {
-    await funGantiStatusInvestasi(investasi.id, "2")
+    await funGantiStatusInvestasi(dataInvestasi.id, "2")
       .then((res) => res)
       .then((val) => {
         if (val.status === 200) {
@@ -79,7 +81,7 @@ export default function DetailDraftInvestasi({
 
   return (
     <>
-      <Paper withBorder mb={"md"}>
+      {/* <Paper withBorder mb={"md"}>
         <AspectRatio ratio={16 / 9}>
           <Image
             alt=""
@@ -88,14 +90,13 @@ export default function DetailDraftInvestasi({
         </AspectRatio>
       </Paper>
 
-      {/* Title dan Persentase */}
       <Center>
         <Title order={4} mb={"xs"}>
           {_.capitalize(investasi.title)}
         </Title>
       </Center>
 
-      {/* Rincian Data */}
+     
       <Grid p={"md"} mb={"md"}>
         <Grid.Col span={6}>
           <Stack>
@@ -139,19 +140,22 @@ export default function DetailDraftInvestasi({
             </Box>
           </Stack>
         </Grid.Col>
-      </Grid>
+      </Grid> */}
 
-      <Center>
-        <Button
-          w={300}
-          radius={50}
-          bg={"yellow.7"}
-          color="yellow"
-          onClick={() => onsubmit()}
-        >
-          Ajukan Review
-        </Button>
-      </Center>
+      <Stack mb={"lg"}>
+        <ComponentInvestasi_DetailDataNonPublish data={dataInvestasi} />
+        <Stack>
+          <Button
+            radius={50}
+            bg={MainColor.yellow}
+            color="yellow"
+            c={"black"}
+            onClick={() => onsubmit()}
+          >
+            Ajukan Review
+          </Button>
+        </Stack>
+      </Stack>
     </>
   );
 }

@@ -1,31 +1,25 @@
 "use client";
 
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import {
-  Paper,
-  Grid,
-  Center,
-  Title,
-  Divider,
-  Button,
-  Text,
   ActionIcon,
   Group,
-  Modal,
+  Paper,
+  Text
 } from "@mantine/core";
 import {
-  IconChevronRight,
   IconTrash,
-  IconWorldShare,
+  IconWorldShare
 } from "@tabler/icons-react";
+import _ from "lodash";
 import Link from "next/link";
 import { useState } from "react";
-import { MODEL_Investasi } from "../model/model_investasi";
-import _ from "lodash";
 import funDeleteDokumenInvestasi from "../fun/fun_delete_dokumen";
-import toast from "react-simple-toasts";
 import funLoadDataInvestasi from "../fun/fun_load_data";
-import { useDisclosure } from "@mantine/hooks";
-import { Warna } from "@/app/lib/warna";
+import { MODEL_Investasi } from "../model/model_investasi";
 
 export default function EditDokumenInvestasi({
   dataInvestasi,
@@ -37,12 +31,12 @@ export default function EditDokumenInvestasi({
   async function onDelete(id: string) {
     await funDeleteDokumenInvestasi(id).then(async (res) => {
       if (res.status === 200) {
-        toast(res.message);
+        ComponentGlobal_NotifikasiBerhasil(res.message);
 
         const load = await funLoadDataInvestasi(dokumen.id);
         setDokumen(load as any);
       } else {
-        toast(res.message);
+        ComponentGlobal_NotifikasiGagal(res.message);
       }
     });
   }
@@ -51,45 +45,42 @@ export default function EditDokumenInvestasi({
     <>
       {!_.isEmpty(dokumen.DokumenInvestasi) ? (
         dokumen.DokumenInvestasi.map((e) => (
-          <Paper key={e.id} w={"100%"} h={50} bg={"gray"} mb={"md"}>
-            <Grid
-              align="center"
-              justify="center"
-              h={50}
-              px={"sm"}
-              onClick={() => ""}
-            >
-              <Grid.Col span={8}>
-                <Text>{e.title}</Text>
-              </Grid.Col>
-
-              <Grid.Col span={4}>
-                <Group position="center">
-                  <Link href={`/file/${e.url}`} target="_blank">
-                    <ActionIcon variant="transparent">
-                      <IconWorldShare color="green" />
-                    </ActionIcon>
-                  </Link>
-                  <ActionIcon
-                    variant="transparent"
-                    onClick={() => {
-                      onDelete(e.id);
-                    }}
-                  >
-                    <IconTrash color="red" />
+          <Paper
+            key={e.id}
+            style={{
+              padding: "15px",
+              backgroundColor: AccentColor.darkblue,
+              border: `2px solid ${AccentColor.blue}`,
+              borderRadius: "10px",
+              color: "white",
+              marginBottom: "15px",
+            }}
+          >
+            <Group position="apart">
+              <Text lineClamp={1}>{e.title}</Text>
+              <Group position="center">
+                <Link href={`/file/${e.url}`} target="_blank">
+                  <ActionIcon variant="transparent">
+                    <IconWorldShare color="green" />
                   </ActionIcon>
-                </Group>
-              </Grid.Col>
-            </Grid>
+                </Link>
+                <ActionIcon
+                  variant="transparent"
+                  onClick={() => {
+                    onDelete(e.id);
+                  }}
+                >
+                  <IconTrash color="red" />
+                </ActionIcon>
+              </Group>
+            </Group>
           </Paper>
         ))
       ) : (
-        <Center>
-          <Title order={5}>Tidak ada file</Title>
-        </Center>
+        <ComponentGlobal_IsEmptyData />
       )}
 
-      <Divider mt={"lg"} />
+      {/* <Divider mt={"lg"} /> */}
     </>
   );
 }

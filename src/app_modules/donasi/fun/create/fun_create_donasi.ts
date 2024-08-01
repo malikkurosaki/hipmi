@@ -22,6 +22,16 @@ export async function Donasi_funCreate(req: MODEL_DONASI, file: FormData) {
       namaBank: body.namaBank,
       rekening: body.rekening,
     },
+    select: {
+      id: true,
+      title: true,
+      authorId: true,
+      DonasiMaster_Status: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
 
   if (!dataDonasi) return { status: 400, message: "Gagal disimpan" };
@@ -62,6 +72,7 @@ export async function Donasi_funCreate(req: MODEL_DONASI, file: FormData) {
   if (!dataCerita) return { status: 400, message: "Gagal simpan data cerita" };
   revalidatePath("/dev/donasi/main/galang_dana");
   return {
+    data: dataDonasi,
     status: 201,
     message: "Data donasi tersimpan",
   };

@@ -15,6 +15,7 @@ import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
 import { redirectVotingPage } from "./path/voting";
 import { redirectEventPage } from "./path/event";
 import { redirectDetailCollaborationPage } from "./path/collaboration";
+import { redirectDonasiPage } from "./path/donasi";
 
 export function ComponentNotifiaksi_CardView({
   data,
@@ -53,7 +54,7 @@ export function ComponentNotifiaksi_CardView({
           //   });
           //   onLoadData(loadData);
           // }
-          console.log(data.status);
+
 
           data?.kategoriApp === "JOB" &&
             redirectJobPage({
@@ -92,6 +93,15 @@ export function ComponentNotifiaksi_CardView({
             redirectDetailCollaborationPage({
               data: data,
               router: router,
+            });
+
+          data.kategoriApp === "DONASI" &&
+            redirectDonasiPage({
+              data: data,
+              router: router,
+              onSetPage(val) {
+                onSetMenu(val);
+              },
             });
         }}
       >

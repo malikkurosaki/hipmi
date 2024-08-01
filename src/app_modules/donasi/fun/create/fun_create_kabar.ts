@@ -12,16 +12,6 @@ export async function Donasi_funCreateKabar(
   req: MODEL_DONASI_KABAR | any,
   file: FormData
 ) {
-  const create = await prisma.donasi_Kabar.create({
-    data: {
-      title: req.title,
-      deskripsi: req.deskripsi,
-      donasiId: req.donasiId,
-    },
-  });
-
-  if (!create) return { status: 400, message: "Gagal membuat data" };
-
   const dataImage: any = file.get("file");
   if (dataImage !== "null") {
     const fileName = dataImage.name;
@@ -43,24 +33,53 @@ export async function Donasi_funCreateKabar(
     const uploadFolder = Buffer.from(await dataImage.arrayBuffer());
     fs.writeFileSync(`./public/donasi/kabar/${upload.url}`, uploadFolder);
 
-    const updateKabar = await prisma.donasi_Kabar.update({
-      where: {
-        id: create.id,
-      },
+    const createWithPhoto = await prisma.donasi_Kabar.create({
       data: {
+        title: req.title,
+        deskripsi: req.deskripsi,
+        donasiId: req.donasiId,
         imagesId: upload.id,
+      },
+      select: {
+        Donasi: {
+          select: {
+            id: true,
+            title: true,
+            authorId: true,
+          },
+        },
       },
     });
 
-    if (!updateKabar) return { status: 400, message: "Gagal upload gambar" };
+    if (!createWithPhoto) return { status: 400, message: "Gagal membuat data" };
+    return {
+      status: 200,
+      message: "Berhasil disimpan",
+      data: createWithPhoto,
+    };
   }
 
-  
+  const create = await prisma.donasi_Kabar.create({
+    data: {
+      title: req.title,
+      deskripsi: req.deskripsi,
+      donasiId: req.donasiId,
+    },
+    select: {
+      Donasi: {
+        select: {
+          id: true,
+          title: true,
+          authorId: true,
+        },
+      },
+    },
+  });
 
   revalidatePath("/dev/donasi/list_kabar");
   return {
     status: 200,
     message: "Berhasil disimpan",
-    kabarId: create.id
+    data: create,
   };
 }
