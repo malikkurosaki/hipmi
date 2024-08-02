@@ -1,4 +1,4 @@
-// import prisma from "./../src/app/lib/prisma";
+import prisma from "./../src/app/lib/prisma";
 // import { generate_seeder } from "./../src/app_modules/_global/fun/generate_seeder";
 import bidangBisnis from "./../src/bin/seeder/bidang_bisnis.json";
 import collaboration_industri from "./../src/bin/seeder/colab/master_industri.json";
@@ -24,9 +24,6 @@ import nomor_admin from "./../src/bin/seeder/nomor_admin.json";
 import userRole from "./../src/bin/seeder/user_role.json";
 import userSeeder from "./../src/bin/seeder/user_seeder.json";
 import voting_status from "./../src/bin/seeder/voting/master_status.json";
-
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
 
 (async () => {
   console.log("start");
