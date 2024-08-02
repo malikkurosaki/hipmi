@@ -69,18 +69,7 @@ export function ComponentDonasi_DetailDataMain({
               radius={"sm"}
             />
           </AspectRatio>
-          {/* <Center>
-            <Image
-              maw={200}
-              radius={"xs"}
-              alt="Foto"
-              src={RouterDonasi?.api_gambar + `${donasi?.imagesId}`}
-            />
-          </Center> */}
-          {/* <AspectRatio ratio={16 / 9}>
-            <Paper radius={"md"}>
-            </Paper>
-          </AspectRatio> */}
+
           <Stack spacing={0} mt={"lg"}>
             <Title order={4}>{donasi?.title}</Title>
             <ComponentDonasi_TampilanHitungMundur
@@ -172,8 +161,12 @@ export function ComponentDonasi_DetailDataMain({
             <Grid.Col
               span={"auto"}
               onClick={() => {
-                setLoadingPencairan(true);
-                onPencairanDana(router, donasi, userLoginId);
+                onPencairanDana(
+                  router,
+                  donasi,
+                  userLoginId,
+                  setLoadingPencairan
+                );
               }}
             >
               <Stack spacing={"sm"} align="center">
@@ -199,19 +192,19 @@ export function ComponentDonasi_DetailDataMain({
 async function onPencairanDana(
   router: AppRouterInstance,
   donasi: MODEL_DONASI,
-  userLoginId: string
+  userLoginId: string,
+  setLoadingPencairan: any
 ) {
-  // console.log(userLoginId)
-  // console.log(donasi.authorId)
   const cek = await Donasi_findDonaturByTokenId(donasi.id, userLoginId);
-
-  if (userLoginId == donasi.authorId)
+  if (userLoginId == donasi.authorId) {
+    setLoadingPencairan(true);
     return router.push(RouterDonasi.pencairan_dana + `${donasi.id}`);
+  }
 
-  if (!cek) return NotifPeringatan("Halaman khusus donatur");
-  router.push(RouterDonasi.pencairan_dana + `${donasi.id}`);
-
-  // if (userLoginId != donasi.authorId)
-  //   return NotifPeringatan("Halaman khusus donatur");
-  // router.push(RouterDonasi.pencairan_dana + `${donasi.id}`);
+  if (!cek) {
+    return NotifPeringatan("Halaman khusus donatur");
+  } else {
+    setLoadingPencairan(true);
+    router.push(RouterDonasi.pencairan_dana + `${donasi.id}`);
+  }
 }

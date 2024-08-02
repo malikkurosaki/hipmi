@@ -33,6 +33,7 @@ import {
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { notifikasiToUser_CreateKabarDonasi } from "@/app_modules/notifikasi/fun/create/create_notif_to_user_kabar_donasi";
 
 export default function Donasi_CreateKabar({ donasiId }: { donasiId: string }) {
   const router = useRouter();
@@ -74,6 +75,7 @@ export default function Donasi_CreateKabar({ donasiId }: { donasiId: string }) {
           label="Deskripsi"
           withAsterisk
           placeholder="Masukan deskripsi kabar"
+          autosize
           onChange={(val) => {
             setKabar({
               ...kabar,
@@ -188,7 +190,13 @@ async function onSave(
 
   const res = await Donasi_funCreateKabar(body as any, gambar);
   if (res.status === 200) {
-    // Notif ke setiap donatur
+    await notifikasiToUser_CreateKabarDonasi({
+      donasiId: donasiId,
+      kabarId: res.kabarId as any,
+    });
+
+    ComponentGlobal_NotifikasiBerhasil(res.message);
+    router.back();
   } else {
     ComponentGlobal_NotifikasiGagal(res.message);
   }

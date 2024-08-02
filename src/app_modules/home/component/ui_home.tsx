@@ -216,7 +216,7 @@ export function Home_UiView({
                         <Stack h={"100%"} align="center" justify="flex-start">
                           <IconUserSearch size={20} color="white" />
                         </Stack>
-                        <Stack spacing={0} bg={"cyan"} w={"70%"}>
+                        <Stack spacing={0} w={"60%"}>
                           <Text
                             lineClamp={1}
                             fz={"sm"}

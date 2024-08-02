@@ -54,6 +54,7 @@ import Donasi_DetailNotif from "./detail/deail_notif";
 import LayoutDonasi_DetailNotif from "./detail/deail_notif/layout";
 import Donasi_EditRekening from "./edit/edit_rekening";
 import LayoutDonasi_EditRekening from "./edit/edit_rekening/layout";
+export { LayoutDonasi_BuktiTransfer } from "./detail/detail_main/bukti_transfer";
 
 export {
   MainDonasi,

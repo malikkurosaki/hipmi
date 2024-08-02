@@ -1,6 +1,12 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import ComponentDonasi_NotedBox from "@/app_modules/donasi/component/noted_box";
 import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import {
@@ -23,8 +29,10 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconTransferIn } from "@tabler/icons-react";
+import { IconImageInPicture, IconTransferIn } from "@tabler/icons-react";
+import _ from "lodash";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function PencairanDanaDonasi({
@@ -49,7 +57,17 @@ export default function PencairanDanaDonasi({
 function BoxDanaDicarikan({ akumulasi }: { akumulasi: MODEL_DONASI }) {
   return (
     <>
-      <Paper bg={"gray.1"} p={"md"}>
+      <Paper
+        style={{
+          backgroundColor: MainColor.darkblue,
+          border: `2px solid ${AccentColor.blue}`,
+          padding: "15px",
+          cursor: "pointer",
+          borderRadius: "10px",
+          color: "white",
+          marginBottom: "10px",
+        }}
+      >
         <Stack>
           <Grid>
             <Grid.Col span={6}>
@@ -63,7 +81,7 @@ function BoxDanaDicarikan({ akumulasi }: { akumulasi: MODEL_DONASI }) {
               <Text fz={"xs"}>Pencairan dana</Text>
             </Grid.Col>
           </Grid>
-          <ComponentDonasi_NotedBox
+          <ComponentGlobal_BoxInformation
             informasi=" Pencairan dana akan dilakukan oleh Admin HIPMI tanpa campur tangan
             pihak manapun, jika berita pencairan dana dibawah tidak sesuai
             dengan kabar yang diberikan oleh PENGGALANG DANA. Maka pegguna lain
@@ -80,6 +98,7 @@ function InformasiPencairanDana({
 }: {
   listPD: MODEL_DONASI_PENCAIRAN_DANA[];
 }) {
+  const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
   const [idGambar, setIdGambar] = useState("");
   return (
@@ -94,34 +113,53 @@ function InformasiPencairanDana({
           </Paper>
         </AspectRatio>
       </Modal>
-      {listPD.map((e, i) => (
-        <Paper key={i} withBorder p={"md"}>
-          <Text fz={"xs"}>{moment(e.createdAt).format("ll")}</Text>
-          <Stack spacing={"lg"}>
-            <Title order={5}>{e.title}</Title>
-            <Spoiler
-              maxHeight={50}
-              hideLabel="Sembunyikan"
-              showLabel="Baca Selengkapnya"
-            >
-              {e.deskripsi}
-            </Spoiler>
-            <Center>
-              <Button
-                radius={"xl"}
-                variant="outline"
-                leftIcon={<IconTransferIn />}
-                onClick={() => {
-                  open();
-                  setIdGambar(e.imagesId);
-                }}
+
+      {_.isEmpty(listPD) ? (
+        <ComponentGlobal_IsEmptyData height={20} />
+      ) : (
+        listPD.map((e, i) => (
+          <Paper
+            key={i}
+            style={{
+              padding: "15px",
+              border: `2px solid ${AccentColor.blue}`,
+              backgroundColor: AccentColor.darkblue,
+              borderRadius: "10px",
+              color: "white",
+            }}
+          >
+            <Text fz={"xs"}>{moment(e.createdAt).format("ll")}</Text>
+            <Stack spacing={"lg"}>
+              <Title order={5}>{e.title}</Title>
+              <Spoiler
+                maxHeight={50}
+                hideLabel="Sembunyikan"
+                showLabel="Baca Selengkapnya"
               >
-                Bukti Transfer
-              </Button>
-            </Center>
-          </Stack>
-        </Paper>
-      ))}
+                {e.deskripsi}
+              </Spoiler>
+              <Center>
+                <Button
+                  radius={"xl"}
+                  leftIcon={<IconImageInPicture />}
+                  onClick={() => {
+                    // open();
+                    // setIdGambar(e.imagesId);
+                    router.push(`/dev/donasi/bukti-transfer/${e.imagesId}`, {
+                      scroll: false,
+                    });
+                  }}
+                  bg={MainColor.yellow}
+                  color="yellow"
+                  c={"black"}
+                >
+                  Bukti Transfer
+                </Button>
+              </Center>
+            </Stack>
+          </Paper>
+        ))
+      )}
     </>
   );
 }

@@ -40,22 +40,14 @@ export async function Donasi_funCreateKabar(
         donasiId: req.donasiId,
         imagesId: upload.id,
       },
-      select: {
-        Donasi: {
-          select: {
-            id: true,
-            title: true,
-            authorId: true,
-          },
-        },
-      },
+    
     });
 
     if (!createWithPhoto) return { status: 400, message: "Gagal membuat data" };
     return {
       status: 200,
       message: "Berhasil disimpan",
-      data: createWithPhoto,
+      kabarId: createWithPhoto.id,
     };
   }
 
@@ -65,21 +57,12 @@ export async function Donasi_funCreateKabar(
       deskripsi: req.deskripsi,
       donasiId: req.donasiId,
     },
-    select: {
-      Donasi: {
-        select: {
-          id: true,
-          title: true,
-          authorId: true,
-        },
-      },
-    },
   });
 
   revalidatePath("/dev/donasi/list_kabar");
   return {
     status: 200,
     message: "Berhasil disimpan",
-    data: create,
+    kabarId: create.id,
   };
 }

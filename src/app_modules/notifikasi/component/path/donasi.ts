@@ -46,4 +46,14 @@ export function redirectDonasiPage({
     });
     router.push(pathDetail, { scroll: false });
   }
+
+  if (data.status === "Kabar Donasi") {
+    const pathKabar = RouterDonasi.detail_kabar + data.appId;
+    router.push(pathKabar, { scroll: false });
+  }
+
+   if (data.status === "Pencairan Dana") {
+     const pathPencairan = RouterDonasi.pencairan_dana + data.appId;
+     router.push(pathPencairan, { scroll: false });
+   }
 }

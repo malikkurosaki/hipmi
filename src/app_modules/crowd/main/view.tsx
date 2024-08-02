@@ -60,14 +60,15 @@ export default function MainCrowd() {
               border: `2px solid ${AccentColor.blue}`,
               borderRadius: "10px",
               backgroundColor: MainColor.darkblue,
-              color: "white",
+              // color: "white",
+              color: "gray",
             }}
             onClick={() => {
               // setLoadingInv(true);
               // router.push(RouterCrowd.investasi);
               // setChangeColor(0);
               ComponentGlobal_NotifikasiPeringatan(
-                "Sementara ini sedang maintenance",
+                "Sedang Perbaikan",
                 3000
               );
             }}
@@ -103,13 +104,13 @@ export default function MainCrowd() {
               color: "white",
             }}
             onClick={() => {
-              // setLoadingDon(true);
-              // router.push(RouterCrowd.donasi);
-              // setDonasiHotMenu(0);
-              ComponentGlobal_NotifikasiPeringatan(
-                "Sementara ini sedang maintenance",
-                3000
-              );
+              setLoadingDon(true);
+              router.push(RouterCrowd.donasi);
+              setDonasiHotMenu(0);
+              // ComponentGlobal_NotifikasiPeringatan(
+              //   "Sementara ini sedang maintenance",
+              //   3000
+              // );
             }}
           >
             <Grid>

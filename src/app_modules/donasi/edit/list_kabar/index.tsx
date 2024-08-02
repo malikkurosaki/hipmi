@@ -35,13 +35,19 @@ export default function ListKabarDonasi({
 }) {
   const router = useRouter();
   const [kabar, setKabar] = useState(listKabar);
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
       <Stack>
         <Button
+          loaderPosition="center"
+          loading={isLoading ? true : false}
           leftIcon={<IconCirclePlus />}
           radius={"xl"}
-          onClick={() => router.push(RouterDonasi.create_kabar + `${donasiId}`)}
+          onClick={() => {
+            setIsLoading(true);
+            router.push(RouterDonasi.create_kabar + `${donasiId}`);
+          }}
           bg={MainColor.yellow}
           color="yellow"
           c={"black"}
