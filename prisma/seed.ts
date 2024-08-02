@@ -1,5 +1,5 @@
 import prisma from "./../src/app/lib/prisma";
-import { generate_seeder } from "@/app_modules/_global/fun/generate_seeder";
+import { generate_seeder } from "./../src/app_modules/_global/fun/generate_seeder";
 
 (async () => {
   console.log("start");
