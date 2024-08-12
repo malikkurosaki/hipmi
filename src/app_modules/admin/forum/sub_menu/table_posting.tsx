@@ -186,6 +186,7 @@ function TablePublish({ listPublish }: { listPublish: any }) {
             }}
           />
         </Group>
+        
         {isEmpty(data) ? (
           <ComponentAdminGlobal_IsEmptyData />
         ) : (

@@ -14,10 +14,7 @@ export default async function funDeleteInvestasi(id: string) {
 
   if (!res) return { status: 400, message: "Gagal Hapus Data" };
 
-
-  revalidatePath(RouterInvestasi.portofolio)
-  revalidatePath(RouterAdminInvestasi_OLD.main_investasi)
-
+  revalidatePath(RouterInvestasi.portofolio);
 
   return {
     status: 200,

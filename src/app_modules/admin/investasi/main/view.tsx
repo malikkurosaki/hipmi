@@ -61,12 +61,13 @@ export default function Admin_Investasi({
   const router = useRouter();
 
   const listBox = [
+
     {
       id: 1,
-      name: "Draft",
-      jumlah: countDraft,
-      link: "",
-      color: "yellow",
+      name: "Publish",
+      jumlah: countPublish,
+      link: RouterAdminInvestasi_OLD.table_status_publish,
+      color: "green",
     },
     {
       id: 2,
@@ -77,13 +78,6 @@ export default function Admin_Investasi({
     },
     {
       id: 3,
-      name: "Publish",
-      jumlah: countPublish,
-      link: RouterAdminInvestasi_OLD.table_status_publish,
-      color: "green",
-    },
-    {
-      id: 4,
       name: "Reject",
       jumlah: countReject,
       link: RouterAdminInvestasi_OLD.table_status_reject,
@@ -97,7 +91,7 @@ export default function Admin_Investasi({
         <ComponentAdminGlobal_HeaderTamplate name="Investasi" />
 
         <SimpleGrid
-          cols={4}
+          cols={3}
           spacing="lg"
           breakpoints={[
             { maxWidth: "62rem", cols: 4, spacing: "lg" },

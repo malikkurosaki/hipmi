@@ -16,9 +16,10 @@ import {
   Image,
   Paper,
   Progress,
+  SimpleGrid,
   Stack,
   Text,
-  Title
+  Title,
 } from "@mantine/core";
 import {
   IconBookDownload,
@@ -33,7 +34,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { gs_TransferValue } from "../g_state";
 import { MODEL_Investasi } from "../model/model_investasi";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function DetailInvestasi({
   dataInvestasi,
@@ -54,24 +58,25 @@ export default function DetailInvestasi({
   const [transaksiValue, setTransaksiValue] = useAtom(gs_TransferValue);
   const [boxId, setBoxId] = useState(0);
   const [isLoadingBox, setLoadingBox] = useState(false);
+  const [isLoadingButton, setLoadingButton] = useState(false);
 
   const listBox = [
     {
       id: 1,
       name: "Prospektus",
-      icon: <IconBookDownload size={70} />,
+      icon: <IconBookDownload size={70} color="white" />,
       route: RouterInvestasi.detail_prospektus,
     },
     {
       id: 2,
       name: "Dokumen",
-      icon: <IconFileDescription size={70} />,
+      icon: <IconFileDescription size={70} color="white" />,
       route: RouterInvestasi.detail_dokumen,
     },
     {
       id: 3,
       name: "Berita",
-      icon: <IconSpeakerphone size={70} />,
+      icon: <IconSpeakerphone size={70} color="white" />,
       route: RouterInvestasi.berita,
     },
   ];
@@ -85,6 +90,7 @@ export default function DetailInvestasi({
       nomorRekening: "",
       totalTransfer: "",
     });
+    setLoadingButton(true);
   }
 
   return (
@@ -161,12 +167,12 @@ export default function DetailInvestasi({
           )}
         </Group>
 
-        <AspectRatio ratio={1 / 1} mx={"sm"} mah={300}>
+        <AspectRatio ratio={1 / 1} mx={"sm"} mah={250}>
           <Image
             alt=""
             src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
             radius={"sm"}
-            height={300}
+            height={250}
             width={"100%"}
           />
         </AspectRatio>
@@ -268,67 +274,73 @@ export default function DetailInvestasi({
         </Grid>
 
         {/* List Box */}
-        <Grid mb={"md"}>
+        <Group position="apart" px={"lg"}>
           {listBox.map((e, i) => (
-            <Grid.Col
-              span={"auto"}
-              key={e?.id}
-              onClick={() => {
-                setBoxId(e?.id);
-                setLoadingBox(true);
-                router.push(e.route + `${investasi.id}`);
+            <Paper
+              key={i}
+              style={{
+                padding: "15px",
+                backgroundColor: AccentColor.blue,
+                border: `2px solid ${AccentColor.softblue}`,
+                borderRadius: "10px",
+                color: "white",
               }}
             >
-              <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
-                <Flex direction={"column"} align={"center"} justify={"center"}>
-                  <Text fz={12}>{e.name}</Text>
-                  <ActionIcon
-                    radius={"xl"}
-                    loading={isLoadingBox && e?.id === boxId ? true : false}
-                    variant="transparent"
-                    size={60}
-                  >
-                    {e.icon}
-                  </ActionIcon>
-                </Flex>
-              </Paper>
-            </Grid.Col>
-          ))}
-        </Grid>
-
-        {investasi.sisaLembar === "0" ||
-        Number(investasi.MasterPencarianInvestor.name) -
-          moment(new Date()).diff(new Date(investasi.countDown), "days") <=
-          0 ? (
-          <Center mb={"md"}>
-            <Button disabled radius={50} w={350} variant="transparent">
-              Investasi Telah Ditutup
-            </Button>
-          </Center>
-        ) : (
-          <Box>
-            {loginUserId === investasi.authorId ? (
-              <Center mb={"md"}>
-                <Button disabled radius={50} w={350}>
-                  Investasi Ini Milik Anda
-                </Button>
-              </Center>
-            ) : (
-              <Center mb={"md"}>
-                <Button
-                  radius={50}
-                  w={350}
-                  bg={Warna.biru}
-                  onClick={() => {
-                    onSubmit();
-                  }}
+              <Flex direction={"column"} align={"center"} justify={"center"}>
+                <Text fz={12}>{e.name}</Text>
+                <ActionIcon
+                  radius={"xl"}
+                  loading={isLoadingBox && e?.id === boxId ? true : false}
+                  variant="transparent"
+                  size={60}
+                  onClick={() => router.push(e.route + `${investasi.id}`)}
                 >
-                  Beli Saham
-                </Button>
-              </Center>
-            )}
-          </Box>
-        )}
+                  {e.icon}
+                </ActionIcon>
+              </Flex>
+            </Paper>
+          ))}
+        </Group>
+
+        <Box my={"md"}>
+          {investasi.sisaLembar === "0" ||
+          Number(investasi.MasterPencarianInvestor.name) -
+            moment(new Date()).diff(new Date(investasi.countDown), "days") <=
+            0 ? (
+            <Center mb={"md"}>
+              <Button disabled radius={50} variant="transparent">
+                Investasi Telah Ditutup
+              </Button>
+            </Center>
+          ) : (
+            <Box>
+              {loginUserId === investasi.authorId ? (
+                <Center mb={"md"}>
+                  <Button disabled radius={50}>
+                    Investasi Ini Milik Anda
+                  </Button>
+                </Center>
+              ) : (
+                <Center mb={"md"}>
+                  <Button
+                    loaderPosition="center"
+                    loading={isLoadingButton}
+                    w={"100%"}
+                    radius={50}
+                    bg={MainColor.yellow}
+                    color="yellow"
+                    c={"black"}
+                    onClick={() => {
+                      onSubmit();
+                    }}
+                  >
+                    Beli Saham
+                  </Button>
+                </Center>
+              )}
+            </Box>
+          )}
+        </Box>
       </Stack>
     </>
   );

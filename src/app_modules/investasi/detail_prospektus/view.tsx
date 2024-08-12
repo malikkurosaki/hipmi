@@ -25,7 +25,7 @@ export default function DetailPropektus({
             RouterInvestasi.api_file_prospektus +
             `${prospek.ProspektusInvestasi.id}`
           }
-          target="_blank"
+          // target="_blank"
           style={{ textDecorationLine: "none" }}
         >
           <Paper

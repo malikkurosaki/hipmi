@@ -3,7 +3,7 @@
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
-import ComponentDonasi_CardPublish from "@/app_modules/donasi/component/card_view/box_publish";
+import ComponentDonasi_CardPublish from "@/app_modules/donasi/component/card_view/card_publish";
 import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import {
   MODEL_DONASI,

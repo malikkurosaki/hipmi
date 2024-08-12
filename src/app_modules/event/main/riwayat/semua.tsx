@@ -1,29 +1,19 @@
 "use client";
 
-import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import {
-  Card,
-  Stack,
-  Grid,
-  Title,
-  Text,
-  Center,
   Box,
-  Loader,
+  Center,
+  Loader
 } from "@mantine/core";
-import moment from "moment";
 
-import { MODEL_EVENT } from "../../model/interface";
-import { useRouter } from "next/navigation";
-import _ from "lodash";
-import { useState } from "react";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";
-import ComponentEvent_BoxListStatus from "../../component/box_list_status";
-import { event_getAllDraft } from "../../fun/get/status/get_all_draft";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { ComponentEvent_CardRiwayat } from "../../component/card_view/card_riwayat";
 import { event_getListSemuaRiwayat } from "../../fun/get/riwayat/get_list_semua_riwayat";
+import { MODEL_EVENT } from "../../model/interface";
 
 export default function Event_SemuaRiwayat({
   listData,

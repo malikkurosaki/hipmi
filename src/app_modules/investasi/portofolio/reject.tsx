@@ -1,30 +1,17 @@
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import {
-  AspectRatio,
-  Box,
-  Grid,
-  Image,
-  Paper,
-  Stack,
-  Text,
-} from "@mantine/core";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { Box } from "@mantine/core";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
-import { MODEL_Investasi } from "../model/model_investasi";
 import { ComponentInvestasi_CardStatus } from "../component/detail/card_status";
+import { MODEL_Investasi } from "../model/model_investasi";
 
 export default function Reject({ data }: { data: MODEL_Investasi[] }) {
   const [investasi, setInvestasi] = useState(data);
   const router = useRouter();
 
-  if (_.isEmpty(data))
-    return (
-      <>
-        <ComponentInvestasi_IsEmptyData text="Tidak ada data" />
-      </>
-    );
+  if (_.isEmpty(data)) return <ComponentGlobal_IsEmptyData />;
 
   return (
     <>

@@ -13,8 +13,9 @@ import { useState } from "react";
 import { ComponentInvestasi_DetailDataNonPublish } from "../../component/detail/detai_data_non_publish";
 import funDeleteInvestasi from "../../fun/fun_delete_investasi";
 import funGantiStatusInvestasi from "../../fun/fun_ganti_status";
-import { gs_StatusPortoInvestasi } from "../../g_state";
+import { gs_investasi_status } from "../../g_state";
 import { MODEL_Investasi } from "../../model/model_investasi";
+import { investasi_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
 
 export default function DetailRejectInvestasi({
   dataInvestasi,
@@ -23,40 +24,22 @@ export default function DetailRejectInvestasi({
 }) {
   const router = useRouter();
   const [investasi, setInvestasi] = useState(dataInvestasi);
-  const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
+  const [activeTab, setActiveTab] = useAtom(gs_investasi_status);
   const [openModal, setOpenModal] = useState(false);
 
-  const listBox = [
-    {
-      id: 1,
-      name: "Prospektus",
-      icon: <IconBookDownload size={70} />,
-      route: RouterInvestasi.edit_prospektus,
-    },
-    {
-      id: 2,
-      name: "Dokumen",
-      icon: <IconFileDescription size={70} />,
-      route: RouterInvestasi.edit_dokumen,
-    },
-    // {
-    //   id: 3,
-    //   name: "Berita",
-    //   icon: <IconSpeakerphone size={70} />,
-    //   route: RouterInvestasi.edit_berita,
-    // },
-  ];
-
   async function onAjukan() {
-    await funGantiStatusInvestasi(investasi.id, "1").then((res) => {
-      if (res.status === 200) {
-        ComponentGlobal_NotifikasiBerhasil("Project Diajukan Kembali");
-        setActiveTab("Draft");
-        router.push(RouterInvestasi.portofolio);
-      } else {
-        ComponentGlobal_NotifikasiGagal("Gagal Pengajuan");
-      }
+    const res = await investasi_funEditStatusById({
+      investasiId: dataInvestasi.id,
+      statusId: "3",
     });
+
+    if (res.status === 200) {
+      ComponentGlobal_NotifikasiBerhasil("Project Diajukan Kembali");
+      setActiveTab("Draft");
+      router.push(RouterInvestasi.portofolio);
+    } else {
+      ComponentGlobal_NotifikasiGagal("Gagal Pengajuan");
+    }
   }
 
   async function onDelete() {

@@ -1,8 +1,8 @@
 [
   {
     "id": "1",
-    "name": "Draft",
-    "color": "yellow"
+    "name": "Publish",
+    "color": "green"
   },
   {
     "id": "2",
@@ -11,8 +11,8 @@
   },
   {
     "id": "3",
-    "name": "Publish",
-    "color": "green"
+    "name": "Draft",
+    "color": "yellow"
   },
   {
     "id": "4",

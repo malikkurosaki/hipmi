@@ -5,7 +5,7 @@ import { AppShell, CloseButton, Group, Header, Text } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { gs_investasiFooter } from "../../g_state";
+import { gs_investas_menu } from "../../g_state";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 
 export default function LayoutCountDownTransaksiInvestasi({
@@ -14,7 +14,7 @@ export default function LayoutCountDownTransaksiInvestasi({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [hotMenu, setHotMenu] = useAtom(gs_investasiFooter);
+  const [hotMenu, setHotMenu] = useAtom(gs_investas_menu);
   return (
     <>
       <AppComponentGlobal_LayoutTamplate

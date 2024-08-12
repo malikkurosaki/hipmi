@@ -64,7 +64,7 @@ export function ComponentInvestasi_DetailDataNonPublish({
 
         {/* Title dan Persentase */}
         <Center>
-          <Title order={4} align="center">
+          <Title order={3} align="center">
             {_.startCase(data.title)}
           </Title>
         </Center>
@@ -129,8 +129,8 @@ export function ComponentInvestasi_DetailDataNonPublish({
           {listBox.map((e) => (
             <Center key={e.id}>
               <Paper
-                w={100}
                 style={{
+                  width: 100,
                   padding: "15px",
                   backgroundColor: AccentColor.blue,
                   border: `2px solid ${AccentColor.softblue}`,

@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import { useAtom } from "jotai";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { gs_StatusPortoInvestasi } from "../g_state";
+import { gs_investasi_status } from "../g_state";
 import { MODEL_Status_investasi } from "../model/model_investasi";
 import Draft from "./draft";
 import Publish from "./publish";
@@ -31,7 +31,7 @@ export default function PortofolioInvestasi({
   dataReject: any;
 }) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
+  const [activeTab, setActiveTab] = useAtom(gs_investasi_status);
   const [status_inves, setStatus_inves] =
     useState<MODEL_Status_investasi[]>(listStatusInvestasi);
 

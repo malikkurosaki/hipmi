@@ -1,64 +1,55 @@
 "use client";
-"use dev";
 
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import ComponentDonasi_IsEmptyData from "@/app_modules/donasi/component/is_empty_data";
-import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import { ComponentDonasi_CardDonatur } from "@/app_modules/donasi/component/card_view/ui_card_donatur";
+import { donasi_funGetListDonaturById } from "@/app_modules/donasi/fun/get/get_list_donatur";
 import { MODEL_DONASI_INVOICE } from "@/app_modules/donasi/model/interface";
-import { Center, Grid, Group, Paper, Stack, Text, Title } from "@mantine/core";
-import { IconMoodSmileBeam } from "@tabler/icons-react";
+import { Box, Center } from "@mantine/core";
 import _ from "lodash";
+import { ScrollOnly } from "next-scroll-loader";
 import { useState } from "react";
 
 export default function DonaturDonasi({
   listDonatur,
+  donasiId,
 }: {
   listDonatur: MODEL_DONASI_INVOICE[];
+  donasiId: string;
 }) {
-  const [donatur, setDonatur] = useState(listDonatur);
-  if (_.isEmpty(donatur)) return <ComponentDonasi_IsEmptyData />;
+  const [data, setData] = useState(listDonatur);
+  const [activePage, setActivePage] = useState(1);
 
   return (
     <>
-      {donatur.map((e, i) => (
-        <Paper
-          key={i}
-          style={{
-            backgroundColor: AccentColor.blue,
-            border: `2px solid ${AccentColor.darkblue}`,
-            padding: "15px",
-            cursor: "pointer",
-            borderRadius: "10px",
-            color: "white",
-            marginBottom: "10px",
-          }}
-        >
-          <Grid>
-            <Grid.Col span={3}>
-              <Center h={"100%"}>
-                {/* <Avatar variant="filled" radius={"xl"} size={"md"} /> */}
-                <IconMoodSmileBeam size={50} />
+      {_.isEmpty(data) ? (
+        <ComponentGlobal_IsEmptyData />
+      ) : (
+        <Box>
+          <ScrollOnly
+            height="92vh"
+            renderLoading={() => (
+              <Center>
+                <ComponentGlobal_Loader size={25} />
               </Center>
-            </Grid.Col>
-            <Grid.Col span={9}>
-              <Stack spacing={0}>
-                <Title order={5}>{e.Author.username}</Title>
-                <Group spacing={"xs"}>
-                  <Text fz={"xs"}>Berdonasi sebesar</Text>
-                  <Text truncate fw={"bold"}>
-                    <TampilanRupiahDonasi nominal={+e.nominal} />
-                  </Text>
-                </Group>
-                <Text fz={"xs"}>
-                  {new Intl.DateTimeFormat("id-ID", {
-                    dateStyle: "full",
-                  }).format(e?.createdAt)}
-                </Text>
-              </Stack>
-            </Grid.Col>
-          </Grid>
-        </Paper>
-      ))}
+            )}
+            data={data}
+            setData={setData}
+            moreData={async () => {
+              const loadData = await donasi_funGetListDonaturById({
+                page: activePage + 1,
+                donasiId: donasiId,
+              });
+
+              setActivePage((val) => val + 1);
+
+              return loadData;
+            }}
+          >
+            {(item) => <ComponentDonasi_CardDonatur data={item} />}
+          </ScrollOnly>
+        </Box>
+      )}
     </>
   );
 }

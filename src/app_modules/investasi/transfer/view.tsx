@@ -32,7 +32,7 @@ import {
 } from "../model/model_investasi";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { useAtom } from "jotai";
-import { gs_TransferValue, gs_investasiFooter } from "../g_state";
+import { gs_TransferValue, gs_investas_menu } from "../g_state";
 import funGantiStatusTransaksi_Investasi from "../fun/fun_ganti_status_transaksi";
 
 export default function TransferInvestasi({

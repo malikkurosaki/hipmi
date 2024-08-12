@@ -1,10 +1,11 @@
 import { Admin_TableRejectInvestasi } from "@/app_modules/admin/investasi";
-import Admin_funGetAllInvestasi from "@/app_modules/admin/investasi/fun/get_all_investasi";
+import { adminInvestasi_funGetAllReject } from "@/app_modules/admin/investasi/fun/get/get_all_reject";
 
 export default async function Page() {
-    const dataInvestsi = await Admin_funGetAllInvestasi()
-    return <>
-    <Admin_TableRejectInvestasi dataInvestsi={dataInvestsi as any}/>
-    
+  const dataInvestsi = await adminInvestasi_funGetAllReject({page: 1});
+  return (
+    <>
+      <Admin_TableRejectInvestasi dataInvestsi={dataInvestsi as any} />
     </>
+  );
 }

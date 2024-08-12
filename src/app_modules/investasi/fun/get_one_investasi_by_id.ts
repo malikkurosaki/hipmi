@@ -6,11 +6,17 @@ export default async function getOneInvestasiById(id: string) {
   const data = await prisma.investasi.findUnique({
     where: {
       id: id,
-      
-
     },
     select: {
       id: true,
+      author: {
+        select: {
+          id: true,
+          username: true,
+          nomor: true,
+          Profile: true,
+        },
+      },
       title: true,
       authorId: true,
       hargaLembar: true,
@@ -33,8 +39,8 @@ export default async function getOneInvestasiById(id: string) {
       MasterPencarianInvestor: true,
       MasterPeriodeDeviden: true,
       MasterProgresInvestasi: true,
-      author: true,
-      countDown: true
+      masterStatusInvestasiId: true,
+      countDown: true,
     },
   });
 

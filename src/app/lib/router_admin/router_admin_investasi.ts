@@ -3,4 +3,9 @@ export const RouterAdminInvestasi = {
   table_publish: "/dev/admin/investasi/sub-menu/publish",
   table_review: "/dev/admin/investasi/sub-menu/review",
   table_reject: "/dev/admin/investasi/sub-menu/reject",
+
+  // detail
+  detail_publish: "/dev/admin/investasi/detail/publish/",
+  detail_review: "/dev/admin/investasi/detail/review/",
+  detail_reject: "/dev/admin/investasi/detail/reject/",
 };

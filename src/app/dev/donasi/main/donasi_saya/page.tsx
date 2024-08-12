@@ -1,10 +1,8 @@
 import { DonasiSayaDonasi } from "@/app_modules/donasi";
-import { Donasi_getInvoiceByAuthorId } from "@/app_modules/donasi/fun/get/get_list_invoice_by_author_id";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { donasi_funGetAllInvoiceByAuthorId } from "@/app_modules/donasi/fun/get/get_all_invoice_by_author_id";
 
 export default async function Page() {
-  const authorId = await user_getOneUserId();
-  const listInvoice = await Donasi_getInvoiceByAuthorId(authorId);
+  const listInvoice = await donasi_funGetAllInvoiceByAuthorId({ page: 1 });
 
   return <DonasiSayaDonasi listInvoice={listInvoice as any} />;
 }

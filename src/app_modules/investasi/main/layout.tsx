@@ -1,17 +1,15 @@
 "use client";
 
+import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
-import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import {
   ActionIcon,
-  Center,
-  Flex,
-  Footer,
-  Grid,
   SimpleGrid,
   Stack,
-  Text,
+  Text
 } from "@mantine/core";
 import {
   IconCash,
@@ -22,13 +20,7 @@ import {
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { gs_investasiFooter } from "../g_state";
-import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
-import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
-import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
+import { gs_investas_menu } from "../g_state";
 
 export default function LayoutMainInvestasi({
   children,
@@ -36,7 +28,7 @@ export default function LayoutMainInvestasi({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [active, setActive] = useAtom(gs_investasiFooter);
+  const [active, setActive] = useAtom(gs_investas_menu);
 
   const listFooter = [
     {

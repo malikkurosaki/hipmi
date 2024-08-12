@@ -2,116 +2,189 @@
 import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
 import {
-  Badge,
-  ActionIcon,
-  Box,
-  ScrollArea,
-  Table,
-  Tooltip,
-  Stack,
-  Avatar,
-  Group,
-  Text,
+  Button,
   Center,
+  Group,
+  Pagination,
+  Paper,
+  ScrollArea,
+  Stack,
+  Table,
+  Text,
+  TextInput,
+  Title
 } from "@mantine/core";
-import { IconChevronLeft, IconEyeCheck } from "@tabler/icons-react";
-import { IconEdit, IconEye } from "@tabler/icons-react";
+import { IconSearch } from "@tabler/icons-react";
+import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentAdminGlobal_IsEmptyData from "../../component_global/is_empty_data";
+import { adminInvestasi_funGetAllPublish } from "../fun/get/get_all_publish";
+import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
 
 export default function Admin_TablePublishInvestasi({
   dataInvestsi,
 }: {
   dataInvestsi: MODEL_Investasi[];
 }) {
-  const [investasi, setInvestasi] = useState(dataInvestsi);
-  const router = useRouter();
-
-  // console.log(investasi);
-
-  const tableBody = investasi.map((e) =>
-    e.MasterStatusInvestasi.id === "3" ? (
-      <tr key={e.id}>
-        <td>
-          <Group position="left">
-            <Avatar variant="outline" radius={"xl"} />
-            <Text>{e.author.username}</Text>
-          </Group>
-        </td>
-        <td>{e.title}</td>
-        <td>
-          <Center> {e.progress} %</Center>
-        </td>
-        <td>
-          <Center> {new Intl.NumberFormat("id-ID", {maximumFractionDigits: 10}).format(+e.sisaLembar)}</Center>
-        </td>
-        <td>
-        <Center> {new Intl.NumberFormat("id-ID", {maximumFractionDigits: 10}).format(+e.totalLembar)}</Center>
-
-        </td>
-        <td>
-          <Center>
-            <Tooltip label="Detail" withArrow position="bottom">
-              <ActionIcon
-                variant="transparent"
-                onClick={() =>
-                  router.push(RouterAdminInvestasi_OLD.konfirmasi + `${e.id}`)
-                }
-              >
-                <IconEyeCheck color="green" />
-              </ActionIcon>
-            </Tooltip>
-          </Center>
-        </td>
-      </tr>
-    ) : (
-      ""
-    )
-  );
-
   return (
     <>
       <Stack>
-      <ActionIcon variant="outline" onClick={() => router.push(RouterAdminInvestasi_OLD.main_investasi)}>
+        <ComponentAdminGlobal_HeaderTamplate name="Investasi" />
+        <TableView listData={dataInvestsi} />
+        {/* <pre>{JSON.stringify(listPublish, null, 2)}</pre> */}
+      </Stack>
+    </>
+  );
+}
 
-          <IconChevronLeft />
-        </ActionIcon>
-        <Box>
-          <ScrollArea w={"100%"}>
-            {/* <Title order={5} mb={5}>
-              List Publish
-            </Title> */}
-            <Badge color="green" variant="light" radius={0} size={"xl"}>
-              Publish
-            </Badge>
-            <Table
-              withBorder
-              highlightOnHover
-              verticalSpacing={"md"}
-              horizontalSpacing={"md"}
-            >
-              <thead>
-                <tr>
-                  <th>Username</th>
-                  <th>Nama Proyek Investasi</th>
-                  <th>
-                    <Center>Progres</Center>
-                  </th>
-                  <th>
-                    <Center>Sisa Saham</Center>
-                  </th>
-                  <th>
-                    <Center>Total Saham</Center>
-                  </th>
-                  <th>
-                    <Center>Aksi</Center>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>{tableBody}</tbody>
-            </Table>
-          </ScrollArea>
-        </Box>
+function TableView({ listData }: { listData: any }) {
+  const router = useRouter();
+  const [data, setData] = useState<MODEL_Investasi[]>(listData.data);
+  const [nPage, setNPage] = useState(listData.nPage);
+  const [activePage, setActivePage] = useState(1);
+  const [isSearch, setSearch] = useState("");
+
+  async function onSearch(s: string) {
+    setSearch(s);
+    setActivePage(1);
+    const loadData = await adminInvestasi_funGetAllPublish({
+      page: 1,
+      search: s,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  async function onPageClick(p: any) {
+    setActivePage(p);
+    const loadData = await adminInvestasi_funGetAllPublish({
+      search: isSearch,
+      page: p,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  const tableBody = data.map((e) => (
+    <tr key={e.id}>
+      <td>
+        <Center w={200}>
+          <Text lineClamp={1}>{e.author.username}</Text>
+        </Center>
+      </td>
+      <td>
+        <Center w={400}>
+          <Text lineClamp={1}>{e.title}</Text>
+        </Center>
+      </td>
+      <td>
+        <Center w={200}>{_.toNumber(e.progress).toFixed(2)} %</Center>
+      </td>
+      <td>
+        <Center w={200}>
+          {new Intl.NumberFormat("id-ID", {
+            maximumFractionDigits: 10,
+          }).format(+e.sisaLembar)}
+        </Center>
+      </td>
+      <td>
+        <Center w={200}>
+          {new Intl.NumberFormat("id-ID", {
+            maximumFractionDigits: 10,
+          }).format(+e.totalLembar)}
+        </Center>
+      </td>
+      <td>
+        <Center w={200}>
+          <Button
+            bg={"green"}
+            color="green"
+            radius={"xl"}
+            onClick={() =>
+              router.push(RouterAdminInvestasi.detail_publish +`${e.id}`)
+            }
+          >
+            Detail
+          </Button>
+        </Center>
+      </td>
+    </tr>
+  ));
+
+  return (
+    <>
+      <Stack spacing={"xs"} h={"100%"}>
+        <Group
+          position="apart"
+          bg={"green.4"}
+          p={"xs"}
+          style={{ borderRadius: "6px" }}
+        >
+          <Title order={4} c={"black"}>
+            Publish
+          </Title>
+          <TextInput
+            icon={<IconSearch size={20} />}
+            radius={"xl"}
+            placeholder="Cari nama proyek"
+            onChange={(val) => {
+              onSearch(val.currentTarget.value);
+            }}
+          />
+        </Group>
+
+        {_.isEmpty(data) ? (
+          <ComponentAdminGlobal_IsEmptyData />
+        ) : (
+          <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
+            <ScrollArea w={"100%"} h={"90%"} offsetScrollbars>
+              <Table
+                verticalSpacing={"md"}
+                horizontalSpacing={"md"}
+                p={"md"}
+                w={"100%"}
+                h={"100%"}
+                striped
+                highlightOnHover
+              >
+                <thead>
+                  <tr>
+                    <th>
+                      <Center w={200}>Username</Center>
+                    </th>
+                    <th>
+                      <Center w={400}>Nama Proyek</Center>
+                    </th>
+                    <th>
+                      <Center w={200}>Progres</Center>
+                    </th>
+                    <th>
+                      <Center w={200}>Sisa Saham</Center>
+                    </th>
+                    <th>
+                      <Center w={200}>Total Saham</Center>
+                    </th>
+                    <th>
+                      <Center w={200}>Aksi</Center>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>{tableBody}</tbody>
+              </Table>
+            </ScrollArea>
+            <Center mt={"xl"}>
+              <Pagination
+                value={activePage}
+                total={nPage}
+                onChange={(val) => {
+                  onPageClick(val);
+                }}
+              />
+            </Center>
+          </Paper>
+        )}
       </Stack>
     </>
   );

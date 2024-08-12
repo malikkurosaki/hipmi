@@ -1,4 +1,5 @@
 "use client";
+import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
 import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
 import {
@@ -13,85 +14,184 @@ import {
   Avatar,
   Text,
   Center,
+  Button,
+  Pagination,
+  Paper,
+  TextInput,
+  Title,
 } from "@mantine/core";
-import { IconChevronLeft, IconEdit } from "@tabler/icons-react";
+import { IconChevronLeft, IconEdit, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import { adminInvestasi_funGetAllReview } from "../fun/get/get_all_review";
+import _ from "lodash";
+import ComponentAdminGlobal_IsEmptyData from "../../component_global/is_empty_data";
+import ComponentAdminGlobal_TampilanRupiahDonasi from "../../component_global/tampilan_rupiah";
 
 export default function Admin_TableReviewInvestasi({
   dataInvestsi,
 }: {
   dataInvestsi: MODEL_Investasi[];
 }) {
-  const [investasi, setInvestasi] = useState(dataInvestsi);
-  const router = useRouter();
-
-  const tableBody = investasi.map((e) =>
-    e.MasterStatusInvestasi.id === "2" ? (
-      <tr key={e.id}>
-        <td>
-          <Group position="left">
-            <Avatar variant="outline" radius={"xl"} />
-            <Text>{e.author.username}</Text>
-          </Group>
-        </td>
-        <td>
-          {e.title}
-        </td>
-        <td>
-          <Center>
-            {e.ProspektusInvestasi === null ? (
-              <Badge color="red">Unavailable</Badge>
-            ) : (
-              <Badge variant="dot" color="green">
-                Available
-              </Badge>
-            )}
-          </Center>
-        </td>
-        <td>
-          <Center>
-          <Tooltip label="Konfirmasi" withArrow position="bottom">
-            <ActionIcon
-              variant="transparent"
-              onClick={() =>
-                router.push(RouterAdminInvestasi_OLD.konfirmasi + `${e.id}`)
-              }
-            >
-              <IconEdit color="green" />
-            </ActionIcon>
-          </Tooltip>
-          </Center>
-        </td>
-      </tr>
-    ) : (
-      ""
-    )
-  );
   return (
     <>
       <Stack>
-        <ActionIcon variant="outline" onClick={() => router.push(RouterAdminInvestasi_OLD.main_investasi)}>
-          <IconChevronLeft />
-        </ActionIcon>
-        <Box>
-          <ScrollArea w={"100%"}>
-            <Badge color="orange" variant="light" radius={0} size={"xl"}>
-              Review
-            </Badge>
-            <Table withBorder highlightOnHover verticalSpacing={"md"} horizontalSpacing={"md"}>
-              <thead>
-                <tr>
-                  <th>Username</th>
-                  <th>Nama Proyek Investasi</th>
-                  <th><Center>File Prospektus</Center></th>
-                  <th><Center>Aksi</Center></th>
-                </tr>
-              </thead>
-              <tbody>{tableBody}</tbody>
-            </Table>
-          </ScrollArea>
-        </Box>
+        <ComponentAdminGlobal_HeaderTamplate name="Investasi" />
+        <TableView listData={dataInvestsi} />
+      </Stack>
+    </>
+  );
+}
+
+function TableView({ listData }: { listData: any }) {
+  const router = useRouter();
+  const [data, setData] = useState<MODEL_Investasi[]>(listData.data);
+  const [nPage, setNPage] = useState(listData.nPage);
+  const [activePage, setActivePage] = useState(1);
+  const [isSearch, setSearch] = useState("");
+
+  async function onSearch(s: string) {
+    setSearch(s);
+    setActivePage(1);
+    const loadData = await adminInvestasi_funGetAllReview({
+      page: 1,
+      search: s,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  async function onPageClick(p: any) {
+    setActivePage(p);
+    const loadData = await adminInvestasi_funGetAllReview({
+      search: isSearch,
+      page: p,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  const tableBody = data.map((e) => (
+    <tr key={e.id}>
+      <td>
+        <Center w={200}>
+          <Text lineClamp={1}>{e.author.username}</Text>
+        </Center>
+      </td>
+      <td>
+        <Center w={400}>
+          <Text lineClamp={1}>{e.title}</Text>
+        </Center>
+      </td>
+      <td>
+        <Center w={200}>
+          <Text lineClamp={1}>{e.roi} %</Text>
+        </Center>
+      </td>
+      <td>
+        <Center w={200}>
+          <ComponentAdminGlobal_TampilanRupiahDonasi
+            nominal={_.toNumber(e.targetDana)}
+          />
+        </Center>
+      </td>
+      <td>
+        <Center w={200}>
+          <ComponentAdminGlobal_TampilanRupiahDonasi
+            nominal={_.toNumber(e.hargaLembar)}
+          />
+        </Center>
+      </td>
+      <td>
+        <Center w={200}>
+          <Button
+            color="orange"
+            radius={"xl"}
+            onClick={() =>
+              router.push(RouterAdminInvestasi_OLD.konfirmasi + `${e.id}`)
+            }
+          >
+            Detail
+          </Button>
+        </Center>
+      </td>
+    </tr>
+  ));
+
+  return (
+    <>
+      <Stack spacing={"xs"} h={"100%"}>
+        <Group
+          position="apart"
+          bg={"orange.4"}
+          p={"xs"}
+          style={{ borderRadius: "6px" }}
+        >
+          <Title order={4} c={"black"}>
+            Review
+          </Title>
+          <TextInput
+            icon={<IconSearch size={20} />}
+            radius={"xl"}
+            placeholder="Cari nama proyek"
+            onChange={(val) => {
+              onSearch(val.currentTarget.value);
+            }}
+          />
+        </Group>
+
+        {_.isEmpty(data) ? (
+          <ComponentAdminGlobal_IsEmptyData />
+        ) : (
+          <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
+            <ScrollArea w={"100%"} h={"90%"} offsetScrollbars>
+              <Table
+                verticalSpacing={"md"}
+                horizontalSpacing={"md"}
+                p={"md"}
+                w={"100%"}
+                h={"100%"}
+                striped
+                highlightOnHover
+              >
+                <thead>
+                  <tr>
+                    <th>
+                      <Center w={200}>Username</Center>
+                    </th>
+                    <th>
+                      <Center w={400}>Nama Proyek</Center>
+                    </th>
+                    <th>
+                      <Center w={200}>ROI</Center>
+                    </th>
+                    <th>
+                      <Center w={200}>Target Dana</Center>
+                    </th>
+                    <th>
+                      <Center w={200}>Harga Perlembar</Center>
+                    </th>
+
+                    <th>
+                      <Center w={200}>Aksi</Center>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>{tableBody}</tbody>
+              </Table>
+            </ScrollArea>
+            <Center mt={"xl"}>
+              <Pagination
+                value={activePage}
+                total={nPage}
+                onChange={(val) => {
+                  onPageClick(val);
+                }}
+              />
+            </Center>
+          </Paper>
+        )}
       </Stack>
     </>
   );

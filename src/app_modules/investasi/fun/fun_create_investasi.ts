@@ -10,19 +10,20 @@ import { MODEL_Investasi } from "../model/model_investasi";
 import funUploadProspektusInvestasi from "./fun_upload_prospek";
 
 export async function funCreateInvestasi(
-  gamabar: FormData,
+  fileGambar: FormData,
   filePdf: FormData,
   data: MODEL_Investasi
 ) {
   // Function upload gambar
-  const file: any = gamabar.get("file");
-  const fName = file.name;
-  const fExt = _.lowerCase(file.name.split(".").pop());
-  const fRandomName = v4(fName) + "." + fExt;
+  const gambar: any = fileGambar.get("file");
+  const gambarName = gambar.name;
+  const gambarExtention = _.lowerCase(gambar.name.split(".").pop());
+  const gambarRandomName = v4(gambarName) + "." + gambarExtention;
 
   const uploadImage = await prisma.images.create({
     data: {
-      url: fRandomName,
+      url: gambarRandomName,
+      label: "INVESTASI",
     },
     select: {
       id: true,
@@ -36,13 +37,13 @@ export async function funCreateInvestasi(
       message: "Gambar Kosong",
     };
 
-  const upFolder = Buffer.from(await file.arrayBuffer());
+  const upFolder = Buffer.from(await gambar.arrayBuffer());
   fs.writeFileSync(`./public/investasi/${uploadImage.url}`, upFolder);
 
   const createInvest = await prisma.investasi.create({
     data: {
       authorId: data.authorId,
-      title: data.title,
+      title: _.startCase(data.title),
       targetDana: data.targetDana.toString(),
       hargaLembar: data.hargaLembar.toString(),
       totalLembar: data.totalLembar.toString(),
@@ -54,6 +55,16 @@ export async function funCreateInvestasi(
       imagesId: uploadImage.id,
       masterStatusInvestasiId: "2",
     },
+    select: {
+      id: true,
+      title: true,
+      authorId: true,
+      MasterStatusInvestasi: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
 
   if (!createInvest)
@@ -62,32 +73,27 @@ export async function funCreateInvestasi(
       message: "Gagal Disimpan",
     };
 
-  // File upload function
-  // const dataPdf: any = filePdf.get("file");
-  // const pdfName = dataPdf.name;
-  // const pdfExt = _.lowerCase(dataPdf.name.split(".").pop());
-  // const pdfRandomName = v4(pdfName) + "." + pdfExt;
+  // await funUploadProspektusInvestasi(filePdf, createInvest.id);
 
-  // const uploadFile = await prisma.prospektusInvestasi.create({
-  //   data: {
-  //     investasiId: createInvest.id,
-  //     url: pdfRandomName,
-  //   },
-  //   select: {
-  //     id: true,
-  //     url: true,
-  //   },
-  // });
+  const file: any = filePdf.get("file");
+  const fName = file.name;
+  const fExt = _.lowerCase(file.name.split(".").pop());
+  const fRandomName = v4(fName) + "." + fExt;
 
-  // if (!uploadFile) return { status: 400, message: "File Kosong" };
-  // const upPdfFolder = Buffer.from(await file.arrayBuffer());
-  // fs.writeFileSync(`./public/file/${uploadFile.url}`, upPdfFolder);
+  const createFile = await prisma.prospektusInvestasi.create({
+    data: {
+      investasiId: createInvest.id,
+      url: fRandomName,
+    },
+  });
 
-  await funUploadProspektusInvestasi(filePdf, createInvest.id);
+  if (!createFile) return { status: 400, message: "Gagal Upload" };
+  const uploadFile = Buffer.from(await file.arrayBuffer());
+  fs.writeFileSync(`./public/file/${createFile.url}`, uploadFile);
 
   revalidatePath(RouterInvestasi.main_porto);
-
   return {
+    data: createInvest,
     status: 201,
     message: "Berhasil Disimpan",
   };

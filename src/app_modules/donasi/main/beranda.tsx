@@ -1,16 +1,19 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { ActionIcon, Affix, Box, rem } from "@mantine/core";
+import { ActionIcon, Affix, Box, Center, rem } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
 import { IconPencilPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentDonasi_CardPublish from "../component/card_view/box_publish";
+import ComponentDonasi_CardPublish from "../component/card_view/card_publish";
 import { MODEL_DONASI } from "../model/interface";
 import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
 import _ from "lodash";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { ScrollOnly } from "next-scroll-loader";
+import { donasi_funGetAllPublish } from "../fun/get/get_list_beranda";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 
 export default function MainDonasi({
   listDonasi,
@@ -18,6 +21,7 @@ export default function MainDonasi({
   listDonasi: MODEL_DONASI[];
 }) {
   const [data, setData] = useState(listDonasi);
+  const [activePage, setActivePage] = useState(1);
 
   return (
     <>
@@ -26,14 +30,32 @@ export default function MainDonasi({
         {_.isEmpty(data) ? (
           <ComponentGlobal_IsEmptyData />
         ) : (
-          data.map((e, i) => (
-            <Box key={i}>
+          <ScrollOnly
+            height="82vh"
+            renderLoading={() => (
+              <Center>
+                <ComponentGlobal_Loader size={25} />
+              </Center>
+            )}
+            data={data}
+            setData={setData}
+            moreData={async () => {
+              const loadData = await donasi_funGetAllPublish({
+                page: activePage + 1,
+              });
+
+              setActivePage((val) => val + 1);
+
+              return loadData;
+            }}
+          >
+            {(item) => (
               <ComponentDonasi_CardPublish
-                data={e as any}
+                data={item as any}
                 path={RouterDonasi.detail_main}
               />
-            </Box>
-          ))
+            )}
+          </ScrollOnly>
         )}
       </Box>
     </>

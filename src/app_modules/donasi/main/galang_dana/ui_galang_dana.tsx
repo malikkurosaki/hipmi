@@ -75,7 +75,7 @@ export default function GalangDanaDonasi({
           },
         }}
       >
-        <Stack>
+        <Stack >
           <Tabs.List grow>
             {listPosting.map((e, i) => (
               <Tabs.Tab
@@ -98,7 +98,7 @@ export default function GalangDanaDonasi({
             ))}
           </Tabs.List>
           {listPosting.map((e, i) => (
-            <Tabs.Panel key={e.id} value={e.value} pt="xs">
+            <Tabs.Panel key={e.id} value={e.value} >
               {e.path}
             </Tabs.Panel>
           ))}

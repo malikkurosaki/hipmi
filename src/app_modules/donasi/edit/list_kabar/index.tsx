@@ -1,30 +1,20 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import {
-  ActionIcon,
-  Avatar,
-  Box,
-  Button,
-  Group,
-  Paper,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import {
-  IconCirclePlus,
-  IconEdit,
-  IconEditCircle,
-  IconTrash,
-} from "@tabler/icons-react";
-import moment from "moment";
-import { useRouter } from "next/navigation";
-import { MODEL_DONASI_KABAR } from "../../model/interface";
-import { useState } from "react";
-import ComponentDonasi_ListKabar from "../../component/detail_main/list_kabar";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import { Box, Button, Center, Stack } from "@mantine/core";
+import { IconCirclePlus } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ComponentDonasi_ListKabar from "../../component/card_view/ui_card_kabar";
+import { MODEL_DONASI_KABAR } from "../../model/interface";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import _ from "lodash";
+import { ScrollOnly } from "next-scroll-loader";
+import { ComponentDonasi_CardDonatur } from "../../component/card_view/ui_card_donatur";
+import { donasi_funGetListDonaturById } from "../../fun/get/get_list_donatur";
+import { donasi_funGetListKabarById } from "../../fun/get/get_list_kabar";
 
 export default function ListKabarDonasi({
   donasiId,
@@ -34,8 +24,10 @@ export default function ListKabarDonasi({
   listKabar: MODEL_DONASI_KABAR[];
 }) {
   const router = useRouter();
-  const [kabar, setKabar] = useState(listKabar);
+  const [data, setData] = useState(listKabar);
+  const [activePage, setActivePage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+
   return (
     <>
       <Stack>
@@ -54,14 +46,40 @@ export default function ListKabarDonasi({
         >
           Tambah Kabar
         </Button>
-        {kabar.map((e, i) => (
-          <Box key={i}>
-            <ComponentDonasi_ListKabar
-              kabar={e}
-              route={RouterDonasi.update_kabar}
-            />
+
+        {_.isEmpty(data) ? (
+          <ComponentGlobal_IsEmptyData />
+        ) : (
+          <Box>
+            <ScrollOnly
+              height="85vh"
+              renderLoading={() => (
+                <Center>
+                  <ComponentGlobal_Loader size={25} />
+                </Center>
+              )}
+              data={data}
+              setData={setData}
+              moreData={async () => {
+                const loadData = await donasi_funGetListKabarById({
+                  page: activePage + 1,
+                  donasiId: donasiId,
+                });
+
+                setActivePage((val) => val + 1);
+
+                return loadData;
+              }}
+            >
+              {(item) => (
+                <ComponentDonasi_ListKabar
+                  kabar={item}
+                  route={RouterDonasi.update_kabar}
+                />
+              )}
+            </ScrollOnly>
           </Box>
-        ))}
+        )}
       </Stack>
     </>
   );

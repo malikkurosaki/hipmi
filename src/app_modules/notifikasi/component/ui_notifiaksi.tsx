@@ -24,6 +24,10 @@ import {
   gs_donasi_hot_menu,
   gs_donasi_tabs_posting,
 } from "@/app_modules/donasi/global_state";
+import {
+  gs_investas_menu,
+  gs_investasi_status,
+} from "@/app_modules/investasi/g_state";
 
 export function Notifikasi_UiView({
   listNotifikasi,
@@ -42,6 +46,8 @@ export function Notifikasi_UiView({
   const [eventStatus, setEventStatus] = useAtom(gs_event_status);
   const [donasiMenu, setDonasiMenu] = useAtom(gs_donasi_hot_menu);
   const [donasiStatus, setDonasiStatus] = useAtom(gs_donasi_tabs_posting);
+  const [investasiMenu, setInvestasiMenu] = useAtom(gs_investas_menu);
+  const [investasiStatus, setInvestasiStatus] = useAtom(gs_investasi_status);
 
   // useShallowEffect(() => {
   //   onLoadData({
@@ -104,6 +110,11 @@ export function Notifikasi_UiView({
                   if (item?.kategoriApp === "DONASI") {
                     setDonasiMenu(val.menuId);
                     setDonasiStatus(val.status);
+                  }
+
+                  if (item?.kategoriApp === "INVESTASI") {
+                    setInvestasiMenu(val.menuId);
+                    setInvestasiStatus(val.status);
                   }
                 }}
               />

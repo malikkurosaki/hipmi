@@ -9,37 +9,26 @@ import { IconArrowLeft } from "@tabler/icons-react";
 import { title } from "process";
 import { useRouter } from "next/navigation";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
 
 export default function LayoutProsesTransaksiInvestasi({
   children,
+  investasiId,
 }: {
   children: React.ReactNode;
+  investasiId: string;
 }) {
   const [snapShow, setSnapShow] = useAtom(gs_midtrans_snap);
   const router = useRouter();
   // console.log(snapShow)
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
-        header={
-          <Header height={50} sx={{ borderStyle: "none" }}>
-            <Group h={50} position="apart" px={"md"}>
-              <ActionIcon
-                variant="transparent"
-                onClick={() => {
-                  router.back();
-                }}
-              >
-                <IconArrowLeft />
-              </ActionIcon>
-              <Text fw={500}>Proses Transaksi</Text>
-              <ActionIcon variant="transparent" disabled></ActionIcon>
-            </Group>
-          </Header>
-        }
+      <UIGlobal_LayoutTamplate
+        header={<UIGlobal_LayoutHeaderTamplate title="Proses Transaksi" />}
       >
-        <Box>{children}</Box>
-      </AppComponentGlobal_LayoutTamplate>
+        {children}
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }
