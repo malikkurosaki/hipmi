@@ -42,6 +42,7 @@ import { MODEL_USER } from "../model/interface";
 import { MODEL_JOB } from "@/app_modules/job/model/interface";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { RouterMap } from "@/app/lib/router_hipmi/router_map";
 
 export function Home_UiView({
   dataUser,
@@ -260,7 +261,7 @@ const listHalamanFooter = [
     id: 3,
     name: "Business Maps",
     icon: <IconMap2 />,
-    link: "",
+    link: RouterMap.splash,
   },
 ];
 

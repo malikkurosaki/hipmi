@@ -1,16 +1,21 @@
+"use client";
+
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import {
   ActionIcon,
   Drawer,
   Group,
-  SimpleGrid,
+  Skeleton,
   Stack,
-  Text,
+  Title,
 } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { AccentColor } from "../color/color_pallet";
-import ComponentGlobal_Loader from "../component/loader";
+import { Suspense, useState } from "react";
+import { MODEL_MAP } from "../lib/interface";
+import { useShallowEffect } from "@mantine/hooks";
+import { ComponentMap_DetailData } from "./detail_data";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 
 interface MODEL_DRAWER {
   id: string;
@@ -18,25 +23,18 @@ interface MODEL_DRAWER {
   icon: string;
   path: string;
 }
-export default function UIGlobal_Drawer({
+export function ComponentMap_DrawerDetailData({
   opened,
   close,
-  component,
+  mapId,
 }: {
   opened: boolean;
   close: () => void;
-  component:
-    | {
-        id: string;
-        name: string;
-        icon: string;
-        path: string;
-      }[]
-    | any[];
+  mapId: string;
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [pageId, setPageId] = useState("");
+  const [data, setData] = useState<MODEL_MAP>();
 
   return (
     <>
@@ -68,35 +66,15 @@ export default function UIGlobal_Drawer({
         }}
       >
         <Stack spacing={"xs"}>
-          <Group position="right">
+          <Group position="apart">
+            <Title order={5}>Detail Map</Title>
             <ActionIcon onClick={close} variant="transparent">
               <IconX color="white" />
             </ActionIcon>
           </Group>
-          <SimpleGrid cols={component.length < 4 ? component.length : 4}>
-            {component.map((e, i) => (
-              <Stack key={i} align="center" spacing={"xs"}>
-                <ActionIcon
-                  variant="transparent"
-                  c="white"
-                  onClick={() => {
-                    setPageId(e?.id);
-                    setIsLoading(true);
-                    router.push(e?.path, {scroll: false});
-                  }}
-                >
-                  {isLoading && e?.id === pageId ? (
-                    <ComponentGlobal_Loader />
-                  ) : (
-                    e?.icon
-                  )}
-                </ActionIcon>
-                <Text align="center" color="white">
-                  {e?.name}
-                </Text>
-              </Stack>
-            ))}
-          </SimpleGrid>
+          <Suspense fallback={<ComponentGlobal_Loader />}>
+            <ComponentMap_DetailData mapId={mapId} />
+          </Suspense>
         </Stack>
       </Drawer>
     </>
