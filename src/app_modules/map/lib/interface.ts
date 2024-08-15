@@ -1,4 +1,5 @@
 import { MODEL_USER } from "@/app_modules/home/model/interface";
+import { MODEL_PORTOFOLIO } from "@/app_modules/katalog/portofolio/model/interface";
 
 export interface MODEL_MAP {
   id: string;
@@ -9,5 +10,8 @@ export interface MODEL_MAP {
   latitude: number;
   longitude: number;
   authorId: string;
-  Author: MODEL_USER
+  Author: MODEL_USER;
+  portofolioId: string;
+  Portofolio: MODEL_PORTOFOLIO
+  imagesId: string
 }

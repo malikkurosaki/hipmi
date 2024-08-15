@@ -15,8 +15,6 @@ import {
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useState } from "react";
-import { map_funGetOneById } from "../fun/get/fun_get_one_by_id";
-import { MODEL_MAP } from "../lib/interface";
 import {
   IconBuildingSkyscraper,
   IconListDetails,
@@ -26,8 +24,10 @@ import {
 import { useRouter } from "next/navigation";
 import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import { MODEL_MAP } from "@/app_modules/map/lib/interface";
+import { map_funGetOneById } from "@/app_modules/map/fun/get/fun_get_one_by_id";
 
-export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
+export function ComponentPortofolio_DetailDataMap({ mapId }: { mapId: any }) {
   const router = useRouter();
   const [data, setData] = useState<MODEL_MAP>();
 
@@ -99,35 +99,6 @@ export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
               </Grid.Col>
             </Grid>
           </Box>
-        </SimpleGrid>
-
-        <SimpleGrid
-          cols={2}
-          spacing={"lg"}
-          breakpoints={[
-            { maxWidth: 980, cols: 2, spacing: "md" },
-            { maxWidth: 755, cols: 1, spacing: "sm" },
-            { maxWidth: 600, cols: 1, spacing: "sm" },
-          ]}
-        >
-          <Box />
-
-          <Group position="center">
-            <Button
-              radius={"xl"}
-              onClick={() => {
-                router.push(
-                  RouterPortofolio.main_detail + data?.Portofolio.id,
-                  { scroll: false }
-                );
-              }}
-              bg={MainColor.yellow}
-              color="yellow"
-              c={"black"}
-            >
-              Detail
-            </Button>
-          </Group>
         </SimpleGrid>
 
         {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}

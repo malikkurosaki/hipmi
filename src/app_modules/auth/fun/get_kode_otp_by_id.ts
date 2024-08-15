@@ -9,5 +9,5 @@ export async function auth_getKodeOtpById(otpId: string) {
     },
   });
 
-  return data
+  return data;
 }

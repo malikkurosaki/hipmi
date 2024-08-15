@@ -14,13 +14,12 @@ export async function auth_Logout(kodeId: string) {
   const c = cookies().get("ssn");
   if (c?.value !== "") return { status: 400, message: "Gagal Logout" };
 
-  const del = await prisma.kodeOtp.delete({
-    where: {
-      id: kodeId,
-    },
-  });
-
-  if (!del) return { status: 400, message: "Gagal Hapus Kode OTP Id"};
+  // const del = await prisma.kodeOtp.delete({
+  //   where: {
+  //     id: kodeId,
+  //   },
+  // });
+  // if (!del) return { status: 400, message: "Gagal Hapus Kode OTP Id"};
   // revalidatePath("/dev/katalog")
   return { status: 200, message: "Logout Berhasil" };
 }

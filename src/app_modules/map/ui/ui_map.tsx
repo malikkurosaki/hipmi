@@ -1,21 +1,20 @@
 "use client";
 
-import "mapbox-gl/dist/mapbox-gl.css";
-import { Image, Stack, Text, Tooltip } from "@mantine/core";
+import { Image, Stack, Text } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
-import { useRef, useState } from "react";
+import "mapbox-gl/dist/mapbox-gl.css";
+import { useState } from "react";
 import Map, {
   AttributionControl,
-  GeolocateControl,
   Marker,
   NavigationControl,
-  Popup,
-  ScaleControl,
+  ScaleControl
 } from "react-map-gl";
+import { ComponentMap_DrawerDetailData } from "../_component";
+import { ComponentMap_DetailData } from "../_component/detail_data";
+import { map_funGetAllMap } from "../fun/get/fun_get_all_map";
 import { defaultLatLong, defaultMapZoom } from "../lib/default_lat_long";
 import { MODEL_MAP } from "../lib/interface";
-import { ComponentMap_DrawerDetailData } from "../_component";
-import { map_funGetAllMap } from "../fun/get/fun_get_all_map";
 
 export function UiMap_MapBoxView({
   mapboxToken,
@@ -90,7 +89,7 @@ export function UiMap_MapBoxView({
                     style={{
                       borderRadius: "5px",
                       padding: "5px",
-                      width: "auto",
+                      width: 50,
                     }}
                     lineClamp={2}
                   >
@@ -111,6 +110,7 @@ export function UiMap_MapBoxView({
         opened={openDrawer}
         close={() => setOpenDrawer(false)}
         mapId={mapId}
+        component={<ComponentMap_DetailData mapId={mapId} />}
       />
     </>
   );

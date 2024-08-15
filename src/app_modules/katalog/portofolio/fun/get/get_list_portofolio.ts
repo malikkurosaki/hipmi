@@ -14,6 +14,7 @@ export async function funGetListPortofolio(profileId: any) {
     },
     select: {
       id: true,
+      id_Portofolio: true,
       namaBisnis: true,
       profileId: true,
     },

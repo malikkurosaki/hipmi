@@ -2,12 +2,15 @@ import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_ta
 import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import { UiMap_CreatePin } from "../ui/ui_create_pin";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { UiMap_EditPin } from "../ui";
 
 const mapboxToken = process.env.MAPBOX_TOKEN!;
-export async function Map_CreateNewPin({
+export async function Map_EditPin({
   portofolioId,
+  dataMap,
 }: {
   portofolioId: string;
+  dataMap: any
 }) {
   if (!mapboxToken)
     return <ComponentGlobal_IsEmptyData text="Mapbox token not found" />;
@@ -15,14 +18,9 @@ export async function Map_CreateNewPin({
   return (
     <>
       <UIGlobal_LayoutTamplate
-        header={
-          <UIGlobal_LayoutHeaderTamplate title="Tambah Pin" hideButtonLeft />
-        }
+        header={<UIGlobal_LayoutHeaderTamplate title="Edit Pin" />}
       >
-        <UiMap_CreatePin
-          mapboxToken={mapboxToken}
-          portofolioId={portofolioId}
-        />
+        <UiMap_EditPin mapboxToken={mapboxToken} dataMap={dataMap} />
       </UIGlobal_LayoutTamplate>
     </>
   );

@@ -1,6 +1,6 @@
 import { Group, Paper, Stack, Text } from "@mantine/core";
 import { MODEL_PORTOFOLIO } from "../model/interface";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 import { IconCaretRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
@@ -33,9 +33,15 @@ export function ComponentPortofolio_DaftarBoxView({
         }}
       >
         <Group position="apart">
-          <Text fw={"bold"} lineClamp={1} w={"80%"}>
-            {data?.namaBisnis}
-          </Text>
+          <Stack spacing={0} w={"80%"}>
+            <Text fw={"bold"} lineClamp={1} w={"80%"}>
+              {data?.namaBisnis}
+            </Text>
+            <Text fz={10} c={MainColor.yellow}>
+              #{data?.id_Portofolio}
+            </Text>
+          </Stack>
+
           <Stack>
             {isLoading ? (
               <ComponentGlobal_Loader />

@@ -1,42 +1,31 @@
 "use client";
 
-import { Warna } from "@/app/lib/warna";
-import {
-  Flex,
-  Title,
-  TextInput,
-  Button,
-  Text,
-  Center,
-  PinInput,
-  Stack,
-  BackgroundImage,
-} from "@mantine/core";
-import {
-  IconCircleLetterH,
-  IconCloudLockOpen,
-  IconUserCircle,
-} from "@tabler/icons-react";
-import { gs_nomor } from "../state/state";
-import { useAtom } from "jotai";
-import { useState } from "react";
-import { myConsole } from "@/app/fun/my_console";
-import toast from "react-simple-toasts";
-import { ApiHipmi } from "@/app/lib/api";
-import { useRouter } from "next/navigation";
-import _ from "lodash";
-import { useFocusTrap } from "@mantine/hooks";
-import { Auth_funRegister } from "../fun/fun_register";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { IconPencilCheck } from "@tabler/icons-react";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import { auth_funEditAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
-import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import {
+  BackgroundImage,
+  Button,
+  Center,
+  Stack,
+  Text,
+  TextInput,
+  Title
+} from "@mantine/core";
+import { useFocusTrap } from "@mantine/hooks";
+import {
+  IconUserCircle
+} from "@tabler/icons-react";
+import _ from "lodash";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { auth_funDeleteAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
+import { Auth_funRegister } from "../fun/fun_register";
 
 export default function Register({ dataOtp }: { dataOtp: any }) {
   const router = useRouter();
@@ -60,21 +49,20 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
     if (body.username.length < 5) return null;
     if (_.values(body.username).includes(" ")) return null;
 
-    await Auth_funRegister(body).then(async (res) => {
-      if (res.status === 200) {
-        await auth_funEditAktivasiKodeOtpById(dataOtp.id).then((val) => {
-          if (val.status === 200) {
-            ComponentGlobal_NotifikasiBerhasil(res.message);
-            setLoading(true);
-            router.push(RouterHome.main_home, { scroll: false });
-          } else {
-            ComponentGlobal_NotifikasiPeringatan(val.message);
-          }
-        });
-      } else {
-        ComponentGlobal_NotifikasiPeringatan(res.message);
-      }
-    });
+    const res = await Auth_funRegister(body)
+    if (res.status === 200) {
+      await auth_funDeleteAktivasiKodeOtpById(dataOtp.id).then((val) => {
+        if (val.status === 200) {
+          ComponentGlobal_NotifikasiBerhasil(res.message);
+          setLoading(true);
+          router.push(RouterHome.main_home, { scroll: false });
+        } else {
+          ComponentGlobal_NotifikasiPeringatan(val.message);
+        }
+      });
+    } else {
+      ComponentGlobal_NotifikasiPeringatan(res.message);
+    }
   }
 
   return (

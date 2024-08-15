@@ -34,7 +34,7 @@ export default async function funCreatePortofolio(
   const upload_Folder = Buffer.from(await gambar.arrayBuffer());
   fs.writeFileSync(`./public/portofolio/logo/${upload.url}`, upload_Folder);
 
-  const createProto = await prisma.portofolio.create({
+  const createPortofolio = await prisma.portofolio.create({
     data: {
       profileId: profileId,
       id_Portofolio: "Porto" + Date.now().toString(),
@@ -47,11 +47,11 @@ export default async function funCreatePortofolio(
     },
   });
 
-  if (!createProto) return { status: 400, message: "Gagal membuat portofolio" };
+  if (!createPortofolio) return { status: 400, message: "Gagal membuat portofolio" };
 
   const createMedsos = await prisma.portofolio_MediaSosial.create({
     data: {
-      portofolioId: createProto.id,
+      portofolioId: createPortofolio.id,
       facebook: medsos.facebook,
       instagram: medsos.instagram,
       tiktok: medsos.tiktok,
@@ -65,6 +65,7 @@ export default async function funCreatePortofolio(
 
   revalidatePath(`/dev/katalog`);
   return {
+    id: createPortofolio.id,
     status: 201,
     message: "Berhasil menambahakan portofolio",
   };

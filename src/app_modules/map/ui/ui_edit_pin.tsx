@@ -6,15 +6,13 @@ import {
 } from "@/app_modules/_global/color/color_pallet";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import {
-  ActionIcon,
-  Affix,
   AspectRatio,
   Box,
   Button,
   Center,
   FileButton,
-  Group,
   Image,
   Paper,
   Stack,
@@ -22,6 +20,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { IconCamera } from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -33,22 +32,21 @@ import Map, {
 } from "react-map-gl";
 import { map_funCreatePin } from "../fun/create/fun_create_pin";
 import { defaultLatLong, defaultMapZoom } from "../lib/default_lat_long";
-import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { IconCamera, IconX } from "@tabler/icons-react";
+import { MODEL_MAP } from "../lib/interface";
+import { RouterMap } from "@/app/lib/router_hipmi/router_map";
+import { map_funEditMap } from "../fun/edit/fun_edit_map";
 
-export function UiMap_CreatePin({
+export function UiMap_EditPin({
   mapboxToken,
-  portofolioId,
+  dataMap,
 }: {
   mapboxToken: string;
-  portofolioId: string;
+  dataMap: MODEL_MAP;
 }) {
-  const [[lat, long], setLatLong] = useState([0, 0]);
-  const [isPin, setIsPin] = useState(false);
-  const [namePin, setNamePin] = useState("");
+  const [data, setData] = useState(dataMap);
   const [file, setFile] = useState<File | any>(null);
   const [img, setImg] = useState<any | null>(null);
+
 
   return (
     <>
@@ -57,8 +55,8 @@ export function UiMap_CreatePin({
           mapboxAccessToken={mapboxToken}
           mapStyle={"mapbox://styles/mapbox/streets-v11"}
           initialViewState={{
-            latitude: defaultLatLong[0],
-            longitude: defaultLatLong[1],
+            latitude: data.latitude,
+            longitude: data.longitude,
             zoom: defaultMapZoom,
           }}
           style={{
@@ -68,8 +66,11 @@ export function UiMap_CreatePin({
             borderRadius: "10px",
           }}
           onClick={(a) => {
-            setLatLong([a.lngLat.lat, a.lngLat.lng]);
-            setIsPin(true);
+            setData({
+              ...data,
+              latitude: a.lngLat.lat,
+              longitude: a.lngLat.lng,
+            });
           }}
           attributionControl={false}
         >
@@ -80,8 +81,8 @@ export function UiMap_CreatePin({
               // height: 40,
               cursor: "pointer",
             }}
-            latitude={lat}
-            longitude={long}
+            latitude={data.latitude}
+            longitude={data.longitude}
             anchor="bottom"
           >
             <Stack spacing={0}>
@@ -107,14 +108,17 @@ export function UiMap_CreatePin({
           }}
         >
           <TextInput
-            disabled={isPin ? false : true}
             style={{ transition: "0.5s" }}
-            styles={{ label: { color: isPin ? "white" : "gray" } }}
+            styles={{ label: { color: "white" } }}
             label="Nama Pin"
             placeholder="Masukan nama pin map"
+            value={data.namePin}
             withAsterisk
             onChange={(val) => {
-              setNamePin(_.startCase(val.currentTarget.value));
+              setData({
+                ...data,
+                namePin: val.currentTarget.value,
+              });
             }}
           />
         </Paper>
@@ -134,7 +138,7 @@ export function UiMap_CreatePin({
                   radius={"sm"}
                   alt="Foto"
                   src={img ? img : "/aset/no-img.png"}
-                  maw={200}
+                  maw={250}
                 />
               </Paper>
             </AspectRatio>
@@ -148,21 +152,12 @@ export function UiMap_CreatePin({
                   borderRadius: "10px",
                 }}
               >
-                <Box
-                  h={250}
-                  w={200}
-                  style={{
-                    color: "white",
-                  }}
-                >
-                  <Stack spacing={5} justify="center" align="center" h={"100%"}>
-                    <Title order={3}>Foto Lokasi Bisnis</Title>
-                    <Text fs={"italic"} fz={10} align="center">
-                      Upload foto lokasi bisnis anda untuk ditampilkan dalam
-                      detail map
-                    </Text>
-                  </Stack>
-                </Box>
+                <Image
+                  radius={"sm"}
+                  alt="Foto"
+                  src={RouterMap.api_foto + data.imagesId}
+                  maw={250}
+                />
               </Paper>
             </AspectRatio>
           )}
@@ -191,7 +186,6 @@ export function UiMap_CreatePin({
             >
               {(props) => (
                 <Button
-                  disabled={isPin ? false : true}
                   {...props}
                   radius={"xl"}
                   leftIcon={<IconCamera />}
@@ -206,38 +200,22 @@ export function UiMap_CreatePin({
           </Center>
         </Stack>
 
-        <ButtonSavePin
-          namePin={namePin}
-          lat={lat as any}
-          long={long as any}
-          portofolioId={portofolioId}
-          file={file}
-        />
+        <ButtonSavePin data={data as any} file={file} />
       </Stack>
     </>
   );
 }
 
-function ButtonSavePin({
-  namePin,
-  lat,
-  long,
-  portofolioId,
-  file,
-}: {
-  namePin: string;
-  lat: string;
-  long: string;
-  portofolioId: string;
-  file: FormData;
-}) {
+function ButtonSavePin({ data, file }: { data: MODEL_MAP; file: FormData }) {
   const router = useRouter();
   async function onSavePin() {
     const gambar = new FormData();
     gambar.append("file", file as any);
 
-    const res = await map_funCreatePin({
-      data: { namePin, lat, long, portofolioId, gambar },
+    const res = await map_funEditMap({
+      data: data,
+      file: gambar
+
     });
     res.status === 200
       ? (ComponentGlobal_NotifikasiBerhasil(res.message), router.back())
@@ -249,7 +227,7 @@ function ButtonSavePin({
       <Button
         mt={"xl"}
         style={{ transition: "0.5s" }}
-        disabled={namePin === "" || file === null ? true : false}
+        disabled={data.namePin === "" ? true : false}
         radius={"xl"}
         bg={MainColor.yellow}
         color="yellow"

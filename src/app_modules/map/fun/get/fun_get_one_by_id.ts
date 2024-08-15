@@ -9,8 +9,15 @@ export async function map_funGetOneById({ mapId }: { mapId: string }) {
     },
     select: {
       Author: {
-        include: {
-          Profile: true,
+        select: {
+          id: true,
+          username: true,
+          Profile: {
+            select: {
+              id: true,
+              imagesId: true,
+            },
+          },
         },
       },
       id: true,
@@ -21,6 +28,21 @@ export async function map_funGetOneById({ mapId }: { mapId: string }) {
       latitude: true,
       longitude: true,
       authorId: true,
+      imagesId: true,
+      Portofolio: {
+        select: {
+          id: true,
+          alamatKantor: true,
+          tlpn: true,
+          deskripsi: true,
+          namaBisnis: true,
+          MasterBidangBisnis: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
     },
   });
 

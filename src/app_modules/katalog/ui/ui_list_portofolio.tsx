@@ -55,7 +55,9 @@ export function Portofolio_UiListView({
               <ActionIcon
                 variant="transparent"
                 onClick={() => {
-                  router.push(RouterPortofolio.create + `${profile.id}`);
+                  router.push(RouterPortofolio.create + `${profile.id}`, {
+                    scroll: false,
+                  });
                   setLoading(true);
                 }}
               >
@@ -102,9 +104,14 @@ export function Portofolio_UiListView({
                     }}
                   >
                     <Group position="apart">
-                      <Text fw={"bold"} lineClamp={1} w={"80%"}>
-                        {e?.namaBisnis}
-                      </Text>
+                      <Stack spacing={0} w={"80%"}>
+                        <Text fw={"bold"} lineClamp={1}>
+                          {e?.namaBisnis}
+                        </Text>
+                        <Text fz={10} c={MainColor.yellow}>
+                          #{e.id_Portofolio}
+                        </Text>
+                      </Stack>
                       <Stack>
                         {idPorto === e?.id && loadingPorto ? (
                           <ComponentGlobal_Loader />

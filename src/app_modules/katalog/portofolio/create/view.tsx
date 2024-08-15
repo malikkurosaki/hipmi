@@ -1,9 +1,12 @@
 "use client";
 
-import { Warna } from "@/app/lib/warna";
-import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import { RouterMap } from "@/app/lib/router_hipmi/router_map";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import {
@@ -12,6 +15,7 @@ import {
 } from "@/app_modules/model_global/portofolio";
 import {
   AspectRatio,
+  Box,
   Button,
   Center,
   FileButton,
@@ -19,21 +23,17 @@ import {
   Paper,
   Select,
   Stack,
+  Text,
   TextInput,
   Textarea,
+  Title,
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
 import _ from "lodash";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentKatalog_NotedBox from "../../component/noted_box";
 import funCreatePortofolio from "../fun/fun_create_portofolio";
-import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
 
 export default function CreatePortofolio({
   bidangBisnis,
@@ -84,7 +84,7 @@ export default function CreatePortofolio({
             onChange={(val) => {
               setValue({
                 ...value,
-                namaBisnis: val.target.value,
+                namaBisnis: _.startCase(val.target.value),
               });
             }}
           />
@@ -115,8 +115,8 @@ export default function CreatePortofolio({
               },
             }}
             withAsterisk
-            label="Alamat Kantor"
-            placeholder="Alamat kantor"
+            label="Alamat Bisnis"
+            placeholder="Alamat bisnis"
             maxLength={100}
             onChange={(val) => {
               setValue({
@@ -132,8 +132,8 @@ export default function CreatePortofolio({
               },
             }}
             withAsterisk
-            label="Nomor Telepon Kantor"
-            placeholder="Nomor telepon kantor"
+            label="Nomor Telepon "
+            placeholder="Nomor telepon "
             type="number"
             onChange={(val) => {
               setValue({
@@ -149,7 +149,7 @@ export default function CreatePortofolio({
                   color: "white",
                 },
               }}
-              maxLength={150}
+              maxLength={300}
               autosize
               minRows={2}
               maxRows={5}
@@ -164,7 +164,7 @@ export default function CreatePortofolio({
               }}
             />
             <ComponentGlobal_InputCountDown
-              maxInput={150}
+              maxInput={300}
               lengthInput={value.deskripsi.length}
             />
           </Stack>
@@ -172,12 +172,62 @@ export default function CreatePortofolio({
 
         <Stack>
           <ComponentGlobal_BoxInformation informasi="Upload Logo Bisnis Anda!" />
-          <AspectRatio ratio={16 / 9}>
+          {/* <AspectRatio ratio={16 / 9}>
             <Paper radius={"md"} withBorder>
               <Image alt="Foto" src={img ? img : "/aset/no-img.png"} />
             </Paper>
           </AspectRatio>
-          {isFile ? <ComponentGlobal_ErrorInput text="Upload gambar" /> : ""}
+
+          
+
+          {isFile ? <ComponentGlobal_ErrorInput text="Upload gambar" /> : ""} */}
+
+          {img ? (
+            <AspectRatio ratio={1 / 1} mah={300}>
+              <Paper
+                style={{
+                  border: `2px solid ${AccentColor.blue}`,
+                  backgroundColor: AccentColor.darkblue,
+                  padding: "10px",
+                  borderRadius: "10px",
+                }}
+              >
+                <Image
+                radius={"sm"}
+                  alt="Foto"
+                  src={img ? img : "/aset/no-img.png"}
+                  maw={200}
+                />
+              </Paper>
+            </AspectRatio>
+          ) : (
+            <AspectRatio ratio={1 / 1} mah={300}>
+              <Paper
+                style={{
+                  border: `2px solid ${AccentColor.blue}`,
+                  backgroundColor: AccentColor.darkblue,
+                  padding: "10px",
+                  borderRadius: "10px",
+                }}
+              >
+                <Box
+                  h={250}
+                  w={200}
+                  style={{
+                    color: "white",
+                  }}
+                >
+                  <Stack spacing={5} justify="center" align="center" h={"100%"}>
+                    <Title order={3}>Upload Logo Bisnis</Title>
+                    <Text fs={"italic"} fz={10} align="center">
+                      Masukan logo bisnis anda untuk ditampilkan dalam
+                      portofolio
+                    </Text>
+                  </Stack>
+                </Box>
+              </Paper>
+            </AspectRatio>
+          )}
 
           <Center>
             <FileButton
@@ -219,7 +269,7 @@ export default function CreatePortofolio({
         </Stack>
 
         <Stack>
-          <ComponentKatalog_NotedBox informasi="Isi hanya pada sosial media yang anda miliki" />
+          <ComponentGlobal_BoxInformation informasi="Isi hanya pada sosial media yang anda miliki" />
           <TextInput
             styles={{
               label: {
@@ -303,6 +353,7 @@ export default function CreatePortofolio({
         </Stack>
 
         <Button
+          disabled={_.values(value).includes("") || file === null}
           mt={"md"}
           radius={50}
           loading={loading ? true : false}
@@ -321,11 +372,8 @@ export default function CreatePortofolio({
           bg={MainColor.yellow}
           color="yellow"
           c={"black"}
-          style={{
-            border: `2px solid ${AccentColor.yellow}`,
-          }}
         >
-          Simpan
+          Selanjutnya
         </Button>
       </Stack>
 
@@ -361,15 +409,17 @@ async function onSubmit(
   const gambar = new FormData();
   gambar.append("file", file as any);
 
-  await funCreatePortofolio(profileId, porto as any, gambar, dataMedsos).then(
-    (res) => {
-      if (res.status === 201) {
-        setLoading(true);
-        ComponentGlobal_NotifikasiBerhasil("Berhasil disimpan");
-        router.back();
-      } else {
-        ComponentGlobal_NotifikasiGagal("Gagal disimpan");
-      }
-    }
+  const res = await funCreatePortofolio(
+    profileId,
+    porto as any,
+    gambar,
+    dataMedsos
   );
+  if (res.status === 201) {
+    setLoading(true);
+    // ComponentGlobal_NotifikasiBerhasil("Berhasil disimpan");
+    router.replace(RouterMap.create + res.id , {scroll: false});
+  } else {
+    ComponentGlobal_NotifikasiGagal("Gagal disimpan");
+  }
 }

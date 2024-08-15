@@ -10,6 +10,7 @@ export async function portofolio_getOneById(portoId: string) {
     },
     select: {
       id: true,
+      id_Portofolio: true,
       namaBisnis: true,
       alamatKantor: true,
       deskripsi: true,
@@ -35,6 +36,11 @@ export async function portofolio_getOneById(portoId: string) {
               id: true,
             },
           },
+        },
+      },
+      BusinessMaps: {
+        include: {
+          Author: true,
         },
       },
     },
