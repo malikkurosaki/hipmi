@@ -26,7 +26,7 @@ import {
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { gs_StatusPortoInvestasi } from "../../g_state";
+import { gs_investasi_status } from "../../g_state";
 import toast from "react-simple-toasts";
 import { MODEL_Investasi } from "../../model/model_investasi";
 import funGantiStatusInvestasi from "../../fun/fun_ganti_status";
@@ -36,6 +36,9 @@ import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/noti
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import { ComponentInvestasi_DetailDataNonPublish } from "../../component/detail/detai_data_non_publish";
+import { investasi_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
 
 export default function DetailReviewInvestasi({
   dataInvestasi,
@@ -45,40 +48,39 @@ export default function DetailReviewInvestasi({
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
 
-  const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
+  const [activeTab, setActiveTab] = useAtom(gs_investasi_status);
   const [data, setData] = useState<MODEL_Investasi>(dataInvestasi);
 
-  const listBox = [
-    {
-      id: 1,
-      name: "Prospektus",
-      icon: <IconBookDownload size={70} />,
-      route: RouterInvestasi.detail_prospektus,
-    },
-    {
-      id: 2,
-      name: "Dokumen",
-      icon: <IconFileDescription size={70} />,
-      route: RouterInvestasi.detail_dokumen,
-    },
-    // {
-    //   id: 3,
-    //   name: "Berita",
-    //   icon: <IconSpeakerphone size={70} />,
-    //   route: RouterInvestasi.berita,
-    // },
-  ];
-
-  async function onsubmit() {
-    await funGantiStatusInvestasi(data.id, "1").then((val) => {
-      if (val.status === 200) {
-        ComponentGlobal_NotifikasiBerhasil("Review Dibatalkan");
-        router.push(RouterInvestasi.portofolio);
-        setActiveTab("Draft");
-      } else {
-        ComponentGlobal_NotifikasiPeringatan("Error");
-      }
+  async function onCancleReview() {
+    const res = await investasi_funEditStatusById({
+      investasiId: data.id,
+      statusId: "3",
     });
+    if (res.status === 200) {
+      const dataNotif = {
+        appId: res.data?.id,
+        userId: res.data?.authorId,
+        pesan: res.data?.title,
+        status: res.data?.MasterStatusInvestasi?.name,
+        kategoriApp: "INVESTASI",
+        title: "Membatalkan review",
+      };
+
+      const notif = await notifikasiToAdmin_funCreate({
+        data: dataNotif as any,
+      });
+
+      if (notif.status === 201) {
+        mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
+
+        setLoading(true);
+        ComponentGlobal_NotifikasiBerhasil("Review Dibatalkan");
+        setActiveTab("Draft");
+        router.push(RouterInvestasi.portofolio);
+      }
+    } else {
+      ComponentGlobal_NotifikasiPeringatan(res.message);
+    }
   }
 
   return (
@@ -96,7 +98,7 @@ export default function DetailReviewInvestasi({
             radius={50}
             bg={"orange"}
             color="yellow"
-            onClick={() => onsubmit()}
+            onClick={() => onCancleReview()}
           >
             Batalkan Review
           </Button>

@@ -23,21 +23,22 @@ export interface MODEL_Investasi {
   MasterPembagianDeviden: Model_All_Master;
   MasterPencarianInvestor: Model_All_Master;
   MasterPeriodeDeviden: Model_All_Master;
-  MasterProgresInvestasi: Model_All_Master,
+  MasterProgresInvestasi: Model_All_Master;
   masterPeriodeDevidenId: string;
   masterPembagianDevidenId: string;
   masterPencarianInvestorId: string;
+  masterStatusInvestasiId: string;
   author: MODEL_PROFILE_OLD;
-  countDown: Date
+  countDown: Date;
 }
 
 export interface MODEL_Transaksi_Investasi {
   id: string;
   namaBank: string;
   nomorRekening: string;
-  transaction_id: string,
-  status_message: string
-  payment_type: string,
+  transaction_id: string;
+  status_message: string;
+  payment_type: string;
   active: boolean;
   createdAt: Date;
   updatedAt: Date;

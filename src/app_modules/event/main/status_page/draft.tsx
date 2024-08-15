@@ -15,49 +15,43 @@ export default function Event_StatusDraft({
 }: {
   listDraft: MODEL_EVENT[];
 }) {
-   const [data, setData] = useState(listDraft);
-   const [activePage, setActivePage] = useState(1);
+  const [data, setData] = useState(listDraft);
+  const [activePage, setActivePage] = useState(1);
 
+  return (
+    <>
+      {_.isEmpty(data) ? (
+        <ComponentGlobal_IsEmptyData />
+      ) : (
+        // --- Main component --- //
+        <Box>
+          <ScrollOnly
+            height="75vh"
+            renderLoading={() => (
+              <Center mt={"lg"}>
+                <Loader color={"yellow"} />
+              </Center>
+            )}
+            data={data}
+            setData={setData}
+            moreData={async () => {
+              const loadData = await event_getAllDraft({
+                page: activePage + 1,
+              });
+              setActivePage((val) => val + 1);
 
-   return (
-     <>
-       {_.isEmpty(data) ? (
-         <ComponentGlobal_IsEmptyData />
-       ) : (
-         // --- Main component --- //
-         <Box>
-           <ScrollOnly
-             height="75vh"
-             renderLoading={() => (
-               <Center mt={"lg"}>
-                 <Loader color={"yellow"} />
-               </Center>
-             )}
-             data={data}
-             setData={setData}
-             moreData={async () => {
-               const loadData = await event_getAllDraft({
-                 page: activePage + 1,
-               });
-               setActivePage((val) => val + 1);
-
-               return loadData;
-             }}
-           >
-             {(item) => (
-               <ComponentEvent_BoxListStatus
-                 data={item}
-                 path={RouterEvent.detail_draft}
-               />
-             )}
-           </ScrollOnly>
-         </Box>
-       )}
-     </>
-   );
-
-
-
-  
-
+              return loadData;
+            }}
+          >
+            {(item) => (
+              <ComponentEvent_BoxListStatus
+                data={item}
+                path={RouterEvent.detail_draft}
+              />
+            )}
+          </ScrollOnly>
+        </Box>
+      )}
+    </>
+  );
 }

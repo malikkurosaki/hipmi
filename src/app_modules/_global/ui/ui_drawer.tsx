@@ -82,7 +82,7 @@ export default function UIGlobal_Drawer({
                   onClick={() => {
                     setPageId(e?.id);
                     setIsLoading(true);
-                    router.push(e?.path);
+                    router.push(e?.path, {scroll: false});
                   }}
                 >
                   {isLoading && e?.id === pageId ? (

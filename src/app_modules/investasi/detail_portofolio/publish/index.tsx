@@ -1,24 +1,20 @@
 "use client";
 
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import { Warna } from "@/app/lib/warna";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import {
   ActionIcon,
   AspectRatio,
-  Avatar,
   Box,
-  Button,
-  Center,
   Flex,
   Grid,
   Group,
   Image,
   Paper,
   Progress,
-  Slider,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
 import {
   IconBookDownload,
@@ -26,14 +22,10 @@ import {
   IconFileDescription,
   IconSpeakerphone,
 } from "@tabler/icons-react";
-import { useAtom } from "jotai";
-import { useRouter } from "next/navigation";
-import toast from "react-simple-toasts";
-import { MODEL_Investasi } from "../../model/model_investasi";
-import { useState } from "react";
 import moment from "moment";
-import _ from "lodash";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { MODEL_Investasi } from "../../model/model_investasi";
 
 export default function DetailPublishInvestasi({
   dataInvestasi,
@@ -47,19 +39,19 @@ export default function DetailPublishInvestasi({
     {
       id: 1,
       name: "Prospektus",
-      icon: <IconBookDownload size={70} />,
+      icon: <IconBookDownload size={70} color="white" />,
       route: RouterInvestasi.detail_prospektus,
     },
     {
       id: 2,
       name: "Dokumen",
-      icon: <IconFileDescription size={70} />,
+      icon: <IconFileDescription size={70} color="white" />,
       route: RouterInvestasi.edit_dokumen,
     },
     {
       id: 3,
       name: "Berita",
-      icon: <IconSpeakerphone size={70} />,
+      icon: <IconSpeakerphone size={70} color="white" />,
       route: RouterInvestasi.list_edit_berita,
     },
   ];
@@ -109,19 +101,19 @@ export default function DetailPublishInvestasi({
         </Group>
       )}
 
-      <AspectRatio ratio={1 / 1} mx={"sm"} mah={300}>
+      <AspectRatio ratio={1 / 1} mx={"sm"} mah={250}>
         <Image
           alt=""
           src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
           radius={"sm"}
-          height={300}
+          height={250}
           width={"100%"}
         />
       </AspectRatio>
 
       {/* Title dan Persentase */}
       <Box mb={"md"}>
-        <Title order={4} mb={"xs"}>
+        <Title align="center" order={3} mb={"xs"}>
           {investasi.title}
         </Title>
         <Progress
@@ -208,24 +200,33 @@ export default function DetailPublishInvestasi({
       </Grid>
 
       {/* List Box */}
-      <Grid mb={"md"}>
-        {listBox.map((e) => (
-          <Grid.Col
-            span={"auto"}
-            key={e.id}
-            onClick={() => router.push(e.route + `${investasi.id}`)}
+      <Group position="apart" px={"lg"}>
+        {listBox.map((e, i) => (
+          <Paper
+            key={i}
+            style={{
+              padding: "15px",
+              backgroundColor: AccentColor.blue,
+              border: `2px solid ${AccentColor.softblue}`,
+              borderRadius: "10px",
+              color: "white",
+            }}
           >
-            <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
-              <Flex direction={"column"} align={"center"} justify={"center"}>
-                <Text fz={12}>{e.name}</Text>
-                <ActionIcon variant="transparent" size={60}>
-                  {e.icon}
-                </ActionIcon>
-              </Flex>
-            </Paper>
-          </Grid.Col>
+            <Flex direction={"column"} align={"center"} justify={"center"}>
+              <Text fz={12}>{e.name}</Text>
+              <ActionIcon
+                radius={"xl"}
+                // loading={isLoadingBox && e?.id === boxId ? true : false}
+                variant="transparent"
+                size={60}
+                onClick={() => router.push(e.route + `${investasi.id}`)}
+              >
+                {e.icon}
+              </ActionIcon>
+            </Flex>
+          </Paper>
         ))}
-      </Grid>
+      </Group>
     </Stack>
   );
 }

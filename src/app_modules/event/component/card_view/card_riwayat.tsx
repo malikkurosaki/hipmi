@@ -5,9 +5,14 @@ import { Card, Group, Stack, Text, Title } from "@mantine/core";
 
 import { useRouter } from "next/navigation";
 import { MODEL_EVENT } from "../../model/interface";
+import { useState } from "react";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
 
 export function ComponentEvent_CardRiwayat({ data }: { data: MODEL_EVENT }) {
   const router = useRouter();
+  const [eventId, setEventId] = useState("");
+  const [visible, setVisible] = useState(false);
+
   return (
     <>
       <Card
@@ -30,7 +35,11 @@ export function ComponentEvent_CardRiwayat({ data }: { data: MODEL_EVENT }) {
         </Card.Section>
         <Card.Section
           p={"sm"}
-          onClick={() => router.push(RouterEvent.detail_riwayat + data.id)}
+          onClick={() => {
+            setVisible(true);
+            setEventId(data?.id);
+            router.push(RouterEvent.detail_riwayat + data.id);
+          }}
         >
           <Stack>
             <Group w={"100%"} position="apart">
@@ -49,6 +58,11 @@ export function ComponentEvent_CardRiwayat({ data }: { data: MODEL_EVENT }) {
             </Text>
           </Stack>
         </Card.Section>
+        {visible && eventId !== "" ? (
+          <ComponentGlobal_CardLoadingOverlay />
+        ) : (
+          ""
+        )}
       </Card>
     </>
   );

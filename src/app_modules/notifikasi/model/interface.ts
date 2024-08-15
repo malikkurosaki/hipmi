@@ -31,7 +31,9 @@ export interface MODEL_NOTIFIKASI {
     | "Proses"
     | "Berhasil"
     | "Gagal"
-    | "Donatur Baru";
+    | "Donatur Baru"
+    | "Kabar Donasi"
+    | "Pencairan Dana"
 
   Role: MODEL_NEW_DEFAULT_MASTER;
   userRoleId: String;

@@ -88,7 +88,7 @@ export default function AdminDonasi_DetailPublish({
     <>
       {/* <pre>{JSON.stringify(pencairan, null, 2)}</pre> */}
       <Stack>
-        <ComponentAdminGlobal_BackButton />
+        <ComponentAdminGlobal_BackButton path={RouterAdminDonasi.table_publish} />
         <TampilanDetailDonasi donasi={dataDonasi} countDonatur={countDonatur} />
         <TampilanListDonatur
           donatur={listDonatur}

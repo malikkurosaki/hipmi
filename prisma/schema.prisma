@@ -45,6 +45,7 @@ model User {
   UserProjectCollaboration_Notifikasi  ProjectCollaboration_Notifikasi[]      @relation("UserNotifProjectToUser")
   Admin_Notifikasi                     Notifikasi[]                           @relation("AdminNotifikasi")
   User_Notifikasi                      Notifikasi[]                           @relation("UserNotifikasi")
+  BusinessMaps                         BusinessMaps[]
 }
 
 model MasterUserRole {
@@ -865,9 +866,20 @@ model Notifikasi {
   Role       MasterUserRole? @relation(fields: [userRoleId], references: [id])
   userRoleId String
 
-  User    User?    @relation("UserNotifikasi", fields: [userId], references: [id], map: "NotifikasiUser")
+  User    User?   @relation("UserNotifikasi", fields: [userId], references: [id], map: "NotifikasiUser")
   userId  String?
   Admin   User?   @relation("AdminNotifikasi", fields: [adminId], references: [id], map: "NotifikasiAdmin")
   adminId String?
+}
 
+model BusinessMaps {
+  id        String   @id @default(cuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  namePin   String
+  latitude  Float
+  longitude Float
+  Author    User?    @relation(fields: [authorId], references: [id])
+  authorId  String?
 }

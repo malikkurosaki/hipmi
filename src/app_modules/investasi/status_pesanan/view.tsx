@@ -5,19 +5,32 @@ import { MODEL_Transaksi_Investasi } from "../model/model_investasi";
 import { Button, Group, Paper, Stack, Text } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function StatusPesananInvetsatsi({
   dataTransaksi,
 }: {
   dataTransaksi: MODEL_Transaksi_Investasi;
 }) {
-    const router = useRouter()
+  const router = useRouter();
   const [transaksi, setTransaksi] = useState(dataTransaksi);
-  
+  const [isLoading, setLoading] = useState(false);
+
   return (
     <>
-      <Stack>
-        <Paper withBorder p={"md"}>
+      <Stack pb={"lg"}>
+        <Paper
+          style={{
+            padding: "15px",
+            backgroundColor: AccentColor.darkblue,
+            border: `2px solid ${AccentColor.blue}`,
+            borderRadius: "10px",
+            color: "white",
+          }}
+        >
           <Stack>
             <Stack spacing={0}>
               <Text fw={"bold"}>Pemilik Investasi</Text>
@@ -33,7 +46,17 @@ export default function StatusPesananInvetsatsi({
             </Stack>
           </Stack>
         </Paper>
-        <Paper withBorder p={"md"}>
+
+        <Paper
+          style={{
+            padding: "15px",
+            backgroundColor: AccentColor.darkblue,
+            border: `2px solid ${AccentColor.blue}`,
+            borderRadius: "10px",
+            color: "white",
+            marginBottom: "15px",
+          }}
+        >
           <Stack>
             <Stack spacing={0}>
               <Text fw={"bold"}>Transaksi ID</Text>
@@ -41,15 +64,23 @@ export default function StatusPesananInvetsatsi({
             </Stack>
             <Stack spacing={0}>
               <Text fw={"bold"}>Lembar Terbeli</Text>
-              <Text>{new Intl.NumberFormat("id-ID").format(+transaksi.quantity)} lembar</Text>
+              <Text>
+                {new Intl.NumberFormat("id-ID").format(+transaksi.quantity)}{" "}
+                lembar
+              </Text>
             </Stack>
             <Stack spacing={0}>
               <Text fw={"bold"}>Total Transfer</Text>
-              <Text>Rp. {new Intl.NumberFormat("id-ID", {maximumFractionDigits: 10}).format(+transaksi.gross_amount)}</Text>
+              <Text>
+                Rp.{" "}
+                {new Intl.NumberFormat("id-ID", {
+                  maximumFractionDigits: 10,
+                }).format(+transaksi.gross_amount)}
+              </Text>
             </Stack>
             <Stack spacing={0}>
               <Text fw={"bold"}>Tipe Pembayaran</Text>
-              <Text>{transaksi.payment_type.replace('_', " ")}</Text>
+              <Text>{transaksi.payment_type.replace("_", " ")}</Text>
             </Stack>
             <Stack spacing={0}>
               <Text fw={"bold"}>Nama Bank</Text>
@@ -61,8 +92,19 @@ export default function StatusPesananInvetsatsi({
             </Stack>
           </Stack>
         </Paper>
-        <Button radius={"xl"} onClick={() => router.push(RouterInvestasi.main_transaksi)}>
-            Kembali ke List Transaksi
+        <Button
+          loaderPosition="center"
+          loading={isLoading}
+          radius={"xl"}
+          onClick={() => {
+            setLoading(true);
+            router.push(RouterInvestasi.main_transaksi);
+          }}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
+        >
+          Kembali ke List Transaksi
         </Button>
       </Stack>
     </>

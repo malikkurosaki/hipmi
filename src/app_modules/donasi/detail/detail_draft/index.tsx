@@ -15,6 +15,7 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import mqtt_client from "@/util/mqtt_client";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import { useState } from "react";
 
 export default function DetailDraftDonasi({
   dataDonasi,
@@ -52,6 +53,8 @@ function ButtonAjukanPenggalangan({
   const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
     gs_donasi_tabs_posting
   );
+  const [isLoading, setLoading] = useState(false);
+
   async function onCLick() {
     const res = await Donasi_funGantiStatus(dataDonasi.id, "2");
     if (res.status === 200) {
@@ -71,6 +74,7 @@ function ButtonAjukanPenggalangan({
       if (notif.status === 201) {
         mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
 
+        setLoading(true);
         setTabsPostingDonasi("Review");
         ComponentGlobal_NotifikasiBerhasil("Berhasil Diajukan");
         router.push(RouterDonasi.main_galang_dana);
@@ -82,6 +86,8 @@ function ButtonAjukanPenggalangan({
   return (
     <>
       <Button
+        loaderPosition="center"
+        loading={isLoading ? true : false}
         radius={"xl"}
         bg={"orange"}
         color="orange"

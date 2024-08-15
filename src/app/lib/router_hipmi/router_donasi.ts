@@ -36,6 +36,7 @@ export const RouterDonasi = {
   detail_donasi_saya: "/dev/donasi/detail/detail_donasi_saya/",
   detail_notif: "/dev/donasi/detail/detail_notif/",
 
+
   //alur donasi
   donatur: "/dev/donasi/donatur/",
   kabar: "/dev/donasi/kabar/",
@@ -44,6 +45,7 @@ export const RouterDonasi = {
   cerita_penggalang: "/dev/donasi/cerita_penggalang/",
   list_kabar: "/dev/donasi/list_kabar/",
   notif_page: "/dev/donasi/notif_page/",
+  bukti_transfer: "/dev/donasi/bukti-transfer/",
 
   // proses donasi
   masukan_donasi: "/dev/donasi/proses_donasi/masukan_donasi/",

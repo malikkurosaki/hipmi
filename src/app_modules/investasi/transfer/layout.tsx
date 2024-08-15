@@ -17,7 +17,7 @@ import {
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { gs_investasiFooter } from "../g_state";
+import { gs_investas_menu } from "../g_state";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 
 export default function LayoutTransferInvestasi({
@@ -26,7 +26,7 @@ export default function LayoutTransferInvestasi({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [hotMenu, setHotMenu] = useAtom(gs_investasiFooter);
+  const [hotMenu, setHotMenu] = useAtom(gs_investas_menu);
 
   return (
     <>

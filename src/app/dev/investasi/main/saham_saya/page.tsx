@@ -14,7 +14,7 @@ export default async function Page() {
     })
   );
   const listTransaksi = await getListTransaksiBerhasilInvestasi(user.id)
-  // console.log(listTransaksi)
+
   return (
     <>
       <InvestasiSahamTerbeli listTransaksi={listTransaksi as any} />

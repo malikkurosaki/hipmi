@@ -2,8 +2,19 @@
 
 import prisma from "@/app/lib/prisma";
 
-export async function Donasi_getListDonatur(donasiId: string) {
+export async function donasi_funGetListDonaturById({
+  page,
+  donasiId,
+}: {
+  page: number,
+  donasiId: string;
+}) {
+  const takeData = 10
+  const skipData = page * takeData - takeData
+
   const data = await prisma.donasi_Invoice.findMany({
+    take: takeData,
+    skip: skipData,
     orderBy: {
       createdAt: "desc",
     },

@@ -1,7 +1,14 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import ComponentDonasi_NotedBox from "@/app_modules/donasi/component/noted_box";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { ComponentDonasi_InformasiPencairanDana } from "@/app_modules/donasi/component/card_view/box_informasi_pencarian_dana";
+import { ComponentDonasi_BoxPencariranDana } from "@/app_modules/donasi/component/card_view/box_pencairan_dana";
 import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import {
   MODEL_DONASI,
@@ -9,11 +16,9 @@ import {
 } from "@/app_modules/donasi/model/interface";
 import {
   AspectRatio,
-  Avatar,
   Button,
   Center,
   Grid,
-  Group,
   Image,
   Modal,
   Paper,
@@ -23,14 +28,18 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconTransferIn } from "@tabler/icons-react";
+import { IconImageInPicture } from "@tabler/icons-react";
+import _ from "lodash";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function PencairanDanaDonasi({
+  donasiId,
   totalAkumulasi,
   listPencairan,
 }: {
+  donasiId: string;
   totalAkumulasi: MODEL_DONASI;
   listPencairan: MODEL_DONASI_PENCAIRAN_DANA[];
 }) {
@@ -39,89 +48,9 @@ export default function PencairanDanaDonasi({
   return (
     <>
       <Stack>
-        <BoxDanaDicarikan akumulasi={akumulasi} />
-        <InformasiPencairanDana listPD={listPD} />
+        <ComponentDonasi_BoxPencariranDana akumulasi={akumulasi} />
+        <ComponentDonasi_InformasiPencairanDana donasiId={donasiId} listPD={listPD} />
       </Stack>
-    </>
-  );
-}
-
-function BoxDanaDicarikan({ akumulasi }: { akumulasi: MODEL_DONASI }) {
-  return (
-    <>
-      <Paper bg={"gray.1"} p={"md"}>
-        <Stack>
-          <Grid>
-            <Grid.Col span={6}>
-              <Title order={5}>
-                <TampilanRupiahDonasi nominal={akumulasi.totalPencairan} />
-              </Title>
-              <Text fz={"xs"}>Dana sudah dicairkan</Text>
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <Title order={5}>{akumulasi.akumulasiPencairan} kali</Title>
-              <Text fz={"xs"}>Pencairan dana</Text>
-            </Grid.Col>
-          </Grid>
-          <ComponentDonasi_NotedBox
-            informasi=" Pencairan dana akan dilakukan oleh Admin HIPMI tanpa campur tangan
-            pihak manapun, jika berita pencairan dana dibawah tidak sesuai
-            dengan kabar yang diberikan oleh PENGGALANG DANA. Maka pegguna lain
-            dapat melaporkannya pada Admin HIPMI !"
-          />
-        </Stack>
-      </Paper>
-    </>
-  );
-}
-
-function InformasiPencairanDana({
-  listPD,
-}: {
-  listPD: MODEL_DONASI_PENCAIRAN_DANA[];
-}) {
-  const [opened, { open, close }] = useDisclosure(false);
-  const [idGambar, setIdGambar] = useState("");
-  return (
-    <>
-      <Modal opened={opened} onClose={close} size={"xl"}>
-        <AspectRatio ratio={9 / 16}>
-          <Paper>
-            <Image
-              alt="Foto"
-              src={RouterDonasi.api_gambar_pencairan + `${idGambar}`}
-            />
-          </Paper>
-        </AspectRatio>
-      </Modal>
-      {listPD.map((e, i) => (
-        <Paper key={i} withBorder p={"md"}>
-          <Text fz={"xs"}>{moment(e.createdAt).format("ll")}</Text>
-          <Stack spacing={"lg"}>
-            <Title order={5}>{e.title}</Title>
-            <Spoiler
-              maxHeight={50}
-              hideLabel="Sembunyikan"
-              showLabel="Baca Selengkapnya"
-            >
-              {e.deskripsi}
-            </Spoiler>
-            <Center>
-              <Button
-                radius={"xl"}
-                variant="outline"
-                leftIcon={<IconTransferIn />}
-                onClick={() => {
-                  open();
-                  setIdGambar(e.imagesId);
-                }}
-              >
-                Bukti Transfer
-              </Button>
-            </Center>
-          </Stack>
-        </Paper>
-      ))}
     </>
   );
 }

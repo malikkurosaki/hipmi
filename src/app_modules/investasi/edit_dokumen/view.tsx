@@ -1,25 +1,21 @@
 "use client";
 
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import {
-  ActionIcon,
-  Group,
-  Paper,
-  Text
-} from "@mantine/core";
-import {
-  IconTrash,
-  IconWorldShare
-} from "@tabler/icons-react";
+import { ActionIcon, Group, Paper, Text } from "@mantine/core";
+import { IconFolderOpen, IconTrash, IconWorldShare } from "@tabler/icons-react";
 import _ from "lodash";
 import Link from "next/link";
 import { useState } from "react";
 import funDeleteDokumenInvestasi from "../fun/fun_delete_dokumen";
 import funLoadDataInvestasi from "../fun/fun_load_data";
 import { MODEL_Investasi } from "../model/model_investasi";
+import { IconFile } from "@tabler/icons-react";
 
 export default function EditDokumenInvestasi({
   dataInvestasi,
@@ -61,7 +57,11 @@ export default function EditDokumenInvestasi({
               <Group position="center">
                 <Link href={`/file/${e.url}`} target="_blank">
                   <ActionIcon variant="transparent">
-                    <IconWorldShare color="green" />
+                    <IconFolderOpen
+                      style={{
+                        color: MainColor.yellow,
+                      }}
+                    />
                   </ActionIcon>
                 </Link>
                 <ActionIcon

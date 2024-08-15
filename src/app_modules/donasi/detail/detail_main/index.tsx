@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  Stack
-} from "@mantine/core";
+import { Stack } from "@mantine/core";
 import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
 import { ComponentDonasi_DetailDataMain } from "../../component/detail_main/detail_data_donasi";
 import ComponentDonasi_InformasiPenggalangMain from "../../component/detail_main/informasi_penggalang";

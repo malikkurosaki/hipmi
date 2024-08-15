@@ -25,6 +25,8 @@ import { useInterval, useShallowEffect } from "@mantine/hooks";
 import _ from "lodash";
 import Link from "next/link";
 import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function TransaksiInvestasi({
   statusTransaksi,
@@ -56,12 +58,7 @@ export default function TransaksiInvestasi({
     }
   }
 
-  if (_.isEmpty(transaksi))
-    return (
-      <>
-        <ComponentInvestasi_IsEmptyData text="Tidak ada transaksi" />
-      </>
-    );
+  if (_.isEmpty(transaksi)) return <ComponentGlobal_IsEmptyData />;
 
   return (
     <>
@@ -73,7 +70,15 @@ export default function TransaksiInvestasi({
               router.push(RouterInvestasi.status_pesanan + `${e.id}`)
             }
           >
-            <Paper p="xs" bg={"gray"}>
+            <Paper
+              style={{
+                padding: "15px",
+                backgroundColor: AccentColor.darkblue,
+                border: `2px solid ${AccentColor.blue}`,
+                borderRadius: "10px",
+                color: "white",
+              }}
+            >
               <Group position="apart">
                 <Title order={6}>{e.Investasi.title}</Title>
                 <Title order={5}>

@@ -8,9 +8,12 @@ import {
   Paper,
   Image,
   Text,
+  Card,
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { MODEL_DONASI } from "../../model/interface";
+import { useState } from "react";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
 
 export function ComponentDonasi_CardStatus({
   data,
@@ -20,9 +23,12 @@ export function ComponentDonasi_CardStatus({
   path: string;
 }) {
   const router = useRouter();
+  const [visible, setVisible] = useState(false);
+  const [donasiId, setDonasiId] = useState("");
+
   return (
     <>
-      <Box
+      <Card
         style={{
           padding: "15px",
           backgroundColor: AccentColor.darkblue,
@@ -31,7 +37,11 @@ export function ComponentDonasi_CardStatus({
           color: "white",
           marginBottom: "15px",
         }}
-        onClick={() => router.push(path + `${data.id}`)}
+        onClick={() => {
+          setVisible(true);
+          setDonasiId(data.id);
+          router.push(path + `${data.id}`);
+        }}
       >
         <Stack>
           <Grid>
@@ -65,7 +75,12 @@ export function ComponentDonasi_CardStatus({
           </Grid>
           {/* {width > 575 ? "" : <Divider />} */}
         </Stack>
-      </Box>
+        {visible && donasiId !== "" ? (
+          <ComponentGlobal_CardLoadingOverlay />
+        ) : (
+          ""
+        )}
+      </Card>
     </>
   );
 }

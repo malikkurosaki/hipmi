@@ -2,91 +2,75 @@
 
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import {
-  ActionIcon,
   Affix,
   AspectRatio,
   Box,
   Button,
   Card,
   CardSection,
-  Center,
-  Divider,
-  Grid,
   Group,
   Image,
-  Paper,
   Progress,
+  rem,
   Stack,
   Text,
   Title,
-  rem,
 } from "@mantine/core";
-import { useWindowScroll } from "@mantine/hooks";
-import {
-  IconCircleCheck,
-  IconPencilPlus,
-  IconXboxX,
-} from "@tabler/icons-react";
+import { useShallowEffect, useWindowScroll } from "@mantine/hooks";
+import { IconCircleCheck, IconXboxX } from "@tabler/icons-react";
 import _ from "lodash";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
 import { MODEL_Investasi } from "../model/model_investasi";
-import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import mqtt_client from "@/util/mqtt_client";
+import { investasi_funGetAllPublish } from "../fun/get_all_investasi";
 
 export default function MainInvestasi({
   listData,
-  dataSelesai,
-  dataWaktuHabis,
 }: {
   listData: MODEL_Investasi[];
-  dataSelesai: MODEL_Investasi[];
-  dataWaktuHabis: MODEL_Investasi[];
 }) {
   // console.log(listData)
   const router = useRouter();
-  const [investasi, setInvestasi] = useState(listData);
-  const [invesDone, setInvesDone] = useState(dataSelesai);
-  const [invesFail, setInvesFail] = useState(dataWaktuHabis);
-  const [statusPublish, setStatusPublish] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  const [data, setData] = useState(listData);
   const [isLoadingDetail, setLoadingDetail] = useState(false);
-  const [scroll, scrollTo] = useWindowScroll();
+  const [isNewPost, setIsNewPost] = useState(false);
 
   //  console.log(dataWaktuHabis)
 
+  useShallowEffect(() => {
+    mqtt_client.subscribe("Beranda_Investasi");
+
+    mqtt_client.on("message", (topic, message) => {
+      const newPost = JSON.parse(message.toString());
+      setIsNewPost(newPost);
+    });
+  }, []);
+
   return (
     <>
-      {/* <Affix position={{ bottom: rem(150), right: rem(30) }}>
-        <ActionIcon
-          loading={isLoading ? true : false}
-          opacity={scroll.y > 0 ? 0.5 : ""}
-          style={{
-            transition: "0.5s",
-          }}
-          size={"xl"}
-          radius={"xl"}
-          variant="transparent"
-          bg={"blue"}
-          onClick={() => {
-            setLoading(true);
-            router.push(RouterInvestasi.create);
-          }}
-        >
-          <IconPencilPlus color="white" />
-        </ActionIcon>
-      </Affix> */}
+      {isNewPost && (
+        <Affix position={{ top: rem(100) }} w={"100%"}>
+          <ButtonUpdateBeranda
+            onLoadData={(val) => {
+              setData(val.data);
+              setIsNewPost(val.isNewPost);
+            }}
+          />
+        </Affix>
+      )}
 
       <ComponentGlobal_CreateButton path={RouterInvestasi.create} />
 
-      {_.isEmpty(investasi) && _.isEmpty(invesDone) && _.isEmpty(invesFail) ? (
+      {_.isEmpty(data) ? (
         <ComponentGlobal_IsEmptyData />
       ) : (
-        investasi.map((e) => (
+        data.map((e) => (
           <Card
             key={e.id}
             style={{
@@ -103,99 +87,59 @@ export default function MainInvestasi({
               router.push(RouterInvestasi.detail + `${e.id}`);
             }}
           >
-            <CardSection>
-              <AspectRatio ratio={16 / 9}>
-                <Paper radius={"sm"} withBorder>
+            <CardSection py={"md"} px={"sm"}>
+              <AspectRatio ratio={1 / 1} mah={250}>
+                <Box style={{ borderRadius: "7px" }}>
                   {e.imagesId ? (
                     <Image
-                      alt=""
+                      radius={"sm"}
+                      alt="Foto"
                       src={RouterInvestasi.api_gambar + `${e.imagesId}`}
+                      w={200}
                     />
                   ) : (
                     <Image alt="" src={"/aset/no-img.png"} />
                   )}
-                </Paper>
+                </Box>
               </AspectRatio>
             </CardSection>
 
-            <CardSection p={"sm"}>
+            <CardSection p={"md"}>
               <Stack>
-                <Title order={4}>{e.title}</Title>
-                <Progress
+                <Title align="center" order={3}>
+                  {e.title}
+                </Title>
+                {/* <Progress
                   label={(+e.progress).toFixed(2) + " %"}
                   value={+e.progress}
+                  color="teal"
+                  size="xl"
+                  radius="xl"
+                /> */}
+                <Progress
+                  label={
+                    "" +
+                    (
+                      ((+e.totalLembar - +e.sisaLembar) / +e.totalLembar) *
+                      100
+                    ).toFixed(1) +
+                    "%"
+                  }
+                  value={
+                    +(
+                      ((+e.totalLembar - +e.sisaLembar) / +e.totalLembar) *
+                      100
+                    ).toFixed(1)
+                  }
                   color="teal"
                   size="xl"
                   radius="xl"
                 />
               </Stack>
             </CardSection>
-            <CardSection p={"sm"}>
-              <Box>
-                <Grid>
-                  <Grid.Col span={6}>
-                    <Center>
-                      <Stack>
-                        <Box>
-                          <Text truncate>Dana Dibutuhkan</Text>
-                          <Text truncate>
-                            Rp.{" "}
-                            {new Intl.NumberFormat("id-ID", {
-                              maximumSignificantDigits: 10,
-                            }).format(+e.targetDana)}
-                          </Text>
-                        </Box>
-                        <Box>
-                          <Text truncate>Harga Per Lembar</Text>
-                          <Text truncate>
-                            Rp.{" "}
-                            {new Intl.NumberFormat("id-ID", {
-                              maximumSignificantDigits: 10,
-                            }).format(+e.hargaLembar)}
-                          </Text>
-                        </Box>
-                      </Stack>
-                    </Center>
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <Center>
-                      <Stack>
-                        <Box>
-                          <Text truncate>ROI</Text>
-                          <Text truncate>{e.roi}%</Text>
-                        </Box>
-                        <Box>
-                          <Text truncate>Sisa Lembar</Text>
-                          <Text truncate>
-                            {new Intl.NumberFormat("id-ID").format(
-                              +e.sisaLembar
-                            )}
-                          </Text>
-                        </Box>
-                      </Stack>
-                    </Center>
-                  </Grid.Col>
-                </Grid>
-              </Box>
-            </CardSection>
-            <Divider color="gray.4" />
+
             <CardSection p={"md"}>
               <Group position="right">
-                {/* <Button
-                  loaderPosition="center"
-                  loading={isLoadingDetail ? true : false}
-                  radius={"xl"}
-                  compact
-                  bg={Warna.hijau_muda}
-                  color="green"
-                  onClick={() => {
-                    setLoadingDetail(true);
-                    router.push(RouterInvestasi.detail + `${e.id}`);
-                  }}
-                >
-                  Detail
-                </Button> */}
-
                 {e.progress === "100" ? (
                   <Group position="right" spacing={"xs"}>
                     <IconCircleCheck color="green" />
@@ -250,6 +194,44 @@ export default function MainInvestasi({
           </Card>
         ))
       )}
+    </>
+  );
+}
+
+function ButtonUpdateBeranda({
+  onLoadData,
+}: {
+  onLoadData: (val: any) => void;
+}) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function onLoaded() {
+    const loadData = await investasi_funGetAllPublish();
+    onLoadData({
+      data: loadData,
+      isNewPost: false,
+    });
+
+    setIsLoading(true);
+  }
+
+  return (
+    <>
+      <center>
+        <Button
+          style={{
+            transition: "0.5s",
+            border: `1px solid ${AccentColor.skyblue}`,
+          }}
+          bg={AccentColor.blue}
+          loaderPosition="center"
+          loading={isLoading ? true : false}
+          radius={"xl"}
+          onClick={() => onLoaded()}
+        >
+          Update beranda
+        </Button>
+      </center>
     </>
   );
 }

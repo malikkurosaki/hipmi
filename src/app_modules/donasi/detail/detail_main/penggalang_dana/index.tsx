@@ -2,7 +2,8 @@
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import ComponentDonasi_CardPublish from "@/app_modules/donasi/component/card_view/box_publish";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentDonasi_CardPublish from "@/app_modules/donasi/component/card_view/card_publish";
 import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import {
   MODEL_DONASI,
@@ -61,12 +62,20 @@ function InformasiPenggalang({ value }: { value: MODEL_USER }) {
   return (
     <>
       {/* <pre>{JSON.stringify(value, null, 2)}</pre> */}
-      <Paper radius={"md"}>
+      <Box
+        style={{
+          backgroundColor: AccentColor.darkblue,
+          border: `2px solid ${AccentColor.blue}`,
+          padding: "20px",
+          cursor: "pointer",
+          borderRadius: "10px",
+          color: "white",
+          marginBottom: "10px",
+        }}
+      >
         <Stack
-          bg={"gray.1"}
-          p={"md"}
+        
           spacing={"xl"}
-          sx={{ borderRadius: "10px" }}
         >
           <Stack align="center" spacing={0}>
             <Paper
@@ -87,16 +96,16 @@ function InformasiPenggalang({ value }: { value: MODEL_USER }) {
                 />
               </Center>
             </Paper>
-            <Title order={3}>@{value.username}</Title>
+            <Title order={3}>@{value?.username}</Title>
           </Stack>
           <Stack>
             <Group>
               <IconMoodSmile />
-              <Text>Nama Penggalang Dana</Text>
+              <Text>{value?.Profile.name}</Text>
             </Group>
             <Group>
               <IconPhone />
-              <Text>+{value.nomor}</Text>
+              <Text>+{value?.nomor}</Text>
             </Group>
             <Group>
               <IconBrandGmail />
@@ -104,7 +113,7 @@ function InformasiPenggalang({ value }: { value: MODEL_USER }) {
             </Group>
           </Stack>
         </Stack>
-      </Paper>
+      </Box>
     </>
   );
 }

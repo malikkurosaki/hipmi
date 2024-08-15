@@ -1,17 +1,26 @@
-"use server"
+"use server";
 
-import prisma from "@/app/lib/prisma"
+import prisma from "@/app/lib/prisma";
 
-export async function Donasi_getListPencairanDanaById(donasiId:string) {
+export async function donasi_funGetListPencairanDanaById({
+  page,
+  donasiId,
+}: {
+  page: number;
+  donasiId: string;
+}) {
+  const takeData = 5;
+  const skipData = page * takeData - takeData;
+  const data = await prisma.donasi_PencairanDana.findMany({
+    take: takeData,
+    skip: skipData,
+    orderBy: {
+      createdAt: "desc",
+    },
+    where: {
+      donasiId: donasiId,
+    },
+  });
 
-    const data = await prisma.donasi_PencairanDana.findMany({
-        orderBy:{
-            createdAt: "desc"
-        },
-        where: {
-            donasiId: donasiId
-        }
-    })
-
-    return data
+  return data;
 }

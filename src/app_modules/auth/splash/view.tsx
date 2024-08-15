@@ -2,7 +2,14 @@
 
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import UIGlobal_SplashScreen from "@/app_modules/_global/ui/ui_splash";
-import { BackgroundImage, Center, Image, Paper, Stack } from "@mantine/core";
+import {
+  Avatar,
+  BackgroundImage,
+  Center,
+  Image,
+  Paper,
+  Stack,
+} from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 
@@ -31,14 +38,9 @@ export default function SplashScreen({ data }: { data: any }) {
         <Center h={"100vh"}>
           <Stack align="center" justify="center" p={"md"}>
             {/* <Title c={"#002e59"}>Welcome to</Title> */}
-            <Paper
-              p={{ base: 20, md: 30, lg: 40 }}
-              bg={"gray.1"}
-              radius={"100%"}
-              shadow="xl"
-            >
-              <Image height={200} alt="" src={"/aset/logo/logo-hipmi.png"} />
-            </Paper>
+            <Avatar size={300} radius={"100%"} >
+              <Image  height={250} width={250} alt="Logo" src={"/aset/logo/logo-hipmi.png"} />
+            </Avatar>
           </Stack>
         </Center>
       </BackgroundImage>

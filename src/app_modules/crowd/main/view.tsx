@@ -8,17 +8,8 @@ import {
 import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { gs_donasi_hot_menu } from "@/app_modules/donasi/global_state";
-import { gs_investasiFooter } from "@/app_modules/investasi/g_state";
-import {
-  AspectRatio,
-  Grid,
-  Image,
-  Loader,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { gs_investas_menu } from "@/app_modules/investasi/g_state";
+import { Grid, Image, Paper, Stack, Text, Title } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
@@ -26,7 +17,7 @@ import { useState } from "react";
 
 export default function MainCrowd() {
   const router = useRouter();
-  const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
+  const [changeColor, setChangeColor] = useAtom(gs_investas_menu);
   const [donasiHotMenu, setDonasiHotMenu] = useAtom(gs_donasi_hot_menu);
   const [loadingInv, setLoadingInv] = useState(false);
   const [loadingDon, setLoadingDon] = useState(false);
@@ -61,15 +52,16 @@ export default function MainCrowd() {
               borderRadius: "10px",
               backgroundColor: MainColor.darkblue,
               color: "white",
+              // color: "gray",
             }}
             onClick={() => {
-              // setLoadingInv(true);
-              // router.push(RouterCrowd.investasi);
-              // setChangeColor(0);
-              ComponentGlobal_NotifikasiPeringatan(
-                "Sementara ini sedang maintenance",
-                3000
-              );
+              setLoadingInv(true);
+              router.push(RouterCrowd.investasi);
+              setChangeColor(0);
+              // ComponentGlobal_NotifikasiPeringatan(
+              //   "Sedang Perbaikan",
+              //   3000
+              // );
             }}
           >
             <Grid>
@@ -103,13 +95,13 @@ export default function MainCrowd() {
               color: "white",
             }}
             onClick={() => {
-              // setLoadingDon(true);
-              // router.push(RouterCrowd.donasi);
-              // setDonasiHotMenu(0);
-              ComponentGlobal_NotifikasiPeringatan(
-                "Sementara ini sedang maintenance",
-                3000
-              );
+              setLoadingDon(true);
+              router.push(RouterCrowd.donasi);
+              setDonasiHotMenu(0);
+              // ComponentGlobal_NotifikasiPeringatan(
+              //   "Sementara ini sedang maintenance",
+              //   3000
+              // );
             }}
           >
             <Grid>

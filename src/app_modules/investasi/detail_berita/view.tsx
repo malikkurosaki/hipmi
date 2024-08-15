@@ -5,6 +5,7 @@ import { Model_Berita_Investasi } from "../model/model_investasi";
 import { useState } from "react";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import moment from "moment";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function DetailBeritaInvestasi({
   dataBerita,
@@ -14,17 +15,42 @@ export default function DetailBeritaInvestasi({
   const [berita, setBerita] = useState(dataBerita);
   return (
     <>
-      <Stack spacing={"lg"}>
+      <Stack
+        spacing={"lg"}
+        style={{
+          border: `2px solid ${AccentColor.blue}`,
+          backgroundColor: AccentColor.darkblue,
+          padding: "15px",
+          borderRadius: "10px",
+          color: "white",
+        }}
+      >
         <Stack spacing={0}>
-          <Title>{berita.title}</Title>
-          <Text fz={12}>{moment(berita.createdAt).format("lll")}</Text>
+          <Title order={4} align="center">
+            {berita.title}
+          </Title>
+          <Text align="center" fz={12}>
+            {moment(berita.createdAt).format("lll")}
+          </Text>
         </Stack>
-        <AspectRatio ratio={16 / 9}>
+
+        <AspectRatio ratio={1 / 1} mx={"sm"} mah={250}>
           <Image
+            alt=""
+            src={RouterInvestasi.api_gambar + `${berita.imagesId}`}
+            radius={"sm"}
+            height={250}
+            width={"100%"}
+          />
+        </AspectRatio>
+
+        {/* <AspectRatio ratio={16 / 9}>
+          <Image
+            radius={"sm"}
             src={RouterInvestasi.api_gambar + `${berita.imagesId}`}
             alt=""
           />
-        </AspectRatio>
+        </AspectRatio> */}
         <Text>{berita.deskripsi}</Text>
       </Stack>
     </>

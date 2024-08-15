@@ -7,7 +7,7 @@ export default async function Page({params}: {params: {id: string}}) {
     const dataInvestasi =  await getOneInvestasiById(params.id)
 
     return<>
-    <DetailDraftInvestasi dataInvestasi={dataInvestasi}/>
+    <DetailDraftInvestasi dataInvestasi={dataInvestasi as any}/>
     
     </>
 }

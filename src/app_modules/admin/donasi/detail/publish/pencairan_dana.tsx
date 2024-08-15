@@ -1,10 +1,13 @@
 "use client";
 
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentAdminGlobal_NotifikasiGagal } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_gagal";
+import { ComponentAdminGlobal_NotifikasiPeringatan } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_peringatan";
 import ComponentAdminGlobal_TampilanRupiahDonasi from "@/app_modules/admin/component_global/tampilan_rupiah";
+import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
 import ComponentDonasi_NotedBox from "@/app_modules/donasi/component/noted_box";
-import { NotifBerhasil } from "@/app_modules/donasi/component/notifikasi/notif_berhasil";
-import { NotifGagal } from "@/app_modules/donasi/component/notifikasi/notif_gagal";
-import { NotifPeringatan } from "@/app_modules/donasi/component/notifikasi/notif_peringatan";
+import mqtt_client from "@/util/mqtt_client";
 import {
   AspectRatio,
   Button,
@@ -25,12 +28,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentAdminDonasi_TombolKembali from "../../component/tombol_kembali";
 import { AdminDonasi_funCreatePencairanDana } from "../../fun/create/fun_create_pencairan_dana";
-import { AdminDonasi_AkumulasiPencairanById } from "../../fun/update/fun_update_akumulasi_pencairan";
-import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
-import { ComponentAdminGlobal_NotifikasiPeringatan } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_peringatan";
-import { ComponentAdminGlobal_NotifikasiBerhasil } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_berhasil";
-import { ComponentAdminGlobal_NotifikasiGagal } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_gagal";
 import { AdminDonasi_getOneById } from "../../fun/get/get_one_by_id";
+import { AdminDonasi_AkumulasiPencairanById } from "../../fun/update/fun_update_akumulasi_pencairan";
 
 export default function AdminDonasi_PencairanDana({
   donasiId,
@@ -56,7 +55,7 @@ export default function AdminDonasi_PencairanDana({
           onSuccess={(val) => {
             setTerkumpul(val.terkumpul);
             setTotal(val.totalPencairan);
-            console.log(val)
+            console.log(val);
           }}
         />
       </Stack>
@@ -148,15 +147,6 @@ function FormView({
               }
               value={value.nilai}
               onChange={(val) => {
-                // const nilai = val.currentTarget.value;
-                // const nilaiTypeNumber = toNumber(val.currentTarget.value);
-
-                // if (nilaiTypeNumber > sisaDana) {
-                //   console.log("lebih");
-                // } else {
-                //   console.log("kurang");
-                // }
-
                 const match = val.currentTarget.value
                   .replace(/\./g, "")
                   .match(/^[0-9]+$/);
@@ -314,24 +304,41 @@ async function onSave({
   const gambar = new FormData();
   gambar.append("file", file as any);
 
-  await AdminDonasi_funCreatePencairanDana(body as any, gambar).then(
-    async (res) => {
-      if (res.status === 200) {
-        await AdminDonasi_AkumulasiPencairanById(
-          body.donasiId as any,
-          body.nominalCair as any
-        ).then(async (res) => {
-          if (res.status === 200) {
-            const loadData = await AdminDonasi_getOneById(donasiId);
-            onSuccess1(loadData);
-            ComponentAdminGlobal_NotifikasiBerhasil(res.message);
-          } else {
-            ComponentAdminGlobal_NotifikasiGagal(res.message);
-          }
-        });
-      } else {
-        NotifGagal(res.message);
+  const res = await AdminDonasi_funCreatePencairanDana(body as any, gambar);
+  if (res.status === 200) {
+    const res2 = await AdminDonasi_AkumulasiPencairanById(
+      body.donasiId as any,
+      body.nominalCair as any
+    );
+    if (res2.status === 200) {
+      const loadData = await AdminDonasi_getOneById(donasiId);
+      onSuccess1(loadData);
+
+      const dataNotif = {
+        appId: loadData?.id,
+        userId: loadData?.authorId,
+        pesan: loadData?.title as any,
+        status: "Pencairan Dana",
+        kategoriApp: "DONASI",
+        title: "Dana donasi berhasil dicairkan",
+      };
+
+      const notif = await adminNotifikasi_funCreateToUser({
+        data: dataNotif as any,
+      });
+
+      if (notif.status === 201) {
+        mqtt_client.publish(
+          "USER",
+          JSON.stringify({ userId: loadData?.authorId, count: 1 })
+        );
       }
+
+      ComponentAdminGlobal_NotifikasiBerhasil(res2.message);
+    } else {
+      ComponentAdminGlobal_NotifikasiGagal(res2.message);
     }
-  );
+  } else {
+    ComponentAdminGlobal_NotifikasiGagal(res.message);
+  }
 }

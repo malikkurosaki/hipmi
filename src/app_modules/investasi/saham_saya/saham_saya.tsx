@@ -32,6 +32,9 @@ import { useState } from "react";
 import { Warna } from "@/app/lib/warna";
 import _ from "lodash";
 import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 
 export default function InvestasiSahamTerbeli({
   listTransaksi,
@@ -41,133 +44,109 @@ export default function InvestasiSahamTerbeli({
   const router = useRouter();
   const [transaksi, setTransaksi] = useState(listTransaksi);
 
-  if (_.isEmpty(transaksi)) {
-    return (
-      <>
-        <ComponentInvestasi_IsEmptyData text="Tidak ada data" />
-      </>
-    );
-  }
+  if (_.isEmpty(transaksi)) return <ComponentGlobal_IsEmptyData />;
 
   return (
     <>
-      <SimpleGrid
-        cols={4}
-        spacing="lg"
-        breakpoints={[
-          { maxWidth: "md", cols: 3, spacing: "md" },
-          { maxWidth: "sm", cols: 2, spacing: "sm" },
-          { maxWidth: "xs", cols: 1, spacing: "sm" },
-        ]}
-      >
-        {transaksi.map((e) => (
-          <Card key={e.id} bg={"gray.5"} radius={"md"}>
-            <Card.Section withBorder p={"sm"}>
-              <Group position="apart">
-                <Group>
-                  <Avatar radius={"xl"}>
-                    {(() => {
-                      const usr = e.Investasi.author.username;
-                      const splt = usr.split("");
-                      const Up = _.upperCase(splt[0]);
+      {transaksi.map((e) => (
+        <Card
+          key={e.id}
+          style={{
+            padding: "15px",
+            backgroundColor: AccentColor.darkblue,
+            border: `2px solid ${AccentColor.blue}`,
+            borderRadius: "10px",
+            color: "white",
+            marginBottom: "15px",
+          }}
 
-                      return Up;
-                    })()}
-                  </Avatar>
-                  <Text>{e.Investasi.author.username}</Text>
-                </Group>
+          onClick={() => router.push(RouterInvestasi.detail_saham_terbeli + e.id)}
+        >
+          {/* <Card.Section p={"sm"} >
+              <ComponentGlobal_AuthorNameOnHeader
+                authorName={e?.Investasi?.author?.username}
+                imagesId={e?.Investasi?.author.Profile.imagesId}
+                profileId={e?.Investasi?.author.Profile.id}
+                isPembatas
+              />
+           
+          </Card.Section> */}
 
-                <Button
-                  bg={"teal"}
-                  radius={"xl"}
-                  compact
-                  onClick={() =>
-                    router.push(
-                      RouterInvestasi.detail_saham_terbeli + `${e.id}`
-                    )
-                  }
-                >
-                  Detail
-                </Button>
-              </Group>
-            </Card.Section>
-
-            <Card.Section p={"md"}>
+          <Card.Section p={"md"}>
+            <Stack spacing={"lg"}>
               <Stack spacing={"lg"}>
-                <Stack spacing={"lg"}>
-                  <Center>
-                    <Text fw={"bold"} fz={20} truncate>
-                      {e.Investasi.title}
-                    </Text>
-                  </Center>
-                  <Progress
-                    label={
-                      "" +
-                      (
-                        ((+e.Investasi.totalLembar - +e.Investasi.sisaLembar) /
-                          +e.Investasi.totalLembar) *
-                        100
-                      ).toFixed(1) +
-                      "%"
-                    }
-                    value={
-                      +(
-                        ((+e.Investasi.totalLembar - +e.Investasi.sisaLembar) /
-                          +e.Investasi.totalLembar) *
-                        100
-                      ).toFixed(1)
-                    }
-                    color="teal"
-                    size="xl"
-                    radius="xl"
-                  />
-                </Stack>
-                <Grid>
-                  <Grid.Col span={6}>
-                    <Stack spacing={5}>
-                      <Stack spacing={0}>
-                        <Text fz={14}>Lembar Saham:</Text>
-                        <Text fw={"bold"} truncate>
-                          {new Intl.NumberFormat("id-ID", {
-                            maximumFractionDigits: 10,
-                          }).format(+e.quantity)}
-                        </Text>
-                      </Stack>
-                      <Stack spacing={0}>
-                        <Text fz={14}>Total:</Text>
-                        <Text fw={"bold"} truncate>
-                          Rp.{" "}
-                          {new Intl.NumberFormat("id-ID", {
-                            maximumFractionDigits: 10,
-                          }).format(+e.gross_amount)}
-                        </Text>
-                      </Stack>
-                    </Stack>
-                  </Grid.Col>
-                  <Grid.Col span={6}>
-                    <AspectRatio ratio={16 / 9}>
-                      <Paper radius={"md"}>
-                        {e.Investasi.imagesId ? (
-                          <Image
-                            alt=""
-                            src={
-                              RouterInvestasi.api_gambar +
-                              `${e.Investasi.imagesId}`
-                            }
-                          />
-                        ) : (
-                          <Image alt="" src={"/aset/no-img.png"} />
-                        )}
-                      </Paper>
-                    </AspectRatio>
-                  </Grid.Col>
-                </Grid>
+                <Center>
+                  <Text fw={"bold"} fz={20} lineClamp={1}>
+                    {e.Investasi.title}
+                  </Text>
+                </Center>
+                <Progress
+                  label={
+                    "" +
+                    (
+                      ((+e.Investasi.totalLembar - +e.Investasi.sisaLembar) /
+                        +e.Investasi.totalLembar) *
+                      100
+                    ).toFixed(1) +
+                    "%"
+                  }
+                  value={
+                    +(
+                      ((+e.Investasi.totalLembar - +e.Investasi.sisaLembar) /
+                        +e.Investasi.totalLembar) *
+                      100
+                    ).toFixed(1)
+                  }
+                  color="teal"
+                  size="xl"
+                  radius="xl"
+                />
               </Stack>
-              <Box></Box>
-            </Card.Section>
-          </Card>
-        ))}
-      </SimpleGrid>
+              <Grid>
+                <Grid.Col span={6}>
+                  <Stack spacing={5}>
+                    <Stack spacing={0}>
+                      <Text fz={14}>Lembar Saham:</Text>
+                      <Text fw={"bold"} lineClamp={1}>
+                        {new Intl.NumberFormat("id-ID", {
+                          maximumFractionDigits: 10,
+                        }).format(+e.quantity)}
+                      </Text>
+                    </Stack>
+                    <Stack spacing={0}>
+                      <Text fz={14}>Total:</Text>
+                      <Text fw={"bold"} lineClamp={1}>
+                        Rp.{" "}
+                        {new Intl.NumberFormat("id-ID", {
+                          maximumFractionDigits: 10,
+                        }).format(+e.gross_amount)}
+                      </Text>
+                    </Stack>
+                  </Stack>
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <AspectRatio ratio={16 / 9}>
+                    <Paper radius={"md"}>
+                      {e.Investasi.imagesId ? (
+                        <Image
+                          alt=""
+                          src={
+                            RouterInvestasi.api_gambar +
+                            `${e.Investasi.imagesId}`
+                          }
+                        />
+                      ) : (
+                        <Image alt="" src={"/aset/no-img.png"} />
+                      )}
+                    </Paper>
+                  </AspectRatio>
+                </Grid.Col>
+              </Grid>
+            </Stack>
+            <Box></Box>
+          </Card.Section>
+        </Card>
+      ))}
     </>
   );
 }

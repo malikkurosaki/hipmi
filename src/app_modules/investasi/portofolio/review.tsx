@@ -1,38 +1,16 @@
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import {
-  Card,
-  CardSection,
-  AspectRatio,
-  Box,
-  Title,
-  Divider,
-  Group,
-  Badge,
-  Image,
-  Center,
-  Text,
-  Paper,
-  Grid,
-  Stack,
-} from "@mantine/core";
-import { useRouter } from "next/navigation";
-import {
-  MODEL_Status_investasi,
-  MODEL_Investasi,
-} from "../model/model_investasi";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { Box } from "@mantine/core";
 import _ from "lodash";
-import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
+import { useRouter } from "next/navigation";
 import { ComponentInvestasi_CardStatus } from "../component/detail/card_status";
+import { MODEL_Investasi } from "../model/model_investasi";
 
 export default function Review({ data }: { data: MODEL_Investasi[] }) {
   const router = useRouter();
 
-  if (_.isEmpty(data))
-    return (
-      <>
-        <ComponentInvestasi_IsEmptyData text="Tidak ada data" />
-      </>
-    );
+  if (_.isEmpty(data)) return <ComponentGlobal_IsEmptyData />;
+
   return (
     <>
       {data.map((e) => (

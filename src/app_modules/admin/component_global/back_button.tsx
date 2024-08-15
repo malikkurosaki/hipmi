@@ -5,7 +5,11 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function ComponentAdminGlobal_BackButton({path}:{path?:string}) {
+export default function ComponentAdminGlobal_BackButton({
+  path,
+}: {
+  path?: string;
+}) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
 
@@ -17,18 +21,21 @@ export default function ComponentAdminGlobal_BackButton({path}:{path?:string}) {
           // loading={isLoading ? true : false}
           c={"gray"}
           leftIcon={
-            isLoading ? <Loader size={"xs"} color={"gray"} /> : <IconChevronLeft />
+            isLoading ? (
+              <Loader size={"xs"} color={"gray"} />
+            ) : (
+              <IconChevronLeft />
+            )
           }
           variant="white"
           onClick={() => {
             setLoading(true);
             // setTimeout(() => , 3000);
-            if(path==null){
+            if (path == null) {
               router.back();
-            }else{
-              router.push(path)
+            } else {
+              router.push(path);
             }
-            
           }}
         >
           Kembali

@@ -16,7 +16,13 @@ export default async function getOneTransaksiBerhasilByIdInvestasi(
             select: {
               nomor: true,
               username: true,
-            }
+              Profile: {
+                select: {
+                  id: true,
+                  imagesId: true,
+                },
+              },
+            },
           },
           BeritaInvestasi: true,
           DokumenInvestasi: true,

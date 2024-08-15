@@ -19,6 +19,8 @@ import { useRouter } from "next/navigation";
 import { MODEL_Investasi } from "../model/model_investasi";
 import { useState } from "react";
 import _ from "lodash";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function BeritaInvestasi({
   dataInvestasi,
@@ -34,17 +36,23 @@ export default function BeritaInvestasi({
         berita.BeritaInvestasi.map((e) => (
           <Paper
             key={e.id}
-            mb={"md"}
-            w={"100%"}
-            bg={"gray"}
-            p={"sm"}
+            style={{
+              padding: "15px",
+              backgroundColor: AccentColor.darkblue,
+              border: `2px solid ${AccentColor.blue}`,
+              borderRadius: "10px",
+              color: "white",
+              marginBottom: "15px",
+            }}
             onClick={() =>
               router.push(RouterInvestasi.detail_berita + `${e.id}`)
             }
           >
             <Stack>
               <Group position="apart">
-                <Title order={6}>{e.title}</Title>
+                <Title order={6} w={"70%"} lineClamp={1}>
+                  {e.title}
+                </Title>
                 <Text fz={"xs"}>{moment(e.createdAt).format("LL")}</Text>
               </Group>
 
@@ -56,7 +64,10 @@ export default function BeritaInvestasi({
                 </Grid.Col>
                 <Grid.Col span={4}>
                   <AspectRatio ratio={16 / 9} h={50} w={100}>
-                    <Image alt="" src={RouterInvestasi.api_gambar + `${e.imagesId}`} />
+                    <Image
+                      alt=""
+                      src={RouterInvestasi.api_gambar + `${e.imagesId}`}
+                    />
                   </AspectRatio>
                 </Grid.Col>
               </Grid>
@@ -64,9 +75,7 @@ export default function BeritaInvestasi({
           </Paper>
         ))
       ) : (
-        <Center>
-          <Title order={6}>Tidak Ada Berita</Title>
-        </Center>
+        <ComponentGlobal_IsEmptyData />
       )}
     </>
   );

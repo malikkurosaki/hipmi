@@ -15,9 +15,10 @@ import {
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { gs_investasiFooter } from "../g_state";
+import { gs_investas_menu } from "../g_state";
 import { Warna } from "@/app/lib/warna";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 
 export default function LayoutStatusTransaksiInvestasi({
   children,
@@ -25,11 +26,11 @@ export default function LayoutStatusTransaksiInvestasi({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [hotMenu, setHotMenu] = useAtom(gs_investasiFooter);
+  const [hotMenu, setHotMenu] = useAtom(gs_investas_menu);
 
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <UIGlobal_LayoutTamplate
         header={
           <Header height={50}>
             <Group position="apart" align="center" h={50} px={"md"}>
@@ -63,7 +64,7 @@ export default function LayoutStatusTransaksiInvestasi({
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

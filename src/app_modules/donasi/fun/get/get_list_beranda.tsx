@@ -3,13 +3,19 @@
 import prisma from "@/app/lib/prisma";
 import { tree } from "next/dist/build/templates/app-page";
 
-export async function Donasi_getListBeranda() {
+export async function donasi_funGetAllPublish({ page }: { page: number }) {
+  const takeData = 5;
+  const skipData = page * takeData - takeData;
+
   const data = await prisma.donasi.findMany({
+    take: takeData,
+    skip: skipData,
     orderBy: {
       publishTime: "desc",
     },
     where: {
       donasiMaster_StatusDonasiId: "1",
+      active: true,
     },
     select: {
       id: true,

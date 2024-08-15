@@ -35,6 +35,7 @@ export default function UploadDokumenInvestasi({
   const [file, setFile] = useState<any | null>(null);
   const [pdf, setPdf] = useState<File | null>(null);
   const [title, setTitle] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   async function onUpload() {
     const body = {
@@ -50,6 +51,7 @@ export default function UploadDokumenInvestasi({
     await funUploadDokumenInvestasi(fd, body).then((res) => {
       // console.log(res);
       if (res.status === 201) {
+        setLoading(true)
         ComponentGlobal_NotifikasiBerhasil("Berhasil upload");
         router.back();
       } else {
@@ -137,6 +139,8 @@ export default function UploadDokumenInvestasi({
         />
         <Stack>
           <Button
+            loading={isLoading}
+            loaderPosition="center"
             bg={MainColor.yellow}
             color="yellow"
             c={"black"}

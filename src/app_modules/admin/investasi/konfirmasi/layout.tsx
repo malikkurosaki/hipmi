@@ -11,7 +11,9 @@ export default function Admin_LayoutKonfirmasiInvestasi({
 }) {
   return (
     <>
-      <AppShell header={<ComponentGlobal_HeaderTamplate title="Konfimasi Investasi" />}>
+      <AppShell
+        header={<ComponentGlobal_HeaderTamplate title="Konfimasi Investasi" />}
+      >
         {children}
       </AppShell>
     </>

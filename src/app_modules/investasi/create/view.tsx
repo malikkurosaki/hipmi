@@ -30,13 +30,15 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-simple-toasts";
 import { funCreateInvestasi } from "../fun/fun_create_investasi";
-import { gs_StatusPortoInvestasi, gs_investasiFooter } from "../g_state";
+import { gs_investasi_status, gs_investas_menu } from "../g_state";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import mqtt_client from "@/util/mqtt_client";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 
 export default function InvestasiCreate({
   id,
@@ -55,8 +57,8 @@ export default function InvestasiCreate({
   const [pdf, setPdf] = useState<File | null>(null);
   const [filePdf, setFilePdf] = useState<any | null>(null);
 
-  const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
-  const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
+  const [changeColor, setChangeColor] = useAtom(gs_investas_menu);
+  const [activeTab, setActiveTab] = useAtom(gs_investasi_status);
   const [totalLembar, setTotalLembar] = useState(0);
   const [isLoading, setLoading] = useState(false);
 
@@ -93,19 +95,39 @@ export default function InvestasiCreate({
     gmbr.append("file", fl as any);
 
     const flPdf = new FormData();
-    flPdf.append("file", fl as any);
+    flPdf.append("file", pdf as any);
 
-    await funCreateInvestasi(gmbr, flPdf, body as any).then((res) => {
-      if (res.status === 201) {
+    const res = await funCreateInvestasi(gmbr, flPdf, body as any);
+    if (res.status === 201) {
+      const dataNotif = {
+        appId: res.data?.id,
+        status: res.data?.MasterStatusInvestasi?.name,
+        userId: res.data?.authorId,
+        pesan: res.data?.title,
+        kategoriApp: "INVESTASI",
+        title: "Investasi baru",
+      };
+
+      const notif = await notifikasiToAdmin_funCreate({
+        data: dataNotif as any,
+      });
+
+      if (notif.status === 201) {
+        mqtt_client.publish(
+          "ADMIN",
+          JSON.stringify({
+            count: 1,
+          })
+        );
         setChangeColor(1);
         setActiveTab("Review");
         setLoading(true);
-        ComponentGlobal_NotifikasiBerhasil(res.message)
+        ComponentGlobal_NotifikasiBerhasil(res.message);
         router.push(RouterInvestasi.portofolio);
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
       }
-    });
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+    }
   }
 
   async function onTotalLembar({
@@ -115,11 +137,6 @@ export default function InvestasiCreate({
     target: number;
     harga: number;
   }) {
-    // console.log(target, "ini target");
-    // console.log(harga, "ini harga");
-
-    // if (harga === +"Nan") setTotalLembar(0);
-
     const hasil: any = target / harga;
     setTotalLembar(_.floor(hasil === Infinity ? 0 : hasil));
   }
@@ -206,7 +223,7 @@ export default function InvestasiCreate({
                   backgroundColor: "gray.1",
                   padding: "10px",
                   borderRadius: "10px",
-                  color: "gray"
+                  color: "gray",
                 }}
               >
                 <Text>Upload File Prospektus</Text>
@@ -227,7 +244,7 @@ export default function InvestasiCreate({
             )}
             {/* {JSON.stringify(filePdf)} */}
             <FileButton
-              accept="application/pdf"
+              accept={"application/pdf"}
               onChange={async (files: any) => {
                 try {
                   const buffer = URL.createObjectURL(
