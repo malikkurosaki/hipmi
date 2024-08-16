@@ -18,7 +18,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import {
   MODEL_EVENT,
   MODEL_EVENT_PESERTA,

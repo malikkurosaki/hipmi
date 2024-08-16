@@ -6,22 +6,21 @@ import {
 } from "@/app_modules/_global/color/color_pallet";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import {
-  ActionIcon,
-  Affix,
   AspectRatio,
   Box,
   Button,
   Center,
   FileButton,
-  Group,
   Image,
   Paper,
   Stack,
   Text,
   TextInput,
-  Title,
+  Title
 } from "@mantine/core";
+import { IconCamera } from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -33,9 +32,6 @@ import Map, {
 } from "react-map-gl";
 import { map_funCreatePin } from "../fun/create/fun_create_pin";
 import { defaultLatLong, defaultMapZoom } from "../lib/default_lat_long";
-import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { IconCamera, IconX } from "@tabler/icons-react";
 
 export function UiMap_CreatePin({
   mapboxToken,

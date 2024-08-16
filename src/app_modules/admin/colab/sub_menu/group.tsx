@@ -17,7 +17,7 @@ import {
   SimpleGrid,
   Box,
 } from "@mantine/core";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import {
   MODEL_COLLABORATION,
   MODEL_COLLABORATION_ROOM_CHAT,

@@ -5,10 +5,13 @@ import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_nam
 import {
   Box,
   Button,
+  Flex,
   Grid,
   Group,
   Image,
+  Loader,
   SimpleGrid,
+  Skeleton,
   Stack,
   Text,
   Title,
@@ -39,6 +42,8 @@ export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
     const res: any = await map_funGetOneById({ mapId: mapId });
     setData(res);
   }
+
+  if (!data) return <CustomLoading />;
 
   return (
     <>
@@ -133,5 +138,22 @@ export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
         {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       </Stack>
     </>
+  );
+}
+
+function CustomLoading() {
+  return (
+    <Flex>
+      <Stack w={100}>
+        <Skeleton h={100} animate />
+      </Stack>
+      <Stack style={{ flex: 1 }}>
+        <Skeleton h={5} animate />
+        <Skeleton h={5} animate />
+        <Skeleton h={5} animate />
+        <Skeleton h={5} animate />
+        <Skeleton h={5} animate />
+      </Stack>
+    </Flex>
   );
 }

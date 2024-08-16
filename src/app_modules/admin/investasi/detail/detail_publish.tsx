@@ -15,7 +15,7 @@ import {
   ThemeIcon,
   Title,
 } from "@mantine/core";
-import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
+import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { IconCircleCheck, IconHome } from "@tabler/icons-react";
 import investasi from "../../notifikasi/route_setting/investasi";

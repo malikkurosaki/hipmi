@@ -5,12 +5,11 @@ import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
 import { RouterAdminForum } from "@/app/lib/router_admin/router_admin_forum";
 import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
 import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
+import { RouterAdminMap } from "@/app/lib/router_admin/router_admin_map";
 import { RouterAdminVote } from "@/app/lib/router_admin/router_admin_vote";
 import { RouterAdminUserAccess } from "@/app/lib/router_admin/router_admn_user_acces";
 import { RouterAdminAppInformation } from "@/app/lib/router_admin/router_app_information";
-import {
-  RouterAdminDashboard
-} from "@/app/lib/router_hipmi/router_admin";
+import { RouterAdminDashboard } from "@/app/lib/router_hipmi/router_admin";
 import {
   IconAffiliate,
   IconBriefcase,
@@ -18,6 +17,7 @@ import {
   IconDeviceMobile,
   IconHeartHandshake,
   IconHome,
+  IconMap2,
   IconMessages,
   IconMoneybag,
   IconPackageImport,
@@ -270,6 +270,15 @@ export const listAdminPage = [
     ],
   },
 
+  {
+    id: 9,
+    name: "Maps",
+    path: RouterAdminMap.main,
+    icon: <IconMap2 />,
+    child: [],
+  },
+
+  // App Information
   {
     id: 97,
     name: "App Information",

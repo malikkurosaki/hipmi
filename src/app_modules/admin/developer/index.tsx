@@ -14,7 +14,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import ComponentAdminGlobal_HeaderTamplate from "../component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../_admin_global/header_tamplate";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import _ from "lodash";
 import { IconSearch } from "@tabler/icons-react";

@@ -8,7 +8,7 @@ import {
   Text,
   Title
 } from "@mantine/core";
-import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
+import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
 import { ComponentAdminInvestasi_DetailDataAuthor } from "../_component/detail_data_author";
 import { ComponentAdminInvestasi_DetailData } from "../_component/detail_data_investasi";
 import { ComponentAdminInvestasi_DetailGambar } from "../_component/detail_gambar_investasi";

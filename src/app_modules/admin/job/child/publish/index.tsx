@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
-import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
 import { MODEL_JOB } from "@/app_modules/job/model/interface";
 import {
   Badge,

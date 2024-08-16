@@ -4,7 +4,7 @@ import {
   Space,
   Stack
 } from "@mantine/core";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import InformasiBank from "./info_bank";
 import InformasiWhatApps from "./info_whatsapp";
 

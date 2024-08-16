@@ -2,7 +2,7 @@
 
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { Center, Image, Stack } from "@mantine/core";
-import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
+import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
 
 export default function AdminJob_DetailPoster({
   imageId,

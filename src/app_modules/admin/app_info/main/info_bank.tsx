@@ -24,8 +24,8 @@ import {
 } from "@tabler/icons-react";
 import _ from "lodash";
 import { useState } from "react";
-import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../component_global/admin_notifikasi/notifikasi_berhasil";
-import { ComponentAdminGlobal_NotifikasiGagal } from "../../component_global/admin_notifikasi/notifikasi_gagal";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../_admin_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentAdminGlobal_NotifikasiGagal } from "../../_admin_global/admin_notifikasi/notifikasi_gagal";
 import adminAppInformation_createBank from "../fun/create/fun_create_new_bank";
 import adminAppInformation_getMasterBank from "../fun/master/get_list_bank";
 import adminAppInformation_updateStatusBankById from "../fun/update/fun_udpate_status_bank";

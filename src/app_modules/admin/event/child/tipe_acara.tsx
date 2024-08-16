@@ -16,7 +16,7 @@ import {
   Title,
 } from "@mantine/core";
 import ComponentAdminDonasi_TombolKembali from "../../donasi/component/tombol_kembali";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
 import { useState } from "react";
 import { AdminEvent_funCreateTipeAcara } from "../fun/create/fun_create_tipe_acara";

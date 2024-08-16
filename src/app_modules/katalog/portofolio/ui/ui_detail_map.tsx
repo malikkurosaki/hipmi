@@ -1,12 +1,14 @@
 "use client";
 
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentMap_DrawerDetailData } from "@/app_modules/map/_component";
 import {
-  defaultLatLong,
-  defaultMapZoom,
+  defaultMapZoom
 } from "@/app_modules/map/lib/default_lat_long";
 import { MODEL_MAP } from "@/app_modules/map/lib/interface";
-import { Group, Image, Paper, Stack, Text, Title } from "@mantine/core";
+import { Image, Paper, Stack, Text, Title } from "@mantine/core";
+import "mapbox-gl/dist/mapbox-gl.css";
+import { useState } from "react";
 import {
   AttributionControl,
   Map,
@@ -14,10 +16,6 @@ import {
   NavigationControl,
   ScaleControl,
 } from "react-map-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { useState } from "react";
-import { ComponentMap_DrawerDetailData } from "@/app_modules/map/_component";
-import { ComponentMap_DetailData } from "@/app_modules/map/_component/detail_data";
 import { ComponentPortofolio_DetailDataMap } from "../component";
 
 export function Portofolio_UiMap({
@@ -72,7 +70,7 @@ function MapView({
           cursor: "pointer",
           width: "100%",
           height: "50vh",
-          borderRadius: "5px",
+          borderRadius: "10px",
         }}
         attributionControl={false}
         
