@@ -39,7 +39,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { MODEL_USER } from "../home/model/interface";
 import { MODEL_NOTIFIKASI } from "../notifikasi/model/interface";
-import Admin_Logout from "./component_global/logout";
+import Admin_Logout from "./_admin_global/logout";
 import {
   gs_admin_hotMenu,
   gs_admin_subMenu,

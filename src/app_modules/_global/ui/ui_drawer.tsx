@@ -91,7 +91,7 @@ export default function UIGlobal_Drawer({
                     e?.icon
                   )}
                 </ActionIcon>
-                <Text align="center" color="white">
+                <Text fz={"sm"} align="center" color="white">
                   {e?.name}
                 </Text>
               </Stack>

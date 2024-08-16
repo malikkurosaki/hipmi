@@ -18,8 +18,8 @@ import { IconSearch } from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
-import ComponentAdminGlobal_IsEmptyData from "../../component_global/is_empty_data";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
+import ComponentAdminGlobal_IsEmptyData from "../../_admin_global/is_empty_data";
 import { adminInvestasi_funGetAllPublish } from "../fun/get/get_all_publish";
 import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
 

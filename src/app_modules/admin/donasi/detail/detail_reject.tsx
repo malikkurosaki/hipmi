@@ -25,7 +25,7 @@ import { NotifBerhasil } from "@/app_modules/donasi/component/notifikasi/notif_b
 import { NotifGagal } from "@/app_modules/donasi/component/notifikasi/notif_gagal";
 import { AdminDonasi_getOneById } from "../fun/get/get_one_by_id";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
-import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
+import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
 import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_detail_donasi";
 import ComponentAdminDonasi_CeritaPenggalangDana from "../component/tampilan_detail_cerita";
 

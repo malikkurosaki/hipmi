@@ -1,14 +1,37 @@
 "use client";
 
-import { Skeleton, Stack, Text, Title } from "@mantine/core";
-import { Suspense, useState } from "react";
-import { MODEL_MAP } from "../lib/interface";
-import { useShallowEffect } from "@mantine/hooks";
-import { map_funGetOneById } from "../fun/get/fun_get_one_by_id";
-import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import { RouterMap } from "@/app/lib/router_hipmi/router_map";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Group,
+  Image,
+  Loader,
+  SimpleGrid,
+  Skeleton,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
+import { useState } from "react";
+import { map_funGetOneById } from "../fun/get/fun_get_one_by_id";
+import { MODEL_MAP } from "../lib/interface";
+import {
+  IconBuildingSkyscraper,
+  IconListDetails,
+  IconPhoneCall,
+  IconMapPin,
+} from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
-export function ComponentMap_DetailData({ mapId }: { mapId: string }) {
+export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
+  const router = useRouter();
   const [data, setData] = useState<MODEL_MAP>();
 
   useShallowEffect(() => {
@@ -20,35 +43,117 @@ export function ComponentMap_DetailData({ mapId }: { mapId: string }) {
     setData(res);
   }
 
+  if (!data) return <CustomLoading />;
+
   return (
     <>
-      <Stack>
-        <Stack spacing={0}>
-          <Text>
-            latitude:{"  "}
-            <Text fw={"bold"} span inherit>
-              {data?.latitude}
-            </Text>
-          </Text>
-          <Text>
-            longitude:{"  "}
-            <Text fw={"bold"} span inherit>
-              {data?.longitude}
-            </Text>
-          </Text>
-        </Stack>
-
-        <Title order={4}>{data?.namePin}</Title>
-        {/* <Text>{data?.Author?.username}</Text> */}
-
+      <Stack mt={"lg"} spacing={"xl"}>
         <ComponentGlobal_AuthorNameOnHeader
           authorName={data?.Author?.username}
           imagesId={data?.Author?.Profile?.imagesId}
           profileId={data?.Author?.Profile?.id}
         />
 
+        <SimpleGrid
+          cols={2}
+          spacing={"lg"}
+          breakpoints={[
+            { maxWidth: 980, cols: 2, spacing: "md" },
+            { maxWidth: 755, cols: 1, spacing: "sm" },
+            { maxWidth: 600, cols: 1, spacing: "sm" },
+          ]}
+        >
+          <Image
+            radius={"sm"}
+            mah={300}
+            maw={200}
+            alt="Foto"
+            src={RouterMap.api_foto + data?.imagesId}
+          />
+          <Box>
+            <Grid>
+              <Grid.Col span={2}>
+                <IconBuildingSkyscraper />
+              </Grid.Col>
+              <Grid.Col span={"auto"}>
+                <Text>{data?.Portofolio.namaBisnis}</Text>
+              </Grid.Col>
+            </Grid>
+            <Grid>
+              <Grid.Col span={2}>
+                <IconListDetails />
+              </Grid.Col>
+              <Grid.Col span={"auto"}>
+                <Text>{data?.Portofolio.MasterBidangBisnis.name}</Text>
+              </Grid.Col>
+            </Grid>
+            <Grid>
+              <Grid.Col span={2}>
+                <IconPhoneCall />
+              </Grid.Col>
+              <Grid.Col span={"auto"}>
+                <Text>+{data?.Portofolio.tlpn}</Text>
+              </Grid.Col>
+            </Grid>
+            <Grid>
+              <Grid.Col span={2}>
+                <IconMapPin />
+              </Grid.Col>
+              <Grid.Col span={"auto"}>
+                <Text>{data?.Portofolio.alamatKantor}</Text>
+              </Grid.Col>
+            </Grid>
+          </Box>
+        </SimpleGrid>
+
+        <SimpleGrid
+          cols={2}
+          spacing={"lg"}
+          breakpoints={[
+            { maxWidth: 980, cols: 2, spacing: "md" },
+            { maxWidth: 755, cols: 1, spacing: "sm" },
+            { maxWidth: 600, cols: 1, spacing: "sm" },
+          ]}
+        >
+          <Box />
+
+          <Group position="center">
+            <Button
+              radius={"xl"}
+              onClick={() => {
+                router.push(
+                  RouterPortofolio.main_detail + data?.Portofolio.id,
+                  { scroll: false }
+                );
+              }}
+              bg={MainColor.yellow}
+              color="yellow"
+              c={"black"}
+            >
+              Detail
+            </Button>
+          </Group>
+        </SimpleGrid>
+
         {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       </Stack>
     </>
+  );
+}
+
+function CustomLoading() {
+  return (
+    <Flex>
+      <Stack w={100}>
+        <Skeleton h={100} animate />
+      </Stack>
+      <Stack style={{ flex: 1 }}>
+        <Skeleton h={5} animate />
+        <Skeleton h={5} animate />
+        <Skeleton h={5} animate />
+        <Skeleton h={5} animate />
+        <Skeleton h={5} animate />
+      </Stack>
+    </Flex>
   );
 }

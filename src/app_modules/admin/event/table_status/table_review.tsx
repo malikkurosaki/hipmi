@@ -25,7 +25,7 @@ import mqtt_client from "@/util/mqtt_client";
 import _ from "lodash";
 import moment from "moment";
 import { useState } from "react";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import adminNotifikasi_funCreateToUser from "../../notifikasi/fun/create/fun_create_notif_user";
 import { AdminEvent_funEditStatusPublishById } from "../fun/edit/fun_edit_status_publish_by_id";
 import { AdminEvent_funEditCatatanById } from "../fun/edit/fun_edit_status_reject_by_id";

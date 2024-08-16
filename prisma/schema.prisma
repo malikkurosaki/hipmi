@@ -114,6 +114,7 @@ model Images {
   Donasi_Invoice         Donasi_Invoice[]
   Portofolio             Portofolio[]
   Job                    Job[]
+  BusinessMaps           BusinessMaps[]
 }
 
 model ImagesBackground {
@@ -143,6 +144,7 @@ model Portofolio {
   Logo                   Images?                 @relation(fields: [logoId], references: [id])
   logoId                 String?
   Portofolio_MediaSosial Portofolio_MediaSosial?
+  BusinessMaps           BusinessMaps?
 }
 
 model Portofolio_MediaSosial {
@@ -873,13 +875,17 @@ model Notifikasi {
 }
 
 model BusinessMaps {
-  id        String   @id @default(cuid())
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  namePin   String
-  latitude  Float
-  longitude Float
-  Author    User?    @relation(fields: [authorId], references: [id])
-  authorId  String?
+  id           String      @id @default(cuid())
+  isActive     Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  namePin      String
+  latitude     Float
+  longitude    Float
+  Author       User?       @relation(fields: [authorId], references: [id])
+  authorId     String?
+  Portofolio   Portofolio? @relation(fields: [portofolioId], references: [id])
+  portofolioId String?     @unique
+  Images       Images?     @relation(fields: [imagesId], references: [id])
+  imagesId     String?
 }

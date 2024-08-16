@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterAdminForum } from "@/app/lib/router_admin/router_admin_forum";
-import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
 import {
   MODEL_FORUM_REPORT_KOMENTAR,
   MODEL_FORUM_REPORT_POSTING,
@@ -26,7 +26,7 @@ import { IconFlag3, IconSearch } from "@tabler/icons-react";
 import { isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentAdminGlobal_IsEmptyData from "../../component_global/is_empty_data";
+import ComponentAdminGlobal_IsEmptyData from "../../_admin_global/is_empty_data";
 import ComponentAdminForum_ButtonDeletePosting from "../component/button_delete";
 import adminForum_funGetAllReportPosting from "../fun/get/get_all_report_posting";
 import { Forum_Komentar } from "@/app_modules/forum";

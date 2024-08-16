@@ -9,7 +9,10 @@ export async function auth_funLogin(nomor: string) {
 
   try {
     const res = await fetch(
-      `https://wa.wibudev.com/code?nom=${nomor}&text=HIPMI - Masukan kode OTP sesuai dengan nomor yang anda daftarkan, kode ini bersifat rahasia & jangan di bagikan pada siapapun termasuk anggota ataupun pengurus HIPMI lainnya. Kode OTP anda: ${codeOtp}`
+      `https://wa.wibudev.com/code?nom=${nomor}&text=HIPMI - Kode ini bersifat RAHASIA dan JANGAN DI BAGIKAN KEPADA SIAPAPUN, termasuk anggota ataupun pengurus HIPMI lainnya. 
+      \n 
+      >> Kode OTP anda: ${codeOtp}.
+      `
     );
 
     const sendWa = await res.json();
@@ -31,6 +34,7 @@ export async function auth_funLogin(nomor: string) {
       kodeOtpId: createOtpId.id,
     };
   } catch (error) {
+    console.log(error);
     return { status: 500, message: "Server Error !!!" };
   }
 }

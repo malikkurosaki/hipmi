@@ -1,35 +1,29 @@
 "use client";
 
-import {
-  BackgroundImage,
-  Box,
-  Button,
-  Center,
-  Flex,
-  Grid,
-  Group,
-  Image,
-  Stack,
-  Text,
-  TextInput,
-  Title,
-} from "@mantine/core";
-import { useFocusTrap } from "@mantine/hooks";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useAtom } from "jotai";
-import { gs_kodeId } from "../state/state";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { auth_funLogin } from "@/app_modules/auth/fun/fun_login";
 import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { PhoneInput } from "react-international-phone";
-import "react-international-phone/style.css";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { auth_funLogin } from "@/app_modules/auth/fun/fun_login";
+import {
+  BackgroundImage,
+  Button,
+  Center,
+  Stack,
+  Text,
+  Title
+} from "@mantine/core";
+import { useFocusTrap } from "@mantine/hooks";
+import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
+import { gs_kodeId } from "../state/state";
 
 export default function Login() {
   const router = useRouter();

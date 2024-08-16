@@ -11,7 +11,7 @@ import {
   Title
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 
 export default function AdminEvent_Main({
   countPublish,

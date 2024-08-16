@@ -1,6 +1,6 @@
 "use client";
 
-import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
 import { MODEL_VOTING } from "@/app_modules/vote/model/interface";
 import {
   Box,

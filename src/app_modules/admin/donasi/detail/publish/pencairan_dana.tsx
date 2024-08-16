@@ -1,10 +1,10 @@
 "use client";
 
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
-import { ComponentAdminGlobal_NotifikasiBerhasil } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_berhasil";
-import { ComponentAdminGlobal_NotifikasiGagal } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_gagal";
-import { ComponentAdminGlobal_NotifikasiPeringatan } from "@/app_modules/admin/component_global/admin_notifikasi/notifikasi_peringatan";
-import ComponentAdminGlobal_TampilanRupiahDonasi from "@/app_modules/admin/component_global/tampilan_rupiah";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "@/app_modules/admin/_admin_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentAdminGlobal_NotifikasiGagal } from "@/app_modules/admin/_admin_global/admin_notifikasi/notifikasi_gagal";
+import { ComponentAdminGlobal_NotifikasiPeringatan } from "@/app_modules/admin/_admin_global/admin_notifikasi/notifikasi_peringatan";
+import ComponentAdminGlobal_TampilanRupiahDonasi from "@/app_modules/admin/_admin_global/tampilan_rupiah";
 import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
 import ComponentDonasi_NotedBox from "@/app_modules/donasi/component/noted_box";
 import mqtt_client from "@/util/mqtt_client";

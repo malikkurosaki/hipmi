@@ -1,7 +1,7 @@
 "use client";
 
 import { AspectRatio, Box, Image, Paper, Stack } from "@mantine/core";
-import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
+import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
 import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 
 export default function AdminDonasi_BuktiTransfer({

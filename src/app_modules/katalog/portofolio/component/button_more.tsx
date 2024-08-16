@@ -1,6 +1,7 @@
 "use client";
 
 import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
+import { RouterMap } from "@/app/lib/router_hipmi/router_map";
 import UIGlobal_Drawer from "@/app_modules/_global/ui/ui_drawer";
 import { ActionIcon } from "@mantine/core";
 import {
@@ -8,6 +9,7 @@ import {
   IconDotsVertical,
   IconEdit,
   IconId,
+  IconMapPinMinus,
   IconPhotoEdit,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
@@ -26,21 +28,27 @@ export function ComponentPortofolio_ButtonMore({
   const listPage = [
     {
       id: "1",
-      name: "Update detail bisnis",
+      name: "Edit detail ",
       icon: <IconEdit />,
       path: RouterPortofolio.edit_data_bisnis + `${portoId}`,
     },
     {
       id: "2",
-      name: "Update logo ",
+      name: "Edit logo ",
       icon: <IconPhotoEdit />,
       path: RouterPortofolio.edit_logo_bisnis + `${portoId}`,
     },
     {
       id: "3",
-      name: "Update sosial media",
+      name: "Edit sosial media",
       icon: <IconId />,
       path: RouterPortofolio.edit_medsos_bisnis + `${portoId}`,
+    },
+    {
+      id: "4",
+      name: "Edit pin map",
+      icon: <IconMapPinMinus />,
+      path: RouterMap.edit + `${portoId}`,
     },
   ];
 

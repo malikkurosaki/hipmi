@@ -25,14 +25,14 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../component_global/admin_notifikasi/notifikasi_berhasil";
-import { ComponentAdminGlobal_NotifikasiGagal } from "../../component_global/admin_notifikasi/notifikasi_gagal";
-import { ComponentAdminGlobal_NotifikasiPeringatan } from "../../component_global/admin_notifikasi/notifikasi_peringatan";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../_admin_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentAdminGlobal_NotifikasiGagal } from "../../_admin_global/admin_notifikasi/notifikasi_gagal";
+import { ComponentAdminGlobal_NotifikasiPeringatan } from "../../_admin_global/admin_notifikasi/notifikasi_peringatan";
 import ComponentAdminDonasi_TombolKembali from "../component/tombol_kembali";
 import { AdminDonasi_getOneById } from "../fun/get/get_one_by_id";
 import { AdminDonasi_funUpdateStatusPublish } from "../fun/update/fun_status_publish";
 import { AdminDonasi_funUpdateStatusReject } from "../fun/update/fun_status_reject";
-import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
+import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
 import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_detail_donasi";
 import ComponentAdminDonasi_CeritaPenggalangDana from "../component/tampilan_detail_cerita";
 import mqtt_client from "@/util/mqtt_client";

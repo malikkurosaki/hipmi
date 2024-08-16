@@ -23,11 +23,11 @@ import {
 import { IconChevronLeft, IconEdit, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import { adminInvestasi_funGetAllReview } from "../fun/get/get_all_review";
 import _ from "lodash";
-import ComponentAdminGlobal_IsEmptyData from "../../component_global/is_empty_data";
-import ComponentAdminGlobal_TampilanRupiahDonasi from "../../component_global/tampilan_rupiah";
+import ComponentAdminGlobal_IsEmptyData from "../../_admin_global/is_empty_data";
+import ComponentAdminGlobal_TampilanRupiahDonasi from "../../_admin_global/tampilan_rupiah";
 
 export default function Admin_TableReviewInvestasi({
   dataInvestsi,

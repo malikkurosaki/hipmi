@@ -36,7 +36,7 @@ import {
   MODEL_EVENT,
   MODEL_EVENT_PESERTA,
 } from "@/app_modules/event/model/interface";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import moment from "moment";
 import _ from "lodash";
 import { AdminEvent_funEditStatusPublishById } from "../fun/edit/fun_edit_status_publish_by_id";

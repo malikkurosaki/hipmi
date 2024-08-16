@@ -24,7 +24,7 @@ import { useFocusTrap } from "@mantine/hooks";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { auth_funEditAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
+import { auth_funDeleteAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
 import { auth_funValidasi } from "../fun/fun_validasi";
 
 export default function Validasi({ dataOtp }: { dataOtp: any }) {
@@ -41,26 +41,26 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
     if (code != inputCode)
       return ComponentGlobal_NotifikasiPeringatan("Kode Salah");
 
-    await auth_funValidasi(nomor).then(async (res) => {
-      if (res.status === 200) {
-        await auth_funEditAktivasiKodeOtpById(dataOtp.id).then((val) => {
-          if (val.status === 200) {
-            if (res.role === "1") {
-              ComponentGlobal_NotifikasiBerhasil(res.message);
-              setLoading(true);
-              router.push(RouterHome.main_home, { scroll: false });
-            } else {
-              router.push(RouterAdminDashboard.splash_admin);
-            }
-          } else {
-            ComponentGlobal_NotifikasiPeringatan(val.message);
-          }
-        });
+    const res = await auth_funValidasi(nomor);
+    if (res.status === 200) {
+     
+      const resAktivasi = await auth_funDeleteAktivasiKodeOtpById(dataOtp.id);
+      if (resAktivasi.status === 200) {
+        if (res.role === "1") {
+          ComponentGlobal_NotifikasiBerhasil(res.message);
+          setLoading(true);
+          router.push(RouterHome.main_home, { scroll: false });
+        } else {
+          router.push(RouterAdminDashboard.splash_admin);
+        }
       } else {
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-        router.push(RouterAuth.register + dataOtp.id);
+        ComponentGlobal_NotifikasiPeringatan(resAktivasi.message);
       }
-    });
+
+    } else {
+      ComponentGlobal_NotifikasiBerhasil(res.message);
+      router.push(RouterAuth.register + dataOtp.id, { scroll: false });
+    }
   }
 
   return (

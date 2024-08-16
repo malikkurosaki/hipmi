@@ -10,10 +10,8 @@ import yaml from "yaml";
 const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
 export async function POST(req: Request) {
-
   if (req.method === "POST") {
     const body = await req.json();
-
 
     const data = await prisma.user.findUnique({
       where: {
@@ -27,7 +25,7 @@ export async function POST(req: Request) {
       },
     });
 
-    myConsole(data)
+    myConsole(data);
 
     if (!data) return NextResponse.json({ status: 404 });
 
@@ -38,7 +36,7 @@ export async function POST(req: Request) {
           username: data.username,
         }),
         {
-          password: (await config.server.password),
+          password: await config.server.password,
         }
       );
 
@@ -48,7 +46,7 @@ export async function POST(req: Request) {
         maxAge: 60 * 60 * 24 * 7,
       });
 
-      revalidatePath("/dev/home")
+      revalidatePath("/dev/home");
 
       return NextResponse.json({ status: 200, data });
     }

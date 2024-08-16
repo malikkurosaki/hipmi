@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterAdminForum } from "@/app/lib/router_admin/router_admin_forum";
-import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
 import ComponentAdminDonasi_TombolKembali from "@/app_modules/admin/donasi/component/tombol_kembali";
 import {
   MODEL_FORUM_KOMENTAR,
@@ -34,9 +34,9 @@ import { adminForum_funDeleteKomentarById } from "../fun/delete/fun_delete_komen
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { useDisclosure } from "@mantine/hooks";
-import ComponentAdminGlobal_IsEmptyData from "../../component_global/is_empty_data";
+import ComponentAdminGlobal_IsEmptyData from "../../_admin_global/is_empty_data";
 import { adminForum_getListKomentarById } from "../fun/get/get_list_komentar_by_id";
-import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
+import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
 import ComponentAdminForum_ViewOneDetailPosting from "../component/detail_one_posting";
 
 export default function AdminForum_DetailPosting({

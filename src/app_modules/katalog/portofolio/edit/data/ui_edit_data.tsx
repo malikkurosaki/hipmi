@@ -147,7 +147,7 @@ export default function Portofolio_EditDataBisnis({
               value={value.deskripsi}
               label="Deskripsi"
               placeholder="Deskripsi singkat mengenai usaha"
-              maxLength={150}
+              maxLength={300}
               error={
                 value.deskripsi === "" ? (
                   <ComponentGlobal_ErrorInput text="Masukan deskripsi" />
@@ -163,7 +163,7 @@ export default function Portofolio_EditDataBisnis({
               }}
             />
             <ComponentGlobal_InputCountDown
-              maxInput={150}
+              maxInput={300}
               lengthInput={value.deskripsi.length}
             />
           </Stack>

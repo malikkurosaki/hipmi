@@ -25,11 +25,11 @@ export function ComponentMap_Header() {
     <>
       <UIGlobal_LayoutHeaderTamplate
         title="Business Maps"
-        customButtonRight={
-          <ActionIcon variant="transparent" onClick={() => setOpenDrawer(true)}>
-            <IconDotsVertical color="white" />
-          </ActionIcon>
-        }
+        // customButtonRight={
+        //   <ActionIcon variant="transparent" onClick={() => setOpenDrawer(true)}>
+        //     <IconDotsVertical color="white" />
+        //   </ActionIcon>
+        // }
       />
 
       <UIGlobal_Drawer

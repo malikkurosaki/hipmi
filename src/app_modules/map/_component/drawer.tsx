@@ -9,13 +9,12 @@ import {
   Stack,
   Title,
 } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
 import { IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { Suspense, useState } from "react";
+import React, { useState } from "react";
+import { map_funGetOneById } from "../fun/get/fun_get_one_by_id";
 import { MODEL_MAP } from "../lib/interface";
-import { useShallowEffect } from "@mantine/hooks";
-import { ComponentMap_DetailData } from "./detail_data";
-import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 
 interface MODEL_DRAWER {
   id: string;
@@ -27,14 +26,26 @@ export function ComponentMap_DrawerDetailData({
   opened,
   close,
   mapId,
+  component,
 }: {
   opened: boolean;
   close: () => void;
   mapId: string;
+  component: React.ReactNode;
 }) {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<MODEL_MAP>();
+
+  useShallowEffect(() => {
+    onLoadData(mapId);
+  }, [mapId]);
+
+  async function onLoadData(mapId: string) {
+    const res: any = await map_funGetOneById({ mapId: mapId });
+    if (res !== null) {
+      setData(res);
+    }
+  }
 
   return (
     <>
@@ -67,14 +78,18 @@ export function ComponentMap_DrawerDetailData({
       >
         <Stack spacing={"xs"}>
           <Group position="apart">
-            <Title order={5}>Detail Map</Title>
+            <Title order={5}>
+              {data?.namePin ? (
+                data?.namePin
+              ) : (
+                <Skeleton radius={"xl"} w={100} />
+              )}
+            </Title>
             <ActionIcon onClick={close} variant="transparent">
               <IconX color="white" />
             </ActionIcon>
           </Group>
-          <Suspense fallback={<ComponentGlobal_Loader />}>
-            <ComponentMap_DetailData mapId={mapId} />
-          </Suspense>
+          {component}
         </Stack>
       </Drawer>
     </>

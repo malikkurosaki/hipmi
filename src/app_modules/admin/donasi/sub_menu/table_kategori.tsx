@@ -18,13 +18,13 @@ import {
   Switch,
   Modal,
 } from "@mantine/core";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import { MODEL_NEW_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
 import { useState } from "react";
 import { IconCirclePlus, IconEdit, IconTrash } from "@tabler/icons-react";
 import adminDonasi_funCreateKategori from "../fun/create/fun_create_kategori";
-import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../component_global/admin_notifikasi/notifikasi_berhasil";
-import { ComponentAdminGlobal_NotifikasiGagal } from "../../component_global/admin_notifikasi/notifikasi_gagal";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../_admin_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentAdminGlobal_NotifikasiGagal } from "../../_admin_global/admin_notifikasi/notifikasi_gagal";
 import adminDonasi_getMasterKategori from "../fun/master/get_list_kategori";
 import adminDonasi_funDeleteKategori from "../fun/delete/fun_delete_by_id";
 import adminDonasi_funUpdatekategoriById from "../fun/update/fun_update_kategori_by_id";
