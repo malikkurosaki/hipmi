@@ -16,7 +16,7 @@ export async function map_funGetOneByPortofolioId({
       namePin: true,
       latitude: true,
       longitude: true,
-      imagesId: true,
+      imagesMapId: true,
     },
   });
 

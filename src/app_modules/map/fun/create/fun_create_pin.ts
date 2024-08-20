@@ -38,7 +38,7 @@ export async function map_funCreatePin({ data }: { data: any }) {
       namePin: data.namePin,
       portofolioId: data?.portofolioId,
       authorId: authorId,
-      imagesId: uploadImage.id,
+      imagesMapId: uploadImage.id,
     },
   });
 

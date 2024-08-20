@@ -7,6 +7,8 @@ import { v4 } from "uuid";
 import fs from "fs";
 import { revalidatePath } from "next/cache";
 import { MODEL_JOB } from "../../model/interface";
+import path from "path";
+const root = process.cwd();
 
 export async function Job_funCreate(req: MODEL_JOB, file: FormData) {
   const authorId = await user_getOneUserId();
@@ -30,7 +32,10 @@ export async function Job_funCreate(req: MODEL_JOB, file: FormData) {
 
     if (!upload) return { status: 400, message: "Gagal upload gambar" };
     const uploadFolder = Buffer.from(await dataImage.arrayBuffer());
-    fs.writeFileSync(`./public/job/${upload.url}`, uploadFolder);
+    fs.writeFileSync(
+      path.join(root, `public/job/${upload.url}`),
+      uploadFolder
+    );
     const createDataWithImg = await prisma.job.create({
       data: {
         title: req.title,

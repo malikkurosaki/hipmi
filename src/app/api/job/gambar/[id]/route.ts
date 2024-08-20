@@ -1,6 +1,8 @@
 import prisma from "@/app/lib/prisma";
 import fs from "fs";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+const root = process.cwd();
 
 export async function GET(
   req: NextRequest,
@@ -15,15 +17,17 @@ export async function GET(
     },
   });
 
-  if (!fs.existsSync(`./public/job/${get?.url}`)) {
-    const notFile = fs.readFileSync("./public/aset/global/no-file.png");
+  if (!fs.existsSync(path.join(root, `public/job/${get?.url}`))) {
+    const notFile = fs.readFileSync(
+      path.join(root, "public/aset/global/no-file.png")
+    );
     return new NextResponse(notFile, {
       headers: {
         "Content-Type": "image/png",
       },
     });
   }
-  const file = fs.readFileSync(`./public/job/${get?.url}`);
+  const file = fs.readFileSync(path.join(root, `public/job/${get?.url}`));
   return new NextResponse(file, {
     headers: {
       "Content-Type": "image/png",

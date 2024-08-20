@@ -47,7 +47,7 @@ export async function map_funEditMap({
         latitude: data.latitude,
         longitude: data.longitude,
         namePin: data.namePin,
-        imagesId: uploadImage.id,
+        imagesMapId: uploadImage.id,
       },
     });
 
