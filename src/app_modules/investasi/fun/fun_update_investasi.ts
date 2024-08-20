@@ -1,13 +1,13 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import { revalidatePath } from "next/cache";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 
 export default async function funUpdateInvestasi(
-  dataLembarSaham: MODEL_Investasi,
-  dataInvestasi: MODEL_Investasi
+  dataLembarSaham: MODEL_INVESTASI,
+  dataInvestasi: MODEL_INVESTASI
 ) {
   
 
@@ -61,7 +61,7 @@ export default async function funUpdateInvestasi(
     
   }
 
-  revalidatePath(RouterInvestasi.main);
+  revalidatePath(RouterInvestasi_OLD.main);
 
   return {
     status: 200,

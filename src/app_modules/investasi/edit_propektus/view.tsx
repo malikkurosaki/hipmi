@@ -20,15 +20,15 @@ import {
 import { IconChevronRight, IconFileTypePdf } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
-import { MODEL_Investasi } from "../model/model_investasi";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 
 export default function EditProspektusInvestasi({
   dataInvestasi,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
 }) {
-  const [prospek, setProspek] = useState<MODEL_Investasi>(dataInvestasi);
+  const [prospek, setProspek] = useState<MODEL_INVESTASI>(dataInvestasi);
 
   return (
     <>
@@ -37,7 +37,7 @@ export default function EditProspektusInvestasi({
       <Stack>
         {prospek.ProspektusInvestasi != null ? (
           <Link
-            href={RouterInvestasi.api_file_prospektus + `${prospek.ProspektusInvestasi.id}`}
+            href={RouterInvestasi_OLD.api_file_prospektus + `${prospek.ProspektusInvestasi.id}`}
             target="_blank"
             style={{ textDecorationLine: "none" }}
           >

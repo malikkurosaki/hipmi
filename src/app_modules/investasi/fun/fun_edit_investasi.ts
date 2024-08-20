@@ -1,16 +1,16 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import _ from "lodash";
 import { v4 } from "uuid";
 import fs from "fs";
 import { revalidatePath } from "next/cache";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 
 export default async function funEditInvestasi(
   formData: FormData,
-  data: MODEL_Investasi
+  data: MODEL_INVESTASI
 ) {
   const file = formData?.get("file");
 
@@ -58,7 +58,7 @@ export default async function funEditInvestasi(
     };
   }
 
-  revalidatePath(RouterInvestasi.detail_draft);
+  revalidatePath(RouterInvestasi_OLD.detail_draft);
   return {
     status: 200,
     message: "Berhasil Disimpan",

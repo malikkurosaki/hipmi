@@ -15,12 +15,12 @@ import {
 } from "@mantine/core";
 import { IconCamera, IconUpload } from "@tabler/icons-react";
 import {
-  MODEL_Investasi,
+  MODEL_INVESTASI,
   Model_Berita_Investasi,
-} from "../model/model_investasi";
+} from "../_lib/interface";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import toast from "react-simple-toasts";
 import _ from "lodash";
@@ -63,7 +63,7 @@ export default function EditBeritaInvestasi({
           ) : (
             <Image
               alt=""
-              src={RouterInvestasi.api_gambar + `${edit.imagesId}`}
+              src={RouterInvestasi_OLD.api_gambar + `${edit.imagesId}`}
             />
           )}
         </AspectRatio>

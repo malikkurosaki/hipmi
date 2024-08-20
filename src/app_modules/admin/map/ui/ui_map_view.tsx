@@ -110,7 +110,7 @@ export function UiAdminMap_MapBoxView({
       <ComponentAdminMap_Drawer
       opened={openDrawer}
       onClose={() => setOpenDrawer(false)}
-      data={mapId as any}
+      mapId={mapId as any}
       />
     </>
   );

@@ -5,14 +5,14 @@ import _ from "lodash";
 import { v4 } from "uuid";
 import fs from "fs";
 import { revalidatePath } from "next/cache";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import funUploadProspektusInvestasi from "./fun_upload_prospek";
 
 export async function funCreateInvestasi(
   fileGambar: FormData,
   filePdf: FormData,
-  data: MODEL_Investasi
+  data: MODEL_INVESTASI
 ) {
   // Function upload gambar
   const gambar: any = fileGambar.get("file");
@@ -91,7 +91,7 @@ export async function funCreateInvestasi(
   const uploadFile = Buffer.from(await file.arrayBuffer());
   fs.writeFileSync(`./public/file/${createFile.url}`, uploadFile);
 
-  revalidatePath(RouterInvestasi.main_porto);
+  revalidatePath(RouterInvestasi_OLD.main_porto);
   return {
     data: createInvest,
     status: 201,

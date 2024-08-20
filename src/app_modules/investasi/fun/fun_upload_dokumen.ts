@@ -5,7 +5,7 @@ import _ from "lodash";
 import { v4 } from "uuid";
 import fs from "fs";
 import { revalidatePath } from "next/cache";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 
 export default async function funUploadDokumenInvestasi(
   formData: FormData,
@@ -31,7 +31,7 @@ export default async function funUploadDokumenInvestasi(
   const upFolder = Buffer.from(await file.arrayBuffer());
   fs.writeFileSync(`./public/file/${uploadFile.url}`, upFolder);
 
-  revalidatePath(RouterInvestasi.edit_dokumen);
+  revalidatePath(RouterInvestasi_OLD.edit_dokumen);
   return {
     status: 201,
     message: "File tersimpan ",

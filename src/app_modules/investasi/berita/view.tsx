@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import {
   AspectRatio,
   Box,
@@ -16,7 +16,7 @@ import {
 } from "@mantine/core";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import { useState } from "react";
 import _ from "lodash";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
@@ -25,7 +25,7 @@ import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 export default function BeritaInvestasi({
   dataInvestasi,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
 }) {
   const router = useRouter();
   const [berita, setBerita] = useState(dataInvestasi);
@@ -45,7 +45,7 @@ export default function BeritaInvestasi({
               marginBottom: "15px",
             }}
             onClick={() =>
-              router.push(RouterInvestasi.detail_berita + `${e.id}`)
+              router.push(RouterInvestasi_OLD.detail_berita + `${e.id}`)
             }
           >
             <Stack>
@@ -66,7 +66,7 @@ export default function BeritaInvestasi({
                   <AspectRatio ratio={16 / 9} h={50} w={100}>
                     <Image
                       alt=""
-                      src={RouterInvestasi.api_gambar + `${e.imagesId}`}
+                      src={RouterInvestasi_OLD.api_gambar + `${e.imagesId}`}
                     />
                   </AspectRatio>
                 </Grid.Col>

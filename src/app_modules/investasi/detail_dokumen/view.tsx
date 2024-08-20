@@ -3,7 +3,7 @@
 import { Paper, Grid, Center, Text, Title } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import Link from "next/link";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import { useState } from "react";
 import _ from "lodash";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
@@ -12,7 +12,7 @@ import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 export default function DetailDokumenInvestasi({
   dataInvestasi,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
 }) {
   const [dokumen, setDokumen] = useState(dataInvestasi);
   return (

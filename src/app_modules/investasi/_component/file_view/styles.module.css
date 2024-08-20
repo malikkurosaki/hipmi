@@ -1,0 +1,17 @@
+.file_view {
+  width: 100%;
+  /* padding: 30px; */
+  background-color: aqua;
+  right: 0;
+  left: 0;
+  height: 92vh;
+  position: relative;
+}
+
+.page {
+  /* display: grid;
+  place-items: center; Centers both horizontally and vertically */
+  height: 5vh;
+  width: 50%;  
+  position: absolute;
+}

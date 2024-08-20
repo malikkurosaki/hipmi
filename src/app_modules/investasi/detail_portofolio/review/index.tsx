@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import {
   ActionIcon,
@@ -28,7 +28,7 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { gs_investasi_status } from "../../g_state";
 import toast from "react-simple-toasts";
-import { MODEL_Investasi } from "../../model/model_investasi";
+import { MODEL_INVESTASI } from "../../_lib/interface";
 import funGantiStatusInvestasi from "../../fun/fun_ganti_status";
 import { useState } from "react";
 import _ from "lodash";
@@ -43,13 +43,13 @@ import mqtt_client from "@/util/mqtt_client";
 export default function DetailReviewInvestasi({
   dataInvestasi,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
 }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
 
   const [activeTab, setActiveTab] = useAtom(gs_investasi_status);
-  const [data, setData] = useState<MODEL_Investasi>(dataInvestasi);
+  const [data, setData] = useState<MODEL_INVESTASI>(dataInvestasi);
 
   async function onCancleReview() {
     const res = await investasi_funEditStatusById({
@@ -76,7 +76,7 @@ export default function DetailReviewInvestasi({
         setLoading(true);
         ComponentGlobal_NotifikasiBerhasil("Review Dibatalkan");
         setActiveTab("Draft");
-        router.push(RouterInvestasi.portofolio);
+        router.push(RouterInvestasi_OLD.portofolio);
       }
     } else {
       ComponentGlobal_NotifikasiPeringatan(res.message);

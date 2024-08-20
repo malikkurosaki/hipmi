@@ -1,9 +1,9 @@
 "use server";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import moment from "moment";
 import prisma from "@/app/lib/prisma";
 
-export default async function funUpadteProgresWaktuInvestasi(data: MODEL_Investasi) {
+export default async function funUpadteProgresWaktuInvestasi(data: MODEL_INVESTASI) {
 
   const pencarian = data.MasterPencarianInvestor.name;
   const countD = moment(new Date()).diff(new Date(data.countDown), "days");

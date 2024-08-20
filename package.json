@@ -12,6 +12,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@bounceapp/iframe": "^0.3.0",
+    "@cyntler/react-doc-viewer": "^1.16.6",
     "@emotion/react": "^11.11.1",
     "@emotion/server": "^11.11.0",
     "@hookstate/core": "^4.0.1",
@@ -25,6 +27,7 @@
     "@mantine/notifications": "^6.0.17",
     "@mantine/tiptap": "^7.5.3",
     "@prisma/client": "^5.0.0",
+    "@react-pdf/renderer": "^3.4.4",
     "@tabler/icons-react": "^2.38.0",
     "@tiptap/extension-highlight": "^2.2.3",
     "@tiptap/extension-link": "^2.2.3",
@@ -66,9 +69,11 @@
     "react-easy-infinite-scroll-hook": "^2.1.4",
     "react-fast-marquee": "^1.6.4",
     "react-icons": "^5.0.1",
+    "react-iframe": "^1.8.5",
     "react-infinite-scroll-component": "^6.1.0",
     "react-international-phone": "^4.2.6",
     "react-map-gl": "^7.1.7",
+    "react-pdf": "^9.1.0",
     "react-quill": "^2.0.0",
     "react-responsive-carousel": "^3.2.23",
     "react-simple-toasts": "^5.10.0",

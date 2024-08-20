@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import {
   AppShell,
@@ -36,7 +36,7 @@ export default function LayoutStatusTransaksiInvestasi_Gagal({
               <CloseButton
                 size={"md"}
                 onClick={() => {
-                  router.push(RouterInvestasi.main_transaksi);
+                  router.push(RouterInvestasi_OLD.main_transaksi);
                   setHotMenu(3);
                 }}
               />
@@ -53,7 +53,7 @@ export default function LayoutStatusTransaksiInvestasi_Gagal({
                 radius={50}
                 bg={Warna.biru}
                 onClick={() => {
-                  router.push(RouterInvestasi.main_transaksi), setHotMenu(3);
+                  router.push(RouterInvestasi_OLD.main_transaksi), setHotMenu(3);
                 }}
               >
                 Kembali Ke Transaksi

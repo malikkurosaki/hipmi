@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { AppShell, CloseButton, Group, Header, Text } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
@@ -24,7 +24,7 @@ export default function LayoutCountDownTransaksiInvestasi({
               <CloseButton
                 size={"md"}
                 onClick={() => {
-                  router.push(RouterInvestasi.main_transaksi), setHotMenu(3);
+                  router.push(RouterInvestasi_OLD.main_transaksi), setHotMenu(3);
                 }}
               />
               <Text>Status Transfer</Text>

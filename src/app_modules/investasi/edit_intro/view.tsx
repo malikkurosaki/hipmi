@@ -20,7 +20,7 @@ import {
 import { IconUpload } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 import {
   ComponentGlobal_WarningMaxUpload,
@@ -32,7 +32,7 @@ import _ from "lodash";
 import { useState } from "react";
 import toast from "react-simple-toasts";
 import funEditInvestasi from "../fun/fun_edit_investasi";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import {
   AccentColor,
   MainColor,
@@ -47,7 +47,7 @@ export default function EditIntroInvestasi({
   listPeriode,
   listPembagian,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
   listPencarian: MODEL_DEFAULT_MASTER_OLD[];
   listPeriode: MODEL_DEFAULT_MASTER_OLD[];
   listPembagian: MODEL_DEFAULT_MASTER_OLD[];
@@ -130,7 +130,7 @@ export default function EditIntroInvestasi({
             >
               <Image
                 alt="Foto"
-                src={RouterInvestasi.api_gambar + `${edit_inves.imagesId}`}
+                src={RouterInvestasi_OLD.api_gambar + `${edit_inves.imagesId}`}
                 maw={200}
               />
             </Paper>

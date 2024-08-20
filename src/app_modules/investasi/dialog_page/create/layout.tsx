@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import {
   AppShell,
@@ -23,7 +23,7 @@ export default function LayoutDialogPageCreateInvestasi({
 }) {
   const router = useRouter();
   useShallowEffect(() => {
-    setTimeout(() => router.push(RouterInvestasi.portofolio), 3000);
+    setTimeout(() => router.push(RouterInvestasi_OLD.portofolio), 3000);
   }, []);
   return (
     <>

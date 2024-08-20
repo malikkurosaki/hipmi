@@ -1,9 +1,9 @@
 "use client";
 
 import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { BeritaInvestasi } from "@/app_modules/investasi";
-import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
+import { MODEL_INVESTASI } from "@/app_modules/investasi/_lib/interface"; 
 import mqtt_client from "@/util/mqtt_client";
 import {
   AspectRatio,
@@ -49,7 +49,7 @@ import getOneInvestasiById from "@/app_modules/investasi/fun/get_one_investasi_b
 export default function AdminInvestasi_DetailReview({
   dataInvestasi,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
 }) {
   const router = useRouter();
   const [data, setData] = useState(dataInvestasi);
@@ -263,7 +263,7 @@ export default function AdminInvestasi_DetailReview({
               <AspectRatio ratio={16 / 9}>
                 <Image
                   alt=""
-                  src={RouterInvestasi.api_gambar + `${data.imagesId}`}
+                  src={RouterInvestasi_OLD.api_gambar + `${data.imagesId}`}
                 />
               </AspectRatio>
             </Paper>
@@ -370,7 +370,7 @@ export default function AdminInvestasi_DetailReview({
                         <Link
                           target="_blank"
                           href={
-                            RouterInvestasi.api_file_prospektus +
+                            RouterInvestasi_OLD.api_file_prospektus +
                             `${
                               data.ProspektusInvestasi === null
                                 ? ""
@@ -400,7 +400,9 @@ export default function AdminInvestasi_DetailReview({
                           <Text>{e.title}</Text>
                           <Link
                             target="_blank"
-                            href={RouterInvestasi.api_file_dokumen + `${e.id}`}
+                            href={
+                              RouterInvestasi_OLD.api_file_dokumen + `${e.id}`
+                            }
                           >
                             <Button compact radius={50}>
                               Buka

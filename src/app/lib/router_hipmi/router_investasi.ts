@@ -1,4 +1,13 @@
-export const RouterInvestasi = {
+export const NEW_RouterInvestasi = {
+  // Transaksi
+  pembelian: "/dev/investasi/transaksi/pembelian/",
+  metode_pembayaran: "/dev/investasi/transaksi/metode-pembayaran/",
+
+  // file view
+  file_view: "/dev/investasi/file-view/",
+}
+
+export const RouterInvestasi_OLD = {
   api_gambar: "/api/investasi/gambar/",
   api_file_prospektus: "/api/investasi/prospektus/",
   api_file_dokumen: "/api/investasi/dokumen/",
@@ -53,3 +62,5 @@ export const RouterInvestasi = {
   upload_prospektus: "/dev/investasi/upload_prospektus/",
   upload_dokumen: "/dev/investasi/upload_dokumen/",
 };
+
+

@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useAtom } from "jotai";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { gs_investasi_status } from "../g_state";
-import { MODEL_Status_investasi } from "../model/model_investasi";
+import { MODEL_Status_investasi } from "../_lib/interface";
 import Draft from "./draft";
 import Publish from "./publish";
 import Reject from "./reject";

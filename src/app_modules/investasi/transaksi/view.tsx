@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import {
   Badge,
   Box,
@@ -16,7 +16,7 @@ import toast from "react-simple-toasts";
 import {
   MODEL_Transaksi_Investasi,
   Model_Status_Transaksi_Investasi,
-} from "../model/model_investasi";
+} from "../_lib/interface";
 import { useState } from "react";
 import moment from "moment";
 import funCountDown from "../fun/fun_countdown_investasi";
@@ -42,16 +42,16 @@ export default function TransaksiInvestasi({
   async function onKlik(statusId: string, transaksiId: string) {
     // console.log(id)
     if (statusId === "1") {
-      return router.push(RouterInvestasi.transfer + transaksiId);
+      return router.push(RouterInvestasi_OLD.transfer + transaksiId);
     } else {
       if (statusId === "2") {
-        return router.push(RouterInvestasi.transfer);
+        return router.push(RouterInvestasi_OLD.transfer);
       } else {
         if (statusId === "3") {
-          return router.push(RouterInvestasi.dialog_transaksi);
+          return router.push(RouterInvestasi_OLD.dialog_transaksi);
         } else {
           return router.push(
-            RouterInvestasi.status_transaksi_gagal + transaksiId
+            RouterInvestasi_OLD.status_transaksi_gagal + transaksiId
           );
         }
       }
@@ -67,7 +67,7 @@ export default function TransaksiInvestasi({
           <Box
             key={e.id}
             onClick={() =>
-              router.push(RouterInvestasi.status_pesanan + `${e.id}`)
+              router.push(RouterInvestasi_OLD.status_pesanan + `${e.id}`)
             }
           >
             <Paper

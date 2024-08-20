@@ -29,6 +29,7 @@ import {
 import { useRouter } from "next/navigation";
 import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentMap_SkeletonDrawerDetailData } from "./skeleton_detail_data";
 
 export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
   const router = useRouter();
@@ -43,7 +44,7 @@ export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
     setData(res);
   }
 
-  if (!data) return <CustomLoading />;
+  if (!data) return <ComponentMap_SkeletonDrawerDetailData />;
 
   return (
     <>
@@ -138,22 +139,5 @@ export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
         {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       </Stack>
     </>
-  );
-}
-
-function CustomLoading() {
-  return (
-    <Flex>
-      <Stack w={100}>
-        <Skeleton h={100} animate />
-      </Stack>
-      <Stack style={{ flex: 1 }}>
-        <Skeleton h={5} animate />
-        <Skeleton h={5} animate />
-        <Skeleton h={5} animate />
-        <Skeleton h={5} animate />
-        <Skeleton h={5} animate />
-      </Stack>
-    </Flex>
   );
 }

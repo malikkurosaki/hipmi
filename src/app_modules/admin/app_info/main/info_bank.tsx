@@ -1,6 +1,6 @@
 "use client";
 
-import { MODEL_DATA_BANK } from "@/app_modules/investasi/model/model_investasi";
+import { MODEL_DATA_BANK } from "@/app_modules/investasi/_lib/interface";
 import {
   ActionIcon,
   Button,

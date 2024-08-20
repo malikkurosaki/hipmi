@@ -1,4 +1,4 @@
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import {
   Stack,
@@ -15,14 +15,14 @@ import {
   SimpleGrid,
 } from "@mantine/core";
 import _ from "lodash";
-import { MODEL_Investasi } from "../../model/model_investasi";
+import { MODEL_INVESTASI } from "../../_lib/interface";
 import { IconBookDownload, IconFileDescription } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
 export function ComponentInvestasi_DetailDataNonPublish({
   data,
 }: {
-  data: MODEL_Investasi;
+  data: MODEL_INVESTASI;
 }) {
   const router = useRouter();
   const listBox = [
@@ -30,13 +30,13 @@ export function ComponentInvestasi_DetailDataNonPublish({
       id: 1,
       name: "Prospektus",
       icon: <IconBookDownload size={70} />,
-      route: RouterInvestasi.detail_prospektus,
+      route: RouterInvestasi_OLD.detail_prospektus,
     },
     {
       id: 2,
       name: "Dokumen",
       icon: <IconFileDescription size={70} />,
-      route: RouterInvestasi.detail_dokumen,
+      route: RouterInvestasi_OLD.detail_dokumen,
     },
   ];
 
@@ -55,7 +55,7 @@ export function ComponentInvestasi_DetailDataNonPublish({
         <AspectRatio ratio={1 / 1} mx={"sm"} mah={300}>
           <Image
             alt=""
-            src={RouterInvestasi.api_gambar + `${data.imagesId}`}
+            src={RouterInvestasi_OLD.api_gambar + `${data.imagesId}`}
             radius={"sm"}
             height={300}
             width={"100%"}

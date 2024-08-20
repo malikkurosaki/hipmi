@@ -1,4 +1,4 @@
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Paper, Stack, Title, AspectRatio, Center, Image } from "@mantine/core";
 
 export function ComponentAdminInvestasi_DetailGambar({imagesId}: {imagesId: any}) {
@@ -17,7 +17,7 @@ export function ComponentAdminInvestasi_DetailGambar({imagesId}: {imagesId: any}
                   radius={"md"}
                   width={200}
                   alt=""
-                  src={RouterInvestasi.api_gambar + `${imagesId}`}
+                  src={RouterInvestasi_OLD.api_gambar + `${imagesId}`}
                 />
               </Center>
             </AspectRatio>

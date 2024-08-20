@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { Model_Berita_Investasi } from "../model/model_investasi";
+import { Model_Berita_Investasi } from "../_lib/interface";
 import _ from "lodash";
 import { v4 } from "uuid";
 import fs from "fs";

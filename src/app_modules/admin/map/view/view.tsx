@@ -6,6 +6,7 @@ import { UiAdminMap_MapBoxView } from "../ui";
 const mapboxToken = process.env.MAPBOX_TOKEN!;
 export async function AdminMap_View() {
   const dataMap = await adminMap_funGetAllMaps();
+
   return (
     <>
       <ComponentAdminGlobal_HeaderTamplate name="Maps" />

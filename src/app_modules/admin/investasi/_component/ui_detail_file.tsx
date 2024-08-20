@@ -1,4 +1,4 @@
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import {
   SimpleGrid,
   Paper,
@@ -50,7 +50,7 @@ export function ComponentAdminInvestasi_UIDetailFile({
                     <Link
                       target="_blank"
                       href={
-                        RouterInvestasi.api_file_prospektus +
+                        RouterInvestasi_OLD.api_file_prospektus +
                         `${dataProspektus === null ? "" : dataProspektus.id}`
                       }
                     >
@@ -78,7 +78,7 @@ export function ComponentAdminInvestasi_UIDetailFile({
                             <Link
                               target="_blank"
                               href={
-                                RouterInvestasi.api_file_dokumen + `${e.id}`
+                                RouterInvestasi_OLD.api_file_dokumen + `${e.id}`
                               }
                             >
                               <Button radius={50}>Lihat</Button>

@@ -2,7 +2,7 @@
 
 import prisma from "@/app/lib/prisma";
 import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import moment from "moment";
 import { revalidatePath } from "next/cache";
 
@@ -35,7 +35,7 @@ export default async function funGantiStatusInvestasi(
 
     if (!data) return { status: 400 };
 
-    revalidatePath(RouterInvestasi.portofolio);
+    revalidatePath(RouterInvestasi_OLD.portofolio);
     revalidatePath(RouterAdminInvestasi_OLD.main_investasi);
 
     return {
@@ -59,7 +59,7 @@ export default async function funGantiStatusInvestasi(
 
     if (!data) return { status: 400 };
 
-    revalidatePath(RouterInvestasi.portofolio);
+    revalidatePath(RouterInvestasi_OLD.portofolio);
     revalidatePath(RouterAdminInvestasi_OLD.main_investasi);
 
     return {

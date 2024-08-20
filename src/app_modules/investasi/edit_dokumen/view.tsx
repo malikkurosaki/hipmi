@@ -14,13 +14,13 @@ import Link from "next/link";
 import { useState } from "react";
 import funDeleteDokumenInvestasi from "../fun/fun_delete_dokumen";
 import funLoadDataInvestasi from "../fun/fun_load_data";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import { IconFile } from "@tabler/icons-react";
 
 export default function EditDokumenInvestasi({
   dataInvestasi,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
 }) {
   const [dokumen, setDokumen] = useState(dataInvestasi);
 

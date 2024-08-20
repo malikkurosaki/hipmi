@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Box, Center, Loader, Stack, Text, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { IconCircleCheck } from "@tabler/icons-react";
@@ -14,7 +14,7 @@ export default function CountDownTransaksiInvestasi() {
   const router = useRouter();
   const [count, setCount] = useState<any | null>(10);
   useShallowEffect(() => {
-    setTimeout(() => router.push(RouterInvestasi.status_transaksi), 10000);
+    setTimeout(() => router.push(RouterInvestasi_OLD.status_transaksi), 10000);
   }, []);
 
   const PopupCD = () => <Text>Sedang di Proses</Text>;

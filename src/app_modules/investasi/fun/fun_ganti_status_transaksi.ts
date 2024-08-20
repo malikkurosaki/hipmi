@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { revalidatePath } from "next/cache";
 
 export default async function funGantiStatusTransaksi_Investasi(
@@ -28,7 +28,7 @@ export default async function funGantiStatusTransaksi_Investasi(
 
   if (!data) return { status: 400, message: "Status Gagal Diubah" };
 
-  revalidatePath(RouterInvestasi.main_transaksi)
+  revalidatePath(RouterInvestasi_OLD.main_transaksi)
   return {
     data: data,
     status: 200,
