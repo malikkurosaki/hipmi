@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { MODEL_Transaksi_Investasi } from "../model/model_investasi";
+import { MODEL_Transaksi_Investasi } from "../_lib/interface";
 import { Button, Group, Paper, Stack, Text } from "@mantine/core";
 import { useRouter } from "next/navigation";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import {
   AccentColor,
   MainColor,
@@ -98,7 +98,7 @@ export default function StatusPesananInvetsatsi({
           radius={"xl"}
           onClick={() => {
             setLoading(true);
-            router.push(RouterInvestasi.main_transaksi);
+            router.push(RouterInvestasi_OLD.main_transaksi);
           }}
           bg={MainColor.yellow}
           color="yellow"

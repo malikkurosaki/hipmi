@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import {
   Avatar,
@@ -19,10 +19,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-simple-toasts";
 import {
-  MODEL_Investasi,
+  MODEL_INVESTASI,
   MODEL_Transaksi_Investasi,
   MODEL_DATA_BANK,
-} from "../model/model_investasi";
+} from "../_lib/interface";
 import { useAtom } from "jotai";
 import { gs_TransferValue } from "../g_state";
 import getNorekInvestasi from "../fun/get_norek";
@@ -35,7 +35,7 @@ export default function MetodeTransferInvestasi({
   namaBank,
   authorId,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
   namaBank: MODEL_DATA_BANK[];
   authorId: string;
 }) {
@@ -54,7 +54,7 @@ export default function MetodeTransferInvestasi({
     ).then(async (res) => {
       if (res.status === 201) {
         toast(res.message);
-        router.push(RouterInvestasi.transfer + `${res.res?.id}`);
+        router.push(RouterInvestasi_OLD.transfer + `${res.res?.id}`);
       } else {
         toast(res.message);
       }

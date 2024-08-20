@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  Stack
-} from "@mantine/core";
+import { Stack } from "@mantine/core";
 import { ComponentPortofolio_ButtonDelete } from "../component/button_delete";
 import { MODEL_PORTOFOLIO } from "../model/interface";
 import { Portofolio_UiDetailData } from "./ui_detail_data";
@@ -17,13 +15,13 @@ export default function Portofolio_UiDetail({
 }: {
   dataPorto: MODEL_PORTOFOLIO;
   userLoginId: string;
-  mapboxToken: string
+  mapboxToken: string;
 }) {
   return (
     <>
       <Stack mb={"lg"}>
         <Portofolio_UiDetailData dataPorto={dataPorto} />
-        <Portofolio_UiMap mapboxToken={mapboxToken} data={dataPorto.BusinessMaps} />
+        <Portofolio_UiMap mapboxToken={mapboxToken} data={dataPorto} />
         {/* <Portofolio_UiDetailLogo dataPorto={dataPorto} /> */}
         <Portofolio_UiSosialMedia dataPorto={dataPorto} />
 

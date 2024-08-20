@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import {
   Title,
   Card,
@@ -27,7 +27,7 @@ import { IconCircleCheck } from "@tabler/icons-react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import dataDummy from "../dummy/data_dummy.json";
-import { MODEL_Transaksi_Investasi } from "../model/model_investasi";
+import { MODEL_Transaksi_Investasi } from "../_lib/interface";
 import { useState } from "react";
 import { Warna } from "@/app/lib/warna";
 import _ from "lodash";
@@ -60,7 +60,7 @@ export default function InvestasiSahamTerbeli({
             marginBottom: "15px",
           }}
 
-          onClick={() => router.push(RouterInvestasi.detail_saham_terbeli + e.id)}
+          onClick={() => router.push(RouterInvestasi_OLD.detail_saham_terbeli + e.id)}
         >
           {/* <Card.Section p={"sm"} >
               <ComponentGlobal_AuthorNameOnHeader
@@ -131,7 +131,7 @@ export default function InvestasiSahamTerbeli({
                         <Image
                           alt=""
                           src={
-                            RouterInvestasi.api_gambar +
+                            RouterInvestasi_OLD.api_gambar +
                             `${e.Investasi.imagesId}`
                           }
                         />

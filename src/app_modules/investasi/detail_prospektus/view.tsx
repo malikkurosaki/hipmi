@@ -1,55 +1,69 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import { Center, Group, Paper, Text, Title } from "@mantine/core";
+import {
+  NEW_RouterInvestasi,
+  RouterInvestasi_OLD,
+} from "@/app/lib/router_hipmi/router_investasi";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import {
+  BackgroundImage,
+  Box,
+  Center,
+  Container,
+  Group,
+  Modal,
+  Paper,
+  rem,
+  Text,
+  Title,
+} from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
-import {
-  MODEL_Investasi
-} from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
+import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
+import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
+import { useRouter } from "next/navigation";
+// import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
+// import "@cyntler/react-doc-viewer/dist/index.css";
 
 export default function DetailPropektus({
   dataInvestasi,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
 }) {
-  const [prospek, setProspek] = useState(dataInvestasi);
+  const [data, setData] = useState(dataInvestasi);
+  const router = useRouter();
 
   return (
     <>
-      {prospek.ProspektusInvestasi !== null ? (
-        <Link
-          href={
-            RouterInvestasi.api_file_prospektus +
-            `${prospek.ProspektusInvestasi.id}`
-          }
-          // target="_blank"
-          style={{ textDecorationLine: "none" }}
-        >
-          <Paper
-            style={{
-              padding:"15px",
-              backgroundColor: AccentColor.darkblue,
-              border: `2px solid ${AccentColor.blue}`,
-              borderRadius: "10px",
-              color: "white",
-            }}
-          >
-            <Group position="apart">
-              <Text w={"80%"} lineClamp={1}>Prospektus_{prospek.title}</Text>
-              <Center>
-                <IconChevronRight />
-              </Center>
-            </Group>
-          </Paper>
-        </Link>
-      ) : (
-        <Center>
-          <Title order={6}>Tidak Ada File</Title>
-        </Center>
-      )}
+      <Paper
+        style={{
+          padding: "15px",
+          backgroundColor: AccentColor.darkblue,
+          border: `2px solid ${AccentColor.blue}`,
+          borderRadius: "10px",
+          color: "white",
+        }}
+        onClick={() =>
+          router.push(
+            NEW_RouterInvestasi.file_view + `${data.ProspektusInvestasi.id}`,
+            { scroll: false }
+          )
+        }
+      >
+        <Group position="apart">
+          <Text w={"80%"} lineClamp={1}>
+            Prospektus_{data.title}
+          </Text>
+          <Center>
+            <IconChevronRight />
+          </Center>
+        </Group>
+      </Paper>
     </>
   );
 }

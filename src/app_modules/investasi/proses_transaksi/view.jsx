@@ -15,13 +15,13 @@ import {
 } from "@mantine/core";
 import { useFocusTrap, useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 import { useEffect, useState } from "react";
 import getTokenTransaksi from "../fun/get_token_transaksi";
 import toast from "react-simple-toasts";
 import funUpdatePaymentInvestasi from "../fun/fun_update_payment";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { useAtom } from "jotai";
 import { gs_investas_menu, gs_midtrans_snap } from "../g_state";
 import funUpdateInvestasi from "../fun/fun_update_investasi";
@@ -94,7 +94,7 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
                   await funUpdateInvestasi(body2, investasi);
                   ComponentGlobal_NotifikasiBerhasil(res.message);
                   router.push(
-                    RouterInvestasi.status_pesanan + `${resUpdate.data.id}`
+                    RouterInvestasi_OLD.status_pesanan + `${resUpdate.data.id}`
                   );
 
                   setHotmenu(3);

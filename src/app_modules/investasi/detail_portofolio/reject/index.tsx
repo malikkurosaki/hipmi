@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
@@ -14,13 +14,13 @@ import { ComponentInvestasi_DetailDataNonPublish } from "../../component/detail/
 import funDeleteInvestasi from "../../fun/fun_delete_investasi";
 import funGantiStatusInvestasi from "../../fun/fun_ganti_status";
 import { gs_investasi_status } from "../../g_state";
-import { MODEL_Investasi } from "../../model/model_investasi";
+import { MODEL_INVESTASI } from "../../_lib/interface";
 import { investasi_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
 
 export default function DetailRejectInvestasi({
   dataInvestasi,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
 }) {
   const router = useRouter();
   const [investasi, setInvestasi] = useState(dataInvestasi);
@@ -36,7 +36,7 @@ export default function DetailRejectInvestasi({
     if (res.status === 200) {
       ComponentGlobal_NotifikasiBerhasil("Project Diajukan Kembali");
       setActiveTab("Draft");
-      router.push(RouterInvestasi.portofolio);
+      router.push(RouterInvestasi_OLD.portofolio);
     } else {
       ComponentGlobal_NotifikasiGagal("Gagal Pengajuan");
     }
@@ -47,7 +47,7 @@ export default function DetailRejectInvestasi({
       if (res.status === 200) {
         ComponentGlobal_NotifikasiBerhasil(res.message);
         setOpenModal(false);
-        router.push(RouterInvestasi.portofolio);
+        router.push(RouterInvestasi_OLD.portofolio);
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }

@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import {
   ComponentGlobal_WarningMaxUpload,
@@ -123,7 +123,7 @@ export default function InvestasiCreate({
         setActiveTab("Review");
         setLoading(true);
         ComponentGlobal_NotifikasiBerhasil(res.message);
-        router.push(RouterInvestasi.portofolio);
+        router.push(RouterInvestasi_OLD.portofolio);
       }
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);

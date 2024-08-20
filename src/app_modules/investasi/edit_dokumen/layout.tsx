@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import UIGlobal_Drawer from "@/app_modules/_global/ui/ui_drawer";
 import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
 import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
@@ -24,7 +24,7 @@ export default function LayoutEditDokumenInvestasi({
       id: "1",
       name: "Tambah Dokumen",
       icon: <IconFilePlus />,
-      path: RouterInvestasi.upload_dokumen + `${idInves}`,
+      path: RouterInvestasi_OLD.upload_dokumen + `${idInves}`,
     },
   ];
 

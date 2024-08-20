@@ -1,7 +1,7 @@
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { MODEL_NOTIFIKASI } from "../../model/interface";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 
 export function redirectInvestasiPage({
   data,
@@ -12,7 +12,7 @@ export function redirectInvestasiPage({
   router: AppRouterInstance;
   onSetPage: (val: any) => void;
 }) {
-  const path = RouterInvestasi.portofolio;
+  const path = RouterInvestasi_OLD.portofolio;
 
   if (data.status === "Publish") {
     onSetPage({

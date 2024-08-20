@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import {
   ActionIcon,
   AspectRatio,
@@ -21,7 +21,7 @@ import { IconDots, IconEdit } from "@tabler/icons-react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import toast from "react-simple-toasts";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import React, { useState } from "react";
 import _ from "lodash";
 import getOneInvestasiById from "../fun/get_one_investasi_by_id";
@@ -35,7 +35,7 @@ import UIGlobal_Drawer from "@/app_modules/_global/ui/ui_drawer";
 export default function ListEditBeritaInvestasi({
   dataInvestasi,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
 }) {
   const router = useRouter();
   const [investasi, setInvestasi] = useState(dataInvestasi);
@@ -79,7 +79,7 @@ export default function ListEditBeritaInvestasi({
               color: "white",
               marginBottom: "15px",
             }}
-            onClick={() => router.push(RouterInvestasi.detail_berita + v.id)}
+            onClick={() => router.push(RouterInvestasi_OLD.detail_berita + v.id)}
           >
             <Stack spacing={"xs"}>
               <Group position="apart">
@@ -141,7 +141,7 @@ export default function ListEditBeritaInvestasi({
                     <Paper radius={10}>
                       <Image
                         alt=""
-                        src={RouterInvestasi.api_gambar + `${v.imagesId}`}
+                        src={RouterInvestasi_OLD.api_gambar + `${v.imagesId}`}
                       />
                     </Paper>
                   </AspectRatio>

@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
 import UIGlobal_Drawer from "@/app_modules/_global/ui/ui_drawer";
@@ -23,19 +23,19 @@ export default function LayoutDetailDraftInvestasi({
       id: "1",
       name: "Edit Investasi",
       icon: <IconEdit />,
-      path: RouterInvestasi.edit_intro + id,
+      path: RouterInvestasi_OLD.edit_intro + id,
     },
     {
       id: "2",
       name: "Edit Prospektus",
       icon: <IconFilePencil />,
-      path: RouterInvestasi.upload_prospektus + id,
+      path: RouterInvestasi_OLD.upload_prospektus + id,
     },
     {
       id: "3",
       name: "Edit Dokumen",
       icon: <IconFilePencil />,
-      path: RouterInvestasi.edit_dokumen + id,
+      path: RouterInvestasi_OLD.edit_dokumen + id,
     },
   ];
 

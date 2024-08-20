@@ -1,6 +1,6 @@
 import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 
-export interface MODEL_Investasi {
+export interface MODEL_INVESTASI {
   id: string;
   title: string;
   targetDana: string;
@@ -19,7 +19,7 @@ export interface MODEL_Investasi {
   MasterStatusInvestasi: MODEL_Status_investasi;
   BeritaInvestasi: Model_Berita_Investasi[];
   DokumenInvestasi: Model_Dokumen_Investasi[];
-  ProspektusInvestasi: Model_Prospektus_Investasi;
+  ProspektusInvestasi: MODEl_PROSPEKTUS_INVESTASI;
   MasterPembagianDeviden: Model_All_Master;
   MasterPencarianInvestor: Model_All_Master;
   MasterPeriodeDeviden: Model_All_Master;
@@ -52,7 +52,7 @@ export interface MODEL_Transaksi_Investasi {
   Author: MODEL_PROFILE_OLD;
   masterStatusTransaksiInvestasiId: string;
   investasiId: string;
-  Investasi: MODEL_Investasi;
+  Investasi: MODEL_INVESTASI;
 }
 
 export interface MODEL_Status_investasi {
@@ -77,7 +77,7 @@ export interface Model_Berita_Investasi {
   updatedAt: Date;
 }
 
-export interface Model_Prospektus_Investasi {
+export interface MODEl_PROSPEKTUS_INVESTASI {
   id: string;
   url: string;
   active: boolean;

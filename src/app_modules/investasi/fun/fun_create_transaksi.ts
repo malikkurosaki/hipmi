@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { MODEL_Transaksi_Investasi } from "../model/model_investasi";
+import { MODEL_Transaksi_Investasi } from "../_lib/interface";
 
 export default async function funCreateTransaksiInvestasi(
   data: MODEL_Transaksi_Investasi,

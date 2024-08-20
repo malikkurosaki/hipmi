@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
 import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
@@ -34,25 +34,25 @@ export default function LayoutMainInvestasi({
     {
       id: 1,
       name: "Bursa",
-      route: RouterInvestasi.main,
+      route: RouterInvestasi_OLD.main,
       icon: <IconChartHistogram />,
     },
     {
       id: 2,
       name: "Portofolio",
-      route: RouterInvestasi.main_porto,
+      route: RouterInvestasi_OLD.main_porto,
       icon: <IconChartPie />,
     },
     {
       id: 3,
       name: "Saham Saya",
-      route: RouterInvestasi.main_investasi,
+      route: RouterInvestasi_OLD.main_investasi,
       icon: <IconCash />,
     },
     {
       id: 4,
       name: "Transaksi",
-      route: RouterInvestasi.main_transaksi,
+      route: RouterInvestasi_OLD.main_transaksi,
       icon: <IconNotes />,
     },
   ];

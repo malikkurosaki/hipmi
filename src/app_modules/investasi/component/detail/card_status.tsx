@@ -1,8 +1,8 @@
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Paper, Grid, Stack, AspectRatio, Text, Image } from "@mantine/core";
 import _ from "lodash";
 
-import { MODEL_Investasi } from "../../model/model_investasi";
+import { MODEL_INVESTASI } from "../../_lib/interface";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import { useRouter } from "next/navigation";
 
@@ -10,7 +10,7 @@ export function ComponentInvestasi_CardStatus({
   data,
   path,
 }: {
-  data: MODEL_Investasi;
+  data: MODEL_INVESTASI;
   path: string;
 }) {
   const router = useRouter();
@@ -49,7 +49,7 @@ export function ComponentInvestasi_CardStatus({
               <Paper radius={"md"}>
                 <Image
                   alt=""
-                  src={RouterInvestasi.api_gambar + `${data.imagesId}`}
+                  src={RouterInvestasi_OLD.api_gambar + `${data.imagesId}`}
                 />
               </Paper>
             </AspectRatio>

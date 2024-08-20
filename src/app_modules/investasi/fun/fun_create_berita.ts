@@ -1,12 +1,12 @@
 "use server";
 
 import _ from "lodash";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import { v4 } from "uuid";
 import prisma from "@/app/lib/prisma";
 import fs from "fs";
 import { revalidatePath } from "next/cache";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 
 export default async function funCreateBeritaInvestasi(
   formData: FormData,
@@ -53,7 +53,7 @@ export default async function funCreateBeritaInvestasi(
       message: "Gagal Disimpan",
     };
 
-  revalidatePath(RouterInvestasi.list_edit_berita);
+  revalidatePath(RouterInvestasi_OLD.list_edit_berita);
 
   return {
     status: 201,

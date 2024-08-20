@@ -1,4 +1,4 @@
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import {
   AspectRatio,
   Box,
@@ -16,11 +16,11 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
-export default function Publish({ data }: { data: MODEL_Investasi[] }) {
+export default function Publish({ data }: { data: MODEL_INVESTASI[] }) {
   const router = useRouter();
   const [sisaWaktu, setSisaWaktu] = useState();
 
@@ -32,7 +32,7 @@ export default function Publish({ data }: { data: MODEL_Investasi[] }) {
         <Paper
           key={e.id}
           onClick={() =>
-            router.push(RouterInvestasi.detail_publish + `${e.id}`)
+            router.push(RouterInvestasi_OLD.detail_publish + `${e.id}`)
           }
           style={{
             padding: "15px",
@@ -62,7 +62,7 @@ export default function Publish({ data }: { data: MODEL_Investasi[] }) {
                 <Paper radius={"md"}>
                   <Image
                     alt=""
-                    src={RouterInvestasi.api_gambar + `${e.imagesId}`}
+                    src={RouterInvestasi_OLD.api_gambar + `${e.imagesId}`}
                   />
                 </Paper>
               </AspectRatio>

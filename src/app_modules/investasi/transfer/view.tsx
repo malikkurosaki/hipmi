@@ -27,10 +27,10 @@ import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 import Countdown from "react-countdown";
 import {
-  MODEL_Investasi,
+  MODEL_INVESTASI,
   MODEL_Transaksi_Investasi,
-} from "../model/model_investasi";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+} from "../_lib/interface";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { useAtom } from "jotai";
 import { gs_TransferValue, gs_investas_menu } from "../g_state";
 import funGantiStatusTransaksi_Investasi from "../fun/fun_ganti_status_transaksi";
@@ -79,7 +79,7 @@ export default function TransferInvestasi({
       funGantiStatusTransaksi_Investasi(transaksi.id, "4").then((res) => {
         if (res.status === 200) {
           router.push(
-            RouterInvestasi.status_transaksi_gagal + `${transaksi.id}`
+            RouterInvestasi_OLD.status_transaksi_gagal + `${transaksi.id}`
           );
           interval.stop();
         }
@@ -227,7 +227,7 @@ export default function TransferInvestasi({
           w={300}
           bg={Warna.biru}
           onClick={() => {
-            router.push(RouterInvestasi.dialog_transaksi);
+            router.push(RouterInvestasi_OLD.dialog_transaksi);
             // setHotMenu(1);
             // router.push(RouterInvestasi.status_transaksi);
           }}

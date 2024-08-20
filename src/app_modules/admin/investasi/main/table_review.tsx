@@ -1,7 +1,7 @@
 "use client";
 import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
 import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
-import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
+import { MODEL_INVESTASI } from "@/app_modules/investasi/_lib/interface"; 
 import {
   Badge,
   ActionIcon,
@@ -32,7 +32,7 @@ import ComponentAdminGlobal_TampilanRupiahDonasi from "../../_admin_global/tampi
 export default function Admin_TableReviewInvestasi({
   dataInvestsi,
 }: {
-  dataInvestsi: MODEL_Investasi[];
+  dataInvestsi: any[];
 }) {
   return (
     <>
@@ -46,7 +46,7 @@ export default function Admin_TableReviewInvestasi({
 
 function TableView({ listData }: { listData: any }) {
   const router = useRouter();
-  const [data, setData] = useState<MODEL_Investasi[]>(listData.data);
+  const [data, setData] = useState<MODEL_INVESTASI[]>(listData.data);
   const [nPage, setNPage] = useState(listData.nPage);
   const [activePage, setActivePage] = useState(1);
   const [isSearch, setSearch] = useState("");

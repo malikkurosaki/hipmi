@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
@@ -17,11 +17,11 @@ import { useState } from "react";
 import { ComponentInvestasi_DetailDataNonPublish } from "../../component/detail/detai_data_non_publish";
 import { investasi_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
 import { gs_investasi_status } from "../../g_state";
-import { MODEL_Investasi } from "../../model/model_investasi";
+import { MODEL_INVESTASI } from "../../_lib/interface";
 export default function DetailDraftInvestasi({
   dataInvestasi,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +52,7 @@ export default function DetailDraftInvestasi({
 
         setIsLoading(true);
         ComponentGlobal_NotifikasiBerhasil("Review Berhasil Diajukan");
-        router.push(RouterInvestasi.portofolio);
+        router.push(RouterInvestasi_OLD.portofolio);
         setActiveTab("Review");
       }
     } else {

@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { revalidatePath } from "next/cache";
 
 export async function adminInvestasi_funEditStatusPublishById({
@@ -36,7 +36,7 @@ export async function adminInvestasi_funEditStatusPublishById({
   });
 
   if (!res) return { status: 400, message: "Gagal Update" };
-  revalidatePath(RouterInvestasi.portofolio);
+  revalidatePath(RouterInvestasi_OLD.portofolio);
 
   return {
     data: res,

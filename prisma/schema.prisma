@@ -114,7 +114,8 @@ model Images {
   Donasi_Invoice         Donasi_Invoice[]
   Portofolio             Portofolio[]
   Job                    Job[]
-  BusinessMaps           BusinessMaps[]
+  Image_Map              BusinessMaps[]           @relation("ImageMap")
+  Image_Pin              BusinessMaps[]           @relation("ImagePin")
 }
 
 model ImagesBackground {
@@ -886,6 +887,8 @@ model BusinessMaps {
   authorId     String?
   Portofolio   Portofolio? @relation(fields: [portofolioId], references: [id])
   portofolioId String?     @unique
-  Images       Images?     @relation(fields: [imagesId], references: [id])
-  imagesId     String?
+  ImageMap     Images?     @relation("ImageMap", fields: [imagesMapId], references: [id], map: "MapImage")
+  imagesMapId  String?
+  ImagePin     Images?     @relation("ImagePin", fields: [imagePinId], references: [id], map: "PinImage")
+  imagePinId   String?
 }

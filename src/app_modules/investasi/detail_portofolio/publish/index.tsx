@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import {
   ActionIcon,
@@ -25,12 +25,12 @@ import {
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { MODEL_Investasi } from "../../model/model_investasi";
+import { MODEL_INVESTASI } from "../../_lib/interface";
 
 export default function DetailPublishInvestasi({
   dataInvestasi,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
 }) {
   const router = useRouter();
   const [investasi, setInvestasi] = useState(dataInvestasi);
@@ -40,19 +40,19 @@ export default function DetailPublishInvestasi({
       id: 1,
       name: "Prospektus",
       icon: <IconBookDownload size={70} color="white" />,
-      route: RouterInvestasi.detail_prospektus,
+      route: RouterInvestasi_OLD.detail_prospektus,
     },
     {
       id: 2,
       name: "Dokumen",
       icon: <IconFileDescription size={70} color="white" />,
-      route: RouterInvestasi.edit_dokumen,
+      route: RouterInvestasi_OLD.edit_dokumen,
     },
     {
       id: 3,
       name: "Berita",
       icon: <IconSpeakerphone size={70} color="white" />,
-      route: RouterInvestasi.list_edit_berita,
+      route: RouterInvestasi_OLD.list_edit_berita,
     },
   ];
 
@@ -104,7 +104,7 @@ export default function DetailPublishInvestasi({
       <AspectRatio ratio={1 / 1} mx={"sm"} mah={250}>
         <Image
           alt=""
-          src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
+          src={RouterInvestasi_OLD.api_gambar + `${investasi.imagesId}`}
           radius={"sm"}
           height={250}
           width={"100%"}

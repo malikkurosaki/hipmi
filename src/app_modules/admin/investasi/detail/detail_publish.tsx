@@ -1,6 +1,6 @@
 "use client";
 
-import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
+import { MODEL_INVESTASI } from "@/app_modules/investasi/_lib/interface"; 
 import {
   AspectRatio,
   Box,
@@ -16,14 +16,14 @@ import {
   Title,
 } from "@mantine/core";
 import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { IconCircleCheck, IconHome } from "@tabler/icons-react";
 import investasi from "../../notifikasi/route_setting/investasi";
 
 export function AdminInvestasi_DetailPublish({
   data,
 }: {
-  data: MODEL_Investasi;
+  data: MODEL_INVESTASI;
 }) {
   return (
     <>
@@ -38,7 +38,7 @@ export function AdminInvestasi_DetailPublish({
   );
 }
 
-function InformasiAuthor({ data }: { data: MODEL_Investasi }) {
+function InformasiAuthor({ data }: { data: MODEL_INVESTASI }) {
   return (
     <>
       <Paper withBorder>
@@ -55,7 +55,7 @@ function InformasiAuthor({ data }: { data: MODEL_Investasi }) {
                 radius={"md"}
                 width={250}
                 alt=""
-                src={RouterInvestasi.api_gambar + `${data.imagesId}`}
+                src={RouterInvestasi_OLD.api_gambar + `${data.imagesId}`}
               />
             </Center>
           </AspectRatio>
@@ -84,7 +84,7 @@ function InformasiAuthor({ data }: { data: MODEL_Investasi }) {
   );
 }
 
-function InformasiDataInvestasi({ data }: { data: MODEL_Investasi }) {
+function InformasiDataInvestasi({ data }: { data: MODEL_INVESTASI }) {
   return (
     <>
       <Paper withBorder p={"lg"}>

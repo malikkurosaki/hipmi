@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
 import { Center, Grid, Group, Paper, Stack, Text, Title } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
@@ -16,17 +16,17 @@ export default function EditInvestasi({ id }: { id: string }) {
     {
       id: 1,
       name: "Intro",
-      route: RouterInvestasi.edit_intro,
+      route: RouterInvestasi_OLD.edit_intro,
     },
     {
       id: 2,
       name: "Prospektus",
-      route: RouterInvestasi.edit_prospektus,
+      route: RouterInvestasi_OLD.edit_prospektus,
     },
     {
       id: 3,
       name: "Dokumen",
-      route: RouterInvestasi.edit_dokumen,
+      route: RouterInvestasi_OLD.edit_dokumen,
     },
     // {
     //   id: 4,

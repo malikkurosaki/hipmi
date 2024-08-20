@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import {
   ActionIcon,
@@ -28,7 +28,7 @@ import {
   IconSpeakerphone,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { MODEL_Transaksi_Investasi } from "../model/model_investasi";
+import { MODEL_Transaksi_Investasi } from "../_lib/interface";
 import { useState } from "react";
 import moment from "moment";
 import _ from "lodash";
@@ -49,19 +49,19 @@ export default function DetailSahamTerbeli({
       id: 1,
       name: "Prospektus",
       icon: <IconBookDownload size={70} color="white" />,
-      route: RouterInvestasi.detail_prospektus,
+      route: RouterInvestasi_OLD.detail_prospektus,
     },
     {
       id: 2,
       name: "Dokumen",
       icon: <IconFileDescription size={70} color="white" />,
-      route: RouterInvestasi.detail_dokumen,
+      route: RouterInvestasi_OLD.detail_dokumen,
     },
     {
       id: 3,
       name: "Berita",
       icon: <IconSpeakerphone size={70} color="white" />,
-      route: RouterInvestasi.berita,
+      route: RouterInvestasi_OLD.berita,
     },
   ];
 
@@ -210,7 +210,7 @@ export default function DetailSahamTerbeli({
               width={"100%"}
               alt=""
               src={
-                RouterInvestasi.api_gambar + `${investasi.Investasi.imagesId}`
+                RouterInvestasi_OLD.api_gambar + `${investasi.Investasi.imagesId}`
               }
             />
           </AspectRatio>

@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
@@ -26,14 +26,14 @@ import _ from "lodash";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import mqtt_client from "@/util/mqtt_client";
 import { investasi_funGetAllPublish } from "../fun/get_all_investasi";
 
 export default function MainInvestasi({
   listData,
 }: {
-  listData: MODEL_Investasi[];
+  listData: MODEL_INVESTASI[];
 }) {
   // console.log(listData)
   const router = useRouter();
@@ -65,7 +65,7 @@ export default function MainInvestasi({
         </Affix>
       )}
 
-      <ComponentGlobal_CreateButton path={RouterInvestasi.create} />
+      <ComponentGlobal_CreateButton path={RouterInvestasi_OLD.create} />
 
       {_.isEmpty(data) ? (
         <ComponentGlobal_IsEmptyData />
@@ -84,7 +84,7 @@ export default function MainInvestasi({
             }}
             onClick={() => {
               setLoadingDetail(true);
-              router.push(RouterInvestasi.detail + `${e.id}`);
+              router.push(RouterInvestasi_OLD.detail + `${e.id}`);
             }}
           >
             <CardSection py={"md"} px={"sm"}>
@@ -94,7 +94,7 @@ export default function MainInvestasi({
                     <Image
                       radius={"sm"}
                       alt="Foto"
-                      src={RouterInvestasi.api_gambar + `${e.imagesId}`}
+                      src={RouterInvestasi_OLD.api_gambar + `${e.imagesId}`}
                       w={200}
                     />
                   ) : (

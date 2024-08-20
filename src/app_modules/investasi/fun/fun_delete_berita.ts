@@ -2,7 +2,7 @@
 
 import { myConsole } from "@/app/fun/my_console";
 import prisma from "@/app/lib/prisma";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { revalidatePath } from "next/cache";
 
 export default async function funDeleteBeritaInvestasi(id: string) {

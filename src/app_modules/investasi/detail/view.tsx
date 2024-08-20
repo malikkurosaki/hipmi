@@ -1,6 +1,9 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import {
+  NEW_RouterInvestasi,
+  RouterInvestasi_OLD,
+} from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
@@ -33,7 +36,7 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { gs_TransferValue } from "../g_state";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import {
   AccentColor,
   MainColor,
@@ -46,14 +49,14 @@ export default function DetailInvestasi({
   progress,
   totalInvestor,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
   dataUser: MODEL_PROFILE_OLD;
   loginUserId: string;
   progress: number;
   totalInvestor: number;
 }) {
   const router = useRouter();
-  const [investasi, setInvestasi] = useState(dataInvestasi);
+  const [data, setData] = useState(dataInvestasi);
   const [user, setUser] = useState(dataUser);
   const [transaksiValue, setTransaksiValue] = useAtom(gs_TransferValue);
   const [boxId, setBoxId] = useState(0);
@@ -65,24 +68,28 @@ export default function DetailInvestasi({
       id: 1,
       name: "Prospektus",
       icon: <IconBookDownload size={70} color="white" />,
-      route: RouterInvestasi.detail_prospektus,
+      route: RouterInvestasi_OLD.detail_prospektus,
     },
     {
       id: 2,
       name: "Dokumen",
       icon: <IconFileDescription size={70} color="white" />,
-      route: RouterInvestasi.detail_dokumen,
+      route: RouterInvestasi_OLD.detail_dokumen,
     },
     {
       id: 3,
       name: "Berita",
       icon: <IconSpeakerphone size={70} color="white" />,
-      route: RouterInvestasi.berita,
+      route: RouterInvestasi_OLD.berita,
     },
   ];
 
   async function onSubmit() {
-    router.push(RouterInvestasi.proses_transaksi + `${investasi.id}`);
+    //NEW
+    // router.push(NEW_RouterInvestasi.pembelian + data.id, { scroll: false });
+
+    // OLD
+    router.push(RouterInvestasi_OLD.proses_transaksi + `${data.id}`);
     setTransaksiValue({
       ...transaksiValue,
       lembarTerbeli: "",
@@ -114,15 +121,15 @@ export default function DetailInvestasi({
             profileId={dataUser?.Profile?.id}
           />
 
-          {investasi.MasterProgresInvestasi.id === "1" ? (
+          {data.MasterProgresInvestasi.id === "1" ? (
             <Box>
               <Group position="right" spacing={"xs"}>
                 <Text>
                   Sisa waktu:{" "}
                   <Text span inherit>
-                    {Number(investasi.MasterPencarianInvestor.name) -
+                    {Number(data.MasterPencarianInvestor.name) -
                       moment(new Date()).diff(
-                        new Date(investasi.countDown),
+                        new Date(data.countDown),
                         "days"
                       )}{" "}
                     Hari
@@ -132,7 +139,7 @@ export default function DetailInvestasi({
             </Box>
           ) : (
             <Box>
-              {investasi.MasterProgresInvestasi.id === "2" ? (
+              {data.MasterProgresInvestasi.id === "2" ? (
                 <Group position="right" spacing={"xs"}>
                   <IconCircleCheck color="green" />
                   <Text
@@ -170,7 +177,7 @@ export default function DetailInvestasi({
         <AspectRatio ratio={1 / 1} mx={"sm"} mah={250}>
           <Image
             alt=""
-            src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
+            src={RouterInvestasi_OLD.api_gambar + `${data.imagesId}`}
             radius={"sm"}
             height={250}
             width={"100%"}
@@ -180,22 +187,20 @@ export default function DetailInvestasi({
         {/* Title dan Progress */}
         <Box mb={"md"}>
           <Title order={3} mb={"xs"} align="center">
-            {investasi.title}
+            {data.title}
           </Title>
           <Progress
             label={
               "" +
               (
-                ((+investasi.totalLembar - +investasi.sisaLembar) /
-                  +investasi.totalLembar) *
+                ((+data.totalLembar - +data.sisaLembar) / +data.totalLembar) *
                 100
               ).toFixed(1) +
               "%"
             }
             value={
               +(
-                ((+investasi.totalLembar - +investasi.sisaLembar) /
-                  +investasi.totalLembar) *
+                ((+data.totalLembar - +data.sisaLembar) / +data.totalLembar) *
                 100
               ).toFixed(1)
             }
@@ -215,7 +220,7 @@ export default function DetailInvestasi({
                   Rp.{" "}
                   {new Intl.NumberFormat("id-ID", {
                     maximumSignificantDigits: 10,
-                  }).format(+investasi.targetDana)}
+                  }).format(+data.targetDana)}
                 </Text>
               </Box>
               <Box>
@@ -224,16 +229,16 @@ export default function DetailInvestasi({
                   Rp.{" "}
                   {new Intl.NumberFormat("id-ID", {
                     maximumSignificantDigits: 10,
-                  }).format(+investasi.hargaLembar)}
+                  }).format(+data.hargaLembar)}
                 </Text>
               </Box>
               <Box>
                 <Text>Jadwal Pembagian</Text>
-                <Text>{investasi.MasterPembagianDeviden.name} bulan </Text>
+                <Text>{data.MasterPembagianDeviden.name} bulan </Text>
               </Box>
               <Box>
                 <Text>Pembagian Deviden</Text>
-                <Text>{investasi.MasterPeriodeDeviden.name}</Text>
+                <Text>{data.MasterPeriodeDeviden.name}</Text>
               </Box>
             </Stack>
           </Grid.Col>
@@ -249,14 +254,14 @@ export default function DetailInvestasi({
               </Box>
               <Box>
                 <Text>ROI</Text>
-                <Text>{investasi.roi}%</Text>
+                <Text>{data.roi}%</Text>
               </Box>
               <Box>
                 <Text>Total Lembar</Text>
                 <Text>
                   {new Intl.NumberFormat("id-ID", {
                     maximumSignificantDigits: 10,
-                  }).format(+investasi.totalLembar)}{" "}
+                  }).format(+data.totalLembar)}{" "}
                   lembar
                 </Text>
               </Box>
@@ -265,7 +270,7 @@ export default function DetailInvestasi({
                 <Text>
                   {new Intl.NumberFormat("id-ID", {
                     maximumSignificantDigits: 10,
-                  }).format(+investasi.sisaLembar)}{" "}
+                  }).format(+data.sisaLembar)}{" "}
                   lembar
                 </Text>
               </Box>
@@ -293,7 +298,7 @@ export default function DetailInvestasi({
                   loading={isLoadingBox && e?.id === boxId ? true : false}
                   variant="transparent"
                   size={60}
-                  onClick={() => router.push(e.route + `${investasi.id}`)}
+                  onClick={() => router.push(e.route + `${data.id}`)}
                 >
                   {e.icon}
                 </ActionIcon>
@@ -303,9 +308,9 @@ export default function DetailInvestasi({
         </Group>
 
         <Box my={"md"}>
-          {investasi.sisaLembar === "0" ||
-          Number(investasi.MasterPencarianInvestor.name) -
-            moment(new Date()).diff(new Date(investasi.countDown), "days") <=
+          {data.sisaLembar === "0" ||
+          Number(data.MasterPencarianInvestor.name) -
+            moment(new Date()).diff(new Date(data.countDown), "days") <=
             0 ? (
             <Center mb={"md"}>
               <Button disabled radius={50} variant="transparent">
@@ -314,7 +319,7 @@ export default function DetailInvestasi({
             </Center>
           ) : (
             <Box>
-              {loginUserId === investasi.authorId ? (
+              {loginUserId === data.authorId ? (
                 <Center mb={"md"}>
                   <Button disabled radius={50}>
                     Investasi Ini Milik Anda

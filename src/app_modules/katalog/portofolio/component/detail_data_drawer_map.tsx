@@ -26,6 +26,7 @@ import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import { MODEL_MAP } from "@/app_modules/map/lib/interface";
 import { map_funGetOneById } from "@/app_modules/map/fun/get/fun_get_one_by_id";
+import { ComponentMap_SkeletonDrawerDetailData } from "@/app_modules/map/_component";
 
 export function ComponentPortofolio_DetailDataMap({ mapId }: { mapId: any }) {
   const router = useRouter();
@@ -39,6 +40,8 @@ export function ComponentPortofolio_DetailDataMap({ mapId }: { mapId: any }) {
     const res: any = await map_funGetOneById({ mapId: mapId });
     setData(res);
   }
+
+  if(!data) return <ComponentMap_SkeletonDrawerDetailData/>
 
   return (
     <>

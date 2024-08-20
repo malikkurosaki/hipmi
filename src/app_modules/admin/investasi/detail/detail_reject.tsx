@@ -1,6 +1,6 @@
 "use client";
 
-import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
+import { MODEL_INVESTASI } from "@/app_modules/investasi/_lib/interface";
 import {
   Paper,
   SimpleGrid,
@@ -14,11 +14,7 @@ import { ComponentAdminInvestasi_DetailData } from "../_component/detail_data_in
 import { ComponentAdminInvestasi_DetailGambar } from "../_component/detail_gambar_investasi";
 import { ComponentAdminInvestasi_UIDetailFile } from "../_component/ui_detail_file";
 
-export function AdminInvestasi_DetailReject({
-  data,
-}: {
-  data: MODEL_Investasi;
-}) {
+export function AdminInvestasi_DetailReject({ data }: { data: MODEL_INVESTASI }) {
   return (
     <>
       <Stack px={"lg"}>

@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
 import {
@@ -37,7 +37,7 @@ export default function LayoutTransferInvestasi({
               <CloseButton
                 size={"md"}
                 onClick={() => {
-                  router.push(RouterInvestasi.main_transaksi), setHotMenu(3);
+                  router.push(RouterInvestasi_OLD.main_transaksi), setHotMenu(3);
                 }}
               />
               <Text>Transfer</Text>

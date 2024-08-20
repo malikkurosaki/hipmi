@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
 import { ActionIcon, AppShell } from "@mantine/core";
 import { IconDotsVertical, IconPencilPlus } from "@tabler/icons-react";
@@ -27,7 +27,7 @@ export default function LayoutListEditBeritaInvestasi({
       id: "1",
       name: "Tambah Berita",
       icon: <IconPencilPlus />,
-      path: RouterInvestasi.create_berita + `${idInves}`,
+      path: RouterInvestasi_OLD.create_berita + `${idInves}`,
     },
   ];
 

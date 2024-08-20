@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
-import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
+import { MODEL_INVESTASI } from "@/app_modules/investasi/_lib/interface"; 
 import {
   ActionIcon,
   Avatar,
@@ -49,7 +49,7 @@ export default function Admin_Investasi({
   totalInvestasiByUser,
   publishProgres,
 }: {
-  listInvestasi: MODEL_Investasi[];
+  listInvestasi: MODEL_INVESTASI[];
   countDraft: number | any;
   countReview: number | any;
   countPublish: number | any;
@@ -61,7 +61,6 @@ export default function Admin_Investasi({
   const router = useRouter();
 
   const listBox = [
-
     {
       id: 1,
       name: "Publish",
