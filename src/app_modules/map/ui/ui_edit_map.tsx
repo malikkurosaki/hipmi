@@ -1,27 +1,27 @@
 "use client";
 
+import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
+import { RouterMap } from "@/app/lib/router_hipmi/router_map";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import {
   AspectRatio,
-  Box,
+  Avatar,
   Button,
   Center,
   FileButton,
   Image,
   Paper,
   Stack,
-  Text,
   TextInput,
-  Title,
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
-import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Map, {
@@ -30,13 +30,11 @@ import Map, {
   NavigationControl,
   ScaleControl,
 } from "react-map-gl";
-import { map_funCreatePin } from "../fun/create/fun_create_pin";
-import { defaultLatLong, defaultMapZoom } from "../lib/default_lat_long";
-import { MODEL_MAP } from "../lib/interface";
-import { RouterMap } from "@/app/lib/router_hipmi/router_map";
 import { map_funEditMap } from "../fun/edit/fun_edit_map";
+import { defaultMapZoom } from "../lib/default_lat_long";
+import { MODEL_MAP } from "../lib/interface";
 
-export function UiMap_EditPin({
+export function UiMap_EditMap({
   mapboxToken,
   dataMap,
 }: {
@@ -47,10 +45,9 @@ export function UiMap_EditPin({
   const [file, setFile] = useState<File | any>(null);
   const [img, setImg] = useState<any | null>(null);
 
-
   return (
     <>
-      <Stack>
+      <Stack spacing={30} px={"sm"}>
         <Map
           mapboxAccessToken={mapboxToken}
           mapStyle={"mapbox://styles/mapbox/streets-v11"}
@@ -85,13 +82,20 @@ export function UiMap_EditPin({
             longitude={data.longitude}
             anchor="bottom"
           >
-            <Stack spacing={0}>
-              <Image
-                w={"100%"}
-                alt="image"
-                src="https://cdn-icons-png.flaticon.com/512/5860/5860579.png"
-              />
-            </Stack>
+            <Avatar
+              src={
+                data.ImagePin === null
+                  ? RouterPortofolio.api_logo_porto + dataMap.Portofolio.logoId
+                  : RouterMap.api_custom_pin + data.imagePinId
+              }
+              alt="Logo"
+              style={{
+                border: `2px solid ${AccentColor.softblue}`,
+                backgroundColor: "white",
+
+                borderRadius: "100%",
+              }}
+            />
           </Marker>
           <NavigationControl />
           <ScaleControl position="top-left" />
@@ -123,7 +127,10 @@ export function UiMap_EditPin({
           />
         </Paper>
 
-        <Stack>
+        {/* Foto Usaha */}
+        <Stack spacing={"xs"}>
+          <ComponentGlobal_BoxInformation informasi="Masukan foto toko atau tempat usaha anda !" />
+
           {img ? (
             <AspectRatio ratio={1 / 1} mah={300}>
               <Paper
@@ -155,7 +162,7 @@ export function UiMap_EditPin({
                 <Image
                   radius={"sm"}
                   alt="Foto"
-                  src={RouterMap.api_foto + data.imagesId}
+                  src={RouterMap.api_foto + data.imageMapId}
                   maw={250}
                 />
               </Paper>
@@ -214,8 +221,7 @@ function ButtonSavePin({ data, file }: { data: MODEL_MAP; file: FormData }) {
 
     const res = await map_funEditMap({
       data: data,
-      file: gambar
-
+      file: gambar,
     });
     res.status === 200
       ? (ComponentGlobal_NotifikasiBerhasil(res.message), router.back())
@@ -225,7 +231,7 @@ function ButtonSavePin({ data, file }: { data: MODEL_MAP; file: FormData }) {
   return (
     <>
       <Button
-        mt={"xl"}
+        mb={"xl"}
         style={{ transition: "0.5s" }}
         disabled={data.namePin === "" ? true : false}
         radius={"xl"}

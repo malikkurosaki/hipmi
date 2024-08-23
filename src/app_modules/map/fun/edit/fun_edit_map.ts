@@ -11,6 +11,7 @@ import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
 export async function map_funEditMap({
   data,
   file,
+
 }: {
   data: MODEL_MAP;
   file: FormData;
@@ -37,7 +38,7 @@ export async function map_funEditMap({
     if (!uploadImage)
       return { status: 400, message: "Gagal upload foto lokasi" };
     const upload_Folder = Buffer.from(await gambar.arrayBuffer());
-    fs.writeFileSync(`./public/map/${uploadImage.url}`, upload_Folder);
+    fs.writeFileSync(`./public/map/foto/${uploadImage.url}`, upload_Folder);
 
     const updt = await prisma.businessMaps.update({
       where: {
@@ -47,7 +48,7 @@ export async function map_funEditMap({
         latitude: data.latitude,
         longitude: data.longitude,
         namePin: data.namePin,
-        imagesMapId: uploadImage.id,
+        imageMapId: uploadImage.id,
       },
     });
 

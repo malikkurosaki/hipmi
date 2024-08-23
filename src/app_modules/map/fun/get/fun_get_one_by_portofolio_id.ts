@@ -2,7 +2,7 @@
 
 import prisma from "@/app/lib/prisma";
 
-export async function map_funGetOneByPortofolioId({
+export async function map_funGetOneBusinessMapByPortofolioId({
   portofolioId,
 }: {
   portofolioId: string;
@@ -11,13 +11,17 @@ export async function map_funGetOneByPortofolioId({
     where: {
       portofolioId: portofolioId,
     },
-    select: {
-      id: true,
-      namePin: true,
-      latitude: true,
-      longitude: true,
-      imagesMapId: true,
-    },
+    include: {
+      ImageMap: true,
+      ImagePin: true,
+      Portofolio: {
+        select: {
+          id: true,
+          Logo: true,
+          logoId: true
+        }
+      }
+    }
   });
 
   return res;

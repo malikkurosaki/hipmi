@@ -1,14 +1,14 @@
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { map_funGetAllMap } from "@/app_modules/map/fun/get/fun_get_all_map";
 import { Map_View } from "@/app_modules/map/view";
 
 const mapboxToken = process.env.MAPBOX_TOKEN!;
 export default async function Page() {
-  if (!mapboxToken)
-    return <ComponentGlobal_IsEmptyData text="Mapbox token not found" />;
+  const dataMap = await map_funGetAllMap();
 
   return (
     <>
-      <Map_View mapboxToken={mapboxToken} />
+      <Map_View mapboxToken={mapboxToken} dataMap={dataMap} />
     </>
   );
 }

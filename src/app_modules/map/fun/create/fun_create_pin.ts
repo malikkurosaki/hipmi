@@ -29,7 +29,7 @@ export async function map_funCreatePin({ data }: { data: any }) {
 
   if (!uploadImage) return { status: 400, message: "Gagal upload foto lokasi" };
   const upload_Folder = Buffer.from(await gambar.arrayBuffer());
-  fs.writeFileSync(`./public/map/${uploadImage.url}`, upload_Folder);
+  fs.writeFileSync(`./public/map/foto/${uploadImage.url}`, upload_Folder);
 
   const create = await prisma.businessMaps.create({
     data: {
@@ -38,7 +38,7 @@ export async function map_funCreatePin({ data }: { data: any }) {
       namePin: data.namePin,
       portofolioId: data?.portofolioId,
       authorId: authorId,
-      imagesMapId: uploadImage.id,
+      imageMapId: uploadImage.id,
     },
   });
 

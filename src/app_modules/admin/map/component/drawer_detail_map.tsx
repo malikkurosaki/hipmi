@@ -66,7 +66,7 @@ export function ComponentAdminMap_Drawer({
               radius={"md"}
               width={300}
               alt="Foto"
-              src={RouterMap.api_foto + data?.imagesId}
+              src={RouterMap.api_foto + data?.imageMapId}
             />
           </AspectRatio>
 

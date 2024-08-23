@@ -23,6 +23,8 @@ import nomor_admin from "../../../bin/seeder/nomor_admin.json";
 import userRole from "../../../bin/seeder/user_role.json";
 import userSeeder from "../../../bin/seeder/user_seeder.json";
 import voting_status from "../../../bin/seeder/voting/master_status.json";
+import { master_kategori_app } from "@/bin/seeder/master";
+import { new_status_transaksi_investasi } from "@/bin/seeder/investasi";
 
 export async function generate_seeder() {
   for (let i of userRole) {
@@ -400,6 +402,38 @@ export async function generate_seeder() {
       update: {
         id: a.id,
         nomor: a.nomor,
+      },
+    });
+  }
+
+  for (let a of master_kategori_app) {
+    await prisma.masterKategoriApp.upsert({
+      where: {
+        id: a.id,
+      },
+      create: {
+        id: a.id,
+        name: a.name,
+      },
+      update: {
+        id: a.id,
+        name: a.name,
+      },
+    });
+  }
+
+  for (let a of new_status_transaksi_investasi) {
+    await prisma.investasiMaster_StatusInvoice.upsert({
+      where: {
+        id: a.id,
+      },
+      create: {
+        id: a.id,
+        name: a.name,
+      },
+      update: {
+        id: a.id,
+        name: a.name,
       },
     });
   }

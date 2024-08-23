@@ -2,6 +2,10 @@
 
 import { RouterMap } from "@/app/lib/router_hipmi/router_map";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentMap_SkeletonDrawerDetailData } from "@/app_modules/map/_component";
+import { map_funGetOneById } from "@/app_modules/map/fun/get/fun_get_one_by_id";
+import { MODEL_MAP } from "@/app_modules/map/lib/interface";
 import {
   Box,
   Button,
@@ -10,23 +14,17 @@ import {
   Image,
   SimpleGrid,
   Stack,
-  Text,
-  Title,
+  Text
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
-import { useState } from "react";
 import {
   IconBuildingSkyscraper,
   IconListDetails,
-  IconPhoneCall,
   IconMapPin,
+  IconPhoneCall,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
-import { MODEL_MAP } from "@/app_modules/map/lib/interface";
-import { map_funGetOneById } from "@/app_modules/map/fun/get/fun_get_one_by_id";
-import { ComponentMap_SkeletonDrawerDetailData } from "@/app_modules/map/_component";
+import { useState } from "react";
 
 export function ComponentPortofolio_DetailDataMap({ mapId }: { mapId: any }) {
   const router = useRouter();
@@ -45,7 +43,7 @@ export function ComponentPortofolio_DetailDataMap({ mapId }: { mapId: any }) {
 
   return (
     <>
-      <Stack mt={"lg"} spacing={"xl"}>
+      <Stack mt={"lg"} spacing={"xl"} px={"md"}>
         <ComponentGlobal_AuthorNameOnHeader
           authorName={data?.Author?.username}
           imagesId={data?.Author?.Profile?.imagesId}
@@ -66,7 +64,7 @@ export function ComponentPortofolio_DetailDataMap({ mapId }: { mapId: any }) {
             mah={300}
             maw={200}
             alt="Foto"
-            src={RouterMap.api_foto + data?.imagesId}
+            src={RouterMap.api_foto + data?.imageMapId}
           />
           <Box>
             <Grid>
@@ -102,6 +100,38 @@ export function ComponentPortofolio_DetailDataMap({ mapId }: { mapId: any }) {
               </Grid.Col>
             </Grid>
           </Box>
+        </SimpleGrid>
+
+        <SimpleGrid
+          cols={2}
+          spacing={"lg"}
+          breakpoints={[
+            { maxWidth: 980, cols: 2, spacing: "md" },
+            { maxWidth: 755, cols: 1, spacing: "sm" },
+            { maxWidth: 600, cols: 1, spacing: "sm" },
+          ]}
+        >
+          <Box />
+
+          <Group position="center">
+           
+
+            <Button
+              radius={"xl"}
+              bg={MainColor.yellow}
+              color="yellow"
+              c={"black"}
+              onClick={() => {
+                window.open(
+                  `https://maps.google.com?q=${data?.latitude},${data?.longitude}`,
+                  "_blank",
+                  "width=800,height=600,noopener,noreferrer"
+                );
+              }}
+            >
+              Buka Maps
+            </Button>
+          </Group>
         </SimpleGrid>
 
         {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
