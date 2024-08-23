@@ -2,6 +2,8 @@ export const NEW_RouterInvestasi = {
   // Transaksi
   pembelian: "/dev/investasi/transaksi/pembelian/",
   metode_pembayaran: "/dev/investasi/transaksi/metode-pembayaran/",
+  invoice: "/dev/investasi/transaksi/invoice/",
+  proses_transaksi: "/dev/investasi/transaksi/proses-transaksi/",
 
   // file view
   file_view: "/dev/investasi/file-view/",

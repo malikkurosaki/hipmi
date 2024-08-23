@@ -7,6 +7,13 @@ export async function map_funGetAllMap() {
     where: {
       isActive: true,
     },
+    include: {
+      Portofolio: {
+        select: {
+          logoId: true,
+        },
+      },
+    },
   });
 
   return data;

@@ -1,8 +1,11 @@
+import { NEW_RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import { Button, Paper, Radio, Stack, Text, Title } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function ComponentInvestasi_BoxMetodePembayaran({
@@ -10,12 +13,17 @@ export function ComponentInvestasi_BoxMetodePembayaran({
 }: {
   listBank: any[];
 }) {
+  const router = useRouter();
   const [bank, setBank] = useState(listBank);
   const [pilihBank, setPilihBank] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const [total, setTotal] = useLocalStorage({
+    key: "total_investasi",
+    defaultValue: 0,
+  });
 
   async function onProses() {
-    console.log(pilihBank);
+    router.push(NEW_RouterInvestasi.invoice + "1", { scroll: false });
   }
 
   return (

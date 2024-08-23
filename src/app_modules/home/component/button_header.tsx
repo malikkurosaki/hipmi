@@ -16,6 +16,8 @@ import { RouterNotifikasi } from "@/app/lib/router_hipmi/router_notifikasi";
 import { useShallowEffect } from "@mantine/hooks";
 import notifikasi_countUserNotifikasi from "@/app_modules/notifikasi/fun/count/fun_count_by_id";
 import mqtt_client from "@/util/mqtt_client";
+import { useAtom } from "jotai";
+import { gs_notifikasi_kategori_app } from "@/app_modules/notifikasi/lib";
 
 export function ComponentHome_ButtonHeaderLeft({
   dataUser,
@@ -59,19 +61,9 @@ export function ComponentHome_ButtonHeaderRight({
   const router = useRouter();
   const [count, setCount] = useState(countNotifikasi);
   const [isLoadingBell, setIsLoadingBell] = useState(false);
-
-  // useShallowEffect(() => {
-  //   onLoadNotifkasi({
-  //     onLoad(val) {
-  //       setCount(val);
-  //     },
-  //   });
-  // }, []);
-
-  // async function onLoadNotifkasi({ onLoad }: { onLoad: (val: any) => void }) {
-  //   const loadNotifikasi = await notifikasi_countUserNotifikasi();
-  //   onLoad(loadNotifikasi);
-  // }
+  const [activeKategori, setActiveKategori] = useAtom(
+    gs_notifikasi_kategori_app
+  );
 
   useShallowEffect(() => {
     mqtt_client.subscribe("USER");
@@ -107,11 +99,14 @@ export function ComponentHome_ButtonHeaderRight({
           } else {
             router.push(RouterNotifikasi.main, { scroll: false });
             setIsLoadingBell(true);
+            setActiveKategori("Semua")
           }
         }}
       >
         {isLoadingBell ? (
           <Loader color={AccentColor.yellow} size={20} />
+        ) : count === 0 ? (
+          <IconBell color="white" />
         ) : (
           <Indicator
             processing

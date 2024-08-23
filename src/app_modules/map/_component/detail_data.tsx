@@ -30,6 +30,7 @@ import { useRouter } from "next/navigation";
 import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import { ComponentMap_SkeletonDrawerDetailData } from "./skeleton_detail_data";
+import Link from "next/link";
 
 export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
   const router = useRouter();
@@ -48,7 +49,7 @@ export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
 
   return (
     <>
-      <Stack mt={"lg"} spacing={"xl"}>
+      <Stack mt={"lg"} spacing={"xl"} px={"md"}>
         <ComponentGlobal_AuthorNameOnHeader
           authorName={data?.Author?.username}
           imagesId={data?.Author?.Profile?.imagesId}
@@ -69,7 +70,7 @@ export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
             mah={300}
             maw={200}
             alt="Foto"
-            src={RouterMap.api_foto + data?.imagesId}
+            src={RouterMap.api_foto + data?.imageMapId}
           />
           <Box>
             <Grid>
@@ -116,24 +117,35 @@ export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
             { maxWidth: 600, cols: 1, spacing: "sm" },
           ]}
         >
-          <Box />
+          <Button
+            onClick={() => {
+              router.push(RouterPortofolio.main_detail + data?.Portofolio.id, {
+                scroll: false,
+              });
+            }}
+            radius={"xl"}
+            bg={MainColor.yellow}
+            color="yellow"
+            c={"black"}
+          >
+            Detail
+          </Button>
 
-          <Group position="center">
-            <Button
-              radius={"xl"}
-              onClick={() => {
-                router.push(
-                  RouterPortofolio.main_detail + data?.Portofolio.id,
-                  { scroll: false }
-                );
-              }}
-              bg={MainColor.yellow}
-              color="yellow"
-              c={"black"}
-            >
-              Detail
-            </Button>
-          </Group>
+          <Button
+            radius={"xl"}
+            bg={MainColor.yellow}
+            color="yellow"
+            c={"black"}
+            onClick={() => {
+              window.open(
+                `https://maps.google.com?q=${data?.latitude},${data?.longitude}`,
+                "_blank",
+                "width=800,height=600,noopener,noreferrer"
+              );
+            }}
+          >
+            Buka Maps
+          </Button>
         </SimpleGrid>
 
         {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}

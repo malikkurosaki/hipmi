@@ -2,10 +2,14 @@
 
 import {
   NEW_RouterInvestasi,
-  RouterInvestasi_OLD,
+  RouterInvestasi_OLD
 } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 import {
   ActionIcon,
@@ -19,10 +23,9 @@ import {
   Image,
   Paper,
   Progress,
-  SimpleGrid,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
 import {
   IconBookDownload,
@@ -35,12 +38,8 @@ import { useAtom } from "jotai";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { gs_TransferValue } from "../g_state";
 import { MODEL_INVESTASI } from "../_lib/interface";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
+import { gs_TransferValue } from "../g_state";
 
 export default function DetailInvestasi({
   dataInvestasi,
@@ -86,10 +85,11 @@ export default function DetailInvestasi({
 
   async function onSubmit() {
     //NEW
-    // router.push(NEW_RouterInvestasi.pembelian + data.id, { scroll: false });
+    router.push(NEW_RouterInvestasi.pembelian + data.id, { scroll: false });
 
     // OLD
-    router.push(RouterInvestasi_OLD.proses_transaksi + `${data.id}`);
+    // router.push(RouterInvestasi_OLD.proses_transaksi + `${data.id}`);
+
     setTransaksiValue({
       ...transaksiValue,
       lembarTerbeli: "",

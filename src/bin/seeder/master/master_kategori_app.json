@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1",
+    "name": "Event"
+  },
+  {
+    "id": "2",
+    "name": "Job"
+  },
+  {
+    "id": "3",
+    "name": "Voting"
+  },
+  {
+    "id": "4",
+    "name": "Donasi"
+  },
+  {
+    "id": "5",
+    "name": "Investasi"
+  },
+  {
+    "id": "6",
+    "name": "Forum"
+  },
+  {
+    "id": "7",
+    "name": "Collaboration"
+  }
+]

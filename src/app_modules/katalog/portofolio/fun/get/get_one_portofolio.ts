@@ -8,18 +8,8 @@ export async function portofolio_getOneById(portoId: string) {
     where: {
       id: portoId,
     },
-    select: {
-      id: true,
-      id_Portofolio: true,
-      namaBisnis: true,
-      alamatKantor: true,
-      deskripsi: true,
-      tlpn: true,
-      active: true,
-      profileId: true,
+    include: {
       Logo: true,
-      logoId: true,
-      masterBidangBisnisId: true,
       MasterBidangBisnis: {
         select: {
           id: true,
@@ -41,6 +31,8 @@ export async function portofolio_getOneById(portoId: string) {
       BusinessMaps: {
         include: {
           Author: true,
+          ImageMap: true,
+          ImagePin: true,
         },
       },
     },

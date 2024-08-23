@@ -1,43 +1,53 @@
 "use client";
 
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
-import { gs_job_hot_menu, gs_job_status } from "@/app_modules/job/global_state";
-import { Box, Center } from "@mantine/core";
-import { useShallowEffect } from "@mantine/hooks";
-import { useAtom } from "jotai";
-import _ from "lodash";
-import { ScrollOnly } from "next-scroll-loader";
-import { useState } from "react";
-import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
-import { MODEL_NOTIFIKASI } from "../model/interface";
-import { ComponentNotifiaksi_CardView } from "./card_view";
-import {
-  gs_vote_hotMenu,
-  gs_vote_status,
-} from "@/app_modules/vote/global_state";
-import {
-  gs_event_hotMenu,
-  gs_event_status,
-} from "@/app_modules/event/global_state";
 import {
   gs_donasi_hot_menu,
   gs_donasi_tabs_posting,
 } from "@/app_modules/donasi/global_state";
 import {
+  gs_event_hotMenu,
+  gs_event_status,
+} from "@/app_modules/event/global_state";
+import {
   gs_investas_menu,
   gs_investasi_status,
 } from "@/app_modules/investasi/g_state";
+import { gs_job_hot_menu, gs_job_status } from "@/app_modules/job/global_state";
+import {
+  gs_vote_hotMenu,
+  gs_vote_status,
+} from "@/app_modules/vote/global_state";
+import { Box, Button, Center, Flex, Stack } from "@mantine/core";
+import { useAtom } from "jotai";
+import _, { find } from "lodash";
+import { ScrollOnly } from "next-scroll-loader";
+import { useState } from "react";
+import { ComponentNotifikasi_CardSkeleton } from "../component";
+import { ComponentNotifiaksi_CardView } from "../component/card_view";
+import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
+import { MODEL_NOTIFIKASI } from "../model/interface";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { gs_notifikasi_kategori_app } from "../lib";
+import { useShallowEffect } from "@mantine/hooks";
 
 export function Notifikasi_UiView({
   listNotifikasi,
+  masterKategori,
 }: {
-  listNotifikasi: MODEL_NOTIFIKASI[];
+  listNotifikasi: any[];
+  masterKategori: any[];
 }) {
-  const [data, setData] = useState(listNotifikasi);
+  const [data, setData] = useState<MODEL_NOTIFIKASI[]>(listNotifikasi);
   const [activePage, setActivePage] = useState(1);
+  const [mstrKategori, setMstrKategori] = useState(masterKategori);
+  const [activeKategori, setActiveKategori] = useAtom(
+    gs_notifikasi_kategori_app
+  );
 
-  // JOB
+  // Kategori App
   const [jobMenuId, setJobMenuId] = useAtom(gs_job_hot_menu);
   const [jobStatus, setJobStatus] = useAtom(gs_job_status);
   const [voteMenu, setVoteMenu] = useAtom(gs_vote_hotMenu);
@@ -49,27 +59,61 @@ export function Notifikasi_UiView({
   const [investasiMenu, setInvestasiMenu] = useAtom(gs_investas_menu);
   const [investasiStatus, setInvestasiStatus] = useAtom(gs_investasi_status);
 
-  // useShallowEffect(() => {
-  //   onLoadData({
-  //     onLoad(val) {
-  //       setData(val);
-  //     },
-  //   });
-  // }, []);
+  useShallowEffect(() => {
+    onLoadDataNotifikasi({ kategoriApp: activeKategori });
+  }, [activeKategori]);
 
-  // async function onLoadData({ onLoad }: { onLoad: (val: any) => void }) {
-  //   const loadData = await notifikasi_getByUserId({ page: 1 });
-  //   onLoad(loadData);
-  // }
+  async function onLoadDataNotifikasi({
+    kategoriApp,
+  }: {
+    kategoriApp: string;
+  }) {
+    const loadNotifikasi = await notifikasi_getByUserId({
+      page: 1,
+      kategoriApp: kategoriApp,
+    });
+
+    setData(loadNotifikasi as any);
+  }
 
   return (
     <>
-      <Box>
+      <Stack spacing={"xs"}>
+        <Box
+          style={{
+            display: "flex",
+            gap: "20px",
+            position: "relative",
+            overflowX: "scroll",
+            scrollbarWidth: "none",
+          }}
+        >
+          <Flex gap={"md"}>
+            {mstrKategori.map((e, i) => (
+              <Button
+                radius={"xl"}
+                key={i}
+                c={activeKategori === e.name ? "black" : "gray.5"}
+                style={{
+                  transition: "0.3s",
+                  backgroundColor:
+                    activeKategori === e.name ? MainColor.yellow : "GrayText",
+                }}
+                onClick={() => {
+                  setActiveKategori(e.name);
+                }}
+              >
+                {e.name}
+              </Button>
+            ))}
+          </Flex>
+        </Box>
+
         {_.isEmpty(data) ? (
           <ComponentGlobal_IsEmptyData text="Tidak ada pemberitahuan" />
         ) : (
           <ScrollOnly
-            height="92vh"
+            height="85vh"
             renderLoading={() => (
               <Center mt={"lg"}>
                 <ComponentGlobal_Loader />
@@ -121,7 +165,7 @@ export function Notifikasi_UiView({
             )}
           </ScrollOnly>
         )}
-      </Box>
+      </Stack>
     </>
   );
 }

@@ -15,7 +15,7 @@ export async function GET(
     },
   });
 
-  if (!fs.existsSync(`./public/map/${get?.url}`)) {
+  if (!fs.existsSync(`./public/map/pin/${get?.url}`)) {
     const notFile = fs.readFileSync("./public/aset/global/no_img.png");
     return new NextResponse(notFile, {
       headers: {
@@ -23,7 +23,7 @@ export async function GET(
       },
     });
   }
-  const file = fs.readFileSync(`./public/map/${get?.url}`);
+  const file = fs.readFileSync(`./public/map/pin/${get?.url}`);
   return new NextResponse(file, {
     headers: {
       "Content-Type": "image/png",

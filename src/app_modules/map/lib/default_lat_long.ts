@@ -1,3 +1,3 @@
-export const defaultLatLong = [-8.723606930462012, 115.17496509980654];
-export const defaultMapZoom = 12
+export const defaultLatLong = [-8.745326073272455, 115.17319973054386];
+export const defaultMapZoom = 11
 

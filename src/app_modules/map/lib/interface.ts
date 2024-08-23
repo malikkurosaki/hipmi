@@ -13,5 +13,8 @@ export interface MODEL_MAP {
   Author: MODEL_USER;
   portofolioId: string;
   Portofolio: MODEL_PORTOFOLIO
-  imagesId: string
+  imageMapId: string
+  ImageMap: any
+  imagePinId: string
+  ImagePin: any
 }

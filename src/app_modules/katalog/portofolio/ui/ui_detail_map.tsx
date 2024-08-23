@@ -1,10 +1,12 @@
 "use client";
 
+import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
+import { RouterMap } from "@/app/lib/router_hipmi/router_map";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import { ComponentMap_DrawerDetailData } from "@/app_modules/map/_component";
 import { defaultMapZoom } from "@/app_modules/map/lib/default_lat_long";
 import { MODEL_MAP } from "@/app_modules/map/lib/interface";
-import { Image, Paper, Stack, Text, Title } from "@mantine/core";
+import { Image, Paper, Stack, Title } from "@mantine/core";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useState } from "react";
 import {
@@ -16,7 +18,6 @@ import {
 } from "react-map-gl";
 import { ComponentPortofolio_DetailDataMap } from "../component";
 import { MODEL_LOGO, MODEL_PORTOFOLIO } from "../model/interface";
-import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
 
 export function Portofolio_UiMap({
   mapboxToken,
@@ -25,7 +26,6 @@ export function Portofolio_UiMap({
   mapboxToken: string;
   data: MODEL_PORTOFOLIO;
 }) {
-  // console.log(data);
   return (
     <Paper
       p={"sm"}
@@ -101,28 +101,17 @@ function MapView({
             <Image
               width={"100%"}
               alt="image"
-              src={RouterPortofolio.api_logo_porto + `${dataLogo.id}`}
+              src={
+                data.ImagePin === null
+                  ? RouterPortofolio.api_logo_porto + dataLogo.id
+                  : RouterMap.api_custom_pin + data.ImagePin.id
+              }
               radius={"xl"}
               style={{
                 border: `2px solid ${AccentColor.softblue}`,
-                borderRadius: "100%"
+                borderRadius: "100%",
               }}
             />
-
-            {/* <Text
-              fz={"xs"}
-              bg={"dark"}
-              c={"white"}
-              align="center"
-              style={{
-                borderRadius: "5px",
-                padding: "5px",
-                width: 50,
-              }}
-              lineClamp={2}
-            >
-              {data.namePin}
-            </Text> */}
           </Stack>
         </Marker>
 

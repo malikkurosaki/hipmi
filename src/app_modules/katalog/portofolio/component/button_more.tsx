@@ -9,6 +9,8 @@ import {
   IconDotsVertical,
   IconEdit,
   IconId,
+  IconMapPin,
+  IconMapPin2,
   IconMapPinMinus,
   IconPhotoEdit,
 } from "@tabler/icons-react";
@@ -46,9 +48,15 @@ export function ComponentPortofolio_ButtonMore({
     },
     {
       id: "4",
-      name: "Edit pin map",
-      icon: <IconMapPinMinus />,
+      name: "Edit data map",
+      icon: <IconMapPin2 />,
       path: RouterMap.edit + `${portoId}`,
+    },
+    {
+      id: "5",
+      name: "Custom pin map",
+      icon: <IconMapPin />,
+      path: RouterMap.custom_pin + `${portoId}`,
     },
   ];
 

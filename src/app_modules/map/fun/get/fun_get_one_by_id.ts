@@ -28,7 +28,7 @@ export async function map_funGetOneById({ mapId }: { mapId: string }) {
       latitude: true,
       longitude: true,
       authorId: true,
-      imagesMapId: true,
+      imageMapId: true,
       Portofolio: {
         select: {
           id: true,
