@@ -1,6 +1,6 @@
 "use client";
 
-import { MODEL_DATA_BANK } from "@/app_modules/investasi/_lib/interface";
+import { MODEL_MASTER_BANK } from "@/app_modules/investasi/_lib/interface";
 import {
   ActionIcon,
   Button,
@@ -34,7 +34,7 @@ import adminAppInformation_updateDataBankById from "../fun/update/fun_update_dat
 export default function InformasiBank({
   listBank,
 }: {
-  listBank: MODEL_DATA_BANK[];
+  listBank: MODEL_MASTER_BANK[];
 }) {
   const [data, setData] = useState(listBank);
   const [isCreate, setIsCreate] = useState(false);
@@ -119,7 +119,7 @@ export default function InformasiBank({
       <tr key={i}>
         <td>
           <Center>
-            <Text>{e?.name}</Text>
+            <Text>{e?.namaBank}</Text>
           </Center>
         </td>
         <td>
@@ -133,7 +133,7 @@ export default function InformasiBank({
               color="orange"
               onLabel="ON"
               offLabel="OFF"
-              checked={e?.active}
+              checked={e?.isActive}
               onChange={(val) => {
                 setIsActivation(true);
                 setUpdateStatus({
@@ -154,7 +154,7 @@ export default function InformasiBank({
                 setIsCreate(false);
                 setUpdateData({
                   id: e?.id,
-                  name: e?.name,
+                  name: e?.namaBank,
                   norek: e?.norek,
                 });
               }}

@@ -8,7 +8,7 @@ export async function Donasi_getMasterBank() {
     //   createdAt: "asc",
     // },
     where: {
-      active: true,
+      isActive: true,
     },
   });
   return data;

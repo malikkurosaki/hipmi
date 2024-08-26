@@ -13,6 +13,7 @@ export function ComponentEvent_CardBeranda({ data }: { data: any }) {
 
   const [eventId, setEventId] = useState("");
   const [visible, setVisible] = useState(false);
+  
   return (
     <>
       <Card

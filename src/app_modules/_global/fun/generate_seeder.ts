@@ -12,7 +12,6 @@ import event_tipe_acara from "../../../bin/seeder/event/master_tipe_acara.json";
 import forum_kategori_report from "../../../bin/seeder/forum/master_report.json";
 import forum_status_posting from "../../../bin/seeder/forum/master_status.json";
 import jenisProgres from "../../../bin/seeder/investasi/master_progres.json";
-import namaBank from "../../../bin/seeder/investasi/nama_bank.json";
 import pembagianDeviden from "../../../bin/seeder/investasi/pembagian_deviden.json";
 import pencarianInvestor from "../../../bin/seeder/investasi/pencarian_investor.json";
 import periodeDeviden from "../../../bin/seeder/investasi/periode_deviden.json";
@@ -25,6 +24,7 @@ import userSeeder from "../../../bin/seeder/user_seeder.json";
 import voting_status from "../../../bin/seeder/voting/master_status.json";
 import { master_kategori_app } from "@/bin/seeder/master";
 import { new_status_transaksi_investasi } from "@/bin/seeder/investasi";
+import { master_nama_bank } from "@/bin/seeder/master";
 
 export async function generate_seeder() {
   for (let i of userRole) {
@@ -143,24 +143,26 @@ export async function generate_seeder() {
     });
   }
 
-  for (let i of namaBank) {
+  for (let i of master_nama_bank) {
     await prisma.masterBank.upsert({
       where: {
         id: i.id.toString(),
       },
       create: {
         id: i.id.toString(),
-        name: i.name,
+        namaBank: i.namaBank,
+        namaAkun: i.namaAkun,
         norek: i.norek.toString(),
       },
       update: {
         id: i.id.toString(),
-        name: i.name,
+        namaBank: i.namaBank,
+        namaAkun: i.namaAkun,
         norek: i.norek.toString(),
       },
     });
   }
-
+  
   for (let i of statusTransaksiInvestasi) {
     await prisma.masterStatusTransaksiInvestasi.upsert({
       where: {

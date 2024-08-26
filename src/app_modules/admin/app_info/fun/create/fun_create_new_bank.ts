@@ -13,7 +13,8 @@ export default async function adminAppInformation_createBank({
   const create = await prisma.masterBank.create({
     data: {
       id: idBank.toString(),
-      name: data.name,
+      namaBank: data.name,
+      namaAkun: data.akun,
       norek: data.norek,
     },
   });

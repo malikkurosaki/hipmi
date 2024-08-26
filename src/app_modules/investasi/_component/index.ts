@@ -1,11 +1,7 @@
-import { ComponentInvestasi_FrameFileView } from "./file_view/frame_file_view";
-import { ComponentInvestasi_BoxMetodePembayaran } from "./transaksi/box_metode_pembayaran";
-import { ComponentInvestasi_BoxPembelian } from "./transaksi/box_pembelian";
-import { ComponentInvestasi_ProsesAccAdmin } from "./transaksi/proses_acc_admin";
-import { ComponentInvestasi_ViewInvoice } from "./transaksi/view_invoice";
+import { Investasi_ComponentCardBeranda } from "./main/comp_card_beranda";
+import { Investasi_ComponentFooterMain } from "./main/comp_footer_main";
+import { Investasi_ComponentButtonUpdateBeranda } from "./main/comp_update_beranda";
 
-export { ComponentInvestasi_BoxPembelian };
-export { ComponentInvestasi_BoxMetodePembayaran };
-export { ComponentInvestasi_FrameFileView };
-export { ComponentInvestasi_ViewInvoice };
-export { ComponentInvestasi_ProsesAccAdmin };
+export { Investasi_ComponentFooterMain };
+export { Investasi_ComponentCardBeranda };
+export { Investasi_ComponentButtonUpdateBeranda };

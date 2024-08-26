@@ -96,11 +96,12 @@ export interface Model_Dokumen_Investasi {
   investasiId: string;
 }
 
-export interface MODEL_DATA_BANK {
+export interface MODEL_MASTER_BANK {
   id: string;
-  name: string;
+  namaBank: string;
+  namaAkun: string
   norek: string;
-  active: boolean;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

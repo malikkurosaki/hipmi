@@ -7,7 +7,7 @@ import {
 } from "@/app_modules/_global/color/color_pallet";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import { MODEL_DATA_BANK } from "@/app_modules/investasi/_lib/interface";
+import { MODEL_MASTER_BANK } from "@/app_modules/investasi/_lib/interface";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import mqtt_client from "@/util/mqtt_client";
 import { Button, Paper, Radio, Stack, Title } from "@mantine/core";
@@ -22,7 +22,7 @@ export default function Donasi_MetodePembayaran({
   donasiId,
   authorId,
 }: {
-  listBank: MODEL_DATA_BANK[];
+  listBank: MODEL_MASTER_BANK[];
   donasiId: string;
   authorId: string;
 }) {
@@ -110,7 +110,7 @@ export default function Donasi_MetodePembayaran({
                 value={e.id}
                 label={
                   <Title order={6} color="white">
-                    {e.name}
+                    {e.namaBank}
                   </Title>
                 }
               />

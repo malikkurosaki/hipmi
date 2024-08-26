@@ -6,7 +6,7 @@ export default async function getNorekInvestasi(id: string) {
   const res = await prisma.masterBank.findUnique({
     where: { id: id },
     select: {
-      name: true,
+      namaBank: true,
       norek: true,
     },
   });

@@ -6,7 +6,6 @@ import pencarianInvestor from "./../../../bin/seeder/investasi/pencarian_investo
 import periodeDeviden from "./../../../bin/seeder/investasi/periode_deviden.json";
 import pembagianDeviden from "./../../../bin/seeder/investasi/pembagian_deviden.json";
 import statusInvestasi from "./../../../bin/seeder/investasi/status_investasi.json";
-import namaBank from "./../../../bin/seeder/investasi/nama_bank.json";
 import statusTransaksiInvestasi from "./../../../bin/seeder/investasi/status_transaksi_investasi.json";
 import jenisProgres from "../../../bin/seeder/investasi/master_progres.json";
 import userSeeder from "../../../bin/seeder/user_seeder.json";
@@ -25,11 +24,11 @@ import collaboration_industri from "../../../bin/seeder/colab/master_industri.js
 import collaboration_status from "../../../bin/seeder/colab/master_status.json";
 import collaboration_jumlah_minimal_room from "../../../bin/seeder/colab/jumlah_minimal_room.json";
 import nomor_admin from "../../../bin/seeder/nomor_admin.json";
+import { master_nama_bank } from "@/bin/seeder/master";
 
 export async function GET(req: Request) {
   const dev = new URL(req.url).searchParams.get("dev");
   if (dev === "DEV-HIPMI") {
-    
     for (let i of userRole) {
       const data = await prisma.masterUserRole.upsert({
         where: {
@@ -146,19 +145,21 @@ export async function GET(req: Request) {
       });
     }
 
-    for (let i of namaBank) {
+    for (let i of master_nama_bank) {
       await prisma.masterBank.upsert({
         where: {
           id: i.id.toString(),
         },
         create: {
           id: i.id.toString(),
-          name: i.name,
+          namaBank: i.namaBank,
+          namaAkun: i.namaAkun,
           norek: i.norek.toString(),
         },
         update: {
           id: i.id.toString(),
-          name: i.name,
+          namaBank: i.namaBank,
+          namaAkun: i.namaAkun,
           norek: i.norek.toString(),
         },
       });

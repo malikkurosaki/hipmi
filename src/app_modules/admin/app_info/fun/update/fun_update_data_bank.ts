@@ -1,19 +1,19 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { MODEL_DATA_BANK } from "@/app_modules/investasi/_lib/interface"; 
+import { MODEL_MASTER_BANK } from "@/app_modules/investasi/_lib/interface"; 
 
 export default async function adminAppInformation_updateDataBankById({
   data,
 }: {
-  data: MODEL_DATA_BANK;
+  data: MODEL_MASTER_BANK;
 }) {
   const updt = await prisma.masterBank.update({
     where: {
       id: data.id,
     },
     data: {
-      name: data.name,
+      namaBank: data.namaBank,
       norek: data.norek,
     },
   });

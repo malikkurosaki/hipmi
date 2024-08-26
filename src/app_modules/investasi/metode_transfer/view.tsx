@@ -21,7 +21,7 @@ import toast from "react-simple-toasts";
 import {
   MODEL_INVESTASI,
   MODEL_Transaksi_Investasi,
-  MODEL_DATA_BANK,
+  MODEL_MASTER_BANK,
 } from "../_lib/interface";
 import { useAtom } from "jotai";
 import { gs_TransferValue } from "../g_state";
@@ -36,7 +36,7 @@ export default function MetodeTransferInvestasi({
   authorId,
 }: {
   dataInvestasi: MODEL_INVESTASI;
-  namaBank: MODEL_DATA_BANK[];
+  namaBank: MODEL_MASTER_BANK[];
   authorId: string;
 }) {
   const [investasi, setInvestasi] = useState(dataInvestasi);
@@ -66,7 +66,7 @@ export default function MetodeTransferInvestasi({
       if (res.status === 200) {
         setTransferValue({
           ...transferValue,
-          namaBank: res.res?.name as any,
+          namaBank: res.res?.namaBank as any,
           nomorRekening: res.res?.norek as any,
         });
       } else {
@@ -100,7 +100,7 @@ export default function MetodeTransferInvestasi({
         <Flex direction={"column"} gap={"lg"} mt="xs">
           {bank.map((e) => (
             <Box key={e.id}>
-              <Radio value={e.id} label={e.name} />
+              <Radio value={e.id} label={e.namaBank} />
             </Box>
           ))}
         </Flex>

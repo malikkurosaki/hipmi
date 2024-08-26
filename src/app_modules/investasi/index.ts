@@ -1,5 +1,3 @@
-import MainInvestasi from "./main/view";
-import LayoutMainInvestasi from "./main/layout";
 import InvestasiCreate from "./create/view";
 import InvestasiCreateLayout from "./create/layout";
 import UploadGambarInvestasi from "./upload/view";
@@ -69,8 +67,6 @@ import StatusPesananInvetsatsi from "./status_pesanan/view";
 import LayoutStatusPesananInvestasi from "./status_pesanan/layout";
 
 export {
-  MainInvestasi,
-  LayoutMainInvestasi,
   InvestasiCreate,
   InvestasiCreateLayout,
   UploadGambarInvestasi,

@@ -44,7 +44,10 @@ import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_
 import { forum_funEditStatusPostingById } from "../../fun/edit/fun_edit_status_posting_by_id";
 import { forum_getOnePostingById } from "../../fun/get/get_one_posting_by_id";
 import mqtt_client from "@/util/mqtt_client";
-import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function ComponentForum_DetailHeader({
   data,
@@ -148,16 +151,27 @@ function ComponentForum_DetailButtonMore_V2({
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [loadingReport, setLoadingReport] = useState(false);
 
-  //   if (loadingEdit) return <ComponentGlobal_V2_LoadingPage />;
-
   return (
     <>
       <Drawer
-        // className={classes.radiusCustom}
         styles={{
           content: {
-            backgroundColor: MainColor.darkblue,
-            borderTop: `1px solid ${AccentColor.blue}`,
+            padding: 0,
+            position: "absolute",
+            margin: "auto",
+            backgroundColor: "transparent",
+            left: 0,
+            right: 0,
+            width: 500,
+          },
+          body: {
+            backgroundColor: AccentColor.darkblue,
+            borderTop: `2px solid ${AccentColor.blue}`,
+            borderRight: `1px solid ${AccentColor.blue}`,
+            borderLeft: `1px solid ${AccentColor.blue}`,
+            borderRadius: "20px 20px 0px 0px",
+            color: "white",
+            paddingBottom: "5%",
           },
         }}
         opened={opened}
@@ -338,7 +352,9 @@ function ButtonDelete({
   return (
     <>
       <Stack>
-        <Title order={6} color="white">Yakin menghapus posting ini ?</Title>
+        <Title order={6} color="white">
+          Yakin menghapus posting ini ?
+        </Title>
         <Group position="center">
           <Button radius={"xl"} onClick={() => setOpenDel(false)}>
             Batal
