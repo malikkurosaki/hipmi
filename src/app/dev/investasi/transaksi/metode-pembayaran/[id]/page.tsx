@@ -8,7 +8,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <Investasi_UiMetodePembayaran listBank={listBank} />
+      <Investasi_UiMetodePembayaran listBank={listBank} investasiId={investasiId}  />
     </>
   );
 }

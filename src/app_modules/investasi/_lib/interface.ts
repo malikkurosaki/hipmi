@@ -99,7 +99,7 @@ export interface Model_Dokumen_Investasi {
 export interface MODEL_MASTER_BANK {
   id: string;
   namaBank: string;
-  namaAkun: string
+  namaAkun: string;
   norek: string;
   isActive: boolean;
   createdAt: Date;
@@ -111,6 +111,32 @@ export interface Model_Status_Transaksi_Investasi {
   name: string;
   color: string;
   active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface MODEL_INVOICE_INVESTASI {
+  id: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  nominal: string;
+  lembarTerbeli: string;
+  Investasi: MODEL_INVESTASI;
+  investasiId: string;
+  masterBankId: string;
+  statusInvoiceId: string;
+  authorId: string;
+  imagesId: string;
+  MasterBank: MODEL_MASTER_BANK;
+  StatusInvoice: MODEL_STATUS_INVOICE_INVESTASI;
+
+}
+
+export interface MODEL_STATUS_INVOICE_INVESTASI {
+  id: string;
+  name: string;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

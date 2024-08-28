@@ -1,36 +1,31 @@
 "use client";
 
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import UIGlobal_Drawer from "@/app_modules/_global/ui/ui_drawer";
 import {
-  ActionIcon,
   AspectRatio,
   Box,
-  Center,
-  Divider,
   Grid,
   Group,
   Image,
-  Menu,
   Paper,
   Spoiler,
   Stack,
   Text,
   Title,
 } from "@mantine/core";
-import { IconDots, IconEdit } from "@tabler/icons-react";
+import { IconEdit } from "@tabler/icons-react";
+import _ from "lodash";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import toast from "react-simple-toasts";
-import { MODEL_INVESTASI } from "../_lib/interface";
 import React, { useState } from "react";
-import _ from "lodash";
-import getOneInvestasiById from "../fun/get_one_investasi_by_id";
-import funLoadDataInvestasi from "../fun/fun_load_data";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import funDeleteBeritaInvestasi from "../fun/fun_delete_berita";
-import { useShallowEffect } from "@mantine/hooks";
-import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import UIGlobal_Drawer from "@/app_modules/_global/ui/ui_drawer";
+import funLoadDataInvestasi from "../fun/fun_load_data";
 
 export default function ListEditBeritaInvestasi({
   dataInvestasi,
@@ -46,10 +41,10 @@ export default function ListEditBeritaInvestasi({
     await funDeleteBeritaInvestasi(idBerita).then(async (res) => {
       if (res.status === 200) {
         const load = await funLoadDataInvestasi(investasi.id);
-        toast(res.message);
+        ComponentGlobal_NotifikasiBerhasil(res.message);
         return setInvestasi(load as any);
       } else {
-        toast(res.message);
+        ComponentGlobal_NotifikasiGagal(res.message);
       }
     });
   }
@@ -79,7 +74,9 @@ export default function ListEditBeritaInvestasi({
               color: "white",
               marginBottom: "15px",
             }}
-            onClick={() => router.push(RouterInvestasi_OLD.detail_berita + v.id)}
+            onClick={() =>
+              router.push(RouterInvestasi_OLD.detail_berita + v.id)
+            }
           >
             <Stack spacing={"xs"}>
               <Group position="apart">

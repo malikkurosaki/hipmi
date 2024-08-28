@@ -21,17 +21,37 @@ import {
 import { IconCamera, IconCircleCheck } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { MODEL_INVOICE_INVESTASI } from "../../_lib/interface";
+import { investasi_funUploadBuktiTransferById } from "../../_fun";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 
 export function Investasi_ViewInvoice({
   dataInvoice,
 }: {
-  dataInvoice: any;
+  dataInvoice: MODEL_INVOICE_INVESTASI;
 }) {
   const router = useRouter();
-  const [invoice, setDataInvoice] = useState(dataInvoice);
+  const [isLoading, setLoading] = useState(false);
+  const [data, setData] = useState(dataInvoice);
   const [file, setFile] = useState<File | null>(null);
-  const [image, setImage] = useState<any | null>(null);
-  // const [active, setActive] = useAtom(gs_donasi_hot_menu);
+  // const [image, setImage] = useState<any | null>(null);
+
+  async function onUpload() {
+    const gambar = new FormData();
+    gambar.append("file", file as any);
+
+    const res = await investasi_funUploadBuktiTransferById({
+      invoiceId: data.id,
+      file: gambar,
+    });
+    if (res.status !== 200) return ComponentGlobal_NotifikasiGagal(res.message);
+    ComponentGlobal_NotifikasiBerhasil(res.message);
+    setLoading(true);
+    router.push(NEW_RouterInvestasi.proses_transaksi + data.id, {
+      scroll: false,
+    });
+  }
 
   return (
     <>
@@ -48,10 +68,6 @@ export function Investasi_ViewInvoice({
           }}
         >
           <Title order={5}>Mohon transfer ke rekening dibawah</Title>
-          <Group spacing={"xs"}>
-            <Text>untuk diteruskan ke </Text>
-            <Text fw={"bold"}>{invoice?.Donasi?.Author.username}</Text>
-          </Group>
         </Stack>
 
         <Paper
@@ -67,8 +83,8 @@ export function Investasi_ViewInvoice({
         >
           <Stack spacing={"md"}>
             <Stack spacing={0}>
-              <Text>Bank {invoice?.DonasiMaster_Bank?.name}</Text>
-              <Text>PT. Himpunan Pengusaha Badung</Text>
+              <Text>Bank {data?.MasterBank?.namaBank}</Text>
+              <Text>{data?.MasterBank?.namaAkun}</Text>
             </Stack>
             <Paper
               style={{
@@ -84,13 +100,13 @@ export function Investasi_ViewInvoice({
                 <Grid.Col span={8}>
                   <Group position="left" align="center" h={"100%"}>
                     <Title order={4} color={MainColor.yellow}>
-                      {invoice?.DonasiMaster_Bank?.norek}
+                      {data?.MasterBank?.norek}
                     </Title>
                   </Group>
                 </Grid.Col>
                 <Grid.Col span={4}>
                   <Group position="right">
-                    <CopyButton value={invoice?.DonasiMaster_Bank?.norek}>
+                    <CopyButton value={data?.MasterBank?.norek}>
                       {({ copied, copy }) => (
                         <Button
                           style={{
@@ -141,13 +157,13 @@ export function Investasi_ViewInvoice({
                 <Grid.Col span={8}>
                   <Group position="left" align="center" h={"100%"}>
                     <Title order={4} color="white">
-                      <TampilanRupiahDonasi nominal={+(+invoice.nominal)} />
+                      <TampilanRupiahDonasi nominal={+(+data.nominal)} />
                     </Title>
                   </Group>
                 </Grid.Col>
                 <Grid.Col span={4}>
                   <Group position="right">
-                    <CopyButton value={"" + +invoice.nominal}>
+                    <CopyButton value={"" + +data.nominal}>
                       {({ copied, copy }) => (
                         <Button
                           style={{
@@ -167,9 +183,6 @@ export function Investasi_ViewInvoice({
                 </Grid.Col>
               </Grid>
             </Paper>
-            {/* <Text fz={"xs"} c={"gray"}>
-              Sudah termasuk biaya admin Rp. 2.500,-
-            </Text> */}
           </Stack>
         </Paper>
 
@@ -189,13 +202,8 @@ export function Investasi_ViewInvoice({
               <FileButton
                 onChange={async (files: any | null) => {
                   try {
-                    // const buffer = URL.createObjectURL(
-                    //   new Blob([new Uint8Array(await files.arrayBuffer())])
-                    // );
-                    // console.log(buffer, "ini buffer");
-                    // console.log(files, " ini file");
                     setFile(files);
-                    // onUpload(invoice.id, files);
+                    // onUpload({ invoiceId: data.id, file: files });
                   } catch (error) {
                     console.log(error);
                   }
@@ -241,23 +249,16 @@ export function Investasi_ViewInvoice({
             bg={MainColor.yellow}
             color="yellow"
             c={"black"}
-            // onClick={() => onClick(router, invoice.id, setActive)}
+            loaderPosition="center"
+            loading={isLoading}
             onClick={() => {
-              router.push(NEW_RouterInvestasi.proses_transaksi + "1", {
-                scroll: false,
-              });
+              onUpload();
             }}
           >
             Saya Sudah Transfer
           </Button>
         ) : (
-          <Button
-            disabled
-            radius={"xl"}
-            //  bg={"orange"}
-            //  color="orange"
-            //  onClick={() => onClick(router, invoice.id)}
-          >
+          <Button disabled radius={"xl"}>
             Menunggu Bukti Transfer
           </Button>
         )}

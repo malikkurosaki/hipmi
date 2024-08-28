@@ -1,6 +1,6 @@
 "use client";
 import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
-import { MODEL_INVESTASI } from "@/app_modules/investasi/_lib/interface"; 
+import { MODEL_INVESTASI } from "@/app_modules/investasi/_lib/interface";
 import {
   Badge,
   ActionIcon,
@@ -122,6 +122,8 @@ function TableView({ listData }: { listData: any }) {
   const [nPage, setNPage] = useState(listData.nPage);
   const [activePage, setActivePage] = useState(1);
   const [isSearch, setSearch] = useState("");
+  const [isLoading, setLoading] = useState(false);
+  const [idData, setIdData] = useState("");
 
   async function onSearch(s: string) {
     setSearch(s);
@@ -165,11 +167,15 @@ function TableView({ listData }: { listData: any }) {
       <td>
         <Center w={200}>
           <Button
+            loading={isLoading && idData === e.id}
+            loaderPosition="center"
             color="orange"
             radius={"xl"}
-            onClick={() =>
-              router.push(RouterAdminInvestasi.detail_reject + `${e.id}`)
-            }
+            onClick={() => {
+              setIdData(e.id);
+              setLoading(true);
+              router.push(RouterAdminInvestasi.detail_reject + `${e.id}`);
+            }}
           >
             Detail
           </Button>

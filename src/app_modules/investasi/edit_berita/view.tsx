@@ -1,31 +1,26 @@
 "use client";
 
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import { Warna } from "@/app/lib/warna";
 import {
   AspectRatio,
   Button,
   Center,
   FileButton,
-  FileInput,
   Group,
   Image,
   Stack,
-  Text,
   TextInput,
   Textarea,
 } from "@mantine/core";
-import { IconCamera, IconUpload } from "@tabler/icons-react";
-import {
-  MODEL_INVESTASI,
-  Model_Berita_Investasi,
-} from "../_lib/interface";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
-import { Warna } from "@/app/lib/warna";
-import toast from "react-simple-toasts";
+import { IconCamera } from "@tabler/icons-react";
 import _ from "lodash";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Model_Berita_Investasi } from "../_lib/interface";
 import funEditBeritaInvestasi from "../fun/fun_edit_berita";
-import deleteBeritaInvestasi from "../fun/fun_delete_berita";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 
 export default function EditBeritaInvestasi({
   dataBerita,
@@ -39,7 +34,7 @@ export default function EditBeritaInvestasi({
 
   async function onUpdate() {
     const body = edit;
-    if (_.values(body).includes("")) return toast("Lengkapi data");
+    if (_.values(body).includes("")) return ComponentGlobal_NotifikasiPeringatan("Lengkapi data");
 
     const fd = new FormData();
     fd.append("file", fl as any);
@@ -48,11 +43,10 @@ export default function EditBeritaInvestasi({
       if (res.status === 200) {
         router.back();
       } else {
-        toast(res.message)
+        ComponentGlobal_NotifikasiGagal(res.message);
       }
     });
   }
-
 
   return (
     <>

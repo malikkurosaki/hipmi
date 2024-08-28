@@ -1,6 +1,5 @@
 "use client";
 
-import { Warna } from "@/app/lib/warna";
 import {
   AspectRatio,
   Button,
@@ -9,7 +8,6 @@ import {
   FileButton,
   Group,
   Image,
-  Modal,
   NumberInput,
   Paper,
   Select,
@@ -21,25 +19,25 @@ import { IconUpload } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 import {
   ComponentGlobal_WarningMaxUpload,
   maksimalUploadFile,
 } from "@/app_modules/_global/component/waring_popup";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/model_default_master";
 import { useDisclosure, useWindowScroll } from "@mantine/hooks";
 import _ from "lodash";
 import { useState } from "react";
-import toast from "react-simple-toasts";
-import funEditInvestasi from "../fun/fun_edit_investasi";
 import { MODEL_INVESTASI } from "../_lib/interface";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
-import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import funEditInvestasi from "../fun/fun_edit_investasi";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 
 export default function EditIntroInvestasi({
   dataInvestasi,
@@ -70,7 +68,8 @@ export default function EditIntroInvestasi({
 
   async function onUpdate() {
     const body = edit_inves;
-    if (_.values(edit_inves).includes("")) return toast("Lengkapi data");
+    if (_.values(edit_inves).includes(""))
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi data");
 
     const fd = new FormData();
     fd.append("file", fl as any);

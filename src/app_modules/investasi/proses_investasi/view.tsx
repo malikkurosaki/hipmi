@@ -1,33 +1,20 @@
 "use client";
 
-import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import {
-  ActionIcon,
   Box,
   Button,
   Center,
   Divider,
-  Grid,
   Group,
   NumberInput,
   Text,
-  Title,
 } from "@mantine/core";
-import { useCounter, useFocusTrap, useShallowEffect } from "@mantine/hooks";
-import {
-  IconMinus,
-  IconNumber10Small,
-  IconPlus,
-  IconRefresh,
-} from "@tabler/icons-react";
-import _ from "lodash";
+import { useFocusTrap } from "@mantine/hooks";
+import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
 import { MODEL_INVESTASI } from "../_lib/interface";
-import { error } from "console";
-import { useAtom } from "jotai";
 import { gs_TransferValue } from "../g_state";
 
 export default function ProsesInvestasi({
@@ -61,7 +48,6 @@ export default function ProsesInvestasi({
   const randomId = date.getTime();
 
   async function onProses() {
-
     const body = {
       transaction_details: {
         order_id: "hipmi_" + `${randomId}`,
@@ -69,7 +55,7 @@ export default function ProsesInvestasi({
       },
       item_details: [
         {
-          id: "item_"+ `${randomId}`,
+          id: "item_" + `${randomId}`,
           name: investasi.title,
           price: Number(investasi.hargaLembar),
           quantity: transferValue.lembarTerbeli,

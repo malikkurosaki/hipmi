@@ -1,29 +1,25 @@
 "use client";
 
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
-import { AdminEvent_getListPesertaById } from "@/app_modules/admin/event/fun/get/get_list_peserta_by_id";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { MODEL_VOTING } from "@/app_modules/vote/model/interface";
 import {
-  Stack,
-  Center,
-  Spoiler,
-  Button,
-  Modal,
-  Paper,
-  Title,
-  Grid,
-  Avatar,
-  Group,
-  Divider,
   Box,
+  Button,
+  Center,
+  Group,
+  Modal,
+  Pagination,
+  Paper,
+  ScrollArea,
+  Spoiler,
+  Stack,
   Table,
   Text,
+  TextInput,
+  Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconBan, IconEyeCheck } from "@tabler/icons-react";
-import { IconEyeShare } from "@tabler/icons-react";
+import { IconEyeCheck, IconSearch } from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 
@@ -31,6 +27,8 @@ import { useState } from "react";
 import ComponentAdminVote_DetailHasil from "../../component/detail_hasil";
 import { AdminVote_getHasilById } from "../../fun/get/get_hasil_by_id";
 import { AdminVote_getListKontributorById } from "../../fun/get/get_list_kontributor_by_id";
+import { adminVote_funGetListRiwayat } from "../../fun";
+import { IconCircleCheckFilled } from "@tabler/icons-react";
 
 export default function AdminVote_Riwayat({
   dataVote,
@@ -40,21 +38,45 @@ export default function AdminVote_Riwayat({
   return (
     <>
       <Stack>
-        <ComponentAdminGlobal_HeaderTamplate name="Voting: Table Riwayat" />
+        <ComponentAdminGlobal_HeaderTamplate name="Voting" />
         <TableStatus listPublish={dataVote} />
       </Stack>
     </>
   );
 }
 
-function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
+function TableStatus({ listPublish }: { listPublish: any }) {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
-  const [data, setData] = useState(listPublish);
+  const [data, setData] = useState<MODEL_VOTING[]>(listPublish.data);
   const [hasil, setHasil] = useState<any[]>();
   const [kontributor, setKontributor] = useState<any[]>();
   const [voteId, setVoteId] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [isNPage, setNPage] = useState(listPublish.nPage);
+  const [isActivePage, setActivePage] = useState(1);
+  const [isSearch, setSearch] = useState("");
+
+  async function onSearch(s: string) {
+    setSearch(s);
+    const loadData = await adminVote_funGetListRiwayat({
+      page: 1,
+      search: s,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  async function onPageClick(p: any) {
+    setActivePage(p);
+    const loadData = await adminVote_funGetListRiwayat({
+      search: isSearch,
+      page: p,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
 
   const TableRows = data.map((e, i) => (
     <tr key={i}>
@@ -62,24 +84,27 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
         <Center>
           <Button
             loading={
-              e.id === voteId ? (loading === true ? true : false) : false
+              e?.id === voteId ? (loading === true ? true : false) : false
             }
             radius={"xl"}
             color="green"
-            leftIcon={<IconEyeCheck />}
+            leftIcon={<IconCircleCheckFilled />}
             onClick={async () => {
-              setVoteId(e.id);
+              setVoteId(e?.id);
               setLoading(true);
               await new Promise((r) => setTimeout(r, 500));
-              onList(e.id, setHasil, setKontributor, setLoading, open);
+              onList(e?.id, setHasil, setKontributor, setLoading, open);
             }}
           >
-            Hasil Voting
+            Lihat Hasil
           </Button>
         </Center>
       </td>
       <td>
-        <Center>{e.title}</Center>
+        <Center>{e?.Author?.username}</Center>
+      </td>
+      <td>
+        <Center>{e?.title}</Center>
       </td>
       <td>
         <Center>
@@ -89,27 +114,27 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
             maxHeight={50}
             showLabel="tampilkan"
           >
-            {e.deskripsi}
+            {e?.deskripsi}
           </Spoiler>
         </Center>
       </td>
       <th>
         <Stack>
-          {e.Voting_DaftarNamaVote.map((v) => (
-            <Box key={v.id}>
-              <Text>- {v.value}</Text>
+          {e?.Voting_DaftarNamaVote.map((v) => (
+            <Box key={v?.id}>
+              <Text>- {v?.value}</Text>
             </Box>
           ))}
         </Stack>
       </th>
       <td>
         <Center>
-          {e.awalVote.toLocaleDateString("id-ID", { dateStyle: "long" })}
+          {e?.awalVote.toLocaleDateString("id-ID", { dateStyle: "long" })}
         </Center>
       </td>
       <td>
         <Center>
-          {e.akhirVote.toLocaleDateString("id-ID", { dateStyle: "long" })}
+          {e?.akhirVote.toLocaleDateString("id-ID", { dateStyle: "long" })}
         </Center>
       </td>
     </tr>
@@ -117,6 +142,76 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
 
   return (
     <>
+      <Stack spacing={"xs"} h={"100%"}>
+        {/* <pre>{JSON.stringify(listUser, null, 2)}</pre> */}
+        <Group
+          position="apart"
+          bg={"gray.4"}
+          p={"xs"}
+          style={{ borderRadius: "6px" }}
+        >
+          <Title order={4}>Riwayat</Title>
+          <TextInput
+            icon={<IconSearch size={20} />}
+            radius={"xl"}
+            placeholder="Masukan judul"
+            onChange={(val) => {
+              onSearch(val.currentTarget.value);
+            }}
+          />
+        </Group>
+
+        <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
+          <ScrollArea w={"100%"} h={"90%"}>
+            <Table
+              verticalSpacing={"md"}
+              horizontalSpacing={"md"}
+              p={"md"}
+              w={1500}
+              striped
+              highlightOnHover
+            >
+              <thead>
+                <tr>
+                  <th>
+                    <Center>Aksi</Center>
+                  </th>
+                  <th>
+                    <Center>Username</Center>
+                  </th>
+                  <th>
+                    <Center>Judul</Center>
+                  </th>
+                  <th>
+                    <Center>Deskripsi</Center>
+                  </th>
+                  <th>
+                    <Center>Pilihan</Center>
+                  </th>
+                  <th>
+                    <Center>Mulai Vote</Center>
+                  </th>
+                  <th>
+                    <Center>Selesai Vote</Center>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>{TableRows}</tbody>
+            </Table>
+          </ScrollArea>
+
+          <Center mt={"xl"}>
+            <Pagination
+              value={isActivePage}
+              total={isNPage}
+              onChange={(val) => {
+                onPageClick(val);
+              }}
+            />
+          </Center>
+        </Paper>
+      </Stack>
+
       <Modal
         opened={opened}
         onClose={close}
@@ -128,54 +223,6 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
           kontributor={kontributor}
         />
       </Modal>
-      <Box>
-        <Box bg={"gray.1"} p={"xs"}>
-          <Title order={6} c={"gray"}>
-            RIWAYAT
-          </Title>
-        </Box>
-        <Table
-          withBorder
-          verticalSpacing={"md"}
-          horizontalSpacing={"xl"}
-          p={"md"}
-          striped
-          highlightOnHover
-        >
-          <thead>
-            <tr>
-              <th>
-                <Center>Aksi</Center>
-              </th>
-              <th>
-                <Center>Judul</Center>
-              </th>
-              <th>
-                <Center>Deskripsi</Center>
-              </th>
-              <th>
-                <Center>Pilihan</Center>
-              </th>
-              <th>
-                <Center>Mulai Vote</Center>
-              </th>
-              <th>
-                <Center>Selesai Vote</Center>
-              </th>
-            </tr>
-          </thead>
-          <tbody>{TableRows}</tbody>
-        </Table>
-        <Center>
-          {_.isEmpty(TableRows) ? (
-            <Center h={"50vh"}>
-              <Title order={6}>Tidak Ada Data</Title>
-            </Center>
-          ) : (
-            ""
-          )}
-        </Center>
-      </Box>
     </>
   );
 }

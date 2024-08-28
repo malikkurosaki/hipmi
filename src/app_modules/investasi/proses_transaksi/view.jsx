@@ -1,36 +1,29 @@
 "use client";
 
-import { Warna } from "@/app/lib/warna";
-import {
-  Box,
-  Group,
-  NumberInput,
-  Divider,
-  Center,
-  Button,
-  Text,
-  Container,
-  Flex,
-  TextInput,
-} from "@mantine/core";
-import { useFocusTrap, useShallowEffect } from "@mantine/hooks";
-import { useRouter } from "next/navigation";
-import { MODEL_INVESTASI } from "../_lib/interface";
-import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
-import { useEffect, useState } from "react";
-import getTokenTransaksi from "../fun/get_token_transaksi";
-import toast from "react-simple-toasts";
-import funUpdatePaymentInvestasi from "../fun/fun_update_payment";
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
-import { useAtom } from "jotai";
-import { gs_investas_menu, gs_midtrans_snap } from "../g_state";
-import funUpdateInvestasi from "../fun/fun_update_investasi";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import {
+  Box,
+  Button,
+  Center,
+  Divider,
+  Group,
+  NumberInput,
+  Text,
+} from "@mantine/core";
+import { useFocusTrap, useShallowEffect } from "@mantine/hooks";
+import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import funUpdateInvestasi from "../fun/fun_update_investasi";
+import funUpdatePaymentInvestasi from "../fun/fun_update_payment";
+import getTokenTransaksi from "../fun/get_token_transaksi";
+import { gs_investas_menu } from "../g_state";
 
 export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
   const router = useRouter();

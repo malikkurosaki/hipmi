@@ -1,11 +1,16 @@
 "use client";
 
-import { Warna } from "@/app/lib/warna";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import {
   AspectRatio,
   Box,
   Button,
-  Center,
   FileButton,
   Group,
   Image,
@@ -16,15 +21,7 @@ import {
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
 import funUploadDokumenInvestasi from "../fun/fun_upload_dokumen";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 
 export default function UploadDokumenInvestasi({
   idInves,
@@ -42,7 +39,8 @@ export default function UploadDokumenInvestasi({
       idInves: idInves,
       title: title,
     };
-    if (_.values(body).includes("")) return ComponentGlobal_NotifikasiPeringatan("Lengkapi nama dokumen");
+    if (_.values(body).includes(""))
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi nama dokumen");
     if (!pdf) return ComponentGlobal_NotifikasiPeringatan("File Kosong");
 
     const fd = new FormData();
@@ -51,7 +49,7 @@ export default function UploadDokumenInvestasi({
     await funUploadDokumenInvestasi(fd, body).then((res) => {
       // console.log(res);
       if (res.status === 201) {
-        setLoading(true)
+        setLoading(true);
         ComponentGlobal_NotifikasiBerhasil("Berhasil upload");
         router.back();
       } else {

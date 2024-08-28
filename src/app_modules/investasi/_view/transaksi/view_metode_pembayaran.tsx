@@ -7,11 +7,18 @@ import { Button, Paper, Radio, Stack, Text, Title } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { MODEL_MASTER_BANK } from "../../_lib/interface";
+import { investasi_funCreateInvoice } from "../../_fun/create/fun_create_invoice";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { data } from "autoprefixer";
 
 export function Investasi_ViewMetodePembayaran({
   listBank,
+  investasiId,
 }: {
-  listBank: any[];
+  listBank: MODEL_MASTER_BANK[];
+  investasiId: string;
 }) {
   const router = useRouter();
   const [bank, setBank] = useState(listBank);
@@ -21,9 +28,25 @@ export function Investasi_ViewMetodePembayaran({
     key: "total_investasi",
     defaultValue: 0,
   });
+  const [jumlah, setJumlah] = useLocalStorage({
+    key: "jumlah_investasi",
+    defaultValue: 0,
+  });
 
   async function onProses() {
-    router.push(NEW_RouterInvestasi.invoice + "1", { scroll: false });
+    const res = await investasi_funCreateInvoice({
+      data: {
+        total: total,
+        pilihBank: pilihBank,
+        investasiId: investasiId,
+        jumlah: jumlah,
+      },
+    });
+
+    if (res.status !== 201)
+      return ComponentGlobal_NotifikasiPeringatan(res.message);
+    ComponentGlobal_NotifikasiBerhasil(res.message);
+    router.push(NEW_RouterInvestasi.invoice + res.data?.id, { scroll: false });
   }
 
   return (
@@ -57,7 +80,7 @@ export function Investasi_ViewMetodePembayaran({
                 value={e.id}
                 label={
                   <Title order={6} color="white">
-                    {e.name}
+                    {e.namaBank}
                   </Title>
                 }
               />

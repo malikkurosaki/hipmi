@@ -1,14 +1,12 @@
-import { Stack } from "@mantine/core";
-import { useState } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
-import styles from "./styles.module.css";
+import { Stack, Text } from "@mantine/core";
+// import { useState } from "react";
+// import { Document, Page, pdfjs } from "react-pdf";
+// import "react-pdf/dist/Page/AnnotationLayer.css";
+// import "react-pdf/dist/Page/TextLayer.css";
+// import styles from "./styles.module.css";
+// import { GlobalWorkerOptions } from "pdfjs-dist";
 
-// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-//   "pdfjs-dist/build/pdf.worker.min.mjs",
-//   import.meta.url
-// ).toString();
+// GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.worker.js`;
 
 export function Investasi_ViewFileViewer({
   fileId,
@@ -17,7 +15,12 @@ export function Investasi_ViewFileViewer({
   fileId: string;
   path: string;
 }) {
-  return <Stack>{/* <MyFile file={path + fileId} /> */}</Stack>;
+  return (
+    <Stack>
+      Maintenance
+      {/* <MyFile file={path + fileId} /> */}
+    </Stack>
+  );
 }
 
 // function MyFile({ file }: { file: any }) {
@@ -28,15 +31,19 @@ export function Investasi_ViewFileViewer({
 //     setNumPages(numPages);
 //   }
 
+//   return<>
+//   <Text>Maintenance</Text>
+//   </>
+
 //   return (
 //     <div>
 //       <Document
-//         className={styles.file_view}
+//         // className={styles.file_view}
 //         file={file}
 //         onLoadSuccess={onDocumentLoadSuccess}
 
 //       >
-//         <Page className={styles.page} pageNumber={pageNumber} />
+//         <Page  pageNumber={pageNumber} />
 //       </Document>
 //       {/* <p>
 //         Page {pageNumber} of {numPages}

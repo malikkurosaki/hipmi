@@ -1,3 +1,4 @@
+import { Warna } from "@/app/lib/warna";
 import {
   AccentColor,
   MainColor,
@@ -11,8 +12,10 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { IconBrandWhatsapp } from "@tabler/icons-react";
+import Link from "next/link";
 
-export function Investasi_ViewProsesTransaksi() {
+export function Investasi_ViewProsesTransaksi({ nomorAdmin }: { nomorAdmin : any}) {
   return (
     <>
       <Stack>
@@ -78,17 +81,17 @@ export function Investasi_ViewProsesTransaksi() {
                   Klik pada logo Whatsapp ini.
                 </Text>
               </Stack>
-              {/* <Link
-                  color="white"
-                  style={{
-                    color: "black",
-                    textDecoration: "none",
-                  }}
-                  target="_blank"
-                  href={`https://wa.me/+${nomorAdmin.nomor}?text=Hallo Admin , Saya ada kendala dalam proses transfer donasi!`}
-                >
-                  <IconBrandWhatsapp size={40} color={Warna.hijau_cerah} />
-                </Link> */}
+              <Link
+                color="white"
+                style={{
+                  color: "black",
+                  textDecoration: "none",
+                }}
+                target="_blank"
+                href={`https://wa.me/+${nomorAdmin.nomor}?text=Hallo Admin , Saya ada kendala dalam proses transfer investasi !`}
+              >
+                <IconBrandWhatsapp size={40} color={Warna.hijau_cerah} />
+              </Link>
             </Group>
           </Paper>
         </Paper>

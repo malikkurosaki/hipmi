@@ -65,7 +65,7 @@ export function Home_UiView({
     },
     {
       id: 2,
-      name: "Project Collaboration",
+      name: "Collaboration",
       icon: <IconAffiliate size={50} />,
       link: RouterColab.splash,
     },

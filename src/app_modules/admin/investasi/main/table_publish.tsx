@@ -1,6 +1,7 @@
 "use client";
-import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
-import { MODEL_INVESTASI } from "@/app_modules/investasi/_lib/interface"; 
+
+import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
+import { MODEL_INVESTASI } from "@/app_modules/investasi/_lib/interface";
 import {
   Button,
   Center,
@@ -12,7 +13,7 @@ import {
   Table,
   Text,
   TextInput,
-  Title
+  Title,
 } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import _ from "lodash";
@@ -21,7 +22,6 @@ import { useState } from "react";
 import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import ComponentAdminGlobal_IsEmptyData from "../../_admin_global/is_empty_data";
 import { adminInvestasi_funGetAllPublish } from "../fun/get/get_all_publish";
-import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
 
 export default function Admin_TablePublishInvestasi({
   dataInvestsi,
@@ -45,6 +45,8 @@ function TableView({ listData }: { listData: any }) {
   const [nPage, setNPage] = useState(listData.nPage);
   const [activePage, setActivePage] = useState(1);
   const [isSearch, setSearch] = useState("");
+  const [isLoading, setLoading] = useState(false);
+  const [idData, setIdData] = useState("");
 
   async function onSearch(s: string) {
     setSearch(s);
@@ -99,12 +101,16 @@ function TableView({ listData }: { listData: any }) {
       <td>
         <Center w={200}>
           <Button
+            loading={isLoading && idData === e.id}
+            loaderPosition="center"
             bg={"green"}
             color="green"
             radius={"xl"}
-            onClick={() =>
-              router.push(RouterAdminInvestasi.detail_publish +`${e.id}`)
-            }
+            onClick={() => {
+              setIdData(e.id);
+              setLoading(true);
+              router.push(RouterAdminInvestasi.detail_publish + `${e.id}`);
+            }}
           >
             Detail
           </Button>
