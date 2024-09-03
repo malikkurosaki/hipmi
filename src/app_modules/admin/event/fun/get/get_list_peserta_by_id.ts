@@ -1,21 +1,45 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import { ceil } from "lodash";
 
-export async function AdminEvent_getListPesertaById(eventId: string) {
+export async function adminEvent_getListPesertaById({
+  eventId,
+  page,
+  search,
+}: {
+  eventId: string;
+  page: number;
+  search?: string;
+}) {
+  let takeData = 10;
+  let skipData = page * takeData - takeData;
+
   const data = await prisma.event_Peserta.findMany({
+    skip: skipData,
+    take: takeData,
     where: {
       eventId: eventId,
     },
     select: {
-      id: true,
       User: {
-        select: {
+        include: {
           Profile: true,
         },
       },
     },
   });
 
-  return data;
+  const nCount = await prisma.event_Peserta.count({
+    where: {
+      eventId: eventId,
+    },
+  });
+
+  const allData = {
+    data: data,
+    nPage: ceil(nCount / takeData),
+  };
+
+  return allData;
 }

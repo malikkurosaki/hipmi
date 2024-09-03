@@ -14,6 +14,7 @@ export default async function adminAppInformation_updateDataBankById({
     },
     data: {
       namaBank: data.namaBank,
+      namaAkun: data.namaAkun,
       norek: data.norek,
     },
   });

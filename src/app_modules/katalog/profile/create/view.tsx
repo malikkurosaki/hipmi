@@ -39,7 +39,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
   const [imgBG, setImgBG] = useState<any | null>();
 
   const [value, setValue] = useState({
-    name: "",
+    namaBank: "",
     email: "",
     alamat: "",
     jenisKelamin: "",
@@ -189,7 +189,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
             onChange={(val) => {
               setValue({
                 ...value,
-                name: val.target.value,
+                namaBank: val.target.value,
               });
             }}
           />

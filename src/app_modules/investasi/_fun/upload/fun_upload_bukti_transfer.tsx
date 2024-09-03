@@ -17,7 +17,6 @@ export async function investasi_funUploadBuktiTransferById({
   const fileName = gambar.name;
   const fileExtension = _.lowerCase(gambar.name.split(".").pop());
   const fileRandomName = v4(fileName) + "." + fileExtension;
-  console.log(gambar);
 
   const upload = await prisma.images.create({
     data: {

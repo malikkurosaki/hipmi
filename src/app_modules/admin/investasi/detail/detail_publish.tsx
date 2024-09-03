@@ -10,13 +10,21 @@ import {
   AdminInvestasi_ViewDaftarTransaksi,
   AdminInvestasi_ViewDetailData,
 } from "../_view";
+import { useAtom } from "jotai";
+import { gs_admin_invetasi_menu_publish } from "../_lib/global_state";
 
 export function AdminInvestasi_DetailPublish({
   data,
+  dataTransaksi,
+  statusTransaksi,
+  investasiId,
 }: {
   data: MODEL_INVESTASI;
+  dataTransaksi: any[];
+  statusTransaksi: any[];
+  investasiId: string;
 }) {
-  const [selectPage, setSelectPage] = useState("1");
+  const [selectPage, setSelectPage] = useAtom(gs_admin_invetasi_menu_publish);
   const listPage = [
     {
       id: "1",
@@ -37,7 +45,7 @@ export function AdminInvestasi_DetailPublish({
 
   return (
     <>
-      <Stack px={"lg"}>
+      <Stack >
         <ComponentAdminGlobal_BackButton />
 
         <Group>
@@ -60,9 +68,13 @@ export function AdminInvestasi_DetailPublish({
           <AdminInvestasi_ViewDetailData data={data} />
         ) : null}
         {selectPage == "2" ? (
-          <AdminInvestasi_ViewDaftarTransaksi dataTransaksi={{}} />
+          <AdminInvestasi_ViewDaftarTransaksi
+            dataTransaksi={dataTransaksi}
+            statusTransaksi={statusTransaksi}
+            investasiId={investasiId}
+          />
         ) : null}
-        {selectPage == "3" ? <AdminInvestasi_ViewDaftarInvestor /> : null}
+        {/* {selectPage == "3" ? <AdminInvestasi_ViewDaftarInvestor /> : null} */}
       </Stack>
     </>
   );

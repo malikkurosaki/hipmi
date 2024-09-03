@@ -32,6 +32,16 @@ export function Investasi_ComponentCardDaftarTransaksi({
     invoiceId: string;
     statusInvoiceId: string;
   }) {
+
+    // Berhasil
+     if (statusInvoiceId === "1") {
+       setVisible(true);
+       return router.push(NEW_RouterInvestasi.transaksi_berhasil + invoiceId, {
+         scroll: false,
+       });
+     }
+
+
     // Proses
     if (statusInvoiceId === "2") {
       setVisible(true);
@@ -44,6 +54,13 @@ export function Investasi_ComponentCardDaftarTransaksi({
     if (statusInvoiceId === "3") {
       setVisible(true);
       return router.push(NEW_RouterInvestasi.invoice + invoiceId, {
+        scroll: false,
+      });
+    }
+
+    if (statusInvoiceId === "4") {
+      setVisible(true);
+      return router.push(NEW_RouterInvestasi.transaksi_gagal + invoiceId, {
         scroll: false,
       });
     }

@@ -35,7 +35,6 @@ export function Investasi_ViewInvoice({
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState(dataInvoice);
   const [file, setFile] = useState<File | null>(null);
-  // const [image, setImage] = useState<any | null>(null);
 
   async function onUpload() {
     const gambar = new FormData();

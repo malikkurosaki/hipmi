@@ -5,9 +5,13 @@ export const NEW_RouterInvestasi = {
   invoice: "/dev/investasi/transaksi/invoice/",
   proses_transaksi: "/dev/investasi/transaksi/proses-transaksi/",
 
+  // stasus transaksi
+  transaksi_gagal: "/dev/investasi/status-transaksi/gagal/",
+  transaksi_berhasil: "/dev/investasi/status-transaksi/berhasil/",
+
   // file view
   file_view: "/dev/investasi/file-view/",
-}
+};
 
 export const RouterInvestasi_OLD = {
   api_gambar: "/api/investasi/gambar/",
@@ -32,7 +36,7 @@ export const RouterInvestasi_OLD = {
   proses_investasi: "/dev/investasi/proses_investasi/",
   proses_transaksi: "/dev/investasi/proses_transaksi/",
   status_transaksi: "/dev/investasi/status_transaksi/berhasil",
-  status_pesanan:"/dev/investasi/status_pesanan/",
+  status_pesanan: "/dev/investasi/status_pesanan/",
   status_transaksi_gagal: "/dev/investasi/status_transaksi/gagal/",
   metode_transfer: "/dev/investasi/metode_transfer/",
 
@@ -64,5 +68,3 @@ export const RouterInvestasi_OLD = {
   upload_prospektus: "/dev/investasi/upload_prospektus/",
   upload_dokumen: "/dev/investasi/upload_dokumen/",
 };
-
-

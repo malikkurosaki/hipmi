@@ -1,30 +1,11 @@
-import {
-  NEW_RouterInvestasi,
-  RouterInvestasi_OLD,
-} from "@/app/lib/router_hipmi/router_investasi";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import {
-  Stack,
-  Box,
-  Paper,
-  Group,
-  Title,
-  Text,
-  Center,
-  Badge,
-  Loader,
-} from "@mantine/core";
-import moment from "moment";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { MODEL_INVOICE_INVESTASI } from "../../_lib/interface";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import _ from "lodash";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
-import { ComponentColab_CardBeranda } from "@/app_modules/colab/component/card_view/card_beranda";
 import colab_getListAllProyek from "@/app_modules/colab/fun/get/get_list_all_proyek";
+import { Box, Center, Loader } from "@mantine/core";
+import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";
+import { useState } from "react";
 import { Investasi_ComponentCardDaftarTransaksi } from "../../_component";
+import { MODEL_INVOICE_INVESTASI } from "../../_lib/interface";
 
 export function Investasi_ViewDaftarTransaksi({
   dataTransaksi,

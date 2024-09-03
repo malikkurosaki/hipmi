@@ -1,3 +1,4 @@
+import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 
 export interface MODEL_INVESTASI {
@@ -127,6 +128,7 @@ export interface MODEL_INVOICE_INVESTASI {
   masterBankId: string;
   statusInvoiceId: string;
   authorId: string;
+  Author: MODEL_USER
   imagesId: string;
   MasterBank: MODEL_MASTER_BANK;
   StatusInvoice: MODEL_STATUS_INVOICE_INVESTASI;

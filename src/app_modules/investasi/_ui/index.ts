@@ -6,6 +6,7 @@ import { Investasi_UiProsesTransaksi } from "./transaksi/ui_proses_transaksi";
 import { Investasi_UiBeranda } from "./main/ui_beranda";
 import { Investasi_UiLayoutMain } from "./main/ui_layout_main";
 import { Investasi_UiDaftarTransaksi } from "./main/ui_transaksi";
+import { Investasi_UiTransaksiBerhasil } from "./status_transaksi/ui_transaksi_berhasil";
 
 export { Investasi_UiProsesPembelian };
 export { Investasi_UiMetodePembayaran };
@@ -15,3 +16,4 @@ export { Investasi_UiProsesTransaksi };
 export { Investasi_UiBeranda };
 export { Investasi_UiLayoutMain };
 export { Investasi_UiDaftarTransaksi };
+export { Investasi_UiTransaksiBerhasil };

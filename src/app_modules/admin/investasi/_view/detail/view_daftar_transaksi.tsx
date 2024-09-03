@@ -1,38 +1,84 @@
-import { RouterAdminDonasi } from "@/app/lib/router_admin/router_admin_donasi";
-import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
-import { MODEL_DONASI_INVOICE } from "@/app_modules/donasi/model/interface";
+import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
+import { ComponentAdminGlobal_TampilanRupiah } from "@/app_modules/admin/_admin_global";
 import {
-  Stack,
-  Group,
-  Title,
+  MODEL_INVOICE_INVESTASI,
+  MODEL_STATUS_INVOICE_INVESTASI,
+} from "@/app_modules/investasi/_lib/interface";
+import {
   ActionIcon,
-  Select,
-  Paper,
-  ScrollArea,
-  Table,
-  Center,
-  Pagination,
   Badge,
   Button,
+  Center,
+  Group,
+  Pagination,
+  Paper,
+  ScrollArea,
+  Select,
+  Stack,
+  Table,
+  Title,
 } from "@mantine/core";
 import { IconReload } from "@tabler/icons-react";
+import { isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import {
+  AdminInvestasi_ComponentButtonBandingTransaksi,
+  AdminInvestasi_ComponentButtonKonfirmasiTransaksi,
+  AdminInvestasi_ComponentCekBuktiTransfer,
+} from "../../_component";
+import { adminInvestasi_funGetAllTransaksiById } from "../../fun";
 
 export function AdminInvestasi_ViewDaftarTransaksi({
   dataTransaksi,
+  statusTransaksi,
+  investasiId,
 }: {
   dataTransaksi: any;
+  statusTransaksi: MODEL_STATUS_INVOICE_INVESTASI[];
+  investasiId: string;
 }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
   const [idData, setIdData] = useState("");
-  const [data, setData] = useState<MODEL_DONASI_INVOICE[]>(
+  const [listStatsus, setListStatus] = useState(statusTransaksi);
+
+  const [data, setData] = useState<MODEL_INVOICE_INVESTASI[]>(
     dataTransaksi.data
   );
   const [isNPage, setNPage] = useState(dataTransaksi.nPage);
   const [isActivePage, setActivePage] = useState(1);
-  const [isSelect, setSelect] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+
+  async function onPageClick(p: any) {
+    setActivePage(p);
+    const loadData = await adminInvestasi_funGetAllTransaksiById({
+      investasiId: investasiId,
+      page: p,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  async function onSelected(selectStatus: any) {
+    setSelectedStatus(selectStatus);
+    const loadData = await adminInvestasi_funGetAllTransaksiById({
+      investasiId: investasiId,
+      page: isActivePage,
+      selectStatus: selectStatus,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  async function onReload() {
+    const loadData = await adminInvestasi_funGetAllTransaksiById({
+      investasiId: investasiId,
+      page: 1,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
 
   const tableRows = data?.map((e, i) => (
     <tr key={i}>
@@ -40,11 +86,18 @@ export function AdminInvestasi_ViewDaftarTransaksi({
         <Center>{e?.Author.username}</Center>
       </td>
       <td>
-        <Center>{e?.DonasiMaster_Bank?.name}</Center>
+        <Center>{e?.MasterBank.namaBank}</Center>
       </td>
       <td>
         <Center>
-          <TampilanRupiahDonasi nominal={+e?.nominal} />
+          <ComponentAdminGlobal_TampilanRupiah nominal={+e?.nominal} />
+        </Center>
+      </td>
+      <td>
+        <Center>
+          {new Intl.NumberFormat("id-ID", { maximumFractionDigits: 10 }).format(
+            +e?.lembarTerbeli
+          )}
         </Center>
       </td>
       <td>
@@ -56,63 +109,62 @@ export function AdminInvestasi_ViewDaftarTransaksi({
       </td>
       <td>
         <Center>
-          <Badge w={150} variant="dot">
-            {e?.DonasiMaster_StatusInvoice?.name}
+          <Badge
+            w={150}
+            variant="light"
+            color={
+              e.statusInvoiceId === "1"
+                ? "green"
+                : e.statusInvoiceId === "4"
+                  ? "red"
+                  : "blue"
+            }
+          >
+            {e?.StatusInvoice?.name}
           </Badge>
         </Center>
       </td>
       <td>
         <Center>
-          {e?.donasiMaster_StatusInvoiceId === "1" ||
-          e?.donasiMaster_StatusInvoiceId === "2" ? (
-            <Button
-              radius={"xl"}
-              onClick={() =>
-                router.push(
-                  RouterAdminDonasi.transfer_invoice + `${e?.imagesId}`
-                )
-              }
-            >
-              Cek
-            </Button>
+          {e?.statusInvoiceId !== "3" ? (
+            <AdminInvestasi_ComponentCekBuktiTransfer imagesId={e?.imagesId} />
           ) : (
             "-"
           )}
         </Center>
       </td>
       <td>
-        test
-        {/* <Center>
-            {e?.donasiMaster_StatusInvoiceId === "1" ? (
-              <Button radius={"xl"} disabled>
-                Selesai
-              </Button>
-            ) : e?.DonasiMaster_StatusInvoice?.id === "2" ? (
-              <ButtonAccept
-                invoiceId={e?.id}
-                donasiId={dataDonasi?.id}
-                nominal={+e?.nominal}
-                danaTerkumpul={+dataDonasi?.terkumpul}
-                target={+dataDonasi?.target}
-                onSuccessDonasi={(val) => {
-                  onSuccessDonasi(val);
-                }}
-                onSuccessDonatur={(val) => {
-                  setListDonatur(val.data);
-                  setNPage(val.nPage);
-                }}
-              />
-            ) : (
-              <Text>-</Text>
-            )}
-          </Center> */}
+        <Center>
+          {e.statusInvoiceId === "1" && "-"}
+          {e.statusInvoiceId === "2" && (
+            <AdminInvestasi_ComponentButtonKonfirmasiTransaksi
+              invoiceId={e.id}
+              investasiId={investasiId}
+              onLoadData={(val) => {
+                setData(val.data);
+                setNPage(val.nPage);
+              }}
+            />
+          )}
+          {e.statusInvoiceId === "3" && "-"}
+          {e.statusInvoiceId === "4" && (
+            <AdminInvestasi_ComponentButtonBandingTransaksi
+              invoiceId={e.id}
+              investasiId={investasiId}
+              onLoadData={(val) => {
+                setData(val.data);
+                setNPage(val.nPage);
+              }}
+            />
+          )}
+        </Center>
       </td>
     </tr>
   ));
+
   return (
     <>
       <Stack spacing={"xs"} h={"100%"}>
-        {/* <pre>{JSON.stringify(dataDonasi, null, 2)}</pre> */}
         <Group
           position="apart"
           bg={"gray.4"}
@@ -126,22 +178,25 @@ export function AdminInvestasi_ViewDaftarTransaksi({
               radius={"xl"}
               variant="light"
               onClick={() => {
-                //   onRelaod();
+                onReload();
               }}
             >
               <IconReload />
             </ActionIcon>
             <Select
               placeholder="Pilih status"
-              value={isSelect}
-              data={[]}
-              // data={listMasterStatus.map((e) => ({
-              //   value: e.id,
-              //   label: e.name,
-              // }))}
-              // onChange={(val) => {
-              //   onSelect(val);
-              // }}
+              value={selectedStatus}
+              data={
+                isEmpty(listStatsus)
+                  ? []
+                  : listStatsus.map((e) => ({
+                      value: e.id,
+                      label: e.name,
+                    }))
+              }
+              onChange={(val: any) => {
+                onSelected(val);
+              }}
             />
           </Group>
         </Group>
@@ -168,6 +223,9 @@ export function AdminInvestasi_ViewDaftarTransaksi({
                     <Center>Jumlah Investasi</Center>
                   </th>
                   <th>
+                    <Center>Lembar Terbeli</Center>
+                  </th>
+                  <th>
                     <Center>Tanggal</Center>
                   </th>
                   <th>
@@ -190,7 +248,7 @@ export function AdminInvestasi_ViewDaftarTransaksi({
               value={isActivePage}
               total={isNPage}
               onChange={(val) => {
-                //   onPageClick(val);
+                onPageClick(val);
               }}
             />
           </Center>

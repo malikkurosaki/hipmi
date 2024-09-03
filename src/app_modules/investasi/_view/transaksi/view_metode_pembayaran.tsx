@@ -46,6 +46,7 @@ export function Investasi_ViewMetodePembayaran({
     if (res.status !== 201)
       return ComponentGlobal_NotifikasiPeringatan(res.message);
     ComponentGlobal_NotifikasiBerhasil(res.message);
+    setLoading(true);
     router.push(NEW_RouterInvestasi.invoice + res.data?.id, { scroll: false });
   }
 

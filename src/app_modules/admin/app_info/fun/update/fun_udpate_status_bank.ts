@@ -17,6 +17,8 @@ export default async function adminAppInformation_updateStatusBankById({
     },
   });
 
+
+
   if (!updt) return { status: 400, message: "Gagal update" };
   return { status: 200, message: "Berhasil update" };
 }

@@ -2,7 +2,7 @@
 
 import {
   NEW_RouterInvestasi,
-  RouterInvestasi_OLD
+  RouterInvestasi_OLD,
 } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
@@ -25,7 +25,7 @@ import {
   Progress,
   Stack,
   Text,
-  Title
+  Title,
 } from "@mantine/core";
 import {
   IconBookDownload,
@@ -40,6 +40,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_INVESTASI } from "../_lib/interface";
 import { gs_TransferValue } from "../g_state";
+import { useLocalStorage } from "@mantine/hooks";
 
 export default function DetailInvestasi({
   dataInvestasi,
@@ -61,6 +62,15 @@ export default function DetailInvestasi({
   const [boxId, setBoxId] = useState(0);
   const [isLoadingBox, setLoadingBox] = useState(false);
   const [isLoadingButton, setLoadingButton] = useState(false);
+
+  const [total, setTotal] = useLocalStorage({
+    key: "total_investasi",
+    defaultValue: 0,
+  });
+  const [jumlah, setJumlah] = useLocalStorage({
+    key: "jumlah_investasi",
+    defaultValue: 0,
+  });
 
   const listBox = [
     {
@@ -84,20 +94,22 @@ export default function DetailInvestasi({
   ];
 
   async function onSubmit() {
-    //NEW
-    router.push(NEW_RouterInvestasi.pembelian + data.id, { scroll: false });
-
     // OLD
     // router.push(RouterInvestasi_OLD.proses_transaksi + `${data.id}`);
+    // setTransaksiValue({
+    //   ...transaksiValue,
+    //   lembarTerbeli: "",
+    //   namaBank: "",
+    //   nomorRekening: "",
+    //   totalTransfer: "",
+    // });
 
-    setTransaksiValue({
-      ...transaksiValue,
-      lembarTerbeli: "",
-      namaBank: "",
-      nomorRekening: "",
-      totalTransfer: "",
-    });
     setLoadingButton(true);
+
+    //NEW
+    router.push(NEW_RouterInvestasi.pembelian + data.id, { scroll: false });
+    setTotal(0);
+    setJumlah(0);
   }
 
   return (

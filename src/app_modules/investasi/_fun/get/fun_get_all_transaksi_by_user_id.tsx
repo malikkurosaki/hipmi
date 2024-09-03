@@ -16,7 +16,7 @@ export async function investasi_funGetTransaksiByUserId({
     take: takeData,
     skip: skipData,
     orderBy: {
-      createdAt: "desc",
+      updatedAt: "desc",
     },
     where: {
       authorId: authorId,
