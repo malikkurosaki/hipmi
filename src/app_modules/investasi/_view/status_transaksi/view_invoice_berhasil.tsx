@@ -4,10 +4,8 @@ import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_invest
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import { ComponentGlobal_TampilanRupiah } from "@/app_modules/_global/component";
 import {
-  ActionIcon,
   Box,
   Button,
-  Center,
   Collapse,
   Grid,
   Group,
@@ -15,19 +13,12 @@ import {
   Paper,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
-import {
-  IconBrandWhatsapp,
-  IconMoneybag,
-  IconMoodDollar,
-  IconZoomMoney,
-} from "@tabler/icons-react";
+import { IconBrandCashapp } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_INVOICE_INVESTASI } from "../../_lib/interface";
-import { Prisma } from "@prisma/client";
-import { IconBrandCashapp } from "@tabler/icons-react";
 
 export function Investasi_ViewTransaksiBerhasil({
   dataTransaksi,

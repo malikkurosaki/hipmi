@@ -6,7 +6,7 @@ import {
   MainColor,
   AccentColor,
 } from "@/app_modules/_global/color/color_pallet";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 import { Card, Grid, Center, Text } from "@mantine/core";
 import { MODEL_JOB } from "../../model/interface";
 import { useRouter } from "next/navigation";

@@ -31,6 +31,7 @@ export interface MODEL_INVESTASI {
   masterStatusInvestasiId: string;
   author: MODEL_PROFILE_OLD;
   countDown: Date;
+  Investasi_Invoice: MODEL_INVOICE_INVESTASI[];
 }
 
 export interface MODEL_Transaksi_Investasi {
@@ -128,11 +129,11 @@ export interface MODEL_INVOICE_INVESTASI {
   masterBankId: string;
   statusInvoiceId: string;
   authorId: string;
-  Author: MODEL_USER
+  Author: MODEL_USER;
   imagesId: string;
   MasterBank: MODEL_MASTER_BANK;
   StatusInvoice: MODEL_STATUS_INVOICE_INVESTASI;
-
+  Investor: any[];
 }
 
 export interface MODEL_STATUS_INVOICE_INVESTASI {

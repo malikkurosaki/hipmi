@@ -1,5 +1,13 @@
+import { Investasi_ComponentStylesCard } from "./comp_card_border_and_background";
+import { Investasi_ComponentBoxDaftarBerita } from "./detail/comp_box_daftar_berita";
+import { Investasi_ComponentBoxDaftarDokumen } from "./detail/comp_box_daftar_dokumen";
+import { Investasi_ComponentBoxProspektus } from "./detail/comp_box_prospektus";
+import { Investasi_ComponentBoxDetailData } from "./detail/saham_saya/comp_detail_data";
+import { Investasi_ComponentBoxHargaDanLembarSaham } from "./detail/saham_saya/comp_harga_dan_lembar";
+import { Investasi_ComponentBoxProgress } from "./detail/saham_saya/comp_progress_saham";
 import { Investasi_ComponentCardBeranda } from "./main/comp_card_beranda";
 import { Investasi_ComponentCardDaftarTransaksi } from "./main/comp_card_daftar_transaksi";
+import { Investasi_ComponentSahamSaya } from "./main/comp_card_saham_saya";
 import { Investasi_ComponentFooterMain } from "./main/comp_footer_main";
 import { Investasi_ComponentButtonUpdateBeranda } from "./main/comp_update_beranda";
 
@@ -7,3 +15,11 @@ export { Investasi_ComponentFooterMain };
 export { Investasi_ComponentCardBeranda };
 export { Investasi_ComponentButtonUpdateBeranda };
 export { Investasi_ComponentCardDaftarTransaksi };
+export { Investasi_ComponentSahamSaya };
+export { Investasi_ComponentStylesCard as Investasasi_ComponentBoxBorderAndBackground };
+export { Investasi_ComponentBoxProspektus };
+export { Investasi_ComponentBoxDaftarDokumen };
+export { Investasi_ComponentBoxDaftarBerita };
+export { Investasi_ComponentBoxHargaDanLembarSaham };
+export { Investasi_ComponentBoxProgress };
+export { Investasi_ComponentBoxDetailData };

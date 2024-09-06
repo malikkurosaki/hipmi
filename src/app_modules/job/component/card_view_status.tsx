@@ -4,8 +4,8 @@ import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { Card, Center, Stack, Text } from "@mantine/core";
 import _ from "lodash";

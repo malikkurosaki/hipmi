@@ -9,14 +9,17 @@ import { ComponentAdminGlobal_NotifikasiGagal } from "@/app_modules/admin/_admin
 import { useState } from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { IconBan } from "@tabler/icons-react";
+import { MODEL_INVOICE_INVESTASI } from "@/app_modules/investasi/_lib/interface";
 
 export function AdminInvestasi_ComponentButtonKonfirmasiTransaksi({
   invoiceId,
   investasiId,
+  lembarTerbeli,
   onLoadData,
 }: {
   invoiceId: string;
   investasiId: string;
+  lembarTerbeli: string;
   onLoadData: (val: any) => void;
 }) {
   const [isLoadingAccpet, setLoadingAccept] = useState(false);
@@ -43,7 +46,11 @@ export function AdminInvestasi_ComponentButtonKonfirmasiTransaksi({
   }
 
   async function onAccept() {
-    const res = await adminInvestasi_funAcceptTransaksiById({ invoiceId });
+    const res = await adminInvestasi_funAcceptTransaksiById({
+      invoiceId,
+      investasiId,
+      lembarTerbeli,
+    });
 
     if (res.status == 200) {
       try {

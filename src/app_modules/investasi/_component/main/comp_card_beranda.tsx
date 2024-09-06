@@ -19,7 +19,7 @@ import moment from "moment";
 import { MODEL_INVESTASI } from "../../_lib/interface";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 
 export function Investasi_ComponentCardBeranda({
   data,

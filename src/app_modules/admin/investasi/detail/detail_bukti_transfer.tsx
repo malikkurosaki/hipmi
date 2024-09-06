@@ -3,7 +3,7 @@
 import { Stack } from "@mantine/core";
 import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
 import { AdminInvestasi_ViewBuktiTransfer } from "../_view";
-import { ComponentAdminGlobal_TitlePage } from "../../_admin_global";
+import { ComponentAdminGlobal_TitlePage } from "../../_admin_global/_component";
 
 export function AdminInvestasi_DetailBuktiTransfer({ imageId }: { imageId: string }) {
   return (

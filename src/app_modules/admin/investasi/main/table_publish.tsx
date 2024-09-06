@@ -100,6 +100,11 @@ function TableView({ listData }: { listData: any }) {
       </td>
       <td>
         <Center w={200}>
+          <Text lineClamp={1}>{e.Investasi_Invoice.length}</Text>
+        </Center>
+      </td>
+      <td>
+        <Center w={200}>
           <Button
             loading={isLoading && idData === e.id}
             loaderPosition="center"
@@ -171,6 +176,9 @@ function TableView({ listData }: { listData: any }) {
                     </th>
                     <th>
                       <Center w={200}>Total Saham</Center>
+                    </th>
+                    <th>
+                      <Center w={200}>Validasi</Center>
                     </th>
                     <th>
                       <Center w={200}>Aksi</Center>

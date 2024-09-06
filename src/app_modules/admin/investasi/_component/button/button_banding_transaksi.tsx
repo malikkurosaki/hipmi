@@ -1,7 +1,10 @@
 "use client";
 
 import { Button } from "@mantine/core";
-import { adminInvestasi_funAcceptTransaksiById, adminInvestasi_funGetAllTransaksiById } from "../../fun";
+import {
+  adminInvestasi_funAcceptTransaksiById,
+  adminInvestasi_funGetAllTransaksiById,
+} from "../../fun";
 import { ComponentAdminGlobal_NotifikasiBerhasil } from "@/app_modules/admin/_admin_global/admin_notifikasi/notifikasi_berhasil";
 import { ComponentAdminGlobal_NotifikasiGagal } from "@/app_modules/admin/_admin_global/admin_notifikasi/notifikasi_gagal";
 import { useState } from "react";
@@ -9,15 +12,21 @@ import { useState } from "react";
 export function AdminInvestasi_ComponentButtonBandingTransaksi({
   invoiceId,
   investasiId,
+  lembarTerbeli,
   onLoadData,
 }: {
   invoiceId: string;
-  investasiId: string
+  investasiId: string;
+  lembarTerbeli: string;
   onLoadData: (val: any) => void;
 }) {
-  const [isLoading, setLoading] = useState(false)
+  const [isLoading, setLoading] = useState(false);
   async function onAccept() {
-    const res = await adminInvestasi_funAcceptTransaksiById({ invoiceId });
+    const res = await adminInvestasi_funAcceptTransaksiById({
+      invoiceId,
+      investasiId,
+      lembarTerbeli,
+    });
 
     if (res.status == 200) {
       try {

@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { NEW_RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 
 export function Investasi_ComponentCardDaftarTransaksi({
   data,
@@ -32,15 +32,13 @@ export function Investasi_ComponentCardDaftarTransaksi({
     invoiceId: string;
     statusInvoiceId: string;
   }) {
-
     // Berhasil
-     if (statusInvoiceId === "1") {
-       setVisible(true);
-       return router.push(NEW_RouterInvestasi.transaksi_berhasil + invoiceId, {
-         scroll: false,
-       });
-     }
-
+    if (statusInvoiceId === "1") {
+      setVisible(true);
+      return router.push(NEW_RouterInvestasi.transaksi_berhasil + invoiceId, {
+        scroll: false,
+      });
+    }
 
     // Proses
     if (statusInvoiceId === "2") {
@@ -86,24 +84,39 @@ export function Investasi_ComponentCardDaftarTransaksi({
         }
       >
         <Group position="apart">
-          <Title order={6}>{data.Investasi.title}</Title>
-          <Title order={5}>
+          <Text fw={"bold"}>{data.Investasi.title}</Text>
+          <Text fw={"bold"}>
             Rp.
             {new Intl.NumberFormat("id-ID", {
               maximumFractionDigits: 10,
             }).format(+data.nominal)}
-          </Title>
+          </Text>
         </Group>
         <Group position="apart">
           <Stack spacing={0}>
             {/* <Text fz={"xs"}>Bank {data.namaBank}</Text> */}
-            <Text fz={"xs"}>{moment(data.createdAt).format("ll")}</Text>
+            <Text fz={"xs"} c={"gray"}>
+              {new Intl.DateTimeFormat("id-ID", { dateStyle: "long" }).format(
+                data.createdAt
+              )}
+            </Text>
           </Stack>
-          <Text>{data.lembarTerbeli} Lembar</Text>
+          <Title
+            order={6}
+            c={
+              data.statusInvoiceId === "1"
+                ? "green"
+                : data.statusInvoiceId === "2"
+                  ? "blue"
+                  : data.statusInvoiceId === "3"
+                    ? "orange"
+                    : "red"
+            }
+          >
+            {data.StatusInvoice.name}
+          </Title>
         </Group>
-        <Center mt={"sm"}>
-          <Badge>{data.StatusInvoice.name}</Badge>
-        </Center>
+
         {visible && <ComponentGlobal_CardLoadingOverlay />}
       </Card>
     </>

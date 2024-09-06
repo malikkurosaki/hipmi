@@ -17,7 +17,7 @@ import { ComponentGlobal_NotifikasiPeringatan } from "./notif_global/notifikasi_
 import moment from "moment";
 import { useState } from "react";
 
-export default function ComponentGlobal_AuthorNameOnHeader({
+export default function ComponentGlobal_AuthorNameAndAvatar({
   profileId,
   imagesId,
   authorName,

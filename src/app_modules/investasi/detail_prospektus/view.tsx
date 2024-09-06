@@ -20,7 +20,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { IconChevronRight } from "@tabler/icons-react";
+import { IconChevronRight, IconFileTypePdf } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
 import { MODEL_INVESTASI } from "../_lib/interface";
@@ -47,20 +47,22 @@ export default function DetailPropektus({
           border: `2px solid ${AccentColor.blue}`,
           borderRadius: "10px",
           color: "white",
+          cursor: "pointer",
         }}
         onClick={() =>
           router.push(
-            NEW_RouterInvestasi.file_view + `${data.ProspektusInvestasi.id}`,
+            NEW_RouterInvestasi.file_view_prospektus +
+              `${data.ProspektusInvestasi.id}`,
             { scroll: false }
           )
         }
       >
         <Group position="apart">
           <Text w={"80%"} lineClamp={1}>
-            Prospektus_{data.title}
+            Prospektus_{data?.title}
           </Text>
           <Center>
-            <IconChevronRight />
+            <IconFileTypePdf style={{ color: MainColor.yellow }} />
           </Center>
         </Group>
       </Paper>

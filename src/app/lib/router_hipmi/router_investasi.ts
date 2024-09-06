@@ -10,7 +10,11 @@ export const NEW_RouterInvestasi = {
   transaksi_berhasil: "/dev/investasi/status-transaksi/berhasil/",
 
   // file view
-  file_view: "/dev/investasi/file-view/",
+  file_view_prospektus: "/dev/investasi/file-view/prospektus/",
+  file_view_dokumen: "/dev/investasi/file-view/dokumen/",
+
+  // detail
+  detail_saham: "/dev/investasi/detail/saham/",
 };
 
 export const RouterInvestasi_OLD = {
@@ -60,7 +64,7 @@ export const RouterInvestasi_OLD = {
   detail_reject: "/dev/investasi/detail_portofolio/reject/",
 
   // berita
-  berita: "/dev/investasi/berita/",
+  daftar_berita: "/dev/investasi/berita/",
   create_berita: "/dev/investasi/create_berita/",
   list_edit_berita: "/dev/investasi/list_edit_berita/",
 

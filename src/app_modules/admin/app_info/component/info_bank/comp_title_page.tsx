@@ -1,4 +1,4 @@
-import { ComponentAdminGlobal_TitlePage } from "@/app_modules/admin/_admin_global";
+import { ComponentAdminGlobal_TitlePage } from "@/app_modules/admin/_admin_global/_component"; 
 import { Button } from "@mantine/core";
 import { IconCirclePlus } from "@tabler/icons-react";
 

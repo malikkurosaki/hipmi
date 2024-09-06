@@ -3,10 +3,10 @@ import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_nam
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import { Card, Group, Stack, Text, Title } from "@mantine/core";
 
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 import { useRouter } from "next/navigation";
-import { MODEL_EVENT } from "../../model/interface";
 import { useState } from "react";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
+import { MODEL_EVENT } from "../../model/interface";
 
 export function ComponentEvent_CardRiwayat({ data }: { data: MODEL_EVENT }) {
   const router = useRouter();

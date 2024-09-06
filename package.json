@@ -62,6 +62,7 @@
     "next": "^13.5.4-canary.8",
     "next-dev": "^1.1.9",
     "next-scroll-loader": "^1.0.9",
+    "pdfjs-dist": "^4.6.82",
     "postcss": "8.4.27",
     "react": "18.2.0",
     "react-countdown": "^2.3.5",

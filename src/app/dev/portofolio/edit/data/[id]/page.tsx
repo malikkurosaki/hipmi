@@ -14,7 +14,6 @@ export default async function Page({ params }: { params: { id: string } }) {
     "profileId",
   ]);
 
-
   const listBidang = await Portofolio_getMasterBidangBisnis()
 
   return (

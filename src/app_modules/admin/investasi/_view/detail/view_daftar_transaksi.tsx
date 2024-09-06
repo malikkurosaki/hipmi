@@ -1,5 +1,4 @@
-import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
-import { ComponentAdminGlobal_TampilanRupiah } from "@/app_modules/admin/_admin_global";
+import { ComponentAdminGlobal_TampilanRupiah } from "@/app_modules/admin/_admin_global/_component";
 import {
   MODEL_INVOICE_INVESTASI,
   MODEL_STATUS_INVOICE_INVESTASI,
@@ -7,7 +6,6 @@ import {
 import {
   ActionIcon,
   Badge,
-  Button,
   Center,
   Group,
   Pagination,
@@ -140,6 +138,7 @@ export function AdminInvestasi_ViewDaftarTransaksi({
             <AdminInvestasi_ComponentButtonKonfirmasiTransaksi
               invoiceId={e.id}
               investasiId={investasiId}
+              lembarTerbeli={e.lembarTerbeli}
               onLoadData={(val) => {
                 setData(val.data);
                 setNPage(val.nPage);
@@ -151,6 +150,7 @@ export function AdminInvestasi_ViewDaftarTransaksi({
             <AdminInvestasi_ComponentButtonBandingTransaksi
               invoiceId={e.id}
               investasiId={investasiId}
+              lembarTerbeli={e.lembarTerbeli}
               onLoadData={(val) => {
                 setData(val.data);
                 setNPage(val.nPage);

@@ -16,6 +16,7 @@ import funDeleteDokumenInvestasi from "../fun/fun_delete_dokumen";
 import funLoadDataInvestasi from "../fun/fun_load_data";
 import { MODEL_INVESTASI } from "../_lib/interface";
 import { IconFile } from "@tabler/icons-react";
+import { IconFileTypePdf } from "@tabler/icons-react";
 
 export default function EditDokumenInvestasi({
   dataInvestasi,
@@ -57,7 +58,7 @@ export default function EditDokumenInvestasi({
               <Group position="center">
                 <Link href={`/file/${e.url}`} target="_blank">
                   <ActionIcon variant="transparent">
-                    <IconFolderOpen
+                    <IconFileTypePdf
                       style={{
                         color: MainColor.yellow,
                       }}

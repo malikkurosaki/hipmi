@@ -27,7 +27,7 @@ import adminAppInformation_createBank from "../fun/create/fun_create_new_bank";
 import adminAppInformation_getMasterBank from "../fun/master/get_list_bank";
 import adminAppInformation_updateStatusBankById from "../fun/update/fun_udpate_status_bank";
 import adminAppInformation_updateDataBankById from "../fun/update/fun_update_data_bank";
-import { ComponentAdminGlobal_TitlePage } from "../../_admin_global";
+import { ComponentAdminGlobal_TitlePage } from "../../_admin_global/_component";
 import { AdminAppInformation_ComponentTitlePageBank } from "../component";
 
 export default function AdminAppInformation_ViewInfoBank({
@@ -187,249 +187,235 @@ export default function AdminAppInformation_ViewInfoBank({
 
   return (
     <>
-      <Stack spacing={"xs"}>
-        <AdminAppInformation_ComponentTitlePageBank
-          onEventListener={(val: { isCreate: any; isUpdate: any }) => {
-            setIsCreate(val.isCreate);
-            setIsUpdate(val.isUpdate);
-          }}
-        />
-        {/* <ComponentAdminGlobal_TitlePage
-          name="Informasi Bank"
-          component={
-            <Button
-              w={120}
-              leftIcon={<IconCirclePlus />}
-              radius={"xl"}
-              onClick={() => {
-                setIsCreate(true);
-                setIsUpdate(false);
-              }}
-            >
-              Tambah
-            </Button>
-          }
-        /> */}
-      </Stack>
-
-      <Grid>
-        <Grid.Col span={9}>
-          <Paper p={"md"} withBorder shadow="lg" h={"50vh"}>
-            <ScrollArea w={"100%"} h={"90%"} offsetScrollbars>
-              <Table
-                verticalSpacing={"xs"}
-                horizontalSpacing={"md"}
-                p={"md"}
-                w={1000}
-                striped
-                highlightOnHover
-              >
-                <thead>
-                  <tr>
-                    <th>
-                      <Center w={150}>Bank</Center>
-                    </th>
-                    <th>
-                      <Center>Status</Center>
-                    </th>
-                    <th>
-                      <Center>Nama Rekening</Center>
-                    </th>
-                    <th>
-                      <Center>Nomor Rekening</Center>
-                    </th>
-                    <th>
-                      <Center>Aksi</Center>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>{rowTable}</tbody>
-              </Table>
-            </ScrollArea>
-          </Paper>
-        </Grid.Col>
-
-        <Grid.Col span={3}>
-          {isCreate ? (
-            <Paper p={"md"} withBorder shadow="lg">
-              <Stack>
-                <Center>
-                  <Title order={5}>Tambah Daftar Bank</Title>
-                </Center>
-
-                <TextInput
-                  label={"Nama Bank"}
-                  placeholder="Masukan nama bank"
-                  onChange={(val) => {
-                    setNewData({
-                      ...newData,
-                      namaBank: val.currentTarget.value,
-                    });
-                  }}
-                />
-
-                <TextInput
-                  label={"Nama Rekening"}
-                  placeholder="Masukan nama rekening"
-                  onChange={(val) => {
-                    setNewData({
-                      ...newData,
-                      namaAkun: val.currentTarget.value,
-                    });
-                  }}
-                />
-
-                <TextInput
-                  label={"Nomor Rekening Bank"}
-                  placeholder=" Masukan nomor rekening bank"
-                  type="number"
-                  onChange={(val) => {
-                    setNewData({
-                      ...newData,
-                      norek: val.currentTarget.value,
-                    });
-                  }}
-                />
-                <Group position="right" align="flex-end">
-                  <Button
-                    radius={"xl"}
-                    onClick={() => {
-                      setIsCreate(false);
-                    }}
-                  >
-                    Batal
-                  </Button>
-                  <Button
-                    loading={isLoadingCreate}
-                    loaderPosition="center"
-                    style={{ transition: "0.5s" }}
-                    disabled={_.values(newData).includes("") ? true : false}
-                    radius={"xl"}
-                    color="green"
-                    onClick={() => {
-                      onCreate();
-                    }}
-                  >
-                    Simpan
-                  </Button>
-                </Group>
-              </Stack>
-            </Paper>
-          ) : (
-            ""
-          )}
-
-          {isUpdate ? (
-            <Paper p={"md"} withBorder shadow="lg">
-              <Stack>
-                <Center>
-                  <Title order={5}>Update Data Bank</Title>
-                </Center>
-                <TextInput
-                  label={"Nama Bank"}
-                  placeholder="Masukan nama bank"
-                  value={updateData.namaBank}
-                  onChange={(val) => {
-                    const value = val.currentTarget.value;
-                    setUpdateData({ ...updateData, namaBank: value });
-                  }}
-                />
-
-                <TextInput
-                  label={"Nama Rekening"}
-                  placeholder="Masukan nama rekening"
-                  value={updateData.namaAkun}
-                  onChange={(val) => {
-                    const value = val.currentTarget.value;
-                    setUpdateData({ ...updateData, namaAkun: value });
-                  }}
-                />
-
-                <TextInput
-                  label={"Nomor Rekening Bank"}
-                  placeholder=" Masukan nomor rekening bank"
-                  type="number"
-                  value={updateData.norek}
-                  onChange={(val) => {
-                    const value = val.currentTarget.value;
-                    setUpdateData({ ...updateData, norek: value });
-                  }}
-                />
-                <Group position="right">
-                  <Button
-                    radius={"xl"}
-                    onClick={() => {
-                      setIsUpdate(false);
-                    }}
-                  >
-                    Batal
-                  </Button>
-                  <Button
-                    style={{ transition: "0.5s" }}
-                    disabled={
-                      updateData?.namaBank === "" ||
-                      updateData?.namaAkun === "" ||
-                      updateData?.norek === ""
-                        ? true
-                        : false
-                    }
-                    radius={"xl"}
-                    color="green"
-                    onClick={() => {
-                      onUpdate();
-                    }}
-                  >
-                    Update
-                  </Button>
-                </Group>
-              </Stack>
-            </Paper>
-          ) : (
-            ""
-          )}
-        </Grid.Col>
-      </Grid>
-
-      {/* Activasi bank */}
-      <Modal
-        centered
-        withCloseButton={false}
-        opened={isActivation}
-        onClose={() => setIsActivation(false)}
-      >
-        <Stack align="center">
-          <Title order={5}>
-            Anda ingin{" "}
-            {updateStatus.active ? (
-              <Text span inherit>
-                mengaktifkan
-              </Text>
-            ) : (
-              <Text span inherit>
-                menonaktifkan
-              </Text>
-            )}{" "}
-            Bank ini ?
-          </Title>
-          <Group>
-            <Button radius={"xl"} onClick={() => setIsActivation(false)}>
-              Batal
-            </Button>
-            <Button
-              color="green"
-              radius={"xl"}
-              onClick={() => {
-                onUpdateActivation({
-                  id: updateStatus.id,
-                  value: updateStatus.active as any,
-                });
-              }}
-            >
-              Iya
-            </Button>
-          </Group>
+      <Stack>
+        <Stack spacing={"xs"}>
+          <AdminAppInformation_ComponentTitlePageBank
+            onEventListener={(val: { isCreate: any; isUpdate: any }) => {
+              setIsCreate(val.isCreate);
+              setIsUpdate(val.isUpdate);
+            }}
+          />
         </Stack>
-      </Modal>
+
+        <Grid>
+          <Grid.Col span={9}>
+            <Paper p={"md"} withBorder shadow="lg" h={"65vh"}>
+              <ScrollArea w={"100%"} h={"90%"} offsetScrollbars>
+                <Table
+                  verticalSpacing={"xs"}
+                  horizontalSpacing={"md"}
+                  p={"md"}
+                  w={1000}
+                  striped
+                  highlightOnHover
+                >
+                  <thead>
+                    <tr>
+                      <th>
+                        <Center w={150}>Bank</Center>
+                      </th>
+                      <th>
+                        <Center>Status</Center>
+                      </th>
+                      <th>
+                        <Center>Nama Rekening</Center>
+                      </th>
+                      <th>
+                        <Center>Nomor Rekening</Center>
+                      </th>
+                      <th>
+                        <Center>Aksi</Center>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>{rowTable}</tbody>
+                </Table>
+              </ScrollArea>
+            </Paper>
+          </Grid.Col>
+
+          <Grid.Col span={3}>
+            {isCreate ? (
+              <Paper p={"md"} withBorder shadow="lg">
+                <Stack>
+                  <Center>
+                    <Title order={5}>Tambah Daftar Bank</Title>
+                  </Center>
+
+                  <TextInput
+                    label={"Nama Bank"}
+                    placeholder="Masukan nama bank"
+                    onChange={(val) => {
+                      setNewData({
+                        ...newData,
+                        namaBank: val.currentTarget.value,
+                      });
+                    }}
+                  />
+
+                  <TextInput
+                    label={"Nama Rekening"}
+                    placeholder="Masukan nama rekening"
+                    onChange={(val) => {
+                      setNewData({
+                        ...newData,
+                        namaAkun: val.currentTarget.value,
+                      });
+                    }}
+                  />
+
+                  <TextInput
+                    label={"Nomor Rekening Bank"}
+                    placeholder=" Masukan nomor rekening bank"
+                    type="number"
+                    onChange={(val) => {
+                      setNewData({
+                        ...newData,
+                        norek: val.currentTarget.value,
+                      });
+                    }}
+                  />
+                  <Group position="right" align="flex-end">
+                    <Button
+                      radius={"xl"}
+                      onClick={() => {
+                        setIsCreate(false);
+                      }}
+                    >
+                      Batal
+                    </Button>
+                    <Button
+                      loading={isLoadingCreate}
+                      loaderPosition="center"
+                      style={{ transition: "0.5s" }}
+                      disabled={_.values(newData).includes("") ? true : false}
+                      radius={"xl"}
+                      color="green"
+                      onClick={() => {
+                        onCreate();
+                      }}
+                    >
+                      Simpan
+                    </Button>
+                  </Group>
+                </Stack>
+              </Paper>
+            ) : (
+              ""
+            )}
+
+            {isUpdate ? (
+              <Paper p={"md"} withBorder shadow="lg">
+                <Stack>
+                  <Center>
+                    <Title order={5}>Update Data Bank</Title>
+                  </Center>
+                  <TextInput
+                    label={"Nama Bank"}
+                    placeholder="Masukan nama bank"
+                    value={updateData.namaBank}
+                    onChange={(val) => {
+                      const value = val.currentTarget.value;
+                      setUpdateData({ ...updateData, namaBank: value });
+                    }}
+                  />
+
+                  <TextInput
+                    label={"Nama Rekening"}
+                    placeholder="Masukan nama rekening"
+                    value={updateData.namaAkun}
+                    onChange={(val) => {
+                      const value = val.currentTarget.value;
+                      setUpdateData({ ...updateData, namaAkun: value });
+                    }}
+                  />
+
+                  <TextInput
+                    label={"Nomor Rekening Bank"}
+                    placeholder=" Masukan nomor rekening bank"
+                    type="number"
+                    value={updateData.norek}
+                    onChange={(val) => {
+                      const value = val.currentTarget.value;
+                      setUpdateData({ ...updateData, norek: value });
+                    }}
+                  />
+                  <Group position="right">
+                    <Button
+                      radius={"xl"}
+                      onClick={() => {
+                        setIsUpdate(false);
+                      }}
+                    >
+                      Batal
+                    </Button>
+                    <Button
+                      style={{ transition: "0.5s" }}
+                      disabled={
+                        updateData?.namaBank === "" ||
+                        updateData?.namaAkun === "" ||
+                        updateData?.norek === ""
+                          ? true
+                          : false
+                      }
+                      radius={"xl"}
+                      color="green"
+                      onClick={() => {
+                        onUpdate();
+                      }}
+                    >
+                      Update
+                    </Button>
+                  </Group>
+                </Stack>
+              </Paper>
+            ) : (
+              ""
+            )}
+          </Grid.Col>
+        </Grid>
+
+        {/* Activasi bank */}
+        <Modal
+          centered
+          withCloseButton={false}
+          opened={isActivation}
+          onClose={() => setIsActivation(false)}
+        >
+          <Stack align="center">
+            <Title order={5}>
+              Anda ingin{" "}
+              {updateStatus.active ? (
+                <Text span inherit>
+                  mengaktifkan
+                </Text>
+              ) : (
+                <Text span inherit>
+                  menonaktifkan
+                </Text>
+              )}{" "}
+              Bank ini ?
+            </Title>
+            <Group>
+              <Button radius={"xl"} onClick={() => setIsActivation(false)}>
+                Batal
+              </Button>
+              <Button
+                color="green"
+                radius={"xl"}
+                onClick={() => {
+                  onUpdateActivation({
+                    id: updateStatus.id,
+                    value: updateStatus.active as any,
+                  });
+                }}
+              >
+                Iya
+              </Button>
+            </Group>
+          </Stack>
+        </Modal>
+      </Stack>
     </>
   );
 }

@@ -2,7 +2,7 @@
 
 import prisma from "@/app/lib/prisma";
 
-export async function investasi_funGetInvoiceById({
+export async function investasi_funGetOneInvoiceById({
   invoiceId,
 }: {
   invoiceId: string;
@@ -14,8 +14,30 @@ export async function investasi_funGetInvoiceById({
     include: {
       MasterBank: true,
       StatusInvoice: true,
+      Investasi: {
+        include: {
+          MasterPembagianDeviden: true,
+          MasterPencarianInvestor: true,
+          MasterPeriodeDeviden: true,
+          ProspektusInvestasi: true,
+          Investasi_Invoice: {
+            where: {
+              statusInvoiceId: "1",
+            },
+          },
+        },
+      },
+      Author: {
+        include: {
+          Profile: true,
+        },
+      },
     },
   });
 
-  return data;
+  const { ...allData } = data;
+  const Investor = data?.Investasi?.Investasi_Invoice;
+  const result = { ...allData, Investor };
+
+  return result;
 }

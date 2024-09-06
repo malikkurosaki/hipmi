@@ -1,4 +1,4 @@
-import { Investasi_UiFileView } from "./ui_file_view";
+import { Investasi_UiFileViewProspektus } from "./file_view/ui_file_view_prospektus";
 import { Investasi_UiInvoice } from "./transaksi/ui_invoice";
 import { Investasi_UiMetodePembayaran } from "./transaksi/ui_metode_pembayaran";
 import { Investasi_UiProsesPembelian } from "./transaksi/ui_proses_pembelian";
@@ -7,13 +7,19 @@ import { Investasi_UiBeranda } from "./main/ui_beranda";
 import { Investasi_UiLayoutMain } from "./main/ui_layout_main";
 import { Investasi_UiDaftarTransaksi } from "./main/ui_transaksi";
 import { Investasi_UiTransaksiBerhasil } from "./status_transaksi/ui_transaksi_berhasil";
+import { Investasi_UiFileViewDokumen } from "./file_view/ui_file_view_dokumen";
+import { Investasi_UiSahamSaya } from "./main/ui_saham_saya";
+import { Investasi_UiDetailSahamSaya } from "./detail/ui_detail_saham_saya";
 
 export { Investasi_UiProsesPembelian };
 export { Investasi_UiMetodePembayaran };
-export { Investasi_UiFileView };
+export { Investasi_UiFileViewProspektus as Investasi_UiFileView };
 export { Investasi_UiInvoice };
 export { Investasi_UiProsesTransaksi };
 export { Investasi_UiBeranda };
 export { Investasi_UiLayoutMain };
 export { Investasi_UiDaftarTransaksi };
 export { Investasi_UiTransaksiBerhasil };
+export { Investasi_UiFileViewDokumen };
+export { Investasi_UiSahamSaya };
+export { Investasi_UiDetailSahamSaya };

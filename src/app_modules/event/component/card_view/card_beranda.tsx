@@ -1,19 +1,16 @@
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
-import { Card, Grid, Group, Stack, Text, Title } from "@mantine/core";
-import moment from "moment";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
+import { Card, Group, Stack, Text, Title } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function ComponentEvent_CardBeranda({ data }: { data: any }) {
   const router = useRouter();
-  const [isLoading, setLoading] = useState(false);
-
   const [eventId, setEventId] = useState("");
   const [visible, setVisible] = useState(false);
-  
+
   return (
     <>
       <Card
