@@ -7,7 +7,7 @@ import {
   defaultLatLong,
   defaultMapZoom,
 } from "@/app_modules/map/lib/default_lat_long";
-import { Image, Paper, Stack, Text } from "@mantine/core";
+import { Avatar, Image, Paper, Stack, Text } from "@mantine/core";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Map, {
   AttributionControl,
@@ -16,6 +16,9 @@ import Map, {
   ScaleControl,
 } from "react-map-gl";
 import { ComponentAdminMap_Drawer } from "../component";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
+import { RouterMap } from "@/app/lib/router_hipmi/router_map";
 
 export function UiAdminMap_MapBoxView({
   mapboxToken,
@@ -77,25 +80,19 @@ export function UiAdminMap_MapBoxView({
                     setOpenDrawer(true);
                   }}
                 >
-                  <Image
-                    w={"100%"}
-                    alt="image"
-                    src="https://cdn-icons-png.flaticon.com/512/5860/5860579.png"
-                  />
-                  <Text
-                    fz={"xs"}
-                    bg={"dark"}
-                    c={"white"}
-                    align="center"
+                  <Avatar
+                    alt="Logo"
                     style={{
-                      borderRadius: "5px",
-                      padding: "5px",
-                      width: 50,
+                      border: `2px solid ${AccentColor.softblue}`,
+                      borderRadius: "100%",
+                      backgroundColor: "white",
                     }}
-                    lineClamp={2}
-                  >
-                    {e.namePin}
-                  </Text>
+                    src={
+                      e.imagePinId === null
+                        ? RouterPortofolio.api_logo_porto + e.Portofolio.logoId
+                        : RouterMap.api_custom_pin + e.imagePinId
+                    }
+                  />
                 </Stack>
               </Marker>
             </Stack>
@@ -108,9 +105,9 @@ export function UiAdminMap_MapBoxView({
       </Stack>
 
       <ComponentAdminMap_Drawer
-      opened={openDrawer}
-      onClose={() => setOpenDrawer(false)}
-      mapId={mapId as any}
+        opened={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        mapId={mapId as any}
       />
     </>
   );

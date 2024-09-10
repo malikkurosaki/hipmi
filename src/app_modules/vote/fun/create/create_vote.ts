@@ -1,16 +1,17 @@
 "use server";
 
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { MODEL_VOTING } from "../../model/interface";
 import prisma from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
+import _ from "lodash";
 
 export async function Vote_funCreate(req: MODEL_VOTING, listVote: any[]) {
-  const authorId = await user_getOneUserId();
+  const authorId = await user_funGetOneUserId();
 
   const create = await prisma.voting.create({
     data: {
-      title: req.title,
+      title: _.startCase(req.title),
       deskripsi: req.deskripsi,
       awalVote: req.awalVote,
       akhirVote: req.akhirVote,

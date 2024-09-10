@@ -15,7 +15,7 @@ export default function LayoutDetailDokumenInvestasi({
   return (
     <>
       <UIGlobal_LayoutTamplate
-        header={<UIGlobal_LayoutHeaderTamplate title="Dokumen" />}
+        header={<UIGlobal_LayoutHeaderTamplate title="Daftar Dokumen" />}
       >
         {children}
       </UIGlobal_LayoutTamplate>

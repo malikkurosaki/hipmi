@@ -2,7 +2,7 @@
 
 import prisma from "@/app/lib/prisma";
 import { RouterAdminColab } from "@/app/lib/router_admin/router_admin_colab";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { revalidatePath } from "next/cache";
 
 export default async function adminColab_funReportProjectById({
@@ -12,7 +12,7 @@ export default async function adminColab_funReportProjectById({
   colabId: string;
   report: string;
 }) {
-  const authorId = await user_getOneUserId();
+  const authorId = await user_funGetOneUserId();
 
   const projectUpdate = await prisma.projectCollaboration.update({
     where: {

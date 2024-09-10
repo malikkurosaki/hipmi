@@ -1,8 +1,8 @@
 "use client";
 
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
-import { Center, Grid, Group, Paper, Stack, Text, Title } from "@mantine/core";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
+import { Center, Grid, Paper, Stack, Title } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

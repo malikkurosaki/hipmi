@@ -2,33 +2,25 @@
 
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import {
-  Avatar,
   Box,
   Button,
   Center,
   Flex,
-  Group,
   Paper,
   Radio,
   Text,
   Title,
 } from "@mantine/core";
-import { useShallowEffect } from "@mantine/hooks";
+import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
-import {
-  MODEL_INVESTASI,
-  MODEL_Transaksi_Investasi,
-  MODEL_DATA_BANK,
-} from "../_lib/interface";
-import { useAtom } from "jotai";
-import { gs_TransferValue } from "../g_state";
-import getNorekInvestasi from "../fun/get_norek";
-import _ from "lodash";
+import { MODEL_INVESTASI, MODEL_MASTER_BANK } from "../_lib/interface";
 import funCreateTransaksiInvestasi from "../fun/fun_create_transaksi";
-import { myConsole } from "@/app/fun/my_console";
+import getNorekInvestasi from "../fun/get_norek";
+import { gs_TransferValue } from "../g_state";
 
 export default function MetodeTransferInvestasi({
   dataInvestasi,
@@ -36,7 +28,7 @@ export default function MetodeTransferInvestasi({
   authorId,
 }: {
   dataInvestasi: MODEL_INVESTASI;
-  namaBank: MODEL_DATA_BANK[];
+  namaBank: MODEL_MASTER_BANK[];
   authorId: string;
 }) {
   const [investasi, setInvestasi] = useState(dataInvestasi);
@@ -53,10 +45,10 @@ export default function MetodeTransferInvestasi({
       authorId
     ).then(async (res) => {
       if (res.status === 201) {
-        toast(res.message);
+        ComponentGlobal_NotifikasiBerhasil(res.message);
         router.push(RouterInvestasi_OLD.transfer + `${res.res?.id}`);
       } else {
-        toast(res.message);
+        ComponentGlobal_NotifikasiGagal(res.message);
       }
     });
   }
@@ -66,11 +58,11 @@ export default function MetodeTransferInvestasi({
       if (res.status === 200) {
         setTransferValue({
           ...transferValue,
-          namaBank: res.res?.name as any,
+          namaBank: res.res?.namaBank as any,
           nomorRekening: res.res?.norek as any,
         });
       } else {
-        toast(res.message);
+        ComponentGlobal_NotifikasiGagal(res.message);
       }
     });
   }
@@ -100,7 +92,7 @@ export default function MetodeTransferInvestasi({
         <Flex direction={"column"} gap={"lg"} mt="xs">
           {bank.map((e) => (
             <Box key={e.id}>
-              <Radio value={e.id} label={e.name} />
+              <Radio value={e.id} label={e.namaBank} />
             </Box>
           ))}
         </Flex>

@@ -1,18 +1,16 @@
 "use client";
 
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "@/app_modules/admin/_admin_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentAdminGlobal_NotifikasiGagal } from "@/app_modules/admin/_admin_global/admin_notifikasi/notifikasi_gagal";
 import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
-import { AdminEvent_getListPesertaById } from "@/app_modules/admin/event/fun/get/get_list_peserta_by_id";
 import { MODEL_VOTING } from "@/app_modules/vote/model/interface";
 import {
-  Avatar,
   Box,
   Button,
   Center,
-  Divider,
-  Grid,
   Group,
   Modal,
+  Pagination,
   Paper,
   ScrollArea,
   Spoiler,
@@ -20,39 +18,79 @@ import {
   Table,
   Text,
   Textarea,
+  TextInput,
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconBan, IconEyeShare } from "@tabler/icons-react";
-import _ from "lodash";
+import { IconBan, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { adminVote_funGetListReject } from "../../fun";
 import { AdminVote_funEditCatatanRejectById } from "../../fun/edit/fun_edit_catatan_reject_by_id";
-import { AdminVote_getListTableByStatusId } from "../../fun/get/get_list_table_by_status_id";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 
-export default function AdminVote_TableReject({
-  dataVote,
-}: {
-  dataVote: MODEL_VOTING[];
-}) {
+export default function AdminVote_TableReject({ dataVote }: { dataVote: any }) {
   return (
     <>
       <Stack>
-        <ComponentAdminGlobal_HeaderTamplate name="Voting: Table Reject" />
+        <ComponentAdminGlobal_HeaderTamplate name="Voting" />
         <TableStatus listData={dataVote} />
       </Stack>
     </>
   );
 }
 
-function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
+function TableStatus({ listData }: { listData: any }) {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
-  const [data, setData] = useState(listData);
+  const [data, setData] = useState<MODEL_VOTING[]>(listData.data);
   const [votingId, setVotingId] = useState("");
   const [catatan, setCatatan] = useState("");
+
+  const [isNPage, setNPage] = useState(listData.nPage);
+  const [isActivePage, setActivePage] = useState(1);
+  const [isSearch, setSearch] = useState("");
+
+  async function onSearch(s: string) {
+    setSearch(s);
+    const loadData = await adminVote_funGetListReject({
+      page: 1,
+      search: s,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  async function onPageClick(p: any) {
+    setActivePage(p);
+    const loadData = await adminVote_funGetListReject({
+      search: isSearch,
+      page: p,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  async function onReject(
+    votingId: string,
+    catatan: string,
+    close: any,
+    setData: any
+  ) {
+    const res = await AdminVote_funEditCatatanRejectById(votingId, catatan);
+    if (res.status === 200) {
+      const loadData = await adminVote_funGetListReject({
+        page: 1,
+        search: isSearch,
+      });
+      setData(loadData.data as any);
+      setNPage(loadData.nPage);
+      setActivePage(1);
+      ComponentAdminGlobal_NotifikasiBerhasil(res.message);
+      close();
+    } else {
+      ComponentAdminGlobal_NotifikasiGagal(res.message);
+    }
+  }
 
   const TableRows = data.map((e, i) => (
     <tr key={i}>
@@ -129,53 +167,32 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
 
   return (
     <>
-      <Modal
-        opened={opened}
-        onClose={close}
-        centered
-        withCloseButton={false}
-        size={"lg"}
-      >
-        <Stack>
-          <Textarea
-            minRows={2}
-            maxRows={5}
-            maxLength={300}
-            autosize
-            label="Masukan Alasan Penolakan"
-            placeholder="Contoh: Karena deskripsi kurang lengkap, dll"
-            value={catatan}
+      <Stack spacing={"xs"} h={"100%"}>
+        {/* <pre>{JSON.stringify(listUser, null, 2)}</pre> */}
+        <Group
+          position="apart"
+          bg={"red.4"}
+          p={"xs"}
+          style={{ borderRadius: "6px" }}
+        >
+          <Title order={4}>Reject</Title>
+          <TextInput
+            icon={<IconSearch size={20} />}
+            radius={"xl"}
+            placeholder="Masukan judul"
             onChange={(val) => {
-              setCatatan(val.target.value);
+              onSearch(val.currentTarget.value);
             }}
           />
-          <Group position="right">
-            <Button
-              radius={"xl"}
-              onClick={() => {
-                onReject(votingId, catatan, close, setData);
-                console.log(catatan);
-              }}
-            >
-              Simpan
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
+        </Group>
 
-      <Box>
-        <Box bg={"red.1"} p={"xs"}>
-          <Title order={6} c={"red"}>
-            REJECT
-          </Title>
-        </Box>
-        <ScrollArea w={"100%"}>
-          <Box w={2000}>
+        <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
+          <ScrollArea w={"100%"} h={"90%"}>
             <Table
-              withBorder
               verticalSpacing={"md"}
-              horizontalSpacing={"xl"}
+              horizontalSpacing={"md"}
               p={"md"}
+              w={1500}
               striped
               highlightOnHover
             >
@@ -209,39 +226,56 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
               </thead>
               <tbody>{TableRows}</tbody>
             </Table>
-          </Box>
-        </ScrollArea>
-        <Center>
-          {_.isEmpty(TableRows) ? (
-            <Center h={"50vh"}>
-              <Title order={6}>Tidak Ada Data</Title>
-            </Center>
-          ) : (
-            ""
-          )}
-        </Center>
-      </Box>
-    </>
-  );
-}
+          </ScrollArea>
 
-async function onReject(
-  votingId: string,
-  catatan: string,
-  close: any,
-  setData: any
-) {
-  await AdminVote_funEditCatatanRejectById(votingId, catatan).then(
-    async (res) => {
-      if (res.status === 200) {
-        await AdminVote_getListTableByStatusId("4").then((val) => {
-          setData(val);
-          ComponentGlobal_NotifikasiBerhasil(res.message);
-          close();
-        });
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
-      }
-    }
+          <Center mt={"xl"}>
+            <Pagination
+              value={isActivePage}
+              total={isNPage}
+              onChange={(val) => {
+                onPageClick(val);
+              }}
+            />
+          </Center>
+        </Paper>
+      </Stack>
+
+      <Modal
+        opened={opened}
+        onClose={close}
+        centered
+        withCloseButton={false}
+        size={"md"}
+      >
+        <Stack>
+          <Textarea
+            minRows={2}
+            maxRows={5}
+            maxLength={300}
+            autosize
+            label="Masukan Alasan Penolakan"
+            placeholder="Contoh: Karena deskripsi kurang lengkap, dll"
+            value={catatan}
+            onChange={(val) => {
+              setCatatan(val.target.value);
+            }}
+          />
+          <Group position="right">
+            <Button radius={"xl"} onClick={() => close()}>
+              Batal
+            </Button>
+            <Button
+              radius={"xl"}
+              onClick={() => {
+                onReject(votingId, catatan, close, setData);
+                console.log(catatan);
+              }}
+            >
+              Simpan
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
+    </>
   );
 }

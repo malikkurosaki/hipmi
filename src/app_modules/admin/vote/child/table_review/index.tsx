@@ -8,29 +8,32 @@ import {
   Center,
   Group,
   Modal,
+  Pagination,
+  Paper,
   ScrollArea,
   Spoiler,
   Stack,
   Table,
   Text,
   Textarea,
+  TextInput,
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconBan, IconEyeShare } from "@tabler/icons-react";
-import _ from "lodash";
+import { IconBan, IconCircleCheck, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
+import mqtt_client from "@/util/mqtt_client";
 import moment from "moment";
 import { useState } from "react";
+import { adminVote_funGetListReview } from "../../fun";
 import { AdminVote_funEditStatusPublishById } from "../../fun/edit/fun_edit_status_publish_by_id";
 import { AdminEvent_funEditCatatanById } from "../../fun/edit/fun_edit_status_reject_by_id";
 import { AdminVote_getListTableByStatusId } from "../../fun/get/get_list_table_by_status_id";
-import mqtt_client from "@/util/mqtt_client";
-import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
 
 export default function AdminVote_TableReview({
   listVote,
@@ -40,26 +43,50 @@ export default function AdminVote_TableReview({
   return (
     <>
       <Stack>
-        <ComponentAdminGlobal_HeaderTamplate name="Voting: Table Review" />
+        <ComponentAdminGlobal_HeaderTamplate name="Voting" />
         <TableStatus listData={listVote} />
       </Stack>
     </>
   );
 }
 
-function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
+function TableStatus({ listData }: { listData: any }) {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
-  const [data, setData] = useState(listData);
+  const [data, setData] = useState<MODEL_VOTING[]>(listData.data);
   const [votingId, setVotingId] = useState("");
   const [catatan, setCatatan] = useState("");
   const [isLoadingPublish, setLoadingPublish] = useState(false);
   const [isSaveLoading, setSaveLoading] = useState(false);
 
+  const [isNPage, setNPage] = useState(listData.nPage);
+  const [isActivePage, setActivePage] = useState(1);
+  const [isSearch, setSearch] = useState("");
+
+  async function onSearch(s: string) {
+    setSearch(s);
+    const loadData = await adminVote_funGetListReview({
+      page: 1,
+      search: s,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  async function onPageClick(p: any) {
+    setActivePage(p);
+    const loadData = await adminVote_funGetListReview({
+      search: isSearch,
+      page: p,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
   const TableRows = data.map((e, i) => (
     <tr key={i}>
       <td>
-        <Center>{e?.Author?.Profile?.name}</Center>
+        <Center>{e?.Author?.username}</Center>
       </td>
       <td>
         <Center>{e.title}</Center>
@@ -105,7 +132,7 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
             }
             w={120}
             color={"green"}
-            leftIcon={<IconEyeShare />}
+            leftIcon={<IconCircleCheck />}
             radius={"xl"}
             onClick={() =>
               onPublish(
@@ -138,12 +165,83 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
 
   return (
     <>
+      <Stack spacing={"xs"} h={"100%"}>
+        {/* <pre>{JSON.stringify(listUser, null, 2)}</pre> */}
+        <Group
+          position="apart"
+          bg={"orange.4"}
+          p={"xs"}
+          style={{ borderRadius: "6px" }}
+        >
+          <Title order={4}>Review</Title>
+          <TextInput
+            icon={<IconSearch size={20} />}
+            radius={"xl"}
+            placeholder="Masukan judul"
+            onChange={(val) => {
+              onSearch(val.currentTarget.value);
+            }}
+          />
+        </Group>
+
+        <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
+          <ScrollArea w={"100%"} h={"90%"}>
+            <Table
+              verticalSpacing={"md"}
+              horizontalSpacing={"md"}
+              p={"md"}
+              w={1500}
+              striped
+              highlightOnHover
+            >
+              <thead>
+                <tr>
+                  <th>
+                    <Center>Username</Center>
+                  </th>
+                  <th>
+                    <Center>Judul</Center>
+                  </th>
+                  <th>
+                    <Center>Deskripsi</Center>
+                  </th>
+                  <th>
+                    <Center>Pilihan</Center>
+                  </th>
+                  <th>
+                    <Center>Mulai Vote</Center>
+                  </th>
+                  <th>
+                    <Center>Selesai Vote</Center>
+                  </th>
+
+                  <th>
+                    <Center>Aksi</Center>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>{TableRows}</tbody>
+            </Table>
+          </ScrollArea>
+
+          <Center mt={"xl"}>
+            <Pagination
+              value={isActivePage}
+              total={isNPage}
+              onChange={(val) => {
+                onPageClick(val);
+              }}
+            />
+          </Center>
+        </Paper>
+      </Stack>
+
       <Modal
         opened={opened}
         onClose={close}
         centered
         withCloseButton={false}
-        size={"lg"}
+        size={"md"}
       >
         <Stack>
           <Textarea
@@ -174,63 +272,6 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
           </Group>
         </Stack>
       </Modal>
-
-      <Box>
-        <Box bg={"orange.1"} p={"xs"}>
-          <Title order={6} c={"orange"}>
-            REVIEW
-          </Title>
-        </Box>
-        <ScrollArea w={"100%"}>
-          <Box>
-            <Table
-              withBorder
-              verticalSpacing={"md"}
-              horizontalSpacing={"xl"}
-              p={"md"}
-              striped
-              highlightOnHover
-            >
-              <thead>
-                <tr>
-                  <th>
-                    <Center>Author</Center>
-                  </th>
-                  <th>
-                    <Center>Judul</Center>
-                  </th>
-                  <th>
-                    <Center>Deskripsi</Center>
-                  </th>
-                  <th>
-                    <Center>Pilihan</Center>
-                  </th>
-                  <th>
-                    <Center>Mulai Vote</Center>
-                  </th>
-                  <th>
-                    <Center>Selesai Vote</Center>
-                  </th>
-
-                  <th>
-                    <Center>Aksi</Center>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>{TableRows}</tbody>
-            </Table>
-          </Box>
-        </ScrollArea>
-        <Center>
-          {_.isEmpty(TableRows) ? (
-            <Center h={"50vh"}>
-              <Title order={6}>Tidak Ada Data</Title>
-            </Center>
-          ) : (
-            ""
-          )}
-        </Center>
-      </Box>
     </>
   );
 }

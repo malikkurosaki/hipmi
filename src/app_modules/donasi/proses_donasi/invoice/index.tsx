@@ -2,6 +2,14 @@
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
+import {
   Button,
   Center,
   CopyButton,
@@ -18,21 +26,11 @@ import { useAtom } from "jotai";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
-import { NotifGagal } from "../../component/notifikasi/notif_gagal";
 import TampilanRupiahDonasi from "../../component/tampilan_rupiah";
 import { Donasi_funUploadBuktiTransferById } from "../../fun/update/fun_update_invoice";
 import { Donasi_funUpdateStatusInvoice } from "../../fun/update/fun_update_status_invoice";
 import { gs_donasi_hot_menu } from "../../global_state";
 import { MODEL_DONASI_INVOICE } from "../../model/interface";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
-import mqtt_client from "@/util/mqtt_client";
 
 export default function Donasi_InvoiceProses({
   dataInvoice,
@@ -315,9 +313,9 @@ async function onUpload(invoiceId: string, file: FormData) {
 
   await Donasi_funUploadBuktiTransferById(invoiceId, gambar).then((res) => {
     if (res.status === 200) {
-      NotifBerhasil(res.message);
+      ComponentGlobal_NotifikasiBerhasil(res.message);
     } else {
-      NotifGagal(res.message);
+      ComponentGlobal_NotifikasiGagal(res.message);
     }
   });
 }

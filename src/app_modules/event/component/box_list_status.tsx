@@ -1,13 +1,11 @@
 "use client";
 
-import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import { Paper, Stack, Group, Title, Text, Grid, Card } from "@mantine/core";
-import moment from "moment";
-import { MODEL_EVENT } from "../model/interface";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
+import { Card, Group, Stack, Text, Title } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { MODEL_EVENT } from "../model/interface";
 
 export default function ComponentEvent_BoxListStatus({
   data,

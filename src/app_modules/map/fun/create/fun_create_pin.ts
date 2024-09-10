@@ -2,14 +2,14 @@
 
 import prisma from "@/app/lib/prisma";
 import { RouterMap } from "@/app/lib/router_hipmi/router_map";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 import _ from "lodash";
 import { revalidatePath } from "next/cache";
 import { v4 } from "uuid";
 import fs from "fs";
 
 export async function map_funCreatePin({ data }: { data: any }) {
-  const authorId = await user_getOneUserId();
+  const authorId = await user_funGetOneUserId();
 
   const gambar: any = data.gambar.get("file");
   const fileName = gambar.name;

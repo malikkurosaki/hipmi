@@ -68,8 +68,8 @@ export default function Publish({ data }: { data: MODEL_INVESTASI[] }) {
               </AspectRatio>
             </Grid.Col>
           </Grid>
-          <Divider my={"xs"} />
-          <Group position="center">
+
+          <Group position="center" mt={"md"}>
             {Number(e.MasterPencarianInvestor.name) -
               moment(new Date()).diff(new Date(e.updatedAt), "days") <=
             0 ? (
@@ -78,10 +78,7 @@ export default function Publish({ data }: { data: MODEL_INVESTASI[] }) {
                 <Text c={"green"}>Selesai</Text>
               </Group>
             ) : (
-              <Group position="center">
-                {/* <Badge color="green" variant="dot">
-                  Publish
-                </Badge> */}
+              <Group position="center" style={{fontSize: 10, fontWeight: "bold"}}>
                 <Group>
                   {Number(e.MasterPencarianInvestor.name) -
                     moment(new Date()).diff(new Date(e.countDown), "days") <=

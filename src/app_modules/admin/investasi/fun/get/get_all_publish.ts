@@ -16,9 +16,11 @@ export async function adminInvestasi_funGetAllPublish({
   const data = await prisma.investasi.findMany({
     take: takeData,
     skip: skipData,
-    orderBy: {
-      countDown: "desc",
-    },
+    orderBy: [
+      {
+        countDown: "desc",
+      },
+    ],
     where: {
       active: true,
       masterStatusInvestasiId: "1",
@@ -27,17 +29,7 @@ export async function adminInvestasi_funGetAllPublish({
         mode: "insensitive",
       },
     },
-    select: {
-      id: true,
-      title: true,
-      authorId: true,
-      hargaLembar: true,
-      targetDana: true,
-      totalLembar: true,
-      roi: true,
-      active: true,
-      imagesId: true,
-      catatan: true,
+    include: {
       MasterStatusInvestasi: true,
       BeritaInvestasi: true,
       DokumenInvestasi: true,
@@ -46,8 +38,11 @@ export async function adminInvestasi_funGetAllPublish({
       MasterPencarianInvestor: true,
       MasterPeriodeDeviden: true,
       author: true,
-      progress: true,
-      sisaLembar: true,
+      Investasi_Invoice: {
+        where: {
+          statusInvoiceId: "2",
+        },
+      },
     },
   });
 

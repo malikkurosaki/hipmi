@@ -26,7 +26,7 @@ import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v
 import { useAtom } from "jotai";
 import { gs_forum_loading_edit_posting } from "../../global_state";
 import ComponentForum_LoadingDrawer from "../loading_drawer";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { forum_funDeleteKomentarById } from "../../fun/delete/fun_delete_komentar_by_id";
@@ -62,12 +62,22 @@ export default function ComponentForum_KomentarButtonMore({
       <Drawer
         styles={{
           content: {
-            backgroundColor: MainColor.darkblue,
-            borderTop: `1px solid ${AccentColor.blue}`,
-            borderRadius: "10px 10px 0px 0px",
+            padding: 0,
+            position: "absolute",
+            margin: "auto",
+            backgroundColor: "transparent",
+            left: 0,
+            right: 0,
+            width: 500,
           },
-          header: {
-            borderRadius: "10px 10px 0px 0px",
+          body: {
+            backgroundColor: AccentColor.darkblue,
+            borderTop: `2px solid ${AccentColor.blue}`,
+            borderRight: `1px solid ${AccentColor.blue}`,
+            borderLeft: `1px solid ${AccentColor.blue}`,
+            borderRadius: "20px 20px 0px 0px",
+            color: "white",
+            paddingBottom: "5%",
           },
         }}
         opened={opened}

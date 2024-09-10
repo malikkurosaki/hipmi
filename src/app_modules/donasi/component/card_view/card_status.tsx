@@ -1,19 +1,18 @@
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 import {
-  Box,
-  Stack,
-  Grid,
   AspectRatio,
-  Paper,
-  Image,
-  Text,
   Card,
+  Grid,
+  Image,
+  Paper,
+  Stack,
+  Text,
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
-import { MODEL_DONASI } from "../../model/interface";
 import { useState } from "react";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
+import { MODEL_DONASI } from "../../model/interface";
 
 export function ComponentDonasi_CardStatus({
   data,

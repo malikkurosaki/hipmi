@@ -1,3 +1,4 @@
+import { MODEL_USER } from "@/app_modules/home/model/interface";
 import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 
 export interface MODEL_INVESTASI {
@@ -30,6 +31,7 @@ export interface MODEL_INVESTASI {
   masterStatusInvestasiId: string;
   author: MODEL_PROFILE_OLD;
   countDown: Date;
+  Investasi_Invoice: MODEL_INVOICE_INVESTASI[];
 }
 
 export interface MODEL_Transaksi_Investasi {
@@ -96,11 +98,12 @@ export interface Model_Dokumen_Investasi {
   investasiId: string;
 }
 
-export interface MODEL_DATA_BANK {
+export interface MODEL_MASTER_BANK {
   id: string;
-  name: string;
+  namaBank: string;
+  namaAkun: string;
   norek: string;
-  active: boolean;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -110,6 +113,33 @@ export interface Model_Status_Transaksi_Investasi {
   name: string;
   color: string;
   active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface MODEL_INVOICE_INVESTASI {
+  id: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  nominal: string;
+  lembarTerbeli: string;
+  Investasi: MODEL_INVESTASI;
+  investasiId: string;
+  masterBankId: string;
+  statusInvoiceId: string;
+  authorId: string;
+  Author: MODEL_USER;
+  imagesId: string;
+  MasterBank: MODEL_MASTER_BANK;
+  StatusInvoice: MODEL_STATUS_INVOICE_INVESTASI;
+  Investor: any[];
+}
+
+export interface MODEL_STATUS_INVOICE_INVESTASI {
+  id: string;
+  name: string;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

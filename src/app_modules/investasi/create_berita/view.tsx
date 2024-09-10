@@ -19,7 +19,6 @@ import { IconCamera, IconUpload } from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
 import funCreateBeritaInvestasi from "../fun/fun_create_berita";
 import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
@@ -45,7 +44,7 @@ export default function CreateBeritaInvestasi({
   async function onCreate() {
     const body = value;
 
-    if (_.values(body).includes("")) return toast("Lengkapi data");
+    if (_.values(body).includes("")) return ComponentGlobal_NotifikasiPeringatan("Lengkapi data");
     if (!fl) return ComponentGlobal_NotifikasiPeringatan("File Kosong");
 
     const fd = new FormData();

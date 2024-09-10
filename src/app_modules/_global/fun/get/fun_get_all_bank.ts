@@ -8,7 +8,7 @@ export async function funGlobal_getAllBank() {
       id: "asc",
     },
     where: {
-      active: true,
+      isActive: true,
     },
   });
   return data;

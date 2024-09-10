@@ -1,40 +1,35 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { MODEL_DONASI } from "../../model/interface";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
-  Stack,
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import {
   AspectRatio,
-  Paper,
-  Title,
-  Group,
-  Progress,
-  Grid,
   Divider,
+  Grid,
+  Group,
   Image,
+  Progress,
+  Stack,
   Text,
-  Center,
-  Loader,
+  Title,
 } from "@mantine/core";
 import {
   IconClover,
   IconMessageChatbot,
   IconMoneybag,
 } from "@tabler/icons-react";
-import TampilanRupiahDonasi from "../tampilan_rupiah";
-import ComponentDonasi_TampilanHitungMundur from "../tampilan_hitung_mundur";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { NotifPeringatan } from "../notifikasi/notif_peringatan";
-import { NotifBerhasil } from "../notifikasi/notif_berhasil";
-import { Donasi_findDonaturByTokenId } from "../../fun/get/get_donatur_by_token_id";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
-import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import { Donasi_findDonaturByTokenId } from "../../fun/get/get_donatur_by_token_id";
+import { MODEL_DONASI } from "../../model/interface";
+import { NotifPeringatan } from "../notifikasi/notif_peringatan";
+import ComponentDonasi_TampilanHitungMundur from "../tampilan_hitung_mundur";
+import TampilanRupiahDonasi from "../tampilan_rupiah";
 
 export function ComponentDonasi_DetailDataMain({
   donasi,

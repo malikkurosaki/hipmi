@@ -16,7 +16,6 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { gs_donasi_tabs_posting } from "../../global_state";
-import toast from "react-simple-toasts";
 import { MODEL_CERITA_DONASI } from "../../model/interface";
 import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
 import _ from "lodash";
@@ -32,6 +31,8 @@ import {
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 
 export default function EditCeritaPenggalangDonasi({
   dataCerita,
@@ -230,10 +231,10 @@ async function onUpdate(
   if (_.values(body).includes("")) return NotifPeringatan("Lengkapi Data");
   await Donasi_funUpdateCerita(body as any, gambar).then((res) => {
     if (res.status === 200) {
-      NotifBerhasil(res.message);
+      ComponentGlobal_NotifikasiBerhasil(res.message);
       router.back();
     } else {
-      toast(res.message);
+      ComponentGlobal_NotifikasiGagal(res.message);
     }
   });
 }

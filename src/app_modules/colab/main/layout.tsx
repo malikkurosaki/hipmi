@@ -2,31 +2,15 @@
 
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
-import {
-  ActionIcon,
-  Center,
-  Footer,
-  Grid,
-  Indicator,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@mantine/core";
-import {
-  IconBell,
-  IconHome,
-  IconMessages,
-  IconUsersGroup,
-} from "@tabler/icons-react";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import { ActionIcon, SimpleGrid, Stack, Text } from "@mantine/core";
+import { IconHome, IconMessages, IconUsersGroup } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import ComponentColab_HeaderTamplate from "../component/header_tamplate";
 import { gs_colab_hot_menu } from "../global_state";
-import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
-import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function LayoutColab_Main({
   children,
@@ -85,7 +69,7 @@ export default function LayoutColab_Main({
       <UIGlobal_LayoutTamplate
         header={
           <UIGlobal_LayoutHeaderTamplate
-            title="Project Collaboration"
+            title="Collaboration"
             routerLeft={RouterHome.main_home}
           />
         }
@@ -98,7 +82,7 @@ export default function LayoutColab_Main({
                   variant="transparent"
                   c={hotMenu === e.id ? MainColor.yellow : "white"}
                   onClick={() => {
-                    router.replace(e.path, {scroll: false});
+                    router.replace(e.path, { scroll: false });
                     setHotMenu(e.id);
                   }}
                 >

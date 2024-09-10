@@ -3,7 +3,7 @@
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
 import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
-import { Box, Center, Loader } from "@mantine/core";
+import { Box, Center, Loader, Stack, TextInput } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";
@@ -22,19 +22,30 @@ export default function Vote_Beranda({
 
   useShallowEffect(() => {
     onLoad({
-      setData(val) {
+      newData(val) {
         setData(val);
       },
     });
   }, [setData]);
 
-  async function onLoad({ setData }: { setData: (val: any) => void }) {
+  async function onLoad({ newData }: { newData: (val: any) => void }) {
     const loadData = await vote_getAllListPublish({ page: 1 });
-    setData(loadData);
+    newData(loadData);
+  }
+
+  async function onSearch(s: string) {
+    const loadSearch = await vote_getAllListPublish({ page: 1, search: s });
+    setData(loadSearch as any);
   }
 
   return (
-    <Box>
+    <Stack mt={"1vh"}>
+      <TextInput
+        radius={"xl"}
+        placeholder="Masukan judul voting"
+        onChange={(val) => onSearch(val.target.value)}
+      />
+
       <ComponentGlobal_CreateButton path={RouterVote.create} />
 
       {_.isEmpty(data) ? (
@@ -42,7 +53,7 @@ export default function Vote_Beranda({
       ) : (
         <Box>
           <ScrollOnly
-            height="82vh"
+            height="75vh"
             renderLoading={() => (
               <Center mt={"lg"}>
                 <Loader color={"yellow"} />
@@ -69,8 +80,7 @@ export default function Vote_Beranda({
             )}
           </ScrollOnly>
         </Box>
-        // --- Main component --- //
       )}
-    </Box>
+    </Stack>
   );
 }

@@ -2,7 +2,10 @@
 
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
-import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
@@ -36,7 +39,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
   const [imgBG, setImgBG] = useState<any | null>();
 
   const [value, setValue] = useState({
-    name: "",
+    namaBank: "",
     email: "",
     alamat: "",
     jenisKelamin: "",
@@ -186,7 +189,7 @@ export default function CreateProfile({ userId }: { userId: any }) {
             onChange={(val) => {
               setValue({
                 ...value,
-                name: val.target.value,
+                namaBank: val.target.value,
               });
             }}
           />
@@ -303,8 +306,7 @@ function ButtonAction({
       if (res.status === 201) {
         setLoading(true);
         ComponentGlobal_NotifikasiBerhasil("Berhasil Membuat Profile", 3000);
-        // setTimeout(() => router.push(RouterHome.main_home), 2000);
-        router.push(RouterHome.main_home);
+        router.push(RouterHome.main_home, { scroll: false });
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }

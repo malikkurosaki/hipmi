@@ -1,6 +1,5 @@
 "use server";
 import prisma from "@/app/lib/prisma";
-import { data } from "autoprefixer";
 
 export default async function getOneInvestasiById(id: string) {
   const data = await prisma.investasi.findUnique({
@@ -40,6 +39,11 @@ export default async function getOneInvestasiById(id: string) {
       MasterPeriodeDeviden: true,
       MasterProgresInvestasi: true,
       masterStatusInvestasiId: true,
+      Investasi_Invoice: {
+        where: {
+          statusInvoiceId: "1",
+        },
+      },
       countDown: true,
     },
   });

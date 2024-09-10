@@ -2,7 +2,7 @@ import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 import { Avatar, Box, Card, Grid, Group, Stack, Text, Title } from "@mantine/core";
 import moment from "moment";
 import { useRouter } from "next/navigation";

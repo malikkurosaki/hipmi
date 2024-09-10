@@ -1,10 +1,12 @@
 import { AdminEvent_TableReject } from "@/app_modules/admin/event";
-import { AdminEvent_getListTableByStatusId } from "@/app_modules/admin/event/fun/get/get_list_table_by_status_id";
+import { adminEvent_funGetListReject } from "@/app_modules/admin/event/fun";
 
 export default async function Page() {
-    const listReject = await AdminEvent_getListTableByStatusId("4")
+  const listReject = await adminEvent_funGetListReject({ page: 1 });
 
-    return <>
-    <AdminEvent_TableReject listReject={listReject as any}/>
+  return (
+    <>
+      <AdminEvent_TableReject listReject={listReject as any} />
     </>
+  );
 }

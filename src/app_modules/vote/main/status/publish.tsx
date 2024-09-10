@@ -47,6 +47,7 @@ export default function Vote_StatusPublish({
             <ComponentVote_CardViewPublish
               data={item}
               path={RouterVote.detail_publish}
+              statusArsip
             />
           )}
         </ScrollOnly>

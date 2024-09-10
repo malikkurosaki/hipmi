@@ -3,11 +3,8 @@
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Box, Center, Loader, Stack, Text, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
-import { IconCircleCheck } from "@tabler/icons-react";
-import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
 import Countdown from "react-countdown";
 
 export default function CountDownTransaksiInvestasi() {

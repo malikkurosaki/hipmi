@@ -4,19 +4,15 @@ import { Warna } from "@/app/lib/warna";
 import {
   AspectRatio,
   Button,
-  Center,
-  CopyButton,
   FileButton,
   Grid,
   Group,
   Image,
-  Text,
+  Text
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
-import { IconCamera } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
 
 export default function UploadBuktiTransferInvestasi() {
   const router = useRouter();
@@ -25,13 +21,12 @@ export default function UploadBuktiTransferInvestasi() {
   const [total, setTotal] = useState<any | null>(null);
   const [bank, setBank] = useState<any | null>(null);
 
-
   useShallowEffect(() => {
     if (typeof window !== undefined) {
       const totalHarga = localStorage.getItem("total_harga");
-      const pilihBank = localStorage.getItem("bank")
+      const pilihBank = localStorage.getItem("bank");
       setTotal(totalHarga);
-      setBank(pilihBank)
+      setBank(pilihBank);
     }
   }, []);
 
@@ -45,7 +40,6 @@ export default function UploadBuktiTransferInvestasi() {
         <Grid.Col span={7}>
           <Text fw={"bold"}>Xendit</Text>
         </Grid.Col>
-        
       </Grid>
 
       {/* Nomor rekening */}
@@ -53,7 +47,7 @@ export default function UploadBuktiTransferInvestasi() {
         <Grid.Col span={5}>
           <Text>Nomor Rekening</Text>
         </Grid.Col>
-        <Grid.Col span={7} >
+        <Grid.Col span={7}>
           <Text fw={"bold"}>{bank}</Text>
         </Grid.Col>
         {/* <Grid.Col span={"auto"}>
@@ -80,7 +74,6 @@ export default function UploadBuktiTransferInvestasi() {
         <Grid.Col span={7}>
           <Text fw={"bold"}>Rp. {total}</Text>
         </Grid.Col>
-       
       </Grid>
 
       {/* Upload */}

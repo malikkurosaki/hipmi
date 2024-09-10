@@ -21,4 +21,5 @@ export const RouterVote = {
   detail_kontribusi: "/dev/vote/detail/kontribusi/",
   detail_semua_riwayat: "/dev/vote/detail/semua_riwayat/",
   detail_riwayat_saya: "/dev/vote/detail/riwayat_saya/",
+  daftar_kontributor: "/dev/vote/detail/daftar-kontributor/",
 };

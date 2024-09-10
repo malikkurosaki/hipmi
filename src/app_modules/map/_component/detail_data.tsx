@@ -1,36 +1,30 @@
 "use client";
 
+import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
 import { RouterMap } from "@/app/lib/router_hipmi/router_map";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import {
   Box,
   Button,
-  Flex,
   Grid,
-  Group,
   Image,
-  Loader,
   SimpleGrid,
-  Skeleton,
   Stack,
   Text,
-  Title,
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
-import { useState } from "react";
-import { map_funGetOneById } from "../fun/get/fun_get_one_by_id";
-import { MODEL_MAP } from "../lib/interface";
 import {
   IconBuildingSkyscraper,
   IconListDetails,
-  IconPhoneCall,
   IconMapPin,
+  IconPhoneCall,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import { useState } from "react";
+import { map_funGetOneById } from "../fun/get/fun_get_one_by_id";
+import { MODEL_MAP } from "../lib/interface";
 import { ComponentMap_SkeletonDrawerDetailData } from "./skeleton_detail_data";
-import Link from "next/link";
 
 export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
   const router = useRouter();

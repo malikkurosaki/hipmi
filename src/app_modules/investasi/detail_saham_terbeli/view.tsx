@@ -61,7 +61,7 @@ export default function DetailSahamTerbeli({
       id: 3,
       name: "Berita",
       icon: <IconSpeakerphone size={70} color="white" />,
-      route: RouterInvestasi_OLD.berita,
+      route: RouterInvestasi_OLD.daftar_berita,
     },
   ];
 

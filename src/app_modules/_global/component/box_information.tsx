@@ -20,10 +20,10 @@ export default function ComponentGlobal_BoxInformation({
           }}
         >
           <Stack spacing={0}>
-            <Text fz={10} fs={"italic"} c={"orange"} fw={"bold"}>
+            <Text fz={12} fs={"italic"} c={"orange"} fw={"bold"}>
               * Report
             </Text>
-            <Text fz={10} c={"white"}>
+            <Text fz={12} c={"white"}>
               {informasi}
             </Text>
           </Stack>
@@ -38,7 +38,7 @@ export default function ComponentGlobal_BoxInformation({
           }}
         >
           <Group>
-            <Text fz={10} c={"red"} fw={"bold"}>
+            <Text fz={12} c={"red"} fw={"bold"}>
               *{" "}
               <Text span inherit c={"white"} fw={"normal"}>
                 {informasi}

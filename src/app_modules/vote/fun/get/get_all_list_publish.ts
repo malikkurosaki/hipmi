@@ -1,9 +1,15 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 
-export async function vote_getAllListPublish({ page }: { page: number }) {
+export async function vote_getAllListPublish({
+  page,
+  search,
+}: {
+  page: number;
+  search?: string;
+}) {
   const takeData = 5;
   const skipData = page * takeData - takeData;
 
@@ -15,9 +21,14 @@ export async function vote_getAllListPublish({ page }: { page: number }) {
     },
     where: {
       voting_StatusId: "1",
+      isArsip: false,
       isActive: true,
       akhirVote: {
         gte: new Date(),
+      },
+      title: {
+        contains: search,
+        mode: "insensitive",
       },
     },
     select: {
@@ -35,6 +46,13 @@ export async function vote_getAllListPublish({ page }: { page: number }) {
       Voting_DaftarNamaVote: {
         orderBy: {
           createdAt: "asc",
+        },
+        include: {
+          Voting_Kontributor: {
+            include: {
+              Author: true,
+            },
+          },
         },
       },
       Author: {

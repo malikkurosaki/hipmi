@@ -17,8 +17,6 @@ export default function ComponentAdminGlobal_BackButton({
     <>
       <Group>
         <Button
-          // loaderPosition="center"
-          // loading={isLoading ? true : false}
           c={"gray"}
           leftIcon={
             isLoading ? (

@@ -77,14 +77,14 @@ export default function PortofolioInvestasi({
             ))}
           </Tabs.List>
 
-          <Tabs.Panel value="Draft">
-            <Draft data={dataDraft as any} />
+          <Tabs.Panel value="Publish">
+            <Publish data={dataPublish as any} />
           </Tabs.Panel>
           <Tabs.Panel value="Review">
             <Review data={dataReview as any} />
           </Tabs.Panel>
-          <Tabs.Panel value="Publish">
-            <Publish data={dataPublish as any} />
+          <Tabs.Panel value="Draft">
+            <Draft data={dataDraft as any} />
           </Tabs.Panel>
           <Tabs.Panel value="Reject">
             <Reject data={dataReject as any} />

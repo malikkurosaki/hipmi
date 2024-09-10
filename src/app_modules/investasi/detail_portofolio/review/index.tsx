@@ -1,44 +1,18 @@
 "use client";
 
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
-import { Warna } from "@/app/lib/warna";
-import {
-  ActionIcon,
-  AspectRatio,
-  Avatar,
-  Box,
-  Button,
-  Center,
-  Flex,
-  Grid,
-  Group,
-  Image,
-  Paper,
-  Slider,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import {
-  IconBookDownload,
-  IconFileDescription,
-  IconSpeakerphone,
-} from "@tabler/icons-react";
+import { Button, Stack } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { gs_investasi_status } from "../../g_state";
-import toast from "react-simple-toasts";
-import { MODEL_INVESTASI } from "../../_lib/interface";
-import funGantiStatusInvestasi from "../../fun/fun_ganti_status";
-import { useState } from "react";
-import _ from "lodash";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import { ComponentInvestasi_DetailDataNonPublish } from "../../component/detail/detai_data_non_publish";
-import { investasi_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import mqtt_client from "@/util/mqtt_client";
+import { useState } from "react";
+import { MODEL_INVESTASI } from "../../_lib/interface";
+import { ComponentInvestasi_DetailDataNonPublish } from "../../component/detail/detai_data_non_publish";
+import { investasi_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
 
 export default function DetailReviewInvestasi({
   dataInvestasi,

@@ -22,6 +22,8 @@ import { MODEL_VOTING } from "../model/interface";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import { toNumber } from "lodash";
+import { useState } from "react";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 
 export default function ComponentVote_CardViewPublish({
   data,
@@ -29,14 +31,18 @@ export default function ComponentVote_CardViewPublish({
   pilihanSaya,
   authorName,
   namaPilihan,
+  statusArsip,
 }: {
   data?: MODEL_VOTING;
   path: string;
   pilihanSaya?: boolean;
   authorName?: boolean;
   namaPilihan?: string;
+  statusArsip?: boolean;
 }) {
   const router = useRouter();
+  const [visible, setVisible] = useState(false);
+
   return (
     <>
       <Card
@@ -70,8 +76,9 @@ export default function ComponentVote_CardViewPublish({
           py={authorName ? "sm" : 0}
           onClick={() => {
             if (data?.id === undefined) {
-              ComponentGlobal_NotifikasiPeringatan("Path tidak ditemukan");
+              ComponentGlobal_NotifikasiPeringatan("Halaman tidak ditemukan");
             } else {
+              setVisible(true);
               router.push(path + data?.id);
             }
           }}
@@ -112,21 +119,38 @@ export default function ComponentVote_CardViewPublish({
             </Stack>
             {data ? (
               <Stack>
-                {data?.Voting_DaftarNamaVote.map((v, i) => (
-                  <Stack key={v.id} spacing={0}>
-                    <Group position="apart">
-                      <Text>{v.value}</Text>
-                      <Text>{v.jumlah}</Text>
-                    </Group>
-                    <Progress size={"xl"} radius={"xl"} value={v.jumlah} color="yellow" />
-                  </Stack>
-                
-                ))}
+                <Center>
+                  <Title order={5}>Hasil Voting</Title>
+                </Center>
+
+                <Grid justify="center">
+                  {data?.Voting_DaftarNamaVote.map((e) => (
+                    <Grid.Col
+                      key={e.id}
+                      span={data?.Voting_DaftarNamaVote?.length >= 4 ? 6 : 4}
+                    >
+                      <Stack align="center">
+                        <Avatar
+                          radius={100}
+                          size={70}
+                          variant="outline"
+                          color="yellow"
+                        >
+                          <Text>{e.jumlah}</Text>
+                        </Avatar>
+                        <Text fz={"xs"} align="center">
+                          {e.value}
+                        </Text>
+                      </Stack>
+                    </Grid.Col>
+                  ))}
+                </Grid>
               </Stack>
             ) : (
               ""
             )}
           </Stack>
+
           {pilihanSaya ? (
             <Stack align="center" spacing={0} mt="md">
               <Text mb={"xs"} fw={"bold"} fz={"xs"}>
@@ -141,6 +165,18 @@ export default function ComponentVote_CardViewPublish({
           ) : (
             ""
           )}
+
+          {statusArsip ? (
+            <Center mt="md">
+              <Badge color={data?.isArsip ? "gray" : "green"}>
+                {data?.isArsip ? "Arsip" : "Publish"}
+              </Badge>
+            </Center>
+          ) : (
+            ""
+          )}
+
+          {visible && <ComponentGlobal_CardLoadingOverlay />}
         </Card.Section>
       </Card>
     </>

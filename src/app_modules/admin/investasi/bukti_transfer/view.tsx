@@ -16,7 +16,7 @@ import { IconChevronRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
 export default function Admin_BuktiTransferInvestasi() {
-  const router = useRouter()
+  const router = useRouter();
   const listUsername = [
     {
       id: 1,
@@ -41,7 +41,13 @@ export default function Admin_BuktiTransferInvestasi() {
     <>
       {/* Box Username */}
       {listUsername.map((e) => (
-        <Paper key={e.id} bg={"gray"} p={"md"} mb={"xs"} onClick={() => router.push(RouterAdminInvestasi_OLD.status_transfer)}>
+        <Paper
+          key={e.id}
+          bg={"gray"}
+          p={"md"}
+          mb={"xs"}
+          onClick={() => router.push(RouterAdminInvestasi_OLD.status_transfer)}
+        >
           <Grid align="center">
             <Grid.Col span={6}>
               <Text>Username</Text>

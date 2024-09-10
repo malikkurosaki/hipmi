@@ -3,7 +3,7 @@ import {
   Donasi_getMasterDurasi,
   Donasi_getMasterKategori,
 } from "@/app_modules/donasi/fun";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 
 export default async function Page() {
   const masterKategori = await Donasi_getMasterKategori();

@@ -3,7 +3,10 @@
 import prisma from "@/app/lib/prisma";
 import moment from "moment";
 
-export async function investasi_funGetAllPublish() {
+export async function investasi_funGetAllPublish({ page }: { page: number }) {
+  const takeData = 5;
+  const skipData = page * takeData - takeData;
+
   const data = await prisma.investasi.findMany({
     where: {
       masterStatusInvestasiId: "1",
@@ -23,8 +26,6 @@ export async function investasi_funGetAllPublish() {
         moment(new Date()).diff(new Date(a.countDown as any), "days") <=
       0
     ) {
-      // console.log(a.MasterPencarianInvestor?.name);
-
       await prisma.investasi.update({
         where: {
           id: a.id,
@@ -51,34 +52,25 @@ export async function investasi_funGetAllPublish() {
   // klo ada,  update status
 
   const dataFix = await prisma.investasi.findMany({
+    take: takeData,
+    skip: skipData,
     orderBy: [
       {
         masterProgresInvestasiId: "asc",
+      },
+      {
+        countDown: "desc",
       },
     ],
     where: {
       masterStatusInvestasiId: "1",
     },
-    select: {
-      id: true,
-      title: true,
-      authorId: true,
-      hargaLembar: true,
-      targetDana: true,
-      totalLembar: true,
-      sisaLembar: true,
-      progress: true,
-      roi: true,
-      active: true,
-      createdAt: true,
-      updatedAt: true,
-      imagesId: true,
+    include: {
       ProspektusInvestasi: true,
       MasterPembagianDeviden: true,
       MasterPencarianInvestor: true,
       MasterPeriodeDeviden: true,
       MasterProgresInvestasi: true,
-      countDown: true,
     },
   });
 

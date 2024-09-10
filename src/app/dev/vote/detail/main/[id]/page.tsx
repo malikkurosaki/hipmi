@@ -1,19 +1,19 @@
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { Vote_MainDetail } from "@/app_modules/vote";
 import { Vote_cekKontributorById } from "@/app_modules/vote/fun/get/cek_kontributor_by_id";
 import { Vote_getHasilVoteById } from "@/app_modules/vote/fun/get/get_list_hasil_by_id";
 import { Vote_getListKontributorById } from "@/app_modules/vote/fun/get/get_list_kontributor_by_id";
-import { Vote_getOnebyId } from "@/app_modules/vote/fun/get/get_one_by_id";
+import { voting_funGetOneVotingbyId } from "@/app_modules/vote/fun/get/fun_get_one_by_id";
 import { Vote_getOnePilihanVotingByUserId } from "@/app_modules/vote/fun/get/get_one_pilihan_voting_by_user_id";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const voteId = params.id;
-  const dataVote = await Vote_getOnebyId(voteId);
+  const dataVote = await voting_funGetOneVotingbyId(voteId);
   const hasilVoting = await Vote_getHasilVoteById(voteId as any);
   const isKontributor = await Vote_cekKontributorById(voteId);
   const pilihanKontributor = await Vote_getOnePilihanVotingByUserId(voteId);
   const listKontributor = await Vote_getListKontributorById(voteId);
-  const userLoginId = await user_getOneUserId();
+  const userLoginId = await user_funGetOneUserId();
 
   return (
     <>

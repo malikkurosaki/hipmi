@@ -11,12 +11,8 @@ export default function ComponentGlobal_IsEmptyData({
 }) {
   return (
     <>
-      <Center
-        h={height ? `${height}vh` : "70vh"}
-        fz={"sm"}
-        fw={"bold"}
-      >
-        <Text c={"gray"}>{text ? text : "Tidak Ada Data"}</Text>
+      <Center h={height ? `${height}vh` : "70vh"} fz={"sm"} fw={"bold"}>
+        <Text c={"gray"}>{text ? text : "Tidak ada data"}</Text>
       </Center>
     </>
   );

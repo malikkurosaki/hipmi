@@ -1,26 +1,25 @@
 "use client";
 
-import { Warna } from "@/app/lib/warna";
-import {
-  Group,
-  FileButton,
-  Button,
-  Box,
-  Paper,
-  AspectRatio,
-  Image,
-  Stack,
-  Center,
-} from "@mantine/core";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import toast from "react-simple-toasts";
-import funUploadProspektusInvestasi from "../fun/fun_upload_prospek";
-import funLoadDataInvestasi from "../fun/fun_load_data";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import {
+  AspectRatio,
+  Box,
+  Button,
+  FileButton,
+  Group,
+  Image,
+  Paper,
+  Stack
+} from "@mantine/core";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import funUploadProspektusInvestasi from "../fun/fun_upload_prospek";
 
 export default function UploadProspektusInvestasi({
   idInves,
@@ -32,17 +31,17 @@ export default function UploadProspektusInvestasi({
   const [pdf, setPdf] = useState<File | null>(null);
 
   async function onUpload() {
-    if (!pdf) return toast("File Kosong");
+    if (!pdf) return ComponentGlobal_NotifikasiPeringatan("File Kosong");
 
     const fd = new FormData();
     fd.append("file", pdf as any);
 
     await funUploadProspektusInvestasi(fd, idInves).then((res) => {
       if (res.status === 201) {
-        toast("Berhasil upload");
+        ComponentGlobal_NotifikasiBerhasil("Berhasil upload");
         router.back();
       } else {
-        toast(res.message);
+        ComponentGlobal_NotifikasiGagal(res.message);
       }
     });
   }

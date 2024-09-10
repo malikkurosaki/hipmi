@@ -85,7 +85,7 @@ export default function AdminUserAccess_View({ listUser }: { listUser: any }) {
         <Center>{e.username}</Center>
       </td>
       <td>
-        <Center>{e.nomor}</Center>
+        <Center>+{e.nomor}</Center>
       </td>
       <td>
         {e.active === false ? (
@@ -120,7 +120,6 @@ export default function AdminUserAccess_View({ listUser }: { listUser: any }) {
   return (
     <>
       <Stack spacing={"xs"} h={"90vh"}>
-        {/* <pre>{JSON.stringify(listUser, null, 2)}</pre> */}
         <Group
           position="apart"
           bg={"blue.4"}
@@ -138,8 +137,8 @@ export default function AdminUserAccess_View({ listUser }: { listUser: any }) {
           />
         </Group>
 
-        <Paper p={"md"} withBorder shadow="lg" h={"100%"}>
-          <ScrollArea>
+        <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
+          <ScrollArea w={"100%"} h={"90%"}>
             <Table
               verticalSpacing={"xs"}
               horizontalSpacing={"md"}

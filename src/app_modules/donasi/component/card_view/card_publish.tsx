@@ -2,9 +2,9 @@
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 import {
   AspectRatio,
-  Box,
   Card,
   Grid,
   Image,
@@ -14,10 +14,9 @@ import {
   Text,
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import ComponentDonasi_TampilanHitungMundur from "../tampilan_hitung_mundur";
 import TampilanRupiahDonasi from "../tampilan_rupiah";
-import { useState } from "react";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
 
 export default function ComponentDonasi_CardPublish({
   data,

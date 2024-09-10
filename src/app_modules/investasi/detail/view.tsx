@@ -2,7 +2,7 @@
 
 import {
   NEW_RouterInvestasi,
-  RouterInvestasi_OLD
+  RouterInvestasi_OLD,
 } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
@@ -25,7 +25,7 @@ import {
   Progress,
   Stack,
   Text,
-  Title
+  Title,
 } from "@mantine/core";
 import {
   IconBookDownload,
@@ -40,27 +40,31 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_INVESTASI } from "../_lib/interface";
 import { gs_TransferValue } from "../g_state";
+import { useLocalStorage } from "@mantine/hooks";
+import ComponentGlobal_AuthorNameAndAvatar from "@/app_modules/_global/author_name_on_header";
+import { ComponentGlobal_AvatarAndAuthorName } from "@/app_modules/_global/component";
 
 export default function DetailInvestasi({
   dataInvestasi,
-  dataUser,
   loginUserId,
-  progress,
-  totalInvestor,
 }: {
   dataInvestasi: MODEL_INVESTASI;
-  dataUser: MODEL_PROFILE_OLD;
   loginUserId: string;
-  progress: number;
-  totalInvestor: number;
 }) {
   const router = useRouter();
   const [data, setData] = useState(dataInvestasi);
-  const [user, setUser] = useState(dataUser);
-  const [transaksiValue, setTransaksiValue] = useAtom(gs_TransferValue);
   const [boxId, setBoxId] = useState(0);
   const [isLoadingBox, setLoadingBox] = useState(false);
   const [isLoadingButton, setLoadingButton] = useState(false);
+
+  const [total, setTotal] = useLocalStorage({
+    key: "total_investasi",
+    defaultValue: 0,
+  });
+  const [jumlah, setJumlah] = useLocalStorage({
+    key: "jumlah_investasi",
+    defaultValue: 0,
+  });
 
   const listBox = [
     {
@@ -79,100 +83,98 @@ export default function DetailInvestasi({
       id: 3,
       name: "Berita",
       icon: <IconSpeakerphone size={70} color="white" />,
-      route: RouterInvestasi_OLD.berita,
+      route: RouterInvestasi_OLD.daftar_berita,
     },
   ];
 
   async function onSubmit() {
-    //NEW
-    router.push(NEW_RouterInvestasi.pembelian + data.id, { scroll: false });
-
     // OLD
     // router.push(RouterInvestasi_OLD.proses_transaksi + `${data.id}`);
+    // setTransaksiValue({
+    //   ...transaksiValue,
+    //   lembarTerbeli: "",
+    //   namaBank: "",
+    //   nomorRekening: "",
+    //   totalTransfer: "",
+    // });
 
-    setTransaksiValue({
-      ...transaksiValue,
-      lembarTerbeli: "",
-      namaBank: "",
-      nomorRekening: "",
-      totalTransfer: "",
-    });
     setLoadingButton(true);
+
+    //NEW
+    router.push(NEW_RouterInvestasi.pembelian + data.id, { scroll: false });
+    setTotal(0);
+    setJumlah(0);
   }
 
   return (
     <>
       <Stack
         style={{
-          padding: "15px",
           backgroundColor: AccentColor.darkblue,
-          borderRadius: "10px",
           border: `2px solid ${AccentColor.blue}`,
+          padding: "15px",
+          borderRadius: "10px",
           color: "white",
           marginBottom: "15px",
         }}
       >
         {/* Foto username dan sisa waktu */}
-        <Group position="apart" mb={"md"}>
-          {/* <pre>{JSON.stringify(dataUser, null, 2)}</pre> */}
-          <ComponentGlobal_AuthorNameOnHeader
-            authorName={dataUser?.Profile?.name}
-            imagesId={dataUser?.Profile?.imagesId}
-            profileId={dataUser?.Profile?.id}
-          />
-
-          {data.MasterProgresInvestasi.id === "1" ? (
-            <Box>
-              <Group position="right" spacing={"xs"}>
-                <Text>
-                  Sisa waktu:{" "}
-                  <Text span inherit>
-                    {Number(data.MasterPencarianInvestor.name) -
-                      moment(new Date()).diff(
-                        new Date(data.countDown),
-                        "days"
-                      )}{" "}
-                    Hari
-                  </Text>
-                </Text>
-              </Group>
-            </Box>
-          ) : (
-            <Box>
-              {data.MasterProgresInvestasi.id === "2" ? (
+        <ComponentGlobal_AvatarAndAuthorName
+          dataUser={dataInvestasi.author as any}
+          componentRight={
+            data.MasterProgresInvestasi.id === "1" ? (
+              <Box>
                 <Group position="right" spacing={"xs"}>
-                  <IconCircleCheck color="green" />
-                  <Text
-                    truncate
-                    variant="text"
-                    c={Warna.hijau_tua}
-                    sx={{ fontFamily: "Greycliff CF, sans-serif" }}
-                    ta="center"
-                    fz="md"
-                    fw={700}
-                  >
-                    Selesai
+                  <Text>
+                    Sisa waktu:{" "}
+                    <Text span inherit>
+                      {Number(data.MasterPencarianInvestor.name) -
+                        moment(new Date()).diff(
+                          new Date(data.countDown),
+                          "days"
+                        )}{" "}
+                      Hari
+                    </Text>
                   </Text>
                 </Group>
-              ) : (
-                <Group position="right" spacing={"xs"}>
-                  <IconXboxX color="red" />
-                  <Text
-                    truncate
-                    variant="text"
-                    c={Warna.merah}
-                    sx={{ fontFamily: "Greycliff CF, sans-serif" }}
-                    ta="center"
-                    fz="md"
-                    fw={700}
-                  >
-                    Waktu Habis
-                  </Text>
-                </Group>
-              )}
-            </Box>
-          )}
-        </Group>
+              </Box>
+            ) : (
+              <Box>
+                {data.MasterProgresInvestasi.id === "2" ? (
+                  <Group position="right" spacing={"xs"}>
+                    <IconCircleCheck color="green" />
+                    <Text
+                      truncate
+                      variant="text"
+                      c={Warna.hijau_tua}
+                      sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+                      ta="center"
+                      fz="md"
+                      fw={700}
+                    >
+                      Selesai
+                    </Text>
+                  </Group>
+                ) : (
+                  <Group position="right" spacing={"xs"}>
+                    <IconXboxX color="red" />
+                    <Text
+                      truncate
+                      variant="text"
+                      c={Warna.merah}
+                      sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+                      ta="center"
+                      fz="md"
+                      fw={700}
+                    >
+                      Waktu Habis
+                    </Text>
+                  </Group>
+                )}
+              </Box>
+            )
+          }
+        />
 
         <AspectRatio ratio={1 / 1} mx={"sm"} mah={250}>
           <Image
@@ -249,7 +251,7 @@ export default function DetailInvestasi({
                 <Text>
                   {new Intl.NumberFormat("id-ID", {
                     maximumSignificantDigits: 10,
-                  }).format(totalInvestor)}
+                  }).format(dataInvestasi.Investasi_Invoice.length)}
                 </Text>
               </Box>
               <Box>
