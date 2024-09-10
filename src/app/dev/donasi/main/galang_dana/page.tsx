@@ -4,10 +4,10 @@ import { donasi_funGetAllStatusDraft } from "@/app_modules/donasi/fun/get/status
 import { donasi_funGetAllStatusPublish } from "@/app_modules/donasi/fun/get/status/get_all_status_publish";
 import { donasi_funGetAllStatusReject } from "@/app_modules/donasi/fun/get/status/get_all_status_reject";
 import { donasi_funGetAllStatusReview } from "@/app_modules/donasi/fun/get/status/get_all_status_review";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 
 export default async function Page() {
-  const authorId = await user_getOneUserId();
+  const authorId = await user_funGetOneUserId();
   const listPublish = await donasi_funGetAllStatusPublish({page: 1});
   const listReview = await donasi_funGetAllStatusReview({page: 1});
   const listDraft = await donasi_funGetAllStatusDraft({page: 1});

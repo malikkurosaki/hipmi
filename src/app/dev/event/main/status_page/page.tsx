@@ -3,10 +3,10 @@ import { event_getAllDraft } from "@/app_modules/event/fun/get/status/get_all_dr
 import { event_getAllReject } from "@/app_modules/event/fun/get/status/get_all_reject";
 import { event_getAllReview } from "@/app_modules/event/fun/get/status/get_all_review";
 import { event_funGetAllStatusPublish } from "@/app_modules/event/fun/get/status/get_all_status_publish";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 
 export default async function Page() {
-  const authorId = await user_getOneUserId();
+  const authorId = await user_funGetOneUserId();
   const listPublish = await event_funGetAllStatusPublish({ page: 1 });
   const listReview = await event_getAllReview({ page: 1 });
   const listDraft = await event_getAllDraft({ page: 1 });

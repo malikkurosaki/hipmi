@@ -19,10 +19,8 @@ import ComponentVote_DetailDataSetelahPublish from "../../component/detail/detai
 
 export default function Vote_DetailKontribusi({
   dataVote,
-  listKontributor,
 }: {
   dataVote: MODEL_VOTING;
-  listKontributor: any
 }) {
   return (
     <>
@@ -32,12 +30,7 @@ export default function Vote_DetailKontribusi({
           authorName={true}
         />
         <ComponentVote_HasilVoting data={dataVote.Voting_DaftarNamaVote} />
-        <ComponentVote_DaftarKontributorVoter
-          listKontributor={listKontributor}
-        />
       </Stack>
     </>
   );
 }
-
-

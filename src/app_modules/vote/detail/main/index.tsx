@@ -25,9 +25,11 @@ import { useState } from "react";
 import ComponentVote_DaftarKontributorVoter from "../../component/detail/detail_daftar_kontributor";
 import ComponentVote_HasilVoting from "../../component/detail/detail_hasil_voting";
 import { Vote_funCreateHasil } from "../../fun/create/create_hasil";
-import { Vote_getOnebyId } from "../../fun/get/get_one_by_id";
+import { voting_funGetOneVotingbyId } from "../../fun/get/fun_get_one_by_id";
 import { MODEL_VOTING } from "../../model/interface";
 import mqtt_client from "@/util/mqtt_client";
+import moment from "moment";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 
 export default function Vote_MainDetail({
   dataVote,
@@ -45,9 +47,16 @@ export default function Vote_MainDetail({
   userLoginId: string;
 }) {
   const [data, setData] = useState(dataVote);
+  const today = new Date();
+
   return (
     <>
       <Stack py={"md"}>
+        {moment(dataVote?.awalVote).diff(today, "hours") < 0 ? (
+          ""
+        ) : (
+          <ComponentGlobal_BoxInformation informasi="Untuk sementara voting ini belum di buka. Voting akan dimulai sesuai dengan tanggal awal pemilihan, dan akan ditutup sesuai dengan tanggal akhir pemilihan." />
+        )}
         <TampilanDataVoting
           dataVote={data}
           setData={setData}
@@ -56,9 +65,6 @@ export default function Vote_MainDetail({
           userLoginId={userLoginId}
         />
         <ComponentVote_HasilVoting data={data.Voting_DaftarNamaVote} />
-        <ComponentVote_DaftarKontributorVoter
-          listKontributor={listKontributor}
-        />
       </Stack>
     </>
   );
@@ -78,6 +84,8 @@ function TampilanDataVoting({
   userLoginId: string;
 }) {
   const [votingNameId, setVotingNameId] = useState("");
+  const today = new Date();
+
   return (
     <>
       <Card
@@ -184,6 +192,11 @@ function TampilanDataVoting({
                   {dataVote?.Voting_DaftarNamaVote.map((v) => (
                     <Box key={v.id}>
                       <Radio
+                        disabled={
+                          moment(dataVote?.awalVote).diff(today, "hours") < 0
+                            ? false
+                            : true
+                        }
                         color="yellow"
                         styles={{ label: { color: "white" } }}
                         label={v.value}
@@ -233,11 +246,11 @@ async function onVote(
 ) {
   const res = await Vote_funCreateHasil(pilihanVotingId, voteId);
   if (res.status === 201) {
-    await Vote_getOnebyId(voteId).then((val) => {
+    await voting_funGetOneVotingbyId(voteId).then((val) => {
       setData(val);
       ComponentGlobal_NotifikasiBerhasil(res.message);
     });
-    
+
     if (userLoginId !== res?.data?.Voting?.authorId) {
       const dataNotif = {
         appId: res?.data?.Voting?.id,
@@ -262,8 +275,6 @@ async function onVote(
         );
       }
     }
-
-    
   } else {
     ComponentGlobal_NotifikasiPeringatan(res.message);
   }

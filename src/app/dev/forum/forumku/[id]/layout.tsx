@@ -1,5 +1,5 @@
 import { LayoutForum_Forumku } from "@/app_modules/forum";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { user_getOneByUserId } from "@/app_modules/home/fun/get/get_one_user_by_id";
 import React from "react";
 

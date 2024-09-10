@@ -1,10 +1,10 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 
 export async function vote_getAllPublish({ page }: { page: number }) {
-  const authorId = await user_getOneUserId();
+  const authorId = await user_funGetOneUserId();
 
   const takeData = 5;
   const skipData = page * takeData - takeData;
@@ -23,18 +23,7 @@ export async function vote_getAllPublish({ page }: { page: number }) {
         gte: new Date(),
       },
     },
-    select: {
-      id: true,
-      title: true,
-      isActive: true,
-      createdAt: true,
-      updatedAt: true,
-      deskripsi: true,
-      awalVote: true,
-      akhirVote: true,
-      catatan: true,
-      authorId: true,
-      voting_StatusId: true,
+    include: {
       Voting_DaftarNamaVote: {
         orderBy: {
           createdAt: "asc",
@@ -42,6 +31,7 @@ export async function vote_getAllPublish({ page }: { page: number }) {
       },
     },
   });
+
 
   return data;
 }

@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
-export async function user_getOneUserId() {
+export async function user_funGetOneUserId() {
   const c = cookies().get("ssn");
   if (!c?.value || c.value === "") return redirect(RouterAuth.login);
 

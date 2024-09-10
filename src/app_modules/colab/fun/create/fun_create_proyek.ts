@@ -2,7 +2,7 @@
 
 import prisma from "@/app/lib/prisma";
 import { MODEL_COLLABORATION } from "../../model/interface";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { revalidatePath } from "next/cache";
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 import _ from "lodash";
@@ -10,7 +10,7 @@ import _ from "lodash";
 export default async function colab_funCreateProyek(
   value: MODEL_COLLABORATION
 ) {
-  const AuthorId = await user_getOneUserId();
+  const AuthorId = await user_funGetOneUserId();
 
   const data = await prisma.projectCollaboration.create({
     data: {

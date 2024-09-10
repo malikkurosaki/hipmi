@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 
 export async function vote_getAllListKontribusiByAuthorId({
   page,
@@ -11,7 +11,7 @@ export async function vote_getAllListKontribusiByAuthorId({
   const takeData = 5;
   const skipData = page * takeData - takeData;
 
-  const authorId = await user_getOneUserId();
+  const authorId = await user_funGetOneUserId();
   const data = await prisma.voting_Kontributor.findMany({
     take: takeData,
     skip: skipData,

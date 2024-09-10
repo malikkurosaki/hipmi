@@ -173,15 +173,6 @@ model MasterBidangBisnis {
   Portofolio Portofolio[]
 }
 
-model MasterStatus {
-  id        String   @id @default(cuid())
-  name      String
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Job       Job[]
-}
-
 // ------------------- MASTER -------------------------- //
 
 model MasterBank {
@@ -193,6 +184,15 @@ model MasterBank {
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
   Investasi_Invoice Investasi_Invoice[]
+}
+
+model MasterStatus {
+  id        String   @id @default(cuid())
+  name      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Job       Job[]
 }
 
 // -------------------- INVESTASI --------------------- //
@@ -623,6 +623,7 @@ model Voting {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  isArsip   Boolean  @default(false)
 
   title     String
   deskripsi String

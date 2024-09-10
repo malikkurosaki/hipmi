@@ -20,22 +20,20 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconBan, IconEyeShare, IconSearch } from "@tabler/icons-react";
-import _ from "lodash";
+import { IconBan, IconCircleCheck, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
+import mqtt_client from "@/util/mqtt_client";
 import moment from "moment";
 import { useState } from "react";
+import { adminVote_funGetListReview } from "../../fun";
 import { AdminVote_funEditStatusPublishById } from "../../fun/edit/fun_edit_status_publish_by_id";
 import { AdminEvent_funEditCatatanById } from "../../fun/edit/fun_edit_status_reject_by_id";
 import { AdminVote_getListTableByStatusId } from "../../fun/get/get_list_table_by_status_id";
-import mqtt_client from "@/util/mqtt_client";
-import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
-import { adminVote_funGetListReview } from "../../fun";
-import { IconCircleCheckFilled } from "@tabler/icons-react";
 
 export default function AdminVote_TableReview({
   listVote,
@@ -134,7 +132,7 @@ function TableStatus({ listData }: { listData: any }) {
             }
             w={120}
             color={"green"}
-            leftIcon={<IconCircleCheckFilled />}
+            leftIcon={<IconCircleCheck />}
             radius={"xl"}
             onClick={() =>
               onPublish(

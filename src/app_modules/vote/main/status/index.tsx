@@ -23,7 +23,6 @@ export default function Vote_Status({
   listDraft: any[];
   listReject: any[];
 }) {
-
   const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
   const listTabs = [
     {
@@ -73,6 +72,7 @@ export default function Vote_Status({
           <Tabs.List grow>
             {listTabs.map((e) => (
               <Tabs.Tab
+                w={"20%"}
                 key={e.id}
                 value={e.value}
                 fw={"bold"}
@@ -81,10 +81,6 @@ export default function Vote_Status({
                   transition: "0.5s",
                   backgroundColor:
                     tabsStatus === e.value ? MainColor.yellow : "white",
-                  border:
-                    tabsStatus === e.value
-                      ? `1px solid ${AccentColor.yellow}`
-                      : `1px solid white`,
                 }}
               >
                 {e.value}

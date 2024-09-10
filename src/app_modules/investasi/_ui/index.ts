@@ -10,6 +10,7 @@ import { Investasi_UiTransaksiBerhasil } from "./status_transaksi/ui_transaksi_b
 import { Investasi_UiFileViewDokumen } from "./file_view/ui_file_view_dokumen";
 import { Investasi_UiSahamSaya } from "./main/ui_saham_saya";
 import { Investasi_UiDetailSahamSaya } from "./detail/ui_detail_saham_saya";
+import { Investasi_UiPortofolio } from "./main/ui_portofolio";
 
 export { Investasi_UiProsesPembelian };
 export { Investasi_UiMetodePembayaran };
@@ -23,3 +24,4 @@ export { Investasi_UiTransaksiBerhasil };
 export { Investasi_UiFileViewDokumen };
 export { Investasi_UiSahamSaya };
 export { Investasi_UiDetailSahamSaya };
+export { Investasi_UiPortofolio };

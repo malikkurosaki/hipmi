@@ -1,4 +1,7 @@
 export const NEW_RouterInvestasi = {
+  // API
+  api_gambar: "/api/investasi/gambar/",
+
   // Transaksi
   pembelian: "/dev/investasi/transaksi/pembelian/",
   metode_pembayaran: "/dev/investasi/transaksi/metode-pembayaran/",
@@ -15,6 +18,10 @@ export const NEW_RouterInvestasi = {
 
   // detail
   detail_saham: "/dev/investasi/detail/saham/",
+  detail_publish: "/dev/investasi/detail_portofolio/publish/",
+  detail_review: "/dev/investasi/detail_portofolio/review/",
+  detail_draft: "/dev/investasi/detail_portofolio/draft/",
+  detail_reject: "/dev/investasi/detail_portofolio/reject/",
 };
 
 export const RouterInvestasi_OLD = {

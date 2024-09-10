@@ -7,10 +7,9 @@ export async function Vote_getListKontributorById(votingId: string) {
     where: {
       votingId: votingId,
     },
-    select: {
-      id: true,
+    include: {
       Author: {
-        select: {
+        include: {
           Profile: true,
         },
       },

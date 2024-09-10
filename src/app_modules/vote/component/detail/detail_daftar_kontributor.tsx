@@ -10,18 +10,19 @@ import {
   Grid,
   Stack,
   Text,
-  Title
+  Title,
 } from "@mantine/core";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { MODEL_VOTE_KONTRIBUTOR } from "../../model/interface";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 
 export default function ComponentVote_DaftarKontributorVoter({
   listKontributor,
 }: {
   listKontributor?: MODEL_VOTE_KONTRIBUTOR[];
 }) {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <>
       <Card
@@ -36,15 +37,14 @@ export default function ComponentVote_DaftarKontributorVoter({
         <Card.Section>
           <Stack>
             <Center>
-              <Title order={5}>Daftar Voting</Title>
+              <Title order={5}>Daftar Kontributor</Title>
             </Center>
 
             {_.isEmpty(listKontributor) ? (
-              <Center>
-                <Text fz={"xs"} c={"gray"} fw={"bold"}>
-                  - Tidak ada voting -
-                </Text>
-              </Center>
+              <ComponentGlobal_IsEmptyData
+                height={20}
+                text="Tidak ada kontributor"
+              />
             ) : (
               <Stack>
                 {listKontributor?.map((e, i) => (

@@ -1,6 +1,6 @@
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
 import {
   Card,
   CardSection,
@@ -70,14 +70,17 @@ export function Investasi_ComponentCardBeranda({
             <Title align="center" order={3}>
               {data?.title}
             </Title>
-            {/* <Progress
-                  label={(+e.progress).toFixed(2) + " %"}
-                  value={+e.progress}
-                  color="teal"
-                  size="xl"
-                  radius="xl"
-                /> */}
             <Progress
+              label={(+data?.progress).toFixed(2) + " %"}
+              value={+data?.progress}
+              color={MainColor.yellow}
+              size="xl"
+              radius="xl"
+              styles={{
+                label:{color: MainColor.black}
+              }}
+            />
+            {/* <Progress
               label={
                 "" +
                 (
@@ -97,7 +100,7 @@ export function Investasi_ComponentCardBeranda({
               color="teal"
               size="xl"
               radius="xl"
-            />
+            /> */}
           </Stack>
         </CardSection>
 

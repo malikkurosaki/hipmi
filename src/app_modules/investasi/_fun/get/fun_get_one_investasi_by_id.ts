@@ -1,7 +1,11 @@
 "use server";
 import prisma from "@/app/lib/prisma";
 
-export  async function investasi_funGetOneInvestasiById({investasiId}: {investasiId: string}) {
+export async function investasi_funGetOneInvestasiById({
+  investasiId,
+}: {
+  investasiId: string;
+}) {
   const data = await prisma.investasi.findUnique({
     where: {
       id: investasiId,

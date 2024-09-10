@@ -6,8 +6,12 @@ import React from "react";
 
 export default function LayoutVote_DetailSemuaRiwayat({
   children,
+  votingId,
+  userLoginId,
 }: {
   children: React.ReactNode;
+  votingId: string;
+  userLoginId: string;
 }) {
   return (
     <>

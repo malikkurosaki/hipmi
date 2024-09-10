@@ -1,6 +1,7 @@
 import { AccentColor } from "@/app_modules/_global/color";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 import { Card } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 
 export function Investasi_ComponentStylesCard({
   children,
@@ -13,9 +14,9 @@ export function Investasi_ComponentStylesCard({
   backgroundColor?: string;
   border?: string;
   marginBottom?: string | number;
-  onClickHandler?: (val: any) => void;
+  onClickHandler?: React.MouseEventHandler<HTMLDivElement>;
 }) {
-  
+
   return (
     <>
       <Card
@@ -24,9 +25,8 @@ export function Investasi_ComponentStylesCard({
             ? backgroundColor
             : AccentColor.darkblue,
           border: `2px solid ${border ? border : AccentColor.blue}`,
-          paddingInline: "20px",
-          paddingTop: "15px",
-          paddingBottom: "20px",
+          paddingInline: "15px",
+          paddingBlock: "15px",
           borderRadius: "10px",
           color: "white",
           marginBottom: marginBottom ? marginBottom : "0x",
