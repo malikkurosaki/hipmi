@@ -7,22 +7,16 @@ import { unsealData } from "iron-session";
 import { getConfig } from "@/bin/config";
 import yaml from "yaml";
 import fs from "fs";
+import { user_funGetOneUserId } from "@/app_modules/fun_global";
 
 const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
 export default async function PageSplash() {
-  const c = cookies().get("ssn");
-  const tkn = !c
-    ? null
-    : JSON.parse(
-        await unsealData(c.value as string, {
-          password: (await getConfig()).server.password,
-        })
-      );
+  const userLoginId = await user_funGetOneUserId();
 
   return (
     <>
-      <SplashScreen data={tkn} />
+      <SplashScreen userLoginId={userLoginId} />
     </>
   );
 }

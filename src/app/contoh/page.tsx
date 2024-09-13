@@ -1,13 +1,14 @@
 "use client";
 import { ComponentNotifikasi_CardSkeleton } from "@/app_modules/notifikasi/component";
+import Coba_UploadFile from "@/app_modules/zCoba/ui_coba_upload_file";
 import { Box, Button, Flex, Paper, Stack, Title } from "@mantine/core";
 
 export default function Page() {
-
-  return<>
-  <ComponentNotifikasi_CardSkeleton/>
-  </>
-
+  return (
+    <>
+      <Coba_UploadFile />
+    </>
+  );
 
   return (
     <Stack
@@ -27,15 +28,15 @@ export default function Page() {
           gap: "20px",
           position: "relative",
           overflowX: "scroll",
-        //   scrollSnapType: "x",
-        //   scrollbarGutter: "unset",
+          //   scrollSnapType: "x",
+          //   scrollbarGutter: "unset",
           scrollbarWidth: "none",
-          backgroundColor:"red"
+          backgroundColor: "red",
         }}
       >
         <Flex gap={"md"} bg={"cyan"}>
           {Array.from(new Array(10), (_, i) => (
-            <Paper component={Button} w={"200px"}  px={"md"} key={i}>
+            <Paper component={Button} w={"200px"} px={"md"} key={i}>
               Contoh
             </Paper>
           ))}

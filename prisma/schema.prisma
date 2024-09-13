@@ -114,7 +114,6 @@ model Images {
   Donasi_PencairanDana   Donasi_PencairanDana[]
   Donasi_Invoice         Donasi_Invoice[]
   Portofolio             Portofolio[]
-  Job                    Job[]
   Image_Map              BusinessMaps[]           @relation("ImageMap")
   Image_Pin              BusinessMaps[]           @relation("ImagePin")
   Investasi_Invoice      Investasi_Invoice[]
@@ -684,16 +683,15 @@ model Job {
   updatedAt DateTime @updatedAt
   isArsip   Boolean  @default(false)
   catatan   String?
+  title     String
+  content   String   @db.Text
+  deskripsi String   @db.Text
 
-  title          String
-  content        String        @db.Text
-  deskripsi      String        @db.Text
-  Images         Images?       @relation(fields: [imagesId], references: [id])
-  imagesId       String?
   Author         User?         @relation(fields: [authorId], references: [id])
   authorId       String?
   MasterStatus   MasterStatus? @relation(fields: [masterStatusId], references: [id])
   masterStatusId String?       @default("2")
+  imageId        String?
 }
 
 // ========================================= FORUM ========================================= //

@@ -97,13 +97,13 @@ function TableStatus({ listReject }: { listReject: any }) {
       </td>
       <td>
         <Center w={150}>
-          {e.imagesId ? (
+          {e.imageId ? (
             <Button
               color="green"
               radius={"xl"}
               leftIcon={<IconPhotoCheck />}
               onClick={() => {
-                router.push(RouterAdminJob.detail_poster + e?.imagesId);
+                router.push(RouterAdminJob.detail_poster + e?.imageId);
               }}
             >
               Lihat

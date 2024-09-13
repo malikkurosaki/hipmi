@@ -4,8 +4,10 @@ import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 import _ from "lodash";
 
 export default async function Page() {
-  const userId = await user_funGetOneUserId()
+  const userId = await user_funGetOneUserId();
   const listTipeAcara = await Event_getMasterTipeAcara();
 
-  return <Event_Create listTipeAcara={listTipeAcara as any} authorId={userId}/>;
+  return (
+    <Event_Create listTipeAcara={listTipeAcara as any} authorId={userId} />
+  );
 }

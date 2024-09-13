@@ -1,6 +1,9 @@
 "use client";
-import { myConsole } from "@/app/fun/my_console";
-import { ApiHipmi } from "@/app/lib/api";
+import { Warna } from "@/app/lib/warna";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { auth_Logout } from "@/app_modules/auth/fun/fun_logout";
+import { gs_kodeId } from "@/app_modules/auth/state/state";
 import {
   ActionIcon,
   Button,
@@ -10,15 +13,10 @@ import {
   Stack,
   Title,
 } from "@mantine/core";
-import { useRouter } from "next/navigation";
-import { useAtom } from "jotai";
-import { IconLogout } from "@tabler/icons-react";
-import { Warna } from "@/app/lib/warna";
 import { useDisclosure } from "@mantine/hooks";
-import { gs_kodeId, gs_nomor, gs_otp } from "@/app_modules/auth/state/state";
-import { auth_Logout } from "@/app_modules/auth/fun/fun_logout";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { IconLogout } from "@tabler/icons-react";
+import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Admin_Logout() {

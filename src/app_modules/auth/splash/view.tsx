@@ -13,11 +13,11 @@ import {
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 
-export default function SplashScreen({ data }: { data: any }) {
+export default function SplashScreen({ userLoginId }: { userLoginId: any }) {
   const router = useRouter();
 
   useShallowEffect(() => {
-    if (!data) {
+    if (!userLoginId) {
       setTimeout(() => {
         return router.push("/dev/auth/login", { scroll: false });
       }, 1000);
@@ -38,8 +38,13 @@ export default function SplashScreen({ data }: { data: any }) {
         <Center h={"100vh"}>
           <Stack align="center" justify="center" p={"md"}>
             {/* <Title c={"#002e59"}>Welcome to</Title> */}
-            <Avatar size={300} radius={"100%"} >
-              <Image  height={250} width={250} alt="Logo" src={"/aset/logo/logo-hipmi.png"} />
+            <Avatar size={300} radius={"100%"}>
+              <Image
+                height={250}
+                width={250}
+                alt="Logo"
+                src={"/aset/logo/logo-hipmi.png"}
+              />
             </Avatar>
           </Stack>
         </Center>

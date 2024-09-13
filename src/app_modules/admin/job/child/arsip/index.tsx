@@ -1,40 +1,21 @@
 "use client";
 
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
-import { adminEvent_getListPesertaById } from "@/app_modules/admin/event/fun/get/get_list_peserta_by_id";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import {
-  MODEL_EVENT,
-  MODEL_EVENT_PESERTA,
-} from "@/app_modules/event/model/interface";
 import { MODEL_JOB } from "@/app_modules/job/model/interface";
 import {
-  MODEL_VOTE_KONTRIBUTOR,
-  MODEL_VOTING,
-  MODEL_VOTING_DAFTAR_NAMA_VOTE,
-} from "@/app_modules/vote/model/interface";
-import {
-  Avatar,
-  Badge,
   Box,
   Button,
-  Card,
   Center,
-  Divider,
-  Grid,
-  Group,
   Modal,
-  Paper,
   ScrollArea,
   Spoiler,
   Stack,
   Table,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconEyeCheck, IconEyeShare } from "@tabler/icons-react";
+import { IconEyeCheck } from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -74,13 +55,13 @@ function TableStatus({ listArsip }: { listArsip: MODEL_JOB[] }) {
         </td>
         <td>
           <Center w={150}>
-            {e.imagesId ? (
+            {e.imageId ? (
               <Button
                 color="green"
                 radius={"xl"}
                 leftIcon={<IconEyeCheck />}
                 onClick={() => {
-                  setImg(e.imagesId);
+                  setImg(e.imageId);
                   open();
                 }}
               >

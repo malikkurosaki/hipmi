@@ -27,19 +27,8 @@ export default async function adminJob_getListPublish({
         mode: "insensitive",
       },
     },
-    select: {
-      id: true,
-      title: true,
-      isActive: true,
-      isArsip: true,
-      createdAt: true,
-      updatedAt: true,
-      content: true,
-      deskripsi: true,
-      catatan: true,
-      authorId: true,
+    include: {
       Author: true,
-      imagesId: true,
     },
   });
 

@@ -16,16 +16,14 @@ import {
   Table,
   Text,
   TextInput,
-  Title
+  Title,
 } from "@mantine/core";
-import {
-  IconEyeCheck,
-  IconSearch
-} from "@tabler/icons-react";
+import { IconEyeCheck, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import adminJob_getListPublish from "../../fun/get/get_list_publish";
 import { IconPhotoCheck } from "@tabler/icons-react";
+import { ComponentAdminGlobal_TitlePage } from "@/app_modules/admin/_admin_global/_component";
 
 export default function AdminJob_TablePublish({
   dataPublish,
@@ -49,7 +47,7 @@ function TableStatus({ dataPublish }: { dataPublish: any }) {
   const [nPage, setNPage] = useState(dataPublish.nPage);
   const [activePage, setActivePage] = useState(1);
   const [isSearch, setSearch] = useState("");
-
+  const [isLoadingShowImage, setLoadingShowImage] = useState(false);
 
   async function onSearch(s: string) {
     setSearch(s);
@@ -102,19 +100,22 @@ function TableStatus({ dataPublish }: { dataPublish: any }) {
       </td>
       <td>
         <Center w={200}>
-          {e.imagesId ? (
+          {e.imageId ? (
             <Button
+              loaderPosition="center"
+              loading={isLoadingShowImage}
               color="green"
               radius={"xl"}
               leftIcon={<IconPhotoCheck />}
               onClick={() => {
-                router.push(RouterAdminJob.detail_poster + e?.imagesId);
+                setLoadingShowImage(true);
+                router.push(RouterAdminJob.detail_poster + e?.imageId);
               }}
             >
               Lihat
             </Button>
           ) : (
-            <Center w={200} >
+            <Center w={200}>
               <Text fw={"bold"} fz={"xs"} fs={"italic"}>
                 Tidak ada poster
               </Text>
@@ -147,28 +148,22 @@ function TableStatus({ dataPublish }: { dataPublish: any }) {
 
   return (
     <>
-      
-
       <Stack spacing={"xs"} h={"100%"}>
         {/* <pre>{JSON.stringify(listUser, null, 2)}</pre> */}
-        <Group
-          position="apart"
-          bg={"green.4"}
-          p={"xs"}
-          style={{ borderRadius: "6px" }}
-        >
-          <Title order={4} c={"white"}>
-            Publish
-          </Title>
-          <TextInput
-            icon={<IconSearch size={20} />}
-            radius={"xl"}
-            placeholder="Masukan judul"
-            onChange={(val) => {
-              onSearch(val.currentTarget.value);
-            }}
-          />
-        </Group>
+        <ComponentAdminGlobal_TitlePage
+          name="Publish"
+          color="green.4"
+          component={
+            <TextInput
+              icon={<IconSearch size={20} />}
+              radius={"xl"}
+              placeholder="Masukan judul"
+              onChange={(val) => {
+                onSearch(val.currentTarget.value);
+              }}
+            />
+          }
+        />
 
         <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
           <ScrollArea w={"100%"} h={"90%"}>
@@ -217,8 +212,6 @@ function TableStatus({ dataPublish }: { dataPublish: any }) {
           </Center>
         </Paper>
       </Stack>
-
-     
     </>
   );
 }

@@ -3,6 +3,7 @@
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import {
+  AspectRatio,
   Button,
   Center,
   FileButton,
@@ -14,7 +15,7 @@ import {
   Stack,
   Text,
   TextInput,
-  Title
+  Title,
 } from "@mantine/core";
 import {
   useDisclosure,
@@ -36,55 +37,53 @@ import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/inpu
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import dynamic from "next/dynamic";
-import { Job_EditById } from "../fun/edit/fun_edit_by_id";
+import { job_EditById } from "../fun/edit/fun_edit_by_id";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");
   },
   { ssr: false }
 );
+import "react-quill/dist/quill.snow.css";
+import { Job_ComponentBoxUploadImage, Job_ComponentButtonUpdate } from "../component";
+import { APIs } from "@/app/lib";
+import { ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
 
 export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
   const [value, setValue] = useState(dataJob);
-
   const [reload, setReload] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [images, setImages] = useState<any | null>();
-  const [maxFile, setMaxFile] = useState(false);
+  const [img, setImg] = useState<any | null>();
 
-  useShallowEffect(() => {
-    if (window && window.document) setReload(true);
-  }, []);
+  // useShallowEffect(() => {
+  //   if (window && window.document) setReload(true);
+  // }, []);
 
   return (
     <>
-      {!reload ? (
-        <Center h={"50vh"}>
-          <Loader color={MainColor.yellow} />
-        </Center>
-      ) : (
-        <Stack py={"md"} spacing={40}>
-          <Stack align="center">
-            {images ? (
-              <Image alt="" src={images} mah={500} maw={200} />
-            ) : value.imagesId ? (
-              <Image
-                height={300}
-                width={200}
-                alt="Foto"
-                src={RouterJob.api_gambar + value.imagesId}
-              />
+      <Stack>
+        <Stack spacing={"xs"}>
+          <Job_ComponentBoxUploadImage>
+            {value.imageId ? (
+              <AspectRatio ratio={1 / 1} mah={265} mx={"auto"}>
+                <Image
+                  style={{ maxHeight: 250, margin: "auto", padding: "5px" }}
+                  alt="Foto"
+                  height={250}
+                  src={img ? img : APIs.GET + value.imageId}
+                />
+              </AspectRatio>
             ) : (
-              <Paper h={300} w={200} withBorder shadow="lg" bg={"gray.1"}>
-                <Stack justify="center" align="center" h={"100%"}>
-                  <IconUpload color="gray" />
-                  <Text fz={10} fs={"italic"} c={"gray"} fw={"bold"}>
-                    Upload Gambar
-                  </Text>
-                </Stack>
-              </Paper>
+              <Stack justify="center" align="center" h={"100%"}>
+                <IconUpload color="white" />
+                <Text fz={10} fs={"italic"} c={"white"} fw={"bold"}>
+                  Upload Gambar
+                </Text>
+              </Stack>
             )}
+          </Job_ComponentBoxUploadImage>
 
+          <Center>
             <FileButton
               onChange={async (files: any | null) => {
                 try {
@@ -92,19 +91,8 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
                     new Blob([new Uint8Array(await files.arrayBuffer())])
                   );
 
-                  if (files.size > 200000) {
-                    // setMaxFile(true);
-                    ComponentGlobal_NotifikasiPeringatan(
-                      "Maaf, Ukuran file terlalu besar, maksimal 2mb",
-                      3000
-                    );
-                  } else {
-                    // console.log(buffer, "ini buffer");
-                    // console.log(files, " ini file");
-
-                    setImages(buffer);
-                    setFile(files);
-                  }
+                  setImg(buffer);
+                  setFile(files);
                 } catch (error) {
                   console.log(error);
                 }
@@ -121,21 +109,15 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
                     border: `1px solid ${AccentColor.yellow}`,
                   }}
                 >
-                  <IconCamera />
+                  <IconCamera color="black" />
                 </Button>
               )}
             </FileButton>
-          </Stack>
+          </Center>
+        </Stack>
 
-          <Stack
-            spacing={"lg"}
-            p={"md"}
-            style={{
-              backgroundColor: MainColor.darkblue,
-              border: `2px solid ${AccentColor.blue}`,
-              borderRadius: "5px 5px 5px 5px",
-            }}
-          >
+        <ComponentGlobal_CardStyles color="black">
+          <Stack>
             <TextInput
               styles={{
                 label: {
@@ -230,100 +212,12 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
               </Stack>
             </Stack>
           </Stack>
+        </ComponentGlobal_CardStyles>
 
-          <ButtonAction value={value as any} file={file as any} />
-        </Stack>
-      )}
+        <Job_ComponentButtonUpdate value={value as any} file={file as any} />
+      </Stack>
     </>
   );
 }
 
-function ButtonAction({ value, file }: { value: MODEL_JOB; file: FormData }) {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
 
-  const [hotMenu, setHotMenu] = useAtom(gs_job_hot_menu);
-  const [status, setStatus] = useAtom(gs_job_status);
-  const [opened, { open, close }] = useDisclosure(false);
-  const [scroll, scrollTo] = useWindowScroll();
-
-  async function onUpdate() {
-    const gambar = new FormData();
-    gambar.append("file", file as any);
-
-    await Job_EditById(value, gambar).then((res) => {
-      if (res.status === 200) {
-        setHotMenu(2);
-        setStatus("Draft");
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-        setIsLoading(true);
-        router.back();
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
-      }
-    });
-  }
-
-  return (
-    <>
-      <Modal
-        opened={opened}
-        onClose={close}
-        centered
-        withCloseButton={false}
-        styles={{
-          content: {
-            backgroundColor: MainColor.darkblue,
-            border: `2px solid ${AccentColor.blue}`,
-          },
-        }}
-      >
-        <Stack>
-          <Title order={6} c={"white"}>
-            Anda yakin menyimpan data ini ?
-          </Title>
-          <Group position="center">
-            <Button radius={"xl"} onClick={() => close()}>
-              Batal
-            </Button>
-            <Button
-              loaderPosition="center"
-              loading={isLoading ? true : false}
-              color="teal"
-              radius={"xl"}
-              onClick={() => onUpdate()}
-            >
-              Simpan
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
-      <Button
-        style={{
-          transition: "0.5s",
-        }}
-        disabled={
-          value.title === "" ||
-          value.content === "" ||
-          value.content === "<p><br></p>" ||
-          value.content.length > 500 ||
-          value.deskripsi === "" ||
-          value.deskripsi === "<p><br></p>" ||
-          value.deskripsi.length > 500
-            ? true
-            : false
-        }
-        // bg={"teal"}
-        color="teal"
-        radius={"xl"}
-        my={"lg"}
-        onClick={() => {
-          open();
-          scrollTo({ y: 0 });
-        }}
-      >
-        Update
-      </Button>
-    </>
-  );
-}
