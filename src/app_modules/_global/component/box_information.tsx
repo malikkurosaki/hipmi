@@ -3,10 +3,12 @@ import { AccentColor, MainColor } from "../color/color_pallet";
 
 export default function ComponentGlobal_BoxInformation({
   informasi,
- isReport,
+  isReport,
+  fonsize,
 }: {
   informasi: string;
   isReport?: boolean;
+  fonsize?: number | string;
 }) {
   return (
     <>
@@ -20,10 +22,15 @@ export default function ComponentGlobal_BoxInformation({
           }}
         >
           <Stack spacing={0}>
-            <Text fz={12} fs={"italic"} c={"orange"} fw={"bold"}>
+            <Text
+              fz={fonsize ? fonsize : 12}
+              fs={"italic"}
+              c={"orange"}
+              fw={"bold"}
+            >
               * Report
             </Text>
-            <Text fz={12} c={"white"}>
+            <Text fz={fonsize ? fonsize : 12} c={"white"}>
               {informasi}
             </Text>
           </Stack>
@@ -38,7 +45,7 @@ export default function ComponentGlobal_BoxInformation({
           }}
         >
           <Group>
-            <Text fz={12} c={"red"} fw={"bold"}>
+            <Text fz={fonsize ? fonsize : 12} c={"red"} fw={"bold"}>
               *{" "}
               <Text span inherit c={"white"} fw={"normal"}>
                 {informasi}

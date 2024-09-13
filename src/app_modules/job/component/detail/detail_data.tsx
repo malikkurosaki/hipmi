@@ -1,21 +1,35 @@
 "use client";
 
-import { Card, Stack, Skeleton, Image, Text, Center } from "@mantine/core";
-import { MODEL_JOB } from "../../model/interface";
-import { RouterJob } from "@/app/lib/router_hipmi/router_job";
+import { APIs } from "@/app/lib";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import {
+  Card,
+  Center,
+  Image,
+  Loader,
+  Paper,
+  Skeleton,
+  Stack,
+  Text,
+} from "@mantine/core";
+import { MODEL_JOB } from "../../model/interface";
+import { useState } from "react";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 
 export default function ComponentJob_DetailData({
   data,
 }: {
   data?: MODEL_JOB;
 }) {
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
     <>
       {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+
       {data ? (
         <Card
           shadow="lg"
@@ -29,15 +43,34 @@ export default function ComponentJob_DetailData({
         >
           <Card.Section px={"xs"} pb={"lg"}>
             <Stack spacing={"xl"}>
-              {data.imagesId ? (
+              {data.imageId ? (
                 <Stack align="center">
+                  {isLoading ? (
+                    <Paper
+                      style={{ zIndex: 1, position: "relative" }}
+                      w={200}
+                      h={300}
+                      bg={AccentColor.blackgray}
+                    >
+                      <Center h={"100%"}>
+                        <ComponentGlobal_Loader size={30} variant="dots" />
+                      </Center>
+                    </Paper>
+                  ) : (
+                    ""
+                  )}
+
                   <Image
-                    alt=""
-                    src={
-                      data.imagesId ? RouterJob.api_gambar + data.imagesId : ""
-                    }
-                    height={300}
-                    width={200}
+                    style={{ zIndex: 2, position: "relative" }}
+                    onLoad={() => {
+                      setIsLoading(false);
+                    }}
+                    onError={() => {
+                      setIsLoading(false);
+                    }}
+                    alt="Image"
+                    src={APIs.GET + data?.imageId}
+                    maw={200}
                   />
                 </Stack>
               ) : (

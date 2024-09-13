@@ -2,17 +2,21 @@ import { AccentColor } from "@/app_modules/_global/color";
 import { Card } from "@mantine/core";
 import React from "react";
 
-export function Investasi_ComponentStylesCard({
+export function ComponentGlobal_CardStyles({
   children,
   backgroundColor,
   border,
   marginBottom,
+  height,
+  color,
   onClickHandler,
 }: {
   children: React.ReactNode;
   backgroundColor?: string;
   border?: string;
   marginBottom?: string | number;
+  height?: string | number;
+  color?: string;
   onClickHandler?: React.MouseEventHandler<HTMLDivElement>;
 }) {
   return (
@@ -26,7 +30,8 @@ export function Investasi_ComponentStylesCard({
           paddingInline: "15px",
           paddingBlock: "15px",
           borderRadius: "10px",
-          color: "white",
+          color: color ? color : "white",
+          height: height ? height : "auto",
           marginBottom: marginBottom ? marginBottom : "0x",
         }}
         onClick={onClickHandler}

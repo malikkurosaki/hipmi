@@ -85,7 +85,7 @@ function TableStatus({ listReview }: { listReview: any }) {
 
   async function onSearch(s: string) {
     setSearch(s);
-    setActivePage(1)
+    setActivePage(1);
     const loadData = await adminJob_getListReview({
       page: 1,
       search: s,
@@ -123,13 +123,13 @@ function TableStatus({ listReview }: { listReview: any }) {
       </td>
       <td>
         <Center w={200}>
-          {e.imagesId ? (
+          {e.imageId ? (
             <Button
               color="green"
               radius={"xl"}
               leftIcon={<IconPhotoCheck />}
               onClick={() => {
-                router.push(RouterAdminJob.detail_poster + e?.imagesId);
+                router.push(RouterAdminJob.detail_poster + e?.imageId);
               }}
             >
               Lihat

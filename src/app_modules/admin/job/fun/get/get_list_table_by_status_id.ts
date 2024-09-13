@@ -13,19 +13,8 @@ export async function AdminJob_getListTableByStatusId(statusId: string) {
         isActive: true,
         isArsip: true,
       },
-      select: {
-        id: true,
-        title: true,
-        isActive: true,
-        isArsip: true,
-        createdAt: true,
-        updatedAt: true,
-        content: true,
-        deskripsi: true,
-        catatan: true,
-        authorId: true,
+      include: {
         Author: true,
-        imagesId: true,
       },
     });
 
@@ -41,18 +30,8 @@ export async function AdminJob_getListTableByStatusId(statusId: string) {
         isActive: true,
         isArsip: false,
       },
-      select: {
-        id: true,
-        title: true,
-        isActive: true,
-        createdAt: true,
-        updatedAt: true,
-        content: true,
-        deskripsi: true,
-        catatan: true,
-        authorId: true,
+      include: {
         Author: true,
-        imagesId: true,
       },
     });
 
@@ -67,18 +46,8 @@ export async function AdminJob_getListTableByStatusId(statusId: string) {
         masterStatusId: "2",
         isActive: true,
       },
-      select: {
-        id: true,
-        title: true,
-        isActive: true,
-        createdAt: true,
-        updatedAt: true,
-        content: true,
-        deskripsi: true,
-        catatan: true,
-        authorId: true,
+      include: {
         Author: true,
-        imagesId: true,
       },
     });
 
@@ -94,18 +63,8 @@ export async function AdminJob_getListTableByStatusId(statusId: string) {
         masterStatusId: "4",
         isActive: true,
       },
-      select: {
-        id: true,
-        title: true,
-        isActive: true,
-        createdAt: true,
-        updatedAt: true,
-        content: true,
-        deskripsi: true,
-        catatan: true,
-        authorId: true,
+      include: {
         Author: true,
-        imagesId: true,
       },
     });
 

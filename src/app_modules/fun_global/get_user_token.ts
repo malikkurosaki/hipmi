@@ -6,11 +6,14 @@ import fs from "fs";
 import { unsealData } from "iron-session";
 import { redirect } from "next/navigation";
 import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
+import _ from "lodash";
 const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
 export async function user_funGetOneUserId() {
-  const c = cookies().get("ssn");
-  if (!c?.value || c.value === "") return redirect(RouterAuth.login);
+  const kukis = cookies();
+  const c = kukis.get("ssn");
+  if (!c || !c?.value || _.isEmpty(c?.value) || _.isUndefined(c?.value))
+    return redirect(RouterAuth.login);
 
   const token = JSON.parse(
     await unsealData(c?.value as string, {
@@ -18,5 +21,5 @@ export async function user_funGetOneUserId() {
     })
   );
 
-  return token.id
+  return token.id;
 }

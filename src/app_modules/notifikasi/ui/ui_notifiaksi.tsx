@@ -21,17 +21,15 @@ import {
   gs_vote_status,
 } from "@/app_modules/vote/global_state";
 import { Box, Button, Center, Flex, Stack } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
 import { useAtom } from "jotai";
-import _, { find } from "lodash";
+import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";
 import { useState } from "react";
-import { ComponentNotifikasi_CardSkeleton } from "../component";
 import { ComponentNotifiaksi_CardView } from "../component/card_view";
 import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
-import { MODEL_NOTIFIKASI } from "../model/interface";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { gs_notifikasi_kategori_app } from "../lib";
-import { useShallowEffect } from "@mantine/hooks";
+import { MODEL_NOTIFIKASI } from "../model/interface";
 
 export function Notifikasi_UiView({
   listNotifikasi,
