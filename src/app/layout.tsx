@@ -10,7 +10,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  if (!token) return <>require token</>;
+  if (!token)
+    return (
+      <>
+        <center style={{ height: "100vh" }}>Require Token Storage</center>
+      </>
+    );
   return (
     <RootStyleRegistry>
       <MqttLoader />
