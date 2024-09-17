@@ -2,12 +2,11 @@
 
 import prisma from "@/app/lib/prisma";
 import { sealData } from "iron-session";
-import fs from "fs";
-import yaml from "yaml";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-const config = yaml.parse(fs.readFileSync("config.yaml").toString());
+import { PwdCookies } from "@/app/lib";
+
 
 export async function auth_funValidasi(nomor: string) {
   const cek = await prisma.user.findUnique({
@@ -30,7 +29,7 @@ export async function auth_funValidasi(nomor: string) {
         username: cek.username,
       }),
       {
-        password: await config.server.password,
+        password: PwdCookies,
       }
     );
 

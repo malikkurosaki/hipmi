@@ -15,7 +15,7 @@ import {
   Center,
   Stack,
   Text,
-  Title
+  Title,
 } from "@mantine/core";
 import { useFocusTrap } from "@mantine/hooks";
 import { useAtom } from "jotai";
@@ -56,22 +56,6 @@ export default function Login() {
     //   },
     //   body: JSON.stringify(body),
     // })
-    //   .then((res) => res.json())
-    //   .then((val) => {
-    //     // console.log(val);
-    //     if (val.success === true) {
-    //       router.push(RouterAdminDashboard.splash_admin);
-    //     } else {
-    //       if (val.status == 200) {
-    //         setCode(val.body.otp);
-    //         setInputNumber(val.body.nomor);
-    //         router.push("/dev/auth/validasi");
-    //         return NotifBerhasil("Nomor OTP terkirim");
-    //       } else {
-    //         NotifGagal(val.message);
-    //       }
-    //     }
-    //   });
   }
 
   return (

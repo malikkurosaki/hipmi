@@ -4,18 +4,15 @@ import "./globals.css";
 import { TokenProvider } from "./lib/token";
 
 const token = process.env.WS_APIKEY;
+const pwdCookies = process.env.PWD;
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  if (!token)
-    return (
-      <>
-        <center style={{ height: "100vh" }}>Require Token Storage</center>
-      </>
-    );
+  if (!token) return <>Require Token Storage</>;
+  console.log(pwdCookies)
   return (
     <RootStyleRegistry>
       <MqttLoader />
