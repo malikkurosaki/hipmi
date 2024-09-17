@@ -1,13 +1,13 @@
 "use client";
 
 import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
+import { ComponentAdminGlobal_TitlePage } from "@/app_modules/admin/_admin_global/_component";
 import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
 import { MODEL_JOB } from "@/app_modules/job/model/interface";
 import {
   Badge,
   Button,
   Center,
-  Group,
   Pagination,
   Paper,
   ScrollArea,
@@ -16,14 +16,11 @@ import {
   Table,
   Text,
   TextInput,
-  Title,
 } from "@mantine/core";
-import { IconEyeCheck, IconSearch } from "@tabler/icons-react";
+import { IconPhotoCheck, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import adminJob_getListPublish from "../../fun/get/get_list_publish";
-import { IconPhotoCheck } from "@tabler/icons-react";
-import { ComponentAdminGlobal_TitlePage } from "@/app_modules/admin/_admin_global/_component";
 
 export default function AdminJob_TablePublish({
   dataPublish,

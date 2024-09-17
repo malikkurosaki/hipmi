@@ -1,14 +1,13 @@
 "use server";
 
+import { PwdCookies } from "@/app/lib";
 import prisma from "@/app/lib/prisma";
 import { sealData } from "iron-session";
 import { cookies } from "next/headers";
 
-import fs from "fs";
-import yaml from "yaml";
-const config = yaml.parse(fs.readFileSync("config.yaml").toString());
 
 export async function Auth_funRegister(data: any) {
+
   const cekUsername = await prisma.user.findUnique({
     where: {
       username: data.username,
@@ -35,7 +34,7 @@ export async function Auth_funRegister(data: any) {
       username: create.username,
     }),
     {
-      password: await config.server.password,
+      password: PwdCookies
     }
   );
 

@@ -1,14 +1,9 @@
-import { sealData } from "iron-session";
 import { myConsole } from "@/app/fun/my_console";
+import { PwdCookies } from "@/app/lib";
 import prisma from "@/app/lib/prisma";
-import { data } from "autoprefixer";
-import { NextResponse } from "next/server";
+import { sealData } from "iron-session";
 import { cookies } from "next/headers";
-import { getConfig } from "@/bin/config";
-
-import fs from "fs";
-import yaml from "yaml";
-const config = yaml.parse(fs.readFileSync("config.yaml").toString());
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   if (req.method === "POST") {
@@ -40,7 +35,7 @@ export async function POST(req: Request) {
           username: data.username,
         }),
         {
-          password: await config.server.password,
+          password: PwdCookies,
         }
       );
 

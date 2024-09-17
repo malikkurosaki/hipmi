@@ -39,12 +39,10 @@ import { funCreateInvestasi } from "../fun/fun_create_investasi";
 import { gs_investas_menu, gs_investasi_status } from "../g_state";
 
 export default function InvestasiCreate({
-  id,
   pencarianInvestor,
   periodeDeviden,
   pembagianDeviden,
 }: {
-  id: string;
   pencarianInvestor: MODEL_DEFAULT_MASTER_OLD[];
   periodeDeviden: MODEL_DEFAULT_MASTER_OLD[];
   pembagianDeviden: MODEL_DEFAULT_MASTER_OLD[];
@@ -74,7 +72,6 @@ export default function InvestasiCreate({
 
   async function onSubmit() {
     const body = {
-      authorId: id,
       title: value.title,
       targetDana: value.targetDana,
       hargaLembar: value.hargaLembar,

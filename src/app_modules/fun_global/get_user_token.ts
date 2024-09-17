@@ -1,13 +1,12 @@
 "use server";
 
 import { cookies } from "next/headers";
-import yaml from "yaml";
-import fs from "fs";
 import { unsealData } from "iron-session";
 import { redirect } from "next/navigation";
 import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 import _ from "lodash";
-const config = yaml.parse(fs.readFileSync("config.yaml").toString());
+import { PwdCookies } from "@/app/lib";
+
 
 export async function user_funGetOneUserId() {
   const kukis = cookies();
@@ -17,7 +16,7 @@ export async function user_funGetOneUserId() {
 
   const token = JSON.parse(
     await unsealData(c?.value as string, {
-      password: config.server.password,
+      password: PwdCookies,
     })
   );
 
