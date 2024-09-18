@@ -4,8 +4,8 @@ import { ServerEnv } from "@/app/lib/server_env";
 
 
 export default async function Page({ params }: { params: { id: string } }) {
-  let kodeOtpId = params.id;
-  const dataOtp = await auth_getKodeOtpById(kodeOtpId);
+  let nomor = params.id;
+  const dataOtp = await auth_getKodeOtpById({nomor: nomor});
   
 
   return <Validasi dataOtp={dataOtp} />;

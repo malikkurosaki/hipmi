@@ -13,17 +13,17 @@ const middlewareConfig = {
   publicRoute: [
     // Daftar route yang bisa diakses tanpa login
     "/",
-    "/auth/login",
+    "/dev/auth/login",
     "/auth/register",
     "/api/signin",
     "/api/register"
   ],
-  publicPatterns: [/^\/api\/files\/\w+/], // Regex buat nge-match route API yang bisa diakses bebas
-  signinPath: "/auth/login", // Brute buat halaman login
+  publicPatterns: [/^\/api\/files\/\w+/, /^\/aset\/global\/\w+/], // Regex buat nge-match route API yang bisa diakses bebas
+  signinPath: "/dev/auth/login", // Brute buat halaman login
   userPath: "/user", // Route buat halaman user setelah login
   apiRoute: "/api",
   tokenKey: "ws_token",
-  exp: "7 year"
+  exp: "7 year",
 };
 
 // Fungsi buat decode token JWT

@@ -34,16 +34,14 @@ export default function Login() {
   const [isError, setError] = useState(false);
 
   async function onLogin() {
-    const nomorHp = phone.substring(1);
+    const nomor = phone.substring(1);
+    if (nomor.length <= 4) return setError(true);
 
-    if (nomorHp.length <= 4) return setError(true);
-
-    const res = await auth_funLogin(nomorHp);
+    const res = await auth_funLogin({ nomor: nomor });
     if (res.status === 200) {
       setLoading(true);
       ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
-      setKodeId(res.kodeOtpId);
-      router.push(RouterAuth.validasi + res.kodeOtpId);
+      router.push(RouterAuth.validasi + res.nomorUser, { scroll: false });
     } else {
       ComponentGlobal_NotifikasiPeringatan(res.message);
     }
