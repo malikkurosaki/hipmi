@@ -6,8 +6,6 @@ import {
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { auth_funLogin } from "@/app_modules/auth/fun/fun_login";
 import {
   BackgroundImage,
@@ -17,18 +15,20 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useFocusTrap } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { gs_kodeId } from "../state/state";
+import {
+  ComponentGlobal_NotifikasiBerhasil,
+  ComponentGlobal_NotifikasiPeringatan,
+} from "@/app_modules/_global/notif_global";
 
 export default function Login() {
   const router = useRouter();
   const [kodeId, setKodeId] = useAtom(gs_kodeId);
-  const focusTrapRef = useFocusTrap();
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
@@ -38,16 +38,15 @@ export default function Login() {
 
     if (nomorHp.length <= 4) return setError(true);
 
-    await auth_funLogin(nomorHp).then((res) => {
-      if (res.status === 200) {
-        setLoading(true);
-        ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
-        setKodeId(res.kodeOtpId);
-        router.push(RouterAuth.validasi + res.kodeOtpId);
-      } else {
-        ComponentGlobal_NotifikasiPeringatan(res.message);
-      }
-    });
+    const res = await auth_funLogin(nomorHp);
+    if (res.status === 200) {
+      setLoading(true);
+      ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
+      setKodeId(res.kodeOtpId);
+      router.push(RouterAuth.validasi + res.kodeOtpId);
+    } else {
+      ComponentGlobal_NotifikasiPeringatan(res.message);
+    }
 
     // await fetch(ApiHipmi.login, {
     //   method: "POST",

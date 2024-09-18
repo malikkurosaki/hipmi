@@ -15,6 +15,7 @@ import {
 
 export default async function Page() {
   const userId = await user_funGetOneUserId();
+  if (!userId) return <div>{"User Tidak ditemukan"}</div>;
   const listStatus = await getStatusInvestasi();
   const dataDraft = await getPortoByStatusId(userId, 1);
   const dataReview = await getPortoByStatusId(userId, 2);
@@ -30,12 +31,10 @@ export default async function Page() {
     page: 1,
     statusId: "3",
   });
-   const listDataReject = await investasi_funGetAllInvestasiNonPublishByUserId({
-     page: 1,
-     statusId: "4",
-   });
-
-
+  const listDataReject = await investasi_funGetAllInvestasiNonPublishByUserId({
+    page: 1,
+    statusId: "4",
+  });
 
   return (
     <>

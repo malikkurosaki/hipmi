@@ -2,8 +2,10 @@
 
 import prisma from "@/app/lib/prisma";
 import { RouterAdminColab } from "@/app/lib/router_admin/router_admin_colab";
+import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export default async function adminColab_funReportProjectById({
   colabId,
@@ -13,6 +15,10 @@ export default async function adminColab_funReportProjectById({
   report: string;
 }) {
   const authorId = await user_funGetOneUserId();
+  if (!authorId) {
+    redirect(RouterAuth.login);
+    // return { status: 400, message: "Gagal mendapatkan authorId" };
+  }
 
   const projectUpdate = await prisma.projectCollaboration.update({
     where: {

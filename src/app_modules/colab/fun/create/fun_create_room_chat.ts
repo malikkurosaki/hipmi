@@ -1,7 +1,9 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { redirect } from "next/navigation";
 
 export default async function colab_funCreateRoomChat(
   nameRoom: string,
@@ -9,6 +11,10 @@ export default async function colab_funCreateRoomChat(
   colabId: string
 ) {
   const authorId = await user_funGetOneUserId();
+   if (!authorId) {
+     redirect(RouterAuth.login);
+     // return { status: 400, message: "Gagal mendapatkan authorId" };
+   }
 
   const createRoom = await prisma.projectCollaboration_RoomChat.create({
     data: {

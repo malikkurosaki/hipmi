@@ -1,10 +1,8 @@
 "use server";
 
-import { myConsole } from "@/app/fun/my_console";
 import prisma from "@/app/lib/prisma";
 import fs from "fs";
 import _ from "lodash";
-import { cookies } from "next/headers";
 import { v4 } from "uuid";
 
 /**
@@ -17,9 +15,6 @@ export async function funUploadFoto(formData: FormData, id: string) {
   const fName = file.name;
   const fExt = _.lowerCase(file.name.split(".").pop());
   const fRandomName = v4(fName) + "." + fExt;
-
-  myConsole(id);
-  myConsole(fExt);
 
   const upload = await prisma.images.create({
     data: {

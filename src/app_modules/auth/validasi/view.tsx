@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { auth_funDeleteAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
 import { auth_funValidasi } from "../fun/fun_validasi";
+import { GlobalEnv } from "@/app/lib/token";
 
 export default function Validasi({ dataOtp }: { dataOtp: any }) {
   const router = useRouter();
@@ -41,9 +42,11 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
     if (code != inputCode)
       return ComponentGlobal_NotifikasiPeringatan("Kode Salah");
 
-    const res = await auth_funValidasi(nomor);
+    const res = await auth_funValidasi({
+      nomor: nomor,
+      HIPMI_PWD: GlobalEnv.value?.WIBU_PWD as string,
+    });
     if (res.status === 200) {
-     
       const resAktivasi = await auth_funDeleteAktivasiKodeOtpById(dataOtp.id);
       if (resAktivasi.status === 200) {
         if (res.role === "1") {
@@ -51,12 +54,13 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
           setLoading(true);
           router.push(RouterHome.main_home, { scroll: false });
         } else {
-          router.push(RouterAdminDashboard.splash_admin);
+          ComponentGlobal_NotifikasiBerhasil("Admin Logged in");
+          setLoading(true);
+          router.push(RouterAdminDashboard.splash_admin, { scroll: false });
         }
       } else {
         ComponentGlobal_NotifikasiPeringatan(resAktivasi.message);
       }
-
     } else {
       ComponentGlobal_NotifikasiBerhasil(res.message);
       router.push(RouterAuth.register + dataOtp.id, { scroll: false });

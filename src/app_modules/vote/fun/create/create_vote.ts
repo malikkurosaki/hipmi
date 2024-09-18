@@ -5,9 +5,15 @@ import { MODEL_VOTING } from "../../model/interface";
 import prisma from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
 import _ from "lodash";
+import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
+import { redirect } from "next/navigation";
 
 export async function Vote_funCreate(req: MODEL_VOTING, listVote: any[]) {
   const authorId = await user_funGetOneUserId();
+  if (!authorId) {
+    redirect(RouterAuth.login);
+    // return { status: 400, message: "Gagal mendapatkan authorId" };
+  }
 
   const create = await prisma.voting.create({
     data: {

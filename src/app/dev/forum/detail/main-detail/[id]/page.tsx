@@ -6,11 +6,13 @@ import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { redirect } from "next/navigation";
 import { forum_countTotalKomenById } from "@/app_modules/forum/fun/count/count_total_komentar_by_id";
+import { CheckCookies_UiView } from "@/app_modules/check_cookies";
 
 export default async function Page({ params }: { params: { id: string } }) {
   let postingId = params.id;
-
   const userLoginId = await user_funGetOneUserId();
+  if (!userLoginId) return <CheckCookies_UiView />;
+
   const dataPosting = await forum_getOnePostingById(postingId);
   const listKomentar = await forum_funGetAllKomentarById({
     postingId: postingId,

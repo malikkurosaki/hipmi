@@ -1,4 +1,5 @@
 import adminColab_getOneRoomChatById from "@/app_modules/admin/colab/fun/get/get_one_room_chat_by_id";
+import { CheckCookies_UiView } from "@/app_modules/check_cookies";
 import {
   Colab_DetailGrupDiskusi,
   Colab_GroupChatView,
@@ -11,6 +12,8 @@ import _ from "lodash";
 export default async function Page({ params }: { params: { id: string } }) {
   const roomId = params.id;
   const userLoginId = await user_funGetOneUserId();
+  if (!userLoginId) return <CheckCookies_UiView />;
+
   const getData = (await adminColab_getOneRoomChatById({ roomId: roomId }))
     .data;
   const dataRoom = _.omit(getData, [

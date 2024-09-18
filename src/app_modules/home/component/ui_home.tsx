@@ -127,7 +127,7 @@ export function Home_UiView({
                 onClick={() => {
                   if (dataUser.Profile === null) {
                     return ComponentGlobal_NotifikasiPeringatan(
-                      "Lengkapi Data Profile"
+                      "Lengkapi Profile"
                     );
                   } else {
                     if (e.link === "") {
@@ -176,7 +176,7 @@ export function Home_UiView({
               onClick={() => {
                 if (dataUser.Profile === null) {
                   return ComponentGlobal_NotifikasiPeringatan(
-                    "Lengkapi Data Profile"
+                    "Lengkapi Profile"
                   );
                 } else {
                   if (routePageJob.link === "") {

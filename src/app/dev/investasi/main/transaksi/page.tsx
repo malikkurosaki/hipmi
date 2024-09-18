@@ -4,11 +4,14 @@ import getMaster_StatusTransaksiInvestasi from "@/app_modules/investasi/fun/mast
 import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 import { investasi_funGetTransaksiByUserId } from "@/app_modules/investasi/_fun";
 import { Investasi_UiDaftarTransaksi } from "@/app_modules/investasi/_ui";
+import { CheckCookies_UiView } from "@/app_modules/check_cookies";
 
 export default async function Page() {
-  const userId = await user_funGetOneUserId();
+  const userLoginId = await user_funGetOneUserId();
+  if (!userLoginId) return <CheckCookies_UiView />;
+
   const statusTransaksi = await getMaster_StatusTransaksiInvestasi();
-  const listTransaksi = await getListAllTransaksiById_Investasi(userId);
+  const listTransaksi = await getListAllTransaksiById_Investasi(userLoginId);
 
   // NEW
   const dataTransaksi = await investasi_funGetTransaksiByUserId({ page: 1 });

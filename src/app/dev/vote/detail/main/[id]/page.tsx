@@ -5,15 +5,19 @@ import { Vote_getHasilVoteById } from "@/app_modules/vote/fun/get/get_list_hasil
 import { Vote_getListKontributorById } from "@/app_modules/vote/fun/get/get_list_kontributor_by_id";
 import { voting_funGetOneVotingbyId } from "@/app_modules/vote/fun/get/fun_get_one_by_id";
 import { Vote_getOnePilihanVotingByUserId } from "@/app_modules/vote/fun/get/get_one_pilihan_voting_by_user_id";
+import { CheckCookies_UiView } from "@/app_modules/check_cookies";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const voteId = params.id;
+  
+  const userLoginId = await user_funGetOneUserId();
+  if (!userLoginId) return <CheckCookies_UiView />;
+
   const dataVote = await voting_funGetOneVotingbyId(voteId);
   const hasilVoting = await Vote_getHasilVoteById(voteId as any);
   const isKontributor = await Vote_cekKontributorById(voteId);
   const pilihanKontributor = await Vote_getOnePilihanVotingByUserId(voteId);
   const listKontributor = await Vote_getListKontributorById(voteId);
-  const userLoginId = await user_funGetOneUserId();
 
   return (
     <>

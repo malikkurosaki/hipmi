@@ -1,6 +1,5 @@
-import { myConsole } from "@/app/fun/my_console";
-import { PwdCookies } from "@/app/lib";
 import prisma from "@/app/lib/prisma";
+import { ServerEnv } from "@/app/lib/server_env";
 import { sealData } from "iron-session";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
@@ -22,8 +21,6 @@ export async function POST(req: Request) {
       },
     });
 
-    myConsole(data);
-
     if (!data) return NextResponse.json({ status: 404 });
 
     if (data) {
@@ -33,7 +30,7 @@ export async function POST(req: Request) {
           username: data.username,
         }),
         {
-          password: await PwdCookies,
+          password: ServerEnv.value?.WIBU_PWD as string,
         }
       );
 

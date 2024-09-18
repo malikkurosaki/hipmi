@@ -1,6 +1,5 @@
-import { myConsole } from "@/app/fun/my_console";
-import { PwdCookies } from "@/app/lib";
 import prisma from "@/app/lib/prisma";
+import { ServerEnv } from "@/app/lib/server_env";
 import { sealData } from "iron-session";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -15,8 +14,6 @@ export async function POST(req: Request) {
         username: body.username,
       },
     });
-
-    myConsole(cekUsername);
 
     if (cekUsername)
       return NextResponse.json({ status: 400, message: "Username sudah ada" });
@@ -35,7 +32,7 @@ export async function POST(req: Request) {
           username: data.username,
         }),
         {
-          password: PwdCookies,
+          password: ServerEnv.value?.WIBU_PWD as string,
         }
       );
 
