@@ -2,7 +2,6 @@
 
 import {
   AspectRatio,
-  Box,
   Button,
   Center,
   FileButton,
@@ -29,13 +28,11 @@ import {
 
 import {
   ComponentGlobal_BoxInformation,
+  ComponentGlobal_BoxUploadImage,
   ComponentGlobal_CardStyles,
   ComponentGlobal_InputCountDown,
 } from "@/app_modules/_global/component";
-import {
-  Job_ComponentBoxUploadImage,
-  Job_ComponentButtonSaveCreate,
-} from "../component";
+import { Job_ComponentButtonSaveCreate } from "../component";
 import { defaultDeskripsi, defaultSyarat } from "../component/default_value";
 
 export default function Job_Create() {
@@ -57,7 +54,7 @@ export default function Job_Create() {
       <ComponentGlobal_BoxInformation informasi="Poster atau gambar lowongan kerja bersifat opsional, tidak wajib untuk dimasukkan dan upload lah gambar yang sesuai dengan deskripsi lowongan kerja. " />
 
       <Stack spacing={"xs"}>
-        <Job_ComponentBoxUploadImage>
+        <ComponentGlobal_BoxUploadImage>
           {img ? (
             <AspectRatio ratio={1 / 1} mah={265} mx={"auto"}>
               <Image
@@ -75,7 +72,7 @@ export default function Job_Create() {
               </Text>
             </Stack>
           )}
-        </Job_ComponentBoxUploadImage>
+        </ComponentGlobal_BoxUploadImage>
 
         <Center>
           <FileButton

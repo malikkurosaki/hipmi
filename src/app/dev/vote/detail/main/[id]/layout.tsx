@@ -1,5 +1,4 @@
-import { CheckCookies_UiView } from "@/app_modules/check_cookies";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { LayoutVote_MainDetail } from "@/app_modules/vote";
 import React from "react";
 
@@ -11,8 +10,7 @@ export default async function Layout({
   params: { id: string };
 }) {
   const votingId = params.id;
-  const userLoginId = await user_funGetOneUserId();
-  if (!userLoginId) return <CheckCookies_UiView />;
+  const userLoginId = await funGetUserIdByToken();
 
   return (
     <>

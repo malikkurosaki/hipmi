@@ -1,14 +1,14 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export default async function colab_getListAllProyekSayaByAuthorId({
   page,
 }: {
   page: number;
 }) {
-  const authorId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const takeData = 5;
   const skipData = page * takeData - takeData;
@@ -17,7 +17,7 @@ export default async function colab_getListAllProyekSayaByAuthorId({
     take: takeData,
     skip: skipData,
     orderBy: { createdAt: "desc" },
-    where: { userId: authorId, isActive: true },
+    where: { userId: userLoginId, isActive: true },
     select: {
       id: true,
       isActive: true,

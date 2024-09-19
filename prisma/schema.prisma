@@ -147,6 +147,7 @@ model Portofolio {
   logoId                 String?
   Portofolio_MediaSosial Portofolio_MediaSosial?
   BusinessMaps           BusinessMaps?
+  imageId                String?
 }
 
 model Portofolio_MediaSosial {

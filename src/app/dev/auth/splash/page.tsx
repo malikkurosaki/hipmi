@@ -1,8 +1,8 @@
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { SplashScreen } from "@/app_modules/auth";
-import { user_funGetOneUserId } from "@/app_modules/fun_global";
 
 export default async function PageSplash() {
-  const userLoginId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   return (
     <>

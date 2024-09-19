@@ -28,7 +28,6 @@ import {
 
 export default function Login() {
   const router = useRouter();
-  const [kodeId, setKodeId] = useAtom(gs_kodeId);
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
@@ -41,7 +40,7 @@ export default function Login() {
     if (res.status === 200) {
       setLoading(true);
       ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
-      router.push(RouterAuth.validasi + res.nomorUser, { scroll: false });
+      router.push(RouterAuth.validasi + res.kodeId, { scroll: false });
     } else {
       ComponentGlobal_NotifikasiPeringatan(res.message);
     }

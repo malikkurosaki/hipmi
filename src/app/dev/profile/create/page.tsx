@@ -1,12 +1,12 @@
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { CreateProfile } from "@/app_modules/katalog/profile";
 
 export default async function Page() {
-  const userId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   return (
     <>
-      <CreateProfile userId={userId} />
+      <CreateProfile userLoginId={userLoginId} />
     </>
   );
 }

@@ -28,7 +28,7 @@ export default function Admin_Logout() {
   const [loadingLogout, setLoadingLogout] = useState(false);
 
   async function onClickLogout() {
-    await auth_Logout(kodeId).then((res) => {
+    await auth_Logout().then((res) => {
       if (res.status === 200) {
         setLoadingLogout(true);
         ComponentGlobal_NotifikasiBerhasil(res.message);

@@ -12,16 +12,16 @@ export function CheckCookies_UiLayout({
   const router = useRouter();
 
   useShallowEffect(() => {
-    // onCheckCookies();
+    onCheckCookies();
   }, []);
 
-  // async function onCheckCookies() {
-  //   const cek = await fetch("/api/check-cookies");
-  //   const result = await cek.json();
-  //   if (result.success === false) {
-  //     router.push(RouterAuth.login);
-  //   }
-  // }
+  async function onCheckCookies() {
+    const cek = await fetch("/api/check-cookies");
+    const result = await cek.json();
+    if (result.success === false) {
+      router.push(RouterAuth.login);
+    }
+  }
 
   return <>{children}</>;
 }

@@ -17,7 +17,7 @@ export async function auth_funLogin({ nomor }: { nomor: string }) {
 
     const sendWa = await res.json();
     if (sendWa.status !== "success")
-      return { status: 400, message: "WA Tidak Terdaftar", nomorUser: {} };
+      return { status: 400, message: "WA Tidak Terdaftar", kodeId: {} };
 
     const createOtpId = await prisma.kodeOtp.create({
       data: {
@@ -27,15 +27,15 @@ export async function auth_funLogin({ nomor }: { nomor: string }) {
     });
 
     if (!createOtpId)
-      return { status: 400, message: "Gagal Membuat Kode OTP", nomorUser: {} };
+      return { status: 400, message: "Gagal Membuat Kode OTP", kodeId: {} };
 
     return {
       status: 200,
       message: "Kode Verifikasi Dikirim",
-      nomorUser: nomor,
+      kodeId: createOtpId.id,
     };
   } catch (error) {
     console.log(error);
-    return { status: 500, message: "Server Error !!!", nomorUser: {} };
+    return { status: 500, message: "Server Error !!!", kodeId: {} };
   }
 }

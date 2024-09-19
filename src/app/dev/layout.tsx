@@ -8,9 +8,6 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  // const cekCookies = await funCheckToken();
-  // if (cekCookies === false) redirect(RouterAuth.login);
-
   return (
     <>
       <CheckCookies_UiLayout>{children}</CheckCookies_UiLayout>

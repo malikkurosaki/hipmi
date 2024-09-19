@@ -22,6 +22,7 @@ export async function user_funGetOneUserId(): Promise<string | null> {
 
     return token.id;
   } catch (error) {
+    console.log(error);
     return null;
   }
 }

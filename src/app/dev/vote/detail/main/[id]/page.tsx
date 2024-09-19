@@ -1,17 +1,14 @@
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { Vote_MainDetail } from "@/app_modules/vote";
 import { Vote_cekKontributorById } from "@/app_modules/vote/fun/get/cek_kontributor_by_id";
+import { voting_funGetOneVotingbyId } from "@/app_modules/vote/fun/get/fun_get_one_by_id";
 import { Vote_getHasilVoteById } from "@/app_modules/vote/fun/get/get_list_hasil_by_id";
 import { Vote_getListKontributorById } from "@/app_modules/vote/fun/get/get_list_kontributor_by_id";
-import { voting_funGetOneVotingbyId } from "@/app_modules/vote/fun/get/fun_get_one_by_id";
 import { Vote_getOnePilihanVotingByUserId } from "@/app_modules/vote/fun/get/get_one_pilihan_voting_by_user_id";
-import { CheckCookies_UiView } from "@/app_modules/check_cookies";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const voteId = params.id;
-  
-  const userLoginId = await user_funGetOneUserId();
-  if (!userLoginId) return <CheckCookies_UiView />;
+  const userLoginId = await funGetUserIdByToken();
 
   const dataVote = await voting_funGetOneVotingbyId(voteId);
   const hasilVoting = await Vote_getHasilVoteById(voteId as any);

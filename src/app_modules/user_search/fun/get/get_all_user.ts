@@ -1,9 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
-import { redirect } from "next/navigation";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export async function userSearch_getAllUser({
   page,
@@ -12,11 +10,7 @@ export async function userSearch_getAllUser({
   page: number;
   search?: string;
 }) {
-  const authorId = await user_funGetOneUserId();
-  if (!authorId) {
-    redirect(RouterAuth.login);
-    // return { status: 400, message: "Gagal mendapatkan authorId" };
-  }
+  const userLoginId = await funGetUserIdByToken();
 
   const takeData = 20;
   const skipData = page * takeData - takeData;
@@ -40,7 +34,7 @@ export async function userSearch_getAllUser({
       OR: [
         {
           NOT: {
-            id: authorId,
+            id: userLoginId,
           },
         },
       ],

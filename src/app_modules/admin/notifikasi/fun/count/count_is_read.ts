@@ -1,14 +1,14 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export default async function adminNotifikasi_countNotifikasi() {
-  const adminId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const data = await prisma.notifikasi.findMany({
     where: {
-      adminId: adminId,
+      adminId: userLoginId,
       isRead: false,
       userRoleId: "2",
     },

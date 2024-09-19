@@ -1,13 +1,14 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export default async function colab_getListByStatusId(statusId: number) {
-  const AuthorId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
+
   const data = await prisma.projectCollaboration.findMany({
     where: {
-      userId: AuthorId,
+      userId: userLoginId,
       projectCollaborationMaster_StatusId: statusId,
     },
     select: {

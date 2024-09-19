@@ -1,16 +1,15 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { MODEL_COLLABORATION } from "../../model/interface";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
-import { revalidatePath } from "next/cache";
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
-import _ from "lodash";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
+import { revalidatePath } from "next/cache";
+import { MODEL_COLLABORATION } from "../../model/interface";
 
 export default async function colab_funCreateProyek(
   value: MODEL_COLLABORATION
 ) {
-  const AuthorId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const data = await prisma.projectCollaboration.create({
     data: {
@@ -20,7 +19,7 @@ export default async function colab_funCreateProyek(
       benefit: value.benefit,
       projectCollaborationMaster_IndustriId:
         value.projectCollaborationMaster_IndustriId,
-      userId: AuthorId,
+      userId: userLoginId,
       // jumlah_partisipan: + value.jumlah_partisipan,
     },
   });

@@ -1,22 +1,21 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export default async function colab_funCekPartisipasiById(colabId: string) {
-  const UserLoginId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const cek = await prisma.projectCollaboration_Partisipasi.findFirst({
     where: {
       projectCollaborationId: colabId,
-      userId: UserLoginId,
+      userId: userLoginId,
     },
   });
 
-
   if (cek === null) {
-    return (false);
+    return false;
   } else {
-    return (true);
+    return true;
   }
 }

@@ -1,18 +1,19 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export async function forum_funCreateReportKomentarLainnya(
   komentarId: string,
   deskripsi: string
 ) {
-  const authorId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
+
   const create = await prisma.forum_ReportKomentar.create({
     data: {
       forum_KomentarId: komentarId,
       deskripsi: deskripsi,
-      userId: authorId,
+      userId: userLoginId,
     },
   });
 

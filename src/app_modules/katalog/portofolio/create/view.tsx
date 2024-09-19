@@ -34,6 +34,8 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import funCreatePortofolio from "../fun/fun_create_portofolio";
+import { Portofolio_ComponentButtonSelanjutnya } from "../component";
+import { ComponentGlobal_BoxUploadImage } from "@/app_modules/_global/component";
 
 export default function CreatePortofolio({
   bidangBisnis,
@@ -42,9 +44,7 @@ export default function CreatePortofolio({
   bidangBisnis: BIDANG_BISNIS_OLD;
   profileId: any;
 }) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState({
+  const [dataPortofolio, setDataPortofolio] = useState({
     namaBisnis: "",
     masterBidangBisnisId: "",
     alamatKantor: "",
@@ -52,7 +52,7 @@ export default function CreatePortofolio({
     deskripsi: "",
   });
 
-  const [medsos, setMedsos] = useState({
+  const [dataMedsos, setDataMedsos] = useState({
     facebook: "",
     twitter: "",
     instagram: "",
@@ -82,8 +82,8 @@ export default function CreatePortofolio({
             placeholder="Nama bisnis"
             maxLength={100}
             onChange={(val) => {
-              setValue({
-                ...value,
+              setDataPortofolio({
+                ...dataPortofolio,
                 namaBisnis: _.startCase(val.target.value),
               });
             }}
@@ -102,8 +102,8 @@ export default function CreatePortofolio({
               label: e.name,
             }))}
             onChange={(val) => {
-              setValue({
-                ...value,
+              setDataPortofolio({
+                ...dataPortofolio,
                 masterBidangBisnisId: val as any,
               });
             }}
@@ -119,8 +119,8 @@ export default function CreatePortofolio({
             placeholder="Alamat bisnis"
             maxLength={100}
             onChange={(val) => {
-              setValue({
-                ...value,
+              setDataPortofolio({
+                ...dataPortofolio,
                 alamatKantor: val.target.value,
               });
             }}
@@ -136,8 +136,8 @@ export default function CreatePortofolio({
             placeholder="Nomor telepon "
             type="number"
             onChange={(val) => {
-              setValue({
-                ...value,
+              setDataPortofolio({
+                ...dataPortofolio,
                 tlpn: val.target.value,
               });
             }}
@@ -157,15 +157,15 @@ export default function CreatePortofolio({
               label="Deskripsi"
               placeholder="Deskripsi singkat mengenai usaha"
               onChange={(val) => {
-                setValue({
-                  ...value,
+                setDataPortofolio({
+                  ...dataPortofolio,
                   deskripsi: val.target.value,
                 });
               }}
             />
             <ComponentGlobal_InputCountDown
               maxInput={300}
-              lengthInput={value.deskripsi.length}
+              lengthInput={dataPortofolio.deskripsi.length}
             />
           </Stack>
         </Stack>
@@ -182,52 +182,25 @@ export default function CreatePortofolio({
 
           {isFile ? <ComponentGlobal_ErrorInput text="Upload gambar" /> : ""} */}
 
-          {img ? (
-            <AspectRatio ratio={1 / 1} mah={300}>
-              <Paper
-                style={{
-                  border: `2px solid ${AccentColor.blue}`,
-                  backgroundColor: AccentColor.darkblue,
-                  padding: "10px",
-                  borderRadius: "10px",
-                }}
-              >
+          <ComponentGlobal_BoxUploadImage>
+            {img ? (
+              <AspectRatio ratio={1 / 1} mah={265} mx={"auto"}>
                 <Image
-                radius={"sm"}
+                  style={{ maxHeight: 250, margin: "auto", padding: "5px" }}
                   alt="Foto"
-                  src={img ? img : "/aset/no-img.png"}
-                  maw={200}
+                  height={250}
+                  src={img}
                 />
-              </Paper>
-            </AspectRatio>
-          ) : (
-            <AspectRatio ratio={1 / 1} mah={300}>
-              <Paper
-                style={{
-                  border: `2px solid ${AccentColor.blue}`,
-                  backgroundColor: AccentColor.darkblue,
-                  padding: "10px",
-                  borderRadius: "10px",
-                }}
-              >
-                <Box
-                  h={250}
-                  w={200}
-                  style={{
-                    color: "white",
-                  }}
-                >
-                  <Stack spacing={5} justify="center" align="center" h={"100%"}>
-                    <Title order={3}>Upload Logo Bisnis</Title>
-                    <Text fs={"italic"} fz={10} align="center">
-                      Masukan logo bisnis anda untuk ditampilkan dalam
-                      portofolio
-                    </Text>
-                  </Stack>
-                </Box>
-              </Paper>
-            </AspectRatio>
-          )}
+              </AspectRatio>
+            ) : (
+              <Stack spacing={5} justify="center" align="center" h={"100%"}>
+                <Title order={3}>Upload Logo Bisnis</Title>
+                <Text fs={"italic"} fz={10} align="center">
+                  Masukan logo bisnis anda untuk ditampilkan dalam portofolio
+                </Text>
+              </Stack>
+            )}
+          </ComponentGlobal_BoxUploadImage>
 
           <Center>
             <FileButton
@@ -280,8 +253,8 @@ export default function CreatePortofolio({
             maxLength={100}
             placeholder="Facebook"
             onChange={(val) => {
-              setMedsos({
-                ...medsos,
+              setDataMedsos({
+                ...dataMedsos,
                 facebook: val.target.value,
               });
             }}
@@ -296,8 +269,8 @@ export default function CreatePortofolio({
             maxLength={100}
             placeholder="Instagram"
             onChange={(val) => {
-              setMedsos({
-                ...medsos,
+              setDataMedsos({
+                ...dataMedsos,
                 instagram: val.target.value,
               });
             }}
@@ -312,8 +285,8 @@ export default function CreatePortofolio({
             maxLength={100}
             placeholder="Tiktok"
             onChange={(val) => {
-              setMedsos({
-                ...medsos,
+              setDataMedsos({
+                ...dataMedsos,
                 tiktok: val.target.value,
               });
             }}
@@ -328,8 +301,8 @@ export default function CreatePortofolio({
             maxLength={100}
             placeholder="Twitter"
             onChange={(val) => {
-              setMedsos({
-                ...medsos,
+              setDataMedsos({
+                ...dataMedsos,
                 twitter: val.target.value,
               });
             }}
@@ -344,82 +317,24 @@ export default function CreatePortofolio({
             maxLength={100}
             placeholder="Youtube"
             onChange={(val) => {
-              setMedsos({
-                ...medsos,
+              setDataMedsos({
+                ...dataMedsos,
                 youtube: val.target.value,
               });
             }}
           />
         </Stack>
 
-        <Button
-          disabled={_.values(value).includes("") || file === null}
-          mt={"md"}
-          radius={50}
-          loading={loading ? true : false}
-          loaderPosition="center"
-          onClick={() => {
-            onSubmit(
-              router,
-              profileId,
-              value as any,
-              file,
-              medsos,
-              setLoading,
-              setIsFile
-            );
-          }}
-          bg={MainColor.yellow}
-          color="yellow"
-          c={"black"}
-        >
-          Selanjutnya
-        </Button>
+        <Portofolio_ComponentButtonSelanjutnya
+          dataPorto={dataPortofolio as any}
+          dataMedsos={dataMedsos}
+          file={file}
+          profileId={profileId}
+          setIsFile={setIsFile}
+        />
       </Stack>
 
       {/* <pre> {JSON.stringify(bidangBisnis, null, 2)}</pre> */}
     </>
   );
-}
-
-async function onSubmit(
-  router: AppRouterInstance,
-  profileId: string,
-  dataPorto: MODEL_PORTOFOLIO_OLD,
-  file: FormData,
-  dataMedsos: any,
-  setLoading: any,
-  setIsFile: any
-) {
-  const porto = {
-    namaBisnis: dataPorto.namaBisnis,
-    masterBidangBisnisId: dataPorto.masterBidangBisnisId,
-    alamatKantor: dataPorto.alamatKantor,
-    tlpn: dataPorto.tlpn,
-    deskripsi: dataPorto.deskripsi,
-  };
-
-  if (_.values(porto).includes(""))
-    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
-  if (file === null) {
-    setIsFile(true);
-    return null;
-  }
-
-  const gambar = new FormData();
-  gambar.append("file", file as any);
-
-  const res = await funCreatePortofolio(
-    profileId,
-    porto as any,
-    gambar,
-    dataMedsos
-  );
-  if (res.status === 201) {
-    setLoading(true);
-    // ComponentGlobal_NotifikasiBerhasil("Berhasil disimpan");
-    router.replace(RouterMap.create + res.id , {scroll: false});
-  } else {
-    ComponentGlobal_NotifikasiGagal("Gagal disimpan");
-  }
 }

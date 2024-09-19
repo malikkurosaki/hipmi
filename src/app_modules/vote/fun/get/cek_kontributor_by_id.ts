@@ -1,21 +1,21 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export async function Vote_cekKontributorById(votingId: string) {
-  const UserId = await user_funGetOneUserId()
-  
+  const userLoginId = await funGetUserIdByToken();
+
   const cek = await prisma.voting_Kontributor.count({
     where: {
-      authorId: UserId,
+      authorId: userLoginId,
       votingId: votingId,
     },
   });
 
- if (cek > 0) {
-   return true;
- } else {
-   return false;
- }
+  if (cek > 0) {
+    return true;
+  } else {
+    return false;
+  }
 }

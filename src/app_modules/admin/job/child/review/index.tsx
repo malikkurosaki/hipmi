@@ -353,6 +353,11 @@ async function onPublish({
         "USER",
         JSON.stringify({ userId: publish?.data?.authorId, count: 1 })
       );
+
+      mqtt_client.publish(
+        "Job_new_post",
+        JSON.stringify({ isNewPost: true, count: 1 })
+      );
     }
 
     ComponentGlobal_NotifikasiBerhasil(publish.message);

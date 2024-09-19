@@ -1,15 +1,13 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
-import _ from "lodash";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
-export async function event_getListRiwayatSaya({page}: {page: number}) {
-  const authorId = await user_funGetOneUserId();
+export async function event_getListRiwayatSaya({ page }: { page: number }) {
+  const userLoginId = await funGetUserIdByToken();
 
   const takeData = 10;
   const skipData = page * takeData - takeData;
-
 
   const data = await prisma.event.findMany({
     take: takeData,
@@ -18,7 +16,7 @@ export async function event_getListRiwayatSaya({page}: {page: number}) {
       tanggal: "desc",
     },
     where: {
-      authorId: authorId,
+      authorId: userLoginId,
       eventMaster_StatusId: "1",
       tanggal: {
         lte: new Date(),

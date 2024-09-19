@@ -1,8 +1,8 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
-import { revalidatePath } from "next/cache";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
+
 
 export async function forum_funCreateReportPosting({
   postingId,
@@ -11,11 +11,12 @@ export async function forum_funCreateReportPosting({
   postingId: string;
   kategoriId: number;
 }) {
-  const authorId = await user_funGetOneUserId();
+    const userLoginId = await funGetUserIdByToken();
+
 
   const createReport = await prisma.forum_ReportPosting.create({
     data: {
-      userId: authorId,
+      userId: userLoginId,
       forum_PostingId: postingId,
       forumMaster_KategoriReportId: kategoriId,
     },

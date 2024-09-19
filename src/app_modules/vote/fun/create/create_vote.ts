@@ -1,19 +1,13 @@
 "use server";
 
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
-import { MODEL_VOTING } from "../../model/interface";
 import prisma from "@/app/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import _ from "lodash";
-import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { MODEL_VOTING } from "../../model/interface";
 
 export async function Vote_funCreate(req: MODEL_VOTING, listVote: any[]) {
-  const authorId = await user_funGetOneUserId();
-  if (!authorId) {
-    redirect(RouterAuth.login);
-    // return { status: 400, message: "Gagal mendapatkan authorId" };
-  }
+  const userLoginId = await funGetUserIdByToken();
 
   const create = await prisma.voting.create({
     data: {
@@ -21,7 +15,7 @@ export async function Vote_funCreate(req: MODEL_VOTING, listVote: any[]) {
       deskripsi: req.deskripsi,
       awalVote: req.awalVote,
       akhirVote: req.akhirVote,
-      authorId: authorId,
+      authorId: userLoginId,
     },
     select: {
       id: true,

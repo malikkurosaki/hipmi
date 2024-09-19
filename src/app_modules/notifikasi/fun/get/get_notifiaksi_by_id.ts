@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import _ from "lodash";
 
 export default async function notifikasi_getByUserId({
@@ -11,7 +11,7 @@ export default async function notifikasi_getByUserId({
   page: number;
   kategoriApp?: string;
 }) {
-  const userId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
   const takeData = 10;
   const skipData = page * takeData - takeData;
 
@@ -26,7 +26,7 @@ export default async function notifikasi_getByUserId({
         { createdAt: "desc" },
       ],
       where: {
-        userId: userId,
+        userId: userLoginId,
         userRoleId: "1",
       },
     });
@@ -44,7 +44,7 @@ export default async function notifikasi_getByUserId({
       { createdAt: "desc" },
     ],
     where: {
-      userId: userId,
+      userId: userLoginId,
       userRoleId: "1",
       kategoriApp: _.upperCase(kategoriApp),
     },

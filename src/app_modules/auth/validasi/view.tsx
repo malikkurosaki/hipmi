@@ -61,9 +61,19 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
       } else {
         ComponentGlobal_NotifikasiPeringatan(resAktivasi.message);
       }
-    } else {
+    }
+
+    if (res.status === 400) {
       ComponentGlobal_NotifikasiBerhasil(res.message);
       router.push(RouterAuth.register + dataOtp.id, { scroll: false });
+    }
+
+    if (res.status === 401) {
+      const resAktivasi = await auth_funDeleteAktivasiKodeOtpById(dataOtp.id);
+      if (resAktivasi.status === 200) {
+        ComponentGlobal_NotifikasiPeringatan(res.message);
+        router.push(RouterAuth.login, { scroll: false });
+      }
     }
   }
 

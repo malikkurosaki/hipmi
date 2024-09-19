@@ -38,6 +38,7 @@ export async function POST(req: Request) {
         name: "ssn",
         value: res,
         maxAge: 60 * 60 * 24 * 7,
+        
       });
 
       revalidatePath("/dev/home");

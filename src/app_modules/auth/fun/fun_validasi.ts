@@ -25,7 +25,8 @@ export async function auth_funValidasi({
     },
   });
 
-  if (cekUser === null) return { status: 400, message: "Nomor Belum Terdaftar" };
+  if (cekUser === null)
+    return { status: 400, message: "Nomor Belum Terdaftar", role: {} };
 
   const sealToken = await sealData(
     JSON.stringify({
@@ -40,9 +41,22 @@ export async function auth_funValidasi({
   cookies().set({
     name: "ssn",
     value: sealToken,
-    // maxAge: 60 * 60 * 24 * 30,
-    // expires: 60 * 60 * 24 * 30,
+    maxAge: 60 * 60 * 24 * 30,
   });
+
+  const cekSessionUser = await prisma.userSession.findFirst({
+    where: {
+      userId: cekUser.id,
+    },
+  });
+
+  if (cekSessionUser !== null) {
+    await prisma.userSession.delete({
+      where: {
+        userId: cekUser.id,
+      },
+    });
+  }
 
   try {
     const createUserSession = await prisma.userSession.create({
@@ -53,7 +67,7 @@ export async function auth_funValidasi({
     });
 
     if (!createUserSession)
-      return { status: 401, message: "Gagal Membuat User Session" };
+      return { status: 401, message: "Gagal Membuat User Session", role: {} };
 
     revalidatePath(RouterHome.main_home);
   } catch (error) {

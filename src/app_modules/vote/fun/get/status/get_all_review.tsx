@@ -1,16 +1,10 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
-import { redirect } from "next/navigation";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export async function vote_getAllReview({ page }: { page: number }) {
-  const authorId = await user_funGetOneUserId();
-   if (!authorId) {
-     redirect(RouterAuth.login);
-     // return { status: 400, message: "Gagal mendapatkan authorId" };
-   }
+  const userLoginId = await funGetUserIdByToken();
 
   const takeData = 10;
   const skipData = page * takeData - takeData;
@@ -23,7 +17,7 @@ export async function vote_getAllReview({ page }: { page: number }) {
     },
     where: {
       voting_StatusId: "2",
-      authorId: authorId,
+      authorId: userLoginId,
       isActive: true,
     },
   });

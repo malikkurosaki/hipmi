@@ -1,7 +1,9 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { sealData } from "iron-session";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export async function Auth_funRegister({
@@ -47,15 +49,20 @@ export async function Auth_funRegister({
     // maxAge: 60 * 60 * 24 * 7,
   });
 
-  const createUserSession = await prisma.userSession.create({
-    data: {
-      token: sealToken,
-      userId: create.id,
-    },
-  });
+  try {
+    const createUserSession = await prisma.userSession.create({
+      data: {
+        token: sealToken,
+        userId: create.id,
+      },
+    });
 
-  if (!createUserSession)
-    return { status: 400, message: "Gagal Membuat User Session" };
+    if (!createUserSession)
+      return { status: 401, message: "Gagal Membuat User Session" };
 
+    revalidatePath(RouterHome.main_home);
+  } catch (error) {
+    console.log(error);
+  }
   return { status: 200, message: "Berhasil Mendaftar" };
 }
