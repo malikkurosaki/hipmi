@@ -1,11 +1,12 @@
-import { user_funGetOneUserId } from "@/app_modules/fun_global";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { funGetUserProfile } from "@/app_modules/fun_global/get_user_profile";
 import { ProsesTransaksiInvestasi } from "@/app_modules/investasi";
 import getOneInvestasiById from "@/app_modules/investasi/fun/get_one_investasi_by_id";
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const authorId = await user_funGetOneUserId();
-  const userLogin = await funGetUserProfile(authorId);
+  const userLoginId = await funGetUserIdByToken();
+
+  const userLogin = await funGetUserProfile(userLoginId);
   const dataInvestasi = await getOneInvestasiById(params.id);
 
   // console.log(dataInvestasi);

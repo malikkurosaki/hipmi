@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { MODEL_NOTIFIKASI } from "@/app_modules/notifikasi/model/interface";
 
 export default async function adminNotifikasi_funCreateToUser({
@@ -9,11 +9,11 @@ export default async function adminNotifikasi_funCreateToUser({
 }: {
   data: MODEL_NOTIFIKASI;
 }) {
-  const adminId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const create = await prisma.notifikasi.create({
     data: {
-      adminId: adminId,
+      adminId: userLoginId,
       userId: data.userId,
       appId: data.appId,
       status: data.status,

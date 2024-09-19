@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 interface Model_Invoice_Masuk {
   total: number;
@@ -14,14 +14,14 @@ export async function investasi_funCreateInvoice({
 }: {
   data: Model_Invoice_Masuk;
 }) {
-  const authorId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const create = await prisma.investasi_Invoice.create({
     data: {
       nominal: "" + data.total,
-      lembarTerbeli: "" + data.jumlah ,
+      lembarTerbeli: "" + data.jumlah,
       masterBankId: data.pilihBank,
-      authorId: authorId,
+      authorId: userLoginId,
       investasiId: data.investasiId,
       statusInvoiceId: "3",
     },

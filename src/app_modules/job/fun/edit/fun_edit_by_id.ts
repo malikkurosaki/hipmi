@@ -1,21 +1,18 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import _ from "lodash";
-import { v4 } from "uuid";
-import fs from "fs";
-import { MODEL_JOB } from "../../model/interface";
-import { revalidatePath } from "next/cache";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
+import { revalidatePath } from "next/cache";
+import { MODEL_JOB } from "../../model/interface";
 
 export async function job_EditById({
   data,
-  imageId,
+  fileId,
 }: {
   data: MODEL_JOB;
-  imageId?: string;
+  fileId?: string;
 }) {
-  if (imageId == undefined) {
+  if (fileId == undefined) {
     const updt = await prisma.job.update({
       where: {
         id: data.id,
@@ -28,7 +25,7 @@ export async function job_EditById({
     });
     if (!updt) return { status: 400, message: "Gagal Update" };
     revalidatePath(RouterJob.status);
-    
+
     return {
       status: 200,
       message: "Berhasil Update",
@@ -42,7 +39,7 @@ export async function job_EditById({
         title: data.title,
         content: data.content,
         deskripsi: data.deskripsi,
-        imageId: imageId,
+        imageId: fileId,
       },
     });
     if (!updtWithFile) return { status: 400, message: "Gagal Update" };

@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export async function forum_funCreateReportKomentar({
   komentarId,
@@ -10,19 +10,12 @@ export async function forum_funCreateReportKomentar({
   komentarId: string;
   kategoriId: any;
 }) {
-  const authorId = await user_funGetOneUserId();
-  // console.log(kategoriId);
-
-  // const cekId = await prisma.forumMaster_KategoriReport.findFirst({
-  //   where: {
-  //     title: kategoriId,
-  //   },
-  // });
+  const userLoginId = await funGetUserIdByToken();
 
   try {
     const createReport = await prisma.forum_ReportKomentar.create({
       data: {
-        userId: authorId,
+        userId: userLoginId,
         forumMaster_KategoriReportId: kategoriId,
         forum_KomentarId: komentarId,
       },

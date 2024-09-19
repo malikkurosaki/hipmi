@@ -1,10 +1,11 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export async function donasi_funGetAllStatusReject({ page }: { page: number }) {
-  const authorId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
+
   const takeData = 5;
   const skipData = page * takeData - takeData;
 
@@ -15,7 +16,7 @@ export async function donasi_funGetAllStatusReject({ page }: { page: number }) {
       updatedAt: "desc",
     },
     where: {
-      authorId: authorId,
+      authorId: userLoginId,
       donasiMaster_StatusDonasiId: "4",
     },
   });

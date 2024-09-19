@@ -1,14 +1,11 @@
 "use client";
 
-import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import {
   AspectRatio,
@@ -25,14 +22,16 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconAt, IconCamera, IconUpload } from "@tabler/icons-react";
-import _ from "lodash";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { validRegex } from "../../component/regular_expressions";
-import funCreateNewProfile from "../fun/fun_create_profile";
-import { MODEL_PROFILE } from "../model/interface";
+import { Profile_ComponentCreateNewProfile } from "../_component";
+import { ComponentGlobal_BoxUploadImage } from "@/app_modules/_global/component";
 
-export default function CreateProfile({ userId }: { userId: any }) {
+export default function CreateProfile({
+  userLoginId,
+}: {
+  userLoginId: string;
+}) {
   const [filePP, setFilePP] = useState<File | null>(null);
   const [imgPP, setImgPP] = useState<any | null>();
   const [fileBG, setFileBG] = useState<File | null>(null);
@@ -47,14 +46,16 @@ export default function CreateProfile({ userId }: { userId: any }) {
 
   return (
     <>
-      <Stack px={"sm"} spacing={"xl"}>
+      <Stack px={"sm"} spacing={40}>
         <Box>
-          <Stack>
+          <Stack spacing={"xs"}>
             <ComponentGlobal_BoxInformation informasi="Upload foto profile anda." />
             <Center>
               {imgPP ? (
                 <Paper shadow="lg" radius={"100%"}>
                   <Avatar
+
+                    color={"cyan"}
                     sx={{
                       borderStyle: "solid",
                       borderColor: "gray",
@@ -68,11 +69,13 @@ export default function CreateProfile({ userId }: { userId: any }) {
               ) : (
                 <Paper shadow="lg" radius={"100%"}>
                   <Avatar
+                    variant="light"
+                    color="blue"
                     size={150}
                     radius={"100%"}
                     sx={{
                       borderStyle: "solid",
-                      borderColor: "gray",
+                      borderColor: MainColor.darkblue,
                       borderWidth: "0.5px",
                     }}
                   />
@@ -119,22 +122,20 @@ export default function CreateProfile({ userId }: { userId: any }) {
         </Box>
 
         <Box>
-          <Stack>
+          <Stack spacing={"xs"}>
             <ComponentGlobal_BoxInformation informasi="Upload foto latar belakang profile anda." />
-            <AspectRatio ratio={16 / 9}>
-              <Paper radius={"md"} withBorder shadow="lg" bg={"gray.2"}>
-                {imgBG ? (
-                  <Image alt="Foto" src={imgBG ? imgBG : "/aset/no-img.png"} />
-                ) : (
-                  <Stack align="center">
-                    <IconUpload color="gray" />
-                    <Text fz={"xs"} c={"gray"}>
-                      Upload Background
-                    </Text>
-                  </Stack>
-                )}
-              </Paper>
-            </AspectRatio>
+            <ComponentGlobal_BoxUploadImage>
+              {imgBG ? (
+                <Image alt="Foto" src={imgBG ? imgBG : "/aset/no-img.png"} />
+              ) : (
+                <Stack justify="center" align="center" h={"100%"}>
+                  <IconUpload color="white" />
+                  <Text fz={"xs"} c={"white"}>
+                    Upload Background
+                  </Text>
+                </Stack>
+              )}
+            </ComponentGlobal_BoxUploadImage>
 
             <Center>
               <FileButton
@@ -251,87 +252,14 @@ export default function CreateProfile({ userId }: { userId: any }) {
             }}
           />
 
-          <ButtonAction
+          <Profile_ComponentCreateNewProfile
             value={value as any}
-            userId={userId}
+            userLoginId={userLoginId}
             filePP={filePP as any}
             fileBg={fileBG as any}
           />
         </Stack>
       </Stack>
-    </>
-  );
-}
-
-function ButtonAction({
-  value,
-  userId,
-  filePP,
-  fileBg,
-}: {
-  value: MODEL_PROFILE;
-  userId: string;
-  filePP: FormData;
-  fileBg: FormData;
-}) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-
-  async function onSubmit() {
-    const body = {
-      userId: userId,
-      name: value.name,
-      email: value.email,
-      alamat: value.alamat,
-      jenisKelamin: value.jenisKelamin,
-    };
-    if (_.values(body).includes(""))
-      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
-    if (!body.email.match(validRegex)) return null;
-
-    const gambarPP = new FormData();
-    gambarPP.append("filePP", filePP as any);
-
-    const gambarBG = new FormData();
-    gambarBG.append("fileBG", fileBg as any);
-
-    if (!gambarPP)
-      return ComponentGlobal_NotifikasiPeringatan("Lengkapi foto profile");
-    if (!gambarBG)
-      return ComponentGlobal_NotifikasiPeringatan(
-        "Lengkapi background profile"
-      );
-
-    await funCreateNewProfile(body as any, gambarPP, gambarBG).then((res) => {
-      if (res.status === 201) {
-        setLoading(true);
-        ComponentGlobal_NotifikasiBerhasil("Berhasil Membuat Profile", 3000);
-        router.push(RouterHome.main_home, { scroll: false });
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
-      }
-    });
-  }
-
-  return (
-    <>
-      <Button
-        loading={loading ? true : false}
-        loaderPosition="center"
-        mt={"md"}
-        radius={50}
-        bg={MainColor.yellow}
-        color="yellow"
-        onClick={() => {
-          onSubmit();
-        }}
-        style={{
-          border: `2px solid ${AccentColor.yellow}`,
-          color: "black",
-        }}
-      >
-        Simpan
-      </Button>
     </>
   );
 }

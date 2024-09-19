@@ -1,11 +1,10 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
-import { NextRequest } from "next/server";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export default async function adminNotifikasi_getByUserId() {
-  const adminId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const data = await prisma.notifikasi.findMany({
     orderBy: [
@@ -17,7 +16,7 @@ export default async function adminNotifikasi_getByUserId() {
       },
     ],
     where: {
-      adminId: adminId,
+      adminId: userLoginId,
       userRoleId: "2",
     },
   });

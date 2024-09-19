@@ -60,14 +60,14 @@ model MasterUserRole {
 }
 
 model UserSession {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   token     String
-  expires   DateTime
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  User      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
+  expires   DateTime?
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+  userId    String    @unique
 }
 
 model KodeOtp {
@@ -147,6 +147,7 @@ model Portofolio {
   logoId                 String?
   Portofolio_MediaSosial Portofolio_MediaSosial?
   BusinessMaps           BusinessMaps?
+  imageId                String?
 }
 
 model Portofolio_MediaSosial {

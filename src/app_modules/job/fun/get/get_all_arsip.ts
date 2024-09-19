@@ -1,11 +1,10 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
-export async function job_getAllArsipById({page}: {page: number}) {
-  
-  const authorId = await user_funGetOneUserId();
+export async function job_getAllArsipById({ page }: { page: number }) {
+  const userLoginId = await funGetUserIdByToken();
 
   const takeData = 10;
   const skipData = page * takeData - takeData;
@@ -17,7 +16,7 @@ export async function job_getAllArsipById({page}: {page: number}) {
       updatedAt: "desc",
     },
     where: {
-      authorId: authorId,
+      authorId: userLoginId,
       isArsip: true,
       isActive: true,
     },

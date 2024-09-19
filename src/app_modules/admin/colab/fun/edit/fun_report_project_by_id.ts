@@ -2,7 +2,7 @@
 
 import prisma from "@/app/lib/prisma";
 import { RouterAdminColab } from "@/app/lib/router_admin/router_admin_colab";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { revalidatePath } from "next/cache";
 
 export default async function adminColab_funReportProjectById({
@@ -12,7 +12,7 @@ export default async function adminColab_funReportProjectById({
   colabId: string;
   report: string;
 }) {
-  const authorId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const projectUpdate = await prisma.projectCollaboration.update({
     where: {
@@ -33,7 +33,7 @@ export default async function adminColab_funReportProjectById({
   const updateReport = await prisma.projectCollaboration_Notifikasi.create({
     data: {
       projectCollaborationId: colabId,
-      adminId: authorId,
+      adminId: userLoginId,
       userId: projectUpdate.userId as any,
       note: "Project Anda Telah Direport Admin",
     },

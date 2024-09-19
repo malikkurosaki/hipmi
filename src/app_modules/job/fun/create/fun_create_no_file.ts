@@ -1,12 +1,12 @@
 "use server";
 
 import { prisma } from "@/app/lib";
-import { user_funGetOneUserId } from "@/app_modules/fun_global";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { revalidatePath } from "next/cache";
 import { MODEL_JOB } from "../../model/interface";
 
 export async function job_funCreateNoFile({ data }: { data: MODEL_JOB }) {
-  const authorId = await user_funGetOneUserId();
+  const authorId = await funGetUserIdByToken();
 
   const createNoImage = await prisma.job.create({
     data: {

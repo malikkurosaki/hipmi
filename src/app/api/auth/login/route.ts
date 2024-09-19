@@ -1,8 +1,4 @@
-import { redirect } from "next/navigation";
 
-import { myConsole } from "@/app/fun/my_console";
-import prisma from "@/app/lib/prisma";
-import { RouterAdminDashboard } from "@/app/lib/router_hipmi/router_admin";
 
 import { NextResponse } from "next/server";
 

@@ -1,5 +1,6 @@
 import ComponentGlobal_BoxInformation from "./box_information";
 import ComponentGlobal_AvatarAndAuthorName from "./comp_author_name_and_avatar";
+import { ComponentGlobal_BoxUploadImage } from "./comp_box_upload_image";
 import { ComponentGlobal_CardStyles } from "./comp_card_box_and_background";
 import ComponentGlobal_CardLoadingOverlay from "./comp_loading_card";
 import ComponentGlobal_TampilanAngkaRatusan from "./comp_tampilan_angka_ratusan";
@@ -13,3 +14,4 @@ export { ComponentGlobal_CardLoadingOverlay };
 export { ComponentGlobal_BoxInformation };
 export { ComponentGlobal_InputCountDown };
 export { ComponentGlobal_CardStyles };
+export { ComponentGlobal_BoxUploadImage };

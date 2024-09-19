@@ -2,10 +2,10 @@
 
 import prisma from "@/app/lib/prisma";
 
-export async function auth_getKodeOtpById(otpId: string) {
+export async function auth_getCodeOtpByNumber({kodeId}: {kodeId: string}) {
   const data = await prisma.kodeOtp.findFirst({
     where: {
-      id: otpId,
+      id: kodeId,
     },
   });
 

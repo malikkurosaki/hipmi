@@ -1,17 +1,17 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export async function vote_getAllListKontribusiByAuthorId({
   page,
 }: {
   page: number;
 }) {
+  const userLoginId = await funGetUserIdByToken();
   const takeData = 5;
   const skipData = page * takeData - takeData;
 
-  const authorId = await user_funGetOneUserId();
   const data = await prisma.voting_Kontributor.findMany({
     take: takeData,
     skip: skipData,
@@ -19,7 +19,7 @@ export async function vote_getAllListKontribusiByAuthorId({
       createdAt: "asc",
     },
     where: {
-      authorId: authorId,
+      authorId: userLoginId,
     },
     select: {
       id: true,

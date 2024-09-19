@@ -54,6 +54,7 @@
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
     "iron-session": "^6.3.1",
+    "jose": "^5.9.2",
     "jotai": "^2.4.3",
     "lodash": "^4.17.21",
     "mapbox-gl": "^3.5.2",

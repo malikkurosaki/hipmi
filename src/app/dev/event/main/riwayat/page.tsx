@@ -1,7 +1,6 @@
 import { Event_Riwayat } from "@/app_modules/event";
 import { event_getListRiwayatSaya } from "@/app_modules/event/fun/get/get_list_riwayat_saya";
 import { event_getListSemuaRiwayat } from "@/app_modules/event/fun/get/riwayat/get_list_semua_riwayat";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
 
 export default async function Page({ params }: { params: { id: string } }) {
   let eventId = params.id;

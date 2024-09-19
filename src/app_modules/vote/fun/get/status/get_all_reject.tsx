@@ -1,10 +1,10 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export async function vote_getAllReject({ page }: { page: number }) {
-  const authorId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const takeData = 10;
   const skipData = page * takeData - takeData;
@@ -17,7 +17,7 @@ export async function vote_getAllReject({ page }: { page: number }) {
     },
     where: {
       voting_StatusId: "4",
-      authorId: authorId,
+      authorId: userLoginId,
       isActive: true,
     },
   });

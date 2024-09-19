@@ -1,13 +1,18 @@
 "use server";
 
-import { PwdCookies } from "@/app/lib";
 import prisma from "@/app/lib/prisma";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { sealData } from "iron-session";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
-
-export async function Auth_funRegister(data: any) {
-
+export async function Auth_funRegister({
+  data,
+  HIPMI_PWD,
+}: {
+  data: any;
+  HIPMI_PWD: string;
+}) {
   const cekUsername = await prisma.user.findUnique({
     where: {
       username: data.username,
@@ -28,21 +33,36 @@ export async function Auth_funRegister(data: any) {
   });
   if (!create) return { status: 400, message: "Gagal Mendaftar" };
 
-  const seal = await sealData(
+  const sealToken = await sealData(
     JSON.stringify({
       id: create.id,
       username: create.username,
     }),
     {
-      password: PwdCookies
+      password: HIPMI_PWD,
     }
   );
 
   cookies().set({
     name: "ssn",
-    value: seal,
-    maxAge: 60 * 60 * 24 * 7,
+    value: sealToken,
+    // maxAge: 60 * 60 * 24 * 7,
   });
 
+  try {
+    const createUserSession = await prisma.userSession.create({
+      data: {
+        token: sealToken,
+        userId: create.id,
+      },
+    });
+
+    if (!createUserSession)
+      return { status: 401, message: "Gagal Membuat User Session" };
+
+    revalidatePath(RouterHome.main_home);
+  } catch (error) {
+    console.log(error);
+  }
   return { status: 200, message: "Berhasil Mendaftar" };
 }

@@ -1,15 +1,9 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
-import _ from "lodash";
-import { v4 } from "uuid";
-import fs from "fs";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { revalidatePath } from "next/cache";
 import { MODEL_JOB } from "../../model/interface";
-import path from "path";
-import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
-import { DIRECTORY_ID } from "@/app/lib";
 
 export async function job_funCreateWithFile({
   data,
@@ -18,15 +12,14 @@ export async function job_funCreateWithFile({
   data: MODEL_JOB;
   fileId: string;
 }) {
-  const authorId = await user_funGetOneUserId();
-  console.log(authorId);
+  const userLoginId = await funGetUserIdByToken();
 
   const createDataWithoutImg = await prisma.job.create({
     data: {
       title: data.title,
       content: data.content,
       deskripsi: data.deskripsi,
-      authorId: authorId,
+      authorId: userLoginId,
       imageId: fileId,
     },
     select: {

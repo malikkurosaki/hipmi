@@ -37,10 +37,6 @@ export default function Forum_Beranda({
   const [data, setData] = useState<MODEL_FORUM_POSTING[]>(listForum);
   const [activePage, setActivePage] = useState(1);
   const [isSearch, setIsSearch] = useState("");
-
-  const [loadingCreate, setLoadingCreate] = useState(false);
-
-  //
   const [isNewPost, setIsNewPost] = useState(false);
   const [countNewPost, setCountNewPost] = useState(0);
 

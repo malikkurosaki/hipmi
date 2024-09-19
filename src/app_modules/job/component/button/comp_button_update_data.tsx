@@ -15,7 +15,7 @@ import { MODEL_JOB } from "../../model/interface";
 import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
 import { DIRECTORY_ID } from "@/app/lib";
 
-export function Job_ComponentButtonUpdate({
+export function Job_ComponentButtonUpdateData({
   value,
   file,
 }: {
@@ -48,6 +48,7 @@ export function Job_ComponentButtonUpdate({
 
       const updateWithFile = await job_EditById({
         data: value,
+        fileId: uploadFile.data.id,
       });
       if (updateWithFile.status !== 200)
         return ComponentGlobal_NotifikasiGagal(updateWithFile.message);

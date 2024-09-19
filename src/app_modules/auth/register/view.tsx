@@ -15,17 +15,16 @@ import {
   Stack,
   Text,
   TextInput,
-  Title
+  Title,
 } from "@mantine/core";
 import { useFocusTrap } from "@mantine/hooks";
-import {
-  IconUserCircle
-} from "@tabler/icons-react";
+import { IconUserCircle } from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { auth_funDeleteAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
 import { Auth_funRegister } from "../fun/fun_register";
+import { GlobalEnv } from "@/app/lib/token";
 
 export default function Register({ dataOtp }: { dataOtp: any }) {
   const router = useRouter();
@@ -40,7 +39,6 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
       username: value,
       nomor: nomor,
     };
-    // console.log(body);
 
     if (body.username === "") {
       setIsValue(true);
@@ -49,7 +47,7 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
     if (body.username.length < 5) return null;
     if (_.values(body.username).includes(" ")) return null;
 
-    const res = await Auth_funRegister(body)
+    const res = await Auth_funRegister({data: body, HIPMI_PWD: GlobalEnv.value?.WIBU_PWD as string});
     if (res.status === 200) {
       await auth_funDeleteAktivasiKodeOtpById(dataOtp.id).then((val) => {
         if (val.status === 200) {
@@ -67,16 +65,12 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
 
   return (
     <>
-      {/* <pre>{JSON.stringify(dataOtp,null,2)}</pre> */}
-      <BackgroundImage
-        src={"/aset/global/main_background.png"}
-        h={"100vh"}
-        // pos={"static"}
-      >
+      <BackgroundImage src={"/aset/global/main_background.png"} h={"100vh"}>
         <Center h={"100vh"}>
           <Stack h={"100%"} align="center" justify="center" spacing={70}>
             <Title order={2} c={MainColor.yellow}>
               REGISTRASI
+              {GlobalEnv.value?.DATABASE_URL}
             </Title>
 
             <IconUserCircle size={100} color="white" />

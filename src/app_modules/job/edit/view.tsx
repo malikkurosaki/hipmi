@@ -1,53 +1,35 @@
 "use client";
 
-import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import {
   AspectRatio,
   Button,
   Center,
   FileButton,
-  Group,
   Image,
-  Loader,
-  Modal,
-  Paper,
   Stack,
   Text,
-  TextInput,
-  Title,
+  TextInput
 } from "@mantine/core";
-import {
-  useDisclosure,
-  useShallowEffect,
-  useWindowScroll,
-} from "@mantine/hooks";
 import { IconCamera, IconUpload } from "@tabler/icons-react";
-import { useAtom } from "jotai";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { gs_job_hot_menu, gs_job_status } from "../global_state";
 import { MODEL_JOB } from "../model/interface";
 
+import { APIs } from "@/app/lib";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_BoxUploadImage, ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import dynamic from "next/dynamic";
-import { job_EditById } from "../fun/edit/fun_edit_by_id";
+import "react-quill/dist/quill.snow.css";
+import { Job_ComponentBoxUploadImage, Job_ComponentButtonUpdate } from "../component";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");
   },
   { ssr: false }
 );
-import "react-quill/dist/quill.snow.css";
-import { Job_ComponentBoxUploadImage, Job_ComponentButtonUpdate } from "../component";
-import { APIs } from "@/app/lib";
-import { ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
 
 export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
   const [value, setValue] = useState(dataJob);
@@ -63,7 +45,7 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
     <>
       <Stack>
         <Stack spacing={"xs"}>
-          <Job_ComponentBoxUploadImage>
+          <ComponentGlobal_BoxUploadImage>
             {value.imageId ? (
               <AspectRatio ratio={1 / 1} mah={265} mx={"auto"}>
                 <Image
@@ -81,7 +63,7 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
                 </Text>
               </Stack>
             )}
-          </Job_ComponentBoxUploadImage>
+          </ComponentGlobal_BoxUploadImage>
 
           <Center>
             <FileButton

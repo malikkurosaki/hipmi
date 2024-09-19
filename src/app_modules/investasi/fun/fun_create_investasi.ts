@@ -1,21 +1,21 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import _ from "lodash";
-import { v4 } from "uuid";
-import fs from "fs";
-import { revalidatePath } from "next/cache";
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
+import fs from "fs";
+import _ from "lodash";
+import { revalidatePath } from "next/cache";
+import { v4 } from "uuid";
 import { MODEL_INVESTASI } from "../_lib/interface";
-import funUploadProspektusInvestasi from "./fun_upload_prospek";
-import { user_funGetOneUserId } from "@/app_modules/fun_global";
 
 export async function funCreateInvestasi(
   fileGambar: FormData,
   filePdf: FormData,
   data: MODEL_INVESTASI
 ) {
-  const authorId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
+
   // Function upload gambar
   const gambar: any = fileGambar.get("file");
   const gambarName = gambar.name;
@@ -44,7 +44,7 @@ export async function funCreateInvestasi(
 
   const createInvest = await prisma.investasi.create({
     data: {
-      authorId: authorId,
+      authorId: userLoginId,
       title: _.startCase(data.title),
       targetDana: data.targetDana.toString(),
       hargaLembar: data.hargaLembar.toString(),

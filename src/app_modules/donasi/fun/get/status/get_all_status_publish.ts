@@ -1,13 +1,17 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
-export async function donasi_funGetAllStatusPublish({ page }: { page: number }) {
-  const authorId = await user_funGetOneUserId();
+export async function donasi_funGetAllStatusPublish({
+  page,
+}: {
+  page: number;
+}) {
+  const userLoginId = await funGetUserIdByToken();
+
   const takeData = 5;
   const skipData = page * takeData - takeData;
-
 
   const data = await prisma.donasi.findMany({
     take: takeData,
@@ -16,7 +20,7 @@ export async function donasi_funGetAllStatusPublish({ page }: { page: number }) 
       publishTime: "desc",
     },
     where: {
-      authorId: authorId,
+      authorId: userLoginId,
       donasiMaster_StatusDonasiId: "1",
       active: true,
     },

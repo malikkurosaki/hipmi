@@ -1,24 +1,24 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_funGetOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { revalidatePath } from "next/cache";
 
 export async function Vote_funCreatePilihanVotingById(
   namaVotingId: string,
   votingId: string
 ) {
-  const authorId = await user_funGetOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const create = await prisma.voting_Kontributor.create({
     data: {
       voting_DaftarNamaVoteId: namaVotingId,
       votingId: votingId,
-      authorId: authorId,
+      authorId: userLoginId,
     },
   });
 
-  if(!create) return {status: 400, message: "Gagal Voting"}
+  if (!create) return { status: 400, message: "Gagal Voting" };
   revalidatePath("/dev/vote/detail/main/");
-  return {status: 201, message: "Berhasil Voting"}
+  return { status: 201, message: "Berhasil Voting" };
 }

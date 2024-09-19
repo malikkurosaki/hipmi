@@ -1,6 +1,6 @@
 import { Login } from "@/app_modules/auth";
 
-export default function Page() {
+export default async function Page() {
   return (
     <>
       <Login />
