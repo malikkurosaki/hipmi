@@ -11,17 +11,19 @@ import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import funCreatePortofolio from "../../fun/fun_create_portofolio";
+import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
+import { DIRECTORY_ID } from "@/app/lib";
 
 export function Portofolio_ComponentButtonSelanjutnya({
   profileId,
-  dataPorto,
+  dataPortofolio,
   file,
   dataMedsos,
   setIsFile,
 }: {
   profileId: string;
-  dataPorto: MODEL_PORTOFOLIO_OLD;
-  file: FormData;
+  dataPortofolio: MODEL_PORTOFOLIO_OLD;
+  file: File;
   dataMedsos: any;
   setIsFile: any;
 }) {
@@ -30,29 +32,30 @@ export function Portofolio_ComponentButtonSelanjutnya({
 
   async function onSubmit() {
     const porto = {
-      namaBisnis: dataPorto.namaBisnis,
-      masterBidangBisnisId: dataPorto.masterBidangBisnisId,
-      alamatKantor: dataPorto.alamatKantor,
-      tlpn: dataPorto.tlpn,
-      deskripsi: dataPorto.deskripsi,
+      namaBisnis: dataPortofolio.namaBisnis,
+      masterBidangBisnisId: dataPortofolio.masterBidangBisnisId,
+      alamatKantor: dataPortofolio.alamatKantor,
+      tlpn: dataPortofolio.tlpn,
+      deskripsi: dataPortofolio.deskripsi,
     };
 
     if (_.values(porto).includes(""))
       return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
-    if (file === null) {
-      setIsFile(true);
-      return null;
-    }
 
-    const gambar = new FormData();
-    gambar.append("file", file as any);
+    const uploadFile = await funGlobal_UploadToStorage({
+      file: file,
+      dirId: DIRECTORY_ID.portofolio_logo,
+    });
 
-    const res = await funCreatePortofolio(
-      profileId,
-      porto as any,
-      gambar,
-      dataMedsos
-    );
+    if (!uploadFile.success)
+      return ComponentGlobal_NotifikasiPeringatan("Gagal upload gambar");
+
+    const res = await funCreatePortofolio({
+      profileId: profileId,
+      data: dataPortofolio as any,
+      medsos: dataMedsos,
+      fileId: uploadFile.data.id,
+    });
     if (res.status === 201) {
       setLoading(true);
       // ComponentGlobal_NotifikasiBerhasil("Berhasil disimpan");
@@ -64,7 +67,7 @@ export function Portofolio_ComponentButtonSelanjutnya({
   return (
     <>
       <Button
-        disabled={_.values(dataPorto).includes("") || file === null}
+        disabled={_.values(dataPortofolio).includes("") || file === null}
         mt={"md"}
         radius={50}
         loading={loading ? true : false}

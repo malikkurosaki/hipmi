@@ -326,7 +326,7 @@ export default function CreatePortofolio({
         </Stack>
 
         <Portofolio_ComponentButtonSelanjutnya
-          dataPorto={dataPortofolio as any}
+          dataPortofolio={dataPortofolio as any}
           dataMedsos={dataMedsos}
           file={file}
           profileId={profileId}

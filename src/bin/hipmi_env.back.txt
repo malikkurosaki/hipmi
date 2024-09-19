@@ -12,7 +12,7 @@ const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN!;
 const WS_APIKEY = process.env.WS_APIKEY!;
 
 if (!DATABASE_URL) throw new Error("Require DATABASE_URL");
-if (!WIBU_PWD) throw new Error("Require PWD");
+if (!WIBU_PWD) throw new Error("Require WIBU_PWD");
 if (!Client_KEY) throw new Error("Require Client_KEY");
 if (!Server_KEY) throw new Error("Require Server_KEY");
 if (!MAPBOX_TOKEN) throw new Error("Require MAPBOX_TOKEN");

@@ -8,32 +8,17 @@ import _ from "lodash";
 import { v4 } from "uuid";
 import fs from "fs";
 
-export default async function funCreatePortofolio(
-  profileId: string,
-  data: MODEL_PORTOFOLIO,
-  file: FormData,
-  medsos: MODEL_PORTOFOLIO_MEDSOS
-) {
-  const gambar: any = file.get("file");
-  const fileName = gambar.name;
-  const fileExtension = _.lowerCase(gambar.name.split(".").pop());
-  const fRandomName = v4(fileName) + "." + fileExtension;
-
-  const upload = await prisma.images.create({
-    data: {
-      url: fRandomName,
-      label: "PORTOFOLIO_LOGO",
-    },
-    select: {
-      id: true,
-      url: true,
-    },
-  });
-
-  if (!upload) return { status: 400, message: "Gagal upload logo portofolio" };
-  const upload_Folder = Buffer.from(await gambar.arrayBuffer());
-  fs.writeFileSync(`./public/portofolio/logo/${upload.url}`, upload_Folder);
-
+export default async function funCreatePortofolio({
+  profileId,
+  data,
+  fileId,
+  medsos,
+}: {
+  profileId: string;
+  data: MODEL_PORTOFOLIO;
+  fileId: string;
+  medsos: MODEL_PORTOFOLIO_MEDSOS;
+}) {
   const createPortofolio = await prisma.portofolio.create({
     data: {
       profileId: profileId,
@@ -43,11 +28,12 @@ export default async function funCreatePortofolio(
       tlpn: data.tlpn,
       alamatKantor: data.alamatKantor,
       masterBidangBisnisId: data.masterBidangBisnisId,
-      logoId: upload.id,
+      logoId: fileId,
     },
   });
 
-  if (!createPortofolio) return { status: 400, message: "Gagal membuat portofolio" };
+  if (!createPortofolio)
+    return { status: 400, message: "Gagal membuat portofolio" };
 
   const createMedsos = await prisma.portofolio_MediaSosial.create({
     data: {
