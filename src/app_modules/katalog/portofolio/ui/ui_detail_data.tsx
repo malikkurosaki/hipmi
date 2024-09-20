@@ -1,29 +1,30 @@
-import {
-  Paper,
-  Title,
-  Stack,
-  Grid,
-  Text,
-  SimpleGrid,
-  Box,
-  AspectRatio,
-  Image,
-  Group,
-  Divider,
-} from "@mantine/core";
-import {
-  IconBuildingSkyscraper,
-  IconPhoneCall,
-  IconMapPin,
-  IconListDetails,
-  IconPinned,
-} from "@tabler/icons-react";
-import { MODEL_PORTOFOLIO } from "../model/interface";
+import { APIs } from "@/app/lib";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
-import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
+import {
+  AspectRatio,
+  Box,
+  Divider,
+  Grid,
+  Group,
+  Image,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
+import {
+  IconBuildingSkyscraper,
+  IconListDetails,
+  IconMapPin,
+  IconPhoneCall,
+  IconPinned,
+} from "@tabler/icons-react";
+import { MODEL_PORTOFOLIO } from "../model/interface";
+import { ComponentGlobal_LoadImage } from "@/app_modules/_global/component";
 
 export function Portofolio_UiDetailData({
   dataPorto,
@@ -47,7 +48,9 @@ export function Portofolio_UiDetailData({
             <Title order={6}>Data Bisnis</Title>
             <Text color={MainColor.yellow} fw={"bold"}>
               id: {"  "}
-              <Text span inherit>#{dataPorto.id_Portofolio}</Text>
+              <Text span inherit>
+                #{dataPorto.id_Portofolio}
+              </Text>
             </Text>
           </Group>
           <Stack>
@@ -61,17 +64,19 @@ export function Portofolio_UiDetailData({
               ]}
             >
               <Box>
-                <AspectRatio ratio={1 / 1} mah={200}>
-                  <Paper>
+                <Paper>
+                  <ComponentGlobal_LoadImage url={APIs.GET + dataPorto.logoId}/>
+                  {/* <AspectRatio ratio={1 / 1} mah={250} mx={"auto"}>
                     <Image
-                      width={200}
+                      // style={{ maxHeight: 200, margin: "auto", padding: "5px" }}
                       alt="Foto"
-                      src={
-                        RouterPortofolio.api_logo_porto + `${dataPorto?.logoId}`
-                      }
+                      h={200}
+                      m={"auto"}
+                      p={"xs"}
+                      src={APIs.GET + dataPorto.logoId }
                     />
-                  </Paper>
-                </AspectRatio>
+                  </AspectRatio> */}
+                </Paper>
               </Box>
 
               <Box>

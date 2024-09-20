@@ -8,8 +8,6 @@ export async function adminMap_funGetOneById({ mapId }: { mapId: string }) {
       id: mapId,
     },
     include: {
-      ImageMap: true,
-      ImagePin: true,
       Author: true,
       Portofolio: {
         include: {

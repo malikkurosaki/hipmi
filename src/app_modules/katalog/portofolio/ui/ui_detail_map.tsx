@@ -1,12 +1,11 @@
 "use client";
 
-import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
-import { RouterMap } from "@/app/lib/router_hipmi/router_map";
+import { APIs } from "@/app/lib";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import { ComponentMap_DrawerDetailData } from "@/app_modules/map/_component";
 import { defaultMapZoom } from "@/app_modules/map/lib/default_lat_long";
 import { MODEL_MAP } from "@/app_modules/map/lib/interface";
-import { Image, Paper, Stack, Title } from "@mantine/core";
+import { Avatar, Image, Paper, Stack, Title } from "@mantine/core";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useState } from "react";
 import {
@@ -17,7 +16,7 @@ import {
   ScaleControl,
 } from "react-map-gl";
 import { ComponentPortofolio_DetailDataMap } from "../component";
-import { MODEL_LOGO, MODEL_PORTOFOLIO } from "../model/interface";
+import { MODEL_PORTOFOLIO } from "../model/interface";
 
 export function Portofolio_UiMap({
   mapboxToken,
@@ -45,7 +44,7 @@ export function Portofolio_UiMap({
         <MapView
           data={data.BusinessMaps}
           mapboxToken={mapboxToken}
-          dataLogo={data.Logo}
+          logoId={data.logoId}
         />
       </Stack>
     </Paper>
@@ -55,11 +54,11 @@ export function Portofolio_UiMap({
 function MapView({
   mapboxToken,
   data,
-  dataLogo,
+  logoId,
 }: {
   mapboxToken: string;
   data: MODEL_MAP;
-  dataLogo: MODEL_LOGO;
+  logoId: string;
 }) {
   const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -98,17 +97,14 @@ function MapView({
           pitchAlignment="auto"
         >
           <Stack spacing={0} align="center">
-            <Image
-              width={"100%"}
-              alt="image"
+            <Avatar
               src={
-                data.ImagePin === null
-                  ? RouterPortofolio.api_logo_porto + dataLogo.id
-                  : RouterMap.api_custom_pin + data.ImagePin.id
+                data.pinId === null ? APIs.GET + logoId : APIs.GET + data.pinId
               }
-              radius={"xl"}
+              alt="Logo"
               style={{
                 border: `2px solid ${AccentColor.softblue}`,
+                backgroundColor: "white",
                 borderRadius: "100%",
               }}
             />

@@ -25,6 +25,8 @@ import { useState } from "react";
 import { map_funGetOneById } from "../fun/get/fun_get_one_by_id";
 import { MODEL_MAP } from "../lib/interface";
 import { ComponentMap_SkeletonDrawerDetailData } from "./skeleton_detail_data";
+import { APIs } from "@/app/lib";
+import { ComponentGlobal_LoadImage } from "@/app_modules/_global/component";
 
 export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
   const router = useRouter();
@@ -59,13 +61,8 @@ export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
             { maxWidth: 600, cols: 1, spacing: "sm" },
           ]}
         >
-          <Image
-            radius={"sm"}
-            mah={300}
-            maw={200}
-            alt="Foto"
-            src={RouterMap.api_foto + data?.imageMapId}
-          />
+          <ComponentGlobal_LoadImage url={APIs.GET + data?.imageId} />
+          {/* <Image radius={"sm"} mah={300} maw={200} alt="Photo" src={} /> */}
           <Box>
             <Grid>
               <Grid.Col span={2}>

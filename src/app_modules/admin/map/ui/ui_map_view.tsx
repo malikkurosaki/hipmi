@@ -19,6 +19,7 @@ import { ComponentAdminMap_Drawer } from "../component";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
 import { RouterMap } from "@/app/lib/router_hipmi/router_map";
+import { APIs } from "@/app/lib";
 
 export function UiAdminMap_MapBoxView({
   mapboxToken,
@@ -88,9 +89,9 @@ export function UiAdminMap_MapBoxView({
                       backgroundColor: "white",
                     }}
                     src={
-                      e.imagePinId === null
-                        ? RouterPortofolio.api_logo_porto + e.Portofolio.logoId
-                        : RouterMap.api_custom_pin + e.imagePinId
+                      e.pinId === null
+                        ? APIs.GET + e.Portofolio.logoId
+                        : APIs.GET + e.pinId
                     }
                   />
                 </Stack>

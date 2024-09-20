@@ -22,7 +22,6 @@ export default function Portofolio_UiDetail({
       <Stack mb={"lg"}>
         <Portofolio_UiDetailData dataPorto={dataPorto} />
         <Portofolio_UiMap mapboxToken={mapboxToken} data={dataPorto} />
-        {/* <Portofolio_UiDetailLogo dataPorto={dataPorto} /> */}
         <Portofolio_UiSosialMedia dataPorto={dataPorto} />
 
         <ComponentPortofolio_ButtonDelete

@@ -11,13 +11,7 @@ import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empt
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import {
-  Avatar,
-  Button,
-  Center,
-  FileButton,
-  Stack
-} from "@mantine/core";
+import { Avatar, Button, Center, FileButton, Stack } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -31,6 +25,8 @@ import {
 import { map_funCustomPinMap } from "../fun";
 import { defaultMapZoom } from "../lib/default_lat_long";
 import { MODEL_MAP } from "../lib/interface";
+import { APIs, DIRECTORY_ID } from "@/app/lib";
+import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
 
 export function UiMap_CustomPin({
   dataMap,
@@ -62,7 +58,7 @@ export function UiMap_CustomPin({
               <Avatar
                 size={200}
                 radius={"100%"}
-                src={imgPin ? imgPin : "/aset/no-img.png"}
+                src={imgPin ? imgPin : "/aset/global/no-image.svg"}
                 style={{
                   border: `2px solid ${AccentColor.skyblue}`,
                   backgroundColor: AccentColor.darkblue,
@@ -75,9 +71,9 @@ export function UiMap_CustomPin({
                 size={200}
                 radius={"100%"}
                 src={
-                  data.imagePinId === null
-                    ? RouterPortofolio.api_logo_porto + data.Portofolio.logoId
-                    : RouterMap.api_custom_pin + data.imagePinId
+                  data.pinId === null
+                    ? APIs.GET + data.Portofolio.logoId
+                    : APIs.GET + data.pinId
                 }
                 style={{
                   border: `2px solid ${AccentColor.skyblue}`,
@@ -158,9 +154,9 @@ export function UiMap_CustomPin({
               src={
                 imgPin
                   ? imgPin
-                  : data.imagePinId === null
-                    ? RouterPortofolio.api_logo_porto + data.Portofolio.logoId
-                    : RouterMap.api_custom_pin + data.imagePinId
+                  : data.pinId === null
+                    ? APIs.GET + data.Portofolio.logoId
+                    : APIs.GET + data.pinId
               }
               style={{
                 border: `2px solid ${AccentColor.softblue}`,
@@ -180,23 +176,27 @@ export function UiMap_CustomPin({
   );
 }
 
-function ButtonSimpan({
-  mapId,
-  filePin,
-}: {
-  mapId: string;
-  filePin: FormData;
-}) {
+function ButtonSimpan({ mapId, filePin }: { mapId: string; filePin: File }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
 
   async function onCustom() {
-    const file = new FormData();
-    file.append("file", filePin as any);
+    const uploadFileToStorage = await funGlobal_UploadToStorage({
+      file: filePin,
+      dirId: DIRECTORY_ID.map_pin,
+    });
 
-    const res = await map_funCustomPinMap({ mapId: mapId, file: file });
+    if (!uploadFileToStorage.success)
+      return ComponentGlobal_NotifikasiPeringatan("Gagal upload gambar");
+
+    const res = await map_funCustomPinMap({
+      mapId: mapId,
+      fileId: uploadFileToStorage.data.id,
+    });
     res.status === 200
-      ? (ComponentGlobal_NotifikasiBerhasil(res.message), router.back())
+      ? (ComponentGlobal_NotifikasiBerhasil(res.message),
+        setLoading(true),
+        router.back())
       : ComponentGlobal_NotifikasiGagal(res.message);
   }
 

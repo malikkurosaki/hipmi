@@ -1,21 +1,21 @@
-import { RouterMap } from "@/app/lib/router_hipmi/router_map";
+import { APIs } from "@/app/lib";
 import { MODEL_MAP } from "@/app_modules/map/lib/interface";
 import {
-  Stack,
   AspectRatio,
   Box,
-  Grid,
-  Image,
-  Text,
   Button,
   Center,
+  Grid,
+  Image,
+  Stack,
+  Text,
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import {
   IconBuildingSkyscraper,
   IconListDetails,
-  IconPhoneCall,
   IconMapPin,
+  IconPhoneCall,
   IconPinned,
 } from "@tabler/icons-react";
 import { useState } from "react";
@@ -48,8 +48,8 @@ export function ComponentAdminMap_DetailDataDrawer({
           <Image
             radius={"md"}
             width={300}
-            alt="Foto"
-            src={RouterMap.api_foto + data?.imageMapId}
+            alt="Photo"
+            src={APIs.GET + data?.imageId}
           />
         </AspectRatio>
 

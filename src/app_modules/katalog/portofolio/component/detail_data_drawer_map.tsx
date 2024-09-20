@@ -1,8 +1,10 @@
 "use client";
 
+import { APIs } from "@/app/lib";
 import { RouterMap } from "@/app/lib/router_hipmi/router_map";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_LoadImage } from "@/app_modules/_global/component";
 import { ComponentMap_SkeletonDrawerDetailData } from "@/app_modules/map/_component";
 import { map_funGetOneById } from "@/app_modules/map/fun/get/fun_get_one_by_id";
 import { MODEL_MAP } from "@/app_modules/map/lib/interface";
@@ -14,7 +16,7 @@ import {
   Image,
   SimpleGrid,
   Stack,
-  Text
+  Text,
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import {
@@ -39,7 +41,7 @@ export function ComponentPortofolio_DetailDataMap({ mapId }: { mapId: any }) {
     setData(res);
   }
 
-  if(!data) return <ComponentMap_SkeletonDrawerDetailData/>
+  if (!data) return <ComponentMap_SkeletonDrawerDetailData />;
 
   return (
     <>
@@ -59,13 +61,14 @@ export function ComponentPortofolio_DetailDataMap({ mapId }: { mapId: any }) {
             { maxWidth: 600, cols: 1, spacing: "sm" },
           ]}
         >
-          <Image
+          <ComponentGlobal_LoadImage  maw={200}  url={APIs.GET + data.imageId} />
+          {/* <Image
             radius={"sm"}
             mah={300}
             maw={200}
-            alt="Foto"
-            src={RouterMap.api_foto + data?.imageMapId}
-          />
+            alt="Photo"
+            src={APIs.GET + data.imageId}
+          /> */}
           <Box>
             <Grid>
               <Grid.Col span={2}>
@@ -114,8 +117,6 @@ export function ComponentPortofolio_DetailDataMap({ mapId }: { mapId: any }) {
           <Box />
 
           <Group position="center">
-           
-
             <Button
               radius={"xl"}
               bg={MainColor.yellow}
