@@ -1,6 +1,7 @@
 import { RouterMap } from "@/app/lib/router_hipmi/router_map";
 import { MainColor } from "@/app_modules/_global/color";
 import {
+    ComponentGlobal_NotifikasiBerhasil,
   ComponentGlobal_NotifikasiGagal,
   ComponentGlobal_NotifikasiPeringatan,
 } from "@/app_modules/_global/notif_global";
@@ -42,23 +43,23 @@ export function Portofolio_ComponentButtonSelanjutnya({
     if (_.values(porto).includes(""))
       return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
 
-    const uploadFile = await funGlobal_UploadToStorage({
+    const uploadFileToStorage = await funGlobal_UploadToStorage({
       file: file,
       dirId: DIRECTORY_ID.portofolio_logo,
     });
 
-    if (!uploadFile.success)
+    if (!uploadFileToStorage.success)
       return ComponentGlobal_NotifikasiPeringatan("Gagal upload gambar");
 
     const res = await funCreatePortofolio({
       profileId: profileId,
       data: dataPortofolio as any,
       medsos: dataMedsos,
-      fileId: uploadFile.data.id,
+      fileId: uploadFileToStorage.data.id,
     });
     if (res.status === 201) {
       setLoading(true);
-      // ComponentGlobal_NotifikasiBerhasil("Berhasil disimpan");
+      ComponentGlobal_NotifikasiBerhasil("Berhasil disimpan");
       router.replace(RouterMap.create + res.id, { scroll: false });
     } else {
       ComponentGlobal_NotifikasiGagal("Gagal disimpan");

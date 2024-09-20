@@ -11,7 +11,6 @@ export async function adminMap_funGetAllMaps() {
       isActive: true,
     },
     include: {
-      ImagePin: true,
       Portofolio: true,
     },
   });

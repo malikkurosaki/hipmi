@@ -4,12 +4,10 @@ import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_BoxUploadImage } from "@/app_modules/_global/component";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import {
   AspectRatio,
-  Box,
   Button,
   Center,
   FileButton,
@@ -22,7 +20,6 @@ import {
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
 import _ from "lodash";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Map, {
   AttributionControl,
@@ -30,7 +27,7 @@ import Map, {
   NavigationControl,
   ScaleControl,
 } from "react-map-gl";
-import { map_funCreatePin } from "../fun/create/fun_create_pin";
+import { ComponentMap_ButtonSavePin } from "../_component";
 import { defaultLatLong, defaultMapZoom } from "../lib/default_lat_long";
 
 export function UiMap_CreatePin({
@@ -116,52 +113,26 @@ export function UiMap_CreatePin({
         </Paper>
 
         <Stack>
-          {img ? (
-            <AspectRatio ratio={1 / 1} mah={300}>
-              <Paper
-                style={{
-                  border: `2px solid ${AccentColor.blue}`,
-                  backgroundColor: AccentColor.darkblue,
-                  padding: "10px",
-                  borderRadius: "10px",
-                }}
-              >
+          <ComponentGlobal_BoxUploadImage>
+            {img ? (
+              <AspectRatio ratio={1 / 1} mah={265} mx={"auto"}>
                 <Image
-                  radius={"sm"}
+                  style={{ maxHeight: 250, margin: "auto", padding: "5px" }}
                   alt="Foto"
-                  src={img ? img : "/aset/no-img.png"}
-                  maw={200}
+                  height={250}
+                  src={img}
                 />
-              </Paper>
-            </AspectRatio>
-          ) : (
-            <AspectRatio ratio={1 / 1} mah={300}>
-              <Paper
-                style={{
-                  border: `2px solid ${AccentColor.blue}`,
-                  backgroundColor: AccentColor.darkblue,
-                  padding: "10px",
-                  borderRadius: "10px",
-                }}
-              >
-                <Box
-                  h={250}
-                  w={200}
-                  style={{
-                    color: "white",
-                  }}
-                >
-                  <Stack spacing={5} justify="center" align="center" h={"100%"}>
-                    <Title order={3}>Foto Lokasi Bisnis</Title>
-                    <Text fs={"italic"} fz={10} align="center">
-                      Upload foto lokasi bisnis anda untuk ditampilkan dalam
-                      detail map
-                    </Text>
-                  </Stack>
-                </Box>
-              </Paper>
-            </AspectRatio>
-          )}
+              </AspectRatio>
+            ) : (
+              <Stack spacing={5} justify="center" align="center" h={"100%"}>
+                <Title order={3}>Foto Lokasi Bisnis</Title>
+                <Text fs={"italic"} fz={10} align="center">
+                  Upload foto lokasi bisnis anda untuk ditampilkan dalam detail
+                  map
+                </Text>
+              </Stack>
+            )}
+          </ComponentGlobal_BoxUploadImage>
 
           <Center>
             <FileButton
@@ -202,7 +173,7 @@ export function UiMap_CreatePin({
           </Center>
         </Stack>
 
-        <ButtonSavePin
+        <ComponentMap_ButtonSavePin
           namePin={namePin}
           lat={lat as any}
           long={long as any}
@@ -210,50 +181,6 @@ export function UiMap_CreatePin({
           file={file}
         />
       </Stack>
-    </>
-  );
-}
-
-function ButtonSavePin({
-  namePin,
-  lat,
-  long,
-  portofolioId,
-  file,
-}: {
-  namePin: string;
-  lat: string;
-  long: string;
-  portofolioId: string;
-  file: FormData;
-}) {
-  const router = useRouter();
-  async function onSavePin() {
-    const gambar = new FormData();
-    gambar.append("file", file as any);
-
-    const res = await map_funCreatePin({
-      data: { namePin, lat, long, portofolioId, gambar },
-    });
-    res.status === 200
-      ? (ComponentGlobal_NotifikasiBerhasil(res.message), router.back())
-      : ComponentGlobal_NotifikasiGagal(res.message);
-  }
-
-  return (
-    <>
-      <Button
-        mt={"xl"}
-        style={{ transition: "0.5s" }}
-        disabled={namePin === "" || file === null ? true : false}
-        radius={"xl"}
-        bg={MainColor.yellow}
-        color="yellow"
-        c={"black"}
-        onClick={() => onSavePin()}
-      >
-        Simpan
-      </Button>
     </>
   );
 }

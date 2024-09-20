@@ -7,7 +7,7 @@ export async function map_funGetOneById({ mapId }: { mapId: string }) {
     where: {
       id: mapId,
     },
-    select: {
+    include: {
       Author: {
         select: {
           id: true,
@@ -20,15 +20,6 @@ export async function map_funGetOneById({ mapId }: { mapId: string }) {
           },
         },
       },
-      id: true,
-      isActive: true,
-      createdAt: true,
-      updatedAt: true,
-      namePin: true,
-      latitude: true,
-      longitude: true,
-      authorId: true,
-      imageMapId: true,
       Portofolio: {
         select: {
           id: true,

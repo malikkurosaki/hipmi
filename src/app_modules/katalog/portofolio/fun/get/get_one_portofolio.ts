@@ -9,7 +9,6 @@ export async function portofolio_getOneById(portoId: string) {
       id: portoId,
     },
     include: {
-      Logo: true,
       MasterBidangBisnis: {
         select: {
           id: true,
@@ -31,8 +30,6 @@ export async function portofolio_getOneById(portoId: string) {
       BusinessMaps: {
         include: {
           Author: true,
-          ImageMap: true,
-          ImagePin: true,
         },
       },
     },

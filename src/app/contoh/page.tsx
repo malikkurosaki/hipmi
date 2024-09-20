@@ -1,51 +1,53 @@
 "use client";
-import { ComponentNotifikasi_CardSkeleton } from "@/app_modules/notifikasi/component";
-import Coba_UploadFile from "@/app_modules/zCoba/ui_coba_upload_file";
-import { Box, Button, Flex, Paper, Stack, Title } from "@mantine/core";
+import { Box, Center, Image, Loader, Text } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
+import { useState } from "react";
 
 export default function Page() {
   return (
     <>
-      <Coba_UploadFile />
+      <LoadImage
+        url={
+          "https://wibu-storage.wibudev.com/api/files/cm192febp004jkp7j2x1fgekw"
+        }
+      />
     </>
   );
+}
 
-  return (
-    <Stack
-      bg={"gray"}
-      h={"100vh"}
-      style={{
-        position: "relative",
-        width: "100%",
-        overflow: "scroll",
-      }}
-    >
-      <Box
-        p={"md"}
-        style={{
-          display: "flex",
-          //   width: "700px",
-          gap: "20px",
-          position: "relative",
-          overflowX: "scroll",
-          //   scrollSnapType: "x",
-          //   scrollbarGutter: "unset",
-          scrollbarWidth: "none",
-          backgroundColor: "red",
-        }}
-      >
-        <Flex gap={"md"} bg={"cyan"}>
-          {Array.from(new Array(10), (_, i) => (
-            <Paper component={Button} w={"200px"} px={"md"} key={i}>
-              Contoh
-            </Paper>
-          ))}
-        </Flex>
+function LoadImage({ url }: { url: string }) {
+  const [ada, setAda] = useState<boolean | null>(null);
+
+  useShallowEffect(() => {
+    load();
+  }, []);
+
+  async function load() {
+    try {
+      const res = await fetch(url);
+      if (res.ok) {
+        return setAda(true);
+      }
+      setAda(false);
+    } catch (error) {
+      console.log("");
+    }
+  }
+
+  if (ada === null)
+    return (
+      <Box w={100}>
+        <Image w={"100%"} src={"/aset/global/loading.gif"} alt="" />
       </Box>
-
-      <Stack>
-        <Title>Ini Bagian Yang Gak Ikut</Title>
-      </Stack>
-    </Stack>
-  );
+    );
+  if (!ada)
+    return (
+      <Image
+        src={
+          "https://cdn.idntimes.com/content-images/community/2021/06/2318629899-0991efc170-o-cropped-56965fbaa68adf470a17cc45ea5d328d-321a5127ded916230393dbb7bf7d130e_600x400.jpg"
+        }
+        alt=""
+      />
+    );
+  return <Image src={url} alt="" />;
 }

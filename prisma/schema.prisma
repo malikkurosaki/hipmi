@@ -113,8 +113,6 @@ model Images {
   Donasi_Kabar           Donasi_Kabar[]
   Donasi_PencairanDana   Donasi_PencairanDana[]
   Donasi_Invoice         Donasi_Invoice[]
-  Image_Map              BusinessMaps[]           @relation("ImageMap")
-  Image_Pin              BusinessMaps[]           @relation("ImagePin")
   Investasi_Invoice      Investasi_Invoice[]
 }
 
@@ -926,10 +924,8 @@ model BusinessMaps {
   authorId     String?
   Portofolio   Portofolio? @relation(fields: [portofolioId], references: [id])
   portofolioId String?     @unique
-  ImageMap     Images?     @relation("ImageMap", fields: [imageMapId], references: [id], map: "MapImage")
-  imageMapId   String?
-  ImagePin     Images?     @relation("ImagePin", fields: [imagePinId], references: [id], map: "PinImage")
-  imagePinId   String?
+  imageId      String?
+  pinId       String?
 }
 
 // Kategori App

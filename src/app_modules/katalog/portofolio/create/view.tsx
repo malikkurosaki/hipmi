@@ -1,26 +1,17 @@
 "use client";
 
-import { RouterMap } from "@/app/lib/router_hipmi/router_map";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_BoxUploadImage } from "@/app_modules/_global/component";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import {
-  BIDANG_BISNIS_OLD,
-  MODEL_PORTOFOLIO_OLD,
-} from "@/app_modules/model_global/portofolio";
+import { BIDANG_BISNIS_OLD } from "@/app_modules/model_global/portofolio";
 import {
   AspectRatio,
-  Box,
   Button,
   Center,
   FileButton,
   Image,
-  Paper,
   Select,
   Stack,
   Text,
@@ -30,12 +21,8 @@ import {
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
 import _ from "lodash";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import funCreatePortofolio from "../fun/fun_create_portofolio";
 import { Portofolio_ComponentButtonSelanjutnya } from "../component";
-import { ComponentGlobal_BoxUploadImage } from "@/app_modules/_global/component";
 
 export default function CreatePortofolio({
   bidangBisnis,
@@ -172,16 +159,6 @@ export default function CreatePortofolio({
 
         <Stack>
           <ComponentGlobal_BoxInformation informasi="Upload Logo Bisnis Anda!" />
-          {/* <AspectRatio ratio={16 / 9}>
-            <Paper radius={"md"} withBorder>
-              <Image alt="Foto" src={img ? img : "/aset/no-img.png"} />
-            </Paper>
-          </AspectRatio>
-
-          
-
-          {isFile ? <ComponentGlobal_ErrorInput text="Upload gambar" /> : ""} */}
-
           <ComponentGlobal_BoxUploadImage>
             {img ? (
               <AspectRatio ratio={1 / 1} mah={265} mx={"auto"}>

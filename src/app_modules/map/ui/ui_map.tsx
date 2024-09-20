@@ -1,8 +1,8 @@
 "use client";
 
-import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
-import { RouterMap } from "@/app/lib/router_hipmi/router_map";
+import { APIs } from "@/app/lib";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import { Avatar, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -18,7 +18,6 @@ import { ComponentMap_DetailData } from "../_component/detail_data";
 import { map_funGetAllMap } from "../fun/get/fun_get_all_map";
 import { defaultLatLong, defaultMapZoom } from "../lib/default_lat_long";
 import { MODEL_MAP } from "../lib/interface";
-import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 
 export function UiMap_MapBoxView({
   mapboxToken,
@@ -91,9 +90,9 @@ export function UiMap_MapBoxView({
                       backgroundColor: "white",
                     }}
                     src={
-                      e.imagePinId === null
-                        ? RouterPortofolio.api_logo_porto + e.Portofolio.logoId
-                        : RouterMap.api_custom_pin + e.imagePinId
+                      e.pinId === null
+                        ? APIs.GET + e.Portofolio.logoId
+                        : APIs.GET + e.pinId
                     }
                   />
                 </Stack>

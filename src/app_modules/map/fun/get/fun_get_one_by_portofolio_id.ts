@@ -12,12 +12,9 @@ export async function map_funGetOneBusinessMapByPortofolioId({
       portofolioId: portofolioId,
     },
     include: {
-      ImageMap: true,
-      ImagePin: true,
       Portofolio: {
         select: {
           id: true,
-          Logo: true,
           logoId: true
         }
       }

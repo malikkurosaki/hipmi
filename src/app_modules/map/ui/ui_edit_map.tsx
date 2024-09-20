@@ -19,7 +19,9 @@ import {
   Image,
   Paper,
   Stack,
+  Text,
   TextInput,
+  Title,
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
@@ -33,6 +35,9 @@ import Map, {
 import { map_funEditMap } from "../fun/edit/fun_edit_map";
 import { defaultMapZoom } from "../lib/default_lat_long";
 import { MODEL_MAP } from "../lib/interface";
+import { APIs } from "@/app/lib";
+import { ComponentGlobal_BoxUploadImage, ComponentGlobal_LoadImage } from "@/app_modules/_global/component";
+import { ComponentMap_ButtonUpdateDataMap } from "../_component";
 
 export function UiMap_EditMap({
   mapboxToken,
@@ -84,9 +89,9 @@ export function UiMap_EditMap({
           >
             <Avatar
               src={
-                data.ImagePin === null
-                  ? RouterPortofolio.api_logo_porto + dataMap.Portofolio.logoId
-                  : RouterMap.api_custom_pin + data.imagePinId
+                data.pinId === null
+                  ? APIs.GET + dataMap.Portofolio.logoId
+                  : APIs.GET + data.pinId
               }
               alt="Logo"
               style={{
@@ -127,11 +132,29 @@ export function UiMap_EditMap({
           />
         </Paper>
 
-        {/* Foto Usaha */}
+        {/* Photo Usaha */}
         <Stack spacing={"xs"}>
-          <ComponentGlobal_BoxInformation informasi="Masukan foto toko atau tempat usaha anda !" />
+          <ComponentGlobal_BoxInformation informasi="Masukan photo toko atau tempat usaha anda !" />
 
-          {img ? (
+          <ComponentGlobal_BoxUploadImage>
+            {img ? (
+              <AspectRatio ratio={1 / 1} mah={265} mx={"auto"}>
+                <Image
+                  style={{ maxHeight: 250, margin: "auto", padding: "5px" }}
+                  alt="Photo"
+                  height={250}
+                  src={img}
+                />
+              </AspectRatio>
+            ) : (
+              <ComponentGlobal_LoadImage
+
+                url={APIs.GET + data.imageId}
+              />
+            )}
+          </ComponentGlobal_BoxUploadImage>
+
+          {/* {img ? (
             <AspectRatio ratio={1 / 1} mah={300}>
               <Paper
                 style={{
@@ -143,7 +166,7 @@ export function UiMap_EditMap({
               >
                 <Image
                   radius={"sm"}
-                  alt="Foto"
+                  alt="Photo"
                   src={img ? img : "/aset/no-img.png"}
                   maw={250}
                 />
@@ -161,13 +184,13 @@ export function UiMap_EditMap({
               >
                 <Image
                   radius={"sm"}
-                  alt="Foto"
-                  src={RouterMap.api_foto + data.imageMapId}
+                  alt="Photo"
+                  src={RouterMap.api_foto + data.imageId}
                   maw={250}
                 />
               </Paper>
             </AspectRatio>
-          )}
+          )} */}
 
           <Center>
             <FileButton
@@ -207,41 +230,10 @@ export function UiMap_EditMap({
           </Center>
         </Stack>
 
-        <ButtonSavePin data={data as any} file={file} />
+        <ComponentMap_ButtonUpdateDataMap data={data as any} file={file} />
       </Stack>
     </>
   );
 }
 
-function ButtonSavePin({ data, file }: { data: MODEL_MAP; file: FormData }) {
-  const router = useRouter();
-  async function onSavePin() {
-    const gambar = new FormData();
-    gambar.append("file", file as any);
 
-    const res = await map_funEditMap({
-      data: data,
-      file: gambar,
-    });
-    res.status === 200
-      ? (ComponentGlobal_NotifikasiBerhasil(res.message), router.back())
-      : ComponentGlobal_NotifikasiGagal(res.message);
-  }
-
-  return (
-    <>
-      <Button
-        mb={"xl"}
-        style={{ transition: "0.5s" }}
-        disabled={data.namePin === "" ? true : false}
-        radius={"xl"}
-        bg={MainColor.yellow}
-        color="yellow"
-        c={"black"}
-        onClick={() => onSavePin()}
-      >
-        Simpan
-      </Button>
-    </>
-  );
-}

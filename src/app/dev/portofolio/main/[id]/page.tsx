@@ -4,14 +4,14 @@ import { portofolio_getOneById } from "@/app_modules/katalog/portofolio/fun/get/
 
 const mapboxToken = process.env.MAPBOX_TOKEN!;
 export default async function Page({ params }: { params: { id: string } }) {
-  const getPorto = await portofolio_getOneById(params.id);
+  const portofolioId = params.id;
+  const dataPortofolio = await portofolio_getOneById(portofolioId);
   const userLoginId = await funGetUserIdByToken();
 
   return (
     <>
-      {/* <pre style={{ color: "white" }}>{JSON.stringify(getPorto, null, 2)}</pre> */}
       <ViewPortofolio
-        dataPorto={getPorto as any}
+        dataPorto={dataPortofolio as any}
         userLoginId={userLoginId as any}
         mapboxToken={mapboxToken}
       />
