@@ -1,9 +1,7 @@
 "use client";
 
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_BoxUploadImage } from "@/app_modules/_global/component";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
@@ -25,7 +23,6 @@ import { IconAt, IconCamera, IconUpload } from "@tabler/icons-react";
 import { useState } from "react";
 import { validRegex } from "../../component/regular_expressions";
 import { Profile_ComponentCreateNewProfile } from "../_component";
-import { ComponentGlobal_BoxUploadImage } from "@/app_modules/_global/component";
 
 export default function CreateProfile({
   userLoginId,
@@ -38,7 +35,7 @@ export default function CreateProfile({
   const [imgBG, setImgBG] = useState<any | null>();
 
   const [value, setValue] = useState({
-    namaBank: "",
+    name: "",
     email: "",
     alamat: "",
     jenisKelamin: "",
@@ -54,7 +51,6 @@ export default function CreateProfile({
               {imgPP ? (
                 <Paper shadow="lg" radius={"100%"}>
                   <Avatar
-
                     color={"cyan"}
                     sx={{
                       borderStyle: "solid",
@@ -126,7 +122,14 @@ export default function CreateProfile({
             <ComponentGlobal_BoxInformation informasi="Upload foto latar belakang profile anda." />
             <ComponentGlobal_BoxUploadImage>
               {imgBG ? (
-                <Image alt="Foto" src={imgBG ? imgBG : "/aset/no-img.png"} />
+                <AspectRatio ratio={1 / 1} mah={265} mx={"auto"}>
+                  <Image
+                    style={{ maxHeight: 250, margin: "auto", padding: "5px" }}
+                    alt="Foto"
+                    height={250}
+                    src={imgBG ? imgBG : "/aset/no-img.png"}
+                  />
+                </AspectRatio>
               ) : (
                 <Stack justify="center" align="center" h={"100%"}>
                   <IconUpload color="white" />
@@ -190,7 +193,7 @@ export default function CreateProfile({
             onChange={(val) => {
               setValue({
                 ...value,
-                namaBank: val.target.value,
+                name: val.target.value,
               });
             }}
           />
