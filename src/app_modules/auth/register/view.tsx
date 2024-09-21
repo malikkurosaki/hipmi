@@ -47,7 +47,10 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
     if (body.username.length < 5) return null;
     if (_.values(body.username).includes(" ")) return null;
 
-    const res = await Auth_funRegister({data: body, HIPMI_PWD: GlobalEnv.value?.WIBU_PWD as string});
+    const res = await Auth_funRegister({
+      data: body,
+      HIPMI_PWD: GlobalEnv.value?.WIBU_PWD as string,
+    });
     if (res.status === 200) {
       await auth_funDeleteAktivasiKodeOtpById(dataOtp.id).then((val) => {
         if (val.status === 200) {
@@ -70,7 +73,6 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
           <Stack h={"100%"} align="center" justify="center" spacing={70}>
             <Title order={2} c={MainColor.yellow}>
               REGISTRASI
-              {GlobalEnv.value?.DATABASE_URL}
             </Title>
 
             <IconUserCircle size={100} color="white" />

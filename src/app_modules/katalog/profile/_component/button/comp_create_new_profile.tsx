@@ -1,8 +1,12 @@
-"use client"
+"use client";
 
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { MainColor, AccentColor } from "@/app_modules/_global/color";
-import { ComponentGlobal_NotifikasiPeringatan, ComponentGlobal_NotifikasiBerhasil, ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global";
+import {
+  ComponentGlobal_NotifikasiPeringatan,
+  ComponentGlobal_NotifikasiBerhasil,
+  ComponentGlobal_NotifikasiGagal,
+} from "@/app_modules/_global/notif_global";
 import { validRegex } from "@/app_modules/katalog/component/regular_expressions";
 import { Button } from "@mantine/core";
 import _ from "lodash";
@@ -55,7 +59,7 @@ export function Profile_ComponentCreateNewProfile({
       if (res.status === 201) {
         setLoading(true);
         ComponentGlobal_NotifikasiBerhasil("Berhasil Membuat Profile", 3000);
-        router.push(RouterHome.main_home);
+        router.push(RouterHome.main_home, { scroll: false });
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }
