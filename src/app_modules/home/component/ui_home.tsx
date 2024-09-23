@@ -251,12 +251,12 @@ const listHalamanFooter = [
     link: RouterForum.splash,
   },
 
-  {
-    id: 2,
-    name: "MarketPlace",
-    icon: <IconShoppingBag />,
-    link: "",
-  },
+  // {
+  //   id: 2,
+  //   name: "MarketPlace",
+  //   icon: <IconShoppingBag />,
+  //   link: "",
+  // },
   {
     id: 3,
     name: "Business Maps",
@@ -281,7 +281,7 @@ export function Home_UiFooter({ dataUser }: { dataUser: MODEL_USER }) {
         bottom={0}
         h={"9vh"}
       >
-        <SimpleGrid cols={4}>
+        <SimpleGrid cols={listHalamanFooter.length + 1}>
           {listHalamanFooter.map((e, i) => (
             <Center h={"9vh"} key={e.id}>
               <Stack align="center" spacing={0}>
