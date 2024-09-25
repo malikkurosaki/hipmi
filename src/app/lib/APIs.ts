@@ -1,7 +1,14 @@
 const APIs = {
-  GET: "https://wibu-storage.wibudev.com/api/files/",
+  /**
+   * 
+   * @param fileId | file id from wibu storage , atau bisa disimpan di DB
+   * @param size | file size 10 - 1000 , tergantung ukuran file dan kebutuhan saar di tampilkan
+   * @type {string}
+   */
+  GET: ({ fileId, size }: { fileId: string; size?: string }) =>
+    size
+      ? `https://wibu-storage.wibudev.com/api/files/${fileId}-size-${size}`
+      : `https://wibu-storage.wibudev.com/api/files/${fileId}`,
 };
 
-export default APIs
-
-
+export default APIs;

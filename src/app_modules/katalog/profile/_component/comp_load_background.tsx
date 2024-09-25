@@ -1,20 +1,15 @@
 "use client";
 
-import { AspectRatio, Box, Center, Image } from "@mantine/core";
+import { AspectRatio, Box, Center, Image, Skeleton } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useState } from "react";
-import ComponentGlobal_Loader from "./loader";
 
 type IRadius = "xs" | "sm" | "md" | "lg" | "xl";
-export function ComponentGlobal_LoadImage({
+export function Profile_ComponentLoadBackgroundImage({
   url,
-  maw,
-  h,
   radius,
 }: {
   url: string;
-  maw?: number | string;
-  h?: number;
   radius?: IRadius;
 }) {
   const [isImage, setIsImage] = useState<boolean | null>(null);
@@ -35,17 +30,12 @@ export function ComponentGlobal_LoadImage({
     }
   }
 
-  if (isImage === null)
-    return (
-      <Center h={250}>
-        <ComponentGlobal_Loader variant="dots" size={50} />
-      </Center>
-    );
+  if (isImage === null) return <Skeleton h={200} w={"100%"} />;
 
   if (!isImage)
     return (
       <>
-        <Center h={250} >
+        <Center h={200} bg={"white"} style={{borderRadius: "10px"}} >
           <Image
             alt="No Image"
             maw={150}
@@ -59,18 +49,7 @@ export function ComponentGlobal_LoadImage({
 
   return (
     <>
-      <Box h={h ? h : 250}>
-        <Center h={"100%"}>
-          <Image
-            radius={radius ? radius : 0}
-            alt="Image"
-            maw={maw ? maw : 200}
-            m={"auto"}
-            p={"xs"}
-            src={url}
-          />
-        </Center>
-      </Box>
+      <Image height={200} radius={radius ? radius : 0} alt="Image" src={url} />
     </>
   );
 }

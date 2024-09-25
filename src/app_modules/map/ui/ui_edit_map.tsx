@@ -36,7 +36,10 @@ import { map_funEditMap } from "../fun/edit/fun_edit_map";
 import { defaultMapZoom } from "../lib/default_lat_long";
 import { MODEL_MAP } from "../lib/interface";
 import { APIs } from "@/app/lib";
-import { ComponentGlobal_BoxUploadImage, ComponentGlobal_LoadImage } from "@/app_modules/_global/component";
+import {
+  ComponentGlobal_BoxUploadImage,
+  ComponentGlobal_LoadImage,
+} from "@/app_modules/_global/component";
 import { ComponentMap_ButtonUpdateDataMap } from "../_component";
 
 export function UiMap_EditMap({
@@ -90,8 +93,8 @@ export function UiMap_EditMap({
             <Avatar
               src={
                 data.pinId === null
-                  ? APIs.GET + dataMap.Portofolio.logoId
-                  : APIs.GET + data.pinId
+                  ? APIs.GET({ fileId: dataMap.Portofolio.logoId })
+                  : APIs.GET({ fileId: data.pinId })
               }
               alt="Logo"
               style={{
@@ -148,8 +151,7 @@ export function UiMap_EditMap({
               </AspectRatio>
             ) : (
               <ComponentGlobal_LoadImage
-
-                url={APIs.GET + data.imageId}
+                url={APIs.GET({ fileId: data.imageId })}
               />
             )}
           </ComponentGlobal_BoxUploadImage>
@@ -235,5 +237,3 @@ export function UiMap_EditMap({
     </>
   );
 }
-
-

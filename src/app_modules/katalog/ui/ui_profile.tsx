@@ -1,24 +1,8 @@
 "use client";
 
-import {
-  MainColor,
-  AccentColor,
-} from "@/app_modules/_global/color/color_pallet";
-import {
-  Avatar,
-  Box,
-  Center,
-  Group,
-  Image,
-  Paper,
-  Stack,
-  Text,
-  ThemeIcon,
-} from "@mantine/core";
-import { MODEL_PROFILE } from "../profile/model/interface";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { APIs } from "@/app/lib";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { Box, Center, Group, Stack, Text, ThemeIcon } from "@mantine/core";
 import {
   IconBrandGmail,
   IconGenderFemale,
@@ -26,6 +10,13 @@ import {
   IconHome,
   IconPhone,
 } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import {
+  Profile_ComponentAvatarProfile,
+  Profile_ComponentLoadBackgroundImage,
+} from "../profile/_component";
+import { MODEL_PROFILE } from "../profile/model/interface";
 
 export function Profile_UiView({
   profile,
@@ -76,17 +67,19 @@ export function Profile_UiView({
         }}
       >
         <Box>
-          <Image
+          <Profile_ComponentLoadBackgroundImage
+            url={APIs.GET({
+              fileId: profile.imageBackgroundId as string,
+            })}
+            radius="sm"
+          />
+          {/* <Image
             radius={"sm"}
             height={200}
             alt="Background"
-            src={
-              profile?.ImagesBackground.url
-                ? RouterProfile.api_url_background +
-                  `${profile?.ImagesBackground.url}`
-                : "/aset/no-image.png"
-            }
-          />
+            src={APIs.GET({ fileId: profile.imageBackgroundId as string })}
+          /> */}
+
           <Box
             sx={{
               position: "relative",
@@ -97,22 +90,27 @@ export function Profile_UiView({
             }}
           >
             <Center>
-              <Avatar
+              <Profile_ComponentAvatarProfile
+                url={APIs.GET({ fileId: profile.imageId as any, size: "200" })}
+                style={{
+                  borderStyle: "solid",
+                  borderColor: AccentColor.darkblue,
+                  borderWidth: "2px",
+                }}
+              />
+              {/* <Avatar
                 bg={"gray.2"}
                 sx={{
                   borderStyle: "solid",
-                  borderColor: "gray",
-                  borderWidth: "0.5px",
+                  borderColor: AccentColor.darkblue,
+                  borderWidth: "2px",
                 }}
                 src={
-                  profile?.ImageProfile?.url
-                    ? RouterProfile.api_url_foto +
-                      `${profile?.ImageProfile.url}`
-                    : "/aset/global/avatar.png"
+                  APIs.GET({fileId: profile.imageId as any})
                 }
                 size={100}
                 radius={"100%"}
-              />
+              /> */}
             </Center>
             <Stack align="center" c={"white"} mt={"xs"} spacing={0}>
               <Text fw={"bold"} lineClamp={1}>
@@ -128,7 +126,7 @@ export function Profile_UiView({
         <Box>
           <Stack spacing={"xs"}>
             {listInformation.map((e, i) => (
-              <Group key={i}  align="flex-start">
+              <Group key={i} align="flex-start">
                 <ThemeIcon
                   style={{
                     backgroundColor: "transparent",
@@ -136,20 +134,13 @@ export function Profile_UiView({
                 >
                   {e.icon}
                 </ThemeIcon>
-                <Box w={"85%"} >
+                <Box w={"85%"}>
                   <Text fw={"bold"}>{e?.value}</Text>
                 </Box>
               </Group>
             ))}
           </Stack>
         </Box>
-        {/* <pre
-          style={{
-            color: "white",
-          }}
-        >
-          {JSON.stringify(profile, null, 2)}
-        </pre> */}
       </Stack>
     </>
   );

@@ -1,69 +1,81 @@
 "use client";
 
+import { DIRECTORY_ID } from "@/app/lib";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import { MainColor, AccentColor } from "@/app_modules/_global/color";
+import { AccentColor, MainColor } from "@/app_modules/_global/color";
+import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
 import {
-  ComponentGlobal_NotifikasiPeringatan,
   ComponentGlobal_NotifikasiBerhasil,
   ComponentGlobal_NotifikasiGagal,
+  ComponentGlobal_NotifikasiPeringatan,
 } from "@/app_modules/_global/notif_global";
-import { validRegex } from "@/app_modules/katalog/component/regular_expressions";
 import { Button } from "@mantine/core";
 import _ from "lodash";
-
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import funCreateNewProfile from "../../fun/fun_create_profile";
 import { MODEL_PROFILE } from "../../model/interface";
-import { useRouter } from "next/navigation";
+import { validRegex } from "@/app_modules/katalog/component";
 
 export function Profile_ComponentCreateNewProfile({
   value,
-  userLoginId,
   filePP,
-  fileBg,
+  fileBG,
 }: {
   value: MODEL_PROFILE;
-  userLoginId: string;
-  filePP: FormData;
-  fileBg: FormData;
+  filePP: File;
+  fileBG: File;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   async function onSubmit() {
-    const body = {
-      userId: userLoginId,
+    const newData = {
       name: value.name,
       email: value.email,
       alamat: value.alamat,
       jenisKelamin: value.jenisKelamin,
     };
-    if (_.values(body).includes(""))
+    if (_.values(newData).includes(""))
       return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
-    if (!body.email.match(validRegex)) return null;
+    if (!newData.email.match(validRegex)) return null;
 
-    const gambarPP = new FormData();
-    gambarPP.append("filePP", filePP as any);
-
-    const gambarBG = new FormData();
-    gambarBG.append("fileBG", fileBg as any);
-
-    if (!gambarPP)
+    if (filePP == null)
       return ComponentGlobal_NotifikasiPeringatan("Lengkapi foto profile");
-    if (!gambarBG)
+    if (fileBG == null)
       return ComponentGlobal_NotifikasiPeringatan(
         "Lengkapi background profile"
       );
 
-    await funCreateNewProfile(body as any, gambarPP, gambarBG).then((res) => {
-      if (res.status === 201) {
-        setLoading(true);
-        ComponentGlobal_NotifikasiBerhasil("Berhasil Membuat Profile", 3000);
-        router.push(RouterHome.main_home, { scroll: false });
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
-      }
+    const uploadPhoto = await funGlobal_UploadToStorage({
+      file: filePP,
+      dirId: DIRECTORY_ID.profile_foto,
     });
+    if (!uploadPhoto.success)
+      return ComponentGlobal_NotifikasiPeringatan("Gagal upload foto profile");
+
+    const uploadBackground = await funGlobal_UploadToStorage({
+      file: fileBG,
+      dirId: DIRECTORY_ID.profile_background,
+    });
+    if (!uploadBackground.success)
+      return ComponentGlobal_NotifikasiPeringatan(
+        "Gagal upload background profile"
+      );
+
+    const create = await funCreateNewProfile({
+      data: newData as any,
+      imageId: uploadPhoto.data.id,
+      imageBackgroundId: uploadBackground.data.id,
+    });
+
+    if (create.status === 201) {
+      setLoading(true);
+      ComponentGlobal_NotifikasiBerhasil("Berhasil membuat profile", 3000);
+      router.push(RouterHome.main_home, { scroll: false });
+    } else {
+      ComponentGlobal_NotifikasiGagal(create.message);
+    }
   }
 
   return (

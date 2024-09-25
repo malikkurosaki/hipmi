@@ -13,6 +13,9 @@ export async function Auth_funRegister({
   data: any;
   HIPMI_PWD: string;
 }) {
+  const pswd = process.env.WIBU_PWD as string;
+
+
   const cekUsername = await prisma.user.findUnique({
     where: {
       username: data.username,
@@ -39,14 +42,14 @@ export async function Auth_funRegister({
       username: create.username,
     }),
     {
-      password: HIPMI_PWD,
+      password: pswd,
     }
   );
 
   cookies().set({
     name: "ssn",
     value: sealToken,
-    // maxAge: 60 * 60 * 24 * 7,
+    maxAge: 60 * 60 * 24 * 7,
   });
 
   try {

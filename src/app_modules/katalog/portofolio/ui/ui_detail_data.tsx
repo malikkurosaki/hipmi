@@ -3,13 +3,12 @@ import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_LoadImage } from "@/app_modules/_global/component";
 import {
-  AspectRatio,
   Box,
   Divider,
   Grid,
   Group,
-  Image,
   Paper,
   SimpleGrid,
   Stack,
@@ -24,7 +23,6 @@ import {
   IconPinned,
 } from "@tabler/icons-react";
 import { MODEL_PORTOFOLIO } from "../model/interface";
-import { ComponentGlobal_LoadImage } from "@/app_modules/_global/component";
 
 export function Portofolio_UiDetailData({
   dataPorto,
@@ -65,7 +63,9 @@ export function Portofolio_UiDetailData({
             >
               <Box>
                 <Paper>
-                  <ComponentGlobal_LoadImage url={APIs.GET + dataPorto.logoId}/>
+                  <ComponentGlobal_LoadImage
+                    url={APIs.GET({ fileId: dataPorto.logoId })}
+                  />
                   {/* <AspectRatio ratio={1 / 1} mah={250} mx={"auto"}>
                     <Image
                       // style={{ maxHeight: 200, margin: "auto", padding: "5px" }}

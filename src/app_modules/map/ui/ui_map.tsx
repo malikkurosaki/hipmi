@@ -91,8 +91,8 @@ export function UiMap_MapBoxView({
                     }}
                     src={
                       e.pinId === null
-                        ? APIs.GET + e.Portofolio.logoId
-                        : APIs.GET + e.pinId
+                        ? APIs.GET({ fileId: e.Portofolio.logoId })
+                        : APIs.GET({ fileId: e.pinId })
                     }
                   />
                 </Stack>

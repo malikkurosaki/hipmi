@@ -48,10 +48,10 @@ export function Portofolio_UiListView({
         }}
       >
         <Stack spacing={"sm"}>
-          <Group position="apart">
-            <ActionIcon variant="transparent" disabled></ActionIcon>
+          <Group position="center">
+
             <Title order={4}>Portofolio</Title>
-            {profile?.User.id === userLoginId ? (
+            {/* {profile?.User.id === userLoginId ? (
               <ActionIcon
                 variant="transparent"
                 onClick={() => {
@@ -69,7 +69,7 @@ export function Portofolio_UiListView({
               </ActionIcon>
             ) : (
               <ActionIcon variant="transparent" disabled></ActionIcon>
-            )}
+            )} */}
           </Group>
 
           <Stack

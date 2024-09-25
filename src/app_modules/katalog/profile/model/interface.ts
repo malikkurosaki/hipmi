@@ -16,4 +16,6 @@ export interface MODEL_PROFILE {
   imagesId: string;
   ImagesBackground: MODEL_IMAGES;
   imagesBackgroundId: string;
+  imageId?: string;
+  imageBackgroundId?: string;
 }

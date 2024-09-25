@@ -1,4 +1,7 @@
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import {
+  RouterPortofolio,
+  RouterProfile,
+} from "@/app/lib/router_hipmi/router_katalog";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 import Component_Logout from "@/app_modules/auth/logout/view";
@@ -12,9 +15,10 @@ import {
 } from "@mantine/core";
 import {
   IconEdit,
+  IconPencilPlus,
   IconPhotoEdit,
   IconPolaroid,
-  IconX
+  IconX,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -41,15 +45,21 @@ export function ComponentKatalog_DrawerKatalog({
     },
     {
       id: "2",
-      name: "Ubah Foto Profile",
+      name: "Ubah foto profile",
       icon: <IconPhotoEdit />,
       path: RouterProfile.update_foto_profile + profileId,
     },
     {
       id: "3",
-      name: "Ubah Latar Belakang",
+      name: "Ubah latar belakang",
       icon: <IconPolaroid />,
       path: RouterProfile.update_foto_background + profileId,
+    },
+    {
+      id: "4",
+      name: "Tambah portofolio",
+      icon: <IconPencilPlus />,
+      path: RouterPortofolio.create + profileId,
     },
   ];
 
@@ -95,12 +105,16 @@ export function ComponentKatalog_DrawerKatalog({
                   variant="transparent"
                   c="white"
                   onClick={() => {
-                    router.push(e.path);
+                    router.push(e.path, { scroll: false });
                     setPageId(e?.id);
-                    setIsLoading(true)
+                    setIsLoading(true);
                   }}
                 >
-                  {isLoading && e.id === pageId ? <ComponentGlobal_Loader /> :  e.icon}
+                  {isLoading && e.id === pageId ? (
+                    <ComponentGlobal_Loader />
+                  ) : (
+                    e.icon
+                  )}
                 </ActionIcon>
                 <Text align="center" color="white">
                   {e.name}

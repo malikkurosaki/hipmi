@@ -52,7 +52,7 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
       HIPMI_PWD: GlobalEnv.value?.WIBU_PWD as string,
     });
     if (res.status === 200) {
-      await auth_funDeleteAktivasiKodeOtpById(dataOtp.id).then((val) => {
+      await auth_funDeleteAktivasiKodeOtpById({ nomor: nomor }).then((val) => {
         if (val.status === 200) {
           ComponentGlobal_NotifikasiBerhasil(res.message);
           setLoading(true);

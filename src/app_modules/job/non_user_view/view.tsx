@@ -40,7 +40,7 @@ export default function Job_NonUserView({ data }: { data: MODEL_JOB }) {
                   <Image
                     radius={"sm"}
                     alt=""
-                    src={APIs.GET + data.imageId}
+                    src={APIs.GET({ fileId: data.imageId })}
                     maw={200}
                   />
                 </Stack>

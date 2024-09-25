@@ -61,7 +61,10 @@ export function ComponentPortofolio_DetailDataMap({ mapId }: { mapId: any }) {
             { maxWidth: 600, cols: 1, spacing: "sm" },
           ]}
         >
-          <ComponentGlobal_LoadImage  maw={200}  url={APIs.GET + data.imageId} />
+          <ComponentGlobal_LoadImage
+            maw={200}
+            url={APIs.GET({ fileId: data?.imageId })}
+          />
           {/* <Image
             radius={"sm"}
             mah={300}
