@@ -1,5 +1,6 @@
 "use client";
 
+import { MainColor } from "@/app_modules/_global/color";
 import {
   ComponentGlobal_BoxInformation,
   ComponentGlobal_BoxUploadImage,
@@ -21,10 +22,8 @@ import {
 } from "@mantine/core";
 import { IconAt, IconCamera, IconUpload } from "@tabler/icons-react";
 import { useState } from "react";
-import { Profile_ComponentCreateNewProfile } from "../_component";
 import { validRegex } from "../../component";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
-import { MainColor } from "@/app_modules/_global/color";
+import { Profile_ComponentCreateNewProfile } from "../_component";
 
 export default function CreateProfile() {
   const [filePP, setFilePP] = useState<File | null>(null);
@@ -84,15 +83,8 @@ export default function CreateProfile() {
                     const buffer = URL.createObjectURL(
                       new Blob([new Uint8Array(await files.arrayBuffer())])
                     );
-                    if (files.size > 2000000) {
-                      ComponentGlobal_NotifikasiPeringatan(
-                        "Maaf, Ukuran file terlalu besar, maximum 2mb",
-                        3000
-                      );
-                    } else {
-                      setImgPP(buffer);
-                      setFilePP(files);
-                    }
+                    setImgPP(buffer);
+                    setFilePP(files);
                   } catch (error) {
                     console.log(error);
                   }
@@ -146,17 +138,8 @@ export default function CreateProfile() {
                     const buffer = URL.createObjectURL(
                       new Blob([new Uint8Array(await files.arrayBuffer())])
                     );
-                    if (files.size > 2000000) {
-                      ComponentGlobal_NotifikasiPeringatan(
-                        "Maaf, Ukuran file terlalu besar, maximum 2mb",
-                        3000
-                      );
-                    } else {
-                      setImgBG(buffer);
-                      setFileBG(files);
-                    }
-                    // console.log(buffer, "ini buffer");
-                    // console.log(files, " ini file");
+                    setImgBG(buffer);
+                    setFileBG(files);
                   } catch (error) {
                     console.log(error);
                   }
