@@ -1,9 +1,8 @@
 "use client";
 
-import { Header, Group, ActionIcon, Text, Title } from "@mantine/core";
-import { IconArrowLeft, IconChevronLeft } from "@tabler/icons-react";
+import { ActionIcon, Group, Header, Title } from "@mantine/core";
+import { IconChevronLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export default function ComponentKatalog_HeaderTamplate({
   hideBack,

@@ -1,9 +1,35 @@
 "use client";
-import { Box, Center, Image, Loader, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Avatar,
+  Box,
+  Center,
+  Image,
+  Loader,
+  Text,
+} from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useState } from "react";
 
 export default function Page() {
+  return (
+    <>
+      <Box p={"lg"} bg={"gray"} h={"100vh"}>
+        <Center h={"100%"}>
+          <ActionIcon bg={"blue"}>
+            <Avatar
+              size={100}
+              radius={"100%"}
+              src={
+                // "https://wibu-storage.wibudev.com/api/files/cm1efheqx005vkp7jo7lqarnf"
+                "/aset/global/avatar.png"
+              }
+            />
+          </ActionIcon>
+        </Center>
+      </Box>
+    </>
+  );
   return (
     <>
       <LoadImage

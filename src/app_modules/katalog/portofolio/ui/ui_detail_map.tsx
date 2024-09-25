@@ -99,7 +99,9 @@ function MapView({
           <Stack spacing={0} align="center">
             <Avatar
               src={
-                data.pinId === null ? APIs.GET + logoId : APIs.GET + data.pinId
+                data.pinId === null
+                  ? APIs.GET({ fileId: logoId })
+                  : APIs.GET({ fileId: data.pinId })
               }
               alt="Logo"
               style={{

@@ -45,7 +45,9 @@ export default function ComponentJob_DetailData({
           <Card.Section px={"xs"} pb={"lg"}>
             <Stack spacing={"xl"}>
               {data.imageId ? (
-                <ComponentGlobal_LoadImage url={APIs.GET + data?.imageId} />
+                <ComponentGlobal_LoadImage
+                  url={APIs.GET({ fileId: data?.imageId })}
+                />
               ) : (
                 // <Stack align="center">
                 //   {isLoading ? (

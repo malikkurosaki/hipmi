@@ -43,6 +43,8 @@ import { MODEL_JOB } from "@/app_modules/job/model/interface";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { RouterMap } from "@/app/lib/router_hipmi/router_map";
+import { Home_ComponentAvatarProfile } from "./comp_avatar_profile";
+import { APIs } from "@/app/lib";
 
 export function Home_UiView({
   dataUser,
@@ -341,18 +343,11 @@ export function Home_UiFooter({ dataUser }: { dataUser: MODEL_USER }) {
                 ) : isLoadingProfil ? (
                   <Loader color={AccentColor.yellow} size={20} />
                 ) : (
-                  <Avatar
-                    radius={"xl"}
-                    size={25}
-                    sx={{
-                      borderStyle: "solid",
-                      borderWidth: "0.5px",
-                      borderColor: "white",
-                    }}
-                    src={
-                      RouterProfile.api_foto_profile +
-                      `${dataUser?.Profile.imagesId}`
-                    }
+                  <Home_ComponentAvatarProfile
+                    url={APIs.GET({
+                      fileId: dataUser?.Profile?.imageId as string,
+                      size: "50"
+                    })}
                   />
                 )}
               </ActionIcon>

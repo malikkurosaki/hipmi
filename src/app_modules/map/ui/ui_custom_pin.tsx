@@ -72,8 +72,8 @@ export function UiMap_CustomPin({
                 radius={"100%"}
                 src={
                   data.pinId === null
-                    ? APIs.GET + data.Portofolio.logoId
-                    : APIs.GET + data.pinId
+                    ? APIs.GET({ fileId: data.Portofolio.logoId })
+                    : APIs.GET({ fileId: data.pinId })
                 }
                 style={{
                   border: `2px solid ${AccentColor.skyblue}`,
@@ -155,8 +155,8 @@ export function UiMap_CustomPin({
                 imgPin
                   ? imgPin
                   : data.pinId === null
-                    ? APIs.GET + data.Portofolio.logoId
-                    : APIs.GET + data.pinId
+                    ? APIs.GET({ fileId: data.Portofolio.logoId })
+                    : APIs.GET({ fileId: data.pinId })
               }
               style={{
                 border: `2px solid ${AccentColor.softblue}`,

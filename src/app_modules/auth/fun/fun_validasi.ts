@@ -13,6 +13,9 @@ export async function auth_funValidasi({
   nomor: string;
   HIPMI_PWD: string;
 }) {
+  const pswd = process.env.WIBU_PWD as string;
+
+
   const cekUser = await prisma.user.findUnique({
     where: {
       nomor: nomor,
@@ -34,7 +37,7 @@ export async function auth_funValidasi({
       username: cekUser.username,
     }),
     {
-      password: HIPMI_PWD,
+      password: pswd,
     }
   );
 

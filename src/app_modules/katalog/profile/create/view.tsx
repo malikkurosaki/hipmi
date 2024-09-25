@@ -1,10 +1,10 @@
 "use client";
 
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
-import { ComponentGlobal_BoxUploadImage } from "@/app_modules/_global/component";
-import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
-import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import {
+  ComponentGlobal_BoxInformation,
+  ComponentGlobal_BoxUploadImage,
+  ComponentGlobal_ErrorInput,
+} from "@/app_modules/_global/component";
 import {
   AspectRatio,
   Avatar,
@@ -21,14 +21,12 @@ import {
 } from "@mantine/core";
 import { IconAt, IconCamera, IconUpload } from "@tabler/icons-react";
 import { useState } from "react";
-import { validRegex } from "../../component/regular_expressions";
 import { Profile_ComponentCreateNewProfile } from "../_component";
+import { validRegex } from "../../component";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
+import { MainColor } from "@/app_modules/_global/color";
 
-export default function CreateProfile({
-  userLoginId,
-}: {
-  userLoginId: string;
-}) {
+export default function CreateProfile() {
   const [filePP, setFilePP] = useState<File | null>(null);
   const [imgPP, setImgPP] = useState<any | null>();
   const [fileBG, setFileBG] = useState<File | null>(null);
@@ -45,7 +43,7 @@ export default function CreateProfile({
     <>
       <Stack px={"sm"} spacing={40}>
         <Box>
-          <Stack spacing={"xs"}>
+          <Stack spacing={"lg"}>
             <ComponentGlobal_BoxInformation informasi="Upload foto profile anda." />
             <Center>
               {imgPP ? (
@@ -78,6 +76,7 @@ export default function CreateProfile({
                 </Paper>
               )}
             </Center>
+
             <Center>
               <FileButton
                 onChange={async (files: any | null) => {
@@ -118,7 +117,7 @@ export default function CreateProfile({
         </Box>
 
         <Box>
-          <Stack spacing={"xs"}>
+          <Stack spacing={"lg"}>
             <ComponentGlobal_BoxInformation informasi="Upload foto latar belakang profile anda." />
             <ComponentGlobal_BoxUploadImage>
               {imgBG ? (
@@ -257,9 +256,8 @@ export default function CreateProfile({
 
           <Profile_ComponentCreateNewProfile
             value={value as any}
-            userLoginId={userLoginId}
             filePP={filePP as any}
-            fileBg={fileBG as any}
+            fileBG={fileBG as any}
           />
         </Stack>
       </Stack>

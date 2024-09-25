@@ -8,7 +8,7 @@ import {
   Image,
   Stack,
   Text,
-  TextInput
+  TextInput,
 } from "@mantine/core";
 import { IconCamera, IconUpload } from "@tabler/icons-react";
 import { useState } from "react";
@@ -19,11 +19,17 @@ import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
-import { ComponentGlobal_BoxUploadImage, ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
+import {
+  ComponentGlobal_BoxUploadImage,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
-import { Job_ComponentBoxUploadImage, Job_ComponentButtonUpdate } from "../component";
+import {
+  Job_ComponentBoxUploadImage,
+  Job_ComponentButtonUpdate,
+} from "../component";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");
@@ -52,7 +58,7 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
                   style={{ maxHeight: 250, margin: "auto", padding: "5px" }}
                   alt="Foto"
                   height={250}
-                  src={img ? img : APIs.GET + value.imageId}
+                  src={img ? img : APIs.GET({ fileId: value.imageId })}
                 />
               </AspectRatio>
             ) : (
@@ -201,5 +207,3 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
     </>
   );
 }
-
-

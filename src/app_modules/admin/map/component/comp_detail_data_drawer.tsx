@@ -49,7 +49,7 @@ export function ComponentAdminMap_DetailDataDrawer({
             radius={"md"}
             width={300}
             alt="Photo"
-            src={APIs.GET + data?.imageId}
+            src={APIs.GET({ fileId: data?.imageId as string })}
           />
         </AspectRatio>
 

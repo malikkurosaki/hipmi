@@ -95,6 +95,8 @@ model Profile {
   Portofolio         Portofolio[]
   ImagesBackground   ImagesBackground? @relation(fields: [imagesBackgroundId], references: [id])
   imagesBackgroundId String?           @unique
+  imageId            String?
+  imageBackgroundId  String?
 }
 
 model Images {
@@ -925,7 +927,7 @@ model BusinessMaps {
   Portofolio   Portofolio? @relation(fields: [portofolioId], references: [id])
   portofolioId String?     @unique
   imageId      String?
-  pinId       String?
+  pinId        String?
 }
 
 // Kategori App

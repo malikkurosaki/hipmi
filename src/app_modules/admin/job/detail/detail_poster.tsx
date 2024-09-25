@@ -19,7 +19,13 @@ export default function AdminJob_DetailPoster({
       <Stack>
         <ComponentAdminGlobal_BackButton />
         <Center>
-          <Image onLoad={() => setLoading(false)} alt="Foto" src={APIs.GET + imageId} mah={500} maw={300} />
+          <Image
+            onLoad={() => setLoading(false)}
+            alt="Foto"
+            src={APIs.GET({ fileId: imageId })}
+            mah={500}
+            maw={300}
+          />
           {isLoading ? (
             <Center h={"100%"}>
               <ComponentGlobal_Loader size={30} variant="dots" />

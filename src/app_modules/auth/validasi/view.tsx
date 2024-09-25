@@ -69,12 +69,19 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
     }
 
     if (res.status === 401) {
-      const resAktivasi = await auth_funDeleteAktivasiKodeOtpById(dataOtp.id);
+      const resAktivasi = await auth_funDeleteAktivasiKodeOtpById({
+        nomor: nomor,
+      });
       if (resAktivasi.status === 200) {
         ComponentGlobal_NotifikasiPeringatan(res.message);
         router.push(RouterAuth.login, { scroll: false });
       }
     }
+  }
+
+  async function onBack() {
+    await auth_funDeleteAktivasiKodeOtpById({ nomor: nomor });
+    router.back();
   }
 
   return (
@@ -93,7 +100,7 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
               top: 0,
             }}
           >
-            <ActionIcon variant="transparent" onClick={() => router.back()}>
+            <ActionIcon variant="transparent" onClick={() => onBack()}>
               <IconChevronLeft color="white" />
             </ActionIcon>
           </Box>

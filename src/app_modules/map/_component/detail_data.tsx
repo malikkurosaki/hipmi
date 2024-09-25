@@ -61,7 +61,9 @@ export function ComponentMap_DetailData({ mapId }: { mapId: any }) {
             { maxWidth: 600, cols: 1, spacing: "sm" },
           ]}
         >
-          <ComponentGlobal_LoadImage url={APIs.GET + data?.imageId} />
+          <ComponentGlobal_LoadImage
+            url={APIs.GET({ fileId: data?.imageId })}
+          />
           {/* <Image radius={"sm"} mah={300} maw={200} alt="Photo" src={} /> */}
           <Box>
             <Grid>
