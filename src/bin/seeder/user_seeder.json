@@ -7,6 +7,21 @@
   {
     "name": "firman",
     "nomor": "6281339158911",
+    "masterUserRoleId": "2"
+  },
+  {
+    "name": "amalia",
+    "nomor": "628980185458",
     "masterUserRoleId": "1"
+  },
+  {
+    "name": "lukman",
+    "nomor": "6287701790942",
+    "masterUserRoleId": "1"
+  },
+  {
+    "name": "fahmi",
+    "nomor": "628123833845",
+    "masterUserRoleId": "3"
   }
 ]

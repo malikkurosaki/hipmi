@@ -31,6 +31,7 @@ import { MODEL_Transaksi_Investasi } from "../model/model_investasi";
 import { useState } from "react";
 import { Warna } from "@/app/lib/warna";
 import _ from "lodash";
+import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
 
 export default function InvestasiSahamTerbeli({
   listTransaksi,
@@ -43,9 +44,7 @@ export default function InvestasiSahamTerbeli({
   if (_.isEmpty(transaksi)) {
     return (
       <>
-        <Center h={"80vh"}>
-          <Text>Saham Anda Kosong</Text>
-        </Center>
+        <ComponentInvestasi_IsEmptyData text="Tidak ada data" />
       </>
     );
   }

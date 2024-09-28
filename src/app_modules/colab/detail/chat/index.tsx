@@ -1,52 +1,41 @@
 "use client";
 
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
+import { evnPesan } from "@/util/evn";
+import mqtt_client from "@/util/mqtt_client";
 import {
   ActionIcon,
   Box,
-  Button,
-  Card,
   Center,
-  Code,
   Grid,
   Group,
-  Header,
   Loader,
   Paper,
-  ScrollArea,
   Stack,
   Text,
   Textarea,
-  Title,
+  Title
 } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
 import {
   IconChevronLeft,
   IconCircle,
   IconInfoSquareRounded,
   IconSend,
 } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import router from "next/router";
-import React, { useRef, useState } from "react";
-import {
-  MODEL_COLLABORATION_MESSAGE,
-  MODEL_COLLABORATION_ROOM_CHAT,
-} from "../../model/interface";
 import _ from "lodash";
-import ComponentColab_IsEmptyData from "../../component/is_empty_data";
-import colab_getMessageByRoomId from "../../fun/get/room_chat/get_message_by_room_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import colab_funCreateMessageByUserId from "../../fun/create/room/fun_create_message_by_user_id";
-import { useShallowEffect } from "@mantine/hooks";
-import mqtt_client from "@/util/mqtt_client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import useInfiniteScroll, {
   ScrollDirection,
   ScrollDirectionBooleanState,
 } from "react-easy-infinite-scroll-hook";
-import toast from "react-simple-toasts";
-import colab_getOneMessageById from "../../fun/get/room_chat/get_one_message_by_id";
-import { List } from "react-virtualized";
-import { evnPesan } from "@/util/evn";
+import ComponentColab_IsEmptyData from "../../component/is_empty_data";
+import colab_getMessageByRoomId from "../../fun/get/room_chat/get_message_by_room_id";
+import {
+  MODEL_COLLABORATION_MESSAGE,
+  MODEL_COLLABORATION_ROOM_CHAT,
+} from "../../model/interface";
 
 const list = Array(100).fill(0);
 export default function ColabViewChat({

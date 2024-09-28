@@ -13,9 +13,11 @@ export const RouterForum = {
   edit_komentar: "/dev/forum/edit/komentar/",
 
   //detail
-  main_detail: "/dev/forum/detail/",
+  main_detail: "/dev/forum/detail/main-detail/",
+  detail_report_komentar: "/dev/forum/detail/report-komentar/",
+  detail_report_posting: "/dev/forum/detail/report-posting/",
 
-  // komentra
+  // komentar
   komentar: "/dev/forum/komentar/",
 
   //report

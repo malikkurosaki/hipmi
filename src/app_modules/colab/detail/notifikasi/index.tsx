@@ -1,6 +1,6 @@
 "use client";
 
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import ComponentColab_HeaderTamplate from "../../component/header_tamplate";
 import { Center, Stack } from "@mantine/core";
 import { MODEL_COLLABORATION_NOTIFIKSI } from "../../model/interface";

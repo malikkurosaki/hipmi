@@ -1,16 +1,11 @@
 "use client";
 
+import { Button, Center, Stack } from "@mantine/core";
+import { IconBrandWhatsapp } from "@tabler/icons-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ComponentJob_DetailData from "../../component/detail/detail_data";
-import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { Stack, Button, Center, Anchor } from "@mantine/core";
-import { useAtom } from "jotai";
-import { gs_job_status, gs_job_hot_menu } from "../../global_state";
-import Link from "next/link";
-import { IconBrandWhatsapp } from "@tabler/icons-react";
 import { MODEL_JOB } from "../../model/interface";
-import { gen_page } from "../../../../../gen_page";
 
 export default function Job_MainDetail({
   dataJob,
@@ -22,7 +17,6 @@ export default function Job_MainDetail({
   return (
     <>
       <Stack>
-        {/* <Anchor href={gen_page.devForumMain()}>kesana</Anchor> */}
         <ComponentJob_DetailData data={dataJob} />
         <ButtonAction jobId={dataJob.id} hostName={hostName} />
       </Stack>
@@ -45,7 +39,7 @@ function ButtonAction({
         <Button
           radius={"xl"}
           color="teal"
-          mb={30}
+          my={"lg"}
           leftIcon={<IconBrandWhatsapp />}
         >
           <Link

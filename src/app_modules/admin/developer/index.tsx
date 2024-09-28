@@ -14,27 +14,27 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import ComponentAdminGlobal_HeaderTamplate from "../component/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../component_global/header_tamplate";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import _ from "lodash";
 import { IconSearch } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import adminDeveloper_funEditUserAksesById from "./fun/edit/fun_edit_user_akses_by_id";
 import adminDeveloper_funGetListAllAdmin from "./fun/get/fun_get_list_all_admin";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import adminDeveloper_funGetListAllUser from "./fun/get/fun_get_list_all_user";
 
 export default function AdminDeveloper({
   listUser,
   listAdmin,
   pUser,
-  pAdmin
+  pAdmin,
 }: {
   listUser: MODEL_USER[];
   listAdmin: MODEL_USER[];
-  pUser: any,
-  pAdmin: any
+  pUser: any;
+  pAdmin: any;
 }) {
   const [dataUser, setDataUser] = useState(listUser);
   const [dataAdmin, setDataAdmin] = useState(listAdmin);
@@ -56,16 +56,20 @@ export default function AdminDeveloper({
             setDataUser={setDataUser}
             setDataAdmin={setDataAdmin}
           /> */}
-          <NewTableAdmin data={dataAdmin} nPage={pageAdmin}
+          <NewTableAdmin
+            data={dataAdmin}
+            nPage={pageAdmin}
             onUpdated={(val) => {
-              setDataUser(val.data)
-              setPageUser(val.nPage)
+              setDataUser(val.data);
+              setPageUser(val.nPage);
             }}
           />
-          <NewTableUser data={dataUser} nPage={pageUser}
+          <NewTableUser
+            data={dataUser}
+            nPage={pageUser}
             onUpdated={(val) => {
-              setDataAdmin(val.data)
-              setPageAdmin(val.nPage)
+              setDataAdmin(val.data);
+              setPageAdmin(val.nPage);
             }}
           />
         </SimpleGrid>
@@ -74,48 +78,66 @@ export default function AdminDeveloper({
   );
 }
 
-function NewTableUser({ data, nPage, onUpdated }: { data: any, nPage: any, onUpdated: (val: any) => void }) {
-  const [isChoosePage, setChoosePage] = useState(1)
-  const [dataUser, setDataUser] = useState(data)
-  const [isNPage, setNPage] = useState(nPage)
-  const [isSearch, setSearch] = useState('')
+function NewTableUser({
+  data,
+  nPage,
+  onUpdated,
+}: {
+  data: any;
+  nPage: any;
+  onUpdated: (val: any) => void;
+}) {
+  const [isChoosePage, setChoosePage] = useState(1);
+  const [dataUser, setDataUser] = useState(data);
+  const [isNPage, setNPage] = useState(nPage);
+  const [isSearch, setSearch] = useState("");
 
   async function onPageClick(p: any) {
-    setChoosePage(p)
-    const loadData = await adminDeveloper_funGetListAllUser({ search: isSearch, page: p })
-    setDataUser(loadData.data)
-    setNPage(loadData.nPage)
+    setChoosePage(p);
+    const loadData = await adminDeveloper_funGetListAllUser({
+      search: isSearch,
+      page: p,
+    });
+    setDataUser(loadData.data);
+    setNPage(loadData.nPage);
   }
 
   async function onSearch(s: any) {
-    setSearch(s)
-    setChoosePage(1)
-    const loadData = await adminDeveloper_funGetListAllUser({ search: s, page: 1 })
-    setDataUser(loadData.data)
-    setNPage(loadData.nPage)
+    setSearch(s);
+    setChoosePage(1);
+    const loadData = await adminDeveloper_funGetListAllUser({
+      search: s,
+      page: 1,
+    });
+    setDataUser(loadData.data);
+    setNPage(loadData.nPage);
   }
 
   async function onAccess(id: string) {
-    const upd = await adminDeveloper_funEditUserAksesById(id, "2")
+    const upd = await adminDeveloper_funEditUserAksesById(id, "2");
     if (upd.status == 200) {
-      const loadData = await adminDeveloper_funGetListAllUser({ search: isSearch, page: isChoosePage })
-      setDataUser(loadData.data)
-      setNPage(loadData.nPage)
-      const loadDataAdmin = await adminDeveloper_funGetListAllAdmin({ page: 1 })
-      onUpdated(loadDataAdmin)
-      ComponentGlobal_NotifikasiBerhasil(upd.message)
+      const loadData = await adminDeveloper_funGetListAllUser({
+        search: isSearch,
+        page: isChoosePage,
+      });
+      setDataUser(loadData.data);
+      setNPage(loadData.nPage);
+      const loadDataAdmin = await adminDeveloper_funGetListAllAdmin({
+        page: 1,
+      });
+      onUpdated(loadDataAdmin);
+      ComponentGlobal_NotifikasiBerhasil(upd.message);
     } else {
-      ComponentGlobal_NotifikasiGagal(upd.message)
+      ComponentGlobal_NotifikasiGagal(upd.message);
     }
   }
 
   useEffect(() => {
-    setDataUser(data)
-    setNPage(nPage)
-    setSearch('')
-    setChoosePage(1)
-  }, [data, nPage])
-
+    setDataUser(data);
+    setNPage(nPage);
+    setSearch("");
+    setChoosePage(1);
+  }, [data, nPage]);
 
   return (
     <>
@@ -132,7 +154,7 @@ function NewTableUser({ data, nPage, onUpdated }: { data: any, nPage: any, onUpd
             radius={"xl"}
             placeholder="Masukan username"
             onChange={(val) => {
-              onSearch(val.currentTarget.value)
+              onSearch(val.currentTarget.value);
             }}
           />
         </Group>
@@ -168,9 +190,7 @@ function NewTableUser({ data, nPage, onUpdated }: { data: any, nPage: any, onUpd
                   </td>
                   <td>
                     <Center>
-                      <Button radius={"xl"}
-                        onClick={() => onAccess(v.id)}
-                      >
+                      <Button radius={"xl"} onClick={() => onAccess(v.id)}>
                         Admin Access
                       </Button>
                     </Center>
@@ -183,7 +203,7 @@ function NewTableUser({ data, nPage, onUpdated }: { data: any, nPage: any, onUpd
             <Pagination
               value={isChoosePage}
               onChange={(val) => {
-                onPageClick(val)
+                onPageClick(val);
               }}
               total={isNPage}
             />
@@ -191,50 +211,67 @@ function NewTableUser({ data, nPage, onUpdated }: { data: any, nPage: any, onUpd
         </Paper>
       </Stack>
     </>
-  )
+  );
 }
 
-function NewTableAdmin({ data, nPage, onUpdated }: { data: any, nPage: any, onUpdated: (val: any) => void }) {
-  const [isChoosePage, setChoosePage] = useState(1)
-  const [dataAdmin, setDataAdmin] = useState(data)
-  const [isNPage, setNPage] = useState(nPage)
-  const [isSearch, setSearch] = useState('')
+function NewTableAdmin({
+  data,
+  nPage,
+  onUpdated,
+}: {
+  data: any;
+  nPage: any;
+  onUpdated: (val: any) => void;
+}) {
+  const [isChoosePage, setChoosePage] = useState(1);
+  const [dataAdmin, setDataAdmin] = useState(data);
+  const [isNPage, setNPage] = useState(nPage);
+  const [isSearch, setSearch] = useState("");
 
   async function onPageClick(p: any) {
-    setChoosePage(p)
-    const loadData = await adminDeveloper_funGetListAllAdmin({ search: isSearch, page: p })
-    setDataAdmin(loadData.data)
-    setNPage(loadData.nPage)
+    setChoosePage(p);
+    const loadData = await adminDeveloper_funGetListAllAdmin({
+      search: isSearch,
+      page: p,
+    });
+    setDataAdmin(loadData.data);
+    setNPage(loadData.nPage);
   }
 
   async function onSearch(s: any) {
-    setSearch(s)
-    setChoosePage(1)
-    const loadData = await adminDeveloper_funGetListAllAdmin({ search: s, page: 1 })
-    setDataAdmin(loadData.data)
-    setNPage(loadData.nPage)
+    setSearch(s);
+    setChoosePage(1);
+    const loadData = await adminDeveloper_funGetListAllAdmin({
+      search: s,
+      page: 1,
+    });
+    setDataAdmin(loadData.data);
+    setNPage(loadData.nPage);
   }
 
   async function onAccess(id: string) {
-    const upd = await adminDeveloper_funEditUserAksesById(id, "1")
+    const upd = await adminDeveloper_funEditUserAksesById(id, "1");
     if (upd.status == 200) {
-      const loadData = await adminDeveloper_funGetListAllAdmin({ search: isSearch, page: isChoosePage })
-      setDataAdmin(loadData.data)
-      setNPage(loadData.nPage)
-      const loadDataUser = await adminDeveloper_funGetListAllUser({ page: 1 })
-      onUpdated(loadDataUser)
-      ComponentGlobal_NotifikasiBerhasil(upd.message)
+      const loadData = await adminDeveloper_funGetListAllAdmin({
+        search: isSearch,
+        page: isChoosePage,
+      });
+      setDataAdmin(loadData.data);
+      setNPage(loadData.nPage);
+      const loadDataUser = await adminDeveloper_funGetListAllUser({ page: 1 });
+      onUpdated(loadDataUser);
+      ComponentGlobal_NotifikasiBerhasil(upd.message);
     } else {
-      ComponentGlobal_NotifikasiGagal(upd.message)
+      ComponentGlobal_NotifikasiGagal(upd.message);
     }
   }
 
   useEffect(() => {
-    setDataAdmin(data)
-    setNPage(nPage)
-    setSearch('')
-    setChoosePage(1)
-  }, [data, nPage])
+    setDataAdmin(data);
+    setNPage(nPage);
+    setSearch("");
+    setChoosePage(1);
+  }, [data, nPage]);
 
   return (
     <>
@@ -251,7 +288,7 @@ function NewTableAdmin({ data, nPage, onUpdated }: { data: any, nPage: any, onUp
             radius={"xl"}
             placeholder="Masukan username"
             onChange={(val) => {
-              onSearch(val.currentTarget.value)
+              onSearch(val.currentTarget.value);
             }}
           />
         </Group>
@@ -287,7 +324,9 @@ function NewTableAdmin({ data, nPage, onUpdated }: { data: any, nPage: any, onUp
                   </td>
                   <td>
                     <Center>
-                      <Button radius={"xl"} color="red"
+                      <Button
+                        radius={"xl"}
+                        color="red"
                         onClick={() => onAccess(v.id)}
                       >
                         Delete Access
@@ -302,7 +341,7 @@ function NewTableAdmin({ data, nPage, onUpdated }: { data: any, nPage: any, onUp
             <Pagination
               value={isChoosePage}
               onChange={(val) => {
-                onPageClick(val)
+                onPageClick(val);
               }}
               total={isNPage}
             />
@@ -310,10 +349,8 @@ function NewTableAdmin({ data, nPage, onUpdated }: { data: any, nPage: any, onUp
         </Paper>
       </Stack>
     </>
-  )
+  );
 }
-
-
 
 function TableAdmin({
   dataAdmin,

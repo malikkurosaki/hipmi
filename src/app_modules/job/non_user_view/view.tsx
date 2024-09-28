@@ -1,17 +1,27 @@
 "use client";
 
-import { Card, Center, Image, Stack, Text } from "@mantine/core";
+import { Card, Center, Image, Overlay, Stack, Text, Title } from "@mantine/core";
 import ComponentJob_DetailData from "../component/detail/detail_data";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { data } from "autoprefixer";
 import { MODEL_JOB } from "../model/interface";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function Job_NonUserView({ data }: { data: MODEL_JOB }) {
   return (
     <>
-      <Center>
-        <Card shadow="lg" withBorder p={30} w={{ base: 400 }}>
-          <Card.Section px={"xs"} pb={"lg"}>
+      <Center my={"md"} >
+        <Card
+          shadow="lg"
+          withBorder
+          p={"xl"}
+          // w={{ base: 400 }}
+          style={{
+            backgroundColor: MainColor.darkblue,
+            border: `2px solid ${AccentColor.blue}`,
+          }}
+        >
+          <Card.Section px={"xs"} pb={"lg"} c={"white"}>
             <Stack spacing={"xl"}>
               {data.imagesId ? (
                 <Stack align="center">
@@ -46,6 +56,18 @@ export default function Job_NonUserView({ data }: { data: MODEL_JOB }) {
               </Stack>
             </Stack>
           </Card.Section>
+          {data?.isArsip === true && (
+            <Overlay color="gray" opacity={0.5} blur={1}>
+              <Stack align="center" h={"100%"} justify="center">
+                <Title c={"red"} fw={"bold"} order={3}>
+                  Mohon Maaf !
+                </Title>
+                <Title c={"red"} fw={"bold"} order={3}>
+                  Lowongan Kerja Ini Sudah Ditutup{" "}
+                </Title>
+              </Stack>
+            </Overlay>
+          )}
         </Card>
       </Center>
     </>

@@ -23,6 +23,8 @@ import { useRouter } from "next/navigation";
 import toast from "react-simple-toasts";
 import { MODEL_DONASI } from "../../model/interface";
 import TampilanRupiahDonasi from "../../component/tampilan_rupiah";
+import ComponentDonasi_IsEmptyData from "../../component/is_empty_data";
+import _ from "lodash";
 
 export default function PostingDraftDonasi({
   listDraft,
@@ -31,6 +33,10 @@ export default function PostingDraftDonasi({
 }) {
   const { height, width } = useViewportSize();
   const router = useRouter();
+
+  if (_.isEmpty(listDraft))
+    return <ComponentDonasi_IsEmptyData text="Tidak ada data" />;
+
   return (
     <>
       <SimpleGrid
@@ -43,7 +49,10 @@ export default function PostingDraftDonasi({
         ]}
       >
         {listDraft.map((e, i) => (
-          <Box key={i} onClick={() => router.push(RouterDonasi.detail_draft + `${e.id}`)}>
+          <Box
+            key={i}
+            onClick={() => router.push(RouterDonasi.detail_draft + `${e.id}`)}
+          >
             <Stack>
               <Grid>
                 <Grid.Col span={7}>

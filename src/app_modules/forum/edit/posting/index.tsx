@@ -14,7 +14,7 @@ import "react-quill/dist/quill.bubble.css";
 import { IconPhotoUp } from "@tabler/icons-react";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
 
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
@@ -22,10 +22,14 @@ import { useAtom } from "jotai";
 import { gs_forum_loading_edit_posting } from "../../global_state";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
 import { forum_funEditPostingById } from "../../fun/edit/fun_edit_posting_by_id";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 const ReactQuill = dynamic(
   () => {
     return import("react-quill");
@@ -114,6 +118,17 @@ function ButtonAction({
   return (
     <>
       <Button
+        style={{
+          transition: "0.5s",
+          border:
+            diskusi === "<p><br></p>" || diskusi === "" || diskusi.length > 500
+              ? ""
+              : `1px solid ${AccentColor.yellow}`,
+          backgroundColor:
+            diskusi === "<p><br></p>" || diskusi === "" || diskusi.length > 500
+              ? ""
+              : MainColor.yellow,
+        }}
         disabled={
           diskusi === "<p><br></p>" || diskusi === "" || diskusi.length > 500
             ? true
@@ -122,9 +137,6 @@ function ButtonAction({
         loaderPosition="center"
         loading={loading ? true : false}
         radius={"xl"}
-        style={{
-          transition: "0.5s",
-        }}
         onClick={() => {
           onUpdate();
         }}

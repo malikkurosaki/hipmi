@@ -11,10 +11,20 @@ export async function AdminJob_funEditStatusPublishById(jobId: string) {
     data: {
       masterStatusId: "1",
     },
+    select: {
+      id: true,
+      authorId: true,
+      MasterStatus: {
+        select: {
+          name: true,
+        },
+      },
+      title: true,
+    },
   });
 
 
   if(!updt) return {status: 400, message: "Update Gagal"}
   revalidatePath("/dev/admin/job/child/table_review");
-  return {status: 200, message: "Berhasil Update"}
+  return {data: updt, status: 200, message: "Berhasil Update"}
 }

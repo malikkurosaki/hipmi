@@ -23,8 +23,8 @@ import _ from "lodash";
 import { useState } from "react";
 import colab_funCreatePartisipan from "../../fun/create/fun_create_partisipan_by_user_id";
 import colab_getListPartisipanByColabId from "../../fun/get/get_list_partisipan_by_id";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { useDisclosure } from "@mantine/hooks";
 import ComponentColab_AuthorNameOnListPartisipan from "./header_author_list_partisipan";
 

@@ -1,12 +1,17 @@
 "use client";
 
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import { Center, Grid, Group, Paper, Text, Title } from "@mantine/core";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
+import { Center, Grid, Group, Paper, Stack, Text, Title } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export default function EditInvestasi({id}:{id:string}) {
+export default function EditInvestasi({ id }: { id: string }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+  const [listId, setListId] = useState(0);
+
   const listEdit = [
     {
       id: 1,
@@ -33,19 +38,32 @@ export default function EditInvestasi({id}:{id:string}) {
     <>
       {listEdit.map((e) => (
         <Paper
+          shadow="lg"
           key={e.id}
           w={"100%"}
-          h={50}
-          bg={"gray"}
+          bg={"gray.4"}
           mb={"md"}
-          onClick={() => router.push(e.route + `${id}`)}
+          onClick={() => {
+            setLoading(true);
+            setListId(e.id);
+            router.push(e.route + `${id}`);
+          }}
         >
-          <Grid align="center" justify="center" h={50} px={"sm"}>
-            <Grid.Col span={10}>
-              <Text>{e.name}</Text>
+          {isLoading && e.id === listId ? (
+            <ComponentGlobal_CardLoadingOverlay />
+          ) : (
+            ""
+          )}
+          <Grid justify="center" h={70} px={"sm"}>
+            <Grid.Col span={10} h={"100%"}>
+              <Stack h={"100%"} justify="center">
+                <Title order={4} fw={"bold"}>
+                  {e.name}
+                </Title>
+              </Stack>
             </Grid.Col>
             <Grid.Col span={2}>
-              <Center>
+              <Center h={"100%"}>
                 <IconChevronRight />
               </Center>
             </Grid.Col>

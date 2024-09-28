@@ -1,35 +1,28 @@
 "use client";
 
+import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import {
   ActionIcon,
-  AppShell,
-  Box,
   Center,
   Footer,
   Grid,
   Indicator,
-  Loader,
   Stack,
-  Text,
+  Text
 } from "@mantine/core";
-import React, { useState } from "react";
-import ComponentColab_HeaderTamplate from "../component/header_tamplate";
-import router from "next/router";
 import {
   IconBell,
-  IconHistory,
   IconHome,
   IconMessages,
-  IconReservedLine,
-  IconUsersGroup,
+  IconUsersGroup
 } from "@tabler/icons-react";
-import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
-import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import ComponentColab_HeaderTamplate from "../component/header_tamplate";
 import { gs_colab_hot_menu } from "../global_state";
-import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
-import { useTimeout } from "@mantine/hooks";
 
 export default function LayoutColab_Main({
   children,

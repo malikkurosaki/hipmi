@@ -4,8 +4,19 @@ import prisma from "@/app/lib/prisma";
 import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 import _ from "lodash";
 
-export async function forum_getListPostingByAuhtorId(authorId: string) {
+export async function forum_getAllPostingByAuhtorId({
+  authorId,
+  page,
+}: {
+  authorId: string;
+  page: any;
+}) {
+  const takeData = 5;
+  const skipData = page * takeData - takeData;
+
   const get = await prisma.forum_Posting.findMany({
+    take: takeData,
+    skip: skipData,
     orderBy: {
       createdAt: "desc",
     },
@@ -22,7 +33,13 @@ export async function forum_getListPostingByAuhtorId(authorId: string) {
       Author: {
         select: {
           id: true,
-          Profile: true,
+          username: true,
+          Profile: {
+            select: {
+              id: true,
+              imagesId: true,
+            },
+          },
         },
       },
       Forum_Komentar: {
@@ -30,14 +47,20 @@ export async function forum_getListPostingByAuhtorId(authorId: string) {
           isActive: true,
         },
       },
-     ForumMaster_StatusPosting: true 
+      ForumMaster_StatusPosting: {
+        select: {
+          id: true,
+          status: true,
+        },
+      },
+      forumMaster_StatusPostingId: true,
     },
   });
 
-  const data = get.map((val) => ({
-    ..._.omit(val, ["Forum_Komentar"]),
-    _count: val.Forum_Komentar.length,
-  }));
+  // const data = get.map((val) => ({
+  //   ..._.omit(val, ["Forum_Komentar"]),
+  //   _count: val.Forum_Komentar.length,
+  // }));
 
-  return data;
+  return get;
 }

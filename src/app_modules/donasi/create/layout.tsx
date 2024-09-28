@@ -1,9 +1,8 @@
 "use client"
 
-import { AppShell } from "@mantine/core"
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate"
 import React from "react"
 import ComponentDonasi_HeaderTamplate from "../component/header_tamplate"
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate"
 
 export default function LayoutCreateDonasi({children}: {children: React.ReactNode}){
     return<>

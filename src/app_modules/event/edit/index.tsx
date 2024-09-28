@@ -1,37 +1,33 @@
 "use client";
 
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
 import {
-  Stack,
-  TextInput,
-  Textarea,
   Button,
   Select,
-  Text,
-  Group,
+  Stack,
+  TextInput,
+  Textarea
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
+import _ from "lodash";
+import moment from "moment";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import { MODEL_EVENT } from "../model/interface";
 import { useState } from "react";
-import { MODEL_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
 import { Event_funEditById } from "../fun/edit/fun_edit_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import moment from "moment";
-import _ from "lodash";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { IconAlertTriangle } from "@tabler/icons-react";
-import ComponentEvent_ErrorMaximalInput from "../component/error_maksimal_input";
-import ComponentGlobal_InputCountDown from "@/app_modules/component_global/input_countdown";
-import ComponentGlobal_ErrorInput from "@/app_modules/component_global/error_input";
+import { MODEL_EVENT } from "../model/interface";
 
 export default function Event_Edit({
   dataEvent,
   listTipeAcara,
 }: {
   dataEvent: MODEL_EVENT;
-  listTipeAcara: MODEL_DEFAULT_MASTER[];
+  listTipeAcara: MODEL_DEFAULT_MASTER_OLD[];
 }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);

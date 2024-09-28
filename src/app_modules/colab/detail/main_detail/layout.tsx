@@ -1,10 +1,10 @@
 "use client";
 
-import { AppShell } from "@mantine/core";
+import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
+import { IconEdit } from "@tabler/icons-react";
 import React from "react";
 import ComponentColab_HeaderTamplate from "../../component/header_tamplate";
-import { IconEdit } from "@tabler/icons-react";
-import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
 
 export default function LayoutColab_MainDetail({
   children,
@@ -17,7 +17,7 @@ export default function LayoutColab_MainDetail({
 }) {
   return (
     <>
-      <AppShell
+      <AppComponentGlobal_LayoutTamplate
         header={
           <ComponentColab_HeaderTamplate
             title="Detail"
@@ -27,7 +27,7 @@ export default function LayoutColab_MainDetail({
         }
       >
         {children}
-      </AppShell>
+      </AppComponentGlobal_LayoutTamplate>
     </>
   );
 }

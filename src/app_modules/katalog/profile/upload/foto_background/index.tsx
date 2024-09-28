@@ -8,21 +8,23 @@ import {
   Image,
   Paper,
   Stack,
-  Title,
 } from "@mantine/core";
 
 import { useState } from "react";
 
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import { MODEL_PROFILE } from "../../model/interface";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { IconCamera } from "@tabler/icons-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import { Profile_funUpdateFoto } from "../../fun/update/fun_update_foto_profile";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
 import { Profile_funUpdateBackground } from "../../fun/update/fun_update_background";
+import { MODEL_PROFILE } from "../../model/interface";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function Profile_UpdateFotoBackground({
   dataProfile,
@@ -38,7 +40,14 @@ export default function Profile_UpdateFotoBackground({
   return (
     <>
       <Stack spacing={"xl"}>
-        <Paper p={"sm"} withBorder radius={"sm"} shadow="">
+        <Paper
+          p={"sm"}
+          radius={"sm"}
+          style={{
+            backgroundColor: AccentColor.darkblue,
+            border: `2px solid ${AccentColor.blue}`,
+          }}
+        >
           <Stack>
             <AspectRatio ratio={16 / 9}>
               <Image
@@ -77,10 +86,10 @@ export default function Profile_UpdateFotoBackground({
                   <Button
                     {...props}
                     radius={"xl"}
-                    variant="outline"
-                    w={150}
                     leftIcon={<IconCamera />}
-                    compact
+                    bg={MainColor.yellow}
+                    color="yellow"
+                    c={"black"}
                   >
                     Upload
                   </Button>
@@ -96,6 +105,10 @@ export default function Profile_UpdateFotoBackground({
           loaderPosition="center"
           radius={"xl"}
           onClick={() => onUpdate(router, profile.id, file as any, setLoading)}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
+         
         >
           Update
         </Button>

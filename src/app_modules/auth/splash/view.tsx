@@ -1,50 +1,47 @@
 "use client";
 
-import {
-  AspectRatio,
-  Box,
-  Center,
-  Flex,
-  Image,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import UIGlobal_SplashScreen from "@/app_modules/_global/ui/ui_splash";
+import { BackgroundImage, Center, Image, Paper, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export default function SplashScreen({ data }: { data: any }) {
   const router = useRouter();
-  const [val, setVal] = useState(false);
 
   useShallowEffect(() => {
     if (!data) {
       setTimeout(() => {
-        return router.push("/dev/auth/login");
-      }, 2000);
+        return router.push("/dev/auth/login", { scroll: false });
+      }, 1000);
     } else {
       setTimeout(() => {
-        return router.push("/dev/home");
-      }, 2000);
+        return router.push("/dev/home", { scroll: false });
+      }, 1000);
     }
   }, []);
+
   return (
     <>
-      <Center h={"100vh"}>
-        <Stack align="center" justify="center" p={"md"}>
-          {/* <Title c={"#002e59"}>Welcome to</Title> */}
-          <Paper
-            p={{ base: 50, md: 60, lg: 80 }}
-            bg={"gray.1"}
-            radius={500}
-            shadow="xl"
-          >
-            <Image alt="" src={"/aset/logo/logo-hipmi.png"} />
-          </Paper>
-        </Stack>
-      </Center>
+      <BackgroundImage
+        src={"/aset/global/main_background.png"}
+        h={"100vh"}
+        // pos={"static"}
+      >
+        <Center h={"100vh"}>
+          <Stack align="center" justify="center" p={"md"}>
+            {/* <Title c={"#002e59"}>Welcome to</Title> */}
+            <Paper
+              p={{ base: 20, md: 30, lg: 40 }}
+              bg={"gray.1"}
+              radius={"100%"}
+              shadow="xl"
+            >
+              <Image height={200} alt="" src={"/aset/logo/logo-hipmi.png"} />
+            </Paper>
+          </Stack>
+        </Center>
+      </BackgroundImage>
     </>
   );
 }

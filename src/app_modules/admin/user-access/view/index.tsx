@@ -5,6 +5,7 @@ import {
   Button,
   Center,
   Group,
+  Pagination,
   Paper,
   ScrollArea,
   Stack,
@@ -16,20 +17,24 @@ import { IconSearch } from "@tabler/icons-react";
 import adminUserAccess_funEditAccess from "../fun/edit/fun_edit_access";
 import { useState } from "react";
 import adminUserAccess_getListUser from "../fun/get/get_list_all_user";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 
-export default function AdminUserAccess_View({
-  listUser,
-}: {
-  listUser: MODEL_USER[];
-}) {
-  const [data, setData] = useState(listUser);
+export default function AdminUserAccess_View({ listUser }: { listUser: any }) {
+  const [data, setData] = useState<MODEL_USER[]>(listUser.data);
+  const [isActivePage, setActivePage] = useState(1);
+  const [isNPage, setNPage] = useState(listUser.nPage);
+  const [isSearch, setSearch] = useState("");
+
   async function onAccess(id: string) {
     await adminUserAccess_funEditAccess(id, true).then(async (res) => {
       if (res.status === 200) {
-        const value = await adminUserAccess_getListUser();
-        setData(value as any);
+        const value = await adminUserAccess_getListUser({
+          page: 1,
+          search: isSearch,
+        });
+        setData(value.data as any);
+        setNPage(value.nPage);
         ComponentGlobal_NotifikasiBerhasil(res.message);
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
@@ -40,13 +45,38 @@ export default function AdminUserAccess_View({
   async function onDelAccess(id: string) {
     await adminUserAccess_funEditAccess(id, false).then(async (res) => {
       if (res.status === 200) {
-        const value = await adminUserAccess_getListUser();
-        setData(value as any);
+        const value = await adminUserAccess_getListUser({
+          page: 1,
+          search: isSearch,
+        });
+        setData(value.data as any);
+        setNPage(value.nPage);
         ComponentGlobal_NotifikasiBerhasil(res.message);
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }
     });
+  }
+
+  async function onSearch(s: any) {
+    setSearch(s);
+    setActivePage(1);
+    const loadData = await adminUserAccess_getListUser({
+      search: s,
+      page: 1,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  async function onPageClick(p: any) {
+    setActivePage(p);
+    const loadData = await adminUserAccess_getListUser({
+      search: isSearch,
+      page: p,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
   }
 
   const tableBody = data.map((e, i) => (
@@ -86,9 +116,10 @@ export default function AdminUserAccess_View({
       </td>
     </tr>
   ));
+
   return (
     <>
-      <Stack spacing={"xs"}>
+      <Stack spacing={"xs"} h={"90vh"}>
         {/* <pre>{JSON.stringify(listUser, null, 2)}</pre> */}
         <Group
           position="apart"
@@ -97,14 +128,18 @@ export default function AdminUserAccess_View({
           style={{ borderRadius: "6px" }}
         >
           <Title order={4}>Table User</Title>
-          {/* <TextInput
-              icon={<IconSearch size={20} />}
-              radius={"xl"}
-              placeholder="Masukan username"
-            /> */}
+          <TextInput
+            icon={<IconSearch size={20} />}
+            radius={"xl"}
+            placeholder="Masukan username"
+            onChange={(val) => {
+              onSearch(val.currentTarget.value);
+            }}
+          />
         </Group>
-        <Paper p={"md"} withBorder shadow="lg" h={"85vh"}>
-          <ScrollArea h={"80vh"}>
+
+        <Paper p={"md"} withBorder shadow="lg" h={"100%"}>
+          <ScrollArea>
             <Table
               verticalSpacing={"xs"}
               horizontalSpacing={"md"}
@@ -128,6 +163,15 @@ export default function AdminUserAccess_View({
               <tbody>{tableBody}</tbody>
             </Table>
           </ScrollArea>
+          <Center mt={"xl"}>
+            <Pagination
+              value={isActivePage}
+              total={isNPage}
+              onChange={(val) => {
+                onPageClick(val);
+              }}
+            />
+          </Center>
         </Paper>
       </Stack>
     </>

@@ -1,40 +1,37 @@
 "use client";
 
+import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import {
   ActionIcon,
-  AppShell,
   Button,
-  Footer,
   Group,
   Header,
   Modal,
   Stack,
-  Title,
+  Title
 } from "@mantine/core";
-import React from "react";
-import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
+import { useDisclosure } from "@mantine/hooks";
 import {
   IconChevronLeft,
-  IconEdit,
-  IconMessageShare,
+  IconEdit
 } from "@tabler/icons-react";
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { useDisclosure } from "@mantine/hooks";
-import router from "next/router";
-import { title } from "process";
 import { useRouter } from "next/navigation";
-import { data } from "autoprefixer";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import React, { useState } from "react";
 
 export default function LayoutDetailDraftDonasi({
   children,
-  donasiId
+  donasiId,
 }: {
   children: React.ReactNode;
-  donasiId: string
+  donasiId: string;
 }) {
   const [opened, { open, close }] = useDisclosure(false);
   const router = useRouter();
+  const [isLoadingDonasi, setLoadingDonasi] = useState(false);
+  const [isLoadingCerita, setLoadingCerita] = useState(false);
+  const [isLoadingRekening, setLoadingRekening] = useState(false);
+
   return (
     <>
       <AppComponentGlobal_LayoutTamplate
@@ -62,29 +59,47 @@ export default function LayoutDetailDraftDonasi({
       <Modal opened={opened} onClose={close} centered withCloseButton={false}>
         <Stack>
           <Button
+            loaderPosition="center"
+            loading={isLoadingDonasi ? true : false}
+            style={{ transition: "0.5s" }}
             variant="outline"
             radius={"xl"}
             w={"100%"}
             color="blue"
-            onClick={() => router.push(RouterDonasi.edit_donasi + `${donasiId}`)}
+            onClick={() => {
+              setLoadingDonasi(true);
+              router.push(RouterDonasi.edit_donasi + `${donasiId}`);
+            }}
           >
             Edit Donasi
           </Button>
           <Button
+            loaderPosition="center"
+            loading={isLoadingCerita ? true : false}
+            style={{ transition: "0.5s" }}
             variant="outline"
             radius={"xl"}
             w={"100%"}
             color="teal"
-            onClick={() => router.push(RouterDonasi.edit_cerita_penggalang + `${donasiId}`)}
+            onClick={() => {
+              setLoadingCerita(true);
+              router.push(RouterDonasi.edit_cerita_penggalang + `${donasiId}`);
+            }}
           >
             Edit Cerita
           </Button>
           <Button
+            loaderPosition="center"
+            loading={isLoadingRekening ? true : false}
+            style={{ transition: "0.5s" }}
             variant="outline"
             radius={"xl"}
             w={"100%"}
             color="orange"
-            onClick={() => router.push(RouterDonasi.edit_rekening + `${donasiId}`)}
+            onClick={() => {
+              setLoadingRekening(true);
+              router.push(RouterDonasi.edit_rekening + `${donasiId}`);
+            }}
           >
             Edit Rekening
           </Button>

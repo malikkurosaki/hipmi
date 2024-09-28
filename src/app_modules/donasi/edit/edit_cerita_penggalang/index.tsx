@@ -22,6 +22,11 @@ import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
 import _ from "lodash";
 import { Donasi_funUpdateCerita } from "../../fun/update/fun_update_cerita_donasi";
 import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
+import {
+  ComponentGlobal_WarningMaxUpload,
+  maksimalUploadFile,
+} from "@/app_modules/_global/component/waring_popup";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 
 export default function EditCeritaPenggalangDonasi({
   dataCerita,
@@ -29,6 +34,8 @@ export default function EditCeritaPenggalangDonasi({
   dataCerita: MODEL_CERITA_DONASI;
 }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+
   const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
     gs_donasi_tabs_posting
   );
@@ -48,6 +55,13 @@ export default function EditCeritaPenggalangDonasi({
           label="Pembukaan"
           placeholder="Pembuka dari isi cerita"
           value={value.pembukaan}
+          error={
+            value.pembukaan === "" ? (
+              <ComponentGlobal_ErrorInput text="Masukan pembukaan cerita" />
+            ) : (
+              ""
+            )
+          }
           onChange={(val) =>
             setValue({
               ...value,
@@ -64,8 +78,13 @@ export default function EditCeritaPenggalangDonasi({
                   const buffer = URL.createObjectURL(
                     new Blob([new Uint8Array(await files.arrayBuffer())])
                   );
-                  setUpdateImage(buffer);
-                  setFile(files);
+
+                  if (files.size > maksimalUploadFile) {
+                    ComponentGlobal_WarningMaxUpload({});
+                  } else {
+                    setUpdateImage(buffer);
+                    setFile(files);
+                  }
                 } catch (error) {
                   console.log(error);
                 }
@@ -74,6 +93,7 @@ export default function EditCeritaPenggalangDonasi({
             >
               {(props) => (
                 <Button
+                  compact
                   {...props}
                   radius={"xl"}
                   variant="outline"
@@ -108,6 +128,13 @@ export default function EditCeritaPenggalangDonasi({
           label="Cerita"
           placeholder="Ceritakan alasan mengapa harus membuat Penggalangan Dana"
           value={value.cerita}
+          error={
+            value.cerita === "" ? (
+              <ComponentGlobal_ErrorInput text="Masukan pembukaan cerita" />
+            ) : (
+              ""
+            )
+          }
           onChange={(val) =>
             setValue({
               ...value,
@@ -117,6 +144,14 @@ export default function EditCeritaPenggalangDonasi({
         />
 
         <Button
+          style={{
+            transition: "0.5s",
+          }}
+          loaderPosition="center"
+          loading={isLoading ? true : false}
+          disabled={
+            value.cerita === "" || value.pembukaan === "" ? true : false
+          }
           w={"100%"}
           radius={"xl"}
           onClick={() => onUpdate(router, value, file as any)}
@@ -139,14 +174,14 @@ async function onUpdate(
     id: value.id,
     pembukaan: value.pembukaan,
     cerita: value.cerita,
-    imagesId: value.imageCeritaDonasi.id
+    imagesId: value.imageCeritaDonasi.id,
   };
 
   const gambar = new FormData();
   gambar.append("file", file as any);
 
   if (_.values(body).includes("")) return NotifPeringatan("Lengkapi Data");
-  await Donasi_funUpdateCerita(body as any,gambar).then((res) => {
+  await Donasi_funUpdateCerita(body as any, gambar).then((res) => {
     if (res.status === 200) {
       NotifBerhasil(res.message);
       router.back();

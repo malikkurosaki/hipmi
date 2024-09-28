@@ -17,7 +17,7 @@ import {
   SimpleGrid,
   Box,
 } from "@mantine/core";
-import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
 import {
   MODEL_COLLABORATION,
   MODEL_COLLABORATION_ROOM_CHAT,
@@ -25,7 +25,7 @@ import {
 import { IconBan, IconCircleDot, IconEye } from "@tabler/icons-react";
 import { useState } from "react";
 import adminColab_getOneByColabId from "../fun/get/get_one_by_colab_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import ComponentAdminColab_DetailData from "../component/detail_data";
 import adminColab_getOneRoomChatById from "../fun/get/get_one_room_chat_by_id";
 import adminColab_getListAllGroupChat from "../fun/get/get_list_all_group_chat";

@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin";
+import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import {
   Avatar,
@@ -41,7 +41,7 @@ export default function Admin_BuktiTransferInvestasi() {
     <>
       {/* Box Username */}
       {listUsername.map((e) => (
-        <Paper key={e.id} bg={"gray"} p={"md"} mb={"xs"} onClick={() => router.push(RouterAdminInvestasi.status_transfer)}>
+        <Paper key={e.id} bg={"gray"} p={"md"} mb={"xs"} onClick={() => router.push(RouterAdminInvestasi_OLD.status_transfer)}>
           <Grid align="center">
             <Grid.Col span={6}>
               <Text>Username</Text>

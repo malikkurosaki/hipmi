@@ -6,6 +6,7 @@ import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { Stack, Title, Paper, Group, ActionIcon, Text } from "@mantine/core";
 import { IconCircleChevronRight } from "@tabler/icons-react";
 import moment from "moment";
+import { useState } from "react";
 
 export default function ComponentDonasi_CeritaPenggalangMain({
   donasi,
@@ -13,6 +14,7 @@ export default function ComponentDonasi_CeritaPenggalangMain({
   donasi: MODEL_DONASI;
 }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
   return (
     <>
       <Stack spacing={"xs"}>
@@ -20,12 +22,18 @@ export default function ComponentDonasi_CeritaPenggalangMain({
         <Paper p={"sm"} withBorder>
           <Stack>
             <Group position="apart">
-              <Text>{moment(donasi.createdAt).format("ll")}</Text>
+              <Text>
+                {new Intl.DateTimeFormat("id-ID", { dateStyle: "full" }).format(
+                  donasi.createdAt
+                )}
+              </Text>
               <ActionIcon
+                loading={isLoading ? true : false}
                 variant="transparent"
-                onClick={() =>
-                  router.push(RouterDonasi.cerita_penggalang + `${donasi.id}`)
-                }
+                onClick={() => {
+                  setLoading(true);
+                  router.push(RouterDonasi.cerita_penggalang + `${donasi.id}`);
+                }}
               >
                 <IconCircleChevronRight />
               </ActionIcon>

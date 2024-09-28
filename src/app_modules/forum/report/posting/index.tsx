@@ -1,80 +1,144 @@
 "use client";
 
-import { Box, Button, Paper, Radio, Stack, Text, Title } from "@mantine/core";
-import { MODEL_FORUM_MASTER_REPORT } from "../../model/interface";
+import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
+import { Button, Radio, Stack, Text, Title } from "@mantine/core";
+import { toNumber } from "lodash";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { forum_funCreateReportPosting } from "../../fun/create/fun_create_report_posting";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { useRouter } from "next/navigation";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
-import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
+import forum_getOneKategoriById from "../../fun/get/get_one_kategori_by_id";
+import { MODEL_FORUM_MASTER_REPORT } from "../../model/interface";
 
 export default function Forum_ReportPosting({
   postingId,
   listReport,
+  userLoginId,
 }: {
   postingId: string;
   listReport: MODEL_FORUM_MASTER_REPORT[];
+  userLoginId: string;
 }) {
-  const [reportValue, setReportValue] = useState("Kebencian");
+  const [reportValue, setReportValue] = useState("1");
 
   return (
     <>
-      <Stack px={"sm"}>
-        <Radio.Group value={reportValue as any} onChange={setReportValue}>
+      <Stack
+        mb={"md"}
+        p={"sm"}
+        bg={MainColor.darkblue}
+        style={{
+          border: `2px solid ${AccentColor.blue}`,
+          borderRadius: "10px 10px 10px 10px",
+        }}
+      >
+        <Radio.Group
+          c={"white"}
+          value={reportValue as any}
+          onChange={(val: any) => {
+            setReportValue(val);
+          }}
+        >
           <Stack spacing={"xl"}>
             {listReport.map((e) => (
-              <Stack key={e.id}>
+              <Stack key={e?.id.toString()}>
                 <Radio
-                  value={e.title}
-                  label={<Title order={5}>{e.title}</Title>}
+                  value={e.id.toString()}
+                  label={
+                    <Title c={"white"} order={5}>
+                      {e.title}
+                    </Title>
+                  }
                 />
                 <Text>{e.deskripsi}</Text>
               </Stack>
             ))}
           </Stack>
         </Radio.Group>
-        <ButtonAction value={reportValue} postingId={postingId} />
+        <ButtonAction
+          kategoriId={toNumber(reportValue)}
+          postingId={postingId}
+          userLoginId={userLoginId}
+        />
       </Stack>
     </>
   );
 }
 
 function ButtonAction({
-  value,
+  kategoriId,
   postingId,
+  userLoginId,
 }: {
-  value: string;
+  kategoriId: number;
   postingId: string;
+  userLoginId: string;
 }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingLain, setIsLoadingLain] = useState(false);
 
   async function onReport() {
-    await forum_funCreateReportPosting(postingId, value).then((res) => {
-      if (res.status === 201) {
-        ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
-        setLoading(true);
-        router.back();
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
-      }
+    const report = await forum_funCreateReportPosting({
+      postingId: postingId,
+      kategoriId: kategoriId,
     });
+    if (report.status === 201) {
+      const getKategori = await forum_getOneKategoriById({
+        kategoriId: toNumber(kategoriId),
+      });
+      // console.log(getKategori);
+
+      ComponentGlobal_NotifikasiBerhasil(report.message, 2000);
+      router.back();
+
+      const dataNotif = {
+        appId: postingId,
+        pesan: getKategori?.deskripsi,
+        kategoriApp: "FORUM",
+        title: getKategori?.title,
+        userId: userLoginId,
+        status: "Report Posting",
+      };
+
+      const createNotifikasi = await notifikasiToAdmin_funCreate({
+        data: dataNotif as any,
+      });
+
+      if (createNotifikasi.status === 201) {
+        mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
+      }
+      setIsLoading(true);
+    } else {
+      ComponentGlobal_NotifikasiGagal(report.message);
+    }
   }
   return (
     <>
       <Stack mt={"md"}>
         <Button
+          loaderPosition="center"
+          loading={isLoadingLain ? true : false}
           radius={"xl"}
-          onClick={() => router.replace(RouterForum.report_posting_lainnya + postingId)}
+          onClick={() => {
+            setIsLoadingLain(true);
+            router.replace(RouterForum.report_posting_lainnya + postingId);
+          }}
         >
           Lainnya
         </Button>
         <Button
           radius={"xl"}
-          color="red"
+          color="orange"
           loaderPosition="center"
-          loading={loading ? true : false}
+          loading={isLoading ? true : false}
           onClick={() => onReport()}
         >
           Report

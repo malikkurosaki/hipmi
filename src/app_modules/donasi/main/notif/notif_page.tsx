@@ -19,6 +19,8 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { Donasi_funUpdateNotifById } from "../../fun/update/fun_update_notif_by_user_id";
 import { NotifGagal } from "../../component/notifikasi/notif_gagal";
 import { useRouter } from "next/navigation";
+import _ from "lodash";
+import ComponentDonasi_IsEmptyData from "../../component/is_empty_data";
 
 export default function Donasi_NotifPage({
   dataNotif,
@@ -27,6 +29,11 @@ export default function Donasi_NotifPage({
 }) {
   const router = useRouter();
   const [notif, setNotif] = useState(dataNotif);
+
+  if (_.isEmpty(dataNotif)) {
+    return <ComponentDonasi_IsEmptyData text="Tidak ada data" />;
+  }
+
   return (
     <>
       <Box>

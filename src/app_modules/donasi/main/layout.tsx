@@ -2,39 +2,29 @@
 
 import {
   ActionIcon,
-  AppShell,
   Center,
   Flex,
   Footer,
   Grid,
   Group,
   Header,
-  Indicator,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
 import React, { useState } from "react";
-import ComponentDonasi_HeaderTamplate from "../component/header_tamplate";
 
+import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
+import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import {
-  IconBell,
   IconChevronLeft,
-  IconCurrencyDollar,
-  IconGift,
   IconGiftCardFilled,
   IconHome,
-  IconMoneybag,
-  IconSend,
+  IconMoneybag
 } from "@tabler/icons-react";
-import toast from "react-simple-toasts";
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
 import { gs_donasi_hot_menu } from "../global_state";
-import { RouterCrowd } from "@/app/lib/router_hipmi/router_crowd";
-import { title } from "process";
-import _ from "lodash";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
 
 export default function LayoutDonasi({
   children,
@@ -47,6 +37,9 @@ export default function LayoutDonasi({
 }) {
   const router = useRouter();
   const [active, setActive] = useAtom(gs_donasi_hot_menu);
+  const [isLoading, setLoading] = useState(false);
+  const [isRightLoading, setRightLoading] = useState(false);
+
   const listPage = [
     {
       id: 1,
@@ -74,16 +67,27 @@ export default function LayoutDonasi({
         header={
           <Header height={50} sx={{ borderStyle: "none" }}>
             <Group h={50} position="apart" px={"md"}>
-              <ActionIcon onClick={() => router.push(RouterCrowd.main)}>
+              <ActionIcon
+                radius={"xl"}
+                variant="transparent"
+                loading={isLoading ? true : false}
+                onClick={() => {
+                  setLoading(true);
+                  router.push(RouterCrowd.main);
+                }}
+              >
                 <IconChevronLeft />
               </ActionIcon>
               <Title order={5}>Donasi</Title>
-              <ActionIcon
+              <ActionIcon disabled variant="transparent"/>
+              {/* <ActionIcon
                 radius={"md"}
+                loading={isRightLoading ? true : false}
                 variant="transparent"
-                onClick={() =>
-                  router.push(RouterDonasi.notif_page + `${userId}`)
-                }
+                onClick={() => {
+                  setRightLoading(true);
+                  router.push(RouterDonasi.notif_page + `${userId}`);
+                }}
               >
                 {_.isEmpty(isRead) ? (
                   <IconBell />
@@ -94,7 +98,7 @@ export default function LayoutDonasi({
                 ) : (
                   <IconBell />
                 )}
-              </ActionIcon>
+              </ActionIcon> */}
             </Group>
           </Header>
         }

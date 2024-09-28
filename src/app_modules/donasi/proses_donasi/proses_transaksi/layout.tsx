@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { useAtom } from "jotai";
 import { gs_donasi_hot_menu } from "../../global_state";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 
 export default function LayoutDonasi_ProsesTransaksi({
   children,

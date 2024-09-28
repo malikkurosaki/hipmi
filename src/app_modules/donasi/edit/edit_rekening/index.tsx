@@ -9,6 +9,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { Donasi_funUpdateRekening } from "../../fun/update/fun_update_rekening";
 import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
 import { NotifGagal } from "../../component/notifikasi/notif_gagal";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 
 export default function Donasi_EditRekening({
   dataDonasi,
@@ -17,6 +18,7 @@ export default function Donasi_EditRekening({
 }) {
   const router = useRouter();
   const [donasi, setDonasi] = useState(dataDonasi);
+  const [isLoading, setLoading] = useState(false);
 
   return (
     <>
@@ -27,6 +29,13 @@ export default function Donasi_EditRekening({
             label="Nama Bank"
             placeholder="Masukan Nama Bank"
             value={donasi.namaBank}
+            error={
+              donasi.namaBank === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan nama bank" />
+              ) : (
+                ""
+              )
+            }
             onChange={(val) =>
               setDonasi({
                 ...donasi,
@@ -36,18 +45,37 @@ export default function Donasi_EditRekening({
           />
           <TextInput
             withAsterisk
+            type="number"
             label="Nomor Rekening"
             placeholder="Masukkan Nomor Rekening"
             value={donasi.rekening}
+            error={
+              donasi.rekening === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan nomor rekening" />
+              ) : (
+                ""
+              )
+            }
             onChange={(val) =>
               setDonasi({
                 ...donasi,
-                rekening: val.target.value,
+                rekening: val.currentTarget.value,
               })
             }
           />
         </Stack>
-        <Button radius={"xl"} onClick={() => onUpdate(router, donasi)}>
+        <Button
+          style={{
+            transition: "0.5s",
+          }}
+          loaderPosition="center"
+          loading={isLoading ? true : false}
+          disabled={
+            donasi.namaBank === "" || donasi.rekening === "" ? true : false
+          }
+          radius={"xl"}
+          onClick={() => onUpdate(router, donasi, setLoading)}
+        >
           Update
         </Button>
       </Stack>
@@ -55,9 +83,14 @@ export default function Donasi_EditRekening({
   );
 }
 
-async function onUpdate(router: AppRouterInstance, donasi: MODEL_DONASI) {
+async function onUpdate(
+  router: AppRouterInstance,
+  donasi: MODEL_DONASI,
+  setLoading: any
+) {
   await Donasi_funUpdateRekening(donasi).then((res) => {
     if (res.status === 200) {
+      setLoading(true);
       router.back();
       NotifBerhasil(res.message);
     } else {

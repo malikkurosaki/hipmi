@@ -14,6 +14,7 @@ import {
   Modal,
   Group,
   Title,
+  Text,
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
 import { useAtom } from "jotai";
@@ -28,6 +29,11 @@ import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
 import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
 import _ from "lodash";
 import { Donasi_getOneById } from "../../fun/get/get_one_donasi_by_id";
+import {
+  ComponentGlobal_WarningMaxUpload,
+  maksimalUploadFile,
+} from "@/app_modules/_global/component/waring_popup";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 
 export default function EditDonasi({
   dataDonasi,
@@ -39,6 +45,8 @@ export default function EditDonasi({
   masterDurasi: MODEL_DONASI_ALL_MASTER[];
 }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+
   const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
     gs_donasi_tabs_posting
   );
@@ -91,10 +99,13 @@ export default function EditDonasi({
                   const buffer = URL.createObjectURL(
                     new Blob([new Uint8Array(await files.arrayBuffer())])
                   );
-                  // console.log(buffer, "ini buffer");
-                  // console.log(files, " ini file");
-                  setUpdateImage(buffer);
-                  setFile(files);
+
+                  if (files.size > maksimalUploadFile) {
+                    ComponentGlobal_WarningMaxUpload({});
+                  } else {
+                    setUpdateImage(buffer);
+                    setFile(files);
+                  }
                 } catch (error) {
                   console.log(error);
                 }
@@ -103,11 +114,12 @@ export default function EditDonasi({
             >
               {(props) => (
                 <Button
+                  compact
                   {...props}
                   radius={"xl"}
                   variant="outline"
-                  w={150}
                   leftIcon={<IconCamera />}
+                  w={150}
                 >
                   Upload
                 </Button>
@@ -121,6 +133,14 @@ export default function EditDonasi({
             label="Judul Donasi"
             placeholder="Contoh: Renovasi Masjid pada kampung, dll"
             value={value.title}
+            maxLength={100}
+            error={
+              value.title === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan judul" />
+              ) : (
+                ""
+              )
+            }
             onChange={(val) =>
               setValue({
                 ...value,
@@ -129,17 +149,39 @@ export default function EditDonasi({
             }
           />
           <TextInput
-            type="number"
+            icon={<Text fw={"bold"}>Rp.</Text>}
+            min={0}
             withAsterisk
             label="Target Dana"
-            placeholder="Masukan nominal angka"
-            value={+value.target ? +value.target : ""}
-            onChange={(val) =>
+            placeholder="0"
+            value={value.target}
+            error={
+              value.target === "" || value.target === "0" ? (
+                <ComponentGlobal_ErrorInput text="Masukan target dana" />
+              ) : (
+                ""
+              )
+            }
+            onChange={(val) => {
+              const match = val.currentTarget.value
+                .replace(/\./g, "")
+                .match(/^[0-9]+$/);
+
+              if (val.currentTarget.value === "")
+                return setValue({
+                  ...value,
+                  target: 0 + "",
+                });
+              if (!match?.[0]) return null;
+
+              const nilai = val.currentTarget.value.replace(/\./g, "");
+              const target = Intl.NumberFormat("id-ID").format(+nilai);
+
               setValue({
                 ...value,
-                target: val.target.value,
-              })
-            }
+                target: target,
+              });
+            }}
           />
           <Select
             label="Durasi"
@@ -161,6 +203,12 @@ export default function EditDonasi({
           />
         </Stack>
         <Button
+          style={{
+            transition: "0.5s",
+          }}
+          disabled={value.title === "" || value.target === "0" ? true : false}
+          loaderPosition="center"
+          loading={isLoading ? true : false}
           my={"lg"}
           radius={"xl"}
           onClick={() => {
@@ -169,28 +217,10 @@ export default function EditDonasi({
         >
           Update
         </Button>
-        {/* <Modal opened={opened} onClose={close} withCloseButton={false} centered >
-          <ModalEdit />
-        </Modal> */}
       </Stack>
     </>
   );
 }
-
-// function ModalEdit() {
-//   return (
-//     <>
-//     <Stack>
-//       <Title order={6}>Anda yakin menyimpan data ini ?</Title>
-//     <Group position="center">
-//         <Button variant="outline" >Batal</Button>
-//         <Button>Simpan</Button>
-//       </Group>
-//     </Stack>
-
-//     </>
-//   );
-// }
 
 async function onUpdate(value: MODEL_DONASI, file: FormData, router: any) {
   const body = {

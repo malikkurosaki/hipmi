@@ -5,9 +5,11 @@ import React, { useState } from "react";
 import ComponentForum_HeaderTamplate from "../component/header/header_tamplate";
 import { useRouter } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/component_global/loading_page_v2";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
 import { revalidatePath } from "next/cache";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
 
 export const dynamic = "force-dynamic";
 export default function LayoutForum_Detail({
@@ -22,7 +24,13 @@ export default function LayoutForum_Detail({
 
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <UIGlobal_LayoutTamplate
+        header={<UIGlobal_LayoutHeaderTamplate title="Postingan" posotion={"left"} />}
+      >
+        {children}
+      </UIGlobal_LayoutTamplate>
+
+      {/* <AppComponentGlobal_LayoutTamplate
         header={
           <Header height={50} sx={{ borderStyle: "none" }}>
             <Group h={50} px={"md"}>
@@ -31,7 +39,6 @@ export default function LayoutForum_Detail({
                 variant="transparent"
                 onClick={() => {
                   setLoading(true);
-                  // revalidatePath("/dev/forum/main");
                   router.back();
                 }}
               >
@@ -43,7 +50,7 @@ export default function LayoutForum_Detail({
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </AppComponentGlobal_LayoutTamplate> */}
     </>
   );
 }

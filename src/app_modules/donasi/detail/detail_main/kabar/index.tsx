@@ -2,6 +2,7 @@
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import ComponentDonasi_ListKabar from "@/app_modules/donasi/component/detail_main/list_kabar";
+import ComponentDonasi_IsEmptyData from "@/app_modules/donasi/component/is_empty_data";
 import { MODEL_DONASI_KABAR } from "@/app_modules/donasi/model/interface";
 import {
   ActionIcon,
@@ -16,6 +17,7 @@ import {
   Title,
 } from "@mantine/core";
 import { IconCircleChevronRight } from "@tabler/icons-react";
+import _ from "lodash";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -27,6 +29,9 @@ export default function KabarDonasi({
 }) {
   const router = useRouter();
   const [kabar, setKabar] = useState(listKabar);
+
+  if (_.isEmpty(kabar)) return <ComponentDonasi_IsEmptyData />;
+
   return (
     <>
       <SimpleGrid
@@ -39,9 +44,12 @@ export default function KabarDonasi({
         ]}
       >
         {kabar.map((e, i) => (
-         <Box key={i}>
-          <ComponentDonasi_ListKabar kabar={e} route={RouterDonasi.detail_kabar} />
-         </Box>
+          <Box key={i}>
+            <ComponentDonasi_ListKabar
+              kabar={e}
+              route={RouterDonasi.detail_kabar}
+            />
+          </Box>
         ))}
       </SimpleGrid>
     </>

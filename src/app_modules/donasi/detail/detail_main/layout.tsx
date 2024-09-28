@@ -1,10 +1,10 @@
 "use client";
 
-import { AppShell, Box, Button, Center, Footer, Stack } from "@mantine/core";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
+import { Footer, Stack } from "@mantine/core";
 import React from "react";
-import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
 import ButtonDonasi from "../../component/footer_button_donasi";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
 
 export default function LayoutDetailMainDonasi({
   children,

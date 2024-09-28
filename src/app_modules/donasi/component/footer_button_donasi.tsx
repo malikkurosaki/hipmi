@@ -4,9 +4,11 @@ import { Footer, Center, Button } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { gs_proses_donasi } from "../global_state";
+import { useState } from "react";
 
 export default function ButtonDonasi({ donasiId }: { donasiId: string }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
   const [prosesDonasi, setProsesDonasi] = useAtom(gs_proses_donasi);
 
   async function onClick() {
@@ -16,6 +18,7 @@ export default function ButtonDonasi({ donasiId }: { donasiId: string }) {
       nominal: "",
       norek: "",
     });
+    setLoading(true);
     router.push(RouterDonasi.masukan_donasi + `${donasiId}`);
   }
 
@@ -23,7 +26,13 @@ export default function ButtonDonasi({ donasiId }: { donasiId: string }) {
     <>
       <Footer height={70} px={"md"} sx={{ borderStyle: "none" }}>
         <Center h={70}>
-          <Button w={"100%"} radius={"xl"} onClick={() => onClick()}>
+          <Button
+            loaderPosition="center"
+            loading={isLoading ? true : false}
+            w={"100%"}
+            radius={"xl"}
+            onClick={() => onClick()}
+          >
             Donasi
           </Button>
         </Center>

@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterAdminInvestasi } from "@/app/lib/router_hipmi/router_admin";
+import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import {
   Box,
   Button,
@@ -24,13 +24,13 @@ export default function Admin_HalamanAksi({idInves}: {idInves: string}) {
       id: 1,
       name: "Konfirmasi",
       desc: "Publis atau non - aktifkan proyek invetsasi",
-      route: RouterAdminInvestasi.konfirmasi,
+      route: RouterAdminInvestasi_OLD.konfirmasi,
     },
     {
       id: 2,
       name: "Bukti Transfer",
       desc: "Lihat bukti transfer investor",
-      route: RouterAdminInvestasi.bukti_transfer,
+      route: RouterAdminInvestasi_OLD.bukti_transfer,
     },
   ];
 

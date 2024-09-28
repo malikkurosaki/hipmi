@@ -5,7 +5,7 @@ import React from "react";
 import ComponentEvent_HeaderTamplate from "../../component/header_tamplate";
 import { IconEdit } from "@tabler/icons-react";
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 
 export default function LayoutEvent_DetailDraft({
   children,

@@ -9,7 +9,7 @@ import ComponentEvent_BoxListStatus from "../../component/box_list_status";
 import _ from "lodash";
 import ComponentEvent_IsEmptyData from "../../component/is_empty_data";
 import { useState } from "react";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/component_global/loading_card";
+import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
 
 export default function Event_StatusPublish({
   listPublish,

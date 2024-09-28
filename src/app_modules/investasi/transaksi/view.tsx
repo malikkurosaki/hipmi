@@ -24,6 +24,7 @@ import funGantiStatusTransaksi_Investasi from "../fun/fun_ganti_status_transaksi
 import { useInterval, useShallowEffect } from "@mantine/hooks";
 import _ from "lodash";
 import Link from "next/link";
+import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
 
 export default function TransaksiInvestasi({
   statusTransaksi,
@@ -58,9 +59,7 @@ export default function TransaksiInvestasi({
   if (_.isEmpty(transaksi))
     return (
       <>
-        <Center h={"80vh"}>
-          <Text >Tidak Ada Transaksi</Text>
-        </Center>
+        <ComponentInvestasi_IsEmptyData text="Tidak ada transaksi" />
       </>
     );
 
@@ -68,26 +67,30 @@ export default function TransaksiInvestasi({
     <>
       <Stack>
         {transaksi.map((e) => (
-          <Box key={e.id} onClick={() => router.push(RouterInvestasi.status_pesanan + `${e.id}`)}>
-
-              <Paper p="xs" bg={"gray"}>
-                <Group position="apart">
-                  <Title order={6}>{e.Investasi.title}</Title>
-                  <Title order={5}>
-                    Rp.
-                    {new Intl.NumberFormat("id-ID", {
-                      maximumFractionDigits: 10,
-                    }).format(+e.gross_amount)}
-                  </Title>
-                </Group>
-                <Group position="apart">
-                  <Stack spacing={0}>
-                    {/* <Text fz={"xs"}>Bank {e.namaBank}</Text> */}
-                    <Text fz={"xs"}>{moment(e.createdAt).format("ll")}</Text>
-                  </Stack>
-                  <Text>{e.quantity} Lembar</Text>
-                </Group>
-              </Paper>
+          <Box
+            key={e.id}
+            onClick={() =>
+              router.push(RouterInvestasi.status_pesanan + `${e.id}`)
+            }
+          >
+            <Paper p="xs" bg={"gray"}>
+              <Group position="apart">
+                <Title order={6}>{e.Investasi.title}</Title>
+                <Title order={5}>
+                  Rp.
+                  {new Intl.NumberFormat("id-ID", {
+                    maximumFractionDigits: 10,
+                  }).format(+e.gross_amount)}
+                </Title>
+              </Group>
+              <Group position="apart">
+                <Stack spacing={0}>
+                  {/* <Text fz={"xs"}>Bank {e.namaBank}</Text> */}
+                  <Text fz={"xs"}>{moment(e.createdAt).format("ll")}</Text>
+                </Stack>
+                <Text>{e.quantity} Lembar</Text>
+              </Group>
+            </Paper>
           </Box>
         ))}
       </Stack>

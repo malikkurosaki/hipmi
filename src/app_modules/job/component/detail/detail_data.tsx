@@ -3,6 +3,10 @@
 import { Card, Stack, Skeleton, Image, Text, Center } from "@mantine/core";
 import { MODEL_JOB } from "../../model/interface";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 
 export default function ComponentJob_DetailData({
   data,
@@ -13,7 +17,16 @@ export default function ComponentJob_DetailData({
     <>
       {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       {data ? (
-        <Card shadow="lg" withBorder p={30}>
+        <Card
+          shadow="lg"
+          withBorder
+          p={30}
+          style={{
+            backgroundColor: MainColor.darkblue,
+            border: `2px solid ${AccentColor.blue}`,
+          }}
+          c={"white"}
+        >
           <Card.Section px={"xs"} pb={"lg"}>
             <Stack spacing={"xl"}>
               {data.imagesId ? (

@@ -1,6 +1,6 @@
 "use client";
 
-import { RouterAdminDonasi } from "@/app/lib/router_hipmi/router_admin";
+import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
 import {
   ActionIcon,
   Box,
@@ -31,16 +31,16 @@ import { useState } from "react";
 import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import ComponentAdminDonasi_TombolKembali from "../../donasi/component/tombol_kembali";
 import { MODEL_EVENT } from "@/app_modules/event/model/interface";
-import ComponentAdminGlobal_HeaderTamplate from "../../component/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
 import moment from "moment";
 import _ from "lodash";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { AdminEvent_funEditStatusPublishById } from "../fun/edit/fun_edit_status_publish_by_id";
 import { AdminEvent_getListTableByStatusId } from "../fun/get/get_list_table_by_status_id";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { AdminEvent_funEditCatatanById } from "../fun/edit/fun_edit_status_reject_by_id";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 
 export default function AdminEvent_TableReview({
   listReview,
@@ -134,9 +134,7 @@ function TableStatus({ listReview }: { listReview: MODEL_EVENT[] }) {
             <Button
               radius={"xl"}
               onClick={() => {
-                onReject(eventId, catatan, setData, close);
-
-                // console.log("hehe")
+                onReject(eventId, catatan, setData, close)
               }}
             >
               Simpan

@@ -1,5 +1,4 @@
-import HomeView from "./view";
-import HomeLayout from "./layout";
+import HomeView from "./view_home";
 import Home_UserNotActive from "./user_non_active";
 
-export { HomeView, HomeLayout, Home_UserNotActive as Home_UserNonActive };
+export { HomeView, Home_UserNotActive as Home_UserNonActive };

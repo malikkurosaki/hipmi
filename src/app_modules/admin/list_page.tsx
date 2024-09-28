@@ -1,19 +1,23 @@
 import { RouterAdminColab } from "@/app/lib/router_admin/router_admin_colab";
 import { RouterAdminDeveloper } from "@/app/lib/router_admin/router_admin_developer";
+import { RouterAdminDonasi } from "@/app/lib/router_admin/router_admin_donasi";
 import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
 import { RouterAdminForum } from "@/app/lib/router_admin/router_admin_forum";
+import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
 import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
 import { RouterAdminVote } from "@/app/lib/router_admin/router_admin_vote";
 import { RouterAdminUserAccess } from "@/app/lib/router_admin/router_admn_user_acces";
+import { RouterAdminAppInformation } from "@/app/lib/router_admin/router_app_information";
 import {
   RouterAdminDashboard,
-  RouterAdminDonasi,
-  RouterAdminInvestasi,
+  RouterAdminDonasi_OLD,
+  RouterAdminInvestasi_OLD,
 } from "@/app/lib/router_hipmi/router_admin";
 import {
   IconAffiliate,
   IconBriefcase,
   IconDashboard,
+  IconDeviceMobile,
   IconMessages,
   IconUserCog,
 } from "@tabler/icons-react";
@@ -26,6 +30,7 @@ import {
 } from "@tabler/icons-react";
 
 export const listAdminPage = [
+  // Main Dashboard
   {
     id: 1,
     name: "Main Dashboard",
@@ -33,21 +38,73 @@ export const listAdminPage = [
     icon: <IconHome />,
     child: [],
   },
+
+  // Investasi
   {
     id: 2,
     name: "Investasi",
-    path: RouterAdminInvestasi.main_investasi,
+    path: "",
     icon: <IconMoneybag />,
-
-    child: [],
+    child: [
+      {
+        id: 21,
+        name: "Dashboard",
+        path: RouterAdminInvestasi.main,
+      },
+      {
+        id: 22,
+        name: "Table Publish",
+        path: RouterAdminInvestasi.table_publish,
+      },
+      {
+        id: 23,
+        name: "Table Review",
+        path: RouterAdminInvestasi.table_review,
+      },
+      {
+        id: 24,
+        name: "Table Reject",
+        path: RouterAdminInvestasi.table_reject,
+      },
+    ],
   },
+
+  //Donasi
   {
     id: 3,
     name: "Donasi",
-    path: RouterAdminDonasi.main_donasi,
+    path: "",
     icon: <IconHeartHandshake />,
-    child: [],
+    child: [
+      {
+        id: 31,
+        name: "Dashboard",
+        path: RouterAdminDonasi.main,
+      },
+      {
+        id: 32,
+        name: "Table Publish",
+        path: RouterAdminDonasi.table_publish,
+      },
+      {
+        id: 33,
+        name: "Table Review",
+        path: RouterAdminDonasi.table_review,
+      },
+      {
+        id: 34,
+        name: "Table Reject",
+        path: RouterAdminDonasi.table_reject,
+      },
+      {
+        id: 35,
+        name: "Table Kategori",
+        path: RouterAdminDonasi.table_kategori,
+      },
+    ],
   },
+
+  // Event
   {
     id: 4,
     name: "Event",
@@ -86,6 +143,8 @@ export const listAdminPage = [
       },
     ],
   },
+
+  // Voting
   {
     id: 5,
     name: "Voting",
@@ -119,6 +178,8 @@ export const listAdminPage = [
       },
     ],
   },
+
+  // Job Vacancy
   {
     id: 6,
     name: "Job Vacancy",
@@ -133,25 +194,27 @@ export const listAdminPage = [
       {
         id: 62,
         name: "Table Publish",
-        path: RouterAdminJob.table_publish,
+        path: RouterAdminJob.publish,
       },
       {
         id: 63,
         name: "Table Review",
-        path: RouterAdminJob.table_review,
+        path: RouterAdminJob.review,
       },
       {
         id: 64,
         name: "Table Reject",
-        path: RouterAdminJob.table_reject,
+        path: RouterAdminJob.reject,
       },
-      {
-        id: 65,
-        name: "Arsip",
-        path: RouterAdminJob.arsip,
-      },
+      // {
+      //   id: 65,
+      //   name: "Arsip",
+      //   path: RouterAdminJob.arsip,
+      // },
     ],
   },
+
+  // Forum
   {
     id: 7,
     name: "Forum",
@@ -166,20 +229,22 @@ export const listAdminPage = [
       {
         id: 72,
         name: "Table Posting",
-        path: RouterAdminForum.publish,
+        path: RouterAdminForum.table_posting,
       },
-      // {
-      //   id: 73,
-      //   name: "Laporan Posting",
-      //   path: RouterAdminForum.report_posting,
-      // },
-      // {
-      //   id: 74,
-      //   name: "Laporan Komentar",
-      //   path: RouterAdminForum.report_komentar,
-      // },
+      {
+        id: 73,
+        name: "Report Posting",
+        path: RouterAdminForum.table_report_posting,
+      },
+      {
+        id: 74,
+        name: "Report Komentar",
+        path: RouterAdminForum.table_report_komentar,
+      },
     ],
   },
+
+  // Project Collaboration
   {
     id: 8,
     name: "Project Collaboration",
@@ -208,6 +273,16 @@ export const listAdminPage = [
       },
     ],
   },
+
+  {
+    id: 97,
+    name: "App Information",
+    path: RouterAdminAppInformation.main,
+    icon: <IconDeviceMobile />,
+    child: [],
+  },
+
+  // User Access
   {
     id: 98,
     name: "User Access",
@@ -215,6 +290,8 @@ export const listAdminPage = [
     icon: <IconUserCog />,
     child: [],
   },
+
+  // Developer
   {
     id: 99,
     name: "Developer",

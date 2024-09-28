@@ -22,7 +22,7 @@ import {
 import { gs_vote_hotMenu } from "../global_state";
 import { useAtom } from "jotai";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/component_global/component_layout_tamplate";
+import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 
 export default function LayoutVote_Main({
   children,

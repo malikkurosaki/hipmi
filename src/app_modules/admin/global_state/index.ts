@@ -5,6 +5,14 @@ import { atomWithStorage } from "jotai/utils";
  * @type number
  * @
  */
-export const gs_admin_hotMenu = atomWithStorage("gs_admin_hotMenu", 1)
+export const gs_admin_hotMenu = atomWithStorage("gs_admin_hotMenu", 1);
 
-export const gs_admin_subMenu = atomWithStorage<number | null>("gs_admin_subMenu",null)
+export const gs_admin_subMenu = atomWithStorage<number | null>(
+  "gs_admin_subMenu",
+  null
+);
+
+export const gs_layout_admin_isNavbarOpen = atomWithStorage(
+  "gs_layout_admin_isNavbarOpen",
+  false
+);

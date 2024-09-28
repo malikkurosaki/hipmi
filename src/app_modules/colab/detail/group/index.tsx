@@ -35,7 +35,7 @@ import {
 import _ from "lodash";
 import ComponentColab_IsEmptyData from "../../component/is_empty_data";
 import colab_getMessageByRoomId from "../../fun/get/room_chat/get_message_by_room_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import colab_funCreateMessageByUserId from "../../fun/create/room/fun_create_message_by_user_id";
 import { useShallowEffect } from "@mantine/hooks";
 import mqtt_client from "@/util/mqtt_client";

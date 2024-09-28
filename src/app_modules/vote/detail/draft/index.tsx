@@ -5,13 +5,13 @@ import ComponentVote_DetailDataSebelumPublish from "../../component/detail/detai
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { gs_vote_status } from "../../global_state";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/component_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { useDisclosure } from "@mantine/hooks";
 import { MODEL_VOTING } from "../../model/interface";
 import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/component_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { Vote_funDeleteById } from "../../fun/delete/fun_delete_by_id";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/component_global/notif_global/notifikasi_peringatan";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import moment from "moment";
 
 export default function Vote_DetailDraft({
