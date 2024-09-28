@@ -295,6 +295,6 @@ if (isDiscountAvailable(customer)) {
 16. database
 
 
-v.1.2.7
+v.1.2.8
     
 
