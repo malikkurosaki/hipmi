@@ -18,7 +18,10 @@ export function RealtimePage({ token }: { token: string }) {
   function onKirim() {
     setData({
       id: "123",
-      data: Math.random().toString(),
+      data: {
+        "topic":"test",
+      }
+
     });
   }
   return (

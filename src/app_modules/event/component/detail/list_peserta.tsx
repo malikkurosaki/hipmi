@@ -1,22 +1,19 @@
 "use client";
 
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import {
-  Paper,
-  Stack,
   Center,
-  Title,
-  Grid,
-  Avatar,
-  Divider,
+  Stack,
   Text,
+  Title
 } from "@mantine/core";
 import _ from "lodash";
 
-import peserta from "../../main/kontribusi/peserta";
-import { MODEL_EVENT_PESERTA } from "../../model/interface";
+import {
+  ComponentGlobal_AvatarAndUsername,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
 import { useRouter } from "next/navigation";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { MODEL_EVENT_PESERTA } from "../../model/interface";
 
 export default function ComponentEvent_ListPeserta({
   listPeserta,
@@ -28,16 +25,8 @@ export default function ComponentEvent_ListPeserta({
   const router = useRouter();
   return (
     <>
-      <Paper
-        mt={"lg"}
-        p={"md"}
-        style={{
-          border: `2px solid ${AccentColor.blue}`,
-          backgroundColor: AccentColor.darkblue,
-          color: "white",
-        }}
-      >
-        <Stack spacing={"md"} p={"md"}>
+      <ComponentGlobal_CardStyles>
+        <Stack spacing={"md"} px={"sm"}>
           <Center>
             <Title order={5}>Daftar Peserta ({total})</Title>
           </Center>
@@ -52,37 +41,18 @@ export default function ComponentEvent_ListPeserta({
             <Stack>
               {listPeserta.map((e, i) => (
                 <Stack key={i} spacing={"sm"}>
-                  <Grid>
-                    <Grid.Col
-                      span={"content"}
-                      onClick={() => {
-                        router.push(RouterProfile.katalog + e.User.Profile.id);
-                      }}
-                    >
-                      <Avatar
-                        sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-                        radius={"xl"}
-                        bg={"gray"}
-                        size={30}
-                        src={
-                          RouterProfile.api_foto_profile +
-                          e.User.Profile.imagesId
-                        }
-                      />
-                    </Grid.Col>
-                    <Grid.Col span={"auto"}>
-                      <Stack justify="center" h={"100%"}>
-                        <Text>{e.User.Profile.name}</Text>
-                      </Stack>
-                    </Grid.Col>
-                  </Grid>
-                  <Divider />
+                  <ComponentGlobal_AvatarAndUsername
+                    profile={e.User.Profile as any}
+                    sizeAvatar={30}
+                    fontSize={"sm"}
+                  />
+                  {/* <Divider /> */}
                 </Stack>
               ))}
             </Stack>
           )}
         </Stack>
-      </Paper>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

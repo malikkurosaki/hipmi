@@ -37,9 +37,7 @@ export default function Portofolio_EditLogoBisnis({
             {img ? (
               <Image maw={250} alt="Image" src={img} />
             ) : (
-              <ComponentGlobal_LoadImage
-                url={APIs.GET({ fileId: dataPorto.logoId })}
-              />
+              <ComponentGlobal_LoadImage fileId={dataPorto.logoId} />
             )}
 
             <Center>

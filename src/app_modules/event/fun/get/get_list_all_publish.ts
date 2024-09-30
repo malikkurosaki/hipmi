@@ -6,13 +6,13 @@ import _ from "lodash";
 export async function event_getListAllPublish({ page }: { page: number }) {
   const takeData = 10;
   const skipData = page * takeData - takeData;
-  
+
   const data = await prisma.event.findMany({
     take: takeData,
     skip: skipData,
     orderBy: [
       {
-        tanggal: "desc",
+        tanggal: "asc",
       },
     ],
     where: {
@@ -22,17 +22,9 @@ export async function event_getListAllPublish({ page }: { page: number }) {
         gte: new Date(),
       },
     },
-    select: {
-      id: true,
-      title: true,
-      lokasi: true,
-      tanggal: true,
-      deskripsi: true,
-      active: true,
-      catatan: true,
-      authorId: true,
+    include: {
       Author: {
-        select: {
+        include: {
           Profile: true,
         },
       },

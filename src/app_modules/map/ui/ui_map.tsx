@@ -110,7 +110,7 @@ export function UiMap_MapBoxView({
         opened={openDrawer}
         close={() => setOpenDrawer(false)}
         mapId={mapId}
-        component={<ComponentMap_DetailData mapId={mapId} />}
+        component={<ComponentMap_DetailData mapId={mapId}  />}
       />
     </>
   );

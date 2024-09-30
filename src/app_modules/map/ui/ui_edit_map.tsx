@@ -141,18 +141,11 @@ export function UiMap_EditMap({
 
           <ComponentGlobal_BoxUploadImage>
             {img ? (
-              <AspectRatio ratio={1 / 1} mah={265} mx={"auto"}>
-                <Image
-                  style={{ maxHeight: 250, margin: "auto", padding: "5px" }}
-                  alt="Photo"
-                  height={250}
-                  src={img}
-                />
+              <AspectRatio ratio={1 / 1} mt={5} maw={300} mx={"auto"}>
+                <Image style={{ maxHeight: 250 }} alt="Avatar" src={img} />
               </AspectRatio>
             ) : (
-              <ComponentGlobal_LoadImage
-                url={APIs.GET({ fileId: data.imageId })}
-              />
+              <ComponentGlobal_LoadImage maw={300} fileId={data.imageId} />
             )}
           </ComponentGlobal_BoxUploadImage>
 

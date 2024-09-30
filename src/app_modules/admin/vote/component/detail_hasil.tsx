@@ -72,7 +72,7 @@ export default function ComponentAdminVote_DetailHasil({
                             span={2}
                             onClick={() =>
                               router.push(
-                                RouterProfile.katalog + e?.Author?.Profile?.id
+                                RouterProfile.katalogOLD + e?.Author?.Profile?.id
                               )
                             }
                           >

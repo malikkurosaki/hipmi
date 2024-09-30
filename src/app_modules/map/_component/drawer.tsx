@@ -16,12 +16,7 @@ import React, { useState } from "react";
 import { map_funGetOneById } from "../fun/get/fun_get_one_by_id";
 import { MODEL_MAP } from "../lib/interface";
 
-interface MODEL_DRAWER {
-  id: string;
-  name: string;
-  icon: string;
-  path: string;
-}
+
 export function ComponentMap_DrawerDetailData({
   opened,
   close,

@@ -12,12 +12,7 @@ export async function map_funGetOneById({ mapId }: { mapId: string }) {
         select: {
           id: true,
           username: true,
-          Profile: {
-            select: {
-              id: true,
-              imagesId: true,
-            },
-          },
+          Profile: true,
         },
       },
       Portofolio: {

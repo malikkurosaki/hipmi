@@ -38,7 +38,7 @@ export default function ComponentGlobal_AvatarAndAuthorName({
             onClick={() => {
               if (dataUser?.Profile?.id) {
                 setVisible(true);
-                router.push(RouterProfile.katalog + dataUser?.Profile?.id);
+                router.push(RouterProfile.katalogOLD + dataUser?.Profile?.id);
               } else {
                 ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
               }

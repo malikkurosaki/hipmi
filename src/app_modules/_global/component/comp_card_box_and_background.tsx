@@ -27,8 +27,8 @@ export function ComponentGlobal_CardStyles({
             ? backgroundColor
             : AccentColor.darkblue,
           border: `2px solid ${border ? border : AccentColor.blue}`,
-          paddingInline: "15px",
-          paddingBlock: "15px",
+          paddingInline: "16px",
+          paddingBlock: "20px",
           borderRadius: "10px",
           color: color ? color : "white",
           height: height ? height : "auto",

@@ -1,4 +1,5 @@
 import { Overlay, Center, Loader } from "@mantine/core";
+import { MainColor } from "../color";
 
 export default function ComponentGlobal_CardLoadingOverlay({
   size,
@@ -13,8 +14,8 @@ export default function ComponentGlobal_CardLoadingOverlay({
         <Center h={"100%"}>
           <Loader
             variant={variant ? variant : "dots"}
-            size={size ? size : 20}
-            color="white"
+            size={size ? size : 40}
+            color={MainColor.yellow}
           />
         </Center>
       </Overlay>

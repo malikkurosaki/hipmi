@@ -23,12 +23,15 @@ export function Profile_ComponentButtonUpdatePhotoProfile({
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
   async function onUpdate() {
+    setLoading(true);
     const uploadPhoto = await funGlobal_UploadToStorage({
       file: file,
       dirId: DIRECTORY_ID.profile_foto,
     });
-    if (!uploadPhoto.success)
+    if (!uploadPhoto.success) {
+      setLoading(false);
       return ComponentGlobal_NotifikasiPeringatan("Gagal upload foto profile");
+    }
 
     const res = await profile_funUpdatePhoto({
       fileId: uploadPhoto.data.id,
@@ -39,6 +42,7 @@ export function Profile_ComponentButtonUpdatePhotoProfile({
       ComponentGlobal_NotifikasiBerhasil(res.message);
       router.back();
     } else {
+      setLoading(false);
       ComponentGlobal_NotifikasiGagal(res.message);
     }
   }

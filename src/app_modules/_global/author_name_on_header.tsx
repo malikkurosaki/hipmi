@@ -43,7 +43,7 @@ export default function ComponentGlobal_AuthorNameAndAvatar({
             onClick={() => {
               if (profileId) {
                 setVisible(true);
-                router.push(RouterProfile.katalog + profileId);
+                router.push(RouterProfile.katalogOLD + profileId);
               } else {
                 ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
               }

@@ -77,7 +77,7 @@ export default function ComponentForum_ViewForumProfile({
               onClick={() => {
                 setLoading(true);
                 router.push(
-                  RouterProfile.katalog + auhtorSelectedData?.Profile?.id
+                  RouterProfile.katalogOLD + auhtorSelectedData?.Profile?.id
                 );
               }}
             >

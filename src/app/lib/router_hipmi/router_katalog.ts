@@ -1,5 +1,6 @@
 export const RouterProfile = {
-  katalog: "/dev/katalog/",
+  katalogOLD: "/dev/katalog/",
+  "katalog": ({id}:{id: string}) => `/dev/katalog/${id}`,
 
   // create
   create: "/dev/profile/create",

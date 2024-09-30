@@ -68,10 +68,7 @@ export function Profile_UiView({
       >
         <Box>
           <Profile_ComponentLoadBackgroundImage
-            url={APIs.GET({
-              fileId: profile.imageBackgroundId as string,
-            })}
-            radius="sm"
+            fileId={profile.imageBackgroundId as any}
           />
           {/* <Image
             radius={"sm"}
@@ -91,7 +88,7 @@ export function Profile_UiView({
           >
             <Center>
               <Profile_ComponentAvatarProfile
-                url={APIs.GET({ fileId: profile.imageId as any, size: "200" })}
+                fileId={profile.imageId as any}
                 style={{
                   borderStyle: "solid",
                   borderColor: AccentColor.darkblue,

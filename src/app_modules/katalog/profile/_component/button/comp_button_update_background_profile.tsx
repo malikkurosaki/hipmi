@@ -21,12 +21,15 @@ export function Profile_ComponentButtonUpdateBackgroundProfile({
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   async function onUpdate() {
+    setLoading(true);
     const uploadFile = await funGlobal_UploadToStorage({
       file: file,
       dirId: DIRECTORY_ID.profile_background,
     });
-    if (!uploadFile.success)
+    if (!uploadFile.success) {
+      setLoading(false);
       return ComponentGlobal_NotifikasiPeringatan("Gagal upload foto profile");
+    }
 
     const res = await profile_funUpdateBackground({
       profileId: profileId,
@@ -37,6 +40,7 @@ export function Profile_ComponentButtonUpdateBackgroundProfile({
       ComponentGlobal_NotifikasiBerhasil(res.message);
       router.back();
     } else {
+      setLoading(false);
       ComponentGlobal_NotifikasiGagal(res.message);
     }
   }

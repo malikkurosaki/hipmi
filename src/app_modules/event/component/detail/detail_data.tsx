@@ -1,12 +1,8 @@
 "use client";
 
-import { Stack, Title, Grid, Text, Paper, Spoiler } from "@mantine/core";
-import moment from "moment";
+import { ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
+import { Grid, Stack, Text, Title } from "@mantine/core";
 import { MODEL_EVENT } from "../../model/interface";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
 
 export default function ComponentEvent_DetailData({
   data,
@@ -23,15 +19,7 @@ export default function ComponentEvent_DetailData({
 
   return (
     <>
-      {/* <pre>{JSON.stringify(jam)}</pre> */}
-      <Paper
-        p={"md"}
-        style={{
-          border: `2px solid ${AccentColor.blue}`,
-          backgroundColor: AccentColor.darkblue,
-          color: "white",
-        }}
-      >
+      <ComponentGlobal_CardStyles marginBottom={"16px"}>
         <Stack px={"sm"} spacing={"lg"}>
           <Title lineClamp={2} align="center" w={"100%"} order={4}>
             {data ? data?.title : null}
@@ -83,7 +71,7 @@ export default function ComponentEvent_DetailData({
             <Text>{data ? data?.deskripsi : null}</Text>
           </Stack>
         </Stack>
-      </Paper>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

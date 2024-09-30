@@ -1,8 +1,10 @@
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
-import { Card, Group, Stack, Text, Title } from "@mantine/core";
+import {
+  ComponentGlobal_AvatarAndUsername,
+  ComponentGlobal_CardLoadingOverlay,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
+import { Box, Group, Stack, Text, Title } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -13,38 +15,26 @@ export function ComponentEvent_CardBeranda({ data }: { data: any }) {
 
   return (
     <>
-      <Card
-        style={{
-          border: `2px solid ${AccentColor.blue}`,
-          backgroundColor: AccentColor.darkblue,
-          color: "white",
-          borderRadius: "10px",
-          marginBottom: "20px",
-          padding: "15px",
-        }}
-      >
-        <Card.Section px={"sm"} pt={"sm"}>
-          <ComponentGlobal_AuthorNameOnHeader
-            profileId={data.Author?.Profile?.id}
-            imagesId={data.Author?.Profile?.imagesId}
-            authorName={data.Author?.Profile?.name}
-            isPembatas={true}
+      <ComponentGlobal_CardStyles marginBottom={"15px"}>
+        <Stack>
+          <ComponentGlobal_AvatarAndUsername
+            profile={data?.Author?.Profile as any}
           />
-        </Card.Section>
-        <Card.Section
-          p={"sm"}
-          onClick={() => {
-            setEventId(data?.id);
-            setVisible(true);
-            router.push(RouterEvent.detail_main + data?.id);
-          }}
-        >
-          <Stack>
-            <Group w={"100%"} position="apart">
-              <Title order={5} lineClamp={1} w={"70%"}>
+
+          <Stack
+            spacing={5}
+            // p={"md"}
+            onClick={() => {
+              setEventId(data?.id);
+              setVisible(true);
+              router.push(RouterEvent.detail_main + data?.id);
+            }}
+          >
+            <Group w={"100%"} position="apart" grow>
+              <Title order={5} lineClamp={1}>
                 {data.title}
               </Title>
-              <Text align="right" fz={"sm"} lineClamp={1} w={"20%"}>
+              <Text align="right" fz={"sm"} lineClamp={1}>
                 {new Intl.DateTimeFormat("id-ID", {
                   dateStyle: "medium",
                 }).format(data.tanggal)}
@@ -55,13 +45,12 @@ export function ComponentEvent_CardBeranda({ data }: { data: any }) {
               {data.deskripsi}
             </Text>
           </Stack>
-        </Card.Section>
-        {visible && data?.id === eventId ? (
-          <ComponentGlobal_CardLoadingOverlay />
-        ) : (
-          ""
-        )}
-      </Card>
+
+          {visible && data?.id === eventId && (
+            <ComponentGlobal_CardLoadingOverlay />
+          )}
+        </Stack>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

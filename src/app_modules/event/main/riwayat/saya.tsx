@@ -11,7 +11,11 @@ import { event_getListSemuaRiwayat } from "../../fun/get/riwayat/get_list_semua_
 import { MODEL_EVENT } from "../../model/interface";
 import { event_getListRiwayatSaya } from "../../fun/get/get_list_riwayat_saya";
 
-export default function Event_RiwayatSaya({ listData }: { listData: MODEL_EVENT[] }) {
+export default function Event_RiwayatSaya({
+  listData,
+}: {
+  listData: MODEL_EVENT[];
+}) {
   const router = useRouter();
   const [data, setData] = useState(listData);
   const [activePage, setActivePage] = useState(1);
@@ -24,7 +28,7 @@ export default function Event_RiwayatSaya({ listData }: { listData: MODEL_EVENT[
         // --- Main component --- //
         <Box>
           <ScrollOnly
-            height="75vh"
+            height="77vh"
             renderLoading={() => (
               <Center mt={"lg"}>
                 <Loader color={"yellow"} />

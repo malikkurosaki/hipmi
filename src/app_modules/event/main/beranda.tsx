@@ -3,11 +3,7 @@
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
-import {
-  Box,
-  Center,
-  Loader
-} from "@mantine/core";
+import { Box, Center, Loader } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";

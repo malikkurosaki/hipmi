@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  Box,
-  Center,
-  Loader
-} from "@mantine/core";
+import { Box, Center, Loader } from "@mantine/core";
 
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import _ from "lodash";
@@ -32,7 +28,7 @@ export default function Event_SemuaRiwayat({
         // --- Main component --- //
         <Box>
           <ScrollOnly
-            height="75vh"
+            height="77vh"
             renderLoading={() => (
               <Center mt={"lg"}>
                 <Loader color={"yellow"} />
