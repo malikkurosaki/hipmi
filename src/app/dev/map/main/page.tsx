@@ -1,4 +1,3 @@
-import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import { map_funGetAllMap } from "@/app_modules/map/fun/get/fun_get_all_map";
 import { Map_View } from "@/app_modules/map/view";
 

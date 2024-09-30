@@ -1,17 +1,48 @@
 "use client";
+
+import {
+  ComponentGlobal_AvatarAndUsername,
+  ComponentGlobal_LoaderAvatar,
+} from "@/app_modules/_global/component";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import {
+  UIGlobal_LayoutHeaderTamplate,
+  UIGlobal_LayoutTamplate,
+} from "@/app_modules/_global/ui";
 import {
   ActionIcon,
   Avatar,
   Box,
   Center,
+  Group,
   Image,
-  Loader,
+  Paper,
   Text,
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
+import { IconDots } from "@tabler/icons-react";
 import { useState } from "react";
 
 export default function Page() {
+  return (
+    <>
+      <UIGlobal_LayoutTamplate
+        header={<UIGlobal_LayoutHeaderTamplate title="Contoh" />}
+      >
+        <Paper p={"sm"}>
+          <ComponentGlobal_AvatarAndUsername
+            profile={{ id: "1" as any, name: "wibu" as any }}
+            component={
+              <Group position="right">
+                <Text lineClamp={1}>{Intl.DateTimeFormat("id-ID", {dateStyle: "full"}).format(new Date())}</Text>
+              </Group>
+            }
+          />
+        </Paper>
+      </UIGlobal_LayoutTamplate>
+    </>
+  );
+
   return (
     <>
       <Box p={"lg"} bg={"gray"} h={"100vh"}>

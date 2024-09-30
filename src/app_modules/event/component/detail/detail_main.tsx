@@ -5,6 +5,10 @@ import moment from "moment";
 import { MODEL_EVENT } from "../../model/interface";
 import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  ComponentGlobal_AvatarAndUsername,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
 
 export default function ComponentEvent_DetailMainData({
   data,
@@ -14,29 +18,23 @@ export default function ComponentEvent_DetailMainData({
   const tgl = data.tanggal;
   const hari = tgl.toLocaleString("id-ID", { dateStyle: "full" });
 
- const jam = tgl.toLocaleTimeString([], {
-   timeStyle: "short",
-   hourCycle: "h24",
- });
+  const jam = tgl.toLocaleTimeString([], {
+    timeStyle: "short",
+    hourCycle: "h24",
+  });
 
   return (
     <>
-      <Paper
-        p={"md"}
-        style={{
-          border: `2px solid ${AccentColor.blue}`,
-          backgroundColor: AccentColor.darkblue,
-          color: "white",
-        }}
-      >
-        <Stack>
-          <ComponentGlobal_AuthorNameOnHeader
-            authorName={data.Author.Profile.name}
-            imagesId={data.Author.Profile.imagesId}
-            profileId={data.Author.Profile.id}
+      <ComponentGlobal_CardStyles>
+        <Stack px={"xs"} spacing={"xl"}>
+          <ComponentGlobal_AvatarAndUsername
+            profile={data?.Author?.Profile as any}
           />
-          <Stack px={"sm"}>
-            <Title align="center" order={4}>{data ? data.title : null}</Title>
+
+          <Stack>
+            <Title align="center" order={4}>
+              {data ? data.title : null}
+            </Title>
             <Grid>
               <Grid.Col span={4}>
                 <Text fw={"bold"} fz={"sm"}>
@@ -85,7 +83,7 @@ export default function ComponentEvent_DetailMainData({
             </Stack>
           </Stack>
         </Stack>
-      </Paper>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

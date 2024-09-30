@@ -63,19 +63,7 @@ export function Portofolio_UiDetailData({
             >
               <Box>
                 <Paper>
-                  <ComponentGlobal_LoadImage
-                    url={APIs.GET({ fileId: dataPorto.logoId })}
-                  />
-                  {/* <AspectRatio ratio={1 / 1} mah={250} mx={"auto"}>
-                    <Image
-                      // style={{ maxHeight: 200, margin: "auto", padding: "5px" }}
-                      alt="Foto"
-                      h={200}
-                      m={"auto"}
-                      p={"xs"}
-                      src={APIs.GET + dataPorto.logoId }
-                    />
-                  </AspectRatio> */}
+                  <ComponentGlobal_LoadImage fileId={dataPorto.logoId} />
                 </Paper>
               </Box>
 

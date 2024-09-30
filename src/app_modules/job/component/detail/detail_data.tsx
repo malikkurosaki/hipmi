@@ -1,31 +1,25 @@
 "use client";
 
-import { APIs } from "@/app/lib";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_LoadImage } from "@/app_modules/_global/component";
 import {
   Card,
   Center,
   Image,
-  Loader,
-  Paper,
   Skeleton,
   Stack,
-  Text,
+  Text
 } from "@mantine/core";
 import { MODEL_JOB } from "../../model/interface";
-import { useState } from "react";
-import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
-import { ComponentGlobal_LoadImage } from "@/app_modules/_global/component";
 
 export default function ComponentJob_DetailData({
   data,
 }: {
   data?: MODEL_JOB;
 }) {
-  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <>
@@ -44,41 +38,8 @@ export default function ComponentJob_DetailData({
         >
           <Card.Section px={"xs"} pb={"lg"}>
             <Stack spacing={"xl"}>
-              {data.imageId ? (
-                <ComponentGlobal_LoadImage
-                  url={APIs.GET({ fileId: data?.imageId })}
-                />
-              ) : (
-                // <Stack align="center">
-                //   {isLoading ? (
-                //     <Paper
-                //       style={{ zIndex: 1, position: "relative" }}
-                //       w={200}
-                //       h={300}
-                //       bg={AccentColor.blackgray}
-                //     >
-                //       <Center h={"100%"}>
-                //         <ComponentGlobal_Loader size={30} variant="dots" />
-                //       </Center>
-                //     </Paper>
-                //   ) : (
-                //     ""
-                //   )}
-
-                //   <Image
-                //     style={{ zIndex: 2, position: "relative" }}
-                //     onLoad={() => {
-                //       setIsLoading(false);
-                //     }}
-                //     onError={() => {
-                //       setIsLoading(false);
-                //     }}
-                //     alt="Image"
-                //     src={APIs.GET + data?.imageId}
-                //     maw={200}
-                //   />
-                // </Stack>
-                ""
+              {data.imageId && (
+                <ComponentGlobal_LoadImage fileId={data?.imageId} />
               )}
 
               <Stack>

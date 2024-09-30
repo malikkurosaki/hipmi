@@ -39,17 +39,12 @@ export async function userSearch_getAllUser({
         },
       ],
     },
-    select: {
-      id: true,
-      username: true,
-      nomor: true,
-      active: true,
-      masterUserRoleId: true,
+    include: {
       Profile: {
         select: {
           id: true,
           name: true,
-          imagesId: true,
+          imageId: true,
         },
       },
     },

@@ -1,8 +1,10 @@
 import { ComponentGlobal_ButtonUploadFileImage } from "../button/comp_button_upload_photo";
 import ComponentGlobal_BoxInformation from "./box_information";
 import ComponentGlobal_AvatarAndAuthorName from "./comp_author_name_and_avatar";
+import { ComponentGlobal_AvatarAndUsername } from "./comp_avatar_and_username";
 import { ComponentGlobal_BoxUploadImage } from "./comp_box_upload_image";
 import { ComponentGlobal_CardStyles } from "./comp_card_box_and_background";
+import { ComponentGlobal_LoaderAvatar } from "./comp_load_avatar";
 import { ComponentGlobal_LoadImage } from "./comp_load_image";
 import ComponentGlobal_CardLoadingOverlay from "./comp_loading_card";
 import ComponentGlobal_TampilanAngkaRatusan from "./comp_tampilan_angka_ratusan";
@@ -21,3 +23,5 @@ export { ComponentGlobal_BoxUploadImage };
 export { ComponentGlobal_LoadImage };
 export { ComponentGlobal_ErrorInput };
 export { ComponentGlobal_ButtonUploadFileImage };
+export { ComponentGlobal_LoaderAvatar };
+export { ComponentGlobal_AvatarAndUsername };
