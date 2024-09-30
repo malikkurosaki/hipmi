@@ -26,6 +26,7 @@ export default function UIGlobal_LayoutHeaderTamplate({
   iconRight,
   routerRight,
   customButtonRight,
+  backgroundColor,
 }: {
   title: string;
   posotion?: any;
@@ -38,6 +39,7 @@ export default function UIGlobal_LayoutHeaderTamplate({
   iconRight?: any;
   routerRight?: any;
   customButtonRight?: React.ReactNode;
+  backgroundColor?: string;
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +54,7 @@ export default function UIGlobal_LayoutHeaderTamplate({
           //   borderBottom: `1px solid ${AccentColor.blue}`,
           borderStyle: "none",
         }}
-        bg={MainColor.darkblue}
+        bg={backgroundColor ? backgroundColor : MainColor.darkblue}
       >
         <Group h={"100%"} position={posotion ? posotion : "apart"} px={"md"}>
           {hideButtonLeft ? (

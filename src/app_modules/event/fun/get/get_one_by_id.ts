@@ -2,7 +2,7 @@
 
 import prisma from "@/app/lib/prisma";
 
-export async function Event_getOneById(eventId: string) {
+export async function event_getOneById(eventId: string) {
   const data = await prisma.event.findFirst({
     where: {
       id: eventId,
@@ -19,7 +19,7 @@ export async function Event_getOneById(eventId: string) {
       catatan: true,
       authorId: true,
       Author: {
-        select: {
+        include: {
           Profile: true,
         },
       },

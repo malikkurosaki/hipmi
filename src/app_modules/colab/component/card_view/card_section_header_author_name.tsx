@@ -47,7 +47,7 @@ export default function ComponentColab_CardSectionHeaderAuthorName({
               span={"content"}
               onClick={() => {
                 if (profileId) {
-                  router.push(RouterProfile.katalog + profileId);
+                  router.push(RouterProfile.katalogOLD + profileId);
                 } else {
                   ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
                 }

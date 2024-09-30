@@ -2,10 +2,13 @@
 
 import { APIs } from "@/app/lib";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import { ComponentMap_DrawerDetailData } from "@/app_modules/map/_component";
+import {
+  ComponentMap_DetailData,
+  ComponentMap_DrawerDetailData,
+} from "@/app_modules/map/_component";
 import { defaultMapZoom } from "@/app_modules/map/lib/default_lat_long";
 import { MODEL_MAP } from "@/app_modules/map/lib/interface";
-import { Avatar, Image, Paper, Stack, Title } from "@mantine/core";
+import { Avatar, Paper, Stack, Title } from "@mantine/core";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useState } from "react";
 import {
@@ -15,7 +18,6 @@ import {
   NavigationControl,
   ScaleControl,
 } from "react-map-gl";
-import { ComponentPortofolio_DetailDataMap } from "../component";
 import { MODEL_PORTOFOLIO } from "../model/interface";
 
 export function Portofolio_UiMap({
@@ -125,9 +127,9 @@ function MapView({
         opened={openDrawer}
         close={() => setOpenDrawer(false)}
         mapId={data.id}
-        component={<ComponentPortofolio_DetailDataMap mapId={data.id} />}
+        component={<ComponentMap_DetailData mapId={data.id} isDetail />}
       />
     </>
   );
 }
-// ComponentPortofolio_DetailDataMap;
+

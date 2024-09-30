@@ -252,13 +252,12 @@ const listHalamanFooter = [
     icon: <IconMessages />,
     link: RouterForum.splash,
   },
-
-  // {
-  //   id: 2,
-  //   name: "MarketPlace",
-  //   icon: <IconShoppingBag />,
-  //   link: "",
-  // },
+  {
+    id: 2,
+    name: "MarketPlace",
+    icon: <IconShoppingBag />,
+    link: "",
+  },
   {
     id: 3,
     name: "Business Maps",
@@ -313,7 +312,7 @@ export function Home_UiFooter({ dataUser }: { dataUser: MODEL_USER }) {
                 <Text
                   lineClamp={1}
                   c={e.link === "" ? "gray" : "white"}
-                  fz={10}
+                  fz={12}
                 >
                   {e.name}
                 </Text>
@@ -331,7 +330,7 @@ export function Home_UiFooter({ dataUser }: { dataUser: MODEL_USER }) {
                   router.push(RouterProfile.create, { scroll: false });
                 } else {
                   router.push(
-                    RouterProfile.katalog + `${dataUser?.Profile?.id}`,
+                    RouterProfile.katalogOLD + `${dataUser?.Profile?.id}`,
                     { scroll: false }
                   );
                 }

@@ -13,7 +13,7 @@ import {
   Loader,
   Stack,
   Text,
-  TextInput
+  TextInput,
 } from "@mantine/core";
 import { IconChevronRight, IconSearch } from "@tabler/icons-react";
 import _ from "lodash";
@@ -21,6 +21,7 @@ import { ScrollOnly } from "next-scroll-loader";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { userSearch_getAllUser } from "../fun/get/get_all_user";
+import { ComponentGlobal_LoaderAvatar } from "@/app_modules/_global/component";
 
 export function UserSearch_UiView({ listUser }: { listUser: MODEL_USER[] }) {
   const [data, setData] = useState(listUser);
@@ -49,7 +50,7 @@ export function UserSearch_UiView({ listUser }: { listUser: MODEL_USER[] }) {
         />
         <Box>
           {_.isEmpty(data) ? (
-            <ComponentGlobal_IsEmptyData text="Tidak ada pengguna lain" />
+            <ComponentGlobal_IsEmptyData text="Username tidak ditemukan" />
           ) : (
             <ScrollOnly
               height="84vh"
@@ -92,22 +93,16 @@ function CardView({ data }: { data: MODEL_USER }) {
         py={"xs"}
         onClick={() => {
           setLoading(true);
-          router.push(RouterProfile.katalog + `${data?.Profile?.id}`);
+          router.push(RouterProfile.katalogOLD + `${data?.Profile?.id}`);
         }}
       >
         <Group position="apart">
           <Group position="left">
-            <Avatar
-              sx={{
-                borderStyle: "solid",
-                borderWidth: "0.5px",
-              }}
-              radius={"xl"}
-              size={"md"}
-              src={
-                RouterProfile?.api_foto_profile + `${data?.Profile?.imagesId}`
-              }
+            <ComponentGlobal_LoaderAvatar
+              fileId={data.Profile.imageId as any}
+              imageSize="100"
             />
+
             <Stack spacing={0}>
               <Text fw={"bold"} lineClamp={1}>
                 {data?.username}
@@ -134,174 +129,3 @@ function CardView({ data }: { data: MODEL_USER }) {
     </>
   );
 }
-
-let dataDummy = [
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 1",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 2",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 1",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 2",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 1",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 2",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 1",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 2",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 1",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 2",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 1",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 2",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 1",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-  {
-    id: "clx8pl7r90005su4mldioo0v1",
-    username: "amalia 2",
-    nomor: "628980185458",
-    active: true,
-    masterUserRoleId: "1",
-    Profile: {
-      id: "clx8ptp7w000esu4ma275qnc8",
-      name: "Amalia Dwi",
-      imagesId: "clx8ptp7m000bsu4mwzbfvd9w",
-    },
-  },
-];

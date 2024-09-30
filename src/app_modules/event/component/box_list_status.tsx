@@ -1,7 +1,10 @@
 "use client";
 
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
+import {
+  ComponentGlobal_CardLoadingOverlay,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
 import { Card, Group, Stack, Text, Title } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -20,27 +23,20 @@ export default function ComponentEvent_BoxListStatus({
 
   return (
     <>
-      <Card
-        style={{
-          padding: "15px",
-          backgroundColor: AccentColor.darkblue,
-          borderRadius: "10px",
-          border: `2px solid ${AccentColor.blue}`,
-          color: "white",
-          marginBottom: "15px",
-        }}
-        onClick={() => {
+      <ComponentGlobal_CardStyles
+        marginBottom={"15px"}
+        onClickHandler={() => {
           setEventId(data?.id);
           setVisible(true);
           router.push(path + data.id);
         }}
       >
         <Stack>
-          <Group w={"100%"} position="apart">
-            <Title order={5} lineClamp={1} w={"70%"}>
+          <Group w={"100%"} position="apart" grow>
+            <Title order={5} lineClamp={1}>
               {data.title}
             </Title>
-            <Text align="right" fz={"sm"} lineClamp={1} w={"20%"}>
+            <Text align="right" fz={"sm"} lineClamp={1}>
               {new Intl.DateTimeFormat("id-ID", {
                 dateStyle: "medium",
               }).format(data.tanggal)}
@@ -56,7 +52,7 @@ export default function ComponentEvent_BoxListStatus({
         ) : (
           ""
         )}
-      </Card>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

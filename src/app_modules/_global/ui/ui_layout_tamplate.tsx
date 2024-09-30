@@ -32,7 +32,7 @@ export default function UIGlobal_LayoutTamplate({
           position: "fixed",
         }}
       >
-        <Container mih={"100vh"} p={0} size={rem(500)} bg={MainColor.darkblue} >
+        <Container mih={"100vh"} p={0} size={rem(500)} bg={MainColor.darkblue}>
           <BackgroundImage
             src={"/aset/global/main_background.png"}
             h={"100vh"}
@@ -50,7 +50,7 @@ export default function UIGlobal_LayoutTamplate({
   );
 }
 
-function UIHeader({ header }: { header: React.ReactNode }) {
+export function UIHeader({ header }: { header: React.ReactNode }) {
   return (
     <>
       {header ? (
@@ -72,7 +72,7 @@ function UIHeader({ header }: { header: React.ReactNode }) {
   );
 }
 
-function UIChildren({
+export function UIChildren({
   children,
   footer,
 }: {
@@ -95,8 +95,11 @@ function UIFooter({ footer }: { footer: React.ReactNode }) {
     <>
       {footer ? (
         <Box
+          // w dihilangkan kalau relative
+          w={"100%"}
           style={{
-            position: "relative",
+            // position: "relative",
+            position: "fixed",
             bottom: 0,
             height: "10vh",
             zIndex: 10,
@@ -104,16 +107,20 @@ function UIFooter({ footer }: { footer: React.ReactNode }) {
             borderTop: `2px solid ${AccentColor.blue}`,
             borderRight: `1px solid ${AccentColor.blue}`,
             borderLeft: `1px solid ${AccentColor.blue}`,
+            // maxWidth dihilangkan kalau relative
+            maxWidth: rem(500),
           }}
           bg={AccentColor.darkblue}
         >
           <Box
             h={"100%"}
+            // maw dihilangkan kalau relative
+            maw={rem(500)}
             style={{
               borderRadius: "20px 20px 0px 0px",
               width: "100%",
             }}
-            pos={"absolute"}
+            // pos={"absolute"}
           >
             {footer}
           </Box>

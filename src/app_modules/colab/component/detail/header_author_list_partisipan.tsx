@@ -95,7 +95,7 @@ export default function ComponentColab_AuthorNameOnListPartisipan({
             span={"content"}
             onClick={() => {
               if (author?.Profile.id) {
-                router.push(RouterProfile.katalog + author?.Profile.id);
+                router.push(RouterProfile.katalogOLD + author?.Profile.id);
               } else {
                 ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
               }

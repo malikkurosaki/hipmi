@@ -34,7 +34,7 @@ export default function Event_DetailMain({
 
   return (
     <>
-      <Stack spacing={"lg"} py={"md"}>
+      <Stack spacing={"lg"} pb={"md"}>
         <ComponentEvent_DetailMainData data={dataEvent} />
         {isJoin ? (
           <Button disabled radius={"xl"} color="green">
