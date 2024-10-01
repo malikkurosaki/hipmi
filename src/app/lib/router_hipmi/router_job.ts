@@ -24,4 +24,5 @@ export const RouterJob = {
 
   // non user
   non_user_view: "/dev/job/non_user_view/",
+  "job_vacancy_non_user": ({ id }: { id: string }) => `/job-vacancy/${id}`,
 };

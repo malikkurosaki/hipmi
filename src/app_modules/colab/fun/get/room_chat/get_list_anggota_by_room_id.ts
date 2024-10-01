@@ -31,7 +31,7 @@ export default async function colab_getListAnggotaByRoomId(roomId: string) {
                 select: {
                   id: true,
                   name: true,
-                  imagesId: true
+                  imageId: true
                 },
               },
             },

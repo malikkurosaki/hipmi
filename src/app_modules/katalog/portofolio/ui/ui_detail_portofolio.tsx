@@ -4,9 +4,8 @@ import { Stack } from "@mantine/core";
 import { ComponentPortofolio_ButtonDelete } from "../component/button_delete";
 import { MODEL_PORTOFOLIO } from "../model/interface";
 import { Portofolio_UiDetailData } from "./ui_detail_data";
-import { Portofolio_UiDetailLogo } from "./ui_detail_logo";
-import { Portofolio_UiSosialMedia } from "./ui_detail_media";
 import { Portofolio_UiMap } from "./ui_detail_map";
+import { Portofolio_UiSosialMedia } from "./ui_detail_media";
 
 export default function Portofolio_UiDetail({
   dataPorto,

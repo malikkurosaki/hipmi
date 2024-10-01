@@ -10,17 +10,17 @@ import { funGlobal_CheckProfile } from "../fun/get";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { ComponentGlobal_NotifikasiPeringatan } from "../notif_global";
 
-type IFontSize = "xs" | "sm" | "md" | "lg" | "xl"
+type IFontSize = "xs" | "sm" | "md" | "lg" | "xl";
 export function ComponentGlobal_AvatarAndUsername({
   profile,
   component,
   sizeAvatar,
-  fontSize
+  fontSize,
 }: {
   profile: Prisma.ProfileSelect;
   component?: React.ReactNode;
   sizeAvatar?: number;
-  fontSize?: IFontSize | {}
+  fontSize?: IFontSize | {};
 }) {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
@@ -57,11 +57,11 @@ export function ComponentGlobal_AvatarAndUsername({
             )}
           </ActionIcon>
         </Grid.Col>
-        <Grid.Col span={"auto"} style={{ minHeight: 50 }} >
-          <Stack justify="center"  h={30}>
+        <Grid.Col span={"auto"} style={{ minHeight: 50 }}>
+          <Stack justify="center" h={30}>
             <Text
               fw={"bold"}
-              fz={fontSize ? fontSize : "md"}
+              fz={fontSize ? fontSize : "sm"}
               lineClamp={1}
               onClick={() => onCheckProfile()}
             >
@@ -72,7 +72,9 @@ export function ComponentGlobal_AvatarAndUsername({
 
         {component && (
           <Grid.Col span={"auto"} style={{ minHeight: 50 }}>
-            {component}
+            <Stack justify="center" h={30}>
+              {component}
+            </Stack>
           </Grid.Col>
         )}
       </Grid>

@@ -16,7 +16,7 @@ export async function vote_getAllListKontribusiByAuthorId({
     take: takeData,
     skip: skipData,
     orderBy: {
-      createdAt: "asc",
+      createdAt: "desc",
     },
     where: {
       authorId: userLoginId,

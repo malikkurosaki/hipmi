@@ -30,6 +30,7 @@ import { MODEL_COLLABORATION_PARTISIPASI } from "../../model/interface";
 import ComponentColab_AuthorNameOnListPartisipan from "./header_author_list_partisipan";
 import notifikasiToUser_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_user";
 import mqtt_client from "@/util/mqtt_client";
+
 export default function ComponentColab_DetailListPartisipasiUser({
   listPartisipan,
   userLoginId,
@@ -117,6 +118,7 @@ export default function ComponentColab_DetailListPartisipasiUser({
           },
         }}
       >
+        
         <Stack spacing={"xs"}>
           <Group position="right">
             <ActionIcon onClick={close} variant="transparent">
@@ -125,7 +127,7 @@ export default function ComponentColab_DetailListPartisipasiUser({
           </Group>
           <Textarea
             maxLength={300}
-            label="Deskripsi Diri"
+            label={<Text c={"white"} mb={"sm"} fw={"bold"}>Deskripsi Diri</Text>}
             placeholder="Deskripsikan diri anda yang sesuai dengan proyek ini.."
             minRows={4}
             onChange={(val) => {
@@ -179,7 +181,6 @@ export default function ComponentColab_DetailListPartisipasiUser({
             backgroundColor: AccentColor.blue,
             color: "white",
             borderRadius: "10px",
-            marginBottom: "20px",
             padding: "15px",
           }}
         >

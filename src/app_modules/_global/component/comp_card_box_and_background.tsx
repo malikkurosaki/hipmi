@@ -28,11 +28,11 @@ export function ComponentGlobal_CardStyles({
             : AccentColor.darkblue,
           border: `2px solid ${border ? border : AccentColor.blue}`,
           paddingInline: "16px",
-          paddingBlock: "20px",
+          paddingBlock: "16px",
           borderRadius: "10px",
           color: color ? color : "white",
           height: height ? height : "auto",
-          marginBottom: marginBottom ? marginBottom : "0x",
+          marginBottom: marginBottom ? marginBottom : "15px",
         }}
         onClick={onClickHandler}
       >

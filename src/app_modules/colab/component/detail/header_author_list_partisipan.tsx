@@ -1,13 +1,13 @@
 "use client";
 
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_AvatarAndUsername } from "@/app_modules/_global/component";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import {
   ActionIcon,
   Avatar,
-  Button,
   Divider,
   Drawer,
   Grid,
@@ -16,7 +16,7 @@ import {
   ScrollArea,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconCaretRight, IconX } from "@tabler/icons-react";
@@ -89,8 +89,27 @@ export default function ComponentColab_AuthorNameOnListPartisipan({
         </Stack>
       </Drawer>
 
-      <Stack spacing={"xs"}>
-        <Grid>
+      <Stack spacing={"xs"} p={"xs"}>
+        <ComponentGlobal_AvatarAndUsername
+          profile={author?.Profile as any}
+          fontSize={"sm"}
+          component={
+            <Stack justify="center" align="flex-end" h={"100%"}>
+              {deskripsi ? (
+                <ActionIcon
+                  onClick={() => open()}
+                  radius={"xl"}
+                  variant="transparent"
+                >
+                  <IconCaretRight color={MainColor.yellow} />
+                </ActionIcon>
+              ) : (
+                ""
+              )}
+            </Stack>
+          }
+        />
+        {/* <Grid>
           <Grid.Col
             span={"content"}
             onClick={() => {
@@ -136,7 +155,7 @@ export default function ComponentColab_AuthorNameOnListPartisipan({
             </Stack>
           </Grid.Col>
         </Grid>
-        {isPembatas ? <Divider /> : ""}
+        {isPembatas ? <Divider /> : ""} */}
       </Stack>
     </>
   );

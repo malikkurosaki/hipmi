@@ -1,5 +1,7 @@
 "use client";
 
+import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import UIGlobal_SplashScreen from "@/app_modules/_global/ui/ui_splash";
 import {
@@ -19,11 +21,11 @@ export default function SplashScreen({ userLoginId }: { userLoginId: any }) {
   useShallowEffect(() => {
     if (!userLoginId) {
       setTimeout(() => {
-        return router.push("/dev/auth/login", { scroll: false });
+        return router.push(RouterAuth.login, { scroll: false });
       }, 1000);
     } else {
       setTimeout(() => {
-        return router.push("/dev/home", { scroll: false });
+        return router.push(RouterHome.main_home, { scroll: false });
       }, 1000);
     }
   }, []);

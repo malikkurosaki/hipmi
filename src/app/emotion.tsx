@@ -1,13 +1,9 @@
 "use client";
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
 // import './globals.css'
 import { CacheProvider } from "@emotion/react";
 import {
-  Box,
-  Container,
   MantineProvider,
-  rem,
-  useEmotionCache,
+  useEmotionCache
 } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { Provider } from "jotai";

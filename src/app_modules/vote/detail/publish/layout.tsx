@@ -9,16 +9,19 @@ export default function LayoutVote_DetailPublish({
   children,
   votingId,
   userLoginId,
+  dataVoting,
 }: {
   children: React.ReactNode;
   votingId: string;
   userLoginId: string;
+  dataVoting: any;
 }) {
   return (
     <>
       <UIGlobal_LayoutTamplate
         header={
           <Voting_ComponentLayoutHeaderDetailPublish
+            dataVoting={dataVoting}
             title="Detail Publish"
             votingId={votingId}
             userLoginId={userLoginId}

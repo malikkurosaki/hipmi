@@ -45,7 +45,7 @@ export function Job_UiBeranda({ listData }: { listData: MODEL_JOB[] }) {
         setData(val);
       },
     });
-    
+
     mqtt_client.subscribe("Job_new_post");
     mqtt_client.on("message", (topic, message) => {
       if (topic === "Job_new_post") {

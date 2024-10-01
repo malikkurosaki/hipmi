@@ -27,6 +27,7 @@ import { useState } from "react";
 import { auth_funDeleteAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
 import { auth_funValidasi } from "../fun/fun_validasi";
 import { GlobalEnv } from "@/app/lib/token";
+import { UIGlobal_LayoutDefault } from "@/app_modules/_global/ui";
 
 export default function Validasi({ dataOtp }: { dataOtp: any }) {
   const router = useRouter();
@@ -86,11 +87,7 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
 
   return (
     <>
-      <BackgroundImage
-        src={"/aset/global/main_background.png"}
-        h={"100vh"}
-        // pos={"static"}
-      >
+      <UIGlobal_LayoutDefault>
         <Stack h={"100vh"}>
           <Box
             pt={"md"}
@@ -154,7 +151,7 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
             </Button>
           </Stack>
         </Stack>
-      </BackgroundImage>
+      </UIGlobal_LayoutDefault>
     </>
   );
 }

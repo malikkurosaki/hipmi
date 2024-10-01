@@ -6,27 +6,19 @@ import {
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
-import { auth_funLogin } from "@/app_modules/auth/fun/fun_login";
-import {
-  BackgroundImage,
-  Button,
-  Center,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import { useAtom } from "jotai";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { PhoneInput } from "react-international-phone";
-import "react-international-phone/style.css";
-import { gs_kodeId } from "../state/state";
 import {
   ComponentGlobal_NotifikasiBerhasil,
   ComponentGlobal_NotifikasiPeringatan,
 } from "@/app_modules/_global/notif_global";
+import { UIGlobal_LayoutDefault } from "@/app_modules/_global/ui";
+import { auth_funLogin } from "@/app_modules/auth/fun/fun_login";
+import { Box, Button, Center, Stack, Text, Title } from "@mantine/core";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 
-export default function Login() {
+export default function Login({ version }: { version: string }) {
   const router = useRouter();
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -56,11 +48,7 @@ export default function Login() {
 
   return (
     <>
-      <BackgroundImage
-        src={"/aset/global/main_background.png"}
-        h={"100vh"}
-        // pos={"static"}
-      >
+      <UIGlobal_LayoutDefault>
         <Stack align="center" justify="center" h={"100vh"} spacing={100}>
           <Stack align="center" spacing={0}>
             <Title order={3} c={MainColor.yellow}>
@@ -104,8 +92,19 @@ export default function Login() {
               LOGIN
             </Button>
           </Stack>
+
+          <Box pos={"fixed"} bottom={10}>
+            <Text fw={"bold"} c={"white"} fs={"italic"} fz={"xs"}>
+              V.{version}
+            </Text>
+          </Box>
         </Stack>
-      </BackgroundImage>
+      </UIGlobal_LayoutDefault>
+      {/* <BackgroundImage
+        src={"/aset/global/main_background.png"}
+        h={"100vh"}
+        // pos={"static"}
+      ></BackgroundImage> */}
     </>
   );
 }

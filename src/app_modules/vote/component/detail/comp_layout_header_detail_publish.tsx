@@ -1,8 +1,9 @@
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
 import { AccentColor } from "@/app_modules/_global/color";
 import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { UIGlobal_Modal } from "@/app_modules/_global/ui";
-import UIGlobal_Drawer from "@/app_modules/_global/ui/ui_drawer";
 import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
 import {
   ActionIcon,
@@ -13,38 +14,32 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { IconArchive, IconUsersGroup, IconX } from "@tabler/icons-react";
-import { IconDots, IconDotsVertical } from "@tabler/icons-react";
+import {
+  IconArchive,
+  IconDotsVertical,
+  IconUsersGroup,
+  IconX,
+} from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { voting_funGetOneVotingbyId } from "../../fun/get/fun_get_one_by_id";
-import { useShallowEffect } from "@mantine/hooks";
-import { MODEL_VOTING } from "../../model/interface";
 import { voting_funUpdateIsArsipById } from "../../fun";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { MODEL_VOTING } from "../../model/interface";
+import { voting_funGetOneVotingbyId } from "../../fun/get/fun_get_one_by_id";
 
 export function Voting_ComponentLayoutHeaderDetailPublish({
   votingId,
   title,
   userLoginId,
+  dataVoting,
 }: {
   votingId: string;
   title: string;
   userLoginId: string;
+  dataVoting: any;
 }) {
-  const [data, setData] = useState<MODEL_VOTING>();
+  const [data, setData] = useState<MODEL_VOTING>(dataVoting);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-
-  useShallowEffect(() => {
-    onLoadData({ onSetData: setData });
-  }, [setData]);
-
-  async function onLoadData({ onSetData }: { onSetData: any }) {
-    const dataVoting = await voting_funGetOneVotingbyId(votingId);
-    onSetData(dataVoting);
-  }
 
   async function onUpdateStatusArsip({ isArsip }: { isArsip: boolean }) {
     const res = await voting_funUpdateIsArsipById({
@@ -52,8 +47,15 @@ export function Voting_ComponentLayoutHeaderDetailPublish({
       isArsip: isArsip,
     });
     if (res.status === 200) {
-      setOpenModal(false);
-      ComponentGlobal_NotifikasiBerhasil(res.message);
+      try {
+        const loadData = await voting_funGetOneVotingbyId(votingId);
+        setData(loadData as any);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setOpenModal(false);
+        ComponentGlobal_NotifikasiBerhasil(res.message);
+      }
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);
     }

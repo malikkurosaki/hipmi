@@ -1,7 +1,6 @@
 "use client";
 
-import { Stack, Divider, Center, Text, Grid, Card } from "@mantine/core";
-import { IconUsersGroup } from "@tabler/icons-react";
+import { Card, Center, Divider, Grid, Stack, Text } from "@mantine/core";
 
 export default function ComponentColab_JumlahPartisipan({
   jumlah,
@@ -10,18 +9,18 @@ export default function ComponentColab_JumlahPartisipan({
 }) {
   return (
     <>
-      <Card.Section px={"md"}>
+      <Card.Section px={"md"} >
         <Stack>
           <Divider />
           <Center>
             <Grid>
               <Grid.Col span={"content"}>
-                <Text c={"gray"} fz={"xs"} fw={"bold"}>
+                <Text c={"white"} fz={"xs"} fw={"bold"}>
                   {jumlah?.length ? jumlah?.length : 0}
                 </Text>
               </Grid.Col>
               <Grid.Col span={"auto"}>
-                <Text c={"gray"} fz={"xs"} fw={"bold"}>
+                <Text c={"white"} fz={"xs"} fw={"bold"}>
                   Partisipan
                 </Text>
               </Grid.Col>
