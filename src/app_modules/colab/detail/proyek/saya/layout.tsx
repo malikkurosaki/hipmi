@@ -16,7 +16,7 @@ export default function LayoutColab_DetailProyekSaya({
   colabId,
 }: {
   children: React.ReactNode;
-  colabId: string
+  colabId: string;
 }) {
   const [openDrawer, setOpenDrawer] = useState(false);
   const listPage = [
@@ -38,10 +38,8 @@ export default function LayoutColab_DetailProyekSaya({
               <ActionIcon
                 variant="transparent"
                 onClick={() => setOpenDrawer(true)}
-                         
-
               >
-                <IconDotsVertical />
+                <IconDotsVertical color="white" />
               </ActionIcon>
             }
           />
@@ -51,10 +49,9 @@ export default function LayoutColab_DetailProyekSaya({
       </UIGlobal_LayoutTamplate>
 
       <UIGlobal_Drawer
-      opened={openDrawer}
-      close={() => setOpenDrawer(false)}
-      component={listPage}
-      
+        opened={openDrawer}
+        close={() => setOpenDrawer(false)}
+        component={listPage}
       />
     </>
   );

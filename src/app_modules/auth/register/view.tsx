@@ -1,6 +1,7 @@
 "use client";
 
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
+import { GlobalEnv } from "@/app/lib/token";
 import {
   AccentColor,
   MainColor,
@@ -8,14 +9,14 @@ import {
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { UIGlobal_LayoutDefault } from "@/app_modules/_global/ui";
 import {
-  BackgroundImage,
   Button,
   Center,
   Stack,
   Text,
   TextInput,
-  Title,
+  Title
 } from "@mantine/core";
 import { useFocusTrap } from "@mantine/hooks";
 import { IconUserCircle } from "@tabler/icons-react";
@@ -24,7 +25,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { auth_funDeleteAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
 import { Auth_funRegister } from "../fun/fun_register";
-import { GlobalEnv } from "@/app/lib/token";
 
 export default function Register({ dataOtp }: { dataOtp: any }) {
   const router = useRouter();
@@ -68,7 +68,7 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
 
   return (
     <>
-      <BackgroundImage src={"/aset/global/main_background.png"} h={"100vh"}>
+      <UIGlobal_LayoutDefault>
         <Center h={"100vh"}>
           <Stack h={"100%"} align="center" justify="center" spacing={70}>
             <Title order={2} c={MainColor.yellow}>
@@ -130,7 +130,7 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
             </Stack>
           </Stack>
         </Center>
-      </BackgroundImage>
+      </UIGlobal_LayoutDefault>
     </>
   );
 }

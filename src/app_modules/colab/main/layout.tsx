@@ -30,38 +30,18 @@ export default function LayoutColab_Main({
       path: RouterColab.beranda,
       icon: <IconHome />,
     },
-
-    // {
-    //   id: 2,
-    //   name: "Status",
-    //   path: RouterColab.status,
-    //   icon: <IconReservedLine />,
-    // },
-
     {
-      id: 3,
+      id: 2,
       name: "Partisipasi",
       path: RouterColab.proyek,
       icon: <IconUsersGroup />,
     },
     {
-      id: 4,
+      id: 3,
       name: "Grup Diskusi",
       path: RouterColab.grup_diskusi,
       icon: <IconMessages />,
     },
-    // {
-    //   id: 5,
-    //   name: "Notifikasi",
-    //   path: RouterColab.notifikasi,
-    //   icon: cekNotif ? (
-    //     <Indicator processing color="orange">
-    //       <IconBell />
-    //     </Indicator>
-    //   ) : (
-    //     <IconBell />
-    //   ),
-    // },
   ];
 
   return (
