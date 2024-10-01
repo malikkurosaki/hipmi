@@ -1,21 +1,11 @@
 "use client";
-import {
-  Card,
-  Stack,
-  Center,
-  Title,
-  Badge,
-  Group,
-  Radio,
-  Grid,
-  Text,
-} from "@mantine/core";
-import moment from "moment";
-import { MODEL_VOTING } from "../../model/interface";
-import { IconCircle } from "@tabler/icons-react";
-import _ from "lodash";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  ComponentGlobal_AvatarAndUsername,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
+import { Badge, Center, Group, Stack, Text, Title } from "@mantine/core";
+import { MODEL_VOTING } from "../../model/interface";
 
 export default function ComponentVote_DetailDataSetelahPublish({
   data,
@@ -26,27 +16,15 @@ export default function ComponentVote_DetailDataSetelahPublish({
 }) {
   return (
     <>
-      <Card
-        p={30}
-        style={{
-          backgroundColor: AccentColor.darkblue,
-          borderRadius: "10px",
-          border: `2px solid ${AccentColor.blue}`,
-          color: "white",
-        }}
-      >
-        {authorName ? (
-          <Card.Section>
-            <ComponentGlobal_AuthorNameOnHeader
-              authorName={data?.Author.Profile.name}
-              imagesId={data?.Author.Profile.imagesId}
-              profileId={data?.Author.Profile.id}
+      <ComponentGlobal_CardStyles marginBottom={"0px"}>
+        <Stack>
+          {authorName ? (
+            <ComponentGlobal_AvatarAndUsername
+              profile={data?.Author.Profile as any}
             />
-          </Card.Section>
-        ) : (
-          ""
-        )}
-        <Card.Section px={"xs"} py={authorName ? "sm" : 0}>
+          ) : (
+            ""
+          )}
           <Stack spacing={"lg"}>
             <Center>
               <Title order={4} align="center">
@@ -87,8 +65,8 @@ export default function ComponentVote_DetailDataSetelahPublish({
               </Stack>
             </Stack>
           </Stack>
-        </Card.Section>
-      </Card>
+        </Stack>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

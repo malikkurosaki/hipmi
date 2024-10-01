@@ -5,9 +5,11 @@ import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import notifikasiToUser_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_user";
+import mqtt_client from "@/util/mqtt_client";
 import {
   Badge,
   Box,
@@ -21,15 +23,14 @@ import {
   Title,
 } from "@mantine/core";
 import _ from "lodash";
+import moment from "moment";
 import { useState } from "react";
-import ComponentVote_DaftarKontributorVoter from "../../component/detail/detail_daftar_kontributor";
 import ComponentVote_HasilVoting from "../../component/detail/detail_hasil_voting";
 import { Vote_funCreateHasil } from "../../fun/create/create_hasil";
 import { voting_funGetOneVotingbyId } from "../../fun/get/fun_get_one_by_id";
 import { MODEL_VOTING } from "../../model/interface";
-import mqtt_client from "@/util/mqtt_client";
-import moment from "moment";
-import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import { ComponentDonasi_CardStatus } from "@/app_modules/donasi/component/card_view/card_status";
+import { ComponentGlobal_AvatarAndUsername, ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
 
 export default function Vote_MainDetail({
   dataVote,
@@ -51,7 +52,7 @@ export default function Vote_MainDetail({
 
   return (
     <>
-      <Stack py={"md"}>
+      <Stack pb={"md"}>
         {moment(dataVote?.awalVote).diff(today, "hours") < 0 ? (
           ""
         ) : (
@@ -88,23 +89,14 @@ function TampilanDataVoting({
 
   return (
     <>
-      <Card
-        p={30}
-        style={{
-          backgroundColor: AccentColor.darkblue,
-          borderRadius: "10px",
-          border: `2px solid ${AccentColor.blue}`,
-          color: "white",
-        }}
-      >
-        <Card.Section mb={"md"}>
-          <ComponentGlobal_AuthorNameOnHeader
+      <ComponentGlobal_CardStyles>
+        <Stack>
+          <ComponentGlobal_AvatarAndUsername profile={dataVote?.Author?.Profile as any}/>
+          {/* <ComponentGlobal_AuthorNameOnHeader
             authorName={dataVote?.Author.Profile.name}
             imagesId={dataVote?.Author.Profile.imagesId}
             profileId={dataVote?.Author.Profile.id}
-          />
-        </Card.Section>
-        <Card.Section px={"xs"} py={"sm"}>
+          /> */}
           <Stack spacing={"lg"}>
             <Center>
               <Title order={5} align="center">
@@ -146,10 +138,6 @@ function TampilanDataVoting({
               </Stack>
             </Stack>
           </Stack>
-        </Card.Section>
-
-        {/* Voting View */}
-        <Card.Section py={"xl"}>
           {isKontributor ? (
             <Stack
               align="center"
@@ -232,8 +220,9 @@ function TampilanDataVoting({
               </Center>
             </Stack>
           )}
-        </Card.Section>
-      </Card>
+        </Stack>
+       
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

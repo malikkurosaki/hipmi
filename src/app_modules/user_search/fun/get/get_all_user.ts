@@ -24,10 +24,13 @@ export async function userSearch_getAllUser({
     where: {
       active: true,
       masterUserRoleId: "1",
-      username: {
-        contains: search,
-        mode: "insensitive",
+      Profile: {
+        name: {
+          contains: search,
+          mode: "insensitive",
+        },
       },
+
       NOT: {
         Profile: null,
       },

@@ -8,10 +8,12 @@ export default function LayoutVote_MainDetail({
   children,
   votingId,
   userLoginId,
+  dataVoting,
 }: {
   children: React.ReactNode;
   votingId: string;
   userLoginId: string;
+  dataVoting: any
 }) {
   return (
     <>
@@ -21,6 +23,7 @@ export default function LayoutVote_MainDetail({
             title="Detail Voting"
             votingId={votingId}
             userLoginId={userLoginId}
+            dataVoting={dataVoting}
           />
         }
       >

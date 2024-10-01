@@ -5,6 +5,7 @@ import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
@@ -17,7 +18,7 @@ import {
   MODEL_COLLABORATION,
   MODEL_COLLABORATION_PARTISIPASI,
 } from "@/app_modules/colab/model/interface";
-import { notifikasiToUser_CreateGroupCollaboration } from "@/app_modules/notifikasi/fun/create/create_notif_to_user_collaboration";
+import mqtt_client from "@/util/mqtt_client";
 import {
   ActionIcon,
   Button,
@@ -38,8 +39,6 @@ import { useAtom } from "jotai";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import mqtt_client from "@/util/mqtt_client";
-
 
 export default function Colab_DetailProyekSaya({
   dataColab,
@@ -50,24 +49,15 @@ export default function Colab_DetailProyekSaya({
 }) {
   return (
     <>
-      <Stack
-        px={5}
-        spacing={"xl"}
-        style={{
-          border: `2px solid ${AccentColor.blue}`,
-          backgroundColor: AccentColor.darkblue,
-          color: "white",
-          borderRadius: "10px",
-          marginBottom: "20px",
-          padding: "15px",
-        }}
-      >
-        <ComponentColab_DetailData data={dataColab} />
-        <CheckBoxPartisipan
-          listPartisipan={listPartisipan}
-          colabId={dataColab.id}
-        />
-      </Stack>
+      <ComponentGlobal_CardStyles marginBottom={"15px"}>
+        <Stack>
+          <ComponentColab_DetailData data={dataColab} />
+          <CheckBoxPartisipan
+            listPartisipan={listPartisipan}
+            colabId={dataColab.id}
+          />
+        </Stack>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }
@@ -119,8 +109,8 @@ function CheckBoxPartisipan({
                   ) : (
                     listPartisipan.map((e, i) => (
                       <Grid key={i} align="center">
-                        <Grid.Col span={"content"}>
-                          <Checkbox value={e?.User?.id} />
+                        <Grid.Col span={2}>
+                          <Checkbox color={"yellow"} value={e?.User?.id} />
                         </Grid.Col>
                         <Grid.Col span={"auto"}>
                           <ComponentColab_AuthorNameOnListPartisipan
