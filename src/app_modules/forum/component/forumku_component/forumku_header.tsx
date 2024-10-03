@@ -9,7 +9,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
 import ComponentForum_ForumkuMoreButton from "./forumku_more_button";
-
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import { ComponentGlobal_LoaderAvatar } from "@/app_modules/_global/component";
 
 export default function ComponentForum_ForumkuHeaderCard({
   data,
@@ -25,7 +26,6 @@ export default function ComponentForum_ForumkuHeaderCard({
   allData: any[];
 }) {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -35,29 +35,15 @@ export default function ComponentForum_ForumkuHeaderCard({
             span={"content"}
             onClick={() => {
               if (data.Author.id) {
-                setIsLoading(true);
                 router.push(RouterForum.forumku + data.Author.id);
               } else {
                 ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
               }
             }}
           >
-            {isLoading ? (
-              <Loader color="gray" variant="dots" />
-            ) : (
-              <Avatar
-                size={40}
-                sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-                radius={"xl"}
-                bg={"gray.1"}
-                src={
-                  data.Author.Profile.imagesId
-                    ? RouterProfile.api_foto_profile +
-                      data.Author.Profile.imagesId
-                    : "/aset/global/avatar.png"
-                }
-              />
-            )}
+            <ComponentGlobal_LoaderAvatar
+              fileId={data.Author.Profile.imageId as any}
+            />
           </Grid.Col>
 
           <Grid.Col span={"auto"}>
@@ -82,7 +68,9 @@ export default function ComponentForum_ForumkuHeaderCard({
                     : "red"
                 }
               >
-                <Text c={"white"} fz={10}>{data?.ForumMaster_StatusPosting.status}</Text>
+                <Text c={"white"} fz={10}>
+                  {data?.ForumMaster_StatusPosting.status}
+                </Text>
               </Badge>
             </Stack>
           </Grid.Col>
@@ -90,7 +78,7 @@ export default function ComponentForum_ForumkuHeaderCard({
           <Grid.Col span={"content"}>
             <Group position="center" spacing={"xs"}>
               <Group spacing={3}>
-                <Text c={"white"} fz={"sm"} >
+                <Text c={"white"} fz={"sm"}>
                   {data.createdAt !== undefined && data?.createdAt
                     ? new Date(data?.createdAt).toLocaleDateString(["id-ID"], {
                         day: "numeric",

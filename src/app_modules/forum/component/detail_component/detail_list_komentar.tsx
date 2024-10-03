@@ -1,18 +1,14 @@
 "use client";
 
 import {
-  Stack,
-  Center,
-  Box,
   Card,
-  Spoiler,
   Divider,
-  Text,
+  Spoiler,
+  Stack,
+  Text
 } from "@mantine/core";
-import _ from "lodash";
 import { MODEL_FORUM_KOMENTAR } from "../../model/interface";
 import ComponentForum_KomentarAuthorNameOnHeader from "../komentar_component/komentar_author_header_name";
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function ComponentForum_KomentarView({
   data,
@@ -30,8 +26,6 @@ export default function ComponentForum_KomentarView({
       <Card mb={"xs"} bg={"transparent"}>
         <Card.Section>
           <ComponentForum_KomentarAuthorNameOnHeader
-            authorName={data?.Author?.username}
-            imagesId={data?.Author?.Profile?.imagesId}
             tglPublish={data?.createdAt}
             userId={data?.Author?.id}
             komentarId={data?.id}
@@ -39,6 +33,7 @@ export default function ComponentForum_KomentarView({
             setKomentar={setKomentar}
             postingId={postingId}
             userLoginId={userLoginId}
+            profile={data.Author.Profile}
           />
         </Card.Section>
         <Card.Section sx={{ zIndex: 0 }} p={"sm"}>

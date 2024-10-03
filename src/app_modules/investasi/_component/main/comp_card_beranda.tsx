@@ -1,6 +1,9 @@
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
-import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 import {
   Card,
   CardSection,
@@ -19,7 +22,10 @@ import moment from "moment";
 import { MODEL_INVESTASI } from "../../_lib/interface";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
+import {
+  ComponentGlobal_CardLoadingOverlay,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
 
 export function Investasi_ComponentCardBeranda({
   data,
@@ -32,17 +38,8 @@ export function Investasi_ComponentCardBeranda({
 
   return (
     <>
-      <Card
-        style={{
-          padding: "15px",
-          backgroundColor: AccentColor.darkblue,
-          borderRadius: "10px",
-          border: `2px solid ${AccentColor.blue}`,
-          color: "white",
-          marginBottom: "15px",
-          marginInline: "15px",
-        }}
-        onClick={() => {
+      <ComponentGlobal_CardStyles
+        onClickHandler={() => {
           setLoadingDetail(true);
           setVisible(true);
           router.push(RouterInvestasi_OLD.detail + `${data?.id}`);
@@ -77,30 +74,9 @@ export function Investasi_ComponentCardBeranda({
               size="xl"
               radius="xl"
               styles={{
-                label:{color: MainColor.black}
+                label: { color: MainColor.black },
               }}
             />
-            {/* <Progress
-              label={
-                "" +
-                (
-                  ((+data?.totalLembar - +data?.sisaLembar) /
-                    +data?.totalLembar) *
-                  100
-                ).toFixed(1) +
-                "%"
-              }
-              value={
-                +(
-                  ((+data?.totalLembar - +data?.sisaLembar) /
-                    +data?.totalLembar) *
-                  100
-                ).toFixed(1)
-              }
-              color="teal"
-              size="xl"
-              radius="xl"
-            /> */}
           </Stack>
         </CardSection>
 
@@ -158,7 +134,20 @@ export function Investasi_ComponentCardBeranda({
           </Group>
         </CardSection>
         {visible ? <ComponentGlobal_CardLoadingOverlay /> : ""}
-      </Card>
+      </ComponentGlobal_CardStyles>
+
+      {/* <Card
+        style={{
+          padding: "15px",
+          backgroundColor: AccentColor.darkblue,
+          borderRadius: "10px",
+          border: `2px solid ${AccentColor.blue}`,
+          color: "white",
+          marginBottom: "15px",
+          marginInline: "15px",
+        }}
+       
+      ></Card> */}
     </>
   );
 }

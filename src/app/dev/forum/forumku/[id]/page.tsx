@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     "Profile.imagesBackgroundId",
   ]);
   // console.log(dataAuthor)
-  // console.log(auhtorSelectedData)
+  // console.log(auhtorSelectedData)  
 
   // await new Promise((a, b) => {
   //   setTimeout(a, 1000);

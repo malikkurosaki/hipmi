@@ -48,6 +48,8 @@ import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_LoaderAvatar } from "@/app_modules/_global/component";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 
 export default function ComponentForum_DetailHeader({
   data,
@@ -59,6 +61,7 @@ export default function ComponentForum_DetailHeader({
   onLoadData: (val: any) => void;
 }) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -68,30 +71,38 @@ export default function ComponentForum_DetailHeader({
             span={"content"}
             onClick={() => {
               if (data?.Author?.id) {
+                setIsLoading(true);
                 router.push(RouterForum.forumku + data?.Author?.id);
               } else {
                 ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
               }
             }}
           >
-            <Avatar
-              size={40}
-              sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-              radius={"xl"}
-              bg={"gray.1"}
-              src={
-                data?.Author.Profile.imagesId
-                  ? RouterProfile.api_foto_profile +
-                    data?.Author.Profile.imagesId
-                  : "/aset/global/avatar.png"
-              }
-            />
+            {isLoading ? (
+              <Avatar
+                size={40}
+                radius={"100%"}
+                style={{
+                  borderColor: "white",
+                  borderStyle: "solid",
+                  borderWidth: "1px",
+                }}
+              >
+                <ComponentGlobal_Loader variant="dots" />
+              </Avatar>
+            ) : (
+              <ComponentGlobal_LoaderAvatar
+                fileId={data?.Author.Profile?.imageId as any}
+              />
+            )}
           </Grid.Col>
 
           <Grid.Col span={"auto"}>
             <Stack spacing={3}>
               <Text lineClamp={1} fz={"sm"} fw={"bold"} color="white">
-                {data?.Author.username ? data?.Author.username : "Nama author "}
+                {data?.Author.Profile.name
+                  ? data?.Author.Profile.name
+                  : "Nama author "}
               </Text>
               <Badge
                 w={70}
@@ -102,11 +113,7 @@ export default function ComponentForum_DetailHeader({
                     : "red"
                 }
               >
-                <Text fz={10}>
-                  {(data?.ForumMaster_StatusPosting.id as any) === 1
-                    ? "Open"
-                    : "Close"}
-                </Text>
+                <Text fz={10}>{data?.ForumMaster_StatusPosting.status}</Text>
               </Badge>
             </Stack>
           </Grid.Col>

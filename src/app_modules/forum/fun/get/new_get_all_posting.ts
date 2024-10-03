@@ -39,7 +39,8 @@ export async function forum_new_getAllPosting({
           Profile: {
             select: {
               id: true,
-              imagesId: true,
+              name: true,
+              imageId: true,
             },
           },
         },

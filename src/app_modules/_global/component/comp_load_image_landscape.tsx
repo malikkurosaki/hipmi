@@ -8,7 +8,7 @@ import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function Profile_ComponentLoadBackgroundImage({
+export function ComponentGlobal_LoadImageLandscape({
   fileId,
 }: {
   fileId: string;

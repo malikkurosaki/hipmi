@@ -22,8 +22,6 @@ import EditDokumenInvestasi from "./edit_dokumen/view";
 import LayoutEditDokumenInvestasi from "./edit_dokumen/layout";
 import EditBeritaInvestasi from "./edit_berita/view";
 import LayoutEditBeritaInvestasi from "./edit_berita/layout";
-import DetailSahamTerbeli from "./detail_saham_terbeli/view";
-import LayoutDetailSahamTerbeli from "./detail_saham_terbeli/layout";
 import DetailPropektus from "./detail_prospektus/view";
 import LayoutDetailPropektus from "./detail_prospektus/layout";
 import DetailDokumenInvestasi from "./detail_dokumen/view";
@@ -91,8 +89,6 @@ export {
   LayoutEditDokumenInvestasi,
   EditBeritaInvestasi,
   LayoutEditBeritaInvestasi,
-  DetailSahamTerbeli,
-  LayoutDetailSahamTerbeli,
   DetailPropektus,
   LayoutDetailPropektus,
   DetailDokumenInvestasi,

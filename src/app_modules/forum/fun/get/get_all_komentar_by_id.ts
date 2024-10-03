@@ -34,7 +34,7 @@ export async function forum_funGetAllKomentarById({
           Profile: {
             select: {
               name: true,
-              imagesId: true,
+              imageId: true,
             },
           },
         },

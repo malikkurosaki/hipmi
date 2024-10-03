@@ -4,7 +4,6 @@ import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import { ComponentGlobal_BoxUploadImage } from "@/app_modules/_global/component";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { BIDANG_BISNIS_OLD } from "@/app_modules/model_global/portofolio";
 import {
   AspectRatio,
@@ -49,7 +48,6 @@ export default function CreatePortofolio({
 
   const [file, setFile] = useState<File | any>(null);
   const [img, setImg] = useState<any | null>(null);
-  const [isFile, setIsFile] = useState(false);
 
   return (
     <>
@@ -186,16 +184,8 @@ export default function CreatePortofolio({
                   const buffer = URL.createObjectURL(
                     new Blob([new Uint8Array(await files.arrayBuffer())])
                   );
-                  if (files.size > 2000000) {
-                    ComponentGlobal_NotifikasiPeringatan(
-                      "Maaf, Ukuran file terlalu besar, maximum 2mb",
-                      3000
-                    );
-                  } else {
-                    setImg(buffer);
-                    setFile(files);
-                    setIsFile(false);
-                  }
+                  setImg(buffer);
+                  setFile(files);
                 } catch (error) {
                   console.log(error);
                 }
@@ -307,7 +297,6 @@ export default function CreatePortofolio({
           dataMedsos={dataMedsos}
           file={file}
           profileId={profileId}
-          setIsFile={setIsFile}
         />
       </Stack>
 

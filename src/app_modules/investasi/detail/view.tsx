@@ -119,8 +119,8 @@ export default function DetailInvestasi({
         }}
       >
         {/* Foto username dan sisa waktu */}
-        <ComponentGlobal_AvatarAndAuthorName
-          dataUser={dataInvestasi.author as any}
+        {/* <ComponentGlobal_AvatarAndAuthorName
+          dataUser={dataInvestasi.author.Profile as any}
           componentRight={
             data.MasterProgresInvestasi.id === "1" ? (
               <Box>
@@ -174,7 +174,7 @@ export default function DetailInvestasi({
               </Box>
             )
           }
-        />
+        /> */}
 
         <AspectRatio ratio={1 / 1} mx={"sm"} mah={250}>
           <Image

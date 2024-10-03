@@ -1,9 +1,8 @@
 "use client";
 
-import { Box, Center, Loader, Stack } from "@mantine/core";
+import { Box, Center, Loader, Stack, TextInput } from "@mantine/core";
 import _ from "lodash";
 import { MODEL_FORUM_KOMENTAR, MODEL_FORUM_POSTING } from "../model/interface";
-
 import mqtt_client from "@/util/mqtt_client";
 import { useShallowEffect } from "@mantine/hooks";
 import { useState } from "react";
@@ -27,7 +26,6 @@ export default function Forum_MainDetail({
 }) {
   const [data, setData] = useState(dataPosting);
   const [lsKomentar, setLsKomentar] = useState(listKomentar);
-
   const [activePage, setActivePage] = useState(1);
 
   // useShallowEffect(() => {
@@ -90,9 +88,8 @@ export default function Forum_MainDetail({
           ""
         )}
 
-        <Box >
+        <Box>
           <ScrollOnly
-          
             height={"60vh"}
             renderLoading={() => (
               <Center mt={"lg"}>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Stack, Group, Text } from "@mantine/core";
+import { Card, Stack, Group, Text, Box } from "@mantine/core";
 import { IconMessageCircle, IconMessageCircleX } from "@tabler/icons-react";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
 import ComponentForum_DetailHeader from "./detail_header";
@@ -8,6 +8,7 @@ import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
 
 export default function ComponentForum_DetailForumView({
   data,
@@ -22,19 +23,9 @@ export default function ComponentForum_DetailForumView({
 }) {
   return (
     <>
-      <Card
-        mb={"md"}
-        p={"xl"}
-        bg={MainColor.darkblue}
-        style={{
-          border: `2px solid ${AccentColor.blue}`,
-        }}
-        radius={"md"}
-      >
-        {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
-
-        {/* HEADER */}
-        <Card.Section>
+      <ComponentGlobal_CardStyles>
+        <Stack>
+          {/* HEADER */}
           <ComponentForum_DetailHeader
             data={data}
             userLoginId={userLoginId}
@@ -42,11 +33,9 @@ export default function ComponentForum_DetailForumView({
               onLoadData(val);
             }}
           />
-        </Card.Section>
 
-        {/* CONTENT */}
-        <Card.Section sx={{ zIndex: 0 }} p={"lg"}>
-          <Stack spacing={"xs"}>
+          {/* CONTENT */}
+          <Box p={"lg"} >
             <Text fz={"sm"} color="white">
               {data?.diskusi ? (
                 <div dangerouslySetInnerHTML={{ __html: data?.diskusi }} />
@@ -54,11 +43,9 @@ export default function ComponentForum_DetailForumView({
                 ""
               )}
             </Text>
-          </Stack>
-        </Card.Section>
+          </Box>
 
-        {/* FOOTER */}
-        <Card.Section>
+          {/* FOOTER */}
           <Stack>
             <Group position="apart">
               <Group spacing={"xs"} px={"sm"}>
@@ -94,8 +81,8 @@ export default function ComponentForum_DetailForumView({
               </Group>
             </Group>
           </Stack>
-        </Card.Section>
-      </Card>
+        </Stack>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

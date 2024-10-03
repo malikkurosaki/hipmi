@@ -2,10 +2,10 @@
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
-import { ActionIcon, Card, Group, Stack, Text } from "@mantine/core";
+  ComponentGlobal_CardLoadingOverlay,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
+import { Box, Group, Stack, Text } from "@mantine/core";
 import { IconMessageCircle, IconMessageCircleX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -24,23 +24,12 @@ export default function ComponentForum_BerandaCardView({
   allData: any[];
 }) {
   const router = useRouter();
-  const [loadingKomen, setLoadingKomen] = useState(false);
-  const [loadingDetail, setLoadingDetail] = useState(false);
-
-  const [postingId, setPostingId] = useState("");
+  const [visible, setVisible] = useState(false);
 
   return (
     <>
-      <Card
-        mb={"md"}
-        p={"xl"}
-        bg={MainColor.darkblue}
-        style={{
-          border: `2px solid ${AccentColor.blue}`,
-        }}
-        radius={"md"}
-      >
-        <Card.Section>
+      <ComponentGlobal_CardStyles>
+        <Stack>
           <ComponentForum_BerandaHeaderCard
             data={data}
             isMoreButton={true}
@@ -48,42 +37,39 @@ export default function ComponentForum_BerandaCardView({
             onLoadData={onLoadData}
             allData={allData}
           />
-        </Card.Section>
 
-        <Card.Section
-          sx={{ zIndex: 0 }}
-          p={"lg"}
-          onClick={() => {
-            router.push(RouterForum.main_detail + data?.id);
-          }}
-        >
-          <Text c="white" fz={"sm"} lineClamp={4}>
-            <div dangerouslySetInnerHTML={{ __html: data?.diskusi }} />
-          </Text>
-        </Card.Section>
+          <Box
+            sx={{ zIndex: 0 }}
+            p={"lg"}
+            onClick={() => {
+              setVisible(true), router.push(RouterForum.main_detail + data?.id);
+            }}
+          >
+            <Text c="white" fz={"sm"} lineClamp={4}>
+              <div dangerouslySetInnerHTML={{ __html: data?.diskusi }} />
+            </Text>
+          </Box>
 
-        <Card.Section>
-          <Stack>
-            <Group spacing={"xs"} px={"sm"}>
-              <ActionIcon
-                loading={loadingKomen && data?.id === postingId ? true : false}
-                variant="transparent"
-                sx={{ zIndex: 1 }}
-              >
-                {(data?.ForumMaster_StatusPosting?.id as any) === 1 ? (
-                  <IconMessageCircle color="white" size={25} />
-                ) : (
-                  <IconMessageCircleX color="gray" size={25} />
-                )}
-              </ActionIcon>
+          <Group spacing={"xs"}>
+            {(data?.ForumMaster_StatusPosting?.id as any) === 1 ? (
+              <IconMessageCircle color="white" size={25} />
+            ) : (
+              <IconMessageCircleX color="gray" size={25} />
+            )}
 
-              {/* <TotalKomentar postingId={e?.id} /> */}
-
-              <Text color={(data?.ForumMaster_StatusPosting?.id as any) === 1 ? "white" :"gray"}>{data?.Forum_Komentar.length}</Text>
-            </Group>
-          </Stack>
-        </Card.Section>
-      </Card>
+            <Text
+              color={
+                (data?.ForumMaster_StatusPosting?.id as any) === 1
+                  ? "white"
+                  : "gray"
+              }
+            >
+              {data?.Forum_Komentar.length}
+            </Text>
+          </Group>
+          {visible && <ComponentGlobal_CardLoadingOverlay />}
+        </Stack>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

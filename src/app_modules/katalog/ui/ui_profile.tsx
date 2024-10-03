@@ -1,6 +1,5 @@
 "use client";
 
-import { APIs } from "@/app/lib";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import { Box, Center, Group, Stack, Text, ThemeIcon } from "@mantine/core";
 import {
@@ -70,12 +69,6 @@ export function Profile_UiView({
           <Profile_ComponentLoadBackgroundImage
             fileId={profile.imageBackgroundId as any}
           />
-          {/* <Image
-            radius={"sm"}
-            height={200}
-            alt="Background"
-            src={APIs.GET({ fileId: profile.imageBackgroundId as string })}
-          /> */}
 
           <Box
             sx={{
@@ -95,19 +88,6 @@ export function Profile_UiView({
                   borderWidth: "2px",
                 }}
               />
-              {/* <Avatar
-                bg={"gray.2"}
-                sx={{
-                  borderStyle: "solid",
-                  borderColor: AccentColor.darkblue,
-                  borderWidth: "2px",
-                }}
-                src={
-                  APIs.GET({fileId: profile.imageId as any})
-                }
-                size={100}
-                radius={"100%"}
-              /> */}
             </Center>
             <Stack align="center" c={"white"} mt={"xs"} spacing={0}>
               <Text fw={"bold"} lineClamp={1}>
