@@ -1,10 +1,10 @@
 "use client";
 
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_AvatarAndUsername, ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
@@ -14,13 +14,12 @@ import {
   Badge,
   Box,
   Button,
-  Card,
   Center,
   Group,
   Radio,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
 import _ from "lodash";
 import moment from "moment";
@@ -29,8 +28,6 @@ import ComponentVote_HasilVoting from "../../component/detail/detail_hasil_votin
 import { Vote_funCreateHasil } from "../../fun/create/create_hasil";
 import { voting_funGetOneVotingbyId } from "../../fun/get/fun_get_one_by_id";
 import { MODEL_VOTING } from "../../model/interface";
-import { ComponentDonasi_CardStatus } from "@/app_modules/donasi/component/card_view/card_status";
-import { ComponentGlobal_AvatarAndUsername, ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
 
 export default function Vote_MainDetail({
   dataVote,

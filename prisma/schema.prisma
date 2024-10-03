@@ -80,23 +80,19 @@ model KodeOtp {
 }
 
 model Profile {
-  id                 String            @id @default(cuid())
-  name               String
-  email              String            @unique
-  alamat             String
-  jenisKelamin       String
-  active             Boolean           @default(true)
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @default(now()) @updatedAt
-  User               User?             @relation(fields: [userId], references: [id])
-  userId             String?           @unique
-  ImageProfile       Images?           @relation(fields: [imagesId], references: [id])
-  imagesId           String?           @unique
-  Portofolio         Portofolio[]
-  ImagesBackground   ImagesBackground? @relation(fields: [imagesBackgroundId], references: [id])
-  imagesBackgroundId String?           @unique
-  imageId            String?
-  imageBackgroundId  String?
+  id                String       @id @default(cuid())
+  name              String
+  email             String       @unique
+  alamat            String
+  jenisKelamin      String
+  active            Boolean      @default(true)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @default(now()) @updatedAt
+  User              User?        @relation(fields: [userId], references: [id])
+  userId            String?      @unique
+  Portofolio        Portofolio[]
+  imageId           String?
+  imageBackgroundId String?
 }
 
 model Images {
@@ -106,7 +102,6 @@ model Images {
   active                 Boolean                  @default(true)
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @default(now()) @updatedAt
-  Profile                Profile?
   Investasi              Investasi?
   BeritaInvestasi        BeritaInvestasi[]
   Donasi                 Donasi?
@@ -116,16 +111,6 @@ model Images {
   Donasi_PencairanDana   Donasi_PencairanDana[]
   Donasi_Invoice         Donasi_Invoice[]
   Investasi_Invoice      Investasi_Invoice[]
-}
-
-model ImagesBackground {
-  id        String   @id @default(cuid())
-  url       String
-  label     String
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Profile   Profile?
 }
 
 model Portofolio {
@@ -232,8 +217,7 @@ model Investasi {
   masterProgresInvestasiId String?
   Investasi_Invoice        Investasi_Invoice[]
 
-  // imageId      String?
-  // prospektusId String?
+  imageId String?
 }
 
 model MasterPencarianInvestor {
@@ -281,6 +265,9 @@ model ProspektusInvestasi {
   updatedAt   DateTime   @default(now()) @updatedAt
   investasi   Investasi? @relation(fields: [investasiId], references: [id])
   investasiId String?    @unique
+
+  fileId String?
+  title  String?
 }
 
 model DokumenInvestasi {
@@ -292,6 +279,8 @@ model DokumenInvestasi {
   updatedAt   DateTime   @default(now()) @updatedAt
   investasi   Investasi? @relation(fields: [investasiId], references: [id])
   investasiId String?
+
+  fileId String?
 }
 
 model BeritaInvestasi {
@@ -305,6 +294,8 @@ model BeritaInvestasi {
   imagesId    String?
   investasi   Investasi @relation(fields: [investasiId], references: [id])
   investasiId String
+
+  imageId String?
 }
 
 model MasterProgresInvestasi {

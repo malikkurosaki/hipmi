@@ -1,33 +1,26 @@
 "use client";
 
-import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
-import {
-  Card,
-  Stack,
-  Grid,
-  Avatar,
-  Divider,
-  Badge,
-  Group,
-  Text,
-  Title,
-  Box,
-  Center,
-  Progress,
-} from "@mantine/core";
-import moment from "moment";
-import { useRouter } from "next/navigation";
-import { MODEL_VOTING } from "../model/interface";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import { toNumber } from "lodash";
-import { useState } from "react";
 import {
   ComponentGlobal_AvatarAndUsername,
   ComponentGlobal_CardLoadingOverlay,
   ComponentGlobal_CardStyles,
 } from "@/app_modules/_global/component";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import {
+  Avatar,
+  Badge,
+  Box,
+  Center,
+  Grid,
+  Group,
+  Stack,
+  Text,
+  Title
+} from "@mantine/core";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { MODEL_VOTING } from "../model/interface";
 
 export default function ComponentVote_CardViewPublish({
   data,

@@ -1,40 +1,24 @@
 "use client";
 
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import {
-  Title,
-  Card,
-  CardSection,
-  Group,
-  Flex,
-  Avatar,
   AspectRatio,
   Box,
-  Slider,
+  Card,
+  Center,
   Grid,
-  Stack,
-  Divider,
-  Badge,
   Image,
-  Text,
-  Button,
   Paper,
   Progress,
-  Center,
-  SimpleGrid,
+  Stack,
+  Text
 } from "@mantine/core";
-import { IconCircleCheck } from "@tabler/icons-react";
-import moment from "moment";
-import { useRouter } from "next/navigation";
-import dataDummy from "../dummy/data_dummy.json";
-import { MODEL_Transaksi_Investasi } from "../_lib/interface";
-import { useState } from "react";
-import { Warna } from "@/app/lib/warna";
 import _ from "lodash";
-import ComponentInvestasi_IsEmptyData from "../component/is_empty_data";
-import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { MODEL_Transaksi_Investasi } from "../_lib/interface";
 
 export default function InvestasiSahamTerbeli({
   listTransaksi,

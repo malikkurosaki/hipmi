@@ -1,14 +1,12 @@
 "use client";
 
 import {
-  Box,
   Center,
   Group,
   LoadingOverlay,
   Skeleton,
-  Text,
+  Text
 } from "@mantine/core";
-import { MainColor } from "./color/color_pallet";
 
 export default function ComponentGlobal_V2_LoadingPage() {
   const listhHuruf = [

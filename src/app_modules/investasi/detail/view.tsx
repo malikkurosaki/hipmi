@@ -4,13 +4,10 @@ import {
   NEW_RouterInvestasi,
   RouterInvestasi_OLD,
 } from "@/app/lib/router_hipmi/router_investasi";
-import { Warna } from "@/app/lib/warna";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
-import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
 import {
   ActionIcon,
   AspectRatio,
@@ -27,22 +24,16 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 import {
   IconBookDownload,
-  IconCircleCheck,
   IconFileDescription,
-  IconSpeakerphone,
-  IconXboxX,
+  IconSpeakerphone
 } from "@tabler/icons-react";
-import { useAtom } from "jotai";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_INVESTASI } from "../_lib/interface";
-import { gs_TransferValue } from "../g_state";
-import { useLocalStorage } from "@mantine/hooks";
-import ComponentGlobal_AuthorNameAndAvatar from "@/app_modules/_global/author_name_on_header";
-import { ComponentGlobal_AvatarAndAuthorName } from "@/app_modules/_global/component";
 
 export default function DetailInvestasi({
   dataInvestasi,

@@ -1,6 +1,5 @@
 import { ComponentGlobal_ButtonUploadFileImage } from "../button/comp_button_upload_photo";
 import ComponentGlobal_BoxInformation from "./box_information";
-import ComponentGlobal_AvatarAndAuthorName from "./comp_author_name_and_avatar";
 import { ComponentGlobal_AvatarAndUsername } from "./comp_avatar_and_username";
 import { ComponentGlobal_BoxUploadImage } from "./comp_box_upload_image";
 import { ComponentGlobal_CardStyles } from "./comp_card_box_and_background";
@@ -16,7 +15,6 @@ import ComponentGlobal_InputCountDown from "./input_countdown";
 
 export { ComponentGlobal_TampilanRupiah };
 export { ComponentGlobal_TampilanAngkaRatusan };
-export { ComponentGlobal_AvatarAndAuthorName };
 export { ComponentGlobal_CardLoadingOverlay };
 export { ComponentGlobal_BoxInformation };
 export { ComponentGlobal_InputCountDown };

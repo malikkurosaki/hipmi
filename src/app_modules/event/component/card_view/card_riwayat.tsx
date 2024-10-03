@@ -1,7 +1,5 @@
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import { Card, Group, Stack, Text, Title } from "@mantine/core";
+import { Group, Stack, Text, Title } from "@mantine/core";
 
 import {
   ComponentGlobal_AvatarAndUsername,

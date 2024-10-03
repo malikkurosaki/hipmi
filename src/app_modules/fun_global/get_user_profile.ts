@@ -3,7 +3,6 @@ import prisma from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function funGetUserProfile( userId: string ) {
-
   const user = await prisma.user.findUnique({
     where: {
       id: userId,
@@ -19,14 +18,8 @@ export async function funGetUserProfile( userId: string ) {
             email: true,
             jenisKelamin: true,
             name: true,
-            imagesId: true,
-            ImageProfile: {
-              select: {
-                url: true,
-              },
-            },
-            ImagesBackground: true,
-            imagesBackgroundId: true,
+            imageId: true,
+            imageBackgroundId: true,
           },
         },
       },
