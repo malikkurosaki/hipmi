@@ -42,7 +42,7 @@ export async function adminForum_getListKomentarById({
           Profile: {
             select: {
               name: true,
-              imagesId: true,
+              imageId: true,
             },
           },
         },

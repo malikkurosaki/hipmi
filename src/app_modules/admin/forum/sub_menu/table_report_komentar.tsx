@@ -3,11 +3,9 @@
 import { RouterAdminForum } from "@/app/lib/router_admin/router_admin_forum";
 import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
 import {
-  MODEL_FORUM_REPORT_KOMENTAR,
-  MODEL_FORUM_REPORT_POSTING,
+  MODEL_FORUM_REPORT_KOMENTAR
 } from "@/app_modules/forum/model/interface";
 import {
-  Badge,
   Box,
   Button,
   Center,
@@ -20,18 +18,15 @@ import {
   Table,
   Text,
   TextInput,
-  Title,
+  Title
 } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
 import { IconFlag3, IconSearch } from "@tabler/icons-react";
 import { isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentAdminGlobal_IsEmptyData from "../../_admin_global/is_empty_data";
-import ComponentAdminForum_ButtonDeletePosting from "../component/button_delete";
-import adminForum_funGetAllReportPosting from "../fun/get/get_all_report_posting";
-import { Forum_Komentar } from "@/app_modules/forum";
 import adminForum_funGetAllReportKomentar from "../fun/get/get_all_report_komentar";
-import { useShallowEffect } from "@mantine/hooks";
 
 export default function AdminForum_TableReportKomentar({
   listData,
