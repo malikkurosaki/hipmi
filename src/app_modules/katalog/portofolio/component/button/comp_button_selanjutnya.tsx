@@ -1,7 +1,7 @@
 import { RouterMap } from "@/app/lib/router_hipmi/router_map";
 import { MainColor } from "@/app_modules/_global/color";
 import {
-    ComponentGlobal_NotifikasiBerhasil,
+  ComponentGlobal_NotifikasiBerhasil,
   ComponentGlobal_NotifikasiGagal,
   ComponentGlobal_NotifikasiPeringatan,
 } from "@/app_modules/_global/notif_global";
@@ -20,13 +20,11 @@ export function Portofolio_ComponentButtonSelanjutnya({
   dataPortofolio,
   file,
   dataMedsos,
-  setIsFile,
 }: {
   profileId: string;
   dataPortofolio: MODEL_PORTOFOLIO_OLD;
   file: File;
   dataMedsos: any;
-  setIsFile: any;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);

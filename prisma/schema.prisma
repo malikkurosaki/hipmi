@@ -231,6 +231,9 @@ model Investasi {
   MasterProgresInvestasi   MasterProgresInvestasi? @relation(fields: [masterProgresInvestasiId], references: [id])
   masterProgresInvestasiId String?
   Investasi_Invoice        Investasi_Invoice[]
+
+  // imageId      String?
+  // prospektusId String?
 }
 
 model MasterPencarianInvestor {

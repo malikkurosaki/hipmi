@@ -1,9 +1,10 @@
 "use client";
 
 import { APIs } from "@/app/lib";
-import { routerImagePreview } from "@/app/lib/router_hipmi/router_image_preview";
+import { pathAssetImage } from "@/app/lib";
+import { RouterImagePreview } from "@/app/lib/router_hipmi/router_image_preview";
 import { AccentColor } from "@/app_modules/_global/color";
-import { Avatar, Image, Skeleton } from "@mantine/core";
+import { Avatar, Center, Image, Skeleton } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { CSSProperties, useState } from "react";
@@ -17,6 +18,7 @@ export function Profile_ComponentAvatarProfile({
 }) {
   const router = useRouter();
   const [isImage, setIsImage] = useState<boolean | null>(null);
+  const [isLoading, setLoading] = useState(false);
 
   const url = APIs.GET({ fileId: fileId, size: "200" });
 
@@ -70,18 +72,33 @@ export function Profile_ComponentAvatarProfile({
 
   return (
     <>
-      <Avatar
-        bg={"white"}
-        style={style}
-        radius={"50%"}
-        size={100}
-        src={url}
-        onClick={() =>
-          router.push(routerImagePreview.main({ id: fileId }), {
-            scroll: false,
-          })
-        }
-      />
+      <Center>
+        <Avatar
+          bg={"white"}
+          style={style}
+          radius={"50%"}
+          size={100}
+          src={url}
+          opacity={isLoading ? 0.5 : 1}
+          onClick={() => {
+            router.push(RouterImagePreview.main({ id: fileId }), {
+              scroll: false,
+            });
+            setLoading(true);
+          }}
+        />
+        {isLoading && (
+          <Image
+            alt="Loader"
+            src={pathAssetImage.new_loader}
+            height={50}
+            width={50}
+            style={{
+              position: "absolute",
+            }}
+          />
+        )}
+      </Center>
     </>
   );
 }

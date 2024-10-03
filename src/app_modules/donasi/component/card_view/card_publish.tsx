@@ -2,7 +2,10 @@
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
+import {
+  ComponentGlobal_CardLoadingOverlay,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
 import {
   AspectRatio,
   Card,
@@ -31,16 +34,8 @@ export default function ComponentDonasi_CardPublish({
 
   return (
     <>
-      <Card
-        style={{
-          padding: "15px",
-          backgroundColor: AccentColor.darkblue,
-          borderRadius: "10px",
-          border: `2px solid ${AccentColor.blue}`,
-          color: "white",
-          marginBottom: "15px",
-        }}
-        onClick={() => {
+      <ComponentGlobal_CardStyles
+        onClickHandler={() => {
           setVisible(true);
           setDonasiId(data.id);
           router.push(path + `${data.id}`);
@@ -88,7 +83,7 @@ export default function ComponentDonasi_CardPublish({
         ) : (
           ""
         )}
-      </Card>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }
