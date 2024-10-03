@@ -1,7 +1,7 @@
 "use client";
 
-import { APIs, RouterAssetImage } from "@/app/lib";
-import { routerImagePreview } from "@/app/lib/router_hipmi/router_image_preview";
+import { APIs, pathAssetImage } from "@/app/lib";
+import { RouterImagePreview } from "@/app/lib/router_hipmi/router_image_preview";
 import { Box, Center, Image, Skeleton } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
@@ -41,7 +41,7 @@ export function ComponentMap_LoadImageMap({
       ) : isImage ? (
         <Image
           onClick={() =>
-            router.push(routerImagePreview.main({ id: fileId }), {
+            router.push(RouterImagePreview.main({ id: fileId }), {
               scroll: false,
             })
           }
@@ -74,7 +74,7 @@ export function ComponentMap_LoadImageMap({
               alt="Image"
               height={100}
               width={100}
-              src={RouterAssetImage.no_image}
+              src={pathAssetImage.no_image}
             />
           </Center>
         </Box>

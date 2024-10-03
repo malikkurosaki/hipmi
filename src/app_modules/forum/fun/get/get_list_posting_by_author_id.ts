@@ -35,7 +35,8 @@ export async function forum_getAllPostingByAuhtorId({
           Profile: {
             select: {
               id: true,
-              imagesId: true,
+              name: true,
+              imageId: true,
             },
           },
         },

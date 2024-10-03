@@ -1,5 +1,5 @@
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
-import { ComponentGlobal_AvatarAndAuthorName } from "@/app_modules/_global/component";
+import { ComponentGlobal_AvatarAndAuthorName, ComponentGlobal_AvatarAndUsername } from "@/app_modules/_global/component";
 import { MODEL_INVOICE_INVESTASI } from "@/app_modules/investasi/_lib/interface";
 import {
   Stack,
@@ -25,7 +25,7 @@ export function Investasi_ComponentBoxDetailData({
     <>
       <Investasi_ComponentStylesCard>
         <Stack>
-          <ComponentGlobal_AvatarAndAuthorName dataUser={data?.Author} />
+          <ComponentGlobal_AvatarAndUsername profile={data?.Author.Profile as any} />
           <AspectRatio ratio={1 / 1} mx={0} mah={250}>
             <Image
               alt=""

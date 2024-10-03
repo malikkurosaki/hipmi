@@ -93,6 +93,11 @@ export default function ComponentForum_DetailCreateKomentar({
             onChange={(val) => {
               setValue(val);
             }}
+            style={{
+              overflowY: "auto",
+              maxHeight: 100,
+              minHeight: 50,
+            }}
           />
         </Paper>
 

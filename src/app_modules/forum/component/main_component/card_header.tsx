@@ -3,20 +3,14 @@
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import {
-  Avatar,
-  Badge,
-  Grid,
-  Group,
-  Loader,
-  Stack,
-  Text
-} from "@mantine/core";
+import { Avatar, Badge, Grid, Group, Loader, Stack, Text } from "@mantine/core";
 import { IconCircle } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_FORUM_POSTING } from "../../model/interface";
 import ComponentForum_BerandaMoreButton from "./card_more_button";
+import { ComponentGlobal_LoaderAvatar } from "@/app_modules/_global/component";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 
 export default function ComponentForum_BerandaHeaderCard({
   data,
@@ -50,23 +44,20 @@ export default function ComponentForum_BerandaHeaderCard({
             }}
           >
             {isLoading ? (
-              <Loader color="gray" variant="dots" />
-            ) : (
               <Avatar
                 size={40}
-                sx={{
+                radius={"100%"}
+                style={{
+                  borderColor: "white",
                   borderStyle: "solid",
                   borderWidth: "1px",
-                  borderColor: "white",
                 }}
-                radius={"xl"}
-                bg={"gray.1"}
-                src={
-                  data.Author.Profile.imagesId
-                    ? RouterProfile.api_foto_profile +
-                      data.Author.Profile.imagesId
-                    : "/aset/global/avatar.png"
-                }
+              >
+                <ComponentGlobal_Loader variant="dots" />
+              </Avatar>
+            ) : (
+              <ComponentGlobal_LoaderAvatar
+                fileId={data.Author.Profile.imageId as any}
               />
             )}
           </Grid.Col>
@@ -76,8 +67,8 @@ export default function ComponentForum_BerandaHeaderCard({
               <Grid>
                 <Grid.Col span={"auto"}>
                   <Text lineClamp={1} fz={"sm"} fw={"bold"} color={"white"}>
-                    {data.Author.username
-                      ? data.Author.username
+                    {data.Author.Profile.name
+                      ? data.Author.Profile.name
                       : "Nama author  "}
                   </Text>
                 </Grid.Col>

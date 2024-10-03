@@ -1,50 +1,41 @@
 "use client";
 
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import { Stack, Grid, Avatar, Divider, Text, Group } from "@mantine/core";
-import { useRouter } from "next/navigation";
-import moment from "moment";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import {
-  IconCircleFilled,
-  IconDots,
-  IconEdit,
-  IconFlag3,
-  IconMessageCircle,
-  IconTrash,
-} from "@tabler/icons-react";
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { Avatar, Divider, Grid, Group, Stack, Text } from "@mantine/core";
 import { IconCircle } from "@tabler/icons-react";
-import { IoIosMore } from "react-icons/io";
-import { useDisclosure } from "@mantine/hooks";
-import { useState } from "react";
-import ComponentForum_PostingButtonMore from "../more_button/posting_button_more";
+import { useRouter } from "next/navigation";
 import ComponentForum_KomentarButtonMore from "./komentar_button_more";
+import { useState } from "react";
+import { ComponentGlobal_LoaderAvatar } from "@/app_modules/_global/component";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import { data } from "autoprefixer";
+import { MODEL_PROFILE } from "@/app_modules/katalog/profile/model/interface";
 
 export default function ComponentForum_KomentarAuthorNameOnHeader({
   userId,
   komentarId,
-  imagesId,
-  authorName,
   tglPublish,
   isPembatas,
   isMoreButton,
   setKomentar,
   postingId,
   userLoginId,
+  profile,
 }: {
   userId?: string;
   komentarId?: string;
-  imagesId?: string;
-  authorName?: string;
   tglPublish?: Date;
   isPembatas?: boolean;
   isMoreButton?: boolean;
   setKomentar?: any;
   postingId?: string;
   userLoginId: string;
+  profile: MODEL_PROFILE;
 }) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -54,30 +45,35 @@ export default function ComponentForum_KomentarAuthorNameOnHeader({
             span={"content"}
             onClick={() => {
               if (userId) {
+                setIsLoading(true);
                 router.push(RouterForum.forumku + userId);
               } else {
                 ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
               }
             }}
           >
-            <Avatar
-              size={30}
-              sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-              radius={"xl"}
-              bg={"gray.1"}
-              src={
-                imagesId
-                  ? RouterProfile.api_foto_profile + imagesId
-                  : "/aset/global/avatar.png"
-              }
-            />
+            {isLoading ? (
+              <Avatar
+                size={40}
+                radius={"100%"}
+                style={{
+                  borderColor: "white",
+                  borderStyle: "solid",
+                  borderWidth: "1px",
+                }}
+              >
+                <ComponentGlobal_Loader variant="dots" />
+              </Avatar>
+            ) : (
+              <ComponentGlobal_LoaderAvatar fileId={profile.imageId as any} />
+            )}
           </Grid.Col>
           <Grid.Col span={"auto"}>
             <Stack justify="center" h={"100%"}>
               <Grid>
                 <Grid.Col span={"auto"}>
                   <Text color="white" lineClamp={1} fz={"sm"} fw={"bold"}>
-                    {authorName ? authorName : "Nama author  "}
+                    {profile.name ? profile.name : "Nama author  "}
                   </Text>
                 </Grid.Col>
               </Grid>

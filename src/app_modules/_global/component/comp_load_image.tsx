@@ -2,7 +2,7 @@
 
 import { APIs } from "@/app/lib";
 import { pathAssetImage } from "@/app/lib/path_asset_image";
-import { routerImagePreview } from "@/app/lib/router_hipmi/router_image_preview";
+import { RouterImagePreview } from "@/app/lib/router_hipmi/router_image_preview";
 import { Center, Image, Skeleton } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
@@ -67,7 +67,7 @@ export function ComponentGlobal_LoadImage({
         <Image
           onClick={() => {
             setIsLoading(true);
-            router.push(routerImagePreview.main({ id: fileId }), {
+            router.push(RouterImagePreview.main({ id: fileId }), {
               scroll: false,
             });
           }}
