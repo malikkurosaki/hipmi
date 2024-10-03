@@ -1,5 +1,4 @@
 import { MODEL_USER } from "@/app_modules/home/model/interface";
-import { MODEL_IMAGES } from "@/app_modules/model_global/interface";
 
 export interface MODEL_PROFILE {
   userId: string;
@@ -12,10 +11,6 @@ export interface MODEL_PROFILE {
   active: string;
   createdAt: Date;
   updatedAt: Date;
-  ImageProfile: MODEL_IMAGES;
-  imagesId: string;
-  ImagesBackground: MODEL_IMAGES;
-  imagesBackgroundId: string;
   imageId?: string;
   imageBackgroundId?: string;
 }

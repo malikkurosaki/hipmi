@@ -51,13 +51,10 @@ export default function AdminEvent_TablePublish({
 
 function TableStatus({ listPublish }: { listPublish: any }) {
   const router = useRouter();
-  const [opened, { open, close }] = useDisclosure(false);
   const [data, setData] = useState<MODEL_EVENT[]>(listPublish.data);
   const [isNPage, setNPage] = useState(listPublish.nPage);
   const [isActivePage, setActivePage] = useState(1);
   const [isSearch, setSearch] = useState("");
-
-  const [peserta, setPeserta] = useState<MODEL_EVENT_PESERTA[]>();
   const [eventId, setEventId] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -132,14 +129,6 @@ function TableStatus({ listPublish }: { listPublish: any }) {
           radius={"xl"}
           onClick={async () => {
             router.push(RouterAdminEvent.detail_peserta + e.id);
-            // setEventId(e.id);
-            // setLoading(true);
-            // await new Promise((v) => setTimeout(v, 500));
-            // await adminEvent_getListPesertaById(e.id).then((res: any) => {
-            //   setPeserta(res);
-            //   setLoading(false);
-            // });
-            // open();
           }}
         >
           Lihat Peserta
@@ -221,46 +210,6 @@ function TableStatus({ listPublish }: { listPublish: any }) {
           </Center>
         </Paper>
       </Stack>
-
-      <Modal opened={opened} onClose={close}>
-        <Paper>
-          <Stack>
-            <Center>
-              <Title order={3}>Daftar Peserta</Title>
-            </Center>
-            <Stack>
-              {_.isEmpty(peserta) ? (
-                <Center>
-                  <Text c={"gray"}>Tidak ada peserta</Text>
-                </Center>
-              ) : (
-                peserta?.map((e) => (
-                  <Stack key={e.id} spacing={"xs"}>
-                    <Grid>
-                      <Grid.Col span={"content"}>
-                        <Avatar
-                          sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-                          radius={"xl"}
-                          src={
-                            RouterProfile.api_foto_profile +
-                            e?.User?.Profile?.imagesId
-                          }
-                        />
-                      </Grid.Col>
-                      <Grid.Col span={"auto"}>
-                        <Group align="center" h={"100%"}>
-                          <Text>{e?.User?.Profile?.name}</Text>
-                        </Group>
-                      </Grid.Col>
-                    </Grid>
-                    <Divider />
-                  </Stack>
-                ))
-              )}
-            </Stack>
-          </Stack>
-        </Paper>
-      </Modal>
     </>
   );
 }

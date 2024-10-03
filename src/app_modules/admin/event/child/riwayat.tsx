@@ -1,5 +1,6 @@
 "use client";
 
+import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import {
   MODEL_EVENT,
@@ -23,14 +24,12 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { useDisclosure, useShallowEffect } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 import { IconCircleCheck, IconSearch } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import { adminEvent_funGetListAllRiwayat } from "../fun";
-import { adminEvent_getListPesertaById } from "../fun/get/get_list_peserta_by_id";
-import { useRouter } from "next/navigation";
-import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
 
 export default function AdminEvent_Riwayat({
   listRiwayat,
@@ -49,8 +48,6 @@ export default function AdminEvent_Riwayat({
 
 function DetailRiwayat({ listRiwayat }: { listRiwayat: any }) {
   const router = useRouter();
-  const [opened, { open, close }] = useDisclosure(false);
-  const [peserta, setPeserta] = useState<MODEL_EVENT_PESERTA[]>();
   const [eventId, setEventId] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -89,14 +86,6 @@ function DetailRiwayat({ listRiwayat }: { listRiwayat: any }) {
           radius={"xl"}
           onClick={() => {
             router.push(RouterAdminEvent.detail_peserta + e.id);
-            // setEventId(e.id);
-            // setLoading(true);
-            // await new Promise((v) => setTimeout(v, 500));
-            // await AdminEvent_getListPesertaById(e.id).then((res: any) => {
-            //   setPeserta(res);
-            //   setLoading(false);
-            // });
-            // open();
           }}
         >
           Lihat Peserta
@@ -145,16 +134,6 @@ function DetailRiwayat({ listRiwayat }: { listRiwayat: any }) {
       </td>
     </tr>
   ));
-
-  // useShallowEffect(() => {
-  //   getAllPeserta(eventId);
-  // }, [eventId]);
-
-  // async function getAllPeserta(eventId: string) {
-  //   await adminEvent_getListPesertaById(eventId).then((res: any) =>
-  //     setPeserta(res)
-  //   );
-  // }
 
   return (
     <>
@@ -229,46 +208,6 @@ function DetailRiwayat({ listRiwayat }: { listRiwayat: any }) {
           </Center>
         </Paper>
       </Stack>
-
-      <Modal
-        opened={opened}
-        onClose={close}
-        size={"md"}
-        // closeOnClickOutside={false}
-        withCloseButton={false}
-      >
-        <Paper>
-          <Stack>
-            <Center>
-              <Title order={3}>Daftar Peserta</Title>
-            </Center>
-            <Stack>
-              {peserta?.map((e) => (
-                <Stack key={e.id} spacing={"xs"}>
-                  <Grid>
-                    <Grid.Col span={"content"}>
-                      <Avatar
-                        sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-                        radius={"xl"}
-                        src={
-                          RouterProfile.api_foto_profile +
-                          e?.User?.Profile?.imagesId
-                        }
-                      />
-                    </Grid.Col>
-                    <Grid.Col span={"auto"}>
-                      <Group align="center" h={"100%"}>
-                        <Text>{e?.User?.Profile?.name}</Text>
-                      </Group>
-                    </Grid.Col>
-                  </Grid>
-                  <Divider />
-                </Stack>
-              ))}
-            </Stack>
-          </Stack>
-        </Paper>
-      </Modal>
     </>
   );
 }

@@ -23,7 +23,7 @@ export default async function getListTransaksiBerhasilInvestasi(
               Profile: {
                 select: {
                   userId: true,
-                  imagesId: true
+                  imageId: true
                 },
               },
             },

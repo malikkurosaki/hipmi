@@ -19,7 +19,7 @@ export default async function getOneTransaksiBerhasilByIdInvestasi(
               Profile: {
                 select: {
                   id: true,
-                  imagesId: true,
+                  imageId: true,
                 },
               },
             },

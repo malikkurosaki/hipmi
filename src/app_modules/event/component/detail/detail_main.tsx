@@ -1,14 +1,11 @@
 "use client";
 
-import { Stack, Title, Grid, Text, Paper, Spoiler } from "@mantine/core";
-import moment from "moment";
-import { MODEL_EVENT } from "../../model/interface";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import {
   ComponentGlobal_AvatarAndUsername,
   ComponentGlobal_CardStyles,
 } from "@/app_modules/_global/component";
+import { Grid, Stack, Text, Title } from "@mantine/core";
+import { MODEL_EVENT } from "../../model/interface";
 
 export default function ComponentEvent_DetailMainData({
   data,

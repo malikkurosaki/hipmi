@@ -1,19 +1,14 @@
 "use client";
 
-import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
-import { Card, Stack, Grid, Title, Text, Center, Tabs } from "@mantine/core";
-import moment from "moment";
+import { Stack, Tabs } from "@mantine/core";
 
-import { MODEL_EVENT } from "../../model/interface";
-import _ from "lodash";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import Event_SemuaRiwayat from "./semua";
-import Event_RiwayatSaya from "./saya";
-import { useAtom } from "jotai";
-import { gs_event_riwayat } from "../../global_state";
 import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
+import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import { gs_event_riwayat } from "../../global_state";
+import { MODEL_EVENT } from "../../model/interface";
+import Event_RiwayatSaya from "./saya";
+import Event_SemuaRiwayat from "./semua";
 
 export default function Event_Riwayat({
   dataSemuaRiwayat,
