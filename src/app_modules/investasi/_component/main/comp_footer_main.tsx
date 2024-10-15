@@ -1,4 +1,7 @@
-import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import {
+  NEW_RouterInvestasi,
+  RouterInvestasi_OLD,
+} from "@/app/lib/router_hipmi/router_investasi";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import { SimpleGrid, Stack, ActionIcon, Text } from "@mantine/core";
 import {
@@ -21,7 +24,7 @@ const listFooter = [
   {
     id: 2,
     name: "Portofolio",
-    route: RouterInvestasi_OLD.main_porto,
+    route: NEW_RouterInvestasi.portofolio({ id: "1" }),
     icon: <IconChartPie />,
   },
   {
@@ -45,14 +48,14 @@ export function Investasi_ComponentFooterMain() {
   return (
     <>
       <SimpleGrid cols={listFooter.length} h={"9vh"} mx={"xs"}>
-        {listFooter.map((e, i) => (
+        {listFooter.map((e: any, i) => (
           <Stack key={i} align="center" justify="center" spacing={0}>
             <ActionIcon
               // disabled={e.path === "" ? true : false}
               variant="transparent"
               c={hotMenu === i ? MainColor.yellow : "white"}
               onClick={() => {
-                router.push(e.route);
+                router.push(e.route, { scroll: false });
                 setHotMenu(i);
               }}
             >

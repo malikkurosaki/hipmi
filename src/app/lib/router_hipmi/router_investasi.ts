@@ -2,26 +2,75 @@ export const NEW_RouterInvestasi = {
   // API
   api_gambar: "/api/investasi/gambar/",
 
-  // Transaksi
+  // MAIN
+  /**
+   *
+   * @param param status id | 1: Publish, 2: Review, 3: Draft, 4: Reject
+   * @type string
+   */
+  portofolio: ({ id }: { id: string }) =>
+    `/dev/investasi/main/portofolio/${id}`,
+
+  // TRANSAKSI
   pembelian: "/dev/investasi/transaksi/pembelian/",
   metode_pembayaran: "/dev/investasi/transaksi/metode-pembayaran/",
   invoice: "/dev/investasi/transaksi/invoice/",
   proses_transaksi: "/dev/investasi/transaksi/proses-transaksi/",
 
-  // stasus transaksi
+  // STATUS TRANSAKSI
   transaksi_gagal: "/dev/investasi/status-transaksi/gagal/",
   transaksi_berhasil: "/dev/investasi/status-transaksi/berhasil/",
 
-  // file view
-  file_view_prospektus: "/dev/investasi/file-view/prospektus/",
-  file_view_dokumen: "/dev/investasi/file-view/dokumen/",
+  // FILE VIEW
+  file_prospektus: ({ id }: { id: string }) =>
+    `/dev/investasi/file-view/prospektus/${id}`,
 
-  // detail
+  OLD_file_view_prospektus: "/dev/investasi/file-view/prospektus/",
+  OLD_file_view_dokumen: "/dev/investasi/file-view/dokumen/",
+
+  // DETAIL
+  detail_portofolio: ({ id }: { id: string }) =>
+    `/dev/investasi/detail/portofolio/${id}`,
+  detail_prospektus: ({ id }: { id: string }) =>
+    `/dev/investasi/detail/prospektus/${id}`,
+  daftar_dokumen: ({ id }: { id: string }) =>
+    `/dev/investasi/detail/daftar-dokumen/${id}`,
+  rekap_dokumen: ({ id }: { id: string }) =>
+    `/dev/investasi/detail/rekap-dokumen/${id}`,
+
   detail_saham: "/dev/investasi/detail/saham/",
   detail_publish: "/dev/investasi/detail_portofolio/publish/",
   detail_review: "/dev/investasi/detail_portofolio/review/",
   detail_draft: "/dev/investasi/detail_portofolio/draft/",
   detail_reject: "/dev/investasi/detail_portofolio/reject/",
+
+  // CREATE
+  /**
+   * @param id | investasiId
+   * @type string
+   */
+  create_dokumen: ({ id }: { id: string }) =>
+    `/dev/investasi/create/dokumen/${id}`,
+
+  // EDIT
+  /**
+   * @param id | investasiId
+   * @type string
+   */
+  edit_investasi: ({ id }: { id: string }) => `/dev/investasi/edit/${id}`,
+
+  /**
+   * @param id | dokumenId
+   * @type string
+   */
+  edit_dokumen: ({ id }: { id: string }) => `/dev/investasi/edit/dokumen/${id}`,
+
+  /**
+   * @param id | investasiId
+   * @type string
+   */
+  edit_prospektus: ({ id }: { id: string }) =>
+    `/dev/investasi/edit/prospektus/${id}`,
 };
 
 export const RouterInvestasi_OLD = {
@@ -32,7 +81,7 @@ export const RouterInvestasi_OLD = {
 
   //INVESTASI
   main: "/dev/investasi/main",
-  create: "/dev/investasi/create",
+  create: "/dev/investasi/create/investasi",
   main_porto: "/dev/investasi/main/portofolio",
   main_investasi: "/dev/investasi/main/saham_saya",
   main_transaksi: "/dev/investasi/main/transaksi",

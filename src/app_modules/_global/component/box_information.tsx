@@ -12,15 +12,16 @@ export default function ComponentGlobal_BoxInformation({
 }) {
   return (
     <>
-      {isReport ? (
-        <Paper
-          bg={"blue.3"}
-          p={10}
-          style={{
-            backgroundColor: AccentColor.blue,
-            border: `1px solid ${AccentColor.skyblue}`,
-          }}
-        >
+      <Paper
+        bg={"blue.3"}
+        p={10}
+        style={{
+          backgroundColor: AccentColor.blue,
+          border: `2px solid ${AccentColor.softblue}`,
+          borderRadius: "10px",
+        }}
+      >
+        {isReport ? (
           <Stack spacing={0}>
             <Text
               fz={fonsize ? fonsize : 12}
@@ -34,16 +35,7 @@ export default function ComponentGlobal_BoxInformation({
               {informasi}
             </Text>
           </Stack>
-        </Paper>
-      ) : (
-        <Paper
-          bg={"blue.3"}
-          p={10}
-          style={{
-            backgroundColor: AccentColor.blue,
-            border: `1px solid ${AccentColor.skyblue}`,
-          }}
-        >
+        ) : (
           <Group>
             <Text fz={fonsize ? fonsize : 12} c={"red"} fw={"bold"}>
               *{" "}
@@ -52,8 +44,10 @@ export default function ComponentGlobal_BoxInformation({
               </Text>
             </Text>
           </Group>
-        </Paper>
-      )}
+        )}
+      </Paper>
     </>
   );
+
+  
 }

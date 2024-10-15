@@ -10,15 +10,14 @@ import {
   Group,
   NumberInput,
   Text,
-  TextInput,
 } from "@mantine/core";
 import { useFocusTrap, useLocalStorage } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { NEW_RouterInvestasi } from "../../../../app/lib/router_hipmi/router_investasi";
 import { MODEL_INVESTASI } from "../../_lib/interface";
 import { gs_investas_menu } from "../../g_state";
-import { NEW_RouterInvestasi } from "../../../../app/lib/router_hipmi/router_investasi";
 
 export function Investasi_ViewProsesPembelian({
   dataInvestasi,
@@ -37,7 +36,7 @@ export function Investasi_ViewProsesPembelian({
     key: "jumlah_investasi",
     defaultValue: 0,
   });
-  const [hotmenu, setHotmenu] = useAtom(gs_investas_menu);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -111,14 +110,16 @@ export function Investasi_ViewProsesPembelian({
 
         <Center>
           <Button
+            loaderPosition="center"
+            loading={isLoading}
             disabled={jumlah < 10}
             w={350}
             radius={50}
             onClick={() => {
-              // onProses();
               router.push(NEW_RouterInvestasi.metode_pembayaran + data.id, {
                 scroll: false,
               });
+              setIsLoading(true)
             }}
             bg={MainColor.yellow}
             color="yellow"

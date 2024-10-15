@@ -28,12 +28,13 @@ import { useLocalStorage } from "@mantine/hooks";
 import {
   IconBookDownload,
   IconFileDescription,
-  IconSpeakerphone
+  IconSpeakerphone,
 } from "@tabler/icons-react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_INVESTASI } from "../_lib/interface";
+import { ComponentGlobal_LoadImageLandscape } from "@/app_modules/_global/component";
 
 export default function DetailInvestasi({
   dataInvestasi,
@@ -79,16 +80,6 @@ export default function DetailInvestasi({
   ];
 
   async function onSubmit() {
-    // OLD
-    // router.push(RouterInvestasi_OLD.proses_transaksi + `${data.id}`);
-    // setTransaksiValue({
-    //   ...transaksiValue,
-    //   lembarTerbeli: "",
-    //   namaBank: "",
-    //   nomorRekening: "",
-    //   totalTransfer: "",
-    // });
-
     setLoadingButton(true);
 
     //NEW
@@ -167,7 +158,7 @@ export default function DetailInvestasi({
           }
         /> */}
 
-        <AspectRatio ratio={1 / 1} mx={"sm"} mah={250}>
+        {/* <AspectRatio ratio={1 / 1} mx={"sm"} mah={250}>
           <Image
             alt=""
             src={RouterInvestasi_OLD.api_gambar + `${data.imagesId}`}
@@ -175,7 +166,9 @@ export default function DetailInvestasi({
             height={250}
             width={"100%"}
           />
-        </AspectRatio>
+        </AspectRatio> */}
+
+        <ComponentGlobal_LoadImageLandscape fileId={data.imageId} />
 
         {/* Title dan Progress */}
         <Box mb={"md"}>

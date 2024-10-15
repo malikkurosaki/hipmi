@@ -37,7 +37,7 @@ export default function DetailDokumenInvestasi({
               marginBottom: "15px",
             }}
             onClick={() => {
-              router.push(NEW_RouterInvestasi.file_view_dokumen + e.id, {
+              router.push(NEW_RouterInvestasi.OLD_file_view_dokumen + e.id, {
                 scroll: false,
               });
             }}

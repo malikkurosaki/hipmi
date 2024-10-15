@@ -19,7 +19,7 @@ export interface MODEL_INVESTASI {
   progress: string;
   MasterStatusInvestasi: MODEL_Status_investasi;
   BeritaInvestasi: Model_Berita_Investasi[];
-  DokumenInvestasi: Model_Dokumen_Investasi[];
+  DokumenInvestasi: MODEL_INVESTASI_DOKUMEN[];
   ProspektusInvestasi: MODEl_PROSPEKTUS_INVESTASI;
   MasterPembagianDeviden: Model_All_Master;
   MasterPencarianInvestor: Model_All_Master;
@@ -32,6 +32,8 @@ export interface MODEL_INVESTASI {
   author: MODEL_PROFILE_OLD;
   countDown: Date;
   Investasi_Invoice: MODEL_INVOICE_INVESTASI[];
+  imageId: string;
+  prospektusFileId: string;
 }
 
 export interface MODEL_Transaksi_Investasi {
@@ -88,7 +90,7 @@ export interface MODEl_PROSPEKTUS_INVESTASI {
   investasiId: string;
 }
 
-export interface Model_Dokumen_Investasi {
+export interface MODEL_INVESTASI_DOKUMEN {
   id: string;
   title: string;
   url: string;
@@ -96,6 +98,7 @@ export interface Model_Dokumen_Investasi {
   createdAt: Date;
   updatedAt: Date;
   investasiId: string;
+  fileId: string;
 }
 
 export interface MODEL_MASTER_BANK {
@@ -134,6 +137,7 @@ export interface MODEL_INVOICE_INVESTASI {
   MasterBank: MODEL_MASTER_BANK;
   StatusInvoice: MODEL_STATUS_INVOICE_INVESTASI;
   Investor: any[];
+  imageId: string
 }
 
 export interface MODEL_STATUS_INVOICE_INVESTASI {

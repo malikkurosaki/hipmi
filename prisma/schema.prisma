@@ -217,7 +217,8 @@ model Investasi {
   masterProgresInvestasiId String?
   Investasi_Invoice        Investasi_Invoice[]
 
-  imageId String?
+  imageId          String?
+  prospektusFileId String?
 }
 
 model MasterPencarianInvestor {
@@ -273,7 +274,7 @@ model ProspektusInvestasi {
 model DokumenInvestasi {
   id          String     @id @default(cuid())
   title       String
-  url         String
+  url         String?
   active      Boolean    @default(true)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @default(now()) @updatedAt
@@ -372,6 +373,8 @@ model Investasi_Invoice {
 
   Images   Images? @relation(fields: [imagesId], references: [id])
   imagesId String?
+
+  imageId String?
 }
 
 model InvestasiMaster_StatusInvoice {

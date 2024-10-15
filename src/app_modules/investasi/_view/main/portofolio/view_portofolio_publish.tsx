@@ -1,18 +1,22 @@
-import { useState } from "react";
-import { Investasi_ComponentCardPortofolioPublish } from "../../../_component";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 import { Box, Center } from "@mantine/core";
 import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";
-import { investasi_funGetSuccessTransactionById } from "../../../_fun";
+import { useState } from "react";
+import { Investasi_ComponentCardPortofolioPublish } from "../../../_component";
+import {
+  investasi_funGetSuccessTransactionById
+} from "../../../_fun";
 
 export function Investasi_ViewPortofolioPublish({
-  listData,
+  statusId,
+  dataPortofolio,
 }: {
-  listData: any[];
+  statusId: string;
+  dataPortofolio: any
 }) {
-  const [data, setData] = useState(listData);
+  const [data, setData] = useState<any[]>(dataPortofolio);
   const [activePage, setActivePage] = useState(1);
 
   return (

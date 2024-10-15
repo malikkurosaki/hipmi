@@ -31,7 +31,7 @@ export default async function funEditInvestasi(
     });
 
     if (!updateImage) return { status: 400, message: "Gagal upload gambar" };
-    const upFolder = Buffer.from(await file.arrayBuffer());
+    const upFolder : any = Buffer.from(await file.arrayBuffer());
     fs.writeFileSync(`./public/investasi/${updateImage.url}`, upFolder);
   }
 

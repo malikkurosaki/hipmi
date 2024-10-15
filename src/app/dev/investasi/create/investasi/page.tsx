@@ -3,8 +3,6 @@ import getPembagianDeviden from "@/app_modules/investasi/fun/master/get_pembagia
 import getPencarianInvestor from "@/app_modules/investasi/fun/master/get_pencarian_investor";
 import getPeriodeDeviden from "@/app_modules/investasi/fun/master/get_periode_deviden";
 import getStatusInvestasi from "@/app_modules/investasi/fun/master/get_status_investasi";
-import { unsealData } from "iron-session";
-import { cookies } from "next/headers";
 
 export default async function Page() {
 

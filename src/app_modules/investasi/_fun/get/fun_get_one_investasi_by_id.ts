@@ -24,6 +24,7 @@ export async function investasi_funGetOneInvestasiById({
       MasterPencarianInvestor: true,
       MasterPeriodeDeviden: true,
       MasterProgresInvestasi: true,
+      
     },
   });
 

@@ -1,11 +1,13 @@
-import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
-import { Grid, Stack, AspectRatio, Paper, Text, Image } from "@mantine/core";
+import {
+  ComponentGlobal_CardLoadingOverlay,
+  ComponentGlobal_CardStyles,
+  ComponentGlobal_LoadImageCustom,
+} from "@/app_modules/_global/component";
+import { Grid, Stack, Text } from "@mantine/core";
 import _ from "lodash";
-import { MODEL_INVESTASI } from "../../_lib/interface";
-import { Investasi_ComponentStylesCard } from "../comp_card_border_and_background";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
+import { MODEL_INVESTASI } from "../../_lib/interface";
 
 export function Investasi_ComponentCardPortofolio_NotPublish({
   data,
@@ -16,12 +18,13 @@ export function Investasi_ComponentCardPortofolio_NotPublish({
 }) {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
-
   return (
     <>
-      <Investasi_ComponentStylesCard
+      {/* <pre style={{color: "white"}}>{JSON.stringify(data, null, 2)}</pre> */}
+
+      <ComponentGlobal_CardStyles
         onClickHandler={() => {
-          router.push(path + data?.id);
+          router.push(path, { scroll: false });
           setVisible(true);
         }}
       >
@@ -43,18 +46,14 @@ export function Investasi_ComponentCardPortofolio_NotPublish({
           </Grid.Col>
 
           <Grid.Col span={4}>
-            <AspectRatio ratio={16 / 9}>
-              <Paper radius={"md"}>
-                <Image
-                  alt=""
-                  src={RouterInvestasi_OLD.api_gambar + `${data.imagesId}`}
-                />
-              </Paper>
-            </AspectRatio>
+            <ComponentGlobal_LoadImageCustom
+              fileId={data.imageId}
+              height={80}
+            />
           </Grid.Col>
         </Grid>
         {visible && <ComponentGlobal_CardLoadingOverlay />}
-      </Investasi_ComponentStylesCard>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

@@ -1,4 +1,7 @@
-import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import {
+  NEW_RouterInvestasi,
+  RouterInvestasi_OLD,
+} from "@/app/lib/router_hipmi/router_investasi";
 import { AccentColor } from "@/app_modules/_global/color";
 import { ActionIcon, Flex, Loader, Paper, Text } from "@mantine/core";
 import { IconFileDescription } from "@tabler/icons-react";
@@ -23,18 +26,17 @@ export function Investasi_ComponentBoxDaftarDokumen({
           borderRadius: "10px",
           color: "white",
         }}
+        onClick={() => {
+          setLoading(true);
+          router.push(NEW_RouterInvestasi.daftar_dokumen({ id: investasiId }), {
+            scroll: false,
+          });
+          // router.push(RouterInvestasi_OLD.detail_dokumen + investasiId, { scroll: false });
+        }}
       >
         <Flex direction={"column"} align={"center"} justify={"center"}>
           <Text fz={12}>Dokumen</Text>
-          <ActionIcon
-            radius={"xl"}
-            variant="transparent"
-            size={60}
-            onClick={() => {
-              setLoading(true);
-              router.push(RouterInvestasi_OLD.detail_dokumen + investasiId);
-            }}
-          >
+          <ActionIcon radius={"xl"} variant="transparent" size={60}>
             {isLoading ? (
               <Loader color="yellow" />
             ) : (
