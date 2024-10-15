@@ -6,16 +6,14 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import { Button, Group, Stack } from "@mantine/core";
-import { IconBookDownload, IconFileDescription } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ComponentInvestasi_DetailDataNonPublish } from "../../component/detail/detai_data_non_publish";
-import funDeleteInvestasi from "../../fun/fun_delete_investasi";
-import funGantiStatusInvestasi from "../../fun/fun_ganti_status";
-import { gs_investasi_status } from "../../g_state";
 import { MODEL_INVESTASI } from "../../_lib/interface";
+import { ComponentInvestasi_DetailDataNonPublish } from "../../component/detail/x_detai_data_non_publish";
 import { investasi_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
+import funDeleteInvestasi from "../../fun/fun_delete_investasi";
+import { gs_investasi_status } from "../../g_state";
 
 export default function DetailRejectInvestasi({
   dataInvestasi,

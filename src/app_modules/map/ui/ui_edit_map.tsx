@@ -1,14 +1,15 @@
 "use client";
 
-import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
-import { RouterMap } from "@/app/lib/router_hipmi/router_map";
+import { APIs } from "@/app/lib";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import {
+  ComponentGlobal_BoxUploadImage,
+  ComponentGlobal_LoadImage,
+} from "@/app_modules/_global/component";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import {
   AspectRatio,
@@ -19,12 +20,9 @@ import {
   Image,
   Paper,
   Stack,
-  Text,
   TextInput,
-  Title,
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Map, {
   AttributionControl,
@@ -32,15 +30,9 @@ import Map, {
   NavigationControl,
   ScaleControl,
 } from "react-map-gl";
-import { map_funEditMap } from "../fun/edit/fun_edit_map";
+import { ComponentMap_ButtonUpdateDataMap } from "../_component";
 import { defaultMapZoom } from "../lib/default_lat_long";
 import { MODEL_MAP } from "../lib/interface";
-import { APIs } from "@/app/lib";
-import {
-  ComponentGlobal_BoxUploadImage,
-  ComponentGlobal_LoadImage,
-} from "@/app_modules/_global/component";
-import { ComponentMap_ButtonUpdateDataMap } from "../_component";
 
 export function UiMap_EditMap({
   mapboxToken,

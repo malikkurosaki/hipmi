@@ -1,8 +1,9 @@
 "use client";
 
-import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import { APIs } from "@/app/lib";
 import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
 import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import { Box } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
 const PdfToImage = dynamic(
@@ -19,12 +20,11 @@ export function Investasi_UiFileViewDokumen({
   return (
     <>
       <UIGlobal_LayoutTamplate
-        header={<UIGlobal_LayoutHeaderTamplate title="" iconLeft={<IconX/>} />}
+        header={<UIGlobal_LayoutHeaderTamplate title="" iconLeft={<IconX />} />}
       >
-        <PdfToImage
-          id={dokumenId}
-          path={RouterInvestasi_OLD.api_file_dokumen}
-        />
+        <Box mb={"lg"}>
+          <PdfToImage id={dokumenId} path={APIs.GET_NO_PARAMS} />
+        </Box>
       </UIGlobal_LayoutTamplate>
     </>
   );

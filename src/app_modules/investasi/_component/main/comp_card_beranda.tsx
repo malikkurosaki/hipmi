@@ -15,16 +15,20 @@ import {
   Group,
   Image,
   Text,
+  Grid,
 } from "@mantine/core";
 import { IconCircleCheck, IconXboxX } from "@tabler/icons-react";
 import moment from "moment";
 
 import { MODEL_INVESTASI } from "../../_lib/interface";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Component, useState } from "react";
 import {
   ComponentGlobal_CardLoadingOverlay,
   ComponentGlobal_CardStyles,
+  ComponentGlobal_LoadImage,
+  ComponentGlobal_LoadImageCustom,
+  ComponentGlobal_LoadImageLandscape,
 } from "@/app_modules/_global/component";
 
 export function Investasi_ComponentCardBeranda({
@@ -45,109 +49,89 @@ export function Investasi_ComponentCardBeranda({
           router.push(RouterInvestasi_OLD.detail + `${data?.id}`);
         }}
       >
-        <CardSection py={"md"} px={"sm"}>
-          <AspectRatio ratio={1 / 1} mah={250}>
-            <Box style={{ borderRadius: "7px" }}>
-              {data.imagesId ? (
-                <Image
-                  radius={"sm"}
-                  alt="Foto"
-                  src={RouterInvestasi_OLD.api_gambar + `${data?.imagesId}`}
-                  w={200}
+        <Stack>
+          <Grid>
+            <Grid.Col span={6}>
+              <ComponentGlobal_LoadImageCustom
+                height={100}
+                fileId={data.imageId}
+              />
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <Stack>
+                <Text fw={"bold"} align="center" lineClamp={2}>{data?.title}</Text>
+
+                <Progress
+                  label={(+data?.progress).toFixed(2) + " %"}
+                  value={+data?.progress}
+                  color={MainColor.yellow}
+                  size="xl"
+                  radius="xl"
+                  styles={{
+                    label: { color: MainColor.black },
+                  }}
                 />
-              ) : (
-                <Image alt="" src={"/aset/no-img.png"} />
-              )}
-            </Box>
-          </AspectRatio>
-        </CardSection>
-
-        <CardSection p={"md"}>
-          <Stack>
-            <Title align="center" order={3}>
-              {data?.title}
-            </Title>
-            <Progress
-              label={(+data?.progress).toFixed(2) + " %"}
-              value={+data?.progress}
-              color={MainColor.yellow}
-              size="xl"
-              radius="xl"
-              styles={{
-                label: { color: MainColor.black },
-              }}
-            />
-          </Stack>
-        </CardSection>
-
-        <CardSection p={"md"}>
-          <Group position="right">
-            {data?.progress === "100" ? (
-              <Group position="right" spacing={"xs"}>
-                <IconCircleCheck color="green" />
-                <Text
-                  truncate
-                  variant="text"
-                  c={Warna.hijau_tua}
-                  sx={{ fontFamily: "Greycliff CF, sans-serif" }}
-                  ta="center"
-                  fz="md"
-                  fw={700}
-                >
-                  Selesai
-                </Text>
-              </Group>
-            ) : (
-              <Box>
-                {+data?.MasterPencarianInvestor.name -
-                  moment(new Date()).diff(new Date(data?.countDown), "days") <=
-                0 ? (
-                  <Group position="right" spacing={"xs"}>
-                    <IconXboxX color="red" />
-                    <Text
-                      truncate
-                      variant="text"
-                      c={Warna.merah}
-                      sx={{ fontFamily: "Greycliff CF, sans-serif" }}
-                      ta="center"
-                      fz="md"
-                      fw={700}
-                    >
-                      Waktu Habis
-                    </Text>
-                  </Group>
-                ) : (
-                  <Group position="right" spacing={"xs"}>
-                    <Text truncate>Sisa waktu:</Text>
-                    <Text truncate>
-                      {Number(data?.MasterPencarianInvestor.name) -
+                <Group position="right">
+                  {data?.progress === "100" ? (
+                    <Group position="right" spacing={"xs"}>
+                      <IconCircleCheck color="green" />
+                      <Text
+                        truncate
+                        variant="text"
+                        c={Warna.hijau_tua}
+                        sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+                        ta="center"
+                        fz="md"
+                        fw={700}
+                      >
+                        Selesai
+                      </Text>
+                    </Group>
+                  ) : (
+                    <Box>
+                      {+data?.MasterPencarianInvestor.name -
                         moment(new Date()).diff(
                           new Date(data?.countDown),
                           "days"
-                        )}
-                    </Text>
-                    <Text truncate>Hari</Text>
-                  </Group>
-                )}
-              </Box>
-            )}
-          </Group>
-        </CardSection>
+                        ) <=
+                      0 ? (
+                        <Group position="right" spacing={"xs"}>
+                          <IconXboxX color="red" />
+                          <Text
+                            truncate
+                            variant="text"
+                            c={Warna.merah}
+                            sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+                            ta="center"
+                            fz="md"
+                            fw={700}
+                          >
+                            Waktu Habis
+                          </Text>
+                        </Group>
+                      ) : (
+                        <Group position="right" spacing={"xs"}>
+                          <Text truncate>Sisa waktu:</Text>
+                          <Text truncate>
+                            {Number(data?.MasterPencarianInvestor.name) -
+                              moment(new Date()).diff(
+                                new Date(data?.countDown),
+                                "days"
+                              )}
+                          </Text>
+                          <Text truncate>Hari</Text>
+                        </Group>
+                      )}
+                    </Box>
+                  )}
+                </Group>
+              </Stack>
+            </Grid.Col>
+          </Grid>
+        </Stack>
+
         {visible ? <ComponentGlobal_CardLoadingOverlay /> : ""}
       </ComponentGlobal_CardStyles>
-
-      {/* <Card
-        style={{
-          padding: "15px",
-          backgroundColor: AccentColor.darkblue,
-          borderRadius: "10px",
-          border: `2px solid ${AccentColor.blue}`,
-          color: "white",
-          marginBottom: "15px",
-          marginInline: "15px",
-        }}
-       
-      ></Card> */}
     </>
   );
 }

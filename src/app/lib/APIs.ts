@@ -9,6 +9,12 @@ const APIs = {
     size
       ? `https://wibu-storage.wibudev.com/api/files/${fileId}-size-${size}`
       : `https://wibu-storage.wibudev.com/api/files/${fileId}`,
+
+  /**
+   * @type {string}
+   * @returns alamat API dari wibu storage
+   */
+  GET_NO_PARAMS: "https://wibu-storage.wibudev.com/api/files/"
 };
 
 export default APIs;

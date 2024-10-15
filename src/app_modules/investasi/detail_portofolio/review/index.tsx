@@ -11,7 +11,7 @@ import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/cre
 import mqtt_client from "@/util/mqtt_client";
 import { useState } from "react";
 import { MODEL_INVESTASI } from "../../_lib/interface";
-import { ComponentInvestasi_DetailDataNonPublish } from "../../component/detail/detai_data_non_publish";
+import { ComponentInvestasi_DetailDataNonPublish } from "../../component/detail/x_detai_data_non_publish";
 import { investasi_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
 
 export default function DetailReviewInvestasi({
@@ -59,11 +59,12 @@ export default function DetailReviewInvestasi({
 
   return (
     <>
-      <Stack spacing={"xl"} mb={"lg"}>
+      <Stack spacing={"xl"} >
         <ComponentInvestasi_DetailDataNonPublish data={data} />
         {/* Tombol Ajukan */}
         <Stack>
           <Button
+          mb={"xl"}
             style={{
               transition: "0.5s",
             }}

@@ -9,7 +9,7 @@ import { Box } from "@mantine/core";
 <Image
 style={{ maxHeight: 250 }}
 alt="Avatar"
-src={image ? image : APIs.GET({ fileId: profile.imageId as any })}/>
+src={image ? image : APIs.GET({ fileId: <imageId> })}/>
 * </AspectRatio> 
  * @returns folllow like this
  */
@@ -22,7 +22,7 @@ export function ComponentGlobal_BoxUploadImage({
 }) {
   return (
     <>
-      <ComponentGlobal_CardStyles height={height ? height : 300}>
+      <ComponentGlobal_CardStyles height={height ? height : 300} >
         <Box
           style={{
             height: "100%",

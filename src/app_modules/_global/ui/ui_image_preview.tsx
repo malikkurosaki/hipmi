@@ -9,6 +9,7 @@ import {
   Container,
   Image,
   rem,
+  ScrollArea,
   Skeleton,
   Text,
   Title,
@@ -20,10 +21,12 @@ import { useState } from "react";
 import { MainColor } from "../color";
 import UIGlobal_LayoutHeaderTamplate from "./ui_header_tamplate";
 import { UIHeader } from "./ui_layout_tamplate";
+import ComponentGlobal_Loader from "../component/loader";
 
 export function UIGlobal_ImagePreview({ fileId }: { fileId: string }) {
   const router = useRouter();
   const [isImage, setIsImage] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const url = APIs.GET({ fileId: fileId });
 
@@ -63,23 +66,31 @@ export function UIGlobal_ImagePreview({ fileId }: { fileId: string }) {
                 hideButtonLeft
                 customButtonRight={
                   <ActionIcon
-                    onClick={() => router.back()}
+                    onClick={() => {
+                      router.back(), setIsLoading(true);
+                    }}
                     variant="transparent"
                   >
-                    <IconX color={MainColor.yellow} />
+                    {isLoading ? (
+                      <ComponentGlobal_Loader />
+                    ) : (
+                      <IconX color={MainColor.yellow} />
+                    )}
                   </ActionIcon>
                 }
               />
             }
           />
 
-          <Box style={{ zIndex: 0 }} h={"92vh"} pos={"static"} px={"lg"}>
+          <Box style={{ zIndex: 0 }} h={"90vh"} pos={"static"} px={"lg"}>
             {isImage === null ? (
               <Skeleton height={200} radius={"sm"} />
             ) : isImage ? (
-              <Center>
-                <Image alt="Image" src={url} maw={400} miw={200} />
-              </Center>
+              <ScrollArea h={"100%"}>
+                <Center>
+                  <Image alt="Image" src={url} maw={500} miw={200} />
+                </Center>
+              </ScrollArea>
             ) : (
               <Box
                 bg={"gray"}

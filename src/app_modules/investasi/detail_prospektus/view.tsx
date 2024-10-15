@@ -51,7 +51,7 @@ export default function DetailPropektus({
         }}
         onClick={() =>
           router.push(
-            NEW_RouterInvestasi.file_view_prospektus +
+            NEW_RouterInvestasi.OLD_file_view_prospektus +
               `${data.ProspektusInvestasi.id}`,
             { scroll: false }
           )

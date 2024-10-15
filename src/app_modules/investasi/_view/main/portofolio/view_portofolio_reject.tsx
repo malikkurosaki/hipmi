@@ -1,23 +1,21 @@
+import { NEW_RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 import { Box, Center } from "@mantine/core";
-import { data } from "autoprefixer";
 import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";
-import { Investasi_ComponentCardPortofolio_NotPublish } from "../../../_component";
-import {
-  investasi_funGetAllInvestasiNonPublishByUserId,
-  investasi_funGetSuccessTransactionById,
-} from "../../../_fun";
 import { useState } from "react";
-import { NEW_RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { Investasi_ComponentCardPortofolio_NotPublish } from "../../../_component";
+import { investasi_funGetAllInvestasiNonPublishByUserId } from "../../../_fun";
 
 export function Investasi_ViewPortofolioReject({
-  listData,
+  statusId,
+  dataPortofolio,
 }: {
-  listData: any[];
+  statusId: string;
+  dataPortofolio: any;
 }) {
-  const [data, setData] = useState(listData);
+  const [data, setData] = useState<any[]>(dataPortofolio);
   const [activePage, setActivePage] = useState(1);
 
   return (
@@ -49,7 +47,7 @@ export function Investasi_ViewPortofolioReject({
             {(item) => (
               <Investasi_ComponentCardPortofolio_NotPublish
                 data={item}
-                path={NEW_RouterInvestasi.detail_reject}
+                path={NEW_RouterInvestasi.detail_portofolio({ id: item.id })}
               />
             )}
           </ScrollOnly>

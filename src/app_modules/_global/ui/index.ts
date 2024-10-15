@@ -1,4 +1,5 @@
 import UIGlobal_Drawer from "./ui_drawer";
+import UIGlobal_DrawerCustom from "./ui_drawer_custom";
 import UIGlobal_LayoutHeaderTamplate from "./ui_header_tamplate";
 import { UIGlobal_ImagePreview } from "./ui_image_preview";
 import UIGlobal_LayoutDefault from "./ui_layout_default";
@@ -15,3 +16,4 @@ export { UIGlobal_SplashScreen };
 export { UIGlobal_ImagePreview };
 export { UIGlobal_NotUserImagePreview };
 export { UIGlobal_LayoutDefault };
+export { UIGlobal_DrawerCustom };

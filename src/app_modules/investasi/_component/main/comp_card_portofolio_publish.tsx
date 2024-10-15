@@ -34,7 +34,7 @@ export function Investasi_ComponentCardPortofolioPublish({
       <Investasi_ComponentStylesCard
         marginBottom={"15px"}
         onClickHandler={() => {
-          router.push(NEW_RouterInvestasi.detail_publish + data?.id);
+          router.push(NEW_RouterInvestasi.detail_portofolio({ id: data?.id }));
           setVisible(true);
         }}
       >

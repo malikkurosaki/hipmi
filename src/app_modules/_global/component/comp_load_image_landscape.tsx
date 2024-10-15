@@ -39,7 +39,7 @@ export function ComponentGlobal_LoadImageLandscape({
   if (!isImage)
     return (
       <>
-        <Center h={200} bg={"white"} style={{ borderRadius: "10px" }}>
+        <Center h={200} bg={"white"} style={{ borderRadius: "5px" }}>
           <Image
             alt="No Image"
             maw={150}
@@ -55,6 +55,7 @@ export function ComponentGlobal_LoadImageLandscape({
     <>
       <Center>
         <Image
+
           onClick={() => {
             setLoading(true);
             router.push(RouterImagePreview.main({ id: fileId }), {

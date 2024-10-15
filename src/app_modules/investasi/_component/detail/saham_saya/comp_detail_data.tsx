@@ -1,5 +1,9 @@
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
-import { ComponentGlobal_AvatarAndUsername } from "@/app_modules/_global/component";
+import {
+  ComponentGlobal_AvatarAndUsername,
+  ComponentGlobal_CardStyles,
+  ComponentGlobal_LoadImageLandscape,
+} from "@/app_modules/_global/component";
 import { MODEL_INVOICE_INVESTASI } from "@/app_modules/investasi/_lib/interface";
 import {
   AspectRatio,
@@ -23,20 +27,14 @@ export function Investasi_ComponentBoxDetailData({
 }) {
   return (
     <>
-      <Investasi_ComponentStylesCard>
+      <ComponentGlobal_CardStyles>
         <Stack>
-          <ComponentGlobal_AvatarAndUsername profile={data?.Author.Profile as any} />
-          <AspectRatio ratio={1 / 1} mx={0} mah={250}>
-            <Image
-              alt=""
-              src={
-                RouterInvestasi_OLD.api_gambar + `${data?.Investasi.imagesId}`
-              }
-              radius={"sm"}
-              mah={250}
-              width={"100%"}
-            />
-          </AspectRatio>
+          <ComponentGlobal_AvatarAndUsername
+            profile={data?.Author.Profile as any}
+          />
+
+          <ComponentGlobal_LoadImageLandscape fileId={data.Investasi.imageId} />
+
           <Title order={3} mb={"xs"} align="center">
             {data?.Investasi.title}
           </Title>
@@ -122,7 +120,7 @@ export function Investasi_ComponentBoxDetailData({
             ]}
           >
             <Investasi_ComponentBoxProspektus
-              investasiId={data?.Investasi?.id}
+              prospektusFileId={data.Investasi.prospektusFileId}
             />
             <Investasi_ComponentBoxDaftarDokumen
               investasiId={data?.Investasi?.id}
@@ -132,7 +130,7 @@ export function Investasi_ComponentBoxDetailData({
             />
           </SimpleGrid>
         </Stack>
-      </Investasi_ComponentStylesCard>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

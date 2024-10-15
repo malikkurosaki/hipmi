@@ -25,6 +25,9 @@ import { MODEL_INVOICE_INVESTASI } from "../../_lib/interface";
 import { investasi_funUploadBuktiTransferById } from "../../_fun";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
+import { DIRECTORY_ID } from "@/app/lib";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 
 export function Investasi_ViewInvoice({
   dataInvoice,
@@ -37,13 +40,19 @@ export function Investasi_ViewInvoice({
   const [file, setFile] = useState<File | null>(null);
 
   async function onUpload() {
-    const gambar = new FormData();
-    gambar.append("file", file as any);
+    const uploadFileToStorage = await funGlobal_UploadToStorage({
+      file: file as any,
+      dirId: DIRECTORY_ID.investasi_bukti_transfer,
+    });
+
+    if (!uploadFileToStorage.success)
+      return ComponentGlobal_NotifikasiPeringatan("Gagal upload bukti transfer")
 
     const res = await investasi_funUploadBuktiTransferById({
       invoiceId: data.id,
-      file: gambar,
+      fileId: uploadFileToStorage.data.id,
     });
+
     if (res.status !== 200) return ComponentGlobal_NotifikasiGagal(res.message);
     ComponentGlobal_NotifikasiBerhasil(res.message);
     setLoading(true);
@@ -202,7 +211,6 @@ export function Investasi_ViewInvoice({
                 onChange={async (files: any | null) => {
                   try {
                     setFile(files);
-                    // onUpload({ invoiceId: data.id, file: files });
                   } catch (error) {
                     console.log(error);
                   }

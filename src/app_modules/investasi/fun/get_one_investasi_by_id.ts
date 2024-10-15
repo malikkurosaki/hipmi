@@ -7,6 +7,8 @@ export default async function getOneInvestasiById(id: string) {
       id: id,
     },
     select: {
+      imageId: true,
+      prospektusFileId: true,
       id: true,
       author: {
         select: {

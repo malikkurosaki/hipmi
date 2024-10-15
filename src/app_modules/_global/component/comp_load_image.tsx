@@ -44,11 +44,9 @@ export function ComponentGlobal_LoadImage({
 
   if (isImage === null)
     return (
-      // <Center h={250}>
-      //   <ComponentGlobal_Loader variant="dots" size={50} />
-      // </Center>
-      <Center>
-        <Skeleton h={250} radius={"sm"} w={200} />
+     
+      <Center h={"100%"}>
+        <Skeleton h={250} radius={"sm"} w={250} />
       </Center>
     );
 
@@ -74,6 +72,7 @@ export function ComponentGlobal_LoadImage({
           opacity={isLoading ? 0.5 : 1}
           radius={radius ? radius : 0}
           alt="Image"
+          height={h ? h : 250}
           maw={maw ? maw : 200}
           miw={200}
           src={url}
