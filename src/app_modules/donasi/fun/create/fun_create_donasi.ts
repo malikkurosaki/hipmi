@@ -1,26 +1,28 @@
 "use server";
 
-import fs from "fs";
 import prisma from "@/app/lib/prisma";
+import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import { revalidatePath } from "next/cache";
 import { MODEL_DONASI } from "../../model/interface";
 import { Donasi_funDeleteTemporaryCreate } from "../delete/fun_delete_temporary_create";
-import { v4 } from "uuid";
-import _ from "lodash";
-import { revalidatePath } from "next/cache";
 
-export async function Donasi_funCreate(req: MODEL_DONASI, file: FormData) {
-  const body = req;
-
+export async function Donasi_funCreate({
+  data,
+  fileId,
+}: {
+  data: MODEL_DONASI;
+  fileId: string;
+}) {
   const dataDonasi = await prisma.donasi.create({
     data: {
-      target: body.target,
-      title: body.title,
-      donasiMaster_DurasiId: body.donasiMaster_DurasiId,
-      donasiMaster_KategoriId: body.donasiMaster_KategoriId,
-      imagesId: body.imagesId,
-      authorId: body.authorId,
-      namaBank: body.namaBank,
-      rekening: body.rekening,
+      target: data.target,
+      title: data.title,
+      donasiMaster_DurasiId: data.donasiMaster_DurasiId,
+      donasiMaster_KategoriId: data.donasiMaster_KategoriId,
+      authorId: data.authorId,
+      namaBank: data.namaBank,
+      rekening: data.rekening,
+      imageId: data.imageId,
     },
     select: {
       id: true,
@@ -35,42 +37,19 @@ export async function Donasi_funCreate(req: MODEL_DONASI, file: FormData) {
   });
 
   if (!dataDonasi) return { status: 400, message: "Gagal disimpan" };
-  await Donasi_funDeleteTemporaryCreate(body.id);
-
-  const dataImage: any = file.get("file");
-  const fileName = dataImage.name;
-  const fileExtension = _.lowerCase(dataImage.name.split(".").pop());
-  const fRandomName = v4(fileName) + "." + fileExtension;
-
-  const uploadImageCerita = await prisma.images.create({
-    data: {
-      url: fRandomName,
-    },
-    select: {
-      id: true,
-      url: true,
-    },
-  });
-
-  if (!uploadImageCerita)
-    return { status: 400, message: "Gagal upload gambar" };
-  const uploadFolder = Buffer.from(await dataImage.arrayBuffer());
-  fs.writeFileSync(
-    `./public/donasi/image_cerita/${uploadImageCerita.url}`,
-    uploadFolder
-  );
+  await Donasi_funDeleteTemporaryCreate(data.id);
 
   const dataCerita = await prisma.donasi_Cerita.create({
     data: {
       donasiId: dataDonasi.id,
-      pembukaan: body.CeritaDonasi.pembukaan,
-      cerita: body.CeritaDonasi.cerita,
-      imagesId: uploadImageCerita.id,
+      pembukaan: data.CeritaDonasi.pembukaan,
+      cerita: data.CeritaDonasi.cerita,
+      imageId: fileId,
     },
   });
 
   if (!dataCerita) return { status: 400, message: "Gagal simpan data cerita" };
-  revalidatePath("/dev/donasi/main/galang_dana");
+  revalidatePath(RouterDonasi.penggalang_dana);
   return {
     data: dataDonasi,
     status: 201,

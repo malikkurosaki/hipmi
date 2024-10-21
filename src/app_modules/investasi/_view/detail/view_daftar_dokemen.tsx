@@ -1,14 +1,12 @@
-import { ComponentGlobal_BoxInformation } from "@/app_modules/_global/component";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 import { Box, Center, Stack } from "@mantine/core";
-import { data } from "autoprefixer";
 import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";
-import { investasi_funGetAllDocumentById } from "../../_fun";
 import { useState } from "react";
-import { MODEL_INVESTASI_DOKUMEN } from "../../_lib/interface";
 import { Investasi_ComponentCardDaftarDocument } from "../../_component";
+import { investasi_funGetAllDocumentById } from "../../_fun";
+import { MODEL_INVESTASI_DOKUMEN } from "../../_lib/interface";
 
 export function Investasi_ViewDaftarDokumen({
   dataDokumen,

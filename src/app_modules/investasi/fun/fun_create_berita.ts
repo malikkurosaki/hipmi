@@ -1,12 +1,11 @@
 "use server";
 
-import _ from "lodash";
-import { MODEL_INVESTASI } from "../_lib/interface";
-import { v4 } from "uuid";
 import prisma from "@/app/lib/prisma";
-import fs from "fs";
-import { revalidatePath } from "next/cache";
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import fs from "fs";
+import _ from "lodash";
+import { revalidatePath } from "next/cache";
+import { v4 } from "uuid";
 
 export default async function funCreateBeritaInvestasi(
   formData: FormData,
@@ -34,8 +33,8 @@ export default async function funCreateBeritaInvestasi(
       message: "File Kosong",
     };
 
-  const upFolder = Buffer.from(await file.arrayBuffer());
-  fs.writeFileSync(`./public/investasi/${upload.url}`, upFolder);
+  // const upFolder = Buffer.from(await file.arrayBuffer());
+  // fs.writeFileSync(`./public/investasi/${upload.url}`, upFolder);
 
   const createBerita = await prisma.beritaInvestasi.create({
     data: {

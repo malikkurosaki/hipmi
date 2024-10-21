@@ -21,6 +21,9 @@ export async function Donasi_getAuthorById(authorId: string) {
         },
       },
       Donasi: {
+        orderBy: {
+          createdAt: "desc",
+        },
         where: {
           donasiMaster_StatusDonasiId: "1",
         },
@@ -46,6 +49,7 @@ export async function Donasi_getAuthorById(authorId: string) {
           DonasiMaster_Ketegori: true,
           DonasiMaster_Durasi: true,
           DonasiMaster_Status: true,
+          imageId: true,
         },
       },
     },

@@ -33,6 +33,7 @@ export async function donasi_funGetAllStatusPublish({
       publishTime: true,
       DonasiMaster_Durasi: true,
       terkumpul: true,
+      imageId: true,
     },
   });
   return data;

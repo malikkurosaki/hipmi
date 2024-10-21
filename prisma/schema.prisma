@@ -418,6 +418,8 @@ model Donasi {
   Donasi_Invoice              Donasi_Invoice[]
   Donasi_Kabar                Donasi_Kabar[]
   Donasi_PencairanDana        Donasi_PencairanDana[]
+
+  imageId String?
 }
 
 model Donasi_TemporaryCreate {
@@ -433,6 +435,8 @@ model Donasi_TemporaryCreate {
   donasiMaster_KategoriId String?
   durasi                  DonasiMaster_Durasi?   @relation(fields: [donasiMaster_DurasiId], references: [id])
   donasiMaster_DurasiId   String?
+
+  imageId String?
 }
 
 model DonasiMaster_Kategori {
@@ -467,6 +471,8 @@ model Donasi_Cerita {
   imagesId          String? @unique
   Donasi            Donasi? @relation(fields: [donasiId], references: [id])
   donasiId          String? @unique
+
+  imageId String?
 }
 
 model DonasiMaster_StatusDonasi {
@@ -514,6 +520,8 @@ model Donasi_Invoice {
   authorId                     String?
   Images                       Images?                     @relation(fields: [imagesId], references: [id])
   imagesId                     String?
+
+  imageId String?
 }
 
 model Donasi_Kabar {
@@ -529,6 +537,8 @@ model Donasi_Kabar {
   ImagesKabar  Images?        @relation(fields: [imagesId], references: [id])
   imagesId     String?
   Donasi_Notif Donasi_Notif[]
+
+  imageId String?
 }
 
 model Donasi_Notif {
@@ -556,6 +566,8 @@ model Donasi_PencairanDana {
   donasiId    String?
   Images      Images?  @relation(fields: [imagesId], references: [id])
   imagesId    String?
+
+  imageId String?
 }
 
 // ========================================= EVENT ========================================= //

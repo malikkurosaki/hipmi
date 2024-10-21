@@ -1,6 +1,9 @@
 "use client";
 
-import { NEW_RouterInvestasi, RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import {
+  NEW_RouterInvestasi,
+  RouterInvestasi_OLD,
+} from "@/app/lib/router_hipmi/router_investasi";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { Investasi_ComponentDetailDataNonPublish } from "@/app_modules/investasi/_component";
@@ -14,7 +17,6 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-
 export default function Investasi_ViewDetailReview({
   dataInvestasi,
 }: {
@@ -22,8 +24,6 @@ export default function Investasi_ViewDetailReview({
 }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
-
-  const [activeTab, setActiveTab] = useAtom(gs_investasi_status);
   const [data, setData] = useState<MODEL_INVESTASI>(dataInvestasi);
 
   async function onCancleReview() {
@@ -50,8 +50,7 @@ export default function Investasi_ViewDetailReview({
 
         setLoading(true);
         ComponentGlobal_NotifikasiBerhasil("Review Dibatalkan");
-        setActiveTab("Draft");
-        router.push(NEW_RouterInvestasi.portofolio({id: data.id}));
+        router.push(NEW_RouterInvestasi.portofolio({ id: "3" }));
       }
     } else {
       ComponentGlobal_NotifikasiPeringatan(res.message);

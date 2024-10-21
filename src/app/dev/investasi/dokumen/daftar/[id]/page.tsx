@@ -1,6 +1,5 @@
 import {
-  investasi_funGetAllDocumentById,
-  investasi_funGetOneInvestasiById,
+  investasi_funGetAllDocumentById
 } from "@/app_modules/investasi/_fun";
 import { Investasi_UiDaftarDokmen } from "@/app_modules/investasi/_ui";
 
@@ -13,7 +12,10 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <Investasi_UiDaftarDokmen dataDokumen={dataDokumen} investasiId={investasiId}/>
+      <Investasi_UiDaftarDokmen
+        dataDokumen={dataDokumen}
+        investasiId={investasiId}
+      />
     </>
   );
 }

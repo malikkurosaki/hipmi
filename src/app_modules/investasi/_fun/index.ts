@@ -14,10 +14,15 @@ import { investasi_funCreateDocument } from "./create/fun_create_document";
 import { investasi_funGetOneDocumentById } from "./get/fun_get_one_document_by_id";
 import { investasi_funUpdateDocument } from "./edit/fun_edit_document";
 import { investasi_funDeleteDokumenById } from "./delete/fun_delete_dokumen";
+import { investasi_funCreateBerita } from "./create/fun_create_berita";
+import { investasi_funGetBeritaById } from "./get/fun_get_berita_by_id";
+import { investasi_funGetOneBeritaById } from "./get/fun_get_one_berita_by_id";
+import { investasi_funDeleteBerita } from "./delete/fun_delete_berita";
 
 // Create
 export { investasi_funCreateNewInvestasi };
 export { investasi_funCreateDocument };
+export { investasi_funCreateBerita };
 
 // Get
 export { investasi_funGetOneInvestasiById };
@@ -29,6 +34,8 @@ export { investasi_funGetAllInvestasiNonPublishByUserId };
 export { investasi_funGetPortofolioByStatusId };
 export { investasi_funGetAllDocumentById };
 export { investasi_funGetOneDocumentById };
+export { investasi_funGetBeritaById };
+export { investasi_funGetOneBeritaById };
 
 // Update
 export { investasi_funUpdateInvestasi };
@@ -40,3 +47,4 @@ export { investasi_funUploadBuktiTransferById };
 
 // Delete
 export { investasi_funDeleteDokumenById };
+export { investasi_funDeleteBerita };

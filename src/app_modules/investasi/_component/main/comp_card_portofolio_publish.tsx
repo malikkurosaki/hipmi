@@ -19,7 +19,10 @@ import { MODEL_INVESTASI } from "../../_lib/interface";
 import { Investasi_ComponentStylesCard } from "../comp_card_border_and_background";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
+import {
+  ComponentGlobal_CardLoadingOverlay,
+  ComponentGlobal_LoadImageCustom,
+} from "@/app_modules/_global/component";
 
 export function Investasi_ComponentCardPortofolioPublish({
   data,
@@ -34,7 +37,9 @@ export function Investasi_ComponentCardPortofolioPublish({
       <Investasi_ComponentStylesCard
         marginBottom={"15px"}
         onClickHandler={() => {
-          router.push(NEW_RouterInvestasi.detail_portofolio({ id: data?.id }));
+          router.push(NEW_RouterInvestasi.detail_main({ id: data?.id }), {
+            scroll: false,
+          });
           setVisible(true);
         }}
       >
@@ -53,14 +58,10 @@ export function Investasi_ComponentCardPortofolioPublish({
           </Grid.Col>
 
           <Grid.Col span={4}>
-            <AspectRatio ratio={16 / 9}>
-              <Paper radius={"md"}>
-                <Image
-                  alt=""
-                  src={NEW_RouterInvestasi.api_gambar + `${data?.imagesId}`}
-                />
-              </Paper>
-            </AspectRatio>
+            <ComponentGlobal_LoadImageCustom
+              height={80}
+              fileId={data.imageId}
+            />
           </Grid.Col>
         </Grid>
 

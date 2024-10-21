@@ -30,6 +30,10 @@ import { MODEL_DONASI } from "../../model/interface";
 import { NotifPeringatan } from "../notifikasi/notif_peringatan";
 import ComponentDonasi_TampilanHitungMundur from "../tampilan_hitung_mundur";
 import TampilanRupiahDonasi from "../tampilan_rupiah";
+import {
+  ComponentGlobal_CardStyles,
+  ComponentGlobal_LoadImageLandscape,
+} from "@/app_modules/_global/component";
 
 export function ComponentDonasi_DetailDataMain({
   donasi,
@@ -47,23 +51,9 @@ export function ComponentDonasi_DetailDataMain({
 
   return (
     <>
-      <Stack
-        style={{
-          padding: "15px",
-          border: `2px solid ${AccentColor.blue}`,
-          backgroundColor: AccentColor.darkblue,
-          borderRadius: "10px",
-          color: "white",
-        }}
-      >
+      <ComponentGlobal_CardStyles>
         <Stack>
-          <AspectRatio ratio={1 / 1} mx={"sm"} mah={300}>
-            <Image
-              alt="Foto"
-              src={RouterDonasi.api_image + `${donasi?.imageDonasi?.url}`}
-              radius={"sm"}
-            />
-          </AspectRatio>
+          <ComponentGlobal_LoadImageLandscape fileId={donasi.imageId} />
 
           <Stack spacing={0} mt={"lg"}>
             <Title order={4}>{donasi?.title}</Title>
@@ -179,7 +169,7 @@ export function ComponentDonasi_DetailDataMain({
             </Grid.Col>
           </Grid>
         </Stack>
-      </Stack>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

@@ -10,7 +10,6 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_glo
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import { Investasi_ComponentDetailDataNonPublish } from "@/app_modules/investasi/_component";
 import { MODEL_INVESTASI } from "@/app_modules/investasi/_lib/interface";
-import { ComponentInvestasi_DetailDataNonPublish } from "@/app_modules/investasi/component/detail/x_detai_data_non_publish";
 import { investasi_funEditStatusById } from "@/app_modules/investasi/fun/edit/fun_edit_status_by_id";
 import funDeleteInvestasi from "@/app_modules/investasi/fun/fun_delete_investasi";
 import { gs_investasi_status } from "@/app_modules/investasi/g_state";
@@ -49,7 +48,7 @@ export default function Investasi_ViewDetailReject({
       if (res.status === 200) {
         ComponentGlobal_NotifikasiBerhasil(res.message);
         setOpenModal(false);
-        router.push(NEW_RouterInvestasi.portofolio({ id: dataInvestasi.id }));
+        router.push(NEW_RouterInvestasi.portofolio({ id: "3" }));
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }

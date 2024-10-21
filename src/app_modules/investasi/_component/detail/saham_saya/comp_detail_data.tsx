@@ -1,4 +1,3 @@
-import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import {
   ComponentGlobal_AvatarAndUsername,
   ComponentGlobal_CardStyles,
@@ -6,16 +5,13 @@ import {
 } from "@/app_modules/_global/component";
 import { MODEL_INVOICE_INVESTASI } from "@/app_modules/investasi/_lib/interface";
 import {
-  AspectRatio,
   Box,
   Grid,
-  Image,
   SimpleGrid,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
-import { Investasi_ComponentStylesCard } from "../../comp_card_border_and_background";
 import { Investasi_ComponentBoxDaftarBerita } from "../comp_box_daftar_berita";
 import { Investasi_ComponentBoxDaftarDokumen } from "../comp_box_daftar_dokumen";
 import { Investasi_ComponentBoxProspektus } from "../comp_box_prospektus";

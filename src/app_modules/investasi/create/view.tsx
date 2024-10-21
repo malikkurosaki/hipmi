@@ -25,7 +25,12 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import { IconCamera, IconCircleCheck, IconFileTypePdf, IconUpload } from "@tabler/icons-react";
+import {
+  IconCamera,
+  IconCircleCheck,
+  IconFileTypePdf,
+  IconUpload,
+} from "@tabler/icons-react";
 import _ from "lodash";
 import { useState } from "react";
 import { Investasi_ComponentButtonCreateNewInvestasi } from "../_component";
@@ -106,14 +111,9 @@ export default function InvestasiCreate({
                   const buffer = URL.createObjectURL(
                     new Blob([new Uint8Array(await files.arrayBuffer())])
                   );
-                  // console.log(files.size);
 
-                  if (files.size > maksimalUploadFile) {
-                    ComponentGlobal_WarningMaxUpload({});
-                  } else {
-                    setImg(buffer);
-                    setFileImage(files);
-                  }
+                  setImg(buffer);
+                  setFileImage(files);
                 } catch (error) {
                   console.log(error);
                 }
@@ -161,34 +161,6 @@ export default function InvestasiCreate({
             )}
           </ComponentGlobal_CardStyles>
 
-          {/* {!pdf ? (
-            <Paper
-              w={"100%"}
-              style={{
-                border: `2px solid gray`,
-                backgroundColor: "gray.1",
-                padding: "10px",
-                borderRadius: "10px",
-                color: "gray",
-              }}
-            >
-              <Text>Upload File Prospektus</Text>
-            </Paper>
-          ) : (
-            <Paper
-              w={"100%"}
-              style={{
-                border: `2px solid ${AccentColor.softblue}`,
-                backgroundColor: AccentColor.blue,
-                padding: "10px",
-                borderRadius: "10px",
-                color: "white",
-              }}
-            >
-              <Text lineClamp={1}>{pdf.name}</Text>
-            </Paper>
-          )} */}
-          {/* {JSON.stringify(filePdf)} */}
           <Group position="center">
             <FileButton
               accept={"application/pdf"}

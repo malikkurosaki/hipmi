@@ -1,13 +1,12 @@
-import { BeritaInvestasi } from "@/app_modules/investasi";
-import getOneInvestasiById from "@/app_modules/investasi/fun/get_one_investasi_by_id";
+import { investasi_funGetOneBeritaById } from "@/app_modules/investasi/_fun";
+import { Investasi_UiDetailBerita } from "@/app_modules/investasi/_ui";
 
-export default async function Page({params}: {params: {id: string}}) {
-
-  const dataInvestasi = await getOneInvestasiById(params.id)
-
+export default async function Page({ params }: { params: { id: string } }) {
+  const beritaId = params.id;
+  const dataBerita = await investasi_funGetOneBeritaById({ beritaId });
   return (
     <>
-      <BeritaInvestasi dataInvestasi={dataInvestasi as any}/>
+      <Investasi_UiDetailBerita dataBerita={dataBerita} />
     </>
   );
 }

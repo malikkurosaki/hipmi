@@ -29,6 +29,7 @@ export interface MODEL_DONASI {
   DonasiMaster_Ketegori: MODEL_DONASI_ALL_MASTER;
   DonasiMaster_Durasi: MODEL_DONASI_ALL_MASTER;
   DonasiMaster_Status: MODEL_DONASI_ALL_MASTER;
+  imageId: string
 }
 
 export interface MODEL_CERITA_DONASI {
@@ -41,6 +42,7 @@ export interface MODEL_CERITA_DONASI {
   imagesId: string;
   imageCeritaDonasi: MODEL_IMAGES;
   donasiId: string;
+  imageId: string
 }
 
 export interface MODEL_DONASI_ALL_MASTER {
@@ -61,6 +63,7 @@ export interface MODEL_DONASI_TEMPORARY {
   imagesId: string;
   donasiMaster_KategoriId: string;
   donasiMaster_DurasiId: string;
+  imageId: string
 }
 
 export interface MODEL_DONASI_INFO_PENGGALANG {
@@ -85,6 +88,7 @@ export interface MODEL_DONASI_INVOICE {
   Donasi: MODEL_DONASI;
   DonasiMaster_Bank: MODEL_DONASI_NAMA_BANK;
   DonasiMaster_StatusInvoice: MODEL_DONASI_ALL_MASTER;
+  imageId: string
 }
 
 export interface MODEL_DONASI_NAMA_BANK {
@@ -115,6 +119,7 @@ export interface MODEL_DONASI_KABAR {
   imagesId: string;
   Donasi: MODEL_DONASI;
   ImagesKabar: MODEL_IMAGES;
+  imageId: string
 }
 
 export interface MODEL_DONASI_NOTIF {

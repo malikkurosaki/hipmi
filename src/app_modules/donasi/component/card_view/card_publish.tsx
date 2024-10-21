@@ -1,21 +1,11 @@
 "use client";
 
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import {
   ComponentGlobal_CardLoadingOverlay,
   ComponentGlobal_CardStyles,
+  ComponentGlobal_LoadImageCustom,
 } from "@/app_modules/_global/component";
-import {
-  AspectRatio,
-  Card,
-  Grid,
-  Image,
-  Paper,
-  Progress,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Grid, Progress, Stack, Text } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentDonasi_TampilanHitungMundur from "../tampilan_hitung_mundur";
@@ -43,18 +33,13 @@ export default function ComponentDonasi_CardPublish({
       >
         <Stack>
           <Grid>
-            <Grid.Col span={7}>
-              <AspectRatio ratio={16 / 9}>
-                <Paper radius={"md"}>
-                  <Image
-                    alt="Foto"
-                    src={RouterDonasi.api_gambar + `${data.imagesId}`}
-                    radius={"xs"}
-                  />
-                </Paper>
-              </AspectRatio>
+            <Grid.Col span={6}>
+              <ComponentGlobal_LoadImageCustom
+                fileId={data.imageId}
+                height={150}
+              />
             </Grid.Col>
-            <Grid.Col span={5}>
+            <Grid.Col span={6}>
               <Stack spacing={"xs"}>
                 <Stack spacing={0}>
                   <Text fz={"sm"} fw={"bold"} lineClamp={2}>

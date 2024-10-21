@@ -13,20 +13,23 @@ import {
   IconEdit,
   IconFilePencil,
 } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MODEL_INVESTASI } from "../../_lib/interface";
 import {
   Investasi_ViewDetailDraft,
-  Investasi_ViewDetailPublish,
   Investasi_ViewDetailReject,
   Investasi_ViewDetailReview,
 } from "../../_view";
 
 export function Investasi_UiDetailPortofolio({
   data,
+  userLoginId,
 }: {
   data: MODEL_INVESTASI;
+  userLoginId: string;
 }) {
+  const router = useRouter();
   const [openDrawer, setOpenDrawer] = useState(false);
   const listPage = [
     {
@@ -86,9 +89,12 @@ export function Investasi_UiDetailPortofolio({
         />
       }
     >
-      {data.masterStatusInvestasiId === "1" && (
-        <Investasi_ViewDetailPublish dataInvestasi={data} />
-      )}
+      {/* {data.masterStatusInvestasiId === "1" && (
+        <Investasi_ViewDetailPublish
+          dataInvestasi={data}
+          userLoginId={userLoginId}
+        />
+      )} */}
 
       {data.masterStatusInvestasiId === "2" && (
         <Investasi_ViewDetailReview dataInvestasi={data} />

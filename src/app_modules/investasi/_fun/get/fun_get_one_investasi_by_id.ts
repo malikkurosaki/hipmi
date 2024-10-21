@@ -16,6 +16,7 @@ export async function investasi_funGetOneInvestasiById({
           Profile: true,
         },
       },
+      Investasi_Invoice: true,
       MasterStatusInvestasi: true,
       BeritaInvestasi: true,
       DokumenInvestasi: true,
@@ -24,7 +25,6 @@ export async function investasi_funGetOneInvestasiById({
       MasterPencarianInvestor: true,
       MasterPeriodeDeviden: true,
       MasterProgresInvestasi: true,
-      
     },
   });
 

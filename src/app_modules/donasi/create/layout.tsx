@@ -12,7 +12,9 @@ export default function LayoutCreateDonasi({
   return (
     <>
       <UIGlobal_LayoutTamplate
-        header={<UIGlobal_LayoutHeaderTamplate title="Tambah Donasi" />}
+        header={
+          <UIGlobal_LayoutHeaderTamplate title="Tambah Donasi" hideButtonLeft />
+        }
       >
         {children}
       </UIGlobal_LayoutTamplate>

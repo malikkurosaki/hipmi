@@ -10,6 +10,11 @@ export default async function Page() {
   const listDraft = await donasi_funGetAllStatusDraft({ page: 1 });
   const listReject = await donasi_funGetAllStatusReject({ page: 1 });
 
+  // console.log(listPublish, "ini publish")
+  // console.log(listReview, "ini review")
+  // console.log(listDraft, "ini draft")
+  // console.log(listReject, "ini reject")
+
   return (
     <>
       <PostingDonasi
