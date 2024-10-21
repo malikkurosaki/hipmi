@@ -1,4 +1,7 @@
-import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import {
+  NEW_RouterInvestasi,
+  RouterInvestasi_OLD,
+} from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
 import {
   AccentColor,
@@ -46,7 +49,9 @@ export function Investasi_ComponentCardBeranda({
         onClickHandler={() => {
           setLoadingDetail(true);
           setVisible(true);
-          router.push(RouterInvestasi_OLD.detail + `${data?.id}`);
+          router.push(NEW_RouterInvestasi.detail_main({ id: data.id }), {
+            scroll: false,
+          });
         }}
       >
         <Stack>
@@ -59,7 +64,9 @@ export function Investasi_ComponentCardBeranda({
             </Grid.Col>
             <Grid.Col span={6}>
               <Stack>
-                <Text fw={"bold"} align="center" lineClamp={2}>{data?.title}</Text>
+                <Text fw={"bold"} align="center" lineClamp={2}>
+                  {data?.title}
+                </Text>
 
                 <Progress
                   label={(+data?.progress).toFixed(2) + " %"}

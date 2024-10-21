@@ -1,6 +1,10 @@
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
+import {
+  ComponentGlobal_CardLoadingOverlay,
+  ComponentGlobal_CardStyles,
+  ComponentGlobal_LoadImageCustom,
+} from "@/app_modules/_global/component";
 import {
   AspectRatio,
   Card,
@@ -23,39 +27,24 @@ export function ComponentDonasi_CardStatus({
 }) {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
-  const [donasiId, setDonasiId] = useState("");
 
   return (
     <>
-      <Card
-        style={{
-          padding: "15px",
-          backgroundColor: AccentColor.darkblue,
-          borderRadius: "10px",
-          border: `2px solid ${AccentColor.blue}`,
-          color: "white",
-          marginBottom: "15px",
-        }}
-        onClick={() => {
+      <ComponentGlobal_CardStyles
+        onClickHandler={() => {
           setVisible(true);
-          setDonasiId(data.id);
           router.push(path + `${data.id}`);
         }}
       >
         <Stack>
           <Grid>
-            <Grid.Col span={7}>
-              <AspectRatio ratio={16 / 9}>
-                <Paper radius={"sm"} bg={"gray.1"}>
-                  <Image
-                    alt="Foto"
-                    src={RouterDonasi.api_gambar + `${data.imagesId}`}
-                    radius={"md"}
-                  />
-                </Paper>
-              </AspectRatio>
+            <Grid.Col span={6}>
+              <ComponentGlobal_LoadImageCustom
+                fileId={data.imageId}
+                height={100}
+              />
             </Grid.Col>
-            <Grid.Col span={5}>
+            <Grid.Col span={6}>
               <Stack spacing={"xs"}>
                 <Text fz={"sm"} fw={"bold"} lineClamp={2}>
                   {data.title}
@@ -74,12 +63,24 @@ export function ComponentDonasi_CardStatus({
           </Grid>
           {/* {width > 575 ? "" : <Divider />} */}
         </Stack>
-        {visible && donasiId !== "" ? (
-          <ComponentGlobal_CardLoadingOverlay />
-        ) : (
-          ""
-        )}
-      </Card>
+        {visible && <ComponentGlobal_CardLoadingOverlay />}
+      </ComponentGlobal_CardStyles>
+      {/* <Card
+        style={{
+          padding: "15px",
+          backgroundColor: AccentColor.darkblue,
+          borderRadius: "10px",
+          border: `2px solid ${AccentColor.blue}`,
+          color: "white",
+          marginBottom: "15px",
+        }}
+        onClick={() => {
+          setVisible(true);
+          router.push(path + `${data.id}`);
+        }}
+      >
+        
+      </Card> */}
     </>
   );
 }

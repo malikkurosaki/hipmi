@@ -50,11 +50,11 @@ export default function CreateBeritaInvestasi({
     const fd = new FormData();
     fd.append("file", fl);
 
-    await funCreateBeritaInvestasi(fd, body as any).then((res) => {
-      res.status === 201
-        ? (ComponentGlobal_NotifikasiBerhasil(res.message), router.back())
-        : ComponentGlobal_NotifikasiGagal(res.message);
-    });
+    // await funCreateBeritaInvestasi(fd, body as any).then((res) => {
+    //   res.status === 201
+    //     ? (ComponentGlobal_NotifikasiBerhasil(res.message), router.back())
+    //     : ComponentGlobal_NotifikasiGagal(res.message);
+    // });
 
     // router.back();
     // toast("Berita tersimpan");

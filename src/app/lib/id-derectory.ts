@@ -4,12 +4,21 @@ const DIRECTORY_ID = {
   portofolio_logo: "cm0yjl6ug000310njwmk6j0tx",
   map_pin: "cm0yjq8up000710njv5klra32",
   map_image: "cm0yjqnxl000910njplqho07w",
+
+  // Investasi
   investasi_image: "cm0yjs35h000b10njb35o12h1",
   investasi_bukti_transfer: "cm0yjsflu000d10njrc3lnqho",
   investasi_prospektus: "cm1soio74003p38bjyciwf1oy",
   investasi_dokumen: "cm21g2hxw004d10dpx8j16tt7",
+  investasi_berita: "cm21g2yzc004f10dpbtqdfcjb",
+
+  // Donasi
   donasi_image: "cm0yk1coh000f10nj597a99kv",
+  donasi_temporary_image: "cm2dvxo48007t10dpmmustxa2",
+  donasi_cerita_image: "cm2dvy9bi007v10dpmatb5yiy",
   donasi_bukti_transfer: "cm0yk1pmh000h10njhi6m8b8t",
+
+  // Job
   job_image: "cm0ypp6zl0003kp7jf59zuvjy",
 };
 

@@ -1,18 +1,19 @@
 import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
-import { DetailInvestasi } from "@/app_modules/investasi";
-import getOneInvestasiById from "@/app_modules/investasi/fun/get_one_investasi_by_id";
+import { investasi_funGetOneInvestasiById } from "@/app_modules/investasi/_fun";
+import { Investasi_UiDetailMain } from "@/app_modules/investasi/_ui";
+
 
 export default async function Page({ params }: { params: { id: string } }) {
   const investasiId = params.id;
   const userLoginId = await funGetUserIdByToken();
-  
-  const dataInvestasi = await getOneInvestasiById(investasiId);
+
+  const dataInvestasi = await investasi_funGetOneInvestasiById({ investasiId });
 
   return (
     <>
-      <DetailInvestasi
+      <Investasi_UiDetailMain
         dataInvestasi={dataInvestasi as any}
-        loginUserId={userLoginId}
+        userLoginId={userLoginId}
       />
     </>
   );

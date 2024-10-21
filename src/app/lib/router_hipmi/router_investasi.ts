@@ -8,7 +8,7 @@ export const NEW_RouterInvestasi = {
    * @param param status id | 1: Publish, 2: Review, 3: Draft, 4: Reject
    * @type string
    */
-  portofolio: ({ id }: { id: string }) =>
+  portofolio: ({ id }: { id: "1" | "2" | "3" | "4" }) =>
     `/dev/investasi/main/portofolio/${id}`,
 
   // TRANSAKSI
@@ -29,20 +29,50 @@ export const NEW_RouterInvestasi = {
   OLD_file_view_dokumen: "/dev/investasi/file-view/dokumen/",
 
   // DETAIL
+  detail_main: ({ id }: { id: string }) => `/dev/investasi/detail/${id}`,
   detail_portofolio: ({ id }: { id: string }) =>
     `/dev/investasi/detail/portofolio/${id}`,
   detail_prospektus: ({ id }: { id: string }) =>
     `/dev/investasi/detail/prospektus/${id}`,
-  daftar_dokumen: ({ id }: { id: string }) =>
-    `/dev/investasi/detail/daftar-dokumen/${id}`,
-  rekap_dokumen: ({ id }: { id: string }) =>
-    `/dev/investasi/detail/rekap-dokumen/${id}`,
 
   detail_saham: "/dev/investasi/detail/saham/",
   detail_publish: "/dev/investasi/detail_portofolio/publish/",
   detail_review: "/dev/investasi/detail_portofolio/review/",
   detail_draft: "/dev/investasi/detail_portofolio/draft/",
   detail_reject: "/dev/investasi/detail_portofolio/reject/",
+
+  // DOKUMEN
+  /**
+   * @param id | investasiId
+   * @type string
+   */
+  daftar_dokumen: ({ id }: { id: string }) =>
+    `/dev/investasi/dokumen/daftar/${id}`,
+  /**
+   * @param id | investasiId
+   * @type string
+   */
+  rekap_dokumen: ({ id }: { id: string }) =>
+    `/dev/investasi/dokumen/rekap/${id}`,
+
+  // BERITA
+  /**
+   * @param id | beritaId
+   * @type string
+   */
+  berita: ({ id }: { id: string }) => `/dev/investasi/berita/${id}`,
+
+  /**
+   * @param id | investasiId
+   * @type string
+   */
+  daftar_berita: ({ id }: { id: string }) =>
+    `/dev/investasi/berita/daftar/${id}`,
+  /**
+   * @param id | investasiId
+   * @type string
+   */
+  rekap_berita: ({ id }: { id: string }) => `/dev/investasi/berita/rekap/${id}`,
 
   // CREATE
   /**
@@ -51,6 +81,13 @@ export const NEW_RouterInvestasi = {
    */
   create_dokumen: ({ id }: { id: string }) =>
     `/dev/investasi/create/dokumen/${id}`,
+
+  /**
+   * @param id | investasiId
+   * @type string
+   */
+  create_berita: ({ id }: { id: string }) =>
+    `/dev/investasi/create/berita/${id}`,
 
   // EDIT
   /**

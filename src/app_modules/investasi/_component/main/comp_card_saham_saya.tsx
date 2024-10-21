@@ -87,18 +87,6 @@ export function Investasi_ComponentSahamSaya({
         </SimpleGrid>
         {visible && <ComponentGlobal_CardLoadingOverlay />}
       </Investasi_ComponentStylesCard>
-
-      {/* <Card
-        style={{
-          padding: "15px",
-          backgroundColor: AccentColor.darkblue,
-          border: `2px solid ${AccentColor.blue}`,
-          borderRadius: "10px",
-          color: "white",
-          marginBottom: "15px",
-        }}
-        onClick={}
-      ></Card> */}
     </>
   );
 }

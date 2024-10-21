@@ -2,39 +2,24 @@
 
 import { pathAssetImage, RouterImagePreview } from "@/app/lib";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
 import {
   ComponentGlobal_CardStyles,
   ComponentGlobal_LoaderAvatar,
 } from "@/app_modules/_global/component";
 import ComponentDonasi_CardPublish from "@/app_modules/donasi/component/card_view/card_publish";
-import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import {
-  MODEL_DONASI,
-  MODEL_DONASI_INFO_PENGGALANG,
+  MODEL_DONASI_INFO_PENGGALANG
 } from "@/app_modules/donasi/model/interface";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import {
   ActionIcon,
-  AspectRatio,
   Box,
-  Center,
-  Divider,
-  Grid,
   Group,
   Image,
-  Paper,
-  Progress,
-  SimpleGrid,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
-import { useViewportSize } from "@mantine/hooks";
 import { IconBrandGmail, IconMoodSmile, IconPhone } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

@@ -1,4 +1,7 @@
-import { NEW_RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import {
+  NEW_RouterInvestasi,
+  RouterInvestasi_OLD,
+} from "@/app/lib/router_hipmi/router_investasi";
 import { AccentColor } from "@/app_modules/_global/color";
 import { ActionIcon, Flex, Loader, Paper, Text } from "@mantine/core";
 import { IconFileDescription } from "@tabler/icons-react";
@@ -25,14 +28,13 @@ export function Investasi_ComponentBoxDaftarBerita({
         }}
         onClick={() => {
           setLoading(true);
-          router.push(
-            NEW_RouterInvestasi.detail_prospektus({ id: investasiId }),
-            { scroll: false }
-          );
+          router.push(NEW_RouterInvestasi.daftar_berita({ id: investasiId }), {
+            scroll: false,
+          });
         }}
       >
         <Flex direction={"column"} align={"center"} justify={"center"}>
-          <Text fz={12}>Berita</Text>
+          <Text fz={12}>Berita </Text>
           <ActionIcon radius={"xl"} variant="transparent" size={60}>
             {isLoading ? (
               <Loader color="yellow" />
