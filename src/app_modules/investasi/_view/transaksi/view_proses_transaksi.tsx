@@ -15,7 +15,11 @@ import {
 import { IconBrandWhatsapp } from "@tabler/icons-react";
 import Link from "next/link";
 
-export function Investasi_ViewProsesTransaksi({ nomorAdmin }: { nomorAdmin : any}) {
+export function Investasi_ViewProsesTransaksi({
+  nomorAdmin,
+}: {
+  nomorAdmin: any;
+}) {
   return (
     <>
       <Stack>
@@ -44,7 +48,7 @@ export function Investasi_ViewProsesTransaksi({ nomorAdmin }: { nomorAdmin : any
                 <Title order={6}>Admin sedang memproses transaksimu</Title>
                 <Paper radius={1000} w={100} h={100}>
                   <Center h={"100%"}>
-                    <Loader size={"lg"} color="yellow" variant="bars" />
+                    <Loader size={"lg"} color="yellow" variant="dots" />
                   </Center>
                 </Paper>
                 <Title order={6}>Mohon menunggu !</Title>

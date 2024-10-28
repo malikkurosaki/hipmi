@@ -7,8 +7,7 @@ import { ComponentGlobal_BoxUploadImage } from "@/app_modules/_global/component"
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 import {
-  funGlobal_DeleteFileById,
-  funGlobal_UploadToStorage,
+  funGlobal_UploadToStorage
 } from "@/app_modules/_global/fun";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";

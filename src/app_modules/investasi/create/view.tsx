@@ -6,10 +6,6 @@ import {
   ComponentGlobal_BoxUploadImage,
   ComponentGlobal_CardStyles,
 } from "@/app_modules/_global/component";
-import {
-  ComponentGlobal_WarningMaxUpload,
-  maksimalUploadFile,
-} from "@/app_modules/_global/component/waring_popup";
 import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/model_default_master";
 import {
   AspectRatio,
@@ -25,12 +21,7 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import {
-  IconCamera,
-  IconCircleCheck,
-  IconFileTypePdf,
-  IconUpload,
-} from "@tabler/icons-react";
+import { IconCamera, IconCircleCheck, IconUpload } from "@tabler/icons-react";
 import _ from "lodash";
 import { useState } from "react";
 import { Investasi_ComponentButtonCreateNewInvestasi } from "../_component";

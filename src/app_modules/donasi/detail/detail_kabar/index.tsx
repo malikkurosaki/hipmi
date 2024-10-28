@@ -1,56 +1,42 @@
 "use client";
 
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
-  Paper,
-  Stack,
-  Group,
-  Avatar,
-  Title,
-  Text,
-  AspectRatio,
-  Image,
-  Divider,
-} from "@mantine/core";
-import moment from "moment";
-import { MODEL_DONASI_KABAR } from "../../model/interface";
+  ComponentGlobal_CardStyles,
+  ComponentGlobal_LoadImageLandscape,
+} from "@/app_modules/_global/component";
+import { Group, Stack, Text, Title } from "@mantine/core";
 import { useState } from "react";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { MODEL_DONASI_KABAR } from "../../model/interface";
 
-export default function DetailKabarDonasi({dataDonasi}: {dataDonasi: MODEL_DONASI_KABAR}) {
-  const [kabar, setKabar] = useState(dataDonasi)
+export default function DetailKabarDonasi({
+  dataDonasi,
+}: {
+  dataDonasi: MODEL_DONASI_KABAR;
+}) {
+  const [kabar, setKabar] = useState(dataDonasi);
   return (
     <>
-      <Stack
-        style={{
-          backgroundColor: AccentColor.darkblue,
-          border: `2px solid ${AccentColor.blue}`,
-          padding: "20px",
-          borderRadius: "10px",
-          color: "white",
-          marginBottom: "15px",
-        }}
-      >
+      <ComponentGlobal_CardStyles>
         <Stack>
           <Group position="right">
-            <Text fz={"xs"}>{moment(Date.now()).format("ll")}</Text>
+            <Text>
+              {new Intl.DateTimeFormat("id-ID", { dateStyle: "medium" }).format(
+                kabar.createdAt
+              )}
+            </Text>
           </Group>
-          <Title align="center" order={4}>{kabar.title}</Title>
-          {kabar.imagesId === null ? (
+
+          {kabar.imageId === null ? (
             ""
           ) : (
-            <AspectRatio ratio={16 / 9}>
-              <Paper radius={"md"}>
-                <Image
-                  alt="Foro"
-                  src={RouterDonasi.api_gambar_kabar + `${kabar.imagesId}`}
-                />
-              </Paper>
-            </AspectRatio>
+            <ComponentGlobal_LoadImageLandscape fileId={kabar.imageId} />
           )}
+          <Title align="center" order={4}>
+            {kabar.title}
+          </Title>
           <Text>{kabar.deskripsi}</Text>
         </Stack>
-      </Stack>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }
