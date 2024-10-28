@@ -24,12 +24,9 @@ import {
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
-import {
-  ComponentGlobal_WarningMaxUpload,
-  maksimalUploadFile,
-} from "@/app_modules/_global/component/waring_popup";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/model_default_master";
 import { useDisclosure, useWindowScroll } from "@mantine/hooks";
@@ -37,7 +34,6 @@ import _ from "lodash";
 import { useState } from "react";
 import { MODEL_INVESTASI } from "../_lib/interface";
 import funEditInvestasi from "../fun/fun_edit_investasi";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 
 export default function EditIntroInvestasi({
   dataInvestasi,
@@ -157,12 +153,8 @@ export default function EditIntroInvestasi({
                   new Blob([new Uint8Array(await files.arrayBuffer())])
                 );
 
-                if (files.size > maksimalUploadFile) {
-                  ComponentGlobal_WarningMaxUpload({});
-                } else {
-                  setImg(buffer);
-                  setFl(files);
-                }
+                setImg(buffer);
+                setFl(files);
               } catch (error) {
                 console.log(error);
               }
@@ -323,7 +315,7 @@ export default function EditIntroInvestasi({
             });
           }}
         />
-        
+
         <Select
           styles={{
             label: {

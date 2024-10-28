@@ -13,7 +13,7 @@ import {
   Stack,
   Text,
   TextInput,
-  Title
+  Title,
 } from "@mantine/core";
 import {
   IconChevronRight,
@@ -25,8 +25,8 @@ import {
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
 import { gs_proses_donasi } from "../../global_state";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 
 const listNominal = [
   {
@@ -59,9 +59,12 @@ export default function MasukanDonasi({ donasiId }: { donasiId: string }) {
   const [prosesDonasi, setProsesDonasi] = useAtom(gs_proses_donasi);
 
   async function onProses(nominal: number) {
-    if (nominal === 0) return NotifPeringatan("Masukan Nominal");
+    if (nominal === 0)
+      return ComponentGlobal_NotifikasiPeringatan("Masukan Nominal");
     if (nominal < 10000)
-      return NotifPeringatan("Mohon maaf, Minimal donasi Rp. 10.000");
+      return ComponentGlobal_NotifikasiPeringatan(
+        "Mohon maaf, Minimal donasi Rp. 10.000"
+      );
     setProsesDonasi({
       ...prosesDonasi,
       nominal: "" + nominal,

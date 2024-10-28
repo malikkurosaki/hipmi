@@ -3,19 +3,22 @@
 import prisma from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function Donasi_funUpdateStatusInvoice(
-  invoiceId: string,
-  statusId: string
-) {
-  //   console.log(invoiceId, "invoice Id");
-  //   console.log(status, "status");
-
+export async function Donasi_funUpdateStatusInvoice({
+  invoiceId,
+  statusId,
+  fileId,
+}: {
+  invoiceId: string;
+  statusId: string;
+  fileId: string;
+}) {
   const data = await prisma.donasi_Invoice.update({
     where: {
       id: invoiceId,
     },
     data: {
       donasiMaster_StatusInvoiceId: statusId,
+      imageId: fileId,
     },
     select: {
       id: true,
@@ -36,7 +39,7 @@ export async function Donasi_funUpdateStatusInvoice(
 
   if (!data)
     return { status: 400, message: "Gagal memperbarui status transaksi" };
-  revalidatePath("dev/admin/donasi/detail/publish");
+  // revalidatePath("dev/admin/donasi/detail/publish");
   return {
     data: data,
     status: 200,

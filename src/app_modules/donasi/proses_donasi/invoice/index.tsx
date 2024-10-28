@@ -1,10 +1,13 @@
 "use client";
 
+import { DIRECTORY_ID } from "@/app/lib";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
@@ -23,11 +26,9 @@ import {
 } from "@mantine/core";
 import { IconCamera, IconCircleCheck } from "@tabler/icons-react";
 import { useAtom } from "jotai";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import TampilanRupiahDonasi from "../../component/tampilan_rupiah";
-import { Donasi_funUploadBuktiTransferById } from "../../fun/update/fun_update_invoice";
 import { Donasi_funUpdateStatusInvoice } from "../../fun/update/fun_update_status_invoice";
 import { gs_donasi_hot_menu } from "../../global_state";
 import { MODEL_DONASI_INVOICE } from "../../model/interface";
@@ -40,8 +41,61 @@ export default function Donasi_InvoiceProses({
   const [invoice, setDataInvoice] = useState(dataInvoice);
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
-  const [image, setImage] = useState<any | null>(null);
   const [active, setActive] = useAtom(gs_donasi_hot_menu);
+  const [isLoading, setLoading] = useState(false);
+
+  async function onClick() {
+    try {
+      setLoading(true);
+      const uploadImage = await funGlobal_UploadToStorage({
+        file: file as File,
+        dirId: DIRECTORY_ID.donasi_bukti_transfer,
+      });
+
+      if (!uploadImage.success) {
+        setLoading(false);
+        return ComponentGlobal_NotifikasiPeringatan("Gagal upload file gambar");
+      }
+
+      const res = await Donasi_funUpdateStatusInvoice({
+        invoiceId: invoice.id,
+        statusId: "2",
+        fileId: uploadImage.data.id,
+      });
+      if (res.status === 200) {
+        const dataNotif: any = {
+          appId: res.data?.Donasi?.id as any,
+          userId: res.data?.Donasi?.authorId as any,
+          pesan: res.data?.Donasi?.title as any,
+          status: res.data?.DonasiMaster_StatusInvoice?.name,
+          kategoriApp: "DONASI",
+          title: "Donatur melakukan transfer",
+        };
+
+        const notif = await notifikasiToAdmin_funCreate({
+          data: dataNotif as any,
+        });
+
+        if (notif.status === 201) {
+          mqtt_client.publish(
+            "ADMIN",
+            JSON.stringify({
+              count: 1,
+            })
+          );
+          ComponentGlobal_NotifikasiBerhasil(res.message);
+          setActive(2);
+          router.push(RouterDonasi.proses_transaksi + `${invoice.id}`);
+          setLoading(false);
+        }
+      } else {
+        ComponentGlobal_NotifikasiGagal(res.message);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -203,9 +257,8 @@ export default function Donasi_InvoiceProses({
                     //   new Blob([new Uint8Array(await files.arrayBuffer())])
                     // );
                     // console.log(buffer, "ini buffer");
-                    // console.log(files, " ini file");
+
                     setFile(files);
-                    onUpload(invoice.id, files);
                   } catch (error) {
                     console.log(error);
                   }
@@ -251,71 +304,16 @@ export default function Donasi_InvoiceProses({
             bg={MainColor.yellow}
             color="yellow"
             c={"black"}
-            onClick={() => onClick(router, invoice.id, setActive)}
+            onClick={() => onClick()}
           >
             Saya Sudah Transfer
           </Button>
         ) : (
-          <Button
-            disabled
-            radius={"xl"}
-            //  bg={"orange"}
-            //  color="orange"
-            //  onClick={() => onClick(router, invoice.id)}
-          >
+          <Button disabled radius={"xl"}>
             Menunggu Bukti Transfer
           </Button>
         )}
       </Stack>
     </>
   );
-}
-
-async function onClick(
-  router: AppRouterInstance,
-  invoiceId: string,
-  setActive: any
-) {
-  const res = await Donasi_funUpdateStatusInvoice(invoiceId, "2");
-  if (res.status === 200) {
-    const dataNotif: any = {
-      appId: res.data?.Donasi?.id as any,
-      userId: res.data?.Donasi?.authorId as any,
-      pesan: res.data?.Donasi?.title as any,
-      status: res.data?.DonasiMaster_StatusInvoice?.name,
-      kategoriApp: "DONASI",
-      title: "Donatur melakukan transfer",
-    };
-
-    const notif = await notifikasiToAdmin_funCreate({
-      data: dataNotif as any,
-    });
-
-    if (notif.status === 201) {
-      mqtt_client.publish(
-        "ADMIN",
-        JSON.stringify({
-          count: 1,
-        })
-      );
-      ComponentGlobal_NotifikasiBerhasil(res.message);
-      setActive(2);
-      router.push(RouterDonasi.proses_transaksi + `${invoiceId}`);
-    }
-  } else {
-    ComponentGlobal_NotifikasiGagal(res.message);
-  }
-}
-
-async function onUpload(invoiceId: string, file: FormData) {
-  const gambar = new FormData();
-  gambar.append("file", file as any);
-
-  await Donasi_funUploadBuktiTransferById(invoiceId, gambar).then((res) => {
-    if (res.status === 200) {
-      ComponentGlobal_NotifikasiBerhasil(res.message);
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
-    }
-  });
 }

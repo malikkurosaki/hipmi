@@ -43,6 +43,7 @@ export async function donasi_funGetAllInvoiceByAuthorId({
           DonasiMaster_Ketegori: true,
           DonasiMaster_Durasi: true,
           DonasiMaster_Status: true,
+          imageId: true,
         },
       },
     },

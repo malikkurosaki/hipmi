@@ -1,4 +1,4 @@
-import { LayoutCreateDonasi } from "@/app_modules/donasi";
+import { LayoutCreateCeritaDonasi } from "@/app_modules/donasi/create";
 import React from "react";
 
 export default async function Layout({
@@ -8,7 +8,7 @@ export default async function Layout({
 }) {
   return (
     <>
-      <LayoutCreateDonasi>{children}</LayoutCreateDonasi>
+      <LayoutCreateCeritaDonasi>{children}</LayoutCreateCeritaDonasi>
     </>
   );
 }

@@ -27,13 +27,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Donasi_findDonaturByTokenId } from "../../fun/get/get_donatur_by_token_id";
 import { MODEL_DONASI } from "../../model/interface";
-import { NotifPeringatan } from "../notifikasi/notif_peringatan";
 import ComponentDonasi_TampilanHitungMundur from "../tampilan_hitung_mundur";
 import TampilanRupiahDonasi from "../tampilan_rupiah";
 import {
   ComponentGlobal_CardStyles,
   ComponentGlobal_LoadImageLandscape,
 } from "@/app_modules/_global/component";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 
 export function ComponentDonasi_DetailDataMain({
   donasi,
@@ -126,7 +126,9 @@ export function ComponentDonasi_DetailDataMain({
               span={"auto"}
               onClick={() => {
                 setLoadingKabar(true);
-                router.push(RouterDonasi.kabar + `${donasi?.id}`);
+                router.push(RouterDonasi.daftar_kabar({ id: donasi.id }), {
+                  scroll: false,
+                });
               }}
             >
               <Stack spacing={"sm"} align="center">
@@ -187,7 +189,7 @@ async function onPencairanDana(
   }
 
   if (!cek) {
-    return NotifPeringatan("Halaman khusus donatur");
+    return ComponentGlobal_NotifikasiPeringatan("Halaman khusus donatur");
   } else {
     setLoadingPencairan(true);
     router.push(RouterDonasi.pencairan_dana + `${donasi.id}`);

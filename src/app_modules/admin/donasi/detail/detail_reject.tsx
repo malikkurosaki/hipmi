@@ -1,10 +1,12 @@
 "use client";
 
+import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
 import {
   AspectRatio,
   Button,
-  Divider,
   Group,
   Image,
   Modal,
@@ -15,19 +17,15 @@ import {
   Textarea,
   Title,
 } from "@mantine/core";
-import { useState } from "react";
-import ComponentAdminDonasi_TombolKembali from "../component/tombol_kembali";
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import { useDisclosure } from "@mantine/hooks";
-import { AdminDonasi_funUpdateCatatanReject } from "../fun/update/fun_update_catatan_reject";
-import { NotifBerhasil } from "@/app_modules/donasi/component/notifikasi/notif_berhasil";
-import { NotifGagal } from "@/app_modules/donasi/component/notifikasi/notif_gagal";
-import { AdminDonasi_getOneById } from "../fun/get/get_one_by_id";
-import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { useState } from "react";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../_admin_global/admin_notifikasi/notifikasi_berhasil";
 import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
-import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_detail_donasi";
 import ComponentAdminDonasi_CeritaPenggalangDana from "../component/tampilan_detail_cerita";
+import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_detail_donasi";
+import { AdminDonasi_getOneById } from "../fun/get/get_one_by_id";
+import { AdminDonasi_funUpdateCatatanReject } from "../fun/update/fun_update_catatan_reject";
+import { ComponentAdminGlobal_NotifikasiGagal } from "../../_admin_global/admin_notifikasi/notifikasi_gagal";
 
 export default function AdminDonasi_DetailReject({
   dataReject,
@@ -44,7 +42,7 @@ export default function AdminDonasi_DetailReject({
           donasiId={data.id}
           setDonasi={setData}
         />
-          <CatatanReject catatan={data.catatan} />
+        <CatatanReject catatan={data.catatan} />
         <SimpleGrid
           cols={2}
           spacing="lg"
@@ -80,11 +78,11 @@ function ButtonOnHeader({
     await AdminDonasi_funUpdateCatatanReject(donasiId, report).then(
       async (res) => {
         if (res.status === 200) {
-          NotifBerhasil(res.message);
+          ComponentAdminGlobal_NotifikasiBerhasil(res.message);
           close();
           await AdminDonasi_getOneById(donasiId).then((res) => setDonasi(res));
         } else {
-          NotifGagal(res.message);
+          ComponentAdminGlobal_NotifikasiGagal(res.message);
         }
       }
     );
@@ -99,7 +97,6 @@ function ButtonOnHeader({
             Tambah catatan
           </Button>
         </Group>
-
       </Stack>
 
       <Modal
@@ -196,7 +193,7 @@ function CatatanReject({ catatan }: { catatan: string }) {
     <>
       <Paper p={"md"} bg={"gray.1"}>
         <Stack>
-          <Title order={5} >Alasan Penolakan :</Title>
+          <Title order={5}>Alasan Penolakan :</Title>
           <Text>{catatan}</Text>
         </Stack>
       </Paper>

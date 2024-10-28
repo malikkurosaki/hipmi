@@ -1,44 +1,39 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { Button, Stack } from "@mantine/core";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
+import { Button, Group, Stack } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_dana/detail_data_donasi";
 import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
-import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
-import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
 import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
 import { gs_donasi_tabs_posting } from "../../global_state";
 import { MODEL_DONASI } from "../../model/interface";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import mqtt_client from "@/util/mqtt_client";
-import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
-import { useState } from "react";
+import { Donasi_ComponentButtonDeleteDonasiById } from "../../component";
 
 export default function DetailDraftDonasi({
   dataDonasi,
 }: {
   dataDonasi: MODEL_DONASI;
 }) {
-  // const [data, setData] = useState(dataDonasi);
-
-  // useShallowEffect(() => {
-  //   loadData({ id: dataDonasi.id });
-  // }, [dataDonasi.id]);
-
-  // async function loadData({ id }: { id: string }) {
-  //   const loadData = await Donasi_getOneById(id);
-  //   setData(loadData as any);
-  // }
-
   return (
     <>
       <Stack spacing={"xl"} py={"md"}>
         <ComponentDonasi_DetailDataGalangDana donasi={dataDonasi} />
         <ComponentDonasi_CeritaPenggalangMain donasi={dataDonasi} />
-        <ButtonAjukanPenggalangan dataDonasi={dataDonasi} />
+        <Group position="apart" grow mt={"lg"}>
+          <ButtonAjukanPenggalangan dataDonasi={dataDonasi} />
+          <Donasi_ComponentButtonDeleteDonasiById
+            donasiId={dataDonasi.id}
+            imageCeritaId={dataDonasi.CeritaDonasi.imageId}
+            imageId={dataDonasi.imageId}
+          />
+        </Group>
       </Stack>
     </>
   );
@@ -93,7 +88,7 @@ function ButtonAjukanPenggalangan({
         color="orange"
         onClick={() => onCLick()}
       >
-        Ajukan Penggalangan Dana
+        Ajukan Kembali
       </Button>
     </>
   );

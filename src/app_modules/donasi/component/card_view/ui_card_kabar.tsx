@@ -1,12 +1,14 @@
 "use client";
 
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { Paper, Stack, Text, Title } from "@mantine/core";
-import moment from "moment";
+import { Stack, Text, Title } from "@mantine/core";
 
-import { MODEL_DONASI_KABAR } from "../../model/interface";
+import {
+  ComponentGlobal_CardLoadingOverlay,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
 import { useRouter } from "next/navigation";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { useState } from "react";
+import { MODEL_DONASI_KABAR } from "../../model/interface";
 
 export default function ComponentDonasi_ListKabar({
   kabar,
@@ -16,26 +18,25 @@ export default function ComponentDonasi_ListKabar({
   route: string;
 }) {
   const router = useRouter();
+  const [visible, setVisible] = useState(false);
   return (
     <>
-      <Paper
-        style={{
-          backgroundColor: AccentColor.blue,
-          border: `2px solid ${AccentColor.darkblue}`,
-          padding: "15px",
-          cursor: "pointer",
-          borderRadius: "10px",
-          color: "white",
-          marginBottom: "10px",
+      <ComponentGlobal_CardStyles
+        onClickHandler={() => {
+          router.push(route + `${kabar.id}`);
+          setVisible(true);
         }}
-        onClick={() => router.push(route + `${kabar.id}`)}
       >
         <Stack>
-          <Text fz={"xs"}>{moment(kabar.createdAt).format("ll")}</Text>
-
+          <Text fz={"xs"}>
+            {new Intl.DateTimeFormat("id-ID", { dateStyle: "medium" }).format(
+              kabar.createdAt
+            )}
+          </Text>
           <Title order={5}>{kabar.title}</Title>
         </Stack>
-      </Paper>
+        {visible && <ComponentGlobal_CardLoadingOverlay />}
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

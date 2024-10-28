@@ -55,7 +55,6 @@ export default function CreateDonasi({
   );
 
   async function onCreate() {
-    setLoading(true);
     const body = {
       donasiMaster_KategoriId: data.kategoriId,
       donasiMaster_DurasiId: data.durasiId,
@@ -67,6 +66,8 @@ export default function CreateDonasi({
       return ComponentGlobal_NotifikasiPeringatan("Lengkapin Data");
 
     try {
+      setLoading(true);
+
       const uploadImage = await funGlobal_UploadToStorage({
         file: file as File,
         dirId: DIRECTORY_ID.donasi_image,
@@ -188,9 +189,9 @@ export default function CreateDonasi({
         <Stack>
           <ComponentGlobal_BoxUploadImage>
             {img ? (
-              <AspectRatio ratio={1 / 1} mah={265} mx={"auto"}>
+              <AspectRatio ratio={1 / 1} mt={5} maw={300} mx={"auto"}>
                 <Image
-                  style={{ maxHeight: 250, margin: "auto", padding: "5px" }}
+                  style={{ maxHeight: 250 }}
                   alt="Foto"
                   height={250}
                   src={img}

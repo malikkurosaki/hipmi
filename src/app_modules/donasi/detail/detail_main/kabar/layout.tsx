@@ -12,7 +12,7 @@ export default function LayoutKabarDonasi({
   return (
     <>
       <UIGlobal_LayoutTamplate
-        header={<UIGlobal_LayoutHeaderTamplate title="Kabar Terbaru" />}
+        header={<UIGlobal_LayoutHeaderTamplate title="Kabar" />}
       >
         {children}
       </UIGlobal_LayoutTamplate>

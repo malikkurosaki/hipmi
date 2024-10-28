@@ -1,18 +1,18 @@
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
+import {
+  ComponentGlobal_CardLoadingOverlay,
+  ComponentGlobal_LoadImageCustom,
+} from "@/app_modules/_global/component";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import {
-  AspectRatio,
   Badge,
   Card,
   Grid,
   Group,
-  Image,
-  Paper,
   Progress,
   Stack,
-  Text,
+  Text
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -88,15 +88,10 @@ export function ComponentDonasi_CardInvoice({
               </Stack>
             </Grid.Col>
             <Grid.Col span={7}>
-              <AspectRatio ratio={16 / 9}>
-                <Paper radius={"md"}>
-                  <Image
-                    alt="Foto"
-                    src={RouterDonasi.api_gambar + `${data.Donasi.imagesId}`}
-                    radius={"md"}
-                  />
-                </Paper>
-              </AspectRatio>
+              <ComponentGlobal_LoadImageCustom
+                height={150}
+                fileId={data.Donasi.imageId}
+              />
             </Grid.Col>
           </Grid>
           {/* {width > 575 ? "" : <Divider />} */}

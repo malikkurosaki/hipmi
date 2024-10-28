@@ -1,10 +1,12 @@
 "use client";
 
+import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { Warna } from "@/app/lib/warna";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import mqtt_client from "@/util/mqtt_client";
 import {
   Center,
   Group,
@@ -14,17 +16,15 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
 import { IconBrandWhatsapp } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { donasi_getOneStatusInvoiceById } from "../../fun/get/get_one_status_invoice_by_id";
 import { gs_donasi_hot_menu } from "../../global_state";
 import { MODEL_DONASI_INVOICE } from "../../model/interface";
-import { redirect, useRouter } from "next/navigation";
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { useShallowEffect } from "@mantine/hooks";
-import mqtt_client from "@/util/mqtt_client";
-import { donasi_getOneStatusInvoiceById } from "../../fun/get/get_one_status_invoice_by_id";
 
 export default function Donasi_ProsesTransaksi({
   statusInvoice,
@@ -106,7 +106,7 @@ export default function Donasi_ProsesTransaksi({
                   <Title order={6}>Admin sedang memproses transaksimu</Title>
                   <Paper radius={1000} w={100} h={100}>
                     <Center h={"100%"}>
-                      <Loader size={"lg"} color="yellow" variant="bars" />
+                      <Loader size={"lg"} color="yellow" variant="dots" />
                     </Center>
                   </Paper>
                   <Title order={6}>Mohon menunggu !</Title>
