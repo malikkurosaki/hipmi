@@ -11,7 +11,7 @@ export function redirectEventPage({
   router: AppRouterInstance;
   onSetPage: (val: any) => void;
 }) {
-  const path = RouterEvent.status_page;
+  const path = RouterEvent.status({id: ""});
 
   if (data.status === "Publish") {
     onSetPage({

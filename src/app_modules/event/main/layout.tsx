@@ -6,17 +6,12 @@ import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
 import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
-import {
-  ActionIcon,
-  SimpleGrid,
-  Stack,
-  Text
-} from "@mantine/core";
+import { ActionIcon, SimpleGrid, Stack, Text } from "@mantine/core";
 import {
   IconCalendarEvent,
   IconHistory,
   IconHome,
-  IconTimelineEventText
+  IconTimelineEventText,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
@@ -42,7 +37,7 @@ export default function LayoutEvent_Main({
     {
       id: "2",
       name: "Status",
-      path: RouterEvent.status_page,
+      path: RouterEvent.status({ id: "1" }),
       icon: <IconTimelineEventText />,
     },
     {
@@ -54,7 +49,7 @@ export default function LayoutEvent_Main({
     {
       id: "4",
       name: "Riwayat",
-      path: RouterEvent.riwayat,
+      path: RouterEvent.riwayat({ id: "1" }),
       icon: <IconHistory />,
     },
   ];

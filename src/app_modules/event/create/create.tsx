@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentEvent_ErrorMaximalInput from "../component/error_maksimal_input";
 import { Event_funCreate } from "../fun/create/fun_create";
-import { gs_event_hotMenu, gs_event_status } from "../global_state";
+import { gs_event_hotMenu } from "../global_state";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import mqtt_client from "@/util/mqtt_client";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
@@ -27,7 +27,6 @@ export default function Event_Create({
   authorId: string;
 }) {
   const router = useRouter();
-  const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
   const [listTipe, setListTipe] = useState(listTipeAcara);
   const [hotMenu, setHotMenu] = useAtom(gs_event_hotMenu);
   const [isTime, setIsTime] = useState(false);
@@ -177,7 +176,7 @@ export default function Event_Create({
           radius={"xl"}
           mt={"xl"}
           onClick={() => {
-            onSave(router, setTabsStatus, value, setHotMenu, setLoading);
+            onSave(router, value, setHotMenu, setLoading);
           }}
           bg={MainColor.yellow}
           color="yellow"
@@ -191,7 +190,6 @@ export default function Event_Create({
 
 async function onSave(
   router: AppRouterInstance,
-  setTabsStatus: any,
   value: any,
   setHotMenu: any,
   setLoading: any
@@ -231,10 +229,9 @@ async function onSave(
       );
 
       ComponentGlobal_NotifikasiBerhasil(res.message);
-      setTabsStatus("Review");
       setHotMenu(1);
       setLoading(true);
-      router.push(RouterEvent.status_page);
+      router.push(RouterEvent.status({ id: "2" }), { scroll: false });
     }
   } else {
     ComponentGlobal_NotifikasiGagal(res.message);

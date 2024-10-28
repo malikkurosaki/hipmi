@@ -12,10 +12,8 @@ import { MODEL_EVENT } from "../../model/interface";
 
 export default function Event_StatusReview({
   listReview,
-
 }: {
   listReview: MODEL_EVENT[];
-
 }) {
   const [data, setData] = useState(listReview);
   const [activePage, setActivePage] = useState(1);

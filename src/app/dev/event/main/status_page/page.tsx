@@ -14,12 +14,13 @@ export default async function Page() {
   const listReject = await event_getAllReject({ page: 1 });
 
   return (
-    <Event_StatusPage
-      authorId={userLoginId}
-      listPublish={listPublish}
-      listReview={listReview}
-      listDraft={listDraft}
-      listReject={listReject}
-    />
+    <>maintenace</>
+    // <Event_StatusPage
+    //   authorId={userLoginId}
+    //   listPublish={listPublish}
+    //   listReview={listReview}
+    //   listDraft={listDraft}
+    //   listReject={listReject}
+    // />
   );
 }
