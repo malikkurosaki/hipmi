@@ -1,31 +1,31 @@
 "use client";
 
-import { Button, Group, Stack } from "@mantine/core";
-import ComponentEvent_DetailData from "../../component/detail/detail_data";
+import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
-import { useAtom } from "jotai";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
+import { Button, Group, Stack } from "@mantine/core";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import ComponentEvent_DetailData from "../../component/detail/detail_data";
 import { Event_funDeleteById } from "../../fun/delete/fun_delete";
 import { Event_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
-import { gs_event_status } from "../../global_state";
 import { MODEL_EVENT } from "../../model/interface";
-import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
-import mqtt_client from "@/util/mqtt_client";
 
 export default function Event_DetailDraft({
   dataEvent,
 }: {
   dataEvent: MODEL_EVENT;
 }) {
+  const [data, setData] = useState(dataEvent);
   return (
     <>
-      {/* <pre>{JSON.stringify(dataEvent.catatan)}</pre> */}
+      {/* <pre>{JSON.stringify(dataEvent.tanggal)}</pre> */}
       <Stack spacing={"lg"}>
         {dataEvent?.catatan ? (
           <ComponentGlobal_BoxInformation
@@ -35,33 +35,35 @@ export default function Event_DetailDraft({
         ) : (
           ""
         )}
-        <ComponentEvent_DetailData data={dataEvent} />
-        <ButtonAction eventId={dataEvent?.id} tanggal={dataEvent.tanggal} />
+        <ComponentEvent_DetailData data={data} />
+        <ButtonAction eventId={data.id} tanggal={data.tanggal} />
       </Stack>
     </>
   );
 }
 
-function ButtonAction({ eventId, tanggal }: { eventId: string; tanggal: any }) {
+function ButtonAction({
+  eventId,
+  tanggal,
+}: {
+  eventId: string;
+  tanggal?: any;
+}) {
   const router = useRouter();
   const [isLoadingDelete, setLoadingDelete] = useState(false);
   const [isLoadingAjukan, setLoadingAjukan] = useState(false);
-  const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
   const [openModal1, setOpenModal1] = useState(false);
   const [openModal2, setOpenModal2] = useState(false);
 
   async function onDelete() {
-    await Event_funDeleteById(eventId).then((res) => {
-      if (res.status === 200) {
-        ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
-        setLoadingDelete(true);
-        setTabsStatus("Draft");
-        close();
-        router.back();
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
-      }
-    });
+    const res = await Event_funDeleteById(eventId);
+    if (res.status === 200) {
+      router.back();
+      ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
+      setLoadingDelete(true);
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+    }
   }
 
   async function onAjukan() {
@@ -91,9 +93,8 @@ function ButtonAction({ eventId, tanggal }: { eventId: string; tanggal: any }) {
           })
         );
         ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
-        setTabsStatus("Review");
         setLoadingAjukan(true);
-        router.back();
+        router.replace(RouterEvent.status({ id: "2" }));
       }
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);

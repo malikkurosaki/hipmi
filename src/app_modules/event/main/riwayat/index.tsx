@@ -1,48 +1,57 @@
 "use client";
 
 import { Stack, Tabs } from "@mantine/core";
-
-import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
-import { useAtom } from "jotai";
+import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
 import { useRouter } from "next/navigation";
-import { gs_event_riwayat } from "../../global_state";
+import { useState } from "react";
 import { MODEL_EVENT } from "../../model/interface";
 import Event_RiwayatSaya from "./saya";
 import Event_SemuaRiwayat from "./semua";
 
 export default function Event_Riwayat({
+  statusId,
   dataSemuaRiwayat,
-  dataRiwayatSaya
+  dataRiwayatSaya,
 }: {
-  dataSemuaRiwayat: MODEL_EVENT[];
-  dataRiwayatSaya: MODEL_EVENT[]
+  statusId: string;
+  dataSemuaRiwayat?: MODEL_EVENT[];
+  dataRiwayatSaya?: MODEL_EVENT[];
 }) {
   const router = useRouter();
-  const [tabsRiwayat, setTabsRiwayat] = useAtom(gs_event_riwayat)
+  // const [tabsRiwayat, setTabsRiwayat] = useAtom(gs_event_riwayat)
+  const [changeStatus, setChangeStatus] = useState(statusId);
 
   const listTabs = [
     {
-      id: 1,
+      id: "1",
       label: "Semua Riwayat",
       value: "Semua",
-      path: <Event_SemuaRiwayat listData={dataSemuaRiwayat as any} />,
     },
     {
-      id: 2,
+      id: "2",
       label: "Riwayat Saya",
       value: "Saya",
-      path: <Event_RiwayatSaya listData={dataRiwayatSaya as any} />,
     },
   ];
+
+  async function onChangeStatus({ statusId }: { statusId: string }) {
+    router.push(RouterEvent.riwayat({ id: statusId }));
+  }
 
   return (
     <>
       <Tabs
-        defaultValue={"Semua"}
         variant="pills"
         radius={"xl"}
-        onTabChange={setTabsRiwayat}
-        value={tabsRiwayat}
+        value={changeStatus}
+        onTabChange={(val: any) => {
+          setChangeStatus(val);
+          onChangeStatus({ statusId: val });
+        }}
         styles={{
           tabsList: {
             backgroundColor: MainColor.darkblue,
@@ -57,15 +66,15 @@ export default function Event_Riwayat({
             {listTabs.map((e) => (
               <Tabs.Tab
                 key={e.id}
-                value={e.value}
+                value={e.id}
                 fw={"bold"}
                 c={"black"}
                 style={{
                   transition: "0.5s",
                   backgroundColor:
-                    tabsRiwayat === e.value ? MainColor.yellow : "white",
+                    changeStatus === e.id ? MainColor.yellow : "white",
                   border:
-                    tabsRiwayat === e.value
+                    changeStatus === e.id
                       ? `1px solid ${AccentColor.yellow}`
                       : `1px solid white`,
                 }}
@@ -74,11 +83,12 @@ export default function Event_Riwayat({
               </Tabs.Tab>
             ))}
           </Tabs.List>
-          {listTabs.map((e) => (
-            <Tabs.Panel key={e.id} value={e.value}>
-              {e.path}
-            </Tabs.Panel>
-          ))}
+          {statusId == "1" && (
+            <Event_SemuaRiwayat listData={dataSemuaRiwayat as any} />
+          )}
+          {statusId == "2" && (
+            <Event_RiwayatSaya listData={dataRiwayatSaya as any} />
+          )}
         </Stack>
       </Tabs>
     </>

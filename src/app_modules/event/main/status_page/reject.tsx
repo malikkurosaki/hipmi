@@ -1,27 +1,18 @@
 "use client";
 
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import {
   Box,
   Center,
-  Group,
-  Loader,
-  Paper,
-  Stack,
-  Text,
-  Title,
+  Loader
 } from "@mantine/core";
-import moment from "moment";
-import { useRouter } from "next/navigation";
-import { MODEL_EVENT } from "../../model/interface";
-import ComponentEvent_BoxListStatus from "../../component/box_list_status";
 import _ from "lodash";
-import ComponentEvent_IsEmptyData from "../../component/is_empty_data";
-import { event_getAllReject } from "../../fun/get/status/get_all_reject";
-import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import { ScrollOnly } from "next-scroll-loader";
 import { useState } from "react";
-import { event_getAllReview } from "../../fun/get/status/get_all_review";
+import ComponentEvent_BoxListStatus from "../../component/box_list_status";
+import { event_getAllReject } from "../../fun/get/status/get_all_reject";
+import { MODEL_EVENT } from "../../model/interface";
 
 export default function Event_StatusReject({
   listReject,

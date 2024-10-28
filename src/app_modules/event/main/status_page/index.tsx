@@ -1,64 +1,47 @@
 "use client";
 
-import { Stack, Tabs } from "@mantine/core";
-import { useAtom } from "jotai";
-import { useRouter } from "next/navigation";
-import { gs_event_status } from "../../global_state";
-import Event_StatusDraft from "./draft";
-import Event_StatusPublish from "./publish";
-import Event_StatusReject from "./reject";
-import Event_StatusReview from "./review";
+import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { MODEL_NEW_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
+import { Box, Stack, Tabs } from "@mantine/core";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Event_StatusDraft from "./draft";
+import Event_StatusPublish from "./publish";
+import Event_StatusReject from "./reject";
+import Event_StatusReview from "./review";
 
 export default function Event_StatusPage({
-  authorId,
-  listPublish,
-  listReview,
-  listDraft,
-  listReject,
+  statusId,
+  dataStatus,
+  listStatus,
 }: {
-  authorId: string;
-  listPublish: any;
-  listReview: any;
-  listDraft: any;
-  listReject: any;
+  statusId: string;
+  dataStatus: any[];
+  listStatus: MODEL_NEW_DEFAULT_MASTER[];
 }) {
   const router = useRouter();
-  const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
-  const listTabs = [
-    {
-      id: 1,
-      path: <Event_StatusPublish listPublish={listPublish} />,
-      value: "Publish",
-    },
-    {
-      id: 2,
-      path: <Event_StatusReview listReview={listReview} />,
-      value: "Review",
-    },
-    {
-      id: 3,
-      path: <Event_StatusDraft listDraft={listDraft} />,
-      value: "Draft",
-    },
-    {
-      id: 4,
-      path: <Event_StatusReject listReject={listReject} />,
-      value: "Reject",
-    },
-  ];
+  const [changeStatus, setChangeStatus] = useState(statusId);
+
+  async function onChangeStatus({ statusId }: { statusId: string }) {
+    router.push(RouterEvent.status({ id: statusId }));
+  }
+
   return (
     <>
       <Tabs
         variant="pills"
         radius="xl"
         mt={1}
-        defaultValue="Publish"
-        value={tabsStatus}
-        onTabChange={setTabsStatus}
+        // defaultValue={"1"}
+        value={changeStatus}
+        onTabChange={(val: any) => {
+          setChangeStatus(val);
+          onChangeStatus({ statusId: val });
+        }}
         styles={{
           tabsList: {
             backgroundColor: MainColor.darkblue,
@@ -70,33 +53,95 @@ export default function Event_StatusPage({
       >
         <Stack>
           <Tabs.List grow>
-            {listTabs.map((e) => (
+            {listStatus.map((e) => (
               <Tabs.Tab
                 key={e.id}
-                value={e.value}
+                value={e.id}
                 fw={"bold"}
                 c={"black"}
                 style={{
                   transition: "0.5s",
                   backgroundColor:
-                    tabsStatus === e.value ? MainColor.yellow : "white",
+                    changeStatus === e.id ? MainColor.yellow : "white",
                   border:
-                    tabsStatus === e.value
+                    changeStatus === e.id
                       ? `1px solid ${AccentColor.yellow}`
                       : `1px solid white`,
                 }}
               >
-                {e.value}
+                {e.name}
               </Tabs.Tab>
             ))}
           </Tabs.List>
-          {listTabs.map((e) => (
-            <Tabs.Panel key={e.id} value={e.value}>
-              {e.path}
-            </Tabs.Panel>
-          ))}
+
+          <Box>
+            {changeStatus === "1" && (
+              <Event_StatusPublish listPublish={dataStatus} />
+            )}
+            {changeStatus === "2" && (
+              <Event_StatusReview listReview={dataStatus} />
+            )}
+            {changeStatus === "3" && (
+              <Event_StatusDraft listDraft={dataStatus} />
+            )}
+            {changeStatus === "4" && (
+              <Event_StatusReject listReject={dataStatus} />
+            )}
+          </Box>
         </Stack>
       </Tabs>
     </>
   );
+
+  // return (
+  //   <>
+  //     <Tabs
+  //       variant="pills"
+  //       radius="xl"
+  //       mt={1}
+  //       defaultValue={changeStatus}
+  //       value={changeStatus}
+  //       onTabChange={(val: any) => {
+  //         console.log(val);
+  //       }}
+  //       styles={{
+  //         tabsList: {
+  //           backgroundColor: MainColor.darkblue,
+  //           position: "sticky",
+  //           top: 0,
+  //           zIndex: 99,
+  //         },
+  //       }}
+  //     >
+  //       <Stack>
+  //         <Tabs.List grow>
+  //           {listStatus.map((e) => (
+  //             <Tabs.Tab
+  //               key={e.id}
+  //               value={e.name}
+  //               fw={"bold"}
+  //               c={"black"}
+  //               // style={{
+  //               //   transition: "0.5s",
+  //               //   backgroundColor:
+  //               //     tabsStatus === e.name ? MainColor.yellow : "white",
+  //               //   border:
+  //               //     tabsStatus === e.name
+  //               //       ? `1px solid ${AccentColor.yellow}`
+  //               //       : `1px solid white`,
+  //               // }}
+  //             >
+  //               {e.name}
+  //             </Tabs.Tab>
+  //           ))}
+  //         </Tabs.List>
+  //         {/* {listTabs.map((e) => (
+  //           <Tabs.Panel key={e.id} value={e.value}>
+  //             {e.path}
+  //           </Tabs.Panel>
+  //         ))} */}
+  //       </Stack>
+  //     </Tabs>
+  //   </>
+  // );
 }
