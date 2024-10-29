@@ -3,44 +3,46 @@
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { Button, Group, Stack } from "@mantine/core";
-import { useAtom } from "jotai";
 
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import { funGlobal_DeleteFileById } from "@/app_modules/_global/fun";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import { useDisclosure } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import ComponentJob_DetailData from "../../component/detail/detail_data";
 import { Job_funDeleteById } from "../../fun/delete/fun_delete_by_id";
 import { Job_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_status_id";
-import { gs_job_status } from "../../global_state";
 import { MODEL_JOB } from "../../model/interface";
 
 export default function Job_DetailReject({ dataJob }: { dataJob: MODEL_JOB }) {
+  const [data, setData] = useState(dataJob);
+
   return (
     <>
       <Stack>
         <ComponentGlobal_BoxInformation
-          informasi={dataJob.catatan}
+          informasi={data.catatan}
           isReport={true}
         />
-        <ComponentJob_DetailData data={dataJob} />
-        <ButtonAction jobId={dataJob.id} />
+        <ComponentJob_DetailData data={data} />
+        <ButtonAction jobId={data.id} imageId={data.imageId} />
       </Stack>
     </>
   );
 }
 
-function ButtonAction({ jobId }: { jobId: string }) {
+function ButtonAction({ jobId, imageId }: { jobId: string; imageId: string }) {
   const router = useRouter();
-  const [status, setStatus] = useAtom(gs_job_status);
   const [opened, { open, close }] = useDisclosure();
+  const [isLoadingDelete, setLoadingDelete] = useState(false);
 
   async function onEditKembali() {
     await Job_funEditStatusByStatusId(jobId, "3").then((res) => {
       if (res.status === 200) {
-        router.push(RouterJob.status);
-        setStatus("Draft");
+        router.replace(RouterJob.status({ id: "3" }));
         ComponentGlobal_NotifikasiBerhasil("Masuk Draft");
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
@@ -49,15 +51,23 @@ function ButtonAction({ jobId }: { jobId: string }) {
   }
 
   async function onDelete() {
-    await Job_funDeleteById(jobId).then((res) => {
-      if (res.status === 200) {
-        router.push(RouterJob.status);
-        setStatus("Reject");
-        ComponentGlobal_NotifikasiBerhasil("Berhasil Hapus Job");
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
+    const res = await Job_funDeleteById(jobId);
+    if (res.status === 200) {
+      setLoadingDelete(true);
+
+      if (imageId) {
+        const delFile = await funGlobal_DeleteFileById({ fileId: imageId });
+        if (!delFile.success) {
+          ComponentGlobal_NotifikasiPeringatan("Gagal hapus gambar lama");
+        }
       }
-    });
+
+      router.replace(RouterJob.status({ id: "4" }));
+      ComponentGlobal_NotifikasiBerhasil("Berhasil Hapus Job");
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+      setLoadingDelete(false);
+    }
   }
 
   return (
@@ -78,6 +88,8 @@ function ButtonAction({ jobId }: { jobId: string }) {
         }
         buttonKanan={
           <Button
+            loading={isLoadingDelete}
+            loaderPosition="center"
             radius={"xl"}
             color="red"
             onClick={() => {
@@ -88,44 +100,6 @@ function ButtonAction({ jobId }: { jobId: string }) {
           </Button>
         }
       />
-
-      {/* <Modal
-        opened={opened}
-        onClose={close}
-        centered
-        withCloseButton={false}
-        styles={{
-          content: {
-            backgroundColor: MainColor.darkblue,
-            border: `2px solid ${AccentColor.blue}`,
-          },
-        }}
-      >
-        <Stack>
-          <Title order={6} c={"white"} align="center">
-            Yakin ingin menghapus ini ?
-          </Title>
-          <Group position="center">
-            <Button
-              radius={"xl"}
-              onClick={() => {
-                close();
-              }}
-            >
-              Batal
-            </Button>
-            <Button
-              radius={"xl"}
-              color="red"
-              onClick={() => {
-                onDelete();
-              }}
-            >
-              Hapus
-            </Button>
-          </Group>
-        </Stack>
-      </Modal> */}
 
       <Group grow my={"xl"}>
         <Button
