@@ -1,10 +1,13 @@
 "use client";
 
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
 import {
   Box,
   Button,
@@ -24,17 +27,13 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Vote_funCreate } from "../fun/create/create_vote";
-import { gs_vote_hotMenu, gs_vote_status } from "../global_state";
+import { gs_vote_hotMenu } from "../global_state";
 import { MODEL_VOTING } from "../model/interface";
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
-import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
-import mqtt_client from "@/util/mqtt_client";
 
 export default function Vote_Create() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [hotMenu, setHotMenu] = useAtom(gs_vote_hotMenu);
-  const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
 
   const [data, setData] = useState({
     title: "",
@@ -209,14 +208,7 @@ export default function Vote_Create() {
           mt={"lg"}
           radius={"xl"}
           onClick={() => {
-            onSave(
-              router,
-              setHotMenu,
-              setTabsStatus,
-              data as any,
-              listVote,
-              setIsLoading
-            );
+            onSave(router, setHotMenu, data as any, listVote, setIsLoading);
           }}
           c={"black"}
           bg={MainColor.yellow}
@@ -235,7 +227,6 @@ export default function Vote_Create() {
 async function onSave(
   router: AppRouterInstance,
   setHotMenu: any,
-  setTabsStatus: any,
   data: MODEL_VOTING,
   listVote: any[],
   setIsLoading: any
@@ -278,10 +269,9 @@ async function onSave(
           count: 1,
         })
       );
-      
+
       setHotMenu(2);
-      setTabsStatus("Review");
-      router.replace(RouterVote.status);
+      router.replace(RouterVote.status({ id: "2" }));
       ComponentGlobal_NotifikasiBerhasil(res.message);
       setIsLoading(true);
     }

@@ -28,7 +28,7 @@ export default function Vote_RiwayatSaya({
         // --- Main component --- //
         <Box>
           <ScrollOnly
-            height="75vh"
+            height="76vh"
             renderLoading={() => (
               <Center mt={"lg"}>
                 <Loader color={"yellow"} />

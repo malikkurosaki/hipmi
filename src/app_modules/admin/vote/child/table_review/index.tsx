@@ -336,6 +336,7 @@ async function onReject(
 
   const res = await AdminEvent_funEditCatatanById(data as any);
   if (res.status === 200) {
+    setSaveLoading(true);
     const dataNotif = {
       appId: res.data?.id,
       status: res.data?.Voting_Status?.name as any,
@@ -358,7 +359,7 @@ async function onReject(
 
     await AdminVote_getListTableByStatusId("2").then((val) => {
       setData(val);
-      setSaveLoading(true);
+      setSaveLoading(false);
       ComponentGlobal_NotifikasiBerhasil(res.message);
       close();
     });

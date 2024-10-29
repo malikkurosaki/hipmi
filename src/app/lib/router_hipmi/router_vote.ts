@@ -2,9 +2,15 @@ export const RouterVote = {
   // main
   splash: "/dev/vote/splash",
   beranda: "/dev/vote/main/beranda",
-  status: "/dev/vote/main/status",
+  status: ({ id }: { id?: string }) => `/dev/vote/main/status/${id}`,
   kontribusi: "/dev/vote/main/kontribusi",
-  riwayat: "/dev/vote/main/riwayat",
+
+  /**
+   *
+   * @param riwayatId | 1 & 2 | 1: Semua, 2: Saya
+   * @type string
+   */
+  riwayat: ({ id }: { id?: string }) => `/dev/vote/main/riwayat/${id}`,
 
   // create
   create: "/dev/vote/create",

@@ -22,7 +22,6 @@ export default function Event_Riwayat({
   dataRiwayatSaya?: MODEL_EVENT[];
 }) {
   const router = useRouter();
-  // const [tabsRiwayat, setTabsRiwayat] = useAtom(gs_event_riwayat)
   const [changeStatus, setChangeStatus] = useState(statusId);
 
   const listTabs = [

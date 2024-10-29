@@ -7,30 +7,41 @@ import Vote_RiwayatSaya from "./saya";
 import { useAtom } from "jotai";
 import { gs_vote_riwayat } from "../../global_state";
 import { MODEL_VOTING } from "../../model/interface";
-import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import { useRouter } from "next/navigation";
+import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
 
 export default function Vote_Riwayat({
+  riwayatId,
   listRiwayat,
   listRiwayatSaya,
 }: {
-  listRiwayat: MODEL_VOTING[];
-  listRiwayatSaya: MODEL_VOTING[];
+  riwayatId: string;
+  listRiwayat?: MODEL_VOTING[];
+  listRiwayatSaya?: MODEL_VOTING[];
 }) {
-  const [tabsRiwayat, setTabsRiwayat] = useAtom(gs_vote_riwayat);
+  const router = useRouter();
+  const [changeStatus, setChangeStatus] = useState(riwayatId);
+
   const listTabs = [
     {
-      id: 1,
-      path: <Vote_SemuaRiwayat listRiwayat={listRiwayat} />,
+      id: "1",
       value: "Semua",
       label: "Semua Riwayat",
     },
     {
-      id: 2,
-      path: <Vote_RiwayatSaya listRiwayatSaya={listRiwayatSaya} />,
+      id: "2",
       value: "Saya",
       label: "Riwayat Saya",
     },
   ];
+
+  async function onChangeStatus({ statusId }: { statusId: string }) {
+    router.push(RouterVote.riwayat({ id: statusId }));
+  }
 
   return (
     <>
@@ -38,9 +49,11 @@ export default function Vote_Riwayat({
         mt={1}
         variant="pills"
         radius={"xl"}
-        defaultValue={"Semua"}
-        value={tabsRiwayat}
-        onTabChange={setTabsRiwayat}
+        value={changeStatus}
+        onTabChange={(val: any) => {
+          setChangeStatus(val);
+          onChangeStatus({ statusId: val });
+        }}
         styles={{
           tabsList: {
             backgroundColor: MainColor.darkblue,
@@ -58,15 +71,15 @@ export default function Vote_Riwayat({
             {listTabs.map((e, i) => (
               <Tabs.Tab
                 key={i}
-                value={e.value}
+                value={e.id}
                 fw={"bold"}
                 c={"black"}
                 style={{
                   transition: "0.5s",
                   backgroundColor:
-                    tabsRiwayat === e.value ? MainColor.yellow : "white",
+                    changeStatus === e.id ? MainColor.yellow : "white",
                   border:
-                    tabsRiwayat === e.value
+                    changeStatus === e.id
                       ? `1px solid ${AccentColor.yellow}`
                       : `1px solid white`,
                 }}
@@ -75,11 +88,14 @@ export default function Vote_Riwayat({
               </Tabs.Tab>
             ))}
           </Tabs.List>
-          {listTabs.map((e) => (
-            <Tabs.Panel key={e.id} value={e.value}>
-              {e.path}
-            </Tabs.Panel>
-          ))}
+
+          {riwayatId === "1" && (
+            <Vote_SemuaRiwayat listRiwayat={listRiwayat as any} />
+          )}
+
+          {riwayatId === "2" && (
+            <Vote_RiwayatSaya listRiwayatSaya={listRiwayatSaya as any} />
+          )}
         </Stack>
       </Tabs>
     </>

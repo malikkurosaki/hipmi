@@ -12,6 +12,7 @@ import { Button, Group, Stack } from "@mantine/core";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Event_ComponentSkeletonDetailData } from "../../component";
 import ComponentEvent_DetailData from "../../component/detail/detail_data";
 import { Event_funDeleteById } from "../../fun/delete/fun_delete";
 import { Event_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
@@ -19,19 +20,29 @@ import { MODEL_EVENT } from "../../model/interface";
 
 export default function Event_DetailDraft({
   dataEvent,
+  eventId,
 }: {
   dataEvent: MODEL_EVENT;
+  eventId: string;
 }) {
-  const [data, setData] = useState(dataEvent);
+  const [data, setData] = useState<MODEL_EVENT | null>(dataEvent);
+
+  console.log(data, "ini data dipage");
+
+  if (!data) {
+    return (
+      <>
+        <Event_ComponentSkeletonDetailData />
+      </>
+    );
+  }
+
   return (
     <>
       {/* <pre>{JSON.stringify(dataEvent.tanggal)}</pre> */}
       <Stack spacing={"lg"}>
-        {dataEvent?.catatan ? (
-          <ComponentGlobal_BoxInformation
-            isReport
-            informasi={dataEvent?.catatan}
-          />
+        {data?.catatan ? (
+          <ComponentGlobal_BoxInformation isReport informasi={data?.catatan} />
         ) : (
           ""
         )}

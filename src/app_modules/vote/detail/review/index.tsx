@@ -1,18 +1,17 @@
 "use client";
 
+import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
 import { Button, Stack } from "@mantine/core";
-import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentVote_DetailDataSebelumPublish from "../../component/detail/detail_data_sebelum_publish";
 import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_id";
-import { gs_vote_status } from "../../global_state";
 import { MODEL_VOTING } from "../../model/interface";
-import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
-import mqtt_client from "@/util/mqtt_client";
-import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 
 export default function Vote_DetailReview({
   dataVote,
@@ -32,7 +31,6 @@ export default function Vote_DetailReview({
 function ButtonAction({ voteId }: { voteId: string }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
   const [openModal, setOpenModal] = useState(false);
 
   async function onUpdate() {
@@ -58,9 +56,9 @@ function ButtonAction({ voteId }: { voteId: string }) {
             count: 1,
           })
         );
-        setTabsStatus("Draft");
+
         ComponentGlobal_NotifikasiBerhasil("Berhasil Batalkan Review", 2000);
-        router.back();
+        router.replace(RouterVote.status({ id: "3" }));
         setIsLoading(true);
       }
     } else {
