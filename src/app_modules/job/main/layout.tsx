@@ -33,7 +33,7 @@ export default function LayoutJob_Main({
     {
       id: 2,
       name: "Status",
-      path: RouterJob.status,
+      path: RouterJob.status({ id: "1" }),
       icon: <IconReservedLine />,
     },
     {

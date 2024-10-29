@@ -17,6 +17,7 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { gs_event_hotMenu } from "../global_state";
+import { IconReservedLine } from "@tabler/icons-react";
 
 export default function LayoutEvent_Main({
   children,
@@ -38,7 +39,7 @@ export default function LayoutEvent_Main({
       id: "2",
       name: "Status",
       path: RouterEvent.status({ id: "1" }),
-      icon: <IconTimelineEventText />,
+      icon: <IconReservedLine />,
     },
     {
       id: "3",

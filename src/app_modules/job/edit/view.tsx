@@ -22,6 +22,8 @@ import {
 import {
   ComponentGlobal_BoxUploadImage,
   ComponentGlobal_CardStyles,
+  ComponentGlobal_LoadImage,
+  ComponentGlobal_LoadImageCustom,
 } from "@/app_modules/_global/component";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 import dynamic from "next/dynamic";
@@ -39,7 +41,6 @@ const ReactQuill = dynamic(
 
 export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
   const [value, setValue] = useState(dataJob);
-  const [reload, setReload] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [img, setImg] = useState<any | null>();
 
@@ -52,15 +53,17 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
       <Stack>
         <Stack spacing={"xs"}>
           <ComponentGlobal_BoxUploadImage>
-            {value.imageId ? (
-              <AspectRatio ratio={1 / 1} mah={265} mx={"auto"}>
+            {img ? (
+              <AspectRatio ratio={1 / 1} mt={5} maw={300} mx={"auto"}>
                 <Image
-                  style={{ maxHeight: 250, margin: "auto", padding: "5px" }}
+                  style={{ maxHeight: 250 }}
                   alt="Foto"
                   height={250}
-                  src={img ? img : APIs.GET({ fileId: value.imageId })}
+                  src={img}
                 />
               </AspectRatio>
+            ) : value.imageId ? (
+              <ComponentGlobal_LoadImage fileId={value.imageId} />
             ) : (
               <Stack justify="center" align="center" h={"100%"}>
                 <IconUpload color="white" />

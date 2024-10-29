@@ -11,7 +11,7 @@ export function redirectJobPage({
   router: AppRouterInstance;
   onSetPage: (val: any) => void;
 }) {
-  const path = RouterJob.status;
+  const path = RouterJob.status({id: "1"});
 
   if (data.status === "Publish") {
     onSetPage({

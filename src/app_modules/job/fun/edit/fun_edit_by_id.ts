@@ -24,7 +24,7 @@ export async function job_EditById({
       },
     });
     if (!updt) return { status: 400, message: "Gagal Update" };
-    revalidatePath(RouterJob.status);
+    revalidatePath("/dev/job/detail/draft");
 
     return {
       status: 200,
@@ -43,7 +43,7 @@ export async function job_EditById({
       },
     });
     if (!updtWithFile) return { status: 400, message: "Gagal Update" };
-    revalidatePath(RouterJob.status);
+    revalidatePath("/dev/job/detail/draft");
 
     return {
       status: 200,

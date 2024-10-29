@@ -61,7 +61,7 @@ function Job_ComponentButtonSaveCreate({
           );
           setHotMenu(2);
           setStatus("Review");
-          router.replace(RouterJob.status);
+          router.replace(RouterJob.status({ id: "2" }));
           setIsLoading(true);
           ComponentGlobal_NotifikasiBerhasil(createNoFile.message);
         }
@@ -105,7 +105,7 @@ function Job_ComponentButtonSaveCreate({
           );
           setHotMenu(2);
           setStatus("Review");
-          router.replace(RouterJob.status);
+          router.replace(RouterJob.status({ id: "2" }));
           setIsLoading(true);
           ComponentGlobal_NotifikasiBerhasil(createWithFile.message);
         }

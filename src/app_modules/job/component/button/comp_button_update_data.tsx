@@ -12,7 +12,10 @@ import { useState } from "react";
 import { job_EditById } from "../../fun/edit/fun_edit_by_id";
 import { gs_job_hot_menu, gs_job_status } from "../../global_state";
 import { MODEL_JOB } from "../../model/interface";
-import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
+import {
+  funGlobal_DeleteFileById,
+  funGlobal_UploadToStorage,
+} from "@/app_modules/_global/fun";
 import { DIRECTORY_ID } from "@/app/lib";
 
 export function Job_ComponentButtonUpdateData({
@@ -26,7 +29,6 @@ export function Job_ComponentButtonUpdateData({
   const [isLoading, setIsLoading] = useState(false);
 
   const [hotMenu, setHotMenu] = useAtom(gs_job_hot_menu);
-  const [status, setStatus] = useAtom(gs_job_status);
   const [opened, { open, close }] = useDisclosure(false);
   const [scroll, scrollTo] = useWindowScroll();
 
@@ -44,7 +46,13 @@ export function Job_ComponentButtonUpdateData({
       });
 
       if (!uploadFile.success)
-        return ComponentGlobal_NotifikasiPeringatan("Gagal upload gambar");
+         return ComponentGlobal_NotifikasiPeringatan("Gagal upload gambar");
+
+      const delFile = await funGlobal_DeleteFileById({
+        fileId: value.imageId,
+      });
+      if (!delFile.success)
+        ComponentGlobal_NotifikasiPeringatan("Gagal hapus gambar lama");
 
       const updateWithFile = await job_EditById({
         data: value,
@@ -55,7 +63,6 @@ export function Job_ComponentButtonUpdateData({
     }
 
     setHotMenu(2);
-    setStatus("Draft");
     setIsLoading(true);
     router.back();
     return ComponentGlobal_NotifikasiBerhasil("Berhasil Update");

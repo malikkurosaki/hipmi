@@ -1,20 +1,18 @@
 "use client";
 
-import { Button, Card, Image, Skeleton, Stack, Text } from "@mantine/core";
-import ComponentJob_DetailData from "../../component/detail/detail_data";
-import { useRouter } from "next/navigation";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import { useAtom } from "jotai";
-import { gs_job_status } from "../../global_state";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { MODEL_JOB } from "../../model/interface";
-import { Job_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_status_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import mqtt_client from "@/util/mqtt_client";
-import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
+import { Button, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import ComponentJob_DetailData from "../../component/detail/detail_data";
+import { Job_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_status_id";
+import { MODEL_JOB } from "../../model/interface";
 
 export default function Job_DetailReview({ dataJob }: { dataJob: MODEL_JOB }) {
   return (
@@ -29,13 +27,14 @@ export default function Job_DetailReview({ dataJob }: { dataJob: MODEL_JOB }) {
 
 function ButtonAction({ jobId }: { jobId: string }) {
   const router = useRouter();
-  const [status, setStatus] = useAtom(gs_job_status);
-  const [opened, { open, close }] = useDisclosure();
   const [isOpen, setOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   async function onAction() {
     const update = await Job_funEditStatusByStatusId(jobId, "3");
     if (update.status === 200) {
+      setLoading(true);
+
       const dataNotif = {
         appId: update.data?.id as any,
         kategoriApp: "JOB",
@@ -53,11 +52,13 @@ function ButtonAction({ jobId }: { jobId: string }) {
         mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
       }
 
-      setStatus("Draft");
       ComponentGlobal_NotifikasiBerhasil("Berhasil Dibatalkan");
-      router.push(RouterJob.status);
+      router.replace(RouterJob.status({ id: "3" }));
+
+      setLoading(false);
     } else {
       ComponentGlobal_NotifikasiGagal(update.message);
+      setLoading(false);
     }
   }
   return (
@@ -78,6 +79,8 @@ function ButtonAction({ jobId }: { jobId: string }) {
         }
         buttonKanan={
           <Button
+            loaderPosition="center"
+            loading={isLoading}
             radius={"xl"}
             color="orange"
             onClick={() => {

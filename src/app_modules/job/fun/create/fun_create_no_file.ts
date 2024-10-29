@@ -28,7 +28,7 @@ export async function job_funCreateNoFile({ data }: { data: MODEL_JOB }) {
   });
 
   if (!createNoImage) return { status: 400, message: "Gagal Disimpan" };
-  revalidatePath("/dev/job/main/status");
+  revalidatePath("/dev/job/main/status/2");
   return {
     status: 201,
     message: "Berhasil Disimpan",
