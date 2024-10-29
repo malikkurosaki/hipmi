@@ -200,6 +200,7 @@ export default function Event_Edit({
           onClick={() => onUpdate(router, value, setLoading)}
           bg={MainColor.yellow}
           color="yellow"
+          c={"black"}
         >
           Update
         </Button>
@@ -216,13 +217,14 @@ async function onUpdate(
   if (_.values(value).includes(""))
     return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
 
-  await Event_funEditById(value).then((res) => {
-    if (res.status === 200) {
-      ComponentGlobal_NotifikasiBerhasil(res.message);
-      setLoading(true);
-      router.back();
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
-    }
-  });
+  const res = await Event_funEditById(value);
+  setLoading(true);
+
+  if (res.status === 200) {
+    ComponentGlobal_NotifikasiBerhasil(res.message);
+    router.back();
+    setLoading(false);
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }

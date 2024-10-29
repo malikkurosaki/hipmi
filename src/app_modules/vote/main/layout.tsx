@@ -37,7 +37,7 @@ export default function LayoutVote_Main({
     {
       id: 2,
       name: "Status",
-      path: RouterVote.status,
+      path: RouterVote.status({ id: "1" }),
       icon: <IconReservedLine />,
     },
     {
@@ -49,7 +49,7 @@ export default function LayoutVote_Main({
     {
       id: 4,
       name: "Riwayat",
-      path: RouterVote.riwayat,
+      path: RouterVote.riwayat({ id: "1" }),
       icon: <IconHistory />,
     },
   ];
@@ -91,7 +91,6 @@ export default function LayoutVote_Main({
           </SimpleGrid>
         }
       >
-       
         {children}
       </UIGlobal_LayoutTamplate>
     </>

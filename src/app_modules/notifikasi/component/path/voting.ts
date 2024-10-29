@@ -11,7 +11,7 @@ export function redirectVotingPage({
   router: AppRouterInstance;
   onSetPage: (val: any) => void;
 }) {
-  const path = RouterVote.status;
+  const path = RouterVote.status({ id: "" });
 
   if (data.status === "Publish") {
     onSetPage({

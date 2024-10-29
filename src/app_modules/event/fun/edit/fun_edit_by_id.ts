@@ -20,7 +20,7 @@ export async function Event_funEditById(data: MODEL_EVENT) {
   });
 
   if (!updt) return { status: 400, message: "Update Gagal" };
-  revalidatePath(RouterEvent.detail_draft + data.id);
+  revalidatePath(`/dev/event/detail/draft/`, "page");
   return {
     status: 200,
     message: "Berhasil Update",

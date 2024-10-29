@@ -3,7 +3,7 @@
 import { prisma } from "@/app/lib";
 import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
-export async function event_getAllByStatusId({
+export async function vote_funGetAllByStatusId({
   page,
   statusId,
 }: {
@@ -16,46 +16,41 @@ export async function event_getAllByStatusId({
   const skipData = page * takeData - takeData;
 
   if (statusId == "1") {
-    const data = await prisma.event.findMany({
+    const data = await prisma.voting.findMany({
       take: takeData,
       skip: skipData,
       orderBy: {
         updatedAt: "desc",
       },
       where: {
-        active: true,
-        eventMaster_StatusId: "1",
+        voting_StatusId: "1",
         authorId: userLoginId,
-        tanggal: {
+        isActive: true,
+        akhirVote: {
           gte: new Date(),
         },
       },
-      select: {
-        id: true,
-        title: true,
-        deskripsi: true,
-        tanggal: true,
+      include: {
+        Voting_DaftarNamaVote: {
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
       },
     });
 
     return data;
   } else {
-    const data = await prisma.event.findMany({
+    const data = await prisma.voting.findMany({
       take: takeData,
       skip: skipData,
       orderBy: {
         updatedAt: "desc",
       },
       where: {
-        active: true,
-        eventMaster_StatusId: statusId,
+        voting_StatusId: statusId,
         authorId: userLoginId,
-      },
-      select: {
-        id: true,
-        title: true,
-        deskripsi: true,
-        tanggal: true,
+        isActive: true,
       },
     });
 

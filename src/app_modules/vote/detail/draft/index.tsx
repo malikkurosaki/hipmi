@@ -1,42 +1,39 @@
 "use client";
 
+import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
 import { Button, SimpleGrid, Stack } from "@mantine/core";
-import { useAtom } from "jotai";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentVote_DetailDataSebelumPublish from "../../component/detail/detail_data_sebelum_publish";
 import { Vote_funDeleteById } from "../../fun/delete/fun_delete_by_id";
 import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_id";
-import { gs_vote_status } from "../../global_state";
 import { MODEL_VOTING } from "../../model/interface";
-import mqtt_client from "@/util/mqtt_client";
-import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 
 export default function Vote_DetailDraft({
   dataVote,
 }: {
   dataVote: MODEL_VOTING;
 }) {
+  const [data, setData] = useState(dataVote);
   return (
     <>
       <Stack spacing={"xl"}>
         {dataVote?.catatan ? (
-          <ComponentGlobal_BoxInformation
-            isReport
-            informasi={dataVote?.catatan}
-          />
+          <ComponentGlobal_BoxInformation isReport informasi={data?.catatan} />
         ) : (
           ""
         )}
-        <ComponentVote_DetailDataSebelumPublish data={dataVote} />
-        <ButtonAction voteId={dataVote.id} awalVote={dataVote.awalVote} />
+        <ComponentVote_DetailDataSebelumPublish data={data} />
+        <ButtonAction voteId={data.id} awalVote={data.awalVote} />
       </Stack>
     </>
   );
@@ -50,7 +47,6 @@ function ButtonAction({
   awalVote: Date;
 }) {
   const router = useRouter();
-  const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
   const [openModal1, setOpenModal1] = useState(false);
   const [openModal2, setOpenModal2] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -84,10 +80,10 @@ function ButtonAction({
             count: 1,
           })
         );
-        setTabsStatus("Review");
+
         ComponentGlobal_NotifikasiBerhasil("Berhasil Ajukan Review", 2000);
         setIsLoading(true);
-        router.back();
+        router.replace(RouterVote.status({ id: "2" }));
       }
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);
@@ -97,9 +93,9 @@ function ButtonAction({
   async function onDelete() {
     await Vote_funDeleteById(voteId).then((res) => {
       if (res.status === 200) {
-        setTabsStatus("Draft");
+        setOpenModal2(false);
         ComponentGlobal_NotifikasiBerhasil("Berhasil Hapus Vote", 2000);
-        router.back();
+        router.replace(RouterVote.status({ id: "3" }));
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
       }

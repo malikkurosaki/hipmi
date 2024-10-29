@@ -26,7 +26,7 @@ export default function Vote_SemuaRiwayat({
         // --- Main component --- //
         <Box>
           <ScrollOnly
-            height="75vh"
+            height="76vh"
             renderLoading={() => (
               <Center mt={"lg"}>
                 <Loader color={"yellow"} />

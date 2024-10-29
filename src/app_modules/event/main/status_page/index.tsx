@@ -27,7 +27,7 @@ export default function Event_StatusPage({
   const [changeStatus, setChangeStatus] = useState(statusId);
 
   async function onChangeStatus({ statusId }: { statusId: string }) {
-    router.push(RouterEvent.status({ id: statusId }));
+    router.replace(RouterEvent.status({ id: statusId }));
   }
 
   return (
@@ -36,7 +36,6 @@ export default function Event_StatusPage({
         variant="pills"
         radius="xl"
         mt={1}
-        // defaultValue={"1"}
         value={changeStatus}
         onTabChange={(val: any) => {
           setChangeStatus(val);

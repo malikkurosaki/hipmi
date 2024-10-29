@@ -1,10 +1,8 @@
-import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { Event_StatusPage } from "@/app_modules/event";
 import {
-  event_getAllByStatusId,
-  event_getMasterStatus,
+    event_getAllByStatusId,
+    event_getMasterStatus,
 } from "@/app_modules/event/fun";
-import React from "react";
 
 async function Page({ params }: { params: { id: string } }) {
   let statusId = params.id;
