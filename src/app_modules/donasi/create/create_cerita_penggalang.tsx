@@ -6,9 +6,7 @@ import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import { ComponentGlobal_BoxUploadImage } from "@/app_modules/_global/component";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
-import {
-  funGlobal_UploadToStorage
-} from "@/app_modules/_global/fun";
+import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
@@ -43,10 +41,6 @@ export default function CreateCeritaPenggalangDonasi({
 }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
-
-  const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
-    gs_donasi_tabs_posting
-  );
   const [donasiHotMenu, setDonasiHotMenu] = useAtom(gs_donasi_hot_menu);
 
   const [data, setData] = useState({
@@ -116,10 +110,11 @@ export default function CreateCeritaPenggalangDonasi({
               count: 1,
             })
           );
-          setTabsPostingDonasi("Review");
           setDonasiHotMenu(1);
           ComponentGlobal_NotifikasiBerhasil(res.message);
-          router.push(RouterDonasi.main_galang_dana, { scroll: false });
+          router.push(RouterDonasi.status_galang_dana({ id: "2" }), {
+            scroll: false,
+          });
         }
         setLoading(false);
       } else {

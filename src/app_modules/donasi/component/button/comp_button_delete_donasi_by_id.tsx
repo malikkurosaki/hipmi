@@ -48,7 +48,7 @@ export function Donasi_ComponentButtonDeleteDonasiById({
         ComponentGlobal_NotifikasiPeringatan("Gagal hapus gambar ");
       }
 
-      router.push(RouterDonasi.main_galang_dana);
+      router.replace(RouterDonasi.status_galang_dana({ id: "3" }));
       setTabsPostingDonasi("Draft");
       ComponentGlobal_NotifikasiBerhasil(del.message);
     } else {

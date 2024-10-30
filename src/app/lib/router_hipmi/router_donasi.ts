@@ -9,7 +9,7 @@ export const RouterDonasi = {
 
   //main
   main_beranda: "/dev/donasi/main/beranda",
-  main_galang_dana: "/dev/donasi/main/galang_dana",
+  status_galang_dana: ({ id }: { id: string }) => `/dev/donasi/main/galang_dana/${id}`,
   main_donasi_saya: "/dev/donasi/main/donasi_saya",
 
   // create
