@@ -27,7 +27,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
-import _ from "lodash";
+import _, { set } from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Donasi_funUpdateDonasi } from "../../fun/update/fun_update_donasi";
@@ -49,6 +49,7 @@ export default function EditDonasi({
   const [durasi, setDurasi] = useState(masterDurasi);
   const [file, setFile] = useState<File | null>(null);
   const [updateImage, setUpdateImage] = useState<any | null>();
+  const [newTarget, setNewTarget] = useState("");
 
   async function onUpdate() {
     setLoading(true);
@@ -114,7 +115,7 @@ export default function EditDonasi({
 
   return (
     <>
-      <Stack spacing={"md"} px={"md"}>
+      <Stack spacing={"md"} px={"sm"}>
         <Select
           styles={{
             label: {
@@ -218,7 +219,7 @@ export default function EditDonasi({
               })
             }
           />
-          
+
           <TextInput
             styles={{
               label: {
@@ -230,7 +231,7 @@ export default function EditDonasi({
             withAsterisk
             label="Target Dana"
             placeholder="0"
-            value={data.target}
+            value={newTarget ? newTarget : data.target}
             error={
               data.target === "" || data.target === "0" ? (
                 <ComponentGlobal_ErrorInput text="Masukan target dana" />
@@ -243,19 +244,24 @@ export default function EditDonasi({
                 .replace(/\./g, "")
                 .match(/^[0-9]+$/);
 
-              if (val.currentTarget.value === "")
-                return setData({
+              if (val.currentTarget.value === "") {
+                setData({
                   ...data,
                   target: 0 + "",
                 });
+                setNewTarget("0");
+              }
+
               if (!match?.[0]) return null;
 
               const nilai = val.currentTarget.value.replace(/\./g, "");
               const target = Intl.NumberFormat("id-ID").format(+nilai);
 
+              setNewTarget(target);
+
               setData({
                 ...data,
-                target: target,
+                target: nilai,
               });
             }}
           />
@@ -294,6 +300,7 @@ export default function EditDonasi({
           radius={"xl"}
           onClick={() => {
             onUpdate();
+            // console.log(data);
           }}
           bg={MainColor.yellow}
           color="yellow"

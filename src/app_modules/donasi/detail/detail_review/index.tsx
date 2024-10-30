@@ -14,6 +14,7 @@ import { gs_donasi_tabs_posting } from "../../global_state";
 import { MODEL_DONASI } from "../../model/interface";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import mqtt_client from "@/util/mqtt_client";
+import { UIGlobal_Modal } from "@/app_modules/_global/ui";
 
 export default function DetailReviewDonasi({
   dataDonasi,
@@ -24,7 +25,7 @@ export default function DetailReviewDonasi({
 
   return (
     <>
-      <Stack spacing={"xl"} py={"md"}>
+      <Stack spacing={"xl"} pb={"md"}>
         <ComponentDonasi_DetailDataGalangDana donasi={donasi} />
         <ComponentDonasi_CeritaPenggalangMain donasi={donasi} />
         <ButtonBatalReview donasi={donasi} />
@@ -35,11 +36,9 @@ export default function DetailReviewDonasi({
 function ButtonBatalReview({ donasi }: { donasi: MODEL_DONASI }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
-  const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
-    gs_donasi_tabs_posting
-  );
+  const [openModal, setOpenModal] = useState(false);
 
-  async function onCLick() {
+  async function onChangeStatus() {
     const res = await Donasi_funGantiStatus(donasi.id, "3");
     if (res.status === 200) {
       const dataNotif = {
@@ -50,7 +49,7 @@ function ButtonBatalReview({ donasi }: { donasi: MODEL_DONASI }) {
         kategoriApp: "DONASI",
         title: "Membatalkan review",
       };
-      
+
       const notif = await notifikasiToAdmin_funCreate({
         data: dataNotif as any,
       });
@@ -58,10 +57,9 @@ function ButtonBatalReview({ donasi }: { donasi: MODEL_DONASI }) {
       if (notif.status === 201) {
         mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
 
-        setTabsPostingDonasi("Draft");
         ComponentGlobal_NotifikasiBerhasil("Berhasil Dibatalkan");
         setLoading(true);
-        router.push(RouterDonasi.main_galang_dana);
+        router.push(RouterDonasi.status_galang_dana({ id: "3" }));
       }
     } else {
       ComponentGlobal_NotifikasiPeringatan(res.message);
@@ -70,18 +68,41 @@ function ButtonBatalReview({ donasi }: { donasi: MODEL_DONASI }) {
   return (
     <>
       <Button
+        mt={"lg"}
         style={{
           transition: "0.5s",
         }}
-        loaderPosition="center"
-        loading={isLoading ? true : false}
         radius={"xl"}
         bg={"orange"}
         color="orange"
-        onClick={() => onCLick()}
+        onClick={() => setOpenModal(true)}
       >
         Batalkan Review
       </Button>
+
+      <UIGlobal_Modal
+        title={"Anda yakin ingin batalkan review ?"}
+        opened={openModal}
+        close={() => setOpenModal(false)}
+        buttonKiri={
+          <Button radius={"xl"} onClick={() => setOpenModal(false)}>
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            loaderPosition="center"
+            loading={isLoading ? true : false}
+            radius={"xl"}
+            color="orange"
+            onClick={() => {
+              onChangeStatus();
+            }}
+          >
+            Simpan
+          </Button>
+        }
+      />
     </>
   );
 }

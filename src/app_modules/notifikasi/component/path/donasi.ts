@@ -12,7 +12,7 @@ export function redirectDonasiPage({
   router: AppRouterInstance;
   onSetPage: (val: any) => void;
 }) {
-  const path = RouterDonasi.main_galang_dana;
+  const path = RouterDonasi.status_galang_dana({ id: "" });
 
   if (data.status === "Publish") {
     onSetPage({
@@ -21,7 +21,6 @@ export function redirectDonasiPage({
     });
     router.push(path, { scroll: false });
   }
-  //   console.log(data)
 
   if (data.status === "Reject") {
     onSetPage({
@@ -52,8 +51,8 @@ export function redirectDonasiPage({
     router.push(pathKabar, { scroll: false });
   }
 
-   if (data.status === "Pencairan Dana") {
-     const pathPencairan = RouterDonasi.pencairan_dana + data.appId;
-     router.push(pathPencairan, { scroll: false });
-   }
+  if (data.status === "Pencairan Dana") {
+    const pathPencairan = RouterDonasi.pencairan_dana + data.appId;
+    router.push(pathPencairan, { scroll: false });
+  }
 }

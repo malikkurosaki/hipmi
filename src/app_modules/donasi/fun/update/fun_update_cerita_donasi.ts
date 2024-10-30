@@ -36,7 +36,7 @@ export async function Donasi_funUpdateCerita({
   });
 
   if (!update) return { status: 400, message: "Gagal update cerita" };
-  revalidatePath(RouterDonasi.detail_draft + data.id);
+  revalidatePath(RouterDonasi.detail_draft);
 
   return {
     status: 200,

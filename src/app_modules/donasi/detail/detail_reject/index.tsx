@@ -2,23 +2,21 @@
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import { funGlobal_DeleteFileById } from "@/app_modules/_global/fun";
+import {
+  ComponentGlobal_NotifikasiBerhasil,
+  ComponentGlobal_NotifikasiGagal,
+  ComponentGlobal_NotifikasiPeringatan,
+} from "@/app_modules/_global/notif_global";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
-import { Button, Group, Paper, Spoiler, Stack, Title } from "@mantine/core";
-import { useAtom } from "jotai";
+import { Button, Group, Stack } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_dana/detail_data_donasi";
 import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
 import { Donasi_funDeleteDonasiById } from "../../fun/delete/fin_delete_donasi_by_id";
 import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
-import { gs_donasi_tabs_posting } from "../../global_state";
 import { MODEL_DONASI } from "../../model/interface";
-import {
-  ComponentGlobal_NotifikasiBerhasil,
-  ComponentGlobal_NotifikasiGagal,
-  ComponentGlobal_NotifikasiPeringatan,
-} from "@/app_modules/_global/notif_global";
-import { funGlobal_DeleteFileById } from "@/app_modules/_global/fun";
 
 export default function DetailRejectDonasi({
   dataReject,
@@ -30,7 +28,7 @@ export default function DetailRejectDonasi({
   const [data, setData] = useState(dataReject);
   return (
     <>
-      <Stack spacing={"xl"} py={"md"}>
+      <Stack spacing={"xl"} pb={"md"}>
         <ComponentGlobal_BoxInformation isReport informasi={data.catatan} />
         <ComponentDonasi_DetailDataGalangDana donasi={data} />
         <ComponentDonasi_CeritaPenggalangMain donasi={data} />
@@ -53,33 +51,35 @@ function ButtonAction({
   fileIdImageCerita: string;
   imageId: string;
 }) {
-  const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
-    gs_donasi_tabs_posting
-  );
   const router = useRouter();
-  // const [opened, { open, close }] = useDisclosure(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [openModaEdit, setOpenModalEdit] = useState(false);
+  const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [isLoadingEdit, setLoadingEdit] = useState(false);
+  const [isLoadingDelete, setLoadingDelete] = useState(false);
 
-  async function onCLick() {
+  async function onChangeStatus() {
     await Donasi_funGantiStatus(donasiId, "3").then((res) => {
       if (res.status === 200) {
+        setLoadingEdit(true);
         ComponentGlobal_NotifikasiBerhasil(res.message);
-        router.push(RouterDonasi.main_galang_dana);
+        router.replace(RouterDonasi.status_galang_dana({ id: "3" }));
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
+        setLoadingEdit(true);
       }
     });
-    setTabsPostingDonasi("Draft");
   }
   async function onDelete() {
     const del = await Donasi_funDeleteDonasiById(donasiId);
     if (del.status === 200) {
+      setLoadingDelete(true);
       const deleteImageDonasi = await funGlobal_DeleteFileById({
         fileId: imageId as any,
       });
 
       if (!deleteImageDonasi.success) {
         ComponentGlobal_NotifikasiPeringatan("Gagal hapus gambar ");
+        setLoadingDelete(false);
       }
 
       const deleteImageCerita = await funGlobal_DeleteFileById({
@@ -88,13 +88,15 @@ function ButtonAction({
 
       if (!deleteImageCerita.success) {
         ComponentGlobal_NotifikasiPeringatan("Gagal hapus gambar ");
+        setLoadingDelete(false);
       }
 
-      router.push(RouterDonasi.main_galang_dana);
-      setTabsPostingDonasi("Reject");
+      router.replace(RouterDonasi.status_galang_dana({ id: "4" }));
       ComponentGlobal_NotifikasiBerhasil(del.message);
+      setLoadingDelete(false);
     } else {
       ComponentGlobal_NotifikasiGagal(del.message);
+      setLoadingDelete(false);
     }
   }
   return (
@@ -104,31 +106,61 @@ function ButtonAction({
           radius={"xl"}
           bg={"orange"}
           color="orange"
-          onClick={() => onCLick()}
+          onClick={() => setOpenModalEdit(true)}
         >
-          Edit Donasi
+          Edit Kembali
         </Button>
         <Button
           radius={"xl"}
           bg={"red"}
           color="red"
-          onClick={() => setOpenModal(true)}
+          onClick={() => setOpenModalDelete(true)}
         >
           Hapus Donasi
         </Button>
       </Group>
 
+      {/* MODAL EDIT */}
       <UIGlobal_Modal
-        title={"Anda yakin ingin menghapus donasi ini ?"}
-        opened={openModal}
-        close={() => setOpenModal(false)}
+        title={"Anda yakin ingin mengedit donasi ini ?"}
+        opened={openModaEdit}
+        close={() => setOpenModalEdit(false)}
         buttonKiri={
-          <Button radius={"xl"} onClick={() => setOpenModal(false)}>
+          <Button radius={"xl"} onClick={() => setOpenModalEdit(false)}>
             Batal
           </Button>
         }
         buttonKanan={
-          <Button radius={"xl"} color="red" onClick={() => onDelete()}>
+          <Button
+            loaderPosition="center"
+            loading={isLoadingEdit}
+            radius={"xl"}
+            color="orange"
+            onClick={() => onChangeStatus()}
+          >
+            Edit
+          </Button>
+        }
+      />
+
+      {/* HAPUS */}
+      <UIGlobal_Modal
+        title={"Anda yakin ingin menghapus donasi ini ?"}
+        opened={openModalDelete}
+        close={() => setOpenModalDelete(false)}
+        buttonKiri={
+          <Button radius={"xl"} onClick={() => setOpenModalDelete(false)}>
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            loaderPosition="center"
+            loading={isLoadingDelete}
+            radius={"xl"}
+            color="red"
+            onClick={() => onDelete()}
+          >
             Hapus
           </Button>
         }

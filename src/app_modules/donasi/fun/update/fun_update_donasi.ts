@@ -38,7 +38,7 @@ export async function Donasi_funUpdateDonasi({
   });
 
   if (!update) return { status: 400, message: "Gagal update" };
-  revalidatePath(RouterDonasi.detail_draft + data.id);
+  revalidatePath(RouterDonasi.detail_draft);
 
   return {
     status: 200,

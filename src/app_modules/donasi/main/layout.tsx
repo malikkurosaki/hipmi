@@ -14,22 +14,16 @@ import {
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { gs_donasi_hot_menu } from "../global_state";
 
 export default function LayoutDonasi({
   children,
-  userId,
-  isRead,
 }: {
   children: React.ReactNode;
-  userId: string;
-  isRead: boolean[];
 }) {
   const router = useRouter();
   const [active, setActive] = useAtom(gs_donasi_hot_menu);
-  const [isLoading, setLoading] = useState(false);
-  const [isRightLoading, setRightLoading] = useState(false);
 
   const listFooter = [
     {
@@ -41,7 +35,7 @@ export default function LayoutDonasi({
     {
       id: 2,
       name: "Galang Dana",
-      path: RouterDonasi.main_galang_dana,
+      path: RouterDonasi.status_galang_dana({ id: "1" }),
       icon: <IconMoneybag />,
     },
     {

@@ -21,7 +21,13 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import { IconCamera, IconCircleCheck, IconUpload } from "@tabler/icons-react";
+import {
+  IconCamera,
+  IconCircleCheck,
+  IconFileTypePdf,
+  IconPdf,
+  IconUpload,
+} from "@tabler/icons-react";
 import _ from "lodash";
 import { useState } from "react";
 import { Investasi_ComponentButtonCreateNewInvestasi } from "../_component";
@@ -169,7 +175,7 @@ export default function InvestasiCreate({
             >
               {(props) => (
                 <Button
-                  leftIcon={<IconCamera />}
+                  leftIcon={<IconFileTypePdf />}
                   {...props}
                   radius={"xl"}
                   bg={MainColor.yellow}
