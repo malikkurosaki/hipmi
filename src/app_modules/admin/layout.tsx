@@ -4,10 +4,8 @@ import mqtt_client from "@/util/mqtt_client";
 import {
   ActionIcon,
   AppShell,
-  Badge,
   Box,
   Burger,
-  Card,
   Center,
   Divider,
   Drawer,
@@ -17,7 +15,6 @@ import {
   MediaQuery,
   NavLink,
   Navbar,
-  Paper,
   ScrollArea,
   Stack,
   Text,
@@ -26,15 +23,12 @@ import {
 } from "@mantine/core";
 import {
   IconBell,
-  IconCheck,
-  IconChecks,
   IconCircleDot,
   IconCircleDotFilled,
   IconUserSquareRounded,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import _ from "lodash";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { MODEL_USER } from "../home/model/interface";
@@ -46,15 +40,9 @@ import {
   gs_layout_admin_isNavbarOpen,
 } from "./global_state";
 import { listAdminPage } from "./list_page";
-import adminNotifikasi_countNotifikasi from "./notifikasi/fun/count/count_is_read";
 import adminNotifikasi_getByUserId from "./notifikasi/fun/get/get_notifikasi_by_user_id";
-import adminNotifikasi_funUpdateIsReadById from "./notifikasi/fun/update/fun_update_is_read_by_id";
-import adminNotifikasi_findRouterJob from "./notifikasi/route_setting/job";
-import adminNotifikasi_findRouterForum from "./notifikasi/route_setting/forum";
-import { adminNotifikasi_findRouterVoting } from "./notifikasi/route_setting/voting";
-import { adminNotifikasi_findRouterEvent } from "./notifikasi/route_setting/event";
-import adminNotifikasi_findRouterDonasi from "./notifikasi/route_setting/donasi";
 import { ComponentAdmin_UIDrawerNotifikasi } from "./notifikasi/ui_drawer_notifikasi";
+import { AccentColor, MainColor } from "../_global/color";
 
 export default function AdminLayout({
   children,
@@ -86,6 +74,7 @@ export default function AdminLayout({
   const developerNavbar = listAdminPage.map((e, i) => (
     <Box key={e.id}>
       <NavLink
+        style={{ color: "white" }}
         sx={{
           ":hover": {
             backgroundColor: "transparent",
@@ -112,6 +101,7 @@ export default function AdminLayout({
             {e.child.map((v, ii) => (
               <Box key={v.id}>
                 <NavLink
+                  style={{ color: "white" }}
                   sx={{
                     ":hover": {
                       backgroundColor: "transparent",
@@ -144,6 +134,7 @@ export default function AdminLayout({
   const adminNavbar = bukanDeveloper.map((e) => (
     <Box key={e.id}>
       <NavLink
+        style={{ color: "white" }}
         opened={e?.id === activeId && isNavbarOpen ? true : false}
         sx={{
           ":hover": {
@@ -220,9 +211,13 @@ export default function AdminLayout({
         navbarOffsetBreakpoint="md"
         asideOffsetBreakpoint="sm"
         header={
-          <Header height={"6vh"} bg={"gray.2"}>
+          <Header
+            height={"6vh"}
+            bg={AccentColor.darkblue}
+            style={{ color: "white", borderStyle: "none" }}
+          >
             {/* Web View */}
-            <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
+            <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
               <Group position="apart" align="center" h={"100%"} px={"md"}>
                 <Title order={3}>Dashboard Admin</Title>
 
@@ -238,7 +233,7 @@ export default function AdminLayout({
                       processing
                       label={<Text fz={10}>{countNotif}</Text>}
                     >
-                      <IconBell />
+                      <IconBell color="white" />
                     </Indicator>
                   </ActionIcon>
                   <Divider orientation="vertical" color="dark" />
@@ -251,7 +246,7 @@ export default function AdminLayout({
             </MediaQuery>
 
             {/* Mobile View */}
-            <MediaQuery largerThan="md" styles={{ display: "none" }}>
+            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
               <Group h={50} align="center" px={"md"} position="apart">
                 <Burger
                   opened={opened}
@@ -270,17 +265,21 @@ export default function AdminLayout({
           </Header>
         }
         navbar={
-          <MediaQuery smallerThan={"md"} styles={{ display: "none" }}>
+          <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
             <Navbar
               h={"94vh"}
               width={{ lg: 250, md: 200, sm: 200, base: 250 }}
               hiddenBreakpoint="md"
               hidden={!opened}
               p="xs"
-              bg={"gray.2"}
+              bg={AccentColor.darkblue}
             >
-              <Navbar.Section grow component={ScrollArea}>
-                <Stack>
+              <Navbar.Section
+                grow
+                component={ScrollArea}
+                style={{ color: "white", transition: "0.5s" }}
+              >
+                <Stack style={{ color: "white" }}>
                   {userRoleId === "3" ? developerNavbar : adminNavbar}
                 </Stack>
               </Navbar.Section>
@@ -288,7 +287,7 @@ export default function AdminLayout({
                 <Stack>
                   <Divider />
                   <Group position="apart">
-                    <Text fs={"italic"} c={"gray"} fz={"xs"}>
+                    <Text fs={"italic"} c={"white"} fz={"xs"}>
                       V 1.0.0
                     </Text>
                     <Admin_Logout />
@@ -345,5 +344,3 @@ export default function AdminLayout({
     </>
   );
 }
-
-

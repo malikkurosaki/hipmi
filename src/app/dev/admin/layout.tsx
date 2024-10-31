@@ -1,4 +1,5 @@
 import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
+import { Admin_NewLayout } from "@/app_modules/admin";
 import { AdminLayout } from "@/app_modules/admin/main_dashboard";
 import adminNotifikasi_countNotifikasi from "@/app_modules/admin/notifikasi/fun/count/count_is_read";
 import adminNotifikasi_getByUserId from "@/app_modules/admin/notifikasi/fun/get/get_notifikasi_by_user_id";
@@ -18,13 +19,14 @@ export default async function Layout({
 
   return (
     <>
-      <AdminLayout
+      {/* <AdminLayout
         listNotif={listNotif as any}
         dataUser={dataUser as any}
         countNotifikasi={countNotifikasi}
       >
         {children}
-      </AdminLayout>
+      </AdminLayout> */}
+      <Admin_NewLayout user={dataUser as any}>{children}</Admin_NewLayout>
     </>
   );
 }
