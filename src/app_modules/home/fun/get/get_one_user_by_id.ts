@@ -7,11 +7,7 @@ export async function user_getOneByUserId(userId: string) {
     where: {
       id: userId,
     },
-    select: {
-      id: true,
-      active: true,
-      username: true,
-      masterUserRoleId: true,
+    include: {
       Profile: true,
     },
   });

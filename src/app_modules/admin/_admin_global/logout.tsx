@@ -13,15 +13,13 @@ import {
   Stack,
   Title,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconLogout } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Admin_Logout() {
   const router = useRouter();
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [kodeId, setKodeId] = useAtom(gs_kodeId);
@@ -43,7 +41,7 @@ export default function Admin_Logout() {
     <>
       <Modal
         opened={opened}
-        onClose={toggle}
+        onClose={() => setOpened(false)}
         centered
         withCloseButton={false}
         closeOnClickOutside={false}
@@ -53,7 +51,7 @@ export default function Admin_Logout() {
           <Group align="center" position="center">
             <Button
               onClick={() => {
-                toggle();
+                setOpened(false);
                 setLoading(false);
               }}
               radius={50}
@@ -77,13 +75,9 @@ export default function Admin_Logout() {
         {loading ? (
           <Loader color="gray" />
         ) : (
-          <IconLogout
-            color={Warna.merah}
-            onClick={() => {
-              toggle();
-              setLoading(true);
-            }}
-          />
+          <Button radius={"xl"} color={"red"} onClick={() => setOpened(true)}>
+            Keluar
+          </Button>
         )}
       </ActionIcon>
       {/* <Button radius={"xl"} color={"red"} onClick={toggle}>
