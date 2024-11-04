@@ -4,7 +4,7 @@ import { MODEL_INVESTASI } from "@/app_modules/investasi/_lib/interface";
 import { Button, Group, Stack } from "@mantine/core";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { useState } from "react";
-import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
+import AdminGlobal_ComponentBackButton from "../../_admin_global/back_button";
 import {
   AdminInvestasi_ViewDaftarInvestor,
   AdminInvestasi_ViewDaftarTransaksi,
@@ -46,7 +46,7 @@ export function AdminInvestasi_DetailPublish({
   return (
     <>
       <Stack >
-        <ComponentAdminGlobal_BackButton />
+        <AdminGlobal_ComponentBackButton />
 
         <Group>
           {listPage.map((e) => (

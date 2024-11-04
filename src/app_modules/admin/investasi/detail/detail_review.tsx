@@ -3,7 +3,14 @@
 import { MODEL_INVESTASI } from "@/app_modules/investasi/_lib/interface";
 import getOneInvestasiById from "@/app_modules/investasi/fun/get_one_investasi_by_id";
 import mqtt_client from "@/util/mqtt_client";
-import { Button, Group, SimpleGrid, Stack } from "@mantine/core";
+import {
+  Button,
+  Group,
+  Modal,
+  SimpleGrid,
+  Stack,
+  Textarea,
+} from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
@@ -11,7 +18,7 @@ import { useState } from "react";
 import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../_admin_global/admin_notifikasi/notifikasi_berhasil";
 import { ComponentAdminGlobal_NotifikasiGagal } from "../../_admin_global/admin_notifikasi/notifikasi_gagal";
 import { ComponentAdminGlobal_NotifikasiPeringatan } from "../../_admin_global/admin_notifikasi/notifikasi_peringatan";
-import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
+import AdminGlobal_ComponentBackButton from "../../_admin_global/back_button";
 import adminNotifikasi_funCreateToUser from "../../notifikasi/fun/create/fun_create_notif_user";
 import { ComponentAdminInvestasi_DetailDataAuthor } from "../_component/detail_data_author";
 import { ComponentAdminInvestasi_DetailData } from "../_component/detail_data_investasi";
@@ -19,6 +26,7 @@ import { ComponentAdminInvestasi_DetailGambar } from "../_component/detail_gamba
 import { ComponentAdminInvestasi_UIDetailFile } from "../_component/ui_detail_file";
 import { adminInvestasi_funEditStatusPublishById } from "../fun/edit/fun_status_publish_by_id";
 import Admin_funRejectInvestasi from "../fun/fun_reject_investasi";
+import { Admin_ComponentModalReport } from "../../_admin_global/_component";
 
 export default function AdminInvestasi_DetailReview({
   dataInvestasi,
@@ -31,6 +39,7 @@ export default function AdminInvestasi_DetailReview({
   const [openModal, setOpenModal] = useState(false);
   const [isLoadingPublish, setIsLoadingPublish] = useState(false);
   const [isLoadingReject, setIsLoadingReject] = useState(false);
+  const [report, setReport] = useState("");
 
   useShallowEffect(() => {
     cekStatusPublish();
@@ -43,13 +52,16 @@ export default function AdminInvestasi_DetailReview({
   async function onReject() {
     const body = {
       id: data.id,
-      catatan: data.catatan,
+      catatan: report,
       status: "4",
     };
     if (_.isEmpty(body.catatan))
       return ComponentAdminGlobal_NotifikasiPeringatan("Lengkapi alasan");
+
     const res = await Admin_funRejectInvestasi(body);
     if (res.status === 200) {
+      setIsLoadingReject(true);
+
       const dataNotif = {
         appId: res.data?.id,
         userId: res.data?.authorId,
@@ -75,8 +87,11 @@ export default function AdminInvestasi_DetailReview({
 
       ComponentAdminGlobal_NotifikasiBerhasil(res.message);
       router.back();
+      setOpenModal(false);
+      setIsLoadingReject(false);
     } else {
       ComponentAdminGlobal_NotifikasiGagal(res.message);
+      setOpenModal(false);
     }
   }
 
@@ -127,7 +142,7 @@ export default function AdminInvestasi_DetailReview({
     <>
       <Stack px={"lg"}>
         <Group position="apart">
-          <ComponentAdminGlobal_BackButton />
+          <AdminGlobal_ComponentBackButton />
 
           {data.masterStatusInvestasiId === "2" ? (
             <Group>
@@ -141,11 +156,9 @@ export default function AdminInvestasi_DetailReview({
                 Publish
               </Button>
               <Button
-                loaderPosition="center"
-                loading={isLoadingReject}
                 radius={"xl"}
                 color="red"
-                onClick={() => onReject()}
+                onClick={() => setOpenModal(true)}
               >
                 Reject
               </Button>
@@ -168,7 +181,7 @@ export default function AdminInvestasi_DetailReview({
           <ComponentAdminInvestasi_DetailDataAuthor data={data.author} />
 
           {/* Data Foto */}
-          <ComponentAdminInvestasi_DetailGambar imagesId={data.imagesId} />
+          <ComponentAdminInvestasi_DetailGambar imagesId={data.imageId} />
 
           {/* Data Detail */}
           <ComponentAdminInvestasi_DetailData data={data} />
@@ -178,8 +191,53 @@ export default function AdminInvestasi_DetailReview({
           title={data.title}
           dataProspektus={data.ProspektusInvestasi}
           listDokumen={data.DokumenInvestasi}
+          prospektusFileId={data.prospektusFileId}
         />
       </Stack>
+
+      <Admin_ComponentModalReport
+        opened={openModal}
+        onClose={() => setOpenModal(false)}
+        title="Alasan Penolakan"
+        onHandlerChange={(val) => setReport(val.target.value)}
+        buttonKiri={
+          <Button radius={"xl"} onClick={() => setOpenModal(false)}>
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            loaderPosition="center"
+            loading={isLoadingReject}
+            radius={"xl"}
+            onClick={() => {
+              onReject();
+            }}
+          >
+            Simpan
+          </Button>
+        }
+      />
+
+      {/* <Modal
+        opened={openModal}
+        onClose={() => setOpenModal(false)}
+        title="Alasan Penolakan"
+        size={"sm"}
+        centered
+        withCloseButton={false}
+      >
+        <Stack>
+          <Textarea
+            autosize
+            minRows={3}
+            maxRows={5}
+            placeholder="Masukan alasan penolakan"
+            onChange={(val) => setReport(val.target.value)}
+          />
+          <Group position="right"></Group>
+        </Stack>
+      </Modal> */}
     </>
   );
 }

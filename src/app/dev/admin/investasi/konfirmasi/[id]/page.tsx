@@ -1,8 +1,9 @@
 import { Admin_KonfirmasiInvestasi } from "@/app_modules/admin/investasi";
-import getOneInvestasiById from "@/app_modules/investasi/fun/get_one_investasi_by_id";
+import { adminInvestasi_getOneById } from "@/app_modules/admin/investasi/fun";
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const dataInvestasi = await getOneInvestasiById(params.id);
+  const investasiId = params.id;
+  const dataInvestasi = await adminInvestasi_getOneById({investasiId});
   // console.log(dataUser)
 
   return (

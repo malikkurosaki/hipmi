@@ -13,6 +13,22 @@ export async function adminInvestasi_funEditStatusPublishById({
   statusId: string;
   progesInvestasiId: string;
 }) {
+  const cekStatus = await prisma.investasi.findFirst({
+    where: {
+      id: investasiId,
+    },
+    select: {
+      masterStatusInvestasiId: true,
+    },
+  });
+
+  if (cekStatus?.masterStatusInvestasiId !== "2") {
+    return {
+      status: 400,
+      message: "User membatalkan review",
+    };
+  }
+
   const publishTime = new Date();
   const res = await prisma.investasi.update({
     where: {
@@ -31,8 +47,8 @@ export async function adminInvestasi_funEditStatusPublishById({
         select: {
           name: true,
         },
-      },    
-    }
+      },
+    },
   });
 
   if (!res) return { status: 400, message: "Gagal Update" };

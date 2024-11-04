@@ -1,10 +1,14 @@
 "use server";
 import prisma from "@/app/lib/prisma";
 
-export default async function getOneInvestasiById(id: string) {
+export default async function adminInvestasi_getOneById({
+  investasiId,
+}: {
+  investasiId: string;
+}) {
   const data = await prisma.investasi.findUnique({
     where: {
-      id: id,
+      id: investasiId,
     },
     select: {
       imageId: true,
@@ -47,7 +51,6 @@ export default async function getOneInvestasiById(id: string) {
         },
       },
       countDown: true,
-      
     },
   });
 

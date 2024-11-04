@@ -3,10 +3,11 @@
 import { NEW_RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import {
   UIGlobal_Drawer,
+  UIGlobal_DrawerCustom,
   UIGlobal_LayoutHeaderTamplate,
   UIGlobal_LayoutTamplate,
 } from "@/app_modules/_global/ui";
-import { ActionIcon } from "@mantine/core";
+import { ActionIcon, Box, SimpleGrid, Stack, Text } from "@mantine/core";
 import {
   IconCategoryPlus,
   IconDotsVertical,
@@ -21,16 +22,20 @@ import {
   Investasi_ViewDetailReject,
   Investasi_ViewDetailReview,
 } from "../../_view";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 
 export function Investasi_UiDetailPortofolio({
-  data,
+  dataInvestasi,
   userLoginId,
 }: {
-  data: MODEL_INVESTASI;
+  dataInvestasi: MODEL_INVESTASI;
   userLoginId: string;
 }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+  const [pageId, setPageId] = useState("");
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [data, setData] = useState<any>(dataInvestasi);
   const listPage = [
     {
       id: "1",
@@ -70,13 +75,47 @@ export function Investasi_UiDetailPortofolio({
             />
           }
         >
-          <Investasi_ViewDetailDraft dataInvestasi={data} />
+          <Investasi_ViewDetailDraft dataInvestasi={dataInvestasi} />
         </UIGlobal_LayoutTamplate>
 
-        <UIGlobal_Drawer
+        {/* <UIGlobal_Drawer
           opened={openDrawer}
           close={() => setOpenDrawer(false)}
           component={listPage}
+        /> */}
+
+        <UIGlobal_DrawerCustom
+          opened={openDrawer}
+          close={() => setOpenDrawer(false)}
+          component={
+            <SimpleGrid cols={listPage.length}>
+              {listPage.map((e, i) => (
+                <Stack key={i} align="center" spacing={"xs"}>
+                  <ActionIcon
+                    variant="transparent"
+                    c="white"
+                    onClick={() => {
+                      setPageId(e?.id);
+                      setLoading(true);
+                      if (e.id === "1") {
+                        setData({});
+                      }
+                      router.push(e?.path, { scroll: false });
+                    }}
+                  >
+                    {isLoading && e?.id === pageId ? (
+                      <ComponentGlobal_Loader />
+                    ) : (
+                      e?.icon
+                    )}
+                  </ActionIcon>
+                  <Text fz={"sm"} align="center" color="white">
+                    {e?.name}
+                  </Text>
+                </Stack>
+              ))}
+            </SimpleGrid>
+          }
         />
       </>
     );
@@ -85,23 +124,16 @@ export function Investasi_UiDetailPortofolio({
     <UIGlobal_LayoutTamplate
       header={
         <UIGlobal_LayoutHeaderTamplate
-          title={`Detail ${data.MasterStatusInvestasi.name}`}
+          title={`Detail ${dataInvestasi.MasterStatusInvestasi.name}`}
         />
       }
     >
-      {/* {data.masterStatusInvestasiId === "1" && (
-        <Investasi_ViewDetailPublish
-          dataInvestasi={data}
-          userLoginId={userLoginId}
-        />
-      )} */}
-
-      {data.masterStatusInvestasiId === "2" && (
-        <Investasi_ViewDetailReview dataInvestasi={data} />
+      {dataInvestasi.masterStatusInvestasiId === "2" && (
+        <Investasi_ViewDetailReview dataInvestasi={dataInvestasi} />
       )}
 
-      {data.masterStatusInvestasiId === "4" && (
-        <Investasi_ViewDetailReject dataInvestasi={data} />
+      {dataInvestasi.masterStatusInvestasiId === "4" && (
+        <Investasi_ViewDetailReject dataInvestasi={dataInvestasi} />
       )}
     </UIGlobal_LayoutTamplate>
   );

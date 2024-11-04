@@ -69,7 +69,7 @@ export function Investasi_ViewCreateDocument({
   return (
     <>
       <Stack spacing={"xl"}>
-        <ComponentGlobal_BoxInformation informasi="File dokumen bersifat opsional, jika memang ada file yang bisa membantu meyakinkan investor. Anda bisa mengupload nya disini !" />
+        <ComponentGlobal_BoxInformation informasi="File dokumen bersifat opsional, jika memang ada file yang bisa membantu meyakinkan investor. Anda bisa mengupload nya !" />
 
         <Stack>
           <TextInput

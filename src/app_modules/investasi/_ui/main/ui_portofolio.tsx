@@ -18,7 +18,6 @@ export function Investasi_UiPortofolio({
 }) {
   const [activeTab, setActiveTab] = useState<string | null>(statusId);
   const router = useRouter();
-  const [data, setData] = useState(dataPortofolio);
 
   return (
     <>
@@ -61,7 +60,7 @@ export function Investasi_UiPortofolio({
 
           <Investasi_ViewPortofolio
             statusId={statusId}
-            dataPortofolio={data as any}
+            dataPortofolio={dataPortofolio as any}
           />
         </Stack>
       </Tabs>

@@ -36,7 +36,7 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_glo
 import { useDisclosure } from "@mantine/hooks";
 import ComponentAdminGlobal_IsEmptyData from "../../_admin_global/is_empty_data";
 import { adminForum_getListKomentarById } from "../fun/get/get_list_komentar_by_id";
-import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
+import AdminGlobal_ComponentBackButton from "../../_admin_global/back_button";
 import ComponentAdminForum_ViewOneDetailPosting from "../component/detail_one_posting";
 
 export default function AdminForum_DetailPosting({
@@ -53,7 +53,7 @@ export default function AdminForum_DetailPosting({
       {/* <pre>{JSON.stringify(listKomentar, null, 2)}</pre> */}
       <Stack>
         <ComponentAdminGlobal_HeaderTamplate name="Forum: Detail Posting" />
-        <ComponentAdminGlobal_BackButton />
+        <AdminGlobal_ComponentBackButton />
         <ComponentAdminForum_ViewOneDetailPosting dataPosting={dataPosting} />
         <TableKomentar
           listKomentar={listKomentar}

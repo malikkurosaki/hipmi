@@ -8,7 +8,7 @@ import {
   Text,
   Title
 } from "@mantine/core";
-import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
+import AdminGlobal_ComponentBackButton from "../../_admin_global/back_button";
 import { ComponentAdminInvestasi_DetailDataAuthor } from "../_component/detail_data_author";
 import { ComponentAdminInvestasi_DetailData } from "../_component/detail_data_investasi";
 import { ComponentAdminInvestasi_DetailGambar } from "../_component/detail_gambar_investasi";
@@ -18,7 +18,7 @@ export function AdminInvestasi_DetailReject({ data }: { data: MODEL_INVESTASI })
   return (
     <>
       <Stack px={"lg"}>
-        <ComponentAdminGlobal_BackButton />
+        <AdminGlobal_ComponentBackButton />
         <SimpleGrid
           cols={3}
           spacing="lg"
@@ -54,7 +54,7 @@ export function AdminInvestasi_DetailReject({ data }: { data: MODEL_INVESTASI })
           <ComponentAdminInvestasi_DetailDataAuthor data={data.author} />
 
           {/* Data Foto */}
-          <ComponentAdminInvestasi_DetailGambar imagesId={data.imagesId} />
+          <ComponentAdminInvestasi_DetailGambar imagesId={data.imageId}  />
 
           {/* Data Detail */}
           <ComponentAdminInvestasi_DetailData data={data} />
@@ -64,6 +64,7 @@ export function AdminInvestasi_DetailReject({ data }: { data: MODEL_INVESTASI })
           title={data.title}
           dataProspektus={data.ProspektusInvestasi}
           listDokumen={data.DokumenInvestasi}
+          prospektusFileId={data.prospektusFileId}
         />
         {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       </Stack>

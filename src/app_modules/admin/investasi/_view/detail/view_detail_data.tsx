@@ -25,7 +25,7 @@ export function AdminInvestasi_ViewDetailData({
         <ComponentAdminInvestasi_DetailDataAuthor data={data.author} />
 
         {/* Data Foto */}
-        <ComponentAdminInvestasi_DetailGambar imagesId={data.imagesId} />
+        <ComponentAdminInvestasi_DetailGambar imagesId={data.imageId} />
 
         {/* Data Detail */}
         <ComponentAdminInvestasi_DetailData data={data} />
@@ -34,6 +34,7 @@ export function AdminInvestasi_ViewDetailData({
         title={data.title}
         dataProspektus={data.ProspektusInvestasi}
         listDokumen={data.DokumenInvestasi}
+        prospektusFileId={data.prospektusFileId}
       />
     </>
   );
