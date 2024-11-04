@@ -300,6 +300,8 @@ export default function Donasi_InvoiceProses({
 
         {file !== null ? (
           <Button
+            loaderPosition="center"
+            loading={isLoading}
             radius={"xl"}
             bg={MainColor.yellow}
             color="yellow"

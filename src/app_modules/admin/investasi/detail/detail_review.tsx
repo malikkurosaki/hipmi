@@ -6,15 +6,14 @@ import mqtt_client from "@/util/mqtt_client";
 import {
   Button,
   Group,
-  Modal,
   SimpleGrid,
-  Stack,
-  Textarea,
+  Stack
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Admin_ComponentModalReport } from "../../_admin_global/_component";
 import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../_admin_global/admin_notifikasi/notifikasi_berhasil";
 import { ComponentAdminGlobal_NotifikasiGagal } from "../../_admin_global/admin_notifikasi/notifikasi_gagal";
 import { ComponentAdminGlobal_NotifikasiPeringatan } from "../../_admin_global/admin_notifikasi/notifikasi_peringatan";
@@ -26,7 +25,6 @@ import { ComponentAdminInvestasi_DetailGambar } from "../_component/detail_gamba
 import { ComponentAdminInvestasi_UIDetailFile } from "../_component/ui_detail_file";
 import { adminInvestasi_funEditStatusPublishById } from "../fun/edit/fun_status_publish_by_id";
 import Admin_funRejectInvestasi from "../fun/fun_reject_investasi";
-import { Admin_ComponentModalReport } from "../../_admin_global/_component";
 
 export default function AdminInvestasi_DetailReview({
   dataInvestasi,

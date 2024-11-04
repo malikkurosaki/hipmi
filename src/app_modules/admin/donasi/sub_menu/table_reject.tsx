@@ -1,9 +1,9 @@
 "use client";
 
 import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
+import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
+import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
 import {
-  ActionIcon,
-  Box,
   Button,
   Center,
   Group,
@@ -17,22 +17,13 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import {
-  IconChevronLeft,
-  IconEyeCheck,
-  IconEyeClosed,
-  IconEyeEdit,
-  IconSearch,
-} from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import ComponentAdminDonasi_TombolKembali from "../component/tombol_kembali";
 import { useDisclosure } from "@mantine/hooks";
-import AdminDonasi_DetailReview from "../detail/detail_review";
-import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
+import { IconEyeEdit, IconSearch } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import adminDonasi_getListReject from "../fun/get/get_list_reject";
+import { ComponentGlobal_TampilanRupiah } from "@/app_modules/_global/component";
 
 export default function AdminDonasi_TableReject({
   dataReject,
@@ -89,7 +80,7 @@ function TableStatus({ dataReject }: { dataReject: any }) {
       </td>
       <td>
         <Center>
-          <TampilanRupiahDonasi nominal={+e?.target} />
+          <ComponentGlobal_TampilanRupiah color="black" nominal={+e.target} />
         </Center>
       </td>
       <td>

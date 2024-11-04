@@ -1,4 +1,3 @@
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import { Text } from "@mantine/core";
 
 export default function ComponentGlobal_TampilanRupiah({

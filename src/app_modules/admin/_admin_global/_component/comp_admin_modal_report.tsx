@@ -1,6 +1,6 @@
 "use client";
 
-import { Modal, Stack, Textarea, Group, Button } from "@mantine/core";
+import { Group, Modal, Stack, Textarea } from "@mantine/core";
 import React from "react";
 
 export function Admin_ComponentModalReport({
@@ -10,13 +10,17 @@ export function Admin_ComponentModalReport({
   onHandlerChange,
   buttonKanan,
   buttonKiri,
+  cekInputKarakter,
+  value,
 }: {
   opened: any;
   onClose: () => void;
   title: string;
-  onHandlerChange: (val: any) => void;
+  onHandlerChange: (val: React.ChangeEvent<HTMLTextAreaElement>) => void;
   buttonKanan: React.ReactNode;
   buttonKiri: React.ReactNode;
+  cekInputKarakter?: React.ReactNode;
+  value?: string;
 }) {
   return (
     <>
@@ -29,13 +33,18 @@ export function Admin_ComponentModalReport({
         withCloseButton={false}
       >
         <Stack>
-          <Textarea
-            autosize
-            minRows={3}
-            maxRows={5}
-            placeholder="Masukan alasan penolakan"
-            onChange={onHandlerChange}
-          />
+          <Stack spacing={"xs"}>
+            <Textarea
+              autosize
+              value={value}
+              minRows={3}
+              maxRows={5}
+              placeholder="Masukan alasan penolakan"
+              onChange={onHandlerChange}
+            />
+            {cekInputKarakter && cekInputKarakter}
+          </Stack>
+
           <Group position="right">
             {buttonKiri}
             {buttonKanan}

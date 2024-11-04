@@ -30,6 +30,9 @@ import ComponentAdminDonasi_TombolKembali from "../../component/tombol_kembali";
 import { AdminDonasi_funCreatePencairanDana } from "../../fun/create/fun_create_pencairan_dana";
 import { AdminDonasi_getOneById } from "../../fun/get/get_one_by_id";
 import { AdminDonasi_AkumulasiPencairanById } from "../../fun/update/fun_update_akumulasi_pencairan";
+import { ComponentGlobal_InputCountDown } from "@/app_modules/_global/component";
+import { DIRECTORY_ID } from "@/app/lib";
+import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
 
 export default function AdminDonasi_PencairanDana({
   donasiId,
@@ -55,7 +58,6 @@ export default function AdminDonasi_PencairanDana({
           onSuccess={(val) => {
             setTerkumpul(val.terkumpul);
             setTotal(val.totalPencairan);
-            console.log(val);
           }}
         />
       </Stack>
@@ -120,14 +122,82 @@ function FormView({
   });
   const [nilaiNominal, setNilaiNominal] = useState(0);
   const [isOver, setIsOver] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const terkumpul = toNumber(danaTerkumpul);
   const sisaDana = terkumpul - totalPencairan;
 
+  async function onSave() {
+    const body = {
+      donasiId: donasiId,
+      nominalCair: nilaiNominal,
+      title: value.title,
+      deskripsi: value.deskripsi,
+    };
+
+    if (_.values(body).includes(""))
+      return ComponentAdminGlobal_NotifikasiPeringatan("Lengkapi Data");
+
+    const uploadImage = await funGlobal_UploadToStorage({
+      file: file as File,
+      dirId: DIRECTORY_ID.donasi_bukti_trf_pencairan_dana,
+    });
+    if (!uploadImage.success)
+      return ComponentAdminGlobal_NotifikasiPeringatan(
+        "Gagal upload file gambar"
+      );
+
+    const res = await AdminDonasi_funCreatePencairanDana({
+      data: body as any,
+      fileId: uploadImage.data.id,
+    });
+    if (res.status === 200) {
+      setIsLoading(true);
+      const res2 = await AdminDonasi_AkumulasiPencairanById(
+        body.donasiId as any,
+        body.nominalCair as any
+      );
+      if (res2.status === 200) {
+        const loadData = await AdminDonasi_getOneById(donasiId);
+        onSuccess(loadData);
+
+        const dataNotif = {
+          appId: loadData?.id,
+          userId: loadData?.authorId,
+          pesan: loadData?.title as any,
+          status: "Pencairan Dana",
+          kategoriApp: "DONASI",
+          title: "Dana donasi berhasil dicairkan",
+        };
+
+        const notif = await adminNotifikasi_funCreateToUser({
+          data: dataNotif as any,
+        });
+
+        if (notif.status === 201) {
+          mqtt_client.publish(
+            "USER",
+            JSON.stringify({ userId: loadData?.authorId, count: 1 })
+          );
+        }
+
+        ComponentAdminGlobal_NotifikasiBerhasil(res2.message);
+        router.back();
+        setIsLoading(false);
+      } else {
+        ComponentAdminGlobal_NotifikasiGagal(res2.message);
+        setIsLoading(false);
+      }
+    } else {
+      ComponentAdminGlobal_NotifikasiGagal(res.message);
+      setIsLoading(false);
+    }
+  }
+
   return (
     <>
       <Center>
-        <Paper p={"md"} w={{ base: 200, sm: 200, md: 300, lg: 400 }} withBorder>
+        <Paper p={"md"} w={{ base: 300, sm: 350, md: 400, lg: 500 }} withBorder>
           <Center mb={"lg"}>
             <Title order={5}>Form Pencairan Dana</Title>
           </Center>
@@ -186,18 +256,28 @@ function FormView({
                 });
               }}
             />
-            <Textarea
-              withAsterisk
-              placeholder="Masukan deskripsi"
-              label="Deskripsi"
-              maxLength={300}
-              onChange={(val: any) => {
-                setValue({
-                  ...value,
-                  deskripsi: val.target.value,
-                });
-              }}
-            />
+            <Stack spacing={5}>
+              <Textarea
+                withAsterisk
+                placeholder="Masukan deskripsi"
+                label="Deskripsi"
+                maxLength={300}
+                autosize
+                minRows={3}
+                maxRows={5}
+                onChange={(val: any) => {
+                  setValue({
+                    ...value,
+                    deskripsi: val.target.value,
+                  });
+                }}
+              />
+
+              <ComponentGlobal_InputCountDown
+                lengthInput={value.deskripsi.length}
+                maxInput={300}
+              />
+            </Stack>
 
             <ComponentDonasi_NotedBox informasi="Wajib menyertakan bukti transfer" />
             <Stack>
@@ -208,8 +288,7 @@ function FormView({
                       const buffer = URL.createObjectURL(
                         new Blob([new Uint8Array(await files.arrayBuffer())])
                       );
-                      // console.log(buffer, "ini buffer");
-                      // console.log(files, " ini file");
+                   
                       setImages(buffer);
                       setFile(files);
                     } catch (error) {
@@ -243,6 +322,8 @@ function FormView({
               )}
             </Stack>
             <Button
+              loaderPosition="center"
+              loading={isLoading}
               disabled={
                 _.values(value).includes("") || file === null || isOver
                   ? true
@@ -251,16 +332,7 @@ function FormView({
               style={{ transition: "0.5s" }}
               radius={"xl"}
               mt={"lg"}
-              onClick={() =>
-                onSave({
-                  router: router,
-                  value: value,
-                  donasiId: donasiId,
-                  file: file as any,
-                  nilaiNominal: nilaiNominal,
-                  onSuccess1: (val: any) => onSuccess(val),
-                })
-              }
+              onClick={() => onSave()}
             >
               Simpan
             </Button>
@@ -269,76 +341,4 @@ function FormView({
       </Center>
     </>
   );
-}
-
-async function onSave({
-  router,
-  value,
-  donasiId,
-  file,
-  nilaiNominal,
-
-  onSuccess1,
-}: {
-  router: AppRouterInstance;
-  value: any;
-  donasiId: string;
-  file: FormData;
-  nilaiNominal: number;
-  onSuccess1: (val: any) => void;
-}) {
-  const body = {
-    donasiId: donasiId,
-    nominalCair: nilaiNominal,
-    title: value.title,
-    deskripsi: value.deskripsi,
-  };
-
-  if (_.values(body).includes(""))
-    return ComponentAdminGlobal_NotifikasiPeringatan("Lengkapi Data");
-  if (!file)
-    return ComponentAdminGlobal_NotifikasiPeringatan(
-      "Lampirkan Bukti Transfer"
-    );
-
-  const gambar = new FormData();
-  gambar.append("file", file as any);
-
-  const res = await AdminDonasi_funCreatePencairanDana(body as any, gambar);
-  if (res.status === 200) {
-    const res2 = await AdminDonasi_AkumulasiPencairanById(
-      body.donasiId as any,
-      body.nominalCair as any
-    );
-    if (res2.status === 200) {
-      const loadData = await AdminDonasi_getOneById(donasiId);
-      onSuccess1(loadData);
-
-      const dataNotif = {
-        appId: loadData?.id,
-        userId: loadData?.authorId,
-        pesan: loadData?.title as any,
-        status: "Pencairan Dana",
-        kategoriApp: "DONASI",
-        title: "Dana donasi berhasil dicairkan",
-      };
-
-      const notif = await adminNotifikasi_funCreateToUser({
-        data: dataNotif as any,
-      });
-
-      if (notif.status === 201) {
-        mqtt_client.publish(
-          "USER",
-          JSON.stringify({ userId: loadData?.authorId, count: 1 })
-        );
-      }
-
-      ComponentAdminGlobal_NotifikasiBerhasil(res2.message);
-    } else {
-      ComponentAdminGlobal_NotifikasiGagal(res2.message);
-    }
-  } else {
-    ComponentAdminGlobal_NotifikasiGagal(res.message);
-  }
 }

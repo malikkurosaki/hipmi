@@ -17,6 +17,7 @@ const DIRECTORY_ID = {
   donasi_cerita_image: "cm2dvy9bi007v10dpmatb5yiy",
   donasi_kabar: "cm2dvxo48007t10dpmmustxa2",
   donasi_bukti_transfer: "cm0yk1pmh000h10njhi6m8b8t",
+  donasi_bukti_trf_pencairan_dana: "cm32s7h1q005yb5kuf5uiv5de",
 
   // Job
   job_image: "cm0ypp6zl0003kp7jf59zuvjy",

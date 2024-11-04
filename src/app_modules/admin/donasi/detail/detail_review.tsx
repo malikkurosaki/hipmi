@@ -1,26 +1,15 @@
 "use client";
 
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
-import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
+import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
+import mqtt_client from "@/util/mqtt_client";
 import {
-  MODEL_CERITA_DONASI,
-  MODEL_DONASI,
-} from "@/app_modules/donasi/model/interface";
-import {
-  AspectRatio,
-  Box,
   Button,
-  Divider,
   Group,
-  Image,
   Modal,
-  Paper,
   SimpleGrid,
   Stack,
-  Text,
   Textarea,
-  Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
@@ -28,15 +17,14 @@ import { useState } from "react";
 import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../_admin_global/admin_notifikasi/notifikasi_berhasil";
 import { ComponentAdminGlobal_NotifikasiGagal } from "../../_admin_global/admin_notifikasi/notifikasi_gagal";
 import { ComponentAdminGlobal_NotifikasiPeringatan } from "../../_admin_global/admin_notifikasi/notifikasi_peringatan";
-import ComponentAdminDonasi_TombolKembali from "../component/tombol_kembali";
+import AdminGlobal_ComponentBackButton from "../../_admin_global/back_button";
+import adminNotifikasi_funCreateToUser from "../../notifikasi/fun/create/fun_create_notif_user";
+import ComponentAdminDonasi_CeritaPenggalangDana from "../component/tampilan_detail_cerita";
+import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_detail_donasi";
 import { AdminDonasi_getOneById } from "../fun/get/get_one_by_id";
 import { AdminDonasi_funUpdateStatusPublish } from "../fun/update/fun_status_publish";
 import { AdminDonasi_funUpdateStatusReject } from "../fun/update/fun_status_reject";
-import AdminGlobal_ComponentBackButton from "../../_admin_global/back_button";
-import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_detail_donasi";
-import ComponentAdminDonasi_CeritaPenggalangDana from "../component/tampilan_detail_cerita";
-import mqtt_client from "@/util/mqtt_client";
-import adminNotifikasi_funCreateToUser from "../../notifikasi/fun/create/fun_create_notif_user";
+import { Admin_ComponentModalReport } from "../../_admin_global/_component";
 
 export default function AdminDonasi_DetailReview({
   dataReview,
@@ -180,7 +168,48 @@ function ButtonOnHeader({
       </Group>
       {/* <Divider /> */}
 
-      <Modal
+      <Admin_ComponentModalReport
+        opened={opened}
+        onClose={close}
+        title={"Alasan penolakan"}
+        onHandlerChange={(val: any) => setCatatan(val.target.value)}
+        buttonKiri={
+          <>
+            <Button
+              radius={"xl"}
+              onClick={() => {
+                close();
+              }}
+            >
+              Batal
+            </Button>
+          </>
+        }
+        buttonKanan={
+          <>
+            <Button
+              loaderPosition="center"
+              loading={isLoadingReject ? true : false}
+              radius={"xl"}
+              onClick={() => {
+                onReject();
+              }}
+            >
+              Simpan
+            </Button>
+          </>
+        }
+        cekInputKarakter={
+          <>
+            <ComponentGlobal_InputCountDown
+              maxInput={300}
+              lengthInput={catatan.length}
+            />
+          </>
+        }
+      />
+
+      {/* <Modal
         opened={opened}
         onClose={close}
         centered
@@ -202,28 +231,9 @@ function ButtonOnHeader({
             lengthInput={catatan.length}
           />
 
-          <Group position="right">
-            <Button
-              radius={"xl"}
-              onClick={() => {
-                close();
-              }}
-            >
-              Batal
-            </Button>
-            <Button
-              loaderPosition="center"
-              loading={isLoadingReject ? true : false}
-              radius={"xl"}
-              onClick={() => {
-                onReject();
-              }}
-            >
-              Simpan
-            </Button>
-          </Group>
+          <Group position="right"></Group>
         </Stack>
-      </Modal>
+      </Modal> */}
     </>
   );
 }

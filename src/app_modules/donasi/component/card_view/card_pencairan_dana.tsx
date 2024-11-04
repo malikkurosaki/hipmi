@@ -1,22 +1,23 @@
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import {
-  Paper,
-  Stack,
-  Title,
-  Spoiler,
-  Center,
   Button,
+  Center,
+  Paper,
+  Spoiler,
+  Stack,
   Text,
+  Title,
 } from "@mantine/core";
 import { IconImageInPicture } from "@tabler/icons-react";
 import moment from "moment";
 
-import { MODEL_DONASI_PENCAIRAN_DANA } from "../../model/interface";
+import { RouterImagePreview } from "@/app/lib";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { MODEL_DONASI_PENCAIRAN_DANA } from "../../model/interface";
 
 export function ComponentDonasi_CardPencairanDana({
   data,
@@ -24,6 +25,7 @@ export function ComponentDonasi_CardPencairanDana({
   data: MODEL_DONASI_PENCAIRAN_DANA;
 }) {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
 
   return (
     <>
@@ -48,12 +50,13 @@ export function ComponentDonasi_CardPencairanDana({
           </Spoiler>
           <Center>
             <Button
+              loaderPosition="center"
+              loading={isLoading}
               radius={"xl"}
               leftIcon={<IconImageInPicture />}
               onClick={() => {
-                // open();
-                // setIdGambar(e.imagesId);
-                router.push(RouterDonasi.bukti_transfer + data.imagesId, {
+                setLoading(true);
+                router.push(RouterImagePreview.main({ id: data.imageId }), {
                   scroll: false,
                 });
               }}

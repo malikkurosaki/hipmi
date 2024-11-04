@@ -37,6 +37,7 @@ export default async function adminDonasi_getListPublish({
       imageDonasi: true,
       DonasiMaster_Ketegori: true,
       DonasiMaster_Durasi: true,
+      imageId: true,
     },
   });
 

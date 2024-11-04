@@ -3,6 +3,7 @@
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { MODEL_CERITA_DONASI } from "@/app_modules/donasi/model/interface";
 import { Paper, Stack, Title, Box, AspectRatio, Image, Text } from "@mantine/core";
+import { Admin_ComponentLoadImageLandscape } from "../../_admin_global";
 
 export default function ComponentAdminDonasi_CeritaPenggalangDana({
   cerita,
@@ -18,12 +19,7 @@ export default function ComponentAdminDonasi_CeritaPenggalangDana({
           <Text>{cerita.pembukaan}</Text>
 
           <Box>
-            <AspectRatio ratio={16 / 9} mah={300} mx={"auto"}>
-              <Image
-                alt="Gambar_cerita"
-                src={RouterDonasi.api_gambar_cerita + `${cerita.imagesId}`}
-              />
-            </AspectRatio>
+            <Admin_ComponentLoadImageLandscape fileId={cerita.imageId} />
           </Box>
 
           <Text>{cerita.cerita}</Text>

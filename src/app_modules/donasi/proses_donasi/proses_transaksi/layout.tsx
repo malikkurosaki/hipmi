@@ -1,7 +1,7 @@
 "use client";
 
 import { ActionIcon, AppShell, Group, Header, Title } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
 import { IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import { gs_donasi_hot_menu } from "../../global_state";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 
 export default function LayoutDonasi_ProsesTransaksi({
   children,
@@ -18,8 +19,10 @@ export default function LayoutDonasi_ProsesTransaksi({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [donasiHotMenu, setDonasiHotMenu] = useAtom(gs_donasi_hot_menu);
   async function onClick() {
+    setIsLoading(true);
     setDonasiHotMenu(2);
     router.push(RouterDonasi.main_donasi_saya);
   }
@@ -31,20 +34,10 @@ export default function LayoutDonasi_ProsesTransaksi({
             title="Proses Transaksi"
             customButtonLeft={
               <ActionIcon variant="transparent" onClick={() => onClick()}>
-                <IconX />
+                {isLoading ? <ComponentGlobal_Loader /> : <IconX />}
               </ActionIcon>
             }
           />
-
-          // <Header height={50} sx={{ borderStyle: "none" }}>
-          //   <Group h={50} position="apart" px={"md"}>
-          //     <ActionIcon variant="transparent" onClick={() => onClick()}>
-          //       <IconX />
-          //     </ActionIcon>
-          //     <Title order={5}>Proses Transaksi</Title>
-          //     <ActionIcon disabled variant="transparent"></ActionIcon>
-          //   </Group>
-          // </Header>
         }
       >
         {children}

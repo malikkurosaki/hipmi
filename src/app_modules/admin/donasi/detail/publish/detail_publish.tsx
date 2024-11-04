@@ -1,20 +1,33 @@
 "use client";
 
+import { RouterAdminGlobal } from "@/app/lib";
+import { RouterAdminDonasi } from "@/app/lib/router_admin/router_admin_donasi";
+import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
+import { ComponentGlobal_TampilanRupiah } from "@/app_modules/_global/component";
+import { Admin_ComponentLoadImageLandscape } from "@/app_modules/admin/_admin_global";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "@/app_modules/admin/_admin_global/admin_notifikasi/notifikasi_berhasil";
+import { ComponentAdminGlobal_NotifikasiGagal } from "@/app_modules/admin/_admin_global/admin_notifikasi/notifikasi_gagal";
+import AdminGlobal_ComponentBackButton from "@/app_modules/admin/_admin_global/back_button";
+import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
+import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
+import {
+  MODEL_DONASI,
+  MODEL_DONASI_INVOICE,
+  MODEL_DONASI_PENCAIRAN_DANA,
+} from "@/app_modules/donasi/model/interface";
+import { MODEL_NEW_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
+import mqtt_client from "@/util/mqtt_client";
 import {
   ActionIcon,
-  AspectRatio,
   Badge,
   Box,
   Button,
   Center,
-  Divider,
   Grid,
   Group,
-  Image,
   Modal,
   Pagination,
   Paper,
-  Progress,
   ScrollArea,
   Select,
   SimpleGrid,
@@ -25,38 +38,15 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import ComponentAdminDonasi_TombolKembali from "../../component/tombol_kembali";
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import {
-  IconClover,
-  IconMessageChatbot,
-  IconMoneybag,
-  IconReload,
-} from "@tabler/icons-react";
-import router from "next/router";
-import moment from "moment";
-import {
-  MODEL_DONASI,
-  MODEL_DONASI_INVOICE,
-  MODEL_DONASI_PENCAIRAN_DANA,
-} from "@/app_modules/donasi/model/interface";
-import { useState } from "react";
-import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
-import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
+import { useDisclosure } from "@mantine/hooks";
+import { IconReload } from "@tabler/icons-react";
 import _, { toNumber } from "lodash";
+import moment from "moment";
 import { useRouter } from "next/navigation";
-import { useDisclosure, useInterval, useShallowEffect } from "@mantine/hooks";
-import { Donasi_getOneById } from "@/app_modules/donasi/fun/get/get_one_donasi_by_id";
-import { AdminDonasi_getOneById } from "../../fun/get/get_one_by_id";
-import AdminGlobal_ComponentBackButton from "@/app_modules/admin/_admin_global/back_button";
-import { MODEL_NEW_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
+import { useState } from "react";
 import { adminDonasi_getListDonatur } from "../../fun/get/get_list_donatur_by_id";
-import { RouterAdminDonasi } from "@/app/lib/router_admin/router_admin_donasi";
+import { AdminDonasi_getOneById } from "../../fun/get/get_one_by_id";
 import adminDonasi_funUpdateStatusDanTotal from "../../fun/update/fun_update_status_dan_total";
-import { ComponentAdminGlobal_NotifikasiBerhasil } from "@/app_modules/admin/_admin_global/admin_notifikasi/notifikasi_berhasil";
-import { ComponentAdminGlobal_NotifikasiGagal } from "@/app_modules/admin/_admin_global/admin_notifikasi/notifikasi_gagal";
-import mqtt_client from "@/util/mqtt_client";
-import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
 
 export default function AdminDonasi_DetailPublish({
   dataPublish,
@@ -82,13 +72,13 @@ export default function AdminDonasi_DetailPublish({
     "DonasiMaster_Status",
   ]);
 
-  // fungsi manggil serveraction
-
   return (
     <>
       {/* <pre>{JSON.stringify(pencairan, null, 2)}</pre> */}
       <Stack>
-        <AdminGlobal_ComponentBackButton path={RouterAdminDonasi.table_publish} />
+        <AdminGlobal_ComponentBackButton
+          path={RouterAdminDonasi.table_publish}
+        />
         <TampilanDetailDonasi donasi={dataDonasi} countDonatur={countDonatur} />
         <TampilanListDonatur
           donatur={listDonatur}
@@ -113,6 +103,8 @@ function TampilanDetailDonasi({
 }) {
   const [opened, { open, close }] = useDisclosure(false);
   const router = useRouter();
+  const [isLoadingPencairanDana, setIsLoadingPencairanDana] = useState(false);
+
   return (
     <>
       <Paper radius={"md"} p={"md"}>
@@ -126,67 +118,119 @@ function TampilanDetailDonasi({
               { maxWidth: "36rem", cols: 1, spacing: "sm" },
             ]}
           >
-            <Paper withBorder>
-              <AspectRatio ratio={1 / 1}>
-                <Image
-                  // mah={500}
-                  // mx={"auto"}
-                  alt="Foto"
-                  src={RouterDonasi.api_gambar + `${donasi?.imagesId}`}
-                />
-              </AspectRatio>
+            <Paper withBorder p={"xs"}>
+              <Stack>
+                <Title align="center" order={4}>
+                  Gambar Donasi
+                </Title>
+                <Admin_ComponentLoadImageLandscape fileId={donasi.imageId} />
+              </Stack>
             </Paper>
 
             <Paper withBorder p={"sm"}>
               <Stack spacing={5}>
-                <Title order={4}>{donasi?.title}</Title>
-                <Group>
-                  <Text fz={"xs"}>Penggalang Dana</Text>
-                  <Title order={5} c="blue">
-                    {donasi?.Author.username}
-                  </Title>
-                </Group>
-                <Group>
-                  <Text fz={12}>Durasi</Text>
-                  <Title order={5} c="blue">
-                    {donasi?.DonasiMaster_Durasi.name} hari
-                  </Title>
-                </Group>
+                <Title order={4}>Detail Donasi</Title>
+                <Grid>
+                  <Grid.Col span={4}>
+                    <Text fz={"xs"}>Judul</Text>
+                  </Grid.Col>
+                  <Grid.Col span={"content"}>:</Grid.Col>
+                  <Grid.Col span={"auto"}>
+                    <Title order={5} c="blue">
+                      {donasi?.title}
+                    </Title>
+                  </Grid.Col>
+                </Grid>
 
-                <Group>
-                  <Text fz={12}>Dana dibutuhkan</Text>
-                  <Title order={5} c="blue">
-                    <TampilanRupiahDonasi nominal={+donasi?.target} />
-                  </Title>
-                </Group>
-                <Group>
-                  <Text fz={12}>Kategori</Text>
-                  <Title order={5} c="blue">
-                    {donasi?.DonasiMaster_Ketegori?.name}
-                  </Title>
-                </Group>
-                <Group>
-                  <Text fz={12}>Total donatur</Text>
-                  <Title order={5} c="blue">
-                    {countDonatur}
-                  </Title>
-                </Group>
-                <Group>
-                  <Text fz={12}>Progres</Text>
-                  <Title order={5} c="blue">
-                    {toNumber(donasi.progres).toFixed(2)} %
-                  </Title>
-                </Group>
-                <Group>
-                  <Text fz={12}>Dana terkumpul</Text>
-                  <Title order={5} c="blue">
-                    <TampilanRupiahDonasi nominal={+donasi?.terkumpul} />
-                  </Title>
-                </Group>
-                {/* <Button w={200} bg={"green.5"} color="green">Pencairan Dana</Button> */}
+                <Grid>
+                  <Grid.Col span={4}>
+                    <Text fz={"xs"}>Penggalang Dana</Text>
+                  </Grid.Col>
+                  <Grid.Col span={"content"}>:</Grid.Col>
+                  <Grid.Col span={"auto"}>
+                    <Title order={5} c="blue">
+                      {donasi?.Author.username}
+                    </Title>
+                  </Grid.Col>
+                </Grid>
+
+                <Grid>
+                  <Grid.Col span={4}>
+                    <Text fz={"xs"}>Durasi</Text>
+                  </Grid.Col>
+                  <Grid.Col span={"content"}>:</Grid.Col>
+                  <Grid.Col span={"auto"}>
+                    <Title order={5} c="blue">
+                      {donasi?.DonasiMaster_Durasi.name} hari
+                    </Title>
+                  </Grid.Col>
+                </Grid>
+
+                <Grid>
+                  <Grid.Col span={4}>
+                    <Text fz={"xs"}>Dana dibutuhkan</Text>
+                  </Grid.Col>
+                  <Grid.Col span={"content"}>:</Grid.Col>
+                  <Grid.Col span={"auto"}>
+                    <ComponentGlobal_TampilanRupiah
+                      nominal={+donasi?.target}
+                      color="darkblue"
+                    />
+                  </Grid.Col>
+                </Grid>
+
+                <Grid>
+                  <Grid.Col span={4}>
+                    <Text fz={"xs"}>Kategori</Text>
+                  </Grid.Col>
+                  <Grid.Col span={"content"}>:</Grid.Col>
+                  <Grid.Col span={"auto"}>
+                    <Title order={5} c="blue">
+                      {donasi?.DonasiMaster_Ketegori?.name}
+                    </Title>
+                  </Grid.Col>
+                </Grid>
+
+                <Grid>
+                  <Grid.Col span={4}>
+                    <Text fz={"xs"}>Total donatur</Text>
+                  </Grid.Col>
+                  <Grid.Col span={"content"}>:</Grid.Col>
+                  <Grid.Col span={"auto"}>
+                    <Title order={5} c="blue">
+                      {countDonatur}
+                    </Title>
+                  </Grid.Col>
+                </Grid>
+
+                <Grid>
+                  <Grid.Col span={4}>
+                    <Text fz={12}>Progres</Text>
+                  </Grid.Col>
+                  <Grid.Col span={"content"}>:</Grid.Col>
+                  <Grid.Col span={"auto"}>
+                    <Title order={5} c="blue">
+                      {toNumber(donasi.progres).toFixed(2)} %
+                    </Title>
+                  </Grid.Col>
+                </Grid>
+
+                <Grid>
+                  <Grid.Col span={4}>
+                    <Text fz={12}>Dana terkumpul</Text>
+                  </Grid.Col>
+                  <Grid.Col span={"content"}>:</Grid.Col>
+                  <Grid.Col span={"auto"}>
+                    <ComponentGlobal_TampilanRupiah
+                      nominal={+donasi?.terkumpul}
+                      color="darkblue"
+                    />
+                  </Grid.Col>
+                </Grid>
               </Stack>
             </Paper>
 
+            {/* Pencairan Dana */}
             <Paper withBorder p={"sm"}>
               <Stack spacing={"xl"}>
                 <Center>
@@ -196,12 +240,10 @@ function TampilanDetailDonasi({
                   <Grid.Col span={"auto"}>
                     <Stack spacing={0}>
                       <Text fz={"xs"}>Total Dana Dicairkan</Text>
-                      <Title>
-                        <TampilanRupiahDonasi
-                          nominal={donasi?.totalPencairan}
-                          fontSize={14}
-                        />
-                      </Title>
+                      <ComponentGlobal_TampilanRupiah
+                        nominal={donasi?.totalPencairan}
+                        color="darkblue"
+                      />
                     </Stack>
                   </Grid.Col>
                   <Grid.Col span={"auto"}>
@@ -227,12 +269,15 @@ function TampilanDetailDonasi({
                 </Grid>
 
                 <Button
+                  loaderPosition="center"
+                  loading={isLoadingPencairanDana}
                   radius={"xl"}
-                  onClick={() =>
+                  onClick={() => {
+                    setIsLoadingPencairanDana(true);
                     router.push(
                       RouterAdminDonasi_OLD.pencairan_dana + `${donasi?.id}`
-                    )
-                  }
+                    );
+                  }}
                 >
                   Cairkan Dana
                 </Button>
@@ -271,7 +316,7 @@ function TampilanListDonatur({
   onSuccessDonasi: (val: any) => void;
 }) {
   const router = useRouter();
-  const [isLoading, setLoading] = useState(false);
+  const [isLoadingCek, setLoadingCek] = useState(false);
   const [idData, setIdData] = useState("");
   const [lisDonatur, setListDonatur] = useState<MODEL_DONASI_INVOICE[]>(
     donatur.data
@@ -323,7 +368,7 @@ function TampilanListDonatur({
       </td>
       <td>
         <Center>
-          <TampilanRupiahDonasi nominal={+e?.nominal} />
+          <ComponentGlobal_TampilanRupiah color="black" nominal={+e?.nominal} />
         </Center>
       </td>
       <td>
@@ -345,12 +390,13 @@ function TampilanListDonatur({
           {e?.donasiMaster_StatusInvoiceId === "1" ||
           e?.donasiMaster_StatusInvoiceId === "2" ? (
             <Button
+              loaderPosition="center"
+              loading={isLoadingCek && idData === e?.id}
               radius={"xl"}
-              onClick={() =>
-                router.push(
-                  RouterAdminDonasi.transfer_invoice + `${e?.imagesId}`
-                )
-              }
+              onClick={() => {
+                setLoadingCek(true), setIdData(e?.id);
+                router.push(RouterAdminGlobal.preview_image({ id: e.imageId }));
+              }}
             >
               Cek
             </Button>
@@ -496,6 +542,7 @@ function ButtonAccept({
   onSuccessDonatur: (val: any) => void;
 }) {
   const [opened, { open, close }] = useDisclosure(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onAccept() {
     let nominalDonasi = nominal;
@@ -510,6 +557,7 @@ function ButtonAccept({
       target: target,
     });
     if (updateStatus.status == 200) {
+      setIsLoading(true);
       const dataNotif = {
         appId: updateStatus.data?.id,
         userId: updateStatus.data?.authorId,
@@ -569,10 +617,11 @@ function ButtonAccept({
       });
       onSuccessDonatur(updatelistDonatur);
       ComponentAdminGlobal_NotifikasiBerhasil(updateStatus.message);
+      setIsLoading(false);
     } else {
       ComponentAdminGlobal_NotifikasiGagal(updateStatus.message);
+      setIsLoading(false);
     }
-
     close();
   }
 
@@ -592,13 +641,17 @@ function ButtonAccept({
         <Paper>
           <Stack align="center">
             <Title
+              align="center"
               order={6}
-            >{`${"Anda yakin sudah melihat bukti transfer ?"}`}</Title>
+            >{`${"Anda sudah melihat bukti transfer dan yakin menerima donasi ini ?"}`}</Title>
             <Group position="center">
               <Button radius={"xl"} onClick={() => close()}>
                 Batal
               </Button>
               <Button
+                color="green"
+                loading={isLoading}
+                loaderPosition="center"
                 radius={"xl"}
                 onClick={() => {
                   onAccept();
