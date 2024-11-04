@@ -37,6 +37,7 @@ export async function adminDonasi_getListDonatur({
       DonasiMaster_StatusInvoice: true,
       donasiMaster_StatusInvoiceId: true,
       imagesId: true,
+      imageId: true,
     },
   });
 

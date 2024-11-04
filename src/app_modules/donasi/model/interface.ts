@@ -144,4 +144,5 @@ export interface MODEL_DONASI_PENCAIRAN_DANA {
   donasiId: string;
   imagesId: string
   Donasi: MODEL_DONASI;
+  imageId: string
 }

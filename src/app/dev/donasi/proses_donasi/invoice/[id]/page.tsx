@@ -5,6 +5,5 @@ export default async function Page({ params }: { params: { id: string } }) {
   let invoiceId = params.id;
   const dataInvoice = await Donasi_getOneInvoiceById(invoiceId);
 
-
   return <Donasi_InvoiceProses dataInvoice={dataInvoice as any} />;
 }

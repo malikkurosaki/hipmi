@@ -1,17 +1,17 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
+  ComponentGlobal_CardStyles,
+  ComponentGlobal_LoadImageLandscape,
+} from "@/app_modules/_global/component";
 import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 import {
-  AspectRatio,
   Divider,
   Grid,
   Group,
-  Image,
   Progress,
   Stack,
   Text,
@@ -29,11 +29,6 @@ import { Donasi_findDonaturByTokenId } from "../../fun/get/get_donatur_by_token_
 import { MODEL_DONASI } from "../../model/interface";
 import ComponentDonasi_TampilanHitungMundur from "../tampilan_hitung_mundur";
 import TampilanRupiahDonasi from "../tampilan_rupiah";
-import {
-  ComponentGlobal_CardStyles,
-  ComponentGlobal_LoadImageLandscape,
-} from "@/app_modules/_global/component";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 
 export function ComponentDonasi_DetailDataMain({
   donasi,
@@ -70,7 +65,7 @@ export function ComponentDonasi_DetailDataMain({
                   <TampilanRupiahDonasi nominal={+donasi?.terkumpul} />
                 </Title>
                 <Group>
-                  <Text fz={10}>Dari total</Text>{" "}
+                  <Text fz={10}>Dari target</Text>{" "}
                   <TampilanRupiahDonasi
                     nominal={+donasi?.target}
                     fontSize={10}

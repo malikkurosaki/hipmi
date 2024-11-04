@@ -1,33 +1,26 @@
 "use client";
 
 import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
+import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
+import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
 import {
-  ActionIcon,
-  Box,
   Button,
   Center,
   Group,
-  Modal,
   Pagination,
   Paper,
   ScrollArea,
   Stack,
   Table,
-  Text,
   TextInput,
   Title,
 } from "@mantine/core";
-import { IconChevronLeft, IconEyeCheck, IconSearch } from "@tabler/icons-react";
+import { IconEyeCheck, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import ComponentAdminDonasi_TombolKembali from "../component/tombol_kembali";
-import { useDisclosure } from "@mantine/hooks";
-import AdminDonasi_DetailReview from "../detail/detail_review";
-import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
 import { useState } from "react";
-import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
-import _ from "lodash";
 import adminDonasi_getListReview from "../fun/get/get_list_review";
+import { ComponentGlobal_TampilanRupiah } from "@/app_modules/_global/component";
 
 export default function AdminDonasi_TableReview({
   listReview,
@@ -83,7 +76,7 @@ function TableStatus({ listReview }: { listReview: any }) {
       </td>
       <td>
         <Center>
-          <TampilanRupiahDonasi nominal={+e?.target} />
+          <ComponentGlobal_TampilanRupiah color="black" nominal={+e.target} />
         </Center>
       </td>
       <td>
