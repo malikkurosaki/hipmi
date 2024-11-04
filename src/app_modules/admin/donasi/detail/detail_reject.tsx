@@ -20,7 +20,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../_admin_global/admin_notifikasi/notifikasi_berhasil";
-import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
+import AdminGlobal_ComponentBackButton from "../../_admin_global/back_button";
 import ComponentAdminDonasi_CeritaPenggalangDana from "../component/tampilan_detail_cerita";
 import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_detail_donasi";
 import { AdminDonasi_getOneById } from "../fun/get/get_one_by_id";
@@ -92,7 +92,7 @@ function ButtonOnHeader({
     <>
       <Stack>
         <Group position="apart">
-          <ComponentAdminGlobal_BackButton />
+          <AdminGlobal_ComponentBackButton />
           <Button radius={"xl"} bg={"orange"} color="orange" onClick={open}>
             Tambah catatan
           </Button>

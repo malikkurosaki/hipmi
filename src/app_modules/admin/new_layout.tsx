@@ -1,30 +1,30 @@
 "use client";
 
 import {
-    ActionIcon,
-    AppShell,
-    Box,
-    Center,
-    Divider,
-    Drawer,
-    Grid,
-    Group,
-    Menu,
-    Navbar,
-    NavLink,
-    ScrollArea,
-    Stack,
-    Text,
-    Title
+  ActionIcon,
+  AppShell,
+  Box,
+  Center,
+  Divider,
+  Drawer,
+  Grid,
+  Group,
+  Menu,
+  Navbar,
+  NavLink,
+  ScrollArea,
+  Stack,
+  Text,
+  Title,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
-    IconBell,
-    IconCircleDot,
-    IconCircleDotFilled,
-    IconPhone,
-    IconUser,
-    IconUserCircle
+  IconBell,
+  IconCircleDot,
+  IconCircleDotFilled,
+  IconPhone,
+  IconUser,
+  IconUserCircle,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import _ from "lodash";
@@ -34,9 +34,9 @@ import { AccentColor, MainColor } from "../_global/color";
 import { MODEL_USER } from "../home/model/interface";
 import Admin_Logout from "./_admin_global/logout";
 import {
-    gs_admin_navbar_isActive_dropdown,
-    gs_admin_navbar_menu,
-    gs_admin_navbar_subMenu,
+  gs_admin_navbar_isActive_dropdown,
+  gs_admin_navbar_menu,
+  gs_admin_navbar_subMenu,
 } from "./_admin_global/new_global_state";
 import { newListAdminPage } from "./new_list_page";
 import { ComponentAdmin_UIDrawerNotifikasi } from "./notifikasi/ui_drawer_notifikasi";
@@ -60,9 +60,9 @@ export function Admin_NewLayout({
   return (
     <>
       <AppShell
+        h={"100vh"}
         padding="md"
         navbarOffsetBreakpoint={1024}
-        asideOffsetBreakpoint="sm"
         navbar={
           <Navbar
             width={{ lg: 250, md: 200, base: 250 }}

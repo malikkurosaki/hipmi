@@ -1,11 +1,9 @@
-import { APIs, DIRECTORY_ID } from "@/app/lib";
 import { MainColor } from "@/app_modules/_global/color";
 import {
   ComponentGlobal_BoxInformation,
   ComponentGlobal_BoxUploadImage,
   ComponentGlobal_LoadImage,
 } from "@/app_modules/_global/component";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
 import {
   AspectRatio,
@@ -22,11 +20,8 @@ import {
 import { IconCamera } from "@tabler/icons-react";
 import _ from "lodash";
 import { useState } from "react";
-import { MODEL_INVESTASI } from "../../_lib/interface";
-import { investasi_funUpdateInvestasi } from "../../_fun";
-import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
 import { Investasi_ComponentButtonUpdateDataInvestasi } from "../../_component";
-import { useShallowEffect } from "@mantine/hooks";
+import { MODEL_INVESTASI } from "../../_lib/interface";
 
 export function Investasi_ViewEditInvestasi({
   dataInvestasi,

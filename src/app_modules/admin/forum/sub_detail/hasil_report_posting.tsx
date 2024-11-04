@@ -26,7 +26,7 @@ import { IconTrash } from "@tabler/icons-react";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
+import AdminGlobal_ComponentBackButton from "../../_admin_global/back_button";
 import ComponentAdminGlobal_IsEmptyData from "../../_admin_global/is_empty_data";
 import { adminForum_funDeletePostingById } from "../fun/delete/fun_delete_posting_by_id";
 import { adminForum_getListReportPostingById } from "../fun/get/get_list_report_posting_by_id";
@@ -46,7 +46,7 @@ export default function AdminForum_HasilReportPosting({
       <Stack>
         <ComponentAdminGlobal_HeaderTamplate name="Forum: Hasil Report Posting" />
         <Group position="apart">
-          <ComponentAdminGlobal_BackButton />
+          <AdminGlobal_ComponentBackButton />
           <ButtonDeletePosting dataPosting={dataPosting} />
         </Group>
         <ComponentAdminForum_ViewOneDetailPosting dataPosting={dataPosting} />

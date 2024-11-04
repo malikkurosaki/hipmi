@@ -1,4 +1,6 @@
+import { APIs } from "@/app/lib";
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import { MODEL_INVESTASI_DOKUMEN } from "@/app_modules/investasi/_lib/interface";
 import {
   SimpleGrid,
   Paper,
@@ -17,10 +19,12 @@ export function ComponentAdminInvestasi_UIDetailFile({
   title,
   dataProspektus,
   listDokumen,
+  prospektusFileId,
 }: {
   title: string;
   dataProspektus: any;
   listDokumen: any[];
+  prospektusFileId: string;
 }) {
   return (
     <>
@@ -49,10 +53,7 @@ export function ComponentAdminInvestasi_UIDetailFile({
                     <Text>Prospek {title}</Text>
                     <Link
                       target="_blank"
-                      href={
-                        RouterInvestasi_OLD.api_file_prospektus +
-                        `${dataProspektus === null ? "" : dataProspektus.id}`
-                      }
+                      href={APIs.GET({ fileId: prospektusFileId })}
                     >
                       <Button radius={50}>Lihat</Button>
                     </Link>
@@ -70,16 +71,14 @@ export function ComponentAdminInvestasi_UIDetailFile({
                     {_.isEmpty(listDokumen) ? (
                       <Text>-</Text>
                     ) : (
-                      listDokumen.map((e: any) => (
+                      listDokumen.map((e: MODEL_INVESTASI_DOKUMEN) => (
                         <Paper key={e.id}>
                           <Group>
                             <IconFileTypePdf />
                             <Text>{e.title}</Text>
                             <Link
                               target="_blank"
-                              href={
-                                RouterInvestasi_OLD.api_file_dokumen + `${e.id}`
-                              }
+                              href={APIs.GET({ fileId: e.fileId })}
                             >
                               <Button radius={50}>Lihat</Button>
                             </Link>

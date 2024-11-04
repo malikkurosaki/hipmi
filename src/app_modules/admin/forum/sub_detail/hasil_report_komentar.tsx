@@ -29,7 +29,7 @@ import {
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
+import AdminGlobal_ComponentBackButton from "../../_admin_global/back_button";
 import ComponentAdminGlobal_IsEmptyData from "../../_admin_global/is_empty_data";
 import adminNotifikasi_funCreateToUser from "../../notifikasi/fun/create/fun_create_notif_user";
 import ComponentAdminForum_ViewOneDetailKomentar from "../component/detail_one_komentar";
@@ -54,7 +54,7 @@ export default function AdminForum_HasilReportKomentar({
       <Stack>
         <ComponentAdminGlobal_HeaderTamplate name="Forum: Hasil Report Komentar" />
         <Group position="apart">
-          <ComponentAdminGlobal_BackButton />
+          <AdminGlobal_ComponentBackButton />
           <ButtonDeleteKomentar
             komentarId={komentarId}
             data={data}

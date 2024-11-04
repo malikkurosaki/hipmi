@@ -125,7 +125,7 @@ export function AdminInvestasi_ViewDaftarTransaksi({
       <td>
         <Center>
           {e?.statusInvoiceId !== "3" ? (
-            <AdminInvestasi_ComponentCekBuktiTransfer imagesId={e?.imagesId} />
+            <AdminInvestasi_ComponentCekBuktiTransfer imageId={e?.imageId} />
           ) : (
             "-"
           )}

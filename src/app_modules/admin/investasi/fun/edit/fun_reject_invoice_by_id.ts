@@ -9,6 +9,9 @@ export async function adminInvestasi_funRejectInvoiceById({
 }: {
   invoiceId: string;
 }) {
+  
+
+
   const updt = await prisma.investasi_Invoice.update({
     where: {
       id: invoiceId,

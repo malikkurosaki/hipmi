@@ -32,7 +32,7 @@ import ComponentAdminDonasi_TombolKembali from "../component/tombol_kembali";
 import { AdminDonasi_getOneById } from "../fun/get/get_one_by_id";
 import { AdminDonasi_funUpdateStatusPublish } from "../fun/update/fun_status_publish";
 import { AdminDonasi_funUpdateStatusReject } from "../fun/update/fun_status_reject";
-import ComponentAdminGlobal_BackButton from "../../_admin_global/back_button";
+import AdminGlobal_ComponentBackButton from "../../_admin_global/back_button";
 import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_detail_donasi";
 import ComponentAdminDonasi_CeritaPenggalangDana from "../component/tampilan_detail_cerita";
 import mqtt_client from "@/util/mqtt_client";
@@ -159,7 +159,7 @@ function ButtonOnHeader({
   return (
     <>
       <Group position="apart">
-        <ComponentAdminGlobal_BackButton />
+        <AdminGlobal_ComponentBackButton />
         {donasi.donasiMaster_StatusDonasiId === "2" ? (
           <Group>
             <Button

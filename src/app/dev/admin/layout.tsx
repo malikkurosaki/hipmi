@@ -1,9 +1,8 @@
 import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
+import { funGlobal_getUserById } from "@/app_modules/_global/fun/get/fun_get_user_by_id";
 import { Admin_NewLayout } from "@/app_modules/admin";
-import { AdminLayout } from "@/app_modules/admin/main_dashboard";
 import adminNotifikasi_countNotifikasi from "@/app_modules/admin/notifikasi/fun/count/count_is_read";
 import adminNotifikasi_getByUserId from "@/app_modules/admin/notifikasi/fun/get/get_notifikasi_by_user_id";
-import { user_getOneByUserId } from "@/app_modules/home/fun/get/get_one_user_by_id";
 import React from "react";
 
 export default async function Layout({
@@ -13,7 +12,7 @@ export default async function Layout({
 }) {
   const userLoginId = await funGetUserIdByToken();
 
-  const dataUser = await user_getOneByUserId(userLoginId);
+  const dataUser = await funGlobal_getUserById({ userId: userLoginId });
   const listNotif = await adminNotifikasi_getByUserId();
   const countNotifikasi = await adminNotifikasi_countNotifikasi();
 

@@ -48,7 +48,7 @@ import { useRouter } from "next/navigation";
 import { useDisclosure, useInterval, useShallowEffect } from "@mantine/hooks";
 import { Donasi_getOneById } from "@/app_modules/donasi/fun/get/get_one_donasi_by_id";
 import { AdminDonasi_getOneById } from "../../fun/get/get_one_by_id";
-import ComponentAdminGlobal_BackButton from "@/app_modules/admin/_admin_global/back_button";
+import AdminGlobal_ComponentBackButton from "@/app_modules/admin/_admin_global/back_button";
 import { MODEL_NEW_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
 import { adminDonasi_getListDonatur } from "../../fun/get/get_list_donatur_by_id";
 import { RouterAdminDonasi } from "@/app/lib/router_admin/router_admin_donasi";
@@ -88,7 +88,7 @@ export default function AdminDonasi_DetailPublish({
     <>
       {/* <pre>{JSON.stringify(pencairan, null, 2)}</pre> */}
       <Stack>
-        <ComponentAdminGlobal_BackButton path={RouterAdminDonasi.table_publish} />
+        <AdminGlobal_ComponentBackButton path={RouterAdminDonasi.table_publish} />
         <TampilanDetailDonasi donasi={dataDonasi} countDonatur={countDonatur} />
         <TampilanListDonatur
           donatur={listDonatur}

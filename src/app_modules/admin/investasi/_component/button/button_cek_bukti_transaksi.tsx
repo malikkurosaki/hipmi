@@ -1,15 +1,15 @@
-import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
+import { RouterAdminGlobal } from "@/app/lib";
 import { Button } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function AdminInvestasi_ComponentCekBuktiTransfer({
-  imagesId,
+  imageId,
 }: {
-  imagesId: string;
+  imageId: string;
 }) {
   const router = useRouter();
-  const [isLoading, setLoading] = useState(false)
+  const [isLoading, setLoading] = useState(false);
   return (
     <>
       <Button
@@ -18,10 +18,10 @@ export function AdminInvestasi_ComponentCekBuktiTransfer({
         radius={"xl"}
         onClick={() => {
           setLoading(true);
-          router.push(RouterAdminInvestasi.bukti_transfer + `${imagesId}`);
+          router.push(RouterAdminGlobal.preview_image({ id: imageId }));
         }}
       >
-        Cek
+        Cek Transaksi
       </Button>
     </>
   );

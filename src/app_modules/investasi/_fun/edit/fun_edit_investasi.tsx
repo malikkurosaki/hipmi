@@ -1,10 +1,10 @@
 "use server";
 
 import { prisma } from "@/app/lib";
-import { MODEL_INVESTASI } from "../../_lib/interface";
+import { NEW_RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import _ from "lodash";
 import { revalidatePath } from "next/cache";
-import { NEW_RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { MODEL_INVESTASI } from "../../_lib/interface";
 
 export async function investasi_funUpdateInvestasi({
   data,
@@ -39,7 +39,8 @@ export async function investasi_funUpdateInvestasi({
     });
 
     if (!updtWithImage) return { status: 400, message: "Gagal update data" };
-    revalidatePath(NEW_RouterInvestasi.detail_draft);
+    revalidatePath("/dev/investasi/detail/portofolio/");
+
     return { status: 200, message: "Berhasil update" };
   } else {
     const updtNoImage = await prisma.investasi.update({
@@ -61,7 +62,8 @@ export async function investasi_funUpdateInvestasi({
     });
 
     if (!updtNoImage) return { status: 400, message: "Gagal update data" };
-    revalidatePath(NEW_RouterInvestasi.detail_draft);
+    revalidatePath("/dev/investasi/detail/portofolio/");
+
     return { status: 200, message: "Berhasil update" };
   }
 }
