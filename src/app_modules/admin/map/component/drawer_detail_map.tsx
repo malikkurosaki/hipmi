@@ -1,11 +1,7 @@
 "use client";
 
 import { MODEL_MAP } from "@/app_modules/map/lib/interface";
-import {
-  Drawer,
-  Group,
-  Text
-} from "@mantine/core";
+import { Drawer, Group, Text } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import _ from "lodash";
 import { useState } from "react";
@@ -55,7 +51,7 @@ export function ComponentAdminMap_Drawer({
         {_.isEmpty(data) ? (
           <ComponentAdminMap_SkeletonDrawer />
         ) : (
-          <ComponentAdminMap_DetailDataDrawer mapId={mapId} />
+          <ComponentAdminMap_DetailDataDrawer data={data} />
         )}
 
         {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}

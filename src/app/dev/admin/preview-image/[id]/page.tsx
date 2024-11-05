@@ -1,12 +1,11 @@
-import { Admin_UiImagePreview } from "@/app_modules/admin/_admin_global";
-import React from "react";
+import { Admin_ComponentPreviewImageAdmin } from "@/app_modules/admin/_admin_global/comp_preview_image_admin";
 
 async function Page({ params }: { params: { id: string } }) {
   const fileId = params.id;
 
   return (
     <>
-      <Admin_UiImagePreview fileId={fileId} />
+      <Admin_ComponentPreviewImageAdmin fileId={fileId} />
     </>
   );
 }
