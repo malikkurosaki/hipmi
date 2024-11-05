@@ -56,7 +56,6 @@ export function Admin_ComponentLoadImageLandscape({
         <Image
           onClick={() => {
             setLoading(true);
-
             router.push(RouterAdminGlobal.preview_image({ id: fileId }), {
               scroll: false,
             });

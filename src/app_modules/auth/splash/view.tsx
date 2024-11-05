@@ -2,16 +2,7 @@
 
 import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
-import UIGlobal_SplashScreen from "@/app_modules/_global/ui/ui_splash";
-import {
-  Avatar,
-  BackgroundImage,
-  Center,
-  Image,
-  Paper,
-  Stack,
-} from "@mantine/core";
+import { Avatar, BackgroundImage, Center, Image, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 

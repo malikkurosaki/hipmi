@@ -40,7 +40,7 @@ const ReactQuill = dynamic(
 );
 
 export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
-  const [value, setValue] = useState(dataJob);
+  const [data, setData] = useState(dataJob);
   const [file, setFile] = useState<File | null>(null);
   const [img, setImg] = useState<any | null>();
 
@@ -62,8 +62,8 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
                   src={img}
                 />
               </AspectRatio>
-            ) : value.imageId ? (
-              <ComponentGlobal_LoadImage fileId={value.imageId} />
+            ) : data.imageId ? (
+              <ComponentGlobal_LoadImage fileId={data.imageId} />
             ) : (
               <Stack justify="center" align="center" h={"100%"}>
                 <IconUpload color="white" />
@@ -118,11 +118,11 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
               withAsterisk
               label="Judul"
               placeholder="Masukan judul lowongan kerja"
-              value={value.title}
+              value={data.title}
               maxLength={100}
               onChange={(val) => {
-                setValue({
-                  ...value,
+                setData({
+                  ...data,
                   title: val.currentTarget.value,
                 });
               }}
@@ -151,17 +151,17 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
                     ],
                   }}
                   theme="snow"
-                  value={value.content}
+                  value={data.content}
                   onChange={(val) => {
-                    setValue({
-                      ...value,
+                    setData({
+                      ...data,
                       content: val,
                     });
                   }}
                 />
                 <ComponentGlobal_InputCountDown
                   maxInput={500}
-                  lengthInput={value.content.length}
+                  lengthInput={data.content.length}
                 />
               </Stack>
             </Stack>
@@ -188,24 +188,24 @@ export default function Job_Edit({ dataJob }: { dataJob: MODEL_JOB }) {
                     ],
                   }}
                   theme="snow"
-                  value={value.deskripsi}
+                  value={data.deskripsi}
                   onChange={(val) => {
-                    setValue({
-                      ...value,
+                    setData({
+                      ...data,
                       deskripsi: val,
                     });
                   }}
                 />
                 <ComponentGlobal_InputCountDown
                   maxInput={500}
-                  lengthInput={value.deskripsi.length}
+                  lengthInput={data.deskripsi.length}
                 />
               </Stack>
             </Stack>
           </Stack>
         </ComponentGlobal_CardStyles>
 
-        <Job_ComponentButtonUpdate value={value as any} file={file as any} />
+        <Job_ComponentButtonUpdate value={data as any} file={file as any} />
       </Stack>
     </>
   );

@@ -1,7 +1,6 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { revalidatePath } from "next/cache";
 import { MODEL_JOB } from "../../model/interface";
 

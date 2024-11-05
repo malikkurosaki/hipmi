@@ -1,11 +1,14 @@
 "use client";
 
 import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
-import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentAdminGlobal_TitlePage } from "@/app_modules/admin/_admin_global/_component";
+import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
+import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
 import { MODEL_JOB } from "@/app_modules/job/model/interface";
+import mqtt_client from "@/util/mqtt_client";
 import {
   Button,
   Center,
@@ -19,17 +22,13 @@ import {
   Table,
   Text,
   TextInput,
-  Textarea,
-  Title,
+  Textarea
 } from "@mantine/core";
 import { IconBan, IconPhotoCheck, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AdminJob_funEditCatatanById } from "../../fun/edit/fun_edit_catatan_by_id";
 import adminJob_getListReject from "../../fun/get/get_list_reject";
-import { AdminJob_getListTableByStatusId } from "../../fun/get/get_list_table_by_status_id";
-import mqtt_client from "@/util/mqtt_client";
-import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
 
 export default function AdminJob_TableReject({
   dataReject,
@@ -55,6 +54,7 @@ function TableStatus({ listReject }: { listReject: any }) {
 
   const [reject, setReject] = useState(false);
   const [jobId, setJobId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [catatan, setCatatan] = useState("");
 
   async function onSearch(s: string) {
@@ -99,10 +99,14 @@ function TableStatus({ listReject }: { listReject: any }) {
         <Center w={150}>
           {e.imageId ? (
             <Button
+              loading={isLoading && e?.imageId === jobId}
+              loaderPosition="center"
               color="green"
               radius={"xl"}
               leftIcon={<IconPhotoCheck />}
               onClick={() => {
+                setJobId(e?.imageId);
+                setIsLoading(true);
                 router.push(RouterAdminJob.detail_poster + e?.imageId);
               }}
             >
@@ -224,24 +228,20 @@ function TableStatus({ listReject }: { listReject: any }) {
       </Modal>
 
       <Stack spacing={"xs"} h={"100%"}>
-        <Group
-          position="apart"
-          bg={"red.4"}
-          p={"xs"}
-          style={{ borderRadius: "6px" }}
-        >
-          <Title order={4} c={"white"}>
-            Reject
-          </Title>
-          <TextInput
-            icon={<IconSearch size={20} />}
-            radius={"xl"}
-            placeholder="Masukan judul"
-            onChange={(val) => {
-              onSearch(val.currentTarget.value);
-            }}
-          />
-        </Group>
+        <ComponentAdminGlobal_TitlePage
+          name="Reject"
+          color="red.4"
+          component={
+            <TextInput
+              icon={<IconSearch size={20} />}
+              radius={"xl"}
+              placeholder="Masukan judul"
+              onChange={(val) => {
+                onSearch(val.currentTarget.value);
+              }}
+            />
+          }
+        />
 
         <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
           <ScrollArea w={"100%"} h={"90%"}>

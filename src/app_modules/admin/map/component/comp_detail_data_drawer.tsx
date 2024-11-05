@@ -1,16 +1,7 @@
-import { APIs } from "@/app/lib";
+"use client";
+
 import { MODEL_MAP } from "@/app_modules/map/lib/interface";
-import {
-  AspectRatio,
-  Box,
-  Button,
-  Center,
-  Grid,
-  Image,
-  Stack,
-  Text,
-} from "@mantine/core";
-import { useShallowEffect } from "@mantine/hooks";
+import { Box, Button, Center, Grid, Stack, Text } from "@mantine/core";
 import {
   IconBuildingSkyscraper,
   IconListDetails,
@@ -18,40 +9,17 @@ import {
   IconPhoneCall,
   IconPinned,
 } from "@tabler/icons-react";
-import { useState } from "react";
-import { adminMap_funGetOneById } from "../fun/fun_get_one_by_id";
+import { Admin_ComponentLoadImageLandscape } from "../../_admin_global";
 
 export function ComponentAdminMap_DetailDataDrawer({
-  mapId,
+  data,
 }: {
-  mapId: string;
+  data: MODEL_MAP;
 }) {
-  const [data, setData] = useState<MODEL_MAP>();
-
-  useShallowEffect(() => {
-    onLoadMap(mapId);
-  }, [mapId]);
-
-  async function onLoadMap(mapId: string) {
-    try {
-      const res = await adminMap_funGetOneById({ mapId: mapId });
-      setData(res as any);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   return (
     <>
       <Stack>
-        <AspectRatio ratio={1 / 1} mah={300}>
-          <Image
-            radius={"md"}
-            width={300}
-            alt="Photo"
-            src={APIs.GET({ fileId: data?.imageId as string })}
-          />
-        </AspectRatio>
+        <Admin_ComponentLoadImageLandscape fileId={data?.imageId as any} />
 
         <Box>
           <Grid>
@@ -95,7 +63,6 @@ export function ComponentAdminMap_DetailDataDrawer({
             </Grid.Col>
           </Grid>
         </Box>
-
         {data ? (
           <Center>
             <Button

@@ -40,6 +40,7 @@ import {
 } from "./_admin_global/new_global_state";
 import { newListAdminPage } from "./new_list_page";
 import { ComponentAdmin_UIDrawerNotifikasi } from "./notifikasi/ui_drawer_notifikasi";
+import { Admin_ComponentSkeletonNavbar } from "./_admin_global";
 
 export function Admin_NewLayout({
   children,
@@ -60,80 +61,83 @@ export function Admin_NewLayout({
   return (
     <>
       <AppShell
-        h={"100vh"}
         padding="md"
         navbarOffsetBreakpoint={1024}
         navbar={
           <Navbar
-            width={{ lg: 250, md: 200, base: 250 }}
+            height={"100vh"}
+            width={{ base: 250 }}
             hiddenBreakpoint={1024}
             hidden={!opened}
             p="xs"
             bg={AccentColor.darkblue}
           >
-            {/* Header */}
-            <Navbar.Section style={{ color: "white" }}>
-              <Stack spacing={"lg"}>
-                <Grid>
-                  <Grid.Col span={7}>
-                    <Title order={3} lineClamp={1}>
-                      {userRoleId == "2" ? "Admin" : "Developer"}
-                    </Title>
-                  </Grid.Col>
+            {!matches ? (
+              <Admin_ComponentSkeletonNavbar />
+            ) : (
+              <>
+                <Navbar.Section style={{ color: "white" }}>
+                  <Stack spacing={"lg"}>
+                    <Grid>
+                      <Grid.Col span={7}>
+                        <Title order={3} lineClamp={1}>
+                          {userRoleId == "2" ? "Admin" : "Developer"}
+                        </Title>
+                      </Grid.Col>
 
-                  <Grid.Col span={5}>
-                    <Stack h={"100%"} justify="center">
-                      <Group position="right" spacing={5}>
-                        <ButtonUserCircle dataUser={dataUser} />
+                      <Grid.Col span={5}>
+                        <Stack h={"100%"} justify="center">
+                          <Group position="right" spacing={5}>
+                            <ButtonUserCircle dataUser={dataUser} />
 
-                        <ActionIcon
-                          variant="transparent"
-                          onClick={() => setDrawerNotifikasi(true)}
-                        >
-                          <IconBell color="white" />
-                        </ActionIcon>
-                      </Group>
-                    </Stack>
-                  </Grid.Col>
-                </Grid>
-                <Divider color="white" />
-              </Stack>
-            </Navbar.Section>
+                            <ActionIcon
+                              variant="transparent"
+                              onClick={() => setDrawerNotifikasi(true)}
+                            >
+                              <IconBell color="white" />
+                            </ActionIcon>
+                          </Group>
+                        </Stack>
+                      </Grid.Col>
+                    </Grid>
+                    <Divider color="white" />
+                  </Stack>
+                </Navbar.Section>
 
-            {/* Main */}
-            <Navbar.Section
-              grow
-              component={ScrollArea}
-              style={{ color: "white", transition: "0.5s" }}
-            >
-              <Stack style={{ color: "white" }}>
-                <NavbarAdmin userRoleId={userRoleId} />
-              </Stack>
-            </Navbar.Section>
+                <Navbar.Section
+                  grow
+                  component={ScrollArea}
+                  style={{ color: "white", transition: "0.5s" }}
+                >
+                  <Stack style={{ color: "white" }}>
+                    <NavbarAdmin userRoleId={userRoleId} />
+                  </Stack>
+                </Navbar.Section>
 
-            {/* Footer */}
-            <Navbar.Section>
-              <Stack>
-                <Divider />
-                <Group position="center">
-                  <Text fs={"italic"} c={"white"} fz={"xs"}>
-                    V 1.0.0
-                  </Text>
-                </Group>
-              </Stack>
-            </Navbar.Section>
+                <Navbar.Section>
+                  <Stack>
+                    <Divider />
+                    <Group position="center">
+                      <Text fs={"italic"} c={"white"} fz={"xs"}>
+                        V 1.0.0
+                      </Text>
+                    </Group>
+                  </Stack>
+                </Navbar.Section>
+              </>
+            )}
           </Navbar>
         }
       >
-        {matches ? (
-          children
-        ) : (
+        {!matches ? (
           <Stack align="center" justify="center" h={"100%"}>
             <Title>Sorry !</Title>
             <Title order={4} align="center">
               View Only Available For Desktop
             </Title>
           </Stack>
+        ) : (
+          children
         )}
       </AppShell>
 

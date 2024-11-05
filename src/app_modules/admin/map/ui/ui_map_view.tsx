@@ -1,25 +1,23 @@
 "use client";
 
-import { MODEL_MAP } from "@/app_modules/map/lib/interface";
-import ComponentAdminGlobal_IsEmptyData from "../../_admin_global/is_empty_data";
-import { useState } from "react";
+import { APIs } from "@/app/lib";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import {
   defaultLatLong,
   defaultMapZoom,
 } from "@/app_modules/map/lib/default_lat_long";
-import { Avatar, Image, Paper, Stack, Text } from "@mantine/core";
+import { MODEL_MAP } from "@/app_modules/map/lib/interface";
+import { Avatar, Stack } from "@mantine/core";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useState } from "react";
 import Map, {
   AttributionControl,
   Marker,
   NavigationControl,
   ScaleControl,
 } from "react-map-gl";
+import ComponentAdminGlobal_IsEmptyData from "../../_admin_global/is_empty_data";
 import { ComponentAdminMap_Drawer } from "../component";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
-import { RouterPortofolio } from "@/app/lib/router_hipmi/router_katalog";
-import { RouterMap } from "@/app/lib/router_hipmi/router_map";
-import { APIs } from "@/app/lib";
 
 export function UiAdminMap_MapBoxView({
   mapboxToken,

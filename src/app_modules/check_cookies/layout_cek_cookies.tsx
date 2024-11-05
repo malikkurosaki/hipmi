@@ -23,5 +23,5 @@ export function CheckCookies_UiLayout({
     }
   }
 
-  return <>{children}</>;
+  return children;
 }

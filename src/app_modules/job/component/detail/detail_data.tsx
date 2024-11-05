@@ -4,15 +4,7 @@ import {
   ComponentGlobal_CardStyles,
   ComponentGlobal_LoadImage,
 } from "@/app_modules/_global/component";
-import {
-  Card,
-  Center,
-  Image,
-  Skeleton,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Box, Center, Skeleton, Stack, Text } from "@mantine/core";
 import { MODEL_JOB } from "../../model/interface";
 
 export default function ComponentJob_DetailData({
@@ -49,9 +41,20 @@ export default function ComponentJob_DetailData({
       ) : (
         <ComponentGlobal_CardStyles>
           <Stack spacing={"xl"}>
-            <Title order={3} align="center">
-              Data Not Found
-            </Title>
+            <Stack align="center">
+              <Skeleton h={250} w={200} radius="md" />
+              <Skeleton h={10} w={200} />
+            </Stack>
+
+            {Array.from(new Array(2)).map((e, i) => (
+              <Stack key={i}>
+                <Skeleton h={10} w={100} />
+
+                {Array.from({ length: 3 }).map((_, ii) => (
+                  <Skeleton h={10} key={ii} />
+                ))}
+              </Stack>
+            ))}
           </Stack>
         </ComponentGlobal_CardStyles>
       )}

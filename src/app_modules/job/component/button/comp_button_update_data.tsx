@@ -1,22 +1,22 @@
-import { MainColor, AccentColor } from "@/app_modules/_global/color";
+import { DIRECTORY_ID } from "@/app/lib";
+import { AccentColor, MainColor } from "@/app_modules/_global/color";
+import {
+  funGlobal_DeleteFileById,
+  funGlobal_UploadToStorage,
+} from "@/app_modules/_global/fun";
 import {
   ComponentGlobal_NotifikasiBerhasil,
   ComponentGlobal_NotifikasiGagal,
   ComponentGlobal_NotifikasiPeringatan,
 } from "@/app_modules/_global/notif_global";
-import { Modal, Stack, Title, Group, Button } from "@mantine/core";
-import { useDisclosure, useWindowScroll } from "@mantine/hooks";
+import { Button, Group, Modal, Stack, Title } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { job_EditById } from "../../fun/edit/fun_edit_by_id";
-import { gs_job_hot_menu, gs_job_status } from "../../global_state";
+import { gs_job_hot_menu } from "../../global_state";
 import { MODEL_JOB } from "../../model/interface";
-import {
-  funGlobal_DeleteFileById,
-  funGlobal_UploadToStorage,
-} from "@/app_modules/_global/fun";
-import { DIRECTORY_ID } from "@/app/lib";
 
 export function Job_ComponentButtonUpdateData({
   value,
@@ -30,7 +30,6 @@ export function Job_ComponentButtonUpdateData({
 
   const [hotMenu, setHotMenu] = useAtom(gs_job_hot_menu);
   const [opened, { open, close }] = useDisclosure(false);
-  const [scroll, scrollTo] = useWindowScroll();
 
   async function onUpdate() {
     if (file === null) {
@@ -46,13 +45,15 @@ export function Job_ComponentButtonUpdateData({
       });
 
       if (!uploadFile.success)
-         return ComponentGlobal_NotifikasiPeringatan("Gagal upload gambar");
+        return ComponentGlobal_NotifikasiPeringatan("Gagal upload gambar");
 
-      const delFile = await funGlobal_DeleteFileById({
-        fileId: value.imageId,
-      });
-      if (!delFile.success)
-        ComponentGlobal_NotifikasiPeringatan("Gagal hapus gambar lama");
+      if (value.imageId !== null) {
+        const delFile = await funGlobal_DeleteFileById({
+          fileId: value.imageId,
+        });
+        if (!delFile.success)
+          ComponentGlobal_NotifikasiPeringatan("Gagal hapus gambar lama");
+      }
 
       const updateWithFile = await job_EditById({
         data: value,
@@ -126,7 +127,6 @@ export function Job_ComponentButtonUpdateData({
         radius={"xl"}
         onClick={() => {
           open();
-          scrollTo({ y: 0 });
         }}
       >
         Update
