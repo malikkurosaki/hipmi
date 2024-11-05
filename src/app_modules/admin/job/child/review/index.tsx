@@ -1,10 +1,12 @@
 "use client";
 
-import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
-import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
-import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
+import { RouterAdminGlobal } from "@/app/lib";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentAdminGlobal_TitlePage } from "@/app_modules/admin/_admin_global/_component";
+import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
+import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
 import { MODEL_JOB } from "@/app_modules/job/model/interface";
 import mqtt_client from "@/util/mqtt_client";
 import {
@@ -21,14 +23,12 @@ import {
   Text,
   TextInput,
   Textarea,
-  Title,
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import {
   IconBan,
-  IconEyeCheck,
   IconEyeShare,
-  IconHandFinger,
+  IconPhotoCheck,
   IconSearch,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
@@ -36,8 +36,6 @@ import { useState } from "react";
 import { AdminJob_funEditCatatanById } from "../../fun/edit/fun_edit_catatan_by_id";
 import { AdminJob_funEditStatusPublishById } from "../../fun/edit/fun_edit_status_publish_by_id";
 import adminJob_getListReview from "../../fun/get/get_list_review";
-import { IconPhotoCheck } from "@tabler/icons-react";
-import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 
 export default function AdminJob_TableReview({
   dataReview,
@@ -63,6 +61,7 @@ function TableStatus({ listReview }: { listReview: any }) {
 
   const [reject, setReject] = useState(false);
   const [jobId, setJobId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [catatan, setCatatan] = useState("");
 
   useShallowEffect(() => {
@@ -125,11 +124,15 @@ function TableStatus({ listReview }: { listReview: any }) {
         <Center w={200}>
           {e.imageId ? (
             <Button
+              loaderPosition="center"
+              loading={isLoading && jobId == e?.id}
               color="green"
               radius={"xl"}
               leftIcon={<IconPhotoCheck />}
               onClick={() => {
-                router.push(RouterAdminJob.detail_poster + e?.imageId);
+                setJobId(e?.id);
+                setIsLoading(true);
+                router.push(RouterAdminGlobal.preview_image({ id: e.imageId }));
               }}
             >
               Lihat
@@ -253,24 +256,20 @@ function TableStatus({ listReview }: { listReview: any }) {
       </Modal>
 
       <Stack spacing={"xs"} h={"100%"}>
-        <Group
-          position="apart"
-          bg={"orange.4"}
-          p={"xs"}
-          style={{ borderRadius: "6px" }}
-        >
-          <Title order={4} c={"white"}>
-            Review
-          </Title>
-          <TextInput
-            icon={<IconSearch size={20} />}
-            radius={"xl"}
-            placeholder="Masukan judul"
-            onChange={(val) => {
-              onSearch(val.currentTarget.value);
-            }}
-          />
-        </Group>
+        <ComponentAdminGlobal_TitlePage
+          name="Review"
+          color="orange.4"
+          component={
+            <TextInput
+              icon={<IconSearch size={20} />}
+              radius={"xl"}
+              placeholder="Masukan judul"
+              onChange={(val) => {
+                onSearch(val.currentTarget.value);
+              }}
+            />
+          }
+        />
 
         <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
           <ScrollArea w={"100%"} h={"90%"}>

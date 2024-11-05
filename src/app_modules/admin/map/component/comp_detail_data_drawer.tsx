@@ -20,6 +20,7 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { adminMap_funGetOneById } from "../fun/fun_get_one_by_id";
+import { Admin_ComponentLoadImageLandscape } from "../../_admin_global";
 
 export function ComponentAdminMap_DetailDataDrawer({
   mapId,
@@ -44,14 +45,15 @@ export function ComponentAdminMap_DetailDataDrawer({
   return (
     <>
       <Stack>
-        <AspectRatio ratio={1 / 1} mah={300}>
+        <Admin_ComponentLoadImageLandscape fileId={data?.imageId as any}/>
+        {/* <AspectRatio ratio={1 / 1} mah={300}>
           <Image
             radius={"md"}
             width={300}
             alt="Photo"
             src={APIs.GET({ fileId: data?.imageId as string })}
           />
-        </AspectRatio>
+        </AspectRatio> */}
 
         <Box>
           <Grid>

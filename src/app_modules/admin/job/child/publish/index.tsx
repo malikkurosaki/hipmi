@@ -21,6 +21,7 @@ import { IconPhotoCheck, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import adminJob_getListPublish from "../../fun/get/get_list_publish";
+import { RouterAdminGlobal } from "@/app/lib";
 
 export default function AdminJob_TablePublish({
   dataPublish,
@@ -45,6 +46,7 @@ function TableStatus({ dataPublish }: { dataPublish: any }) {
   const [activePage, setActivePage] = useState(1);
   const [isSearch, setSearch] = useState("");
   const [isLoadingShowImage, setLoadingShowImage] = useState(false);
+  const [dataId, setDataId] = useState("");
 
   async function onSearch(s: string) {
     setSearch(s);
@@ -100,13 +102,14 @@ function TableStatus({ dataPublish }: { dataPublish: any }) {
           {e.imageId ? (
             <Button
               loaderPosition="center"
-              loading={isLoadingShowImage}
+              loading={isLoadingShowImage && e.id === dataId}
               color="green"
               radius={"xl"}
               leftIcon={<IconPhotoCheck />}
               onClick={() => {
                 setLoadingShowImage(true);
-                router.push(RouterAdminJob.detail_poster + e?.imageId);
+                setDataId(e.id);
+                router.push(RouterAdminGlobal.preview_image({ id: e.imageId }));
               }}
             >
               Lihat

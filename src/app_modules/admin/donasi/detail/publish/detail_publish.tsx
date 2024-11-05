@@ -249,7 +249,9 @@ function TampilanDetailDonasi({
                   <Grid.Col span={"auto"}>
                     <Stack spacing={0}>
                       <Text fz={"xs"}>Bank Tujuan</Text>
-                      <Title order={6}>{donasi?.namaBank}</Title>
+                      <Title order={6} c={"blue"}>
+                        {donasi?.namaBank}
+                      </Title>
                     </Stack>
                   </Grid.Col>
                 </Grid>
@@ -257,16 +259,31 @@ function TampilanDetailDonasi({
                   <Grid.Col span={"auto"}>
                     <Stack spacing={0}>
                       <Text fz={"xs"}>Akumulasi Pencairan</Text>
-                      <Title order={6}>{donasi?.akumulasiPencairan} Kali</Title>
+                      <Title order={6} c={"blue"}>
+                        {donasi?.akumulasiPencairan} Kali
+                      </Title>
                     </Stack>
                   </Grid.Col>
                   <Grid.Col span={"auto"}>
                     <Stack spacing={0}>
                       <Text fz={"xs"}>Nomor Rekening</Text>
-                      <Title order={6}>{donasi?.rekening}</Title>
+                      <Title order={6} c={"blue"}>
+                        {donasi?.rekening}
+                      </Title>
                     </Stack>
                   </Grid.Col>
                 </Grid>
+
+                <Stack align="center" spacing={0}>
+                  <Text fz={"xs"}>Sisa Dana</Text>
+                  <ComponentGlobal_TampilanRupiah
+                    nominal={
+                      toNumber(donasi.terkumpul) -
+                      toNumber(donasi.totalPencairan)
+                    }
+                    color="darkblue"
+                  />
+                </Stack>
 
                 <Button
                   loaderPosition="center"

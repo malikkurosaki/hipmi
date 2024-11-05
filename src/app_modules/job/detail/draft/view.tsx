@@ -3,13 +3,12 @@
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { Button, Group, Stack } from "@mantine/core";
-
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import mqtt_client from "@/util/mqtt_client";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentJob_DetailData from "../../component/detail/detail_data";
@@ -18,23 +17,43 @@ import { Job_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_s
 import { MODEL_JOB } from "../../model/interface";
 import { funGlobal_DeleteFileById } from "@/app_modules/_global/fun";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
+import { job_getOneById } from "../../fun/get/get_one_by_id";
 
-export default function Job_DetailDraft({ dataJob }: { dataJob: MODEL_JOB }) {
-  const [data, setData] = useState(dataJob);
+export default function Job_DetailDraft({
+  dataJob,
+  jobId,
+}: {
+  dataJob: MODEL_JOB;
+  jobId: string;
+}) {
+  const [data, setData] = useState<MODEL_JOB | null>(dataJob);
+
+  useShallowEffect(() => {
+    onLoadData({
+      loadData(val) {
+        setData(val);
+      },
+    });
+  }, [setData]);
+
+  async function onLoadData({ loadData }: { loadData: (val: any) => void }) {
+    const dataJob = await job_getOneById(jobId);
+    loadData(dataJob as any);
+  }
 
   return (
     <>
       <Stack>
-        {data.catatan ? (
+        {data?.catatan ? (
           <ComponentGlobal_BoxInformation
-            informasi={data.catatan}
+            informasi={data?.catatan}
             isReport={true}
           />
         ) : (
           ""
         )}
-        <ComponentJob_DetailData data={data} />
-        <ButtonAction jobId={data.id} imageId={data.imageId} />
+        <ComponentJob_DetailData data={data as any} />
+        <ButtonAction jobId={data?.id as any} imageId={data?.imageId as any} />
       </Stack>
     </>
   );
