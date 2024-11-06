@@ -6,7 +6,7 @@ import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 export default async function Page({ params }: { params: { id: string } }) {
   let kodeId = params.id;
   const dataOtp = await auth_getCodeOtpByNumber({ kodeId: kodeId });
-  if (dataOtp === null) return redirect(RouterAuth.login);
+  // if (dataOtp === null) return redirect(RouterAuth.login);
 
-  return <Validasi dataOtp={dataOtp} />;
+  return <Validasi dataOtp={dataOtp as any} />;
 }

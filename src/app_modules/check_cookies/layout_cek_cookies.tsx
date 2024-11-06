@@ -11,15 +11,15 @@ export function CheckCookies_UiLayout({
 }) {
   const router = useRouter();
 
-  useShallowEffect(() => {
-    onCheckCookies();
-  }, []);
+  // useShallowEffect(() => {
+  //   onCheckCookies();
+  // }, []);
 
   async function onCheckCookies() {
     const cek = await fetch("/api/check-cookies");
     const result = await cek.json();
     if (result.success === false) {
-      router.push(RouterAuth.login);
+      router.push(RouterAuth.login, { scroll: false });
     }
   }
 

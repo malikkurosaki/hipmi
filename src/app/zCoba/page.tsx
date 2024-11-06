@@ -1,16 +1,17 @@
-import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
-import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
-import Coba_TestLoading from "@/app_modules/zCoba";
-import { Text } from "@mantine/core";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
+import { CobaRealtime } from "@/app_modules/zCoba/coba_realtime";
 
 export default async function Page() {
   await new Promise((a, b) => {
     setTimeout(a, 3000);
   });
 
+  const userLoginId = await funGetUserIdByToken();
+
   return (
     <>
-      <Coba_TestLoading />
+      <CobaRealtime userLoginId={userLoginId} />
+      {/* <Coba_TestLoading userLoginId={userLoginId} /> */}
       {/* <ComponentGlobal_UI_LayoutTamplate /> */}
     </>
   );
