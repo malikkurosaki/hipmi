@@ -1,6 +1,7 @@
 "use client";
 
 import { DIRECTORY_ID } from "@/app/lib";
+import { IRealtimeData } from "@/app/lib/global_state";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { AccentColor, MainColor } from "@/app_modules/_global/color";
 import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
@@ -10,13 +11,13 @@ import {
   ComponentGlobal_NotifikasiPeringatan,
 } from "@/app_modules/_global/notif_global";
 import { notifikasiToAdmin_funCreate } from "@/app_modules/notifikasi/fun";
-import mqtt_client from "@/util/mqtt_client";
 import { Button } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { WibuRealtime } from "wibu-pkg";
 import { job_funCreateNoFile, job_funCreateWithFile } from "../../fun";
-import { gs_job_hot_menu, gs_job_status } from "../../global_state";
+import { gs_job_hot_menu } from "../../global_state";
 import { MODEL_JOB } from "../../model/interface";
 
 function Job_ComponentButtonSaveCreate({
@@ -28,9 +29,7 @@ function Job_ComponentButtonSaveCreate({
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-
   const [hotMenu, setHotMenu] = useAtom(gs_job_hot_menu);
-  const [status, setStatus] = useAtom(gs_job_status);
 
   async function onCreate() {
     if (file === null) {
@@ -39,7 +38,8 @@ function Job_ComponentButtonSaveCreate({
       });
 
       if (createNoFile.status === 201) {
-        const dataNotif: any = {
+        const dataNotifikasi: IRealtimeData = {
+          userRole: "ADMIN",
           appId: createNoFile.data?.id as any,
           status: createNoFile.data?.MasterStatus?.name as any,
           userId: createNoFile.data?.authorId as any,
@@ -49,18 +49,16 @@ function Job_ComponentButtonSaveCreate({
         };
 
         const notif = await notifikasiToAdmin_funCreate({
-          data: dataNotif as any,
+          data: dataNotifikasi as any,
         });
 
         if (notif.status === 201) {
-          mqtt_client.publish(
-            "ADMIN",
-            JSON.stringify({
-              count: 1,
-            })
-          );
+          WibuRealtime.setData({
+            type: "notification",
+            pushNotificationTo: "ADMIN",
+          });
+
           setHotMenu(2);
-          setStatus("Review");
           router.replace(RouterJob.status({ id: "2" }));
           setIsLoading(true);
           ComponentGlobal_NotifikasiBerhasil(createNoFile.message);
@@ -83,9 +81,10 @@ function Job_ComponentButtonSaveCreate({
       });
 
       if (createWithFile.status === 201) {
-        const dataNotif: any = {
+        const dataNotifikasi: IRealtimeData = {
+          userRole: "ADMIN",
           appId: createWithFile.data?.id as any,
-          status: createWithFile.data?.MasterStatus?.name as any,
+          status: "Review",
           userId: createWithFile.data?.authorId as any,
           pesan: createWithFile.data?.title as any,
           kategoriApp: "JOB",
@@ -93,18 +92,16 @@ function Job_ComponentButtonSaveCreate({
         };
 
         const notif = await notifikasiToAdmin_funCreate({
-          data: dataNotif as any,
+          data: dataNotifikasi as any,
         });
 
         if (notif.status === 201) {
-          mqtt_client.publish(
-            "ADMIN",
-            JSON.stringify({
-              count: 1,
-            })
-          );
+          WibuRealtime.setData({
+            type: "notification",
+            pushNotificationTo: "ADMIN",
+          });
+
           setHotMenu(2);
-          setStatus("Review");
           router.replace(RouterJob.status({ id: "2" }));
           setIsLoading(true);
           ComponentGlobal_NotifikasiBerhasil(createWithFile.message);

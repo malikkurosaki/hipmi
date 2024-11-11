@@ -36,6 +36,8 @@ import { useState } from "react";
 import { AdminJob_funEditCatatanById } from "../../fun/edit/fun_edit_catatan_by_id";
 import { AdminJob_funEditStatusPublishById } from "../../fun/edit/fun_edit_status_publish_by_id";
 import adminJob_getListReview from "../../fun/get/get_list_review";
+import { IRealtimeData } from "@/app/lib/global_state";
+import { WibuRealtime } from "wibu-pkg";
 
 export default function AdminJob_TableReview({
   dataReview,
@@ -334,7 +336,7 @@ async function onPublish({
     const loadData = await adminJob_getListReview({ page: 1 });
     onLoadData(loadData);
 
-    const dataNotif = {
+    const dataNotifikasi: IRealtimeData = {
       appId: publish.data?.id as any,
       status: publish.data?.MasterStatus?.name as any,
       userId: publish.data?.authorId as any,
@@ -343,20 +345,16 @@ async function onPublish({
       title: "Job publish",
     };
 
-    const notif = await adminNotifikasi_funCreateToUser({
-      data: dataNotif as any,
+    const createNotifikasi = await adminNotifikasi_funCreateToUser({
+      data: dataNotifikasi as any,
     });
 
-    if (notif.status === 201) {
-      mqtt_client.publish(
-        "USER",
-        JSON.stringify({ userId: publish?.data?.authorId, count: 1 })
-      );
-
-      mqtt_client.publish(
-        "Job_new_post",
-        JSON.stringify({ isNewPost: true, count: 1 })
-      );
+    if (createNotifikasi.status === 201) {
+      WibuRealtime.setData({
+        type: "notification",
+        pushNotificationTo: "USER",
+        dataMessage: dataNotifikasi,
+      });
     }
 
     ComponentGlobal_NotifikasiBerhasil(publish.message);
@@ -382,24 +380,34 @@ async function onReject({
 
     ComponentGlobal_NotifikasiBerhasil(reject.message);
 
-    const dataNotif = {
+    // const dataNotif = {
+    //   appId: reject.data?.id as any,
+    //   status: reject.data?.MasterStatus?.name as any,
+    //   userId: reject.data?.authorId as any,
+    //   pesan: reject.data?.title as any,
+    //   kategoriApp: "JOB",
+    //   title: "Job anda ditolak !",
+    // };
+
+    const dataNotifikasi: IRealtimeData = {
       appId: reject.data?.id as any,
       status: reject.data?.MasterStatus?.name as any,
       userId: reject.data?.authorId as any,
       pesan: reject.data?.title as any,
       kategoriApp: "JOB",
-      title: "Job anda ditolak !",
+      title: "Job reject",
     };
 
-    const notif = await adminNotifikasi_funCreateToUser({
-      data: dataNotif as any,
+    const createRejectNotifikasi = await adminNotifikasi_funCreateToUser({
+      data: dataNotifikasi as any,
     });
 
-    if (notif.status === 201) {
-      mqtt_client.publish(
-        "USER",
-        JSON.stringify({ userId: dataNotif.userId, count: 1 })
-      );
+    if (createRejectNotifikasi.status === 201) {
+      WibuRealtime.setData({
+        type: "notification",
+        pushNotificationTo: "USER",
+        dataMessage: dataNotifikasi,
+      });
     }
   } else {
     ComponentGlobal_NotifikasiGagal(reject.message);

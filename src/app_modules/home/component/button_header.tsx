@@ -1,23 +1,22 @@
 "use client";
 
-import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
-import { ActionIcon, Indicator, Loader, Text } from "@mantine/core";
-import { MODEL_USER } from "../model/interface";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { gs_realtimeData, gs_user_ntf } from "@/app/lib/global_state";
+import { RouterNotifikasi } from "@/app/lib/router_hipmi/router_notifikasi";
 import { RouterUserSearch } from "@/app/lib/router_hipmi/router_user_search";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
-import { IconBell, IconUserSearch } from "@tabler/icons-react";
-import { RouterNotifikasi } from "@/app/lib/router_hipmi/router_notifikasi";
-import { useShallowEffect } from "@mantine/hooks";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import notifikasi_countUserNotifikasi from "@/app_modules/notifikasi/fun/count/fun_count_by_id";
-import mqtt_client from "@/util/mqtt_client";
-import { useAtom } from "jotai";
 import { gs_notifikasi_kategori_app } from "@/app_modules/notifikasi/lib";
+import { ActionIcon, Indicator, Loader, Text } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
+import { IconBell, IconUserSearch } from "@tabler/icons-react";
+import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { MODEL_USER } from "../model/interface";
 
 export function ComponentHome_ButtonHeaderLeft({
   dataUser,
@@ -59,30 +58,46 @@ export function ComponentHome_ButtonHeaderRight({
   countNotifikasi: number;
 }) {
   const router = useRouter();
-  const [count, setCount] = useState(countNotifikasi);
   const [isLoadingBell, setIsLoadingBell] = useState(false);
   const [activeKategori, setActiveKategori] = useAtom(
     gs_notifikasi_kategori_app
   );
 
+  // Notifikasi
+  const [countNtf, setCountNtf] = useState(countNotifikasi);
+  const [newUserNtf, setNewUserNtf] = useAtom(gs_user_ntf);
+  const [dataRealtime, setDataRealtime] = useAtom(gs_realtimeData);
+
   useShallowEffect(() => {
-    mqtt_client.subscribe("USER");
-
-    mqtt_client.on("message", (topic: any, message: any) => {
-      // console.log(topic);
-      const data = JSON.parse(message.toString());
-
-      if (data.userId === dataUser.id) {
-        setCount(count + data.count);
-      }
-    });
+    if (dataRealtime?.userId == dataUser.id) {
+      setCountNtf((e) => e + newUserNtf), setNewUserNtf(0);
+    }
 
     onLoadNotifikasi({
       onLoad(val) {
-        setCount(val);
+        setCountNtf(val);
       },
     });
-  }, [count]);
+  }, [newUserNtf, setCountNtf]);
+
+  // useShallowEffect(() => {
+  //   mqtt_client.subscribe("USER");
+
+  //   mqtt_client.on("message", (topic: any, message: any) => {
+  //     // console.log(topic);
+  //     const data = JSON.parse(message.toString());
+
+  //     if (data.userId === dataUser.id) {
+  //       setCountNtf(countNtf + data.count);
+  //     }
+  //   });
+
+  //   onLoadNotifikasi({
+  //     onLoad(val) {
+  //       setCountNtf(val);
+  //     },
+  //   });
+  // }, [countNtf]);
 
   async function onLoadNotifikasi({ onLoad }: { onLoad: (val: any) => void }) {
     const loadNotif = await notifikasi_countUserNotifikasi();
@@ -99,13 +114,13 @@ export function ComponentHome_ButtonHeaderRight({
           } else {
             router.push(RouterNotifikasi.main, { scroll: false });
             setIsLoadingBell(true);
-            setActiveKategori("Semua")
+            setActiveKategori("Semua");
           }
         }}
       >
         {isLoadingBell ? (
           <Loader color={AccentColor.yellow} size={20} />
-        ) : count === 0 ? (
+        ) : countNtf === 0 ? (
           <IconBell color="white" />
         ) : (
           <Indicator
@@ -113,7 +128,7 @@ export function ComponentHome_ButtonHeaderRight({
             color={MainColor.yellow}
             label={
               <Text fz={10} c={MainColor.darkblue}>
-                {count > 99 ? "99+" : count}
+                {countNtf > 99 ? "99+" : countNtf}
               </Text>
             }
           >

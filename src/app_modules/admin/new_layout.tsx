@@ -1,62 +1,74 @@
 "use client";
 
+import { gs_admin_ntf } from "@/app/lib/global_state";
 import {
   ActionIcon,
   AppShell,
-  Box,
-  Center,
   Divider,
   Drawer,
   Grid,
   Group,
-  Menu,
+  Indicator,
   Navbar,
-  NavLink,
   ScrollArea,
   Stack,
   Text,
   Title,
 } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
-import {
-  IconBell,
-  IconCircleDot,
-  IconCircleDotFilled,
-  IconPhone,
-  IconUser,
-  IconUserCircle,
-} from "@tabler/icons-react";
+import { useMediaQuery, useShallowEffect } from "@mantine/hooks";
+import { IconBell } from "@tabler/icons-react";
 import { useAtom } from "jotai";
-import _ from "lodash";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { AccentColor, MainColor } from "../_global/color";
+import { AccentColor } from "../_global/color";
 import { MODEL_USER } from "../home/model/interface";
-import Admin_Logout from "./_admin_global/logout";
+import { MODEL_NOTIFIKASI } from "../notifikasi/model/interface";
 import {
-  gs_admin_navbar_isActive_dropdown,
+  Admin_ComponentButtonUserCircle,
+  Admin_ComponentSkeletonNavbar,
+  Admin_UiNavbar,
+} from "./_admin_global";
+import {
   gs_admin_navbar_menu,
   gs_admin_navbar_subMenu,
 } from "./_admin_global/new_global_state";
-import { newListAdminPage } from "./new_list_page";
+import adminNotifikasi_getByUserId from "./notifikasi/fun/get/get_notifikasi_by_user_id";
 import { ComponentAdmin_UIDrawerNotifikasi } from "./notifikasi/ui_drawer_notifikasi";
-import { Admin_ComponentSkeletonNavbar } from "./_admin_global";
 
 export function Admin_NewLayout({
   children,
   user,
+  countNotifikasi,
+  listNotifikasi,
 }: {
   children: React.ReactNode;
   user: MODEL_USER;
+  countNotifikasi: number;
+  listNotifikasi: MODEL_NOTIFIKASI[];
 }) {
   const matches = useMediaQuery("(min-width: 1024px)");
   const [dataUser, setDataUser] = useState(user);
   const userRoleId = dataUser.masterUserRoleId;
   const [opened, setOpened] = useState(false);
+  const [activeId, setActiveId] = useAtom(gs_admin_navbar_menu);
+  const [activeChildId, setActiveChildId] = useAtom(gs_admin_navbar_subMenu);
+  const [dataNotifikasi, setDataNotifikasi] =
+    useState<MODEL_NOTIFIKASI[]>(listNotifikasi);
 
   // Notifikasi
   const [isDrawerNotifikasi, setDrawerNotifikasi] = useState(false);
-  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [countNtf, setCountNtf] = useState(countNotifikasi);
+  const [newAdminNtf, setNewAdminNtf] = useAtom(gs_admin_ntf);
+
+  useShallowEffect(() => {
+    setCountNtf((e) => e + newAdminNtf), setNewAdminNtf(0);
+  }, [newAdminNtf, setNewAdminNtf]);
+
+  async function onLoadListNotifikasi() {
+    const loadNotifikasi = await adminNotifikasi_getByUserId();
+
+    setDataNotifikasi(loadNotifikasi as []);
+    setDrawerNotifikasi(true);
+  }
 
   return (
     <>
@@ -65,7 +77,7 @@ export function Admin_NewLayout({
         navbarOffsetBreakpoint={1024}
         navbar={
           <Navbar
-            height={"100vh"}
+            height={"100%"}
             width={{ base: 250 }}
             hiddenBreakpoint={1024}
             hidden={!opened}
@@ -88,13 +100,26 @@ export function Admin_NewLayout({
                       <Grid.Col span={5}>
                         <Stack h={"100%"} justify="center">
                           <Group position="right" spacing={5}>
-                            <ButtonUserCircle dataUser={dataUser} />
+                            <Admin_ComponentButtonUserCircle
+                              dataUser={dataUser}
+                            />
 
                             <ActionIcon
                               variant="transparent"
-                              onClick={() => setDrawerNotifikasi(true)}
+                              onClick={() => {
+                                onLoadListNotifikasi();
+                              }}
                             >
-                              <IconBell color="white" />
+                              {countNtf == 0 ? (
+                                <IconBell color="white" />
+                              ) : (
+                                <Indicator
+                                  processing
+                                  label={<Text fz={10}>{countNtf}</Text>}
+                                >
+                                  <IconBell color="white" />
+                                </Indicator>
+                              )}
                             </ActionIcon>
                           </Group>
                         </Stack>
@@ -110,7 +135,13 @@ export function Admin_NewLayout({
                   style={{ color: "white", transition: "0.5s" }}
                 >
                   <Stack style={{ color: "white" }}>
-                    <NavbarAdmin userRoleId={userRoleId} />
+                    <Admin_UiNavbar
+                      userRoleId={userRoleId}
+                      activeId={activeId}
+                      activeChildId={activeChildId as any}
+                      setActiveId={setActiveId}
+                      setActiveChildId={setActiveChildId}
+                    />
                   </Stack>
                 </Navbar.Section>
 
@@ -156,272 +187,20 @@ export function Admin_NewLayout({
         size={"xs"}
       >
         <ComponentAdmin_UIDrawerNotifikasi
-          data={[]}
-          onLoadReadNotif={(val: any) => {
-            // setDataNotif(val);
+          listNotifikasi={dataNotifikasi}
+          onChangeNavbar={(val: { id: string; childId: string }) => {
+            setActiveId(val.id);
+            setActiveChildId(val.childId);
           }}
-          onChangeNavbar={(val: any) => {
-            // setActiveId(val.id);
-            // setActiveChild(val.childId);
+          onToggleNavbar={(val: any) => {
+            // console.log(val, "toggle navbar");
+            // setDrawerNotifikasi(val);
           }}
-          onToggleNavbar={setIsNavbarOpen}
           onLoadCountNotif={(val: any) => {
-            // setCountNotif(val);
+            setCountNtf(val);
           }}
         />
       </Drawer>
-    </>
-  );
-}
-
-function NavbarAdmin({ userRoleId }: { userRoleId: string }) {
-  const router = useRouter();
-  //   global state
-  const [openDropdown, setOpenDropdown] = useAtom(
-    gs_admin_navbar_isActive_dropdown
-  );
-
-  const [activeId, setActiveId] = useAtom(gs_admin_navbar_menu);
-  const [activeChildId, setActiveChildId] = useAtom(gs_admin_navbar_subMenu);
-
-  //   Kalau fix developer navbar, fix juga navbar admin, dan berlaku sebaliknya
-  const developerNavbar = newListAdminPage.map((parent) => (
-    <Box key={parent.id}>
-      <NavLink
-        opened={openDropdown && activeId === parent.id}
-        styles={{
-          icon: {
-            color: activeId === parent.id ? MainColor.yellow : "white",
-          },
-          label: {
-            color: activeId === parent.id ? MainColor.yellow : "white",
-          },
-        }}
-        style={{
-          color: "white",
-          transition: "0.5s",
-        }}
-        sx={{
-          ":hover": {
-            backgroundColor: "transparent",
-          },
-        }}
-        fw={activeId === parent.id ? "bold" : "normal"}
-        label={<Text>{parent.name}</Text>}
-        icon={parent.icon}
-        onClick={() => {
-          setActiveId(parent.id);
-          setActiveChildId("");
-
-          parent.path == "" ? setActiveChildId(parent.child[0].id) : "";
-          parent.path == ""
-            ? router.push(parent.child[0].path)
-            : router.push(parent.path);
-
-          openDropdown && activeId === parent.id
-            ? setOpenDropdown(false)
-            : setOpenDropdown(true);
-        }}
-        // active={activeId === parent.id}
-      >
-        {/* Navlink Children */}
-        {!_.isEmpty(parent.child) &&
-          parent.child.map((child) => (
-            <Box key={child.id}>
-              <NavLink
-                styles={{
-                  icon: {
-                    color:
-                      activeChildId === child.id ? MainColor.yellow : "white",
-                  },
-                  label: {
-                    color:
-                      activeChildId === child.id ? MainColor.yellow : "white",
-                  },
-                }}
-                style={{
-                  color: "white",
-                  transition: "0.5s",
-                }}
-                sx={{
-                  ":hover": {
-                    backgroundColor: "transparent",
-                  },
-                }}
-                fw={activeChildId === child.id ? "bold" : "normal"}
-                label={<Text>{child.name}</Text>}
-                icon={
-                  activeChildId === child.id ? (
-                    <IconCircleDotFilled size={10} />
-                  ) : (
-                    <IconCircleDot size={10} />
-                  )
-                }
-                onClick={() => {
-                  setActiveChildId(child.id);
-                  router.push(child.path);
-                }}
-                active={activeId === child.id}
-              />
-            </Box>
-          ))}
-      </NavLink>
-    </Box>
-  ));
-
-  const bukanDeveloper = newListAdminPage.slice(0, -1);
-  const adminNavbar = bukanDeveloper.map((parent) => (
-    <Box key={parent.id}>
-      <NavLink
-        opened={openDropdown && activeId === parent.id}
-        styles={{
-          icon: {
-            color: activeId === parent.id ? MainColor.yellow : "white",
-          },
-          label: {
-            color: activeId === parent.id ? MainColor.yellow : "white",
-          },
-        }}
-        style={{
-          color: "white",
-          transition: "0.5s",
-        }}
-        sx={{
-          ":hover": {
-            backgroundColor: "transparent",
-          },
-        }}
-        fw={activeId === parent.id ? "bold" : "normal"}
-        label={<Text>{parent.name}</Text>}
-        icon={parent.icon}
-        onClick={() => {
-          setActiveId(parent.id);
-          setActiveChildId("");
-
-          parent.path == "" ? setActiveChildId(parent.child[0].id) : "";
-          parent.path == ""
-            ? router.push(parent.child[0].path)
-            : router.push(parent.path);
-
-          openDropdown && activeId === parent.id
-            ? setOpenDropdown(false)
-            : setOpenDropdown(true);
-        }}
-        // active={activeId === parent.id}
-      >
-        {/* Navlink Children */}
-        {!_.isEmpty(parent.child) &&
-          parent.child.map((child) => (
-            <Box key={child.id}>
-              <NavLink
-                styles={{
-                  icon: {
-                    color:
-                      activeChildId === child.id ? MainColor.yellow : "white",
-                  },
-                  label: {
-                    color:
-                      activeChildId === child.id ? MainColor.yellow : "white",
-                  },
-                }}
-                style={{
-                  color: "white",
-                  transition: "0.5s",
-                }}
-                sx={{
-                  ":hover": {
-                    backgroundColor: "transparent",
-                  },
-                }}
-                fw={activeChildId === child.id ? "bold" : "normal"}
-                label={<Text>{child.name}</Text>}
-                icon={
-                  activeChildId === child.id ? (
-                    <IconCircleDotFilled size={10} />
-                  ) : (
-                    <IconCircleDot size={10} />
-                  )
-                }
-                onClick={() => {
-                  setActiveChildId(child.id);
-                  router.push(child.path);
-                }}
-                active={activeId === child.id}
-              />
-            </Box>
-          ))}
-      </NavLink>
-    </Box>
-  ));
-
-  return userRoleId == "2" ? adminNavbar : developerNavbar;
-}
-
-function ButtonUserCircle({ dataUser }: { dataUser: MODEL_USER }) {
-  const [isOpenMenuUser, setOpenMenuUser] = useState(false);
-  return (
-    <>
-      <Menu
-        withArrow
-        arrowPosition="center"
-        opened={isOpenMenuUser}
-        onChange={setOpenMenuUser}
-        shadow="md"
-        width={250}
-        position="bottom-start"
-        styles={{
-          dropdown: {
-            backgroundColor: AccentColor.blue,
-            border: `1px solid ${AccentColor.skyblue}`,
-          },
-          item: {
-            color: "white",
-            ":hover": {
-              backgroundColor: "gray",
-            },
-          },
-          arrow: {
-            borderTopColor: AccentColor.skyblue,
-            borderLeftColor: AccentColor.skyblue,
-          },
-        }}
-      >
-        <Menu.Target>
-          <ActionIcon variant="transparent" onClick={() => console.log("test")}>
-            <IconUserCircle color="white" />
-          </ActionIcon>
-        </Menu.Target>
-
-        <Menu.Dropdown>
-          <Stack spacing={5} px={"xs"}>
-            <Menu.Item>
-              <Grid>
-                <Grid.Col span={2}>
-                  <IconUser />
-                </Grid.Col>
-                <Grid.Col span={"auto"}>
-                  <Text lineClamp={1}>{dataUser.username}</Text>
-                </Grid.Col>
-              </Grid>
-            </Menu.Item>
-            <Menu.Item>
-              <Grid>
-                <Grid.Col span={2}>
-                  <IconPhone />
-                </Grid.Col>
-                <Grid.Col span={"auto"}>
-                  <Text lineClamp={1}>+{dataUser.nomor}</Text>
-                </Grid.Col>
-              </Grid>
-            </Menu.Item>
-
-            <Menu.Divider />
-            <Center py={"xs"}>
-              <Admin_Logout />
-            </Center>
-          </Stack>
-        </Menu.Dropdown>
-      </Menu>
     </>
   );
 }

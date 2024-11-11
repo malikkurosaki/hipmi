@@ -1,31 +1,36 @@
-import { RouterJob } from "@/app/lib/router_hipmi/router_job";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { MODEL_NOTIFIKASI } from "../../model/interface";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
+import { notifikasi_funJobCheckStatus } from "../../fun/check/fun_check_job_status";
+import notifikasi_funUpdateIsReadById from "../../fun/update/fun_update_is_read_by_user_id";
 
-export function redirectJobPage({
-  data,
-  router,
-  onSetPage,
+export async function notifikasi_jobCheckStatus({
+  appId,
+  dataId,
 }: {
-  data: MODEL_NOTIFIKASI;
-  router: AppRouterInstance;
-  onSetPage: (val: any) => void;
+  appId: string;
+  dataId: string;
 }) {
-  const path = RouterJob.status({id: "1"});
+  const check = await notifikasi_funJobCheckStatus({
+    id: appId,
+  });
 
-  if (data.status === "Publish") {
-    onSetPage({
-      menuId: 2,
-      status: data.status,
+  console.log(check);
+
+  if (check) {
+    const updateReadNotifikasi = await notifikasi_funUpdateIsReadById({
+      notifId: dataId,
     });
-  }
 
-  if (data.status === "Reject") {
-    onSetPage({
-      menuId: 2,
-      status: data.status,
-    });
+    if (updateReadNotifikasi.status == 200) {
+      return {
+        success: true,
+        statusId: check.statusId,
+      };
+    } else {
+      return {
+        success: false,
+      };
+    }
+  } else {
+    ComponentGlobal_NotifikasiPeringatan("Status tidak ditemukan");
   }
-
-  router.push(path, {scroll: false});
 }

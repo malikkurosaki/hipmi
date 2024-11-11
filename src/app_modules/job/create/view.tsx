@@ -41,7 +41,6 @@ export default function Job_Create() {
     content: "",
     deskripsi: "",
   });
-  const [reload, setReload] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [img, setImg] = useState<any | null>();
 

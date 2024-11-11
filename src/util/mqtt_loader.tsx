@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import mqtt_client from "./mqtt_client";
 
-export default function MqttLoader() {
+export default function   MqttLoader() {
   useEffect(() => {
     mqtt_client.on("connect", () => {
       console.log("connected");

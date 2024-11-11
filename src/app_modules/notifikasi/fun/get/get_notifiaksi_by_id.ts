@@ -15,7 +15,7 @@ export default async function notifikasi_getByUserId({
   const takeData = 10;
   const skipData = page * takeData - takeData;
 
-  if (kategoriApp === "Semua") {
+  if (kategoriApp ===  "Semua" ) {
     const data = await prisma.notifikasi.findMany({
       take: takeData,
       skip: skipData,

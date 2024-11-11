@@ -3,15 +3,16 @@
 import { RouterAdminDashboard } from "@/app/lib/router_hipmi/router_admin";
 import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
+import { GlobalEnv } from "@/app/lib/token";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { UIGlobal_LayoutDefault } from "@/app_modules/_global/ui";
 import {
   ActionIcon,
-  BackgroundImage,
   Box,
   Button,
   Center,
@@ -20,22 +21,32 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useFocusTrap } from "@mantine/hooks";
+import { useFocusTrap, useShallowEffect } from "@mantine/hooks";
+import { Prisma } from "@prisma/client";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { auth_funResendCode } from "../fun";
 import { auth_funDeleteAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
 import { auth_funValidasi } from "../fun/fun_validasi";
-import { GlobalEnv } from "@/app/lib/token";
-import { UIGlobal_LayoutDefault } from "@/app_modules/_global/ui";
 
-export default function Validasi({ dataOtp }: { dataOtp: any }) {
+export default function Validasi({
+  dataOtp,
+}: {
+  dataOtp: Prisma.KodeOtpSelect;
+}) {
   const router = useRouter();
-  const [nomor, setnomor] = useState(dataOtp.nomor);
-  const [code, setCode] = useState(dataOtp.otp);
+  const nomor = dataOtp.nomor as any;
+  const code = dataOtp.otp as any;
   const [inputCode, setInputOtp] = useState("");
   const focusTrapRef = useFocusTrap();
   const [loading, setLoading] = useState(false);
+
+  const [counter, setCounter] = useState(60);
+
+  useShallowEffect(() => {
+    counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+  }, [counter]);
 
   async function onVerifikasi() {
     if (!inputCode)
@@ -48,7 +59,9 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
       HIPMI_PWD: GlobalEnv.value?.WIBU_PWD as string,
     });
     if (res.status === 200) {
-      const resAktivasi = await auth_funDeleteAktivasiKodeOtpById(dataOtp.id);
+      const resAktivasi = await auth_funDeleteAktivasiKodeOtpById(
+        dataOtp.id as any
+      );
       if (resAktivasi.status === 200) {
         if (res.role === "1") {
           ComponentGlobal_NotifikasiBerhasil(res.message);
@@ -85,6 +98,16 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
     router.back();
   }
 
+  async function onResendCode() {
+    const res = await auth_funResendCode({ nomor: nomor });
+    if (res.status === 200) {
+      ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
+      router.push(RouterAuth.validasi + res.kodeId, { scroll: false });
+    } else {
+      ComponentGlobal_NotifikasiPeringatan(res.message);
+    }
+  }
+
   return (
     <>
       <UIGlobal_LayoutDefault>
@@ -102,24 +125,25 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
             </ActionIcon>
           </Box>
 
-          <Stack align="center" justify="center" h={"100vh"} spacing={70}>
+          <Stack align="center" justify="center" h={"100vh"} spacing={50}>
             <Title order={2} color={MainColor.yellow}>
               Verifikasi Kode OTP
             </Title>
 
-            <Stack spacing={0} align="center">
-              <Text fz={"xs"} c={"white"}>
-                Masukan 4 digit kode otp
-              </Text>
-              <Text fz={"xs"} c={"white"}>
-                Yang dikirim ke{" "}
-                <Text span inherit fw={"bold"}>
-                  {" "}
-                  +{nomor}
+            <Stack spacing={"md"} align="center">
+              <Stack spacing={0} align="center">
+                <Text c={"white"}>Masukan 4 digit kode otp</Text>
+                <Text c={"white"}>
+                  Yang dikirim ke{" "}
+                  <Text span inherit fw={"bold"}>
+                    {" "}
+                    +{nomor}
+                  </Text>
                 </Text>
-              </Text>
+              </Stack>
               <Center>
                 <PinInput
+                  size="xl"
                   type={"number"}
                   ref={focusTrapRef}
                   spacing={"md"}
@@ -129,6 +153,19 @@ export default function Validasi({ dataOtp }: { dataOtp: any }) {
                   }}
                 />
               </Center>
+
+              <Text fs="italic" mt={"sm"} c={"white"}>
+                Tidak menerima kode ?{" "}
+                {counter > 0 ? (
+                  <Text fw={"bold"} inherit span>
+                    {counter + "s"}
+                  </Text>
+                ) : (
+                  <Text inherit span onClick={() => onResendCode()}>
+                    Kirim ulang
+                  </Text>
+                )}
+              </Text>
             </Stack>
             <Button
               w={300}

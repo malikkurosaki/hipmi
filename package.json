@@ -1,6 +1,6 @@
 {
   "name": "hipmi",
-  "version": "1.0.12",
+  "version": "1.1.0",
   "private": true,
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"
@@ -88,7 +88,7 @@
     "utf-8-validate": "^6.0.3",
     "uuid": "^9.0.1",
     "wibu": "bipproduction/wibu",
-    "wibu-realtime": "bipproduction/wibu-realtime",
+    "wibu-pkg": "^1.0.3",
     "yaml": "^2.3.2"
   }
 }

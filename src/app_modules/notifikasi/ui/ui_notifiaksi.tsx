@@ -15,7 +15,7 @@ import {
   gs_investas_menu,
   gs_investasi_status,
 } from "@/app_modules/investasi/g_state";
-import { gs_job_hot_menu, gs_job_status } from "@/app_modules/job/global_state";
+import { gs_job_hot_menu } from "@/app_modules/job/global_state";
 import {
   gs_vote_hotMenu,
   gs_vote_status,
@@ -46,8 +46,6 @@ export function Notifikasi_UiView({
   );
 
   // Kategori App
-  const [jobMenuId, setJobMenuId] = useAtom(gs_job_hot_menu);
-  const [jobStatus, setJobStatus] = useAtom(gs_job_status);
   const [voteMenu, setVoteMenu] = useAtom(gs_vote_hotMenu);
   const [voteStatus, setVoteStatus] = useAtom(gs_vote_status);
   const [eventMenu, setEventMenu] = useAtom(gs_event_hotMenu);
@@ -133,32 +131,34 @@ export function Notifikasi_UiView({
                 data={item}
                 onLoadData={setData}
                 activePage={activePage}
-                onSetMenu={(val) => {
-                  if (item?.kategoriApp === "JOB") {
-                    setJobMenuId(val.menuId);
-                    setJobStatus(val.status);
-                  }
+                activeKategori={activeKategori}
+                // onSetMenu={(val) => {
+                //   if (item?.kategoriApp === "JOB") {
 
-                  if (item?.kategoriApp === "VOTING") {
-                    setVoteMenu(val.menuId);
-                    setVoteStatus(val.status);
-                  }
+                //     setJobMenuId(val.menuId);
+                //     // setJobStatus(val.status);
+                //   }
 
-                  if (item?.kategoriApp === "EVENT") {
-                    setEventMenu(val.menuId);
-                    setEventStatus(val.status);
-                  }
+                //   // if (item?.kategoriApp === "VOTING") {
+                //   //   setVoteMenu(val.menuId);
+                //   //   setVoteStatus(val.status);
+                //   // }
 
-                  if (item?.kategoriApp === "DONASI") {
-                    setDonasiMenu(val.menuId);
-                    setDonasiStatus(val.status);
-                  }
+                //   // if (item?.kategoriApp === "EVENT") {
+                //   //   setEventMenu(val.menuId);
+                //   //   setEventStatus(val.status);
+                //   // }
 
-                  if (item?.kategoriApp === "INVESTASI") {
-                    setInvestasiMenu(val.menuId);
-                    setInvestasiStatus(val.status);
-                  }
-                }}
+                //   // if (item?.kategoriApp === "DONASI") {
+                //   //   setDonasiMenu(val.menuId);
+                //   //   setDonasiStatus(val.status);
+                //   // }
+
+                //   // if (item?.kategoriApp === "INVESTASI") {
+                //   //   setInvestasiMenu(val.menuId);
+                //   //   setInvestasiStatus(val.status);
+                //   // }
+                // }}
               />
             )}
           </ScrollOnly>
