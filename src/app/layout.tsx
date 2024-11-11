@@ -4,6 +4,7 @@ import "./globals.css";
 import { TokenProvider } from "./lib/token";
 import dotenv from "dotenv";
 import { ServerEnv } from "./lib/server_env";
+import { RealtimeProvider } from "./lib";
 dotenv.config({
   path: ".env",
 });
@@ -45,6 +46,7 @@ export default function RootLayout({
     <RootStyleRegistry>
       <MqttLoader />
       <TokenProvider token={token} envObject={envObject} />
+      <RealtimeProvider />
       {children}
     </RootStyleRegistry>
   );

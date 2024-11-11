@@ -326,7 +326,7 @@ export default function AdminLayout({
         position="right"
         size={"xs"}
       >
-        <ComponentAdmin_UIDrawerNotifikasi
+        {/* <ComponentAdmin_UIDrawerNotifikasi
           data={dataNotif}
           onLoadReadNotif={(val: any) => {
             setDataNotif(val);
@@ -339,7 +339,7 @@ export default function AdminLayout({
           onLoadCountNotif={(val: any) => {
             setCountNotif(val);
           }}
-        />
+        /> */}
       </Drawer>
     </>
   );

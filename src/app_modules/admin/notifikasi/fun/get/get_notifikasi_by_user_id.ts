@@ -20,5 +20,6 @@ export default async function adminNotifikasi_getByUserId() {
       userRoleId: "2",
     },
   });
+  
   return data;
 }

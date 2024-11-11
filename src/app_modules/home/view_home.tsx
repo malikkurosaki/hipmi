@@ -17,6 +17,9 @@ export default function HomeView({
   dataJob: MODEL_JOB[];
   countNotifikasi: number;
 }) {
+  
+
+
   return (
     <>
       <UIGlobal_LayoutTamplate

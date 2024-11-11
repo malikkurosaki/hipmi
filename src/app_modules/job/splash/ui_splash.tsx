@@ -5,19 +5,18 @@ import { useShallowEffect } from "@mantine/hooks";
 import { IconBriefcase } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 
-import { gs_job_hot_menu, gs_job_status } from "../global_state";
-import { useRouter } from "next/navigation";
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
+import { useRouter } from "next/navigation";
+import { gs_job_hot_menu } from "../global_state";
 
 export function Job_UiSplash() {
   const router = useRouter();
   const [hotMenu, setHotMenu] = useAtom(gs_job_hot_menu);
-  const [status, setStatus] = useAtom(gs_job_status);
+
 
   useShallowEffect(() => {
     setTimeout(() => {
       setHotMenu(1);
-      setStatus("Publish");
       router.replace(RouterJob.beranda, { scroll: false });
     }, 1000);
   }, []);

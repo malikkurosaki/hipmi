@@ -1,8 +1,7 @@
+import { DIRECTORY_ID } from "@/app/lib";
 import { TokenStorage } from "@/app/lib/token";
 import {
-  Box,
   Button,
-  Card,
   Center,
   FileButton,
   Image,
@@ -14,12 +13,8 @@ import { useShallowEffect } from "@mantine/hooks";
 import { IconCamera, IconUpload } from "@tabler/icons-react";
 import { useState } from "react";
 import { AccentColor, MainColor } from "../_global/color";
-import {
-  ComponentGlobal_NotifikasiBerhasil,
-  ComponentGlobal_NotifikasiPeringatan,
-} from "../_global/notif_global";
-import { DIRECTORY_ID } from "@/app/lib";
 import { funGlobal_UploadToStorage } from "../_global/fun";
+import { ComponentGlobal_NotifikasiPeringatan } from "../_global/notif_global";
 
 export default function Coba_UploadFile() {
   const [data, setData] = useState<any>();

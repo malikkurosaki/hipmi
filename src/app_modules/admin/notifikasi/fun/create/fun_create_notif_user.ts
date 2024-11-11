@@ -23,6 +23,7 @@ export default async function adminNotifikasi_funCreateToUser({
       userRoleId: "1",
     },
   });
-
+  
+  if (!create) return { status: 400, message: "Gagal mengirim notifikasi" };
   return { status: 201, message: "Berhasil mengirim notifikasi" };
 }

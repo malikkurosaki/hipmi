@@ -1,13 +1,14 @@
 "use client";
-import { useShallowEffect } from "@mantine/hooks";
-import { useState } from "react";
+import { useHookstate } from "@hookstate/core";
+import { Button, Stack } from "@mantine/core";
+
 
 export default function Page() {
-  const [origin, setOrigin] = useState("");
-  useShallowEffect(() => {
-    if (typeof window !== "undefined") {
-      setOrigin(window.location.origin);
-    }
-  }, []);
-  return <div>{origin}</div>;
+
+  return (
+    <Stack>
+
+      <Button onClick={() => {}}>tekan</Button>
+    </Stack>
+  );
 }

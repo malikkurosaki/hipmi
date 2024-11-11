@@ -1,35 +1,45 @@
 "use client";
 
-import { Badge, Card, Divider, Group, Stack, Text } from "@mantine/core";
-import { IconCheck, IconChecks } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import notifikasi_funUpdateIsReadById from "../fun/update/fun_update_is_read_by_user_id";
-import { MODEL_NOTIFIKASI } from "../model/interface";
-import { redirectDetailForumPage } from "./path/forum";
-import { redirectJobPage } from "./path/job";
+import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { gs_job_hot_menu } from "@/app_modules/job/global_state";
+import { Badge, Card, Divider, Group, Stack, Text } from "@mantine/core";
+import { IconCheck, IconChecks } from "@tabler/icons-react";
+import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
 import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
-import { redirectVotingPage } from "./path/voting";
-import { redirectEventPage } from "./path/event";
+import { MODEL_NOTIFIKASI } from "../model/interface";
 import { redirectDetailCollaborationPage } from "./path/collaboration";
 import { redirectDonasiPage } from "./path/donasi";
+import { redirectEventPage } from "./path/event";
+import { redirectDetailForumPage } from "./path/forum";
 import { redirectInvestasiPage } from "./path/investasi";
+import { notifikasi_jobCheckStatus } from "./path/job";
+import { redirectVotingPage } from "./path/voting";
+import { useState } from "react";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 
 export function ComponentNotifiaksi_CardView({
   data,
   onLoadData,
   activePage,
-  onSetMenu,
+  // onSetMenu,
+  activeKategori,
 }: {
   data: MODEL_NOTIFIKASI;
   onLoadData: (val: any) => void;
   activePage: number;
-  onSetMenu: (val: any) => void;
+  // onSetMenu: (val: any) => void;
+  activeKategori: string;
 }) {
   const router = useRouter();
+  const [visible, setVisible] = useState(false);
+
+  const [jobMenuId, setJobMenuId] = useAtom(gs_job_hot_menu);
+
   return (
     <>
       <Card
@@ -45,73 +55,77 @@ export function ComponentNotifiaksi_CardView({
         }}
         my={"xs"}
         onClick={async () => {
-          await notifikasi_funUpdateIsReadById({
-            notifId: data?.id,
-          });
+          if (data?.kategoriApp === "JOB") {
+            const checkStatus = await notifikasi_jobCheckStatus({
+              appId: data.appId,
+              dataId: data.id,
+            });
 
-          // if (updateIsRead.status === 200) {
-          //   const loadData = await notifikasi_getByUserId({
-          //     page: activePage + 1,
+            if (checkStatus?.success) {
+              const loadListNotifikasi = await notifikasi_getByUserId({
+                page: 1,
+                kategoriApp: activeKategori,
+              });
+
+              onLoadData(loadListNotifikasi);
+
+              const path = RouterJob.status({
+                id: checkStatus.statusId as string,
+              });
+
+              setJobMenuId(2);
+              router.push(path);
+              setVisible(true);
+            }
+          }
+
+          // data?.kategoriApp === "FORUM" &&
+          //   redirectDetailForumPage({
+          //     data: data,
+          //     router: router,
           //   });
-          //   onLoadData(loadData);
-          // }
 
-          data?.kategoriApp === "JOB" &&
-            redirectJobPage({
-              data: data,
-              router: router,
-              onSetPage(val) {
-                onSetMenu(val);
-              },
-            });
+          // data?.kategoriApp === "VOTING" &&
+          //   redirectVotingPage({
+          //     data: data,
+          //     router: router,
+          //     onSetPage(val) {
+          //       // onSetMenu(val);
+          //     },
+          //   });
 
-          data?.kategoriApp === "FORUM" &&
-            redirectDetailForumPage({
-              data: data,
-              router: router,
-            });
+          // data?.kategoriApp === "EVENT" &&
+          //   redirectEventPage({
+          //     data: data,
+          //     router: router,
+          //     onSetPage(val) {
+          //       // onSetMenu(val);
+          //     },
+          //   });
 
-          data?.kategoriApp === "VOTING" &&
-            redirectVotingPage({
-              data: data,
-              router: router,
-              onSetPage(val) {
-                onSetMenu(val);
-              },
-            });
+          // data?.kategoriApp === "COLLABORATION" &&
+          //   redirectDetailCollaborationPage({
+          //     data: data,
+          //     router: router,
+          //   });
 
-          data?.kategoriApp === "EVENT" &&
-            redirectEventPage({
-              data: data,
-              router: router,
-              onSetPage(val) {
-                onSetMenu(val);
-              },
-            });
+          // data.kategoriApp === "DONASI" &&
+          //   redirectDonasiPage({
+          //     data: data,
+          //     router: router,
+          //     onSetPage(val) {
+          //       // onSetMenu(val);
+          //     },
+          //   });
 
-          data?.kategoriApp === "COLLABORATION" &&
-            redirectDetailCollaborationPage({
-              data: data,
-              router: router,
-            });
-
-          data.kategoriApp === "DONASI" &&
-            redirectDonasiPage({
-              data: data,
-              router: router,
-              onSetPage(val) {
-                onSetMenu(val);
-              },
-            });
-
-          data.kategoriApp === "INVESTASI" &&
-            redirectInvestasiPage({
-              data: data,
-              router: router,
-              onSetPage(val) {
-                onSetMenu(val);
-              },
-            });
+          // data.kategoriApp === "INVESTASI" &&
+          //   redirectInvestasiPage({
+          //     data: data,
+          //     router: router,
+          //     onSetPage(val) {
+          //       // onSetMenu(val);
+          //     },
+          //   });
         }}
       >
         {/* <pre>{JSON.stringify(e, null, 2)}</pre> */}
@@ -181,6 +195,7 @@ export function ComponentNotifiaksi_CardView({
               </Group>
             )}
           </Group>
+          {visible && <ComponentGlobal_CardLoadingOverlay />}
         </Card.Section>
       </Card>
     </>

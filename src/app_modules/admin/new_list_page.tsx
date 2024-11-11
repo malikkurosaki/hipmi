@@ -67,33 +67,33 @@ export const newListAdminPage = [
 
   //Donasi
   {
-    id: "Donaasi",
+    id: "Donasi",
     name: "Donasi",
     path: "",
     icon: <IconHeartHandshake />,
     child: [
       {
-        id: "Donaasi_1",
+        id: "Donasi_1",
         name: "Dashboard",
         path: RouterAdminDonasi.main,
       },
       {
-        id: "Donaasi_2",
+        id: "Donasi_2",
         name: "Table Publish",
         path: RouterAdminDonasi.table_publish,
       },
       {
-        id: "Donaasi_3",
+        id: "Donasi_3",
         name: "Table Review",
         path: RouterAdminDonasi.table_review,
       },
       {
-        id: "Donaasi_4",
+        id: "Donasi_4",
         name: "Table Reject",
         path: RouterAdminDonasi.table_reject,
       },
       {
-        id: "Donaasi_5",
+        id: "Donasi_5",
         name: "Table Kategori",
         path: RouterAdminDonasi.table_kategori,
       },

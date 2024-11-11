@@ -1,35 +1,26 @@
 import { MODEL_NOTIFIKASI } from "@/app_modules/notifikasi/model/interface";
-import _ from "lodash";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { ComponentAdminGlobal_NotifikasiPeringatan } from "../../_admin_global/admin_notifikasi/notifikasi_peringatan";
+import { admin_funCheckStatusJob } from "../fun/get/fun_check_status_job";
+import adminNotifikasi_funUpdateIsReadById from "../fun/update/fun_update_is_read_by_id";
 
-export default async function adminNotifikasi_findRouterJob({
+export async function adminNotifikasi_findRouterJob({
   data,
-  router,
-  onChangeNavbar,
-  onToggleNavbar,
 }: {
   data: MODEL_NOTIFIKASI;
-  router: AppRouterInstance;
-  onChangeNavbar: (val: any) => void;
-  onToggleNavbar: (val: any) => void;
 }) {
-  const routeName = "/dev/admin/job/child/";
+  const check = await admin_funCheckStatusJob({ id: data.appId });
 
-  if (data.status === "Review") {
-    router.push(routeName + _.lowerCase(data.status));
-    onChangeNavbar({
-      id: 6,
-      childId: 63,
+  if (check) {
+    const udpateReadNotifikasi = await adminNotifikasi_funUpdateIsReadById({
+      notifId: data?.id,
     });
-  }
 
-  if (data.status === "Draft") {
-    router.push(routeName + "review");
-    onChangeNavbar({
-      id: 6,
-      childId: 63,
-    });
+    if (udpateReadNotifikasi.status == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    ComponentAdminGlobal_NotifikasiPeringatan("Status telah dirubah oleh user");
   }
-
-  onToggleNavbar(true);
 }
