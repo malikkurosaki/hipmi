@@ -355,6 +355,12 @@ async function onPublish({
         pushNotificationTo: "USER",
         dataMessage: dataNotifikasi,
       });
+
+      WibuRealtime.setData({
+        type: "trigger",
+        pushNotificationTo: "USER",
+        dataMessage: dataNotifikasi,
+      });
     }
 
     ComponentGlobal_NotifikasiBerhasil(publish.message);

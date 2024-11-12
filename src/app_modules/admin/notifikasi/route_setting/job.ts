@@ -10,15 +10,21 @@ export async function adminNotifikasi_findRouterJob({
 }) {
   const check = await admin_funCheckStatusJob({ id: data.appId });
 
-  if (check) {
+  if (check.status == 200) {
     const udpateReadNotifikasi = await adminNotifikasi_funUpdateIsReadById({
       notifId: data?.id,
     });
 
     if (udpateReadNotifikasi.status == 200) {
-      return true;
+      return {
+        success: true,
+        statusName: check.statusName,
+      };
     } else {
-      return false;
+      return {
+        success: false,
+        statusName: ""
+      };
     }
   } else {
     ComponentAdminGlobal_NotifikasiPeringatan("Status telah dirubah oleh user");

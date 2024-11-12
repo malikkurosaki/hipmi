@@ -15,7 +15,6 @@ import {
   gs_investas_menu,
   gs_investasi_status,
 } from "@/app_modules/investasi/g_state";
-import { gs_job_hot_menu } from "@/app_modules/job/global_state";
 import {
   gs_vote_hotMenu,
   gs_vote_status,
@@ -72,6 +71,7 @@ export function Notifikasi_UiView({
     setData(loadNotifikasi as any);
   }
 
+
   return (
     <>
       <Stack spacing={"xs"}>
@@ -97,6 +97,7 @@ export function Notifikasi_UiView({
                 }}
                 onClick={() => {
                   setActiveKategori(e.name);
+                  // onLoadDataNotifikasi(e.name);
                 }}
               >
                 {e.name}
@@ -105,64 +106,69 @@ export function Notifikasi_UiView({
           </Flex>
         </Box>
 
-        {_.isEmpty(data) ? (
-          <ComponentGlobal_IsEmptyData text="Tidak ada pemberitahuan" />
-        ) : (
-          <ScrollOnly
-            height="85vh"
-            renderLoading={() => (
-              <Center mt={"lg"}>
-                <ComponentGlobal_Loader />
-              </Center>
-            )}
-            data={data}
-            setData={setData}
-            moreData={async () => {
-              const loadData = await notifikasi_getByUserId({
-                page: activePage + 1,
-              });
-              setActivePage((val) => val + 1);
+        <Box>
+          {_.isEmpty(data) ? (
+            <ComponentGlobal_IsEmptyData text="Tidak ada pemberitahuan" />
+          ) : (
+            <ScrollOnly
+              height="85vh"
+              renderLoading={() => (
+                <Center mt={"lg"}>
+                  <ComponentGlobal_Loader />
+                </Center>
+              )}
+              data={data}
+              setData={setData}
+              moreData={async () => {
+                const loadData = await notifikasi_getByUserId({
+                  page: activePage + 1,
+                  kategoriApp: activeKategori,
+                });
+                // console.log(loadData);
 
-              return loadData;
-            }}
-          >
-            {(item) => (
-              <ComponentNotifiaksi_CardView
-                data={item}
-                onLoadData={setData}
-                activePage={activePage}
-                activeKategori={activeKategori}
-                // onSetMenu={(val) => {
-                //   if (item?.kategoriApp === "JOB") {
+                setActivePage((val) => val + 1);
 
-                //     setJobMenuId(val.menuId);
-                //     // setJobStatus(val.status);
-                //   }
+                return loadData;
+              }}
+            >
+              {(item) => (
+                <ComponentNotifiaksi_CardView
+                  data={item}
+                  onLoadData={setData}
+                  activePage={activePage}
+                  activeKategori={activeKategori}
+                  // onSetMenu={(val) => {
+                  //   if (item?.kategoriApp === "JOB") {
 
-                //   // if (item?.kategoriApp === "VOTING") {
-                //   //   setVoteMenu(val.menuId);
-                //   //   setVoteStatus(val.status);
-                //   // }
+                  //     setJobMenuId(val.menuId);
+                  //     // setJobStatus(val.status);
+                  //   }
 
-                //   // if (item?.kategoriApp === "EVENT") {
-                //   //   setEventMenu(val.menuId);
-                //   //   setEventStatus(val.status);
-                //   // }
+                  //   // if (item?.kategoriApp === "VOTING") {
+                  //   //   setVoteMenu(val.menuId);
+                  //   //   setVoteStatus(val.status);
+                  //   // }
 
-                //   // if (item?.kategoriApp === "DONASI") {
-                //   //   setDonasiMenu(val.menuId);
-                //   //   setDonasiStatus(val.status);
-                //   // }
+                  //   // if (item?.kategoriApp === "EVENT") {
+                  //   //   setEventMenu(val.menuId);
+                  //   //   setEventStatus(val.status);
+                  //   // }
 
-                //   // if (item?.kategoriApp === "INVESTASI") {
-                //   //   setInvestasiMenu(val.menuId);
-                //   //   setInvestasiStatus(val.status);
-                //   // }
-                // }}
-              />
-            )}
-          </ScrollOnly>
-        )}
+                  //   // if (item?.kategoriApp === "DONASI") {
+                  //   //   setDonasiMenu(val.menuId);
+                  //   //   setDonasiStatus(val.status);
+                  //   // }
+
+                  //   // if (item?.kategoriApp === "INVESTASI") {
+                  //   //   setInvestasiMenu(val.menuId);
+                  //   //   setInvestasiStatus(val.status);
+                  //   // }
+                  // }}
+                />
+              )}
+            </ScrollOnly>
+          )}
+        </Box>
       </Stack>
     </>
   );

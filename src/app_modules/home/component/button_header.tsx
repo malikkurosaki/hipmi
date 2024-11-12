@@ -1,6 +1,6 @@
 "use client";
 
-import { gs_realtimeData, gs_user_ntf } from "@/app/lib/global_state";
+import { gs_user_ntf } from "@/app/lib/global_state";
 import { RouterNotifikasi } from "@/app/lib/router_hipmi/router_notifikasi";
 import { RouterUserSearch } from "@/app/lib/router_hipmi/router_user_search";
 import {
@@ -66,15 +66,16 @@ export function ComponentHome_ButtonHeaderRight({
   // Notifikasi
   const [countNtf, setCountNtf] = useState(countNotifikasi);
   const [newUserNtf, setNewUserNtf] = useAtom(gs_user_ntf);
-  const [dataRealtime, setDataRealtime] = useAtom(gs_realtimeData);
 
   useShallowEffect(() => {
-    if (dataRealtime?.userId == dataUser.id) {
-      setCountNtf((e) => e + newUserNtf), setNewUserNtf(0);
-    }
+    // console.log(newUserNtf, "new notif");
+    // console.log(countNtf, "count ntf");
+    setCountNtf(countNtf + newUserNtf);
+    setNewUserNtf(0);
 
     onLoadNotifikasi({
       onLoad(val) {
+        console.log(val, "total notif");
         setCountNtf(val);
       },
     });

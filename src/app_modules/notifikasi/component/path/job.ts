@@ -13,9 +13,7 @@ export async function notifikasi_jobCheckStatus({
     id: appId,
   });
 
-  console.log(check);
-
-  if (check) {
+  if (check.status == 200) {
     const updateReadNotifikasi = await notifikasi_funUpdateIsReadById({
       notifId: dataId,
     });
