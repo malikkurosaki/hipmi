@@ -49,7 +49,7 @@ export function ComponentAdmin_UIDrawerNotifikasi({
         data: data,
       });
 
-      if (checkJob) {
+      if (checkJob?.success) {
         setVisible(true);
         setDataId(data.id);
 
@@ -65,7 +65,9 @@ export function ComponentAdmin_UIDrawerNotifikasi({
             childId: "Job_3",
           });
 
-          router.push("/dev/admin/job/child/review");
+          const path = `/dev/admin/job/child/${checkJob.statusName}`;
+
+          router.push(path);
           setVisible(false);
           setDataId("");
         }

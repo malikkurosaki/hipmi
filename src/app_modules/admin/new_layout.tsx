@@ -39,11 +39,13 @@ export function Admin_NewLayout({
   user,
   countNotifikasi,
   listNotifikasi,
+  version,
 }: {
   children: React.ReactNode;
   user: MODEL_USER;
   countNotifikasi: number;
   listNotifikasi: MODEL_NOTIFIKASI[];
+  version: string
 }) {
   const matches = useMediaQuery("(min-width: 1024px)");
   const [dataUser, setDataUser] = useState(user);
@@ -150,7 +152,7 @@ export function Admin_NewLayout({
                     <Divider />
                     <Group position="center">
                       <Text fs={"italic"} c={"white"} fz={"xs"}>
-                        V 1.0.0
+                        V {version}
                       </Text>
                     </Group>
                   </Stack>

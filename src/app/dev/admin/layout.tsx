@@ -4,6 +4,8 @@ import { Admin_NewLayout } from "@/app_modules/admin";
 import adminNotifikasi_countNotifikasi from "@/app_modules/admin/notifikasi/fun/count/count_is_read";
 import adminNotifikasi_getByUserId from "@/app_modules/admin/notifikasi/fun/get/get_notifikasi_by_user_id";
 import React from "react";
+import versionUpdate from "../../../../package.json";
+
 
 export default async function Layout({
   children,
@@ -11,6 +13,7 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   const userLoginId = await funGetUserIdByToken();
+  const version = versionUpdate.version
 
   const dataUser = await funGlobal_getUserById({ userId: userLoginId });
   const listNotifikasi = await adminNotifikasi_getByUserId();
@@ -30,6 +33,7 @@ export default async function Layout({
         user={dataUser as any}
         countNotifikasi={countNotifikasi as any}
         listNotifikasi={listNotifikasi as []}
+        version={version}
       >
         {children}
       </Admin_NewLayout>

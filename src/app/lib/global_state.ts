@@ -21,3 +21,7 @@ export const gs_realtimeData = atom<IRealtimeData | null>(null);
 export const gs_admin_ntf = atom<number>(0);
 export const gs_user_ntf = atom<number>(0);
 
+// job
+
+export const gs_job_trigger = atom<boolean>(false)
+

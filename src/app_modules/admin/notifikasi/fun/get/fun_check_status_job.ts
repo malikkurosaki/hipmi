@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/app/lib";
+import _ from "lodash";
 
 export async function admin_funCheckStatusJob({ id }: { id: string }) {
   const data = await prisma.job.findUnique({
@@ -12,9 +13,11 @@ export async function admin_funCheckStatusJob({ id }: { id: string }) {
     },
   });
 
-  if (data?.MasterStatus?.name === "Review") {
-    return true;
-  } else {
-    return false;
-  }
+  if (!data)
+    return { status: 400, message: "Id tidak ditemukan", statusName: "" };
+  return {
+    status: 200,
+    message: "Id ditemukan",
+    statusName: _.lowerCase(data.MasterStatus?.name),
+  };
 }

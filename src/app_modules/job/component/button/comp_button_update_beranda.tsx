@@ -8,17 +8,20 @@ export function Job_ComponentButtonUpdateBeranda({
   onSetData,
   onSetIsNewPost,
 }: {
-  onSetData: (val: any) => void;
+  onSetData: (val : {data: any[]}) => void;
   onSetIsNewPost: (val: any) => void;
 }) {
   const [scroll, scrollTo] = useWindowScroll();
   const [isLoading, setIsLoading] = useState(false);
 
   async function onLoadData() {
+    setIsLoading(true)
     const loadData = await job_getAllListPublish({ page: 1 });
 
     if (loadData) {
-      onSetData(loadData);
+      onSetData({
+        data: loadData,
+      });
       onSetIsNewPost(false);
       setIsLoading(false);
     }

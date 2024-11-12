@@ -5,23 +5,29 @@ import { useAtom } from "jotai";
 import { WibuRealtime } from "wibu-pkg";
 import {
   gs_admin_ntf,
+  gs_job_trigger,
   gs_realtimeData,
   gs_user_ntf,
   IRealtimeData,
 } from "./global_state";
 
 export type TypeNotification = {
-  type: "message" | "notification" 
+  type: "message" | "notification" | "trigger";
   pushNotificationTo: "ADMIN" | "USER";
   dataMessage?: IRealtimeData;
   userLoginId?: string;
 };
 
 const WIBU_REALTIME_TOKEN: any = process.env.NEXT_PUBLIC_WIBU_REALTIME_TOKEN;
-export default function RealtimeProvider() {
+export default function RealtimeProvider({
+  userLoginId,
+}: {
+  userLoginId: string;
+}) {
   const [dataRealtime, setDataRealtime] = useAtom(gs_realtimeData);
   const [newAdminNtf, setNewAdminNtf] = useAtom(gs_admin_ntf);
   const [newUserNtf, setNewUserNtf] = useAtom(gs_user_ntf);
+  const [triggerJob, setTriggerJob] = useAtom(gs_job_trigger);
 
   useShallowEffect(() => {
     WibuRealtime.init({
@@ -30,14 +36,21 @@ export default function RealtimeProvider() {
           setNewAdminNtf((e) => e + 1);
         }
 
-        if (data.type == "notification" && data.pushNotificationTo == "USER") {
+        if (
+          data.type == "notification" &&
+          data.pushNotificationTo == "USER" &&
+          data.dataMessage?.userId == userLoginId
+        ) {
           setNewUserNtf((e) => e + 1);
           setDataRealtime(data.dataMessage as any);
         }
 
-        if (data.type == "message") {
-          // console.log(data.dataMessage);
-          setDataRealtime(data.dataMessage as any);
+        if (
+          data.type == "trigger" &&
+          data.pushNotificationTo == "USER" &&
+          data.dataMessage?.kategoriApp == "JOB"
+        ) {
+          setTriggerJob(true);
         }
       },
       project: "hipmi",

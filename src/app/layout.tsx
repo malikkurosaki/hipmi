@@ -5,6 +5,7 @@ import { TokenProvider } from "./lib/token";
 import dotenv from "dotenv";
 import { ServerEnv } from "./lib/server_env";
 import { RealtimeProvider } from "./lib";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 dotenv.config({
   path: ".env",
 });
@@ -35,18 +36,20 @@ const envObject = {
 };
 ServerEnv.set(envObject);
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const userLoginId = await funGetUserIdByToken();
+
   if (!token) return <>Require Token Storage</>;
 
   return (
     <RootStyleRegistry>
-      <MqttLoader />
-      <TokenProvider token={token} envObject={envObject} />
-      <RealtimeProvider />
+      {/* <MqttLoader />
+      <TokenProvider token={token} envObject={envObject} /> */}
+      <RealtimeProvider userLoginId={userLoginId} />
       {children}
     </RootStyleRegistry>
   );
