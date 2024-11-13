@@ -45,14 +45,14 @@ export function Notifikasi_UiView({
   );
 
   // Kategori App
-  const [voteMenu, setVoteMenu] = useAtom(gs_vote_hotMenu);
-  const [voteStatus, setVoteStatus] = useAtom(gs_vote_status);
-  const [eventMenu, setEventMenu] = useAtom(gs_event_hotMenu);
-  const [eventStatus, setEventStatus] = useAtom(gs_event_status);
-  const [donasiMenu, setDonasiMenu] = useAtom(gs_donasi_hot_menu);
-  const [donasiStatus, setDonasiStatus] = useAtom(gs_donasi_tabs_posting);
-  const [investasiMenu, setInvestasiMenu] = useAtom(gs_investas_menu);
-  const [investasiStatus, setInvestasiStatus] = useAtom(gs_investasi_status);
+  // const [voteMenu, setVoteMenu] = useAtom(gs_vote_hotMenu);
+  // const [voteStatus, setVoteStatus] = useAtom(gs_vote_status);
+  // const [eventMenu, setEventMenu] = useAtom(gs_event_hotMenu);
+  // const [eventStatus, setEventStatus] = useAtom(gs_event_status);
+  // const [donasiMenu, setDonasiMenu] = useAtom(gs_donasi_hot_menu);
+  // const [donasiStatus, setDonasiStatus] = useAtom(gs_donasi_tabs_posting);
+  // const [investasiMenu, setInvestasiMenu] = useAtom(gs_investas_menu);
+  // const [investasiStatus, setInvestasiStatus] = useAtom(gs_investasi_status);
 
   useShallowEffect(() => {
     onLoadDataNotifikasi({ kategoriApp: activeKategori });
@@ -65,7 +65,7 @@ export function Notifikasi_UiView({
   }) {
     const loadNotifikasi = await notifikasi_getByUserId({
       page: 1,
-      kategoriApp: kategoriApp,
+      kategoriApp: "Semua",
     });
 
     setData(loadNotifikasi as any);
@@ -96,7 +96,8 @@ export function Notifikasi_UiView({
                     activeKategori === e.name ? MainColor.yellow : "GrayText",
                 }}
                 onClick={() => {
-                  setActiveKategori(e.name);
+
+                  // setActiveKategori(e.name);
                   // onLoadDataNotifikasi(e.name);
                 }}
               >
@@ -106,7 +107,7 @@ export function Notifikasi_UiView({
           </Flex>
         </Box>
 
-        <Box>
+        {/* <Box>
           {_.isEmpty(data) ? (
             <ComponentGlobal_IsEmptyData text="Tidak ada pemberitahuan" />
           ) : (
@@ -168,7 +169,7 @@ export function Notifikasi_UiView({
               )}
             </ScrollOnly>
           )}
-        </Box>
+        </Box> */}
       </Stack>
     </>
   );

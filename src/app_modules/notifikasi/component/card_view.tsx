@@ -5,35 +5,26 @@ import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 import { gs_job_hot_menu } from "@/app_modules/job/global_state";
 import { Badge, Card, Divider, Group, Stack, Text } from "@mantine/core";
 import { IconCheck, IconChecks } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
-import { MODEL_NOTIFIKASI } from "../model/interface";
-import { redirectDetailCollaborationPage } from "./path/collaboration";
-import { redirectDonasiPage } from "./path/donasi";
-import { redirectEventPage } from "./path/event";
-import { redirectDetailForumPage } from "./path/forum";
-import { redirectInvestasiPage } from "./path/investasi";
-import { notifikasi_jobCheckStatus } from "./path/job";
-import { redirectVotingPage } from "./path/voting";
 import { useState } from "react";
-import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
+import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
+import { gs_notifikasi_kategori_app } from "../lib";
+import { MODEL_NOTIFIKASI } from "../model/interface";
+import { notifikasi_jobCheckStatus } from "./path/job";
 
 export function ComponentNotifiaksi_CardView({
   data,
   onLoadData,
-  activePage,
-  // onSetMenu,
-  activeKategori,
+  categoryPage,
 }: {
   data: MODEL_NOTIFIKASI;
   onLoadData: (val: any) => void;
-  activePage: number;
-  // onSetMenu: (val: any) => void;
-  activeKategori: string;
+  categoryPage: any;
 }) {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
@@ -64,7 +55,7 @@ export function ComponentNotifiaksi_CardView({
             if (checkStatus?.success) {
               const loadListNotifikasi = await notifikasi_getByUserId({
                 page: 1,
-                kategoriApp: activeKategori,
+                kategoriApp: "Job",
               });
 
               onLoadData(loadListNotifikasi);
