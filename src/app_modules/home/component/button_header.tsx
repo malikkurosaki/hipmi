@@ -59,13 +59,11 @@ export function ComponentHome_ButtonHeaderRight({
 }) {
   const router = useRouter();
   const [isLoadingBell, setIsLoadingBell] = useState(false);
-  const [activeKategori, setActiveKategori] = useAtom(
-    gs_notifikasi_kategori_app
-  );
 
   // Notifikasi
   const [countNtf, setCountNtf] = useState(countNotifikasi);
   const [newUserNtf, setNewUserNtf] = useAtom(gs_user_ntf);
+  const [categoryPage, setCategoryPage] = useAtom(gs_notifikasi_kategori_app);
 
   useShallowEffect(() => {
     // console.log(newUserNtf, "new notif");
@@ -113,9 +111,12 @@ export function ComponentHome_ButtonHeaderRight({
           if (dataUser?.Profile === null) {
             ComponentGlobal_NotifikasiPeringatan("Lengkapi Profile");
           } else {
-            router.push(RouterNotifikasi.main, { scroll: false });
+            router.push(RouterNotifikasi.categoryApp({ name: "semua" }), {
+              scroll: false,
+            });
+            setCategoryPage("Semua");
             setIsLoadingBell(true);
-            setActiveKategori("Semua");
+            // setActiveKategori("Semua");
           }
         }}
       >

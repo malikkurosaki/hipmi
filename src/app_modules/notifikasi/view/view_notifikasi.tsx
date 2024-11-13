@@ -4,9 +4,11 @@ import { Notifikasi_UiLayout, Notifikasi_UiView } from "../ui";
 export default function Notifikasi_MainView({
   listNotifikasi,
   masterKategori,
+  kategoriName,
 }: {
   listNotifikasi: any[];
   masterKategori: any[];
+  kategoriName: string
 }) {
   return (
     <>

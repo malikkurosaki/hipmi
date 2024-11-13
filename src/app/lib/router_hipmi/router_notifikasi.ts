@@ -1,3 +1,4 @@
 export const RouterNotifikasi = {
-  main: "/dev/notifikasi",
+  // main: ({ name }: { name: string }) => `/dev/notifikasi/${name}`,
+  categoryApp: ({ name }: { name: string }) => `/dev/notifikasi/${name}`,
 };

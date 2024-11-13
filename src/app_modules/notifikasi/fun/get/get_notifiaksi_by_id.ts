@@ -4,12 +4,22 @@ import prisma from "@/app/lib/prisma";
 import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import _ from "lodash";
 
+type ICategoryapp =
+  | "Semua"
+  | "Event"
+  | "Job"
+  | "Voting"
+  | "Donasi"
+  | "Investasi"
+  | "Forum"
+  | "Collaboration";
+
 export default async function notifikasi_getByUserId({
   page,
   kategoriApp,
 }: {
   page: number;
-  kategoriApp?: string;
+  kategoriApp?: ICategoryapp
 }) {
   console.log(page, "ini page");
   console.log(kategoriApp, "ini kategori");
