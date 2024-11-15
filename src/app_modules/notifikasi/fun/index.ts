@@ -1,3 +1,4 @@
+import { notifikasi_funEventCheckStatus } from "./check/fun_check_event_status";
 import notifikasiToAdmin_funCreate from "./create/create_notif_to_admin";
 import notifikasiToUser_funCreate from "./create/create_notif_to_user";
 import { notifikasiToUser_CreateGroupCollaboration } from "./create/create_notif_to_user_collaboration";
@@ -7,3 +8,4 @@ export { notifikasiToAdmin_funCreate };
 export { notifikasiToUser_CreateGroupCollaboration };
 export { notifikasiToUser_CreateKabarDonasi };
 export { notifikasiToUser_funCreate };
+export { notifikasi_funEventCheckStatus };

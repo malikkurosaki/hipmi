@@ -6,19 +6,17 @@ import adminNotifikasi_getByUserId from "@/app_modules/admin/notifikasi/fun/get/
 import React from "react";
 import versionUpdate from "../../../../package.json";
 
-
 export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const userLoginId = await funGetUserIdByToken();
-  const version = versionUpdate.version
+  const version = versionUpdate.version;
 
   const dataUser = await funGlobal_getUserById({ userId: userLoginId });
-  const listNotifikasi = await adminNotifikasi_getByUserId();
+  const listNotifikasi = await adminNotifikasi_getByUserId({page: 1});
   const countNotifikasi = await adminNotifikasi_countNotifikasi();
-
 
   return (
     <>

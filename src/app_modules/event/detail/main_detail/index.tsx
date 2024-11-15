@@ -13,6 +13,8 @@ import { Event_getListPesertaById } from "../../fun/get/get_list_peserta_by_id";
 import { MODEL_EVENT, MODEL_EVENT_PESERTA } from "../../model/interface";
 import mqtt_client from "@/util/mqtt_client";
 import notifikasiToUser_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_user";
+import { IRealtimeData } from "@/app/lib/global_state";
+import { WibuRealtime } from "wibu-pkg";
 
 export default function Event_DetailMain({
   dataEvent,
@@ -82,29 +84,35 @@ async function onJoin(
 
   const res = await Event_funJoinEvent(body as any);
   if (res.status === 200) {
-    if (userLoginId !== res.data?.Event?.authorId) {
-      const dataNotif = {
-        appId: res?.data?.Event?.id,
-        userId: res?.data?.Event?.authorId,
-        pesan: res?.data?.Event?.title,
-        status: "Peserta Event",
-        kategoriApp: "EVENT",
-        title: "Peserta baru telah masuk !",
-      };
+    // const dataNotif = {
+    //   appId: res?.data?.Event?.id,
+    //   userId: res?.data?.Event?.authorId,
+    //   pesan: res?.data?.Event?.title,
+    //   status: "Peserta Event",
+    //   kategoriApp: "EVENT",
+    //   title: "Peserta baru telah masuk !",
+    // };
 
-      const createNotifikasi = await notifikasiToUser_funCreate({
-        data: dataNotif as any,
+    const dataNotifikasi: IRealtimeData = {
+      appId: res?.data?.Event?.id as any,
+      status: "Peserta Event" as any,
+      userId: res.data?.Event?.authorId as any,
+      pesan: res.data?.Event?.title as any,
+      kategoriApp: "EVENT",
+      title: "Peserta baru event anda !",
+    };
+
+    const createNotifikasi = await notifikasiToUser_funCreate({
+      data: dataNotifikasi as any,
+    });
+
+    if (createNotifikasi.status === 201) {
+      WibuRealtime.setData({
+        type: "notification",
+        pushNotificationTo: "USER",
+        dataMessage: dataNotifikasi,
       });
 
-      if (createNotifikasi.status === 201) {
-        mqtt_client.publish(
-          "USER",
-          JSON.stringify({
-            userId: dataNotif.userId,
-            count: 1,
-          })
-        );
-      }
     }
 
     const resPeserta = await Event_getListPesertaById(eventId);

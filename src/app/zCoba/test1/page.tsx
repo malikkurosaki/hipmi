@@ -30,7 +30,6 @@ export default function Page() {
       pesan: "apa kabar",
       title: "coba",
       kategoriApp: "INVESTASI",
-      userRole: "ADMIN",
     };
 
     WibuRealtime.setData({

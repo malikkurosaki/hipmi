@@ -19,11 +19,8 @@ export default async function notifikasi_getByUserId({
   kategoriApp,
 }: {
   page: number;
-  kategoriApp?: ICategoryapp
+  kategoriApp?: ICategoryapp;
 }) {
-  console.log(page, "ini page");
-  console.log(kategoriApp, "ini kategori");
-
   const userLoginId = await funGetUserIdByToken();
   const takeData = 10;
   const skipData = page * takeData - takeData;

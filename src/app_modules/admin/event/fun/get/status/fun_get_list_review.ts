@@ -17,7 +17,7 @@ export async function adminEvent_funGetListReview({
     skip: skipData,
     take: takeData,
     orderBy: {
-      tanggal: "desc",
+      tanggal: "asc",
     },
     where: {
       eventMaster_StatusId: "2",
