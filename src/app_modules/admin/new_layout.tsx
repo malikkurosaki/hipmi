@@ -45,7 +45,7 @@ export function Admin_NewLayout({
   user: MODEL_USER;
   countNotifikasi: number;
   listNotifikasi: MODEL_NOTIFIKASI[];
-  version: string
+  version: string;
 }) {
   const matches = useMediaQuery("(min-width: 1024px)");
   const [dataUser, setDataUser] = useState(user);
@@ -66,7 +66,7 @@ export function Admin_NewLayout({
   }, [newAdminNtf, setNewAdminNtf]);
 
   async function onLoadListNotifikasi() {
-    const loadNotifikasi = await adminNotifikasi_getByUserId();
+    const loadNotifikasi = await adminNotifikasi_getByUserId({ page: 1 });
 
     setDataNotifikasi(loadNotifikasi as []);
     setDrawerNotifikasi(true);
@@ -189,6 +189,7 @@ export function Admin_NewLayout({
         size={"xs"}
       >
         <ComponentAdmin_UIDrawerNotifikasi
+          newAdminNtf={newAdminNtf}
           listNotifikasi={dataNotifikasi}
           onChangeNavbar={(val: { id: string; childId: string }) => {
             setActiveId(val.id);

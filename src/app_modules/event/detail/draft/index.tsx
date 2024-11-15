@@ -1,5 +1,6 @@
 "use client";
 
+import { IRealtimeData } from "@/app/lib/global_state";
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
@@ -7,11 +8,11 @@ import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_glo
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
-import mqtt_client from "@/util/mqtt_client";
 import { Button, Group, Stack } from "@mantine/core";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { WibuRealtime } from "wibu-pkg";
 import { Event_ComponentSkeletonDetailData } from "../../component";
 import ComponentEvent_DetailData from "../../component/detail/detail_data";
 import { Event_funDeleteById } from "../../fun/delete/fun_delete";
@@ -26,8 +27,6 @@ export default function Event_DetailDraft({
   eventId: string;
 }) {
   const [data, setData] = useState<MODEL_EVENT | null>(dataEvent);
-
-  console.log(data, "ini data dipage");
 
   if (!data) {
     return (
@@ -83,7 +82,16 @@ function ButtonAction({
 
     const res = await Event_funEditStatusById("2", eventId);
     if (res.status === 200) {
-      const dataNotif: any = {
+      // const dataNotif: any = {
+      //   appId: res.data?.id as any,
+      //   status: res.data?.EventMaster_Status?.name as any,
+      //   userId: res.data?.authorId as any,
+      //   pesan: res.data?.title as any,
+      //   kategoriApp: "EVENT",
+      //   title: "Mengajukan review",
+      // };
+
+      const dataNotifikasi: IRealtimeData = {
         appId: res.data?.id as any,
         status: res.data?.EventMaster_Status?.name as any,
         userId: res.data?.authorId as any,
@@ -93,20 +101,24 @@ function ButtonAction({
       };
 
       const notif = await notifikasiToAdmin_funCreate({
-        data: dataNotif as any,
+        data: dataNotifikasi as any,
       });
 
       if (notif.status === 201) {
-        mqtt_client.publish(
-          "ADMIN",
-          JSON.stringify({
-            count: 1,
-          })
-        );
-        ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
-        setLoadingAjukan(true);
-        router.replace(RouterEvent.status({ id: "2" }));
+        WibuRealtime.setData({
+          type: "notification",
+          pushNotificationTo: "ADMIN",
+        });
+
+        WibuRealtime.setData({
+          type: "trigger",
+          pushNotificationTo: "ADMIN",
+          dataMessage: dataNotifikasi,
+        });
       }
+      ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
+      setLoadingAjukan(true);
+      router.replace(RouterEvent.status({ id: "2" }));
     } else {
       ComponentGlobal_NotifikasiGagal(res.message);
     }

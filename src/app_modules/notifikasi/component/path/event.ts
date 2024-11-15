@@ -1,36 +1,53 @@
-import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { MODEL_NOTIFIKASI } from "../../model/interface";
+import { notifikasi_funEventCheckStatus } from "../../fun";
+import notifikasi_getByUserId from "../../fun/get/get_notifiaksi_by_id";
+import notifikasi_funUpdateIsReadById from "../../fun/update/fun_update_is_read_by_user_id";
+import notifikasi_countUserNotifikasi from "../../fun/count/fun_count_by_id";
 
-export function redirectEventPage({
-  data,
+export async function notifikasi_eventCheckStatus({
+  appId,
+  dataId,
+  categoryPage,
   router,
-  onSetPage,
+  onLoadDataEvent,
+  onSetEventMenuId,
+  onSetVisible,
+  onLoadCountNtf,
 }: {
-  data: MODEL_NOTIFIKASI;
+  appId: string;
+  dataId: string;
+  categoryPage: string
   router: AppRouterInstance;
-  onSetPage: (val: any) => void;
+  onLoadDataEvent: (val: any) => void;
+  onSetEventMenuId(val: number): void;
+  onSetVisible(val: boolean): void;
+  onLoadCountNtf(val: number): void;
 }) {
-  const path = RouterEvent.status({id: ""});
+  const check = await notifikasi_funEventCheckStatus({ id: appId });
 
-  if (data.status === "Publish") {
-    onSetPage({
-      menuId: 2,
-      status: data.status,
+  if (check.status == 200) {
+    const loadListNotifikasi = await notifikasi_getByUserId({
+      page: 1,
+      kategoriApp: categoryPage as any,
     });
-    router.push(path, { scroll: false });
-  }
-  //   console.log(data)
+    onLoadDataEvent(loadListNotifikasi);
 
-  if (data.status === "Reject") {
-    onSetPage({
-      menuId: 2,
-      status: data.status,
+    const loadCountNotifikasi = await notifikasi_countUserNotifikasi();
+    onLoadCountNtf(loadCountNotifikasi);
+
+    const updateReadNotifikasi = await notifikasi_funUpdateIsReadById({
+      notifId: dataId,
     });
-    router.push(path, { scroll: false });
-  }
 
-  if (data.status === "Peserta Event") {
-    router.push(RouterEvent.detail_main + data.appId, { scroll: false });
+    if (updateReadNotifikasi.status == 200) {
+      onSetVisible(true);
+
+      const path = `/dev/event/detail/${check.statusName}/${appId}`;
+      onSetEventMenuId(1);
+      router.push(path, { scroll: false });
+    }
+  } else {
+    ComponentGlobal_NotifikasiPeringatan("Status tidak ditemukan");
   }
 }

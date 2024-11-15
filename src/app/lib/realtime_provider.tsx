@@ -5,7 +5,10 @@ import { useAtom } from "jotai";
 import { WibuRealtime } from "wibu-pkg";
 import {
   gs_admin_ntf,
-  gs_job_trigger,
+  gs_adminEventTriggerReview,
+  gs_adminJobTriggerReview,
+  gs_eventTriggerBeranda,
+  gs_jobTiggerBeranda,
   gs_realtimeData,
   gs_user_ntf,
   IRealtimeData,
@@ -27,7 +30,21 @@ export default function RealtimeProvider({
   const [dataRealtime, setDataRealtime] = useAtom(gs_realtimeData);
   const [newAdminNtf, setNewAdminNtf] = useAtom(gs_admin_ntf);
   const [newUserNtf, setNewUserNtf] = useAtom(gs_user_ntf);
-  const [triggerJob, setTriggerJob] = useAtom(gs_job_trigger);
+
+  // JOB
+  const [isTriggerJobBeranda, setIsTriggerJobBeranda] =
+    useAtom(gs_jobTiggerBeranda);
+  const [isAdminJob_TriggerReview, setIsAdminJob_TriggerReview] = useAtom(
+    gs_adminJobTriggerReview
+  );
+
+  // EVENT
+  const [isTriggerEventBeranda, setIsTriggerEventBeranca] = useAtom(
+    gs_eventTriggerBeranda
+  );
+  const [isAdminEvent_TriggerReview, setIsAdminEvent_TriggerReview] = useAtom(
+    gs_adminEventTriggerReview
+  );
 
   useShallowEffect(() => {
     WibuRealtime.init({
@@ -36,6 +53,7 @@ export default function RealtimeProvider({
           setNewAdminNtf((e) => e + 1);
         }
 
+        // Notifikasi ke semua user , yang datanya di acc admin
         if (
           data.type == "notification" &&
           data.pushNotificationTo == "USER" &&
@@ -45,14 +63,52 @@ export default function RealtimeProvider({
           setDataRealtime(data.dataMessage as any);
         }
 
+        // JOB
+        if (
+          data.type == "trigger" &&
+          data.pushNotificationTo == "ADMIN" &&
+          data.dataMessage?.kategoriApp == "JOB"
+        ) {
+          setIsAdminJob_TriggerReview(true);
+        }
+
         if (
           data.type == "trigger" &&
           data.pushNotificationTo == "USER" &&
-          data.dataMessage?.kategoriApp == "JOB"
+          data.dataMessage?.kategoriApp == "JOB" &&
+          data.dataMessage.status == "Publish"
         ) {
-          setTriggerJob(true);
+          setIsTriggerJobBeranda(true);
+        }
+
+        // EVENT
+        if (
+          data.type == "trigger" &&
+          data.pushNotificationTo == "ADMIN" &&
+          data.dataMessage?.kategoriApp == "EVENT"
+        ) {
+          setIsAdminEvent_TriggerReview(true);
+        }
+
+        if (
+          data.type == "trigger" &&
+          data.pushNotificationTo == "USER" &&
+          data.dataMessage?.kategoriApp == "EVENT" &&
+          data.dataMessage.status == "Publish"
+        ) {
+          setIsTriggerEventBeranca(true);
+        }
+
+        if (
+          data.type == "notification" &&
+          data.pushNotificationTo == "USER" &&
+          data.dataMessage?.status == "Peserta Event" &&
+          userLoginId !== data.dataMessage?.userId
+        ) {
+          setNewUserNtf((e) => e + 1);
         }
       },
+
       project: "hipmi",
       WIBU_REALTIME_TOKEN: WIBU_REALTIME_TOKEN,
     });

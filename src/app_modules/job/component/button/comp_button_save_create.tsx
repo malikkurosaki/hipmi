@@ -39,7 +39,6 @@ function Job_ComponentButtonSaveCreate({
 
       if (createNoFile.status === 201) {
         const dataNotifikasi: IRealtimeData = {
-          userRole: "ADMIN",
           appId: createNoFile.data?.id as any,
           status: createNoFile.data?.MasterStatus?.name as any,
           userId: createNoFile.data?.authorId as any,
@@ -56,6 +55,12 @@ function Job_ComponentButtonSaveCreate({
           WibuRealtime.setData({
             type: "notification",
             pushNotificationTo: "ADMIN",
+          });
+
+          WibuRealtime.setData({
+            type: "trigger",
+            pushNotificationTo: "ADMIN",
+            dataMessage: dataNotifikasi,
           });
 
           setHotMenu(2);
@@ -82,9 +87,8 @@ function Job_ComponentButtonSaveCreate({
 
       if (createWithFile.status === 201) {
         const dataNotifikasi: IRealtimeData = {
-          userRole: "ADMIN",
           appId: createWithFile.data?.id as any,
-          status: "Review",
+          status: createWithFile.data?.MasterStatus?.name as any,
           userId: createWithFile.data?.authorId as any,
           pesan: createWithFile.data?.title as any,
           kategoriApp: "JOB",
@@ -99,6 +103,12 @@ function Job_ComponentButtonSaveCreate({
           WibuRealtime.setData({
             type: "notification",
             pushNotificationTo: "ADMIN",
+          });
+
+          WibuRealtime.setData({
+            type: "trigger",
+            pushNotificationTo: "ADMIN",
+            dataMessage: dataNotifikasi,
           });
 
           setHotMenu(2);

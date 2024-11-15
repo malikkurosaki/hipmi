@@ -1,20 +1,20 @@
 "use client";
 
-import { RouterJob } from "@/app/lib/router_hipmi/router_job";
+import { gs_count_ntf } from "@/app/lib/global_state";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
+import { gs_event_hotMenu } from "@/app_modules/event/global_state";
 import { gs_job_hot_menu } from "@/app_modules/job/global_state";
 import { Badge, Card, Divider, Group, Stack, Text } from "@mantine/core";
 import { IconCheck, IconChecks } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
-import { gs_notifikasi_kategori_app } from "../lib";
 import { MODEL_NOTIFIKASI } from "../model/interface";
+import { notifikasi_eventCheckStatus } from "./path/event";
 import { notifikasi_jobCheckStatus } from "./path/job";
 
 export function ComponentNotifiaksi_CardView({
@@ -28,8 +28,10 @@ export function ComponentNotifiaksi_CardView({
 }) {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
+  const [loadCountNtf, setLoadCountNtf] = useAtom(gs_count_ntf);
 
   const [jobMenuId, setJobMenuId] = useAtom(gs_job_hot_menu);
+  const [eventMenuId, setEventMenuId] = useAtom(gs_event_hotMenu);
 
   return (
     <>
@@ -46,28 +48,48 @@ export function ComponentNotifiaksi_CardView({
         }}
         my={"xs"}
         onClick={async () => {
+          // JOB
           if (data?.kategoriApp === "JOB") {
-            const checkStatus = await notifikasi_jobCheckStatus({
+            await notifikasi_jobCheckStatus({
               appId: data.appId,
               dataId: data.id,
+              categoryPage: categoryPage,
+              router: router,
+              onLoadDataJob(val) {
+                onLoadData(val);
+              },
+              onSetJobMenuId(val) {
+                setJobMenuId(val);
+              },
+              onSetVisible(val) {
+                setVisible(val);
+              },
+              onLoadCountNtf(val) {
+                setLoadCountNtf(val);
+              },
             });
+          }
 
-            if (checkStatus?.success) {
-              const loadListNotifikasi = await notifikasi_getByUserId({
-                page: 1,
-                kategoriApp: "Job",
-              });
-
-              onLoadData(loadListNotifikasi);
-
-              const path = RouterJob.status({
-                id: checkStatus.statusId as string,
-              });
-
-              setJobMenuId(2);
-              router.push(path);
-              setVisible(true);
-            }
+          // EVENT
+          if (data?.kategoriApp === "EVENT") {
+            await notifikasi_eventCheckStatus({
+              appId: data.appId,
+              dataId: data.id,
+              categoryPage: categoryPage,
+              router: router,
+              onLoadDataEvent(val) {
+                onLoadData(val);
+              },
+              onSetVisible(val) {
+                setVisible(val);
+              },
+              onSetEventMenuId(val) {
+                setEventMenuId(val);
+              },
+              onLoadCountNtf(val) {
+                setLoadCountNtf(val);
+              },
+            });
           }
 
           // data?.kategoriApp === "FORUM" &&

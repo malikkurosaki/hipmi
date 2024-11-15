@@ -189,10 +189,10 @@ export default function AdminLayout({
     </Box>
   ));
 
-  async function onLoadNotifikasi() {
-    const loadNotif = await adminNotifikasi_getByUserId();
-    setDataNotif(loadNotif as any);
-  }
+  // async function onLoadNotifikasi() {
+  //   const loadNotif = await adminNotifikasi_getByUserId();
+  //   setDataNotif(loadNotif as any);
+  // }
 
   useEffect(() => {
     mqtt_client.subscribe("ADMIN");
@@ -226,7 +226,7 @@ export default function AdminLayout({
                     radius={"xl"}
                     onClick={() => {
                       setIsNotif(true);
-                      onLoadNotifikasi();
+                      // onLoadNotifikasi();
                     }}
                   >
                     <Indicator

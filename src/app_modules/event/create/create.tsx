@@ -1,23 +1,13 @@
 "use client";
 
-import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
-import { Button, Select, Stack, TextInput, Textarea } from "@mantine/core";
+import { Select, Stack, TextInput, Textarea } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
-import { useAtom } from "jotai";
 import moment from "moment";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Event_ComponentCreateButton } from "../component";
 import ComponentEvent_ErrorMaximalInput from "../component/error_maksimal_input";
-import { Event_funCreate } from "../fun/create/fun_create";
-import { gs_event_hotMenu } from "../global_state";
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
-import mqtt_client from "@/util/mqtt_client";
-import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 
 export default function Event_Create({
   listTipeAcara,
@@ -26,11 +16,9 @@ export default function Event_Create({
   listTipeAcara: MODEL_DEFAULT_MASTER_OLD[];
   authorId: string;
 }) {
-  const router = useRouter();
   const [listTipe, setListTipe] = useState(listTipeAcara);
-  const [hotMenu, setHotMenu] = useAtom(gs_event_hotMenu);
   const [isTime, setIsTime] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+
 
   const [value, setValue] = useState({
     title: "",
@@ -159,81 +147,8 @@ export default function Event_Create({
           />
         </Stack>
 
-        <Button
-          style={{
-            transition: "0.5s",
-          }}
-          disabled={
-            value.title === "" ||
-            value.lokasi === "" ||
-            value.deskripsi === "" ||
-            value.eventMaster_TipeAcaraId === 0 ||
-            value.tanggal === "function Date() { [native code] }" ||
-            moment(value.tanggal).diff(moment(), "minutes") < 0
-          }
-          loaderPosition="center"
-          loading={isLoading ? true : false}
-          radius={"xl"}
-          mt={"xl"}
-          onClick={() => {
-            onSave(router, value, setHotMenu, setLoading);
-          }}
-          bg={MainColor.yellow}
-          color="yellow"
-        >
-          Simpan
-        </Button>
+        <Event_ComponentCreateButton value={value} />
       </Stack>
     </>
   );
-}
-
-async function onSave(
-  router: AppRouterInstance,
-  value: any,
-  setHotMenu: any,
-  setLoading: any
-) {
-  // if (_.values(value).includes(""))
-  //   return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
-  // if (value.eventMaster_TipeAcaraId === 0)
-  //   return ComponentGlobal_NotifikasiPeringatan("Pilih Tipe Acara");
-  // if (moment(value.tanggal).format() === "Invalid date")
-  //   return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
-  // if (
-  //   moment(value.tanggal.toISOString().toString()).diff(moment(), "minutes") < 0
-  // )
-  //   return null;
-
-  const res = await Event_funCreate(value);
-  if (res.status === 201) {
-    const dataNotif: any = {
-      appId: res.data?.id as any,
-      status: res.data?.EventMaster_Status?.name as any,
-      userId: res.data?.authorId as any,
-      pesan: res.data?.title as any,
-      kategoriApp: "EVENT",
-      title: "Event baru",
-    };
-
-    const notif = await notifikasiToAdmin_funCreate({
-      data: dataNotif as any,
-    });
-
-    if (notif.status === 201) {
-      mqtt_client.publish(
-        "ADMIN",
-        JSON.stringify({
-          count: 1,
-        })
-      );
-
-      ComponentGlobal_NotifikasiBerhasil(res.message);
-      setHotMenu(1);
-      setLoading(true);
-      router.push(RouterEvent.status({ id: "2" }), { scroll: false });
-    }
-  } else {
-    ComponentGlobal_NotifikasiGagal(res.message);
-  }
 }

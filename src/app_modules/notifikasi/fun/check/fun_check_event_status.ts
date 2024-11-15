@@ -3,13 +3,13 @@
 import { prisma } from "@/app/lib";
 import _ from "lodash";
 
-export async function notifikasi_funJobCheckStatus({ id }: { id: string }) {
-  const data = await prisma.job.findUnique({
+export async function notifikasi_funEventCheckStatus({ id }: { id: string }) {
+  const data = await prisma.event.findUnique({
     where: {
       id: id,
     },
     select: {
-      MasterStatus: true,
+      EventMaster_Status: true,
     },
   });
 
@@ -18,6 +18,6 @@ export async function notifikasi_funJobCheckStatus({ id }: { id: string }) {
   return {
     status: 200,
     message: "Berhasil di cek",
-    statusName: _.lowerCase(data.MasterStatus?.name),
+    statusName: _.lowerCase(data.EventMaster_Status?.name),
   };
 }

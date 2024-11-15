@@ -18,6 +18,8 @@ import { MODEL_JOB } from "../../model/interface";
 import { funGlobal_DeleteFileById } from "@/app_modules/_global/fun";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 import { job_getOneById } from "../../fun/get/get_one_by_id";
+import { IRealtimeData } from "@/app/lib/global_state";
+import { WibuRealtime } from "wibu-pkg";
 
 export default function Job_DetailDraft({
   dataJob,
@@ -71,7 +73,7 @@ function ButtonAction({ jobId, imageId }: { jobId: string; imageId: string }) {
     if (update.status === 200) {
       setLoading(true);
 
-      const dataNotif = {
+      const dataNotifikasi: IRealtimeData = {
         appId: update.data?.id as any,
         status: update.data?.MasterStatus?.name as any,
         userId: update.data?.authorId as any,
@@ -81,11 +83,20 @@ function ButtonAction({ jobId, imageId }: { jobId: string; imageId: string }) {
       };
 
       const notif = await notifikasiToAdmin_funCreate({
-        data: dataNotif as any,
+        data: dataNotifikasi as any,
       });
 
       if (notif.status === 201) {
-        mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
+        WibuRealtime.setData({
+          type: "notification",
+          pushNotificationTo: "ADMIN",
+        });
+
+        WibuRealtime.setData({
+          type: "trigger",
+          pushNotificationTo: "ADMIN",
+          dataMessage: dataNotifikasi,
+        });
       }
 
       ComponentGlobal_NotifikasiBerhasil("Berhasil Diajukan");
