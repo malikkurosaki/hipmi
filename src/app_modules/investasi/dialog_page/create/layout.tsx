@@ -3,17 +3,13 @@
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 import {
-  AppShell,
-  CloseButton,
   Footer,
   Group,
-  Header,
-  Text,
+  Text
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { IconAlertTriangle } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import router from "next/router";
 import React from "react";
 
 export default function LayoutDialogPageCreateInvestasi({

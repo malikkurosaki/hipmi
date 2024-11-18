@@ -1,16 +1,13 @@
 "use client";
 
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
-import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
-import { ActionIcon, AppShell } from "@mantine/core";
-import { IconDotsVertical, IconPencilPlus } from "@tabler/icons-react";
-import React from "react";
-import getOneInvestasiById from "../fun/get_one_investasi_by_id";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
-import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
-import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
-import { useRouter } from "next/navigation";
 import UIGlobal_Drawer from "@/app_modules/_global/ui/ui_drawer";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import { ActionIcon } from "@mantine/core";
+import { IconDotsVertical, IconPencilPlus } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 export default function LayoutListEditBeritaInvestasi({
   children,

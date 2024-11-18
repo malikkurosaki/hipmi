@@ -2,22 +2,20 @@
 
 import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import {
-  AppShell,
-  Header,
-  Group,
-  CloseButton,
   ActionIcon,
-  Footer,
-  Center,
   Button,
-  Text,
+  Center,
+  CloseButton,
+  Footer,
+  Group,
+  Header,
+  Text
 } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { gs_investas_menu } from "../../g_state";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
-import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 
 export default function LayoutStatusTransaksiInvestasi_Gagal({
   children,

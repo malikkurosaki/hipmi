@@ -5,7 +5,7 @@ import {
   Box,
   Container,
   rem,
-  ScrollArea
+  ScrollArea,
 } from "@mantine/core";
 import React from "react";
 import { AccentColor, MainColor } from "../color/color_pallet";
@@ -16,7 +16,7 @@ export default function UIGlobal_LayoutTamplate({
   footer,
 }: {
   children: React.ReactNode;
-  header?: React.ReactNode;
+  header: React.ReactNode;
   footer?: React.ReactNode;
 }) {
   return (
@@ -52,21 +52,18 @@ export default function UIGlobal_LayoutTamplate({
 export function UIHeader({ header }: { header: React.ReactNode }) {
   return (
     <>
-      {header ? (
-        <Box
-          h={"8vh"}
-          style={{
-            zIndex: 10,
-          }}
-          w={"100%"}
-          pos={"sticky"}
-          top={0}
-        >
-          {header}
-        </Box>
-      ) : (
-        ""
-      )}
+      <Box
+        h={"8vh"}
+        style={{
+          zIndex: 10,
+          alignContent: "center",
+        }}
+        w={"100%"}
+        pos={"sticky"}
+        top={0}
+      >
+        {header}
+      </Box>
     </>
   );
 }

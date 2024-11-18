@@ -47,11 +47,15 @@ export default function UIGlobal_LayoutHeaderTamplate({
 
   return (
     <>
-      <Header
-        height={"8vh"}
+      <Box
+        h={"8vh"}
+        // w={"100%"}
+        // pos={"sticky"}
+        // top={0}
+        // style={{
+        //   zIndex: 10,
+        // }}
         sx={{
-          //   borderRadius: "0px 0px 20px 20px",
-          //   borderBottom: `1px solid ${AccentColor.blue}`,
           borderStyle: "none",
         }}
         bg={backgroundColor ? backgroundColor : MainColor.darkblue}
@@ -110,7 +114,7 @@ export default function UIGlobal_LayoutHeaderTamplate({
             </ActionIcon>
           )}
         </Group>
-      </Header>
+      </Box>
     </>
   );
 }
