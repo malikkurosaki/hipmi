@@ -217,25 +217,7 @@ export default function AdminInvestasi_DetailReview({
         }
       />
 
-      {/* <Modal
-        opened={openModal}
-        onClose={() => setOpenModal(false)}
-        title="Alasan Penolakan"
-        size={"sm"}
-        centered
-        withCloseButton={false}
-      >
-        <Stack>
-          <Textarea
-            autosize
-            minRows={3}
-            maxRows={5}
-            placeholder="Masukan alasan penolakan"
-            onChange={(val) => setReport(val.target.value)}
-          />
-          <Group position="right"></Group>
-        </Stack>
-      </Modal> */}
+  
     </>
   );
 }

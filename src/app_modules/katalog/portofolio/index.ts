@@ -5,7 +5,6 @@ import Portofolio_UiDetail from "./ui/ui_detail_portofolio";
 import Portofolio_EditDataBisnis from "./edit/data/ui_edit_data";
 import Portofolio_EditLogoBisnis from "./edit/logo/ui_edit_logo";
 import Portofolio_EditMedsosBisnis from "./edit/medsos/ui_edit_medsos";
-import LayoutPortofolio_EditBisnis from "./edit/layout";
 import LayoutPortofolio_EditDataBisnis from "./edit/data/layout";
 import LayoutPortofolio_EditLogoBisnis from "./edit/logo/layout";
 import LayoutPortofolio_EditMedsosBisnis from "./edit/medsos/layout";
@@ -18,7 +17,6 @@ export {
   Portofolio_EditDataBisnis,
   Portofolio_EditLogoBisnis,
   Portofolio_EditMedsosBisnis,
-  LayoutPortofolio_EditBisnis,
   LayoutPortofolio_EditDataBisnis,
   LayoutPortofolio_EditLogoBisnis,
   LayoutPortofolio_EditMedsosBisnis,

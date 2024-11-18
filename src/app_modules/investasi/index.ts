@@ -1,15 +1,7 @@
 import InvestasiCreate from "./create/view";
 import InvestasiCreateLayout from "./create/layout";
-import UploadGambarInvestasi from "./upload/view";
-import LayoutUploadGambarInvestasi from "./upload/layout";
 import DetailInvestasi from "./detail/view";
 import LayoutDetailInvestasi from "./detail/layout";
-import ProsesInvestasi from "./proses_investasi/view";
-import LayoutProsesInvestasi from "./proses_investasi/layout";
-import UploadBuktiTransferInvestasi from "./upload_bukti/view";
-import LayoutBuktiTransferInvestasi from "./upload_bukti/layout";
-import CountDownTransaksiInvestasi from "./dialog_page/transaksi_saham/view";
-import LayoutCountDownTransaksiInvestasi from "./dialog_page/transaksi_saham/layout";
 import PortofolioInvestasi from "./portofolio/view";
 import LayoutPortofolioInvestasi from "./portofolio/layout";
 import EditIntroInvestasi from "./edit_intro/view";
@@ -28,12 +20,7 @@ import DetailBeritaInvestasi from "./detail_berita/view";
 import LayoutDetailBeritaInvestasi from "./detail_berita/layout";
 import BeritaInvestasi from "./berita/view";
 import LayoutBeritaInvestasi from "./berita/layout";
-import MetodeTransferInvestasi from "./metode_transfer/view";
-import LayoutMetodeTransferInvestasi from "./metode_transfer/layout";
-import TransferInvestasi from "./transfer/view";
-import LayoutTransferInvestasi from "./transfer/layout";
 import StatusTransaksiInvestasi from "./status_transaksi/view";
-import LayoutStatusTransaksiInvestasi from "./status_transaksi/layout";
 import DialogPageCreateInvestasi from "./dialog_page/create/view";
 import LayoutDialogPageCreateInvestasi from "./dialog_page/create/layout";
 import CreateBeritaInvestasi from "./create_berita/view";
@@ -52,7 +39,6 @@ import LayoutDetailRejectInvestasi from "./detail_portofolio/reject/layout";
 import TransaksiInvestasi from "./transaksi/view";
 import LayoutTransaksiInvestasi from "./transaksi/layout";
 import StatusTransaksiInvestasi_Gagal from "./status_transaksi/gagal/view";
-import LayoutStatusTransaksiInvestasi_Gagal from "./status_transaksi/gagal/layout";
 import UploadProspektusInvestasi from "./upload_prospektus/view";
 import LayoutUploadProspektusInvestasi from "./upload_prospektus/layout";
 import UploadDokumenInvestasi from "./upload_dokumen/view";
@@ -65,16 +51,8 @@ import LayoutStatusPesananInvestasi from "./status_pesanan/layout";
 export {
   InvestasiCreate,
   InvestasiCreateLayout,
-  UploadGambarInvestasi,
-  LayoutUploadGambarInvestasi,
   DetailInvestasi,
   LayoutDetailInvestasi,
-  ProsesInvestasi,
-  LayoutProsesInvestasi,
-  UploadBuktiTransferInvestasi,
-  LayoutBuktiTransferInvestasi,
-  CountDownTransaksiInvestasi as KonfirmasiBuktiInvestasi,
-  LayoutCountDownTransaksiInvestasi as LayoutKonfirmasiBuktiInvestasi,
   PortofolioInvestasi,
   LayoutPortofolioInvestasi,
   EditIntroInvestasi,
@@ -93,12 +71,7 @@ export {
   LayoutDetailBeritaInvestasi,
   BeritaInvestasi,
   LayoutBeritaInvestasi as LayoutBeritaInvestasi,
-  MetodeTransferInvestasi,
-  LayoutMetodeTransferInvestasi,
-  TransferInvestasi,
-  LayoutTransferInvestasi,
   StatusTransaksiInvestasi,
-  LayoutStatusTransaksiInvestasi,
   DialogPageCreateInvestasi,
   LayoutDialogPageCreateInvestasi,
   CreateBeritaInvestasi,
@@ -117,7 +90,6 @@ export {
   TransaksiInvestasi,
   LayoutTransaksiInvestasi,
   StatusTransaksiInvestasi_Gagal,
-  LayoutStatusTransaksiInvestasi_Gagal,
   UploadProspektusInvestasi,
   LayoutUploadProspektusInvestasi,
   UploadDokumenInvestasi,

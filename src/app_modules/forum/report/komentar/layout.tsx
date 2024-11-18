@@ -1,10 +1,8 @@
 "use client";
 
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
-import React from "react";
-import ComponentForum_HeaderRataKiri from "../../component/header/header_rata_kiri";
-import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import React from "react";
 
 export default function LayoutForum_ReportKomentar({
   children,

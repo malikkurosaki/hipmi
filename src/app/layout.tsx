@@ -1,6 +1,6 @@
 import MqttLoader from "@/util/mqtt_loader";
 import RootStyleRegistry from "./emotion";
-import "./globals.css";
+// import "./globals.css";
 import { TokenProvider } from "./lib/token";
 import dotenv from "dotenv";
 import { ServerEnv } from "./lib/server_env";

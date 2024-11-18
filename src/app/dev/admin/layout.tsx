@@ -6,7 +6,7 @@ import adminNotifikasi_getByUserId from "@/app_modules/admin/notifikasi/fun/get/
 import React from "react";
 import versionUpdate from "../../../../package.json";
 
-export default async function Layout({
+export  default async function Layout({
   children,
 }: {
   children: React.ReactNode;

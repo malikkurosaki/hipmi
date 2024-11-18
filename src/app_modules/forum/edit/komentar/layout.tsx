@@ -1,9 +1,10 @@
 "use client";
 
-import { AppShell } from "@mantine/core";
+import {
+  UIGlobal_LayoutHeaderTamplate,
+  UIGlobal_LayoutTamplate,
+} from "@/app_modules/_global/ui";
 import React from "react";
-import ComponentForum_HeaderTamplate from "../../component/header/header_tamplate";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 
 export default function LayoutForum_EditKomentar({
   children,
@@ -12,11 +13,11 @@ export default function LayoutForum_EditKomentar({
 }) {
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
-        header={<ComponentForum_HeaderTamplate title="Edit Komentar" />}
+      <UIGlobal_LayoutTamplate
+        header={<UIGlobal_LayoutHeaderTamplate title="Edit Komentar" />}
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

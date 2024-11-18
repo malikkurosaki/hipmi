@@ -1,48 +1,19 @@
 "use client";
 
-import mqtt_client from "@/util/mqtt_client";
 import {
-  ActionIcon,
-  AppShell,
   Box,
-  Burger,
-  Center,
-  Divider,
-  Drawer,
-  Group,
-  Header,
-  Indicator,
-  MediaQuery,
-  NavLink,
-  Navbar,
-  ScrollArea,
-  Stack,
-  Text,
-  Title,
-  useMantineTheme,
+  useMantineTheme
 } from "@mantine/core";
-import {
-  IconBell,
-  IconCircleDot,
-  IconCircleDotFilled,
-  IconUserSquareRounded,
-} from "@tabler/icons-react";
 import { useAtom } from "jotai";
-import _ from "lodash";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { MODEL_USER } from "../home/model/interface";
 import { MODEL_NOTIFIKASI } from "../notifikasi/model/interface";
-import Admin_Logout from "./_admin_global/logout";
 import {
   gs_admin_hotMenu,
   gs_admin_subMenu,
   gs_layout_admin_isNavbarOpen,
 } from "./global_state";
-import { listAdminPage } from "./list_page";
-import adminNotifikasi_getByUserId from "./notifikasi/fun/get/get_notifikasi_by_user_id";
-import { ComponentAdmin_UIDrawerNotifikasi } from "./notifikasi/ui_drawer_notifikasi";
-import { AccentColor, MainColor } from "../_global/color";
 
 export default function AdminLayout({
   children,
@@ -71,142 +42,145 @@ export default function AdminLayout({
   const [countNotif, setCountNotif] = useState(countNotifikasi);
   const [isNavbarOpen, setIsNavbarOpen] = useAtom(gs_layout_admin_isNavbarOpen);
 
-  const developerNavbar = listAdminPage.map((e, i) => (
-    <Box key={e.id}>
-      <NavLink
-        style={{ color: "white" }}
-        sx={{
-          ":hover": {
-            backgroundColor: "transparent",
-          },
-        }}
-        fw={activeId === e.id ? "bold" : "normal"}
-        icon={
-          // active === e.id ? loading ? <Loader size={10} /> : e.icon : e.icon
-          e.icon
-        }
-        label={<Text size={"sm"}>{e.name}</Text>}
-        onClick={() => {
-          setLoading(true);
-          setActiveId(e.id);
-          setActiveChild(null);
-          e.path === "" ? router.push(e.child[0].path) : router.push(e.path);
-          e.path === "" ? setActiveChild(e.child[0].id) : "";
-        }}
-      >
-        {_.isEmpty(e.child) ? (
-          ""
-        ) : (
-          <Box>
-            {e.child.map((v, ii) => (
-              <Box key={v.id}>
-                <NavLink
-                  style={{ color: "white" }}
-                  sx={{
-                    ":hover": {
-                      backgroundColor: "transparent",
-                    },
-                  }}
-                  fw={activeChild === v.id ? "bold" : "normal"}
-                  label={<Text>{v.name}</Text>}
-                  icon={
-                    activeChild === v.id ? (
-                      <IconCircleDotFilled size={10} />
-                    ) : (
-                      <IconCircleDot size={10} />
-                    )
-                  }
-                  onClick={() => {
-                    setActiveId(e.id);
-                    setActiveChild(v.id);
-                    router.push(v.path);
-                  }}
-                />
-              </Box>
-            ))}
-          </Box>
-        )}
-      </NavLink>
-    </Box>
-  ));
+  // const developerNavbar = listAdminPage.map((e, i) => (
+  //   <Box key={e.id}>
+  //     <NavLink
+  //       style={{ color: "white" }}
+  //       sx={{
+  //         ":hover": {
+  //           backgroundColor: "transparent",
+  //         },
+  //       }}
+  //       fw={activeId === e.id ? "bold" : "normal"}
+  //       icon={
+  //         // active === e.id ? loading ? <Loader size={10} /> : e.icon : e.icon
+  //         e.icon
+  //       }
+  //       label={<Text size={"sm"}>{e.name}</Text>}
+  //       onClick={() => {
+  //         setLoading(true);
+  //         setActiveId(e.id);
+  //         setActiveChild(null);
+  //         e.path === "" ? router.push(e.child[0].path) : router.push(e.path);
+  //         e.path === "" ? setActiveChild(e.child[0].id) : "";
+  //       }}
+  //     >
+  //       {_.isEmpty(e.child) ? (
+  //         ""
+  //       ) : (
+  //         <Box>
+  //           {e.child.map((v, ii) => (
+  //             <Box key={v.id}>
+  //               <NavLink
+  //                 style={{ color: "white" }}
+  //                 sx={{
+  //                   ":hover": {
+  //                     backgroundColor: "transparent",
+  //                   },
+  //                 }}
+  //                 fw={activeChild === v.id ? "bold" : "normal"}
+  //                 label={<Text>{v.name}</Text>}
+  //                 icon={
+  //                   activeChild === v.id ? (
+  //                     <IconCircleDotFilled size={10} />
+  //                   ) : (
+  //                     <IconCircleDot size={10} />
+  //                   )
+  //                 }
+  //                 onClick={() => {
+  //                   setActiveId(e.id);
+  //                   setActiveChild(v.id);
+  //                   router.push(v.path);
+  //                 }}
+  //               />
+  //             </Box>
+  //           ))}
+  //         </Box>
+  //       )}
+  //     </NavLink>
+  //   </Box>
+  // ));
 
-  const bukanDeveloper = listAdminPage.slice(0, -1);
-  const adminNavbar = bukanDeveloper.map((e) => (
-    <Box key={e.id}>
-      <NavLink
-        style={{ color: "white" }}
-        opened={e?.id === activeId && isNavbarOpen ? true : false}
-        sx={{
-          ":hover": {
-            backgroundColor: "transparent",
-          },
-        }}
-        fw={activeId === e.id ? "bold" : "normal"}
-        icon={e.icon}
-        label={<Text size={"sm"}>{e.name}</Text>}
-        onClick={() => {
-          setLoading(true);
-          setActiveId(e.id);
-          setActiveChild(null);
-          e.path === "" ? router.push(e.child[0].path) : router.push(e.path);
-          e.path === "" ? setActiveChild(e.child[0].id) : "";
+  // const bukanDeveloper = listAdminPage.slice(0, -1);
+  // const adminNavbar = bukanDeveloper.map((e) => (
+  //   <Box key={e.id}>
+  //     <NavLink
+  //       style={{ color: "white" }}
+  //       opened={e?.id === activeId && isNavbarOpen ? true : false}
+  //       sx={{
+  //         ":hover": {
+  //           backgroundColor: "transparent",
+  //         },
+  //       }}
+  //       fw={activeId === e.id ? "bold" : "normal"}
+  //       icon={e.icon}
+  //       label={<Text size={"sm"}>{e.name}</Text>}
+  //       onClick={() => {
+  //         setLoading(true);
+  //         setActiveId(e.id);
+  //         setActiveChild(null);
+  //         e.path === "" ? router.push(e.child[0].path) : router.push(e.path);
+  //         e.path === "" ? setActiveChild(e.child[0].id) : "";
 
-          setIsNavbarOpen(true);
-        }}
-      >
-        {_.isEmpty(e.child) ? (
-          ""
-        ) : (
-          <Box>
-            {e.child.map((v, ii) => (
-              <Box key={v.id}>
-                <NavLink
-                  sx={{
-                    ":hover": {
-                      backgroundColor: "transparent",
-                    },
-                  }}
-                  fw={activeChild === v.id ? "bold" : "normal"}
-                  label={<Text>{v.name}</Text>}
-                  icon={
-                    activeChild === v.id ? (
-                      <IconCircleDotFilled size={10} />
-                    ) : (
-                      <IconCircleDot size={10} />
-                    )
-                  }
-                  onClick={() => {
-                    setActiveId(e.id);
-                    setActiveChild(v.id);
-                    router.push(v.path);
-                  }}
-                />
-              </Box>
-            ))}
-          </Box>
-        )}
-      </NavLink>
-    </Box>
-  ));
+  //         setIsNavbarOpen(true);
+  //       }}
+  //     >
+  //       {_.isEmpty(e.child) ? (
+  //         ""
+  //       ) : (
+  //         <Box>
+  //           {e.child.map((v, ii) => (
+  //             <Box key={v.id}>
+  //               <NavLink
+  //                 sx={{
+  //                   ":hover": {
+  //                     backgroundColor: "transparent",
+  //                   },
+  //                 }}
+  //                 fw={activeChild === v.id ? "bold" : "normal"}
+  //                 label={<Text>{v.name}</Text>}
+  //                 icon={
+  //                   activeChild === v.id ? (
+  //                     <IconCircleDotFilled size={10} />
+  //                   ) : (
+  //                     <IconCircleDot size={10} />
+  //                   )
+  //                 }
+  //                 onClick={() => {
+  //                   setActiveId(e.id);
+  //                   setActiveChild(v.id);
+  //                   router.push(v.path);
+  //                 }}
+  //               />
+  //             </Box>
+  //           ))}
+  //         </Box>
+  //       )}
+  //     </NavLink>
+  //   </Box>
+  // ));
 
   // async function onLoadNotifikasi() {
   //   const loadNotif = await adminNotifikasi_getByUserId();
   //   setDataNotif(loadNotif as any);
   // }
 
-  useEffect(() => {
-    mqtt_client.subscribe("ADMIN");
+  // useEffect(() => {
+  //   mqtt_client.subscribe("ADMIN");
 
-    mqtt_client.on("message", (topic: any, message: any) => {
-      const data = JSON.parse(message.toString());
-      // console.log(data);
-      setCountNotif(countNotif + data.count);
-    });
-  }, [countNotif]);
+  //   mqtt_client.on("message", (topic: any, message: any) => {
+  //     const data = JSON.parse(message.toString());
+  //     // console.log(data);
+  //     setCountNotif(countNotif + data.count);
+  //   });
+  // }, [countNotif]);
 
   return (
     <>
-      <AppShell
+    <Box>{children}</Box>
+
+
+      {/* 
         padding="md"
         navbarOffsetBreakpoint="md"
         asideOffsetBreakpoint="sm"
@@ -216,7 +190,6 @@ export default function AdminLayout({
             bg={AccentColor.darkblue}
             style={{ color: "white", borderStyle: "none" }}
           >
-            {/* Web View */}
             <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
               <Group position="apart" align="center" h={"100%"} px={"md"}>
                 <Title order={3}>Dashboard Admin</Title>
@@ -245,7 +218,6 @@ export default function AdminLayout({
               </Group>
             </MediaQuery>
 
-            {/* Mobile View */}
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>
               <Group h={50} align="center" px={"md"} position="apart">
                 <Burger
@@ -256,7 +228,6 @@ export default function AdminLayout({
                   mr="xl"
                 />
                 <Title order={6}>Dashboard Admin</Title>
-                {/* <Admin_Logout /> */}
                 <ActionIcon>
                   <IconBell />
                 </ActionIcon>
@@ -299,10 +270,10 @@ export default function AdminLayout({
         }
       >
         {children}
-      </AppShell>
+      */}
 
       {/* Drawer Mobile View */}
-      <Drawer opened={opened} onClose={() => setOpened(false)} size={"50%"}>
+      {/* <Drawer opened={opened} onClose={() => setOpened(false)} size={"50%"}>
         <Stack spacing={"xl"}>
           {listAdminPage.map((e) => (
             <Text key={e.id} onClick={() => router.push(e.path)}>
@@ -310,10 +281,10 @@ export default function AdminLayout({
             </Text>
           ))}
         </Stack>
-      </Drawer>
+      </Drawer> */}
 
       {/* Drawer Notifikasi */}
-      <Drawer
+      {/* <Drawer
         title={
           <Group position="apart">
             <Text fw={"bold"} fz={"lg"}>
@@ -326,7 +297,7 @@ export default function AdminLayout({
         position="right"
         size={"xs"}
       >
-        {/* <ComponentAdmin_UIDrawerNotifikasi
+        <ComponentAdmin_UIDrawerNotifikasi
           data={dataNotif}
           onLoadReadNotif={(val: any) => {
             setDataNotif(val);
@@ -339,8 +310,8 @@ export default function AdminLayout({
           onLoadCountNotif={(val: any) => {
             setCountNotif(val);
           }}
-        /> */}
-      </Drawer>
+        />
+      </Drawer> */}
     </>
   );
 }

@@ -1,14 +1,6 @@
 "use client";
 
 import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
-import {
-  AppShell,
-  Box,
-  Button,
-  Group,
-  Header,
-  ScrollArea,
-} from "@mantine/core";
 import React, { useState } from "react";
 
 export default function LayoutPortofolioInvestasi({

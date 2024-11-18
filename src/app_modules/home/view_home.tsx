@@ -14,6 +14,7 @@ import { useShallowEffect } from "@mantine/hooks";
 import { gs_count_ntf, gs_user_ntf } from "@/app/lib/global_state";
 import { useAtom } from "jotai";
 import notifikasi_countUserNotifikasi from "../notifikasi/fun/count/fun_count_by_id";
+import { Center, Text, Title } from "@mantine/core";
 
 export default function HomeView({
   dataUser,
@@ -52,6 +53,9 @@ export default function HomeView({
     <>
       <UIGlobal_LayoutTamplate
         header={
+          // <Center>
+          //   <Title order={3}>HIPMI</Title>
+          // </Center>
           <UIGlobal_LayoutHeaderTamplate
             title="HIPMI"
             customButtonLeft={
