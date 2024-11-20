@@ -29,7 +29,7 @@ export const listAdminPage = [
   // Main Dashboard
   {
     id: 1,
-    name: "Main Dashboard",
+    name: "Dashboard",
     path: RouterAdminDashboard.main_admin,
     icon: <IconHome />,
     child: [],

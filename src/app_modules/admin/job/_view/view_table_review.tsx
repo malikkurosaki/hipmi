@@ -1,6 +1,6 @@
 import { RouterAdminGlobal } from "@/app/lib";
 import {
-  gs_adminJobTriggerReview,
+  gs_adminJob_triggerReview,
   IRealtimeData,
 } from "@/app/lib/global_state";
 import { ComponentGlobal_InputCountDown } from "@/app_modules/_global/component";
@@ -63,7 +63,7 @@ export default function AdminJob_ViewTavleReview({
 
   // Realtime
   const [isAdminJob_TriggerReview, setIsAdminJob_TriggerReview] = useAtom(
-    gs_adminJobTriggerReview
+    gs_adminJob_triggerReview
   );
   const [isShowReload, setIsShowReload] = useState(false);
 

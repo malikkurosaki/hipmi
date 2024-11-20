@@ -4,7 +4,10 @@ import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
-import { ComponentGlobal_AvatarAndUsername, ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
+import {
+  ComponentGlobal_AvatarAndUsername,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
@@ -19,7 +22,7 @@ import {
   Radio,
   Stack,
   Text,
-  Title
+  Title,
 } from "@mantine/core";
 import _ from "lodash";
 import moment from "moment";
@@ -28,6 +31,8 @@ import ComponentVote_HasilVoting from "../../component/detail/detail_hasil_votin
 import { Vote_funCreateHasil } from "../../fun/create/create_hasil";
 import { voting_funGetOneVotingbyId } from "../../fun/get/fun_get_one_by_id";
 import { MODEL_VOTING } from "../../model/interface";
+import { IRealtimeData } from "@/app/lib/global_state";
+import { WibuRealtime } from "wibu-pkg";
 
 export default function Vote_MainDetail({
   dataVote,
@@ -88,7 +93,9 @@ function TampilanDataVoting({
     <>
       <ComponentGlobal_CardStyles>
         <Stack>
-          <ComponentGlobal_AvatarAndUsername profile={dataVote?.Author?.Profile as any}/>
+          <ComponentGlobal_AvatarAndUsername
+            profile={dataVote?.Author?.Profile as any}
+          />
           {/* <ComponentGlobal_AuthorNameOnHeader
             authorName={dataVote?.Author.Profile.name}
             imagesId={dataVote?.Author.Profile.imagesId}
@@ -218,7 +225,6 @@ function TampilanDataVoting({
             </Stack>
           )}
         </Stack>
-       
       </ComponentGlobal_CardStyles>
     </>
   );
@@ -238,27 +244,25 @@ async function onVote(
     });
 
     if (userLoginId !== res?.data?.Voting?.authorId) {
-      const dataNotif = {
-        appId: res?.data?.Voting?.id,
-        userId: res?.data?.Voting?.authorId,
-        pesan: res?.pilihan,
+      const dataNotifikasi: IRealtimeData = {
+        appId: res?.data?.Voting?.id as string,
+        userId: res?.data?.Voting?.authorId as string,
+        pesan: res?.pilihan as string,
         status: "Voting Masuk",
         kategoriApp: "VOTING",
         title: "User lain telah melakukan voting !",
       };
 
       const createNotifikasi = await notifikasiToUser_funCreate({
-        data: dataNotif as any,
+        data: dataNotifikasi as any,
       });
 
       if (createNotifikasi.status === 201) {
-        mqtt_client.publish(
-          "USER",
-          JSON.stringify({
-            userId: dataNotif.userId,
-            count: 1,
-          })
-        );
+        WibuRealtime.setData({
+          type: "notification",
+          pushNotificationTo: "USER",
+          dataMessage: dataNotifikasi,
+        });
       }
     }
   } else {

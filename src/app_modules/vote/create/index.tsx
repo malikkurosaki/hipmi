@@ -1,5 +1,6 @@
 "use client";
 
+import { IRealtimeData } from "@/app/lib/global_state";
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
@@ -7,7 +8,6 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
-import mqtt_client from "@/util/mqtt_client";
 import {
   Box,
   Button,
@@ -23,12 +23,11 @@ import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import _ from "lodash";
 import moment from "moment";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { WibuRealtime } from "wibu-pkg";
 import { Vote_funCreate } from "../fun/create/create_vote";
 import { gs_vote_hotMenu } from "../global_state";
-import { MODEL_VOTING } from "../model/interface";
 
 export default function Vote_Create() {
   const router = useRouter();
@@ -52,6 +51,60 @@ export default function Vote_Create() {
       value: "",
     },
   ]);
+
+  async function onSave() {
+    if (_.values(data).includes(""))
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+
+    const cekAwalVote = moment(data.awalVote).format();
+    if (cekAwalVote === "Invalid date")
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
+
+    const cekAkhirVote = moment(data.akhirVote).format();
+    if (cekAkhirVote === "Invalid date")
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
+
+    if (_.values(listVote.map((e) => e.value)).includes(""))
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Pilihan Voting");
+
+    // console.log("berhasil");
+
+    const res = await Vote_funCreate(data as any, listVote);
+    if (res.status === 201) {
+       const dataNotifikasi: IRealtimeData = {
+        appId: res.data?.id as any,
+        status: res.data?.Voting_Status?.name as any,
+        userId: res.data?.authorId as any,
+        pesan: res.data?.title as any,
+        kategoriApp: "VOTING",
+        title: "Voting baru",
+      };
+
+      const notif = await notifikasiToAdmin_funCreate({
+        data: dataNotifikasi as any,
+      });
+
+      if (notif.status === 201) {
+        WibuRealtime.setData({
+          type: "notification",
+          pushNotificationTo: "ADMIN",
+        });
+
+        WibuRealtime.setData({
+          type: "trigger",
+          pushNotificationTo: "ADMIN",
+          dataMessage: dataNotifikasi,
+        });
+
+        setHotMenu(2);
+        router.replace(RouterVote.status({ id: "2" }));
+        ComponentGlobal_NotifikasiBerhasil(res.message);
+        setIsLoading(true);
+      }
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+    }
+  }
 
   return (
     <>
@@ -208,7 +261,7 @@ export default function Vote_Create() {
           mt={"lg"}
           radius={"xl"}
           onClick={() => {
-            onSave(router, setHotMenu, data as any, listVote, setIsLoading);
+            onSave();
           }}
           c={"black"}
           bg={MainColor.yellow}
@@ -222,60 +275,4 @@ export default function Vote_Create() {
       </Stack>
     </>
   );
-}
-
-async function onSave(
-  router: AppRouterInstance,
-  setHotMenu: any,
-  data: MODEL_VOTING,
-  listVote: any[],
-  setIsLoading: any
-) {
-  if (_.values(data).includes(""))
-    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
-
-  const cekAwalVote = moment(data.awalVote).format();
-  if (cekAwalVote === "Invalid date")
-    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
-
-  const cekAkhirVote = moment(data.akhirVote).format();
-  if (cekAkhirVote === "Invalid date")
-    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
-
-  if (_.values(listVote.map((e) => e.value)).includes(""))
-    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Pilihan Voting");
-
-  // console.log("berhasil");
-
-  const res = await Vote_funCreate(data, listVote);
-  if (res.status === 201) {
-    const dataNotif: any = {
-      appId: res.data?.id as any,
-      status: res.data?.Voting_Status?.name as any,
-      userId: res.data?.authorId as any,
-      pesan: res.data?.title as any,
-      kategoriApp: "VOTING",
-      title: "Voting baru",
-    };
-
-    const notif = await notifikasiToAdmin_funCreate({
-      data: dataNotif as any,
-    });
-
-    if (notif.status === 201) {
-      mqtt_client.publish(
-        "ADMIN",
-        JSON.stringify({
-          count: 1,
-        })
-      );
-
-      setHotMenu(2);
-      router.replace(RouterVote.status({ id: "2" }));
-      ComponentGlobal_NotifikasiBerhasil(res.message);
-      setIsLoading(true);
-    }
-  } else {
-    ComponentGlobal_NotifikasiGagal(res.message);
-  }
 }

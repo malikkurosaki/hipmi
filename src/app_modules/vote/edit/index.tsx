@@ -1,5 +1,6 @@
 "use client";
 
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
@@ -9,14 +10,14 @@ import {
   Box,
   Button,
   Center,
-  Grid,
   Group,
   Stack,
   Text,
   TextInput,
-  Textarea,
+  Textarea
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
+import { useShallowEffect } from "@mantine/hooks";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import _ from "lodash";
@@ -24,14 +25,12 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Vote_funEditById } from "../fun/edit/fun_edit_by_id";
+import { Vote_getListDaftarNamaById } from "../fun/get/get_list_daftar_vote_by_id";
 import { gs_vote_hotMenu, gs_vote_status } from "../global_state";
 import {
   MODEL_VOTING,
   MODEL_VOTING_DAFTAR_NAMA_VOTE,
 } from "../model/interface";
-import { useShallowEffect } from "@mantine/hooks";
-import { Vote_getListDaftarNamaById } from "../fun/get/get_list_daftar_vote_by_id";
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
 
 export default function Vote_Edit({
   dataVote,
