@@ -1,23 +1,26 @@
 import {
-  gs_adminJobTriggerReview,
-  gs_adminEventTriggerReview,
+  gs_adminEvent_triggerReview,
+  gs_adminJob_triggerReview,
+  gs_adminVoting_triggerReview,
 } from "@/app/lib/global_state";
 import { AccentColor } from "@/app_modules/_global/color";
 import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 import { MODEL_NOTIFIKASI } from "@/app_modules/notifikasi/model/interface";
-import { Card, Stack, Group, Badge, Divider, Text } from "@mantine/core";
-import { IconChecks, IconCheck } from "@tabler/icons-react";
+import { Badge, Card, Divider, Group, Stack, Text } from "@mantine/core";
+import { IconCheck, IconChecks } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ComponentAdminGlobal_NotifikasiPeringatan } from "../_admin_global/admin_notifikasi/notifikasi_peringatan";
 import adminNotifikasi_countNotifikasi from "./fun/count/count_is_read";
 import adminNotifikasi_getByUserId from "./fun/get/get_notifikasi_by_user_id";
 import { adminNotifikasi_findRouterEvent } from "./route_setting/event";
 import { adminNotifikasi_findRouterJob } from "./route_setting/job";
 import {
-  IAdmin_ActivePage,
   IAdmin_ActiveChildId,
+  IAdmin_ActivePage,
 } from "./route_setting/type_of_select_page";
+import { adminNotifikasi_findRouterVoting } from "./route_setting/voting";
 
 export default function AdminNotifikasi_ViewCardDrawer({
   data,
@@ -43,112 +46,113 @@ export default function AdminNotifikasi_ViewCardDrawer({
 
   // Realtime
   const [isAdminJob_TriggerReview, setIsAdminJob_TriggerReview] = useAtom(
-    gs_adminJobTriggerReview
+    gs_adminJob_triggerReview
   );
   const [isAdminEvent_TriggerReview, setIsAdminEvent_TriggerReview] = useAtom(
-    gs_adminEventTriggerReview
+    gs_adminEvent_triggerReview
+  );
+  const [isAdminVoting_TriggerReview, setIsAdminVoting_TriggerReview] = useAtom(
+    gs_adminVoting_triggerReview
   );
 
-  async function onRead({ data }: { data: MODEL_NOTIFIKASI }) {
-    // JOB
+  async function onRead() {
+    // ========================== JOB ========================== //
     if (data?.kategoriApp === "JOB") {
+      setVisible(true);
+      setDataId(data.id);
+
       const checkJob = await adminNotifikasi_findRouterJob({
-        data: data,
+        appId: data.appId,
+        notifikasiId: data.id,
+        router: router,
+        activePage: activePage,
+        onLoadCountNotif(val) {
+          onLoadCountNotif(val);
+        },
+        onLoadDataNotifikasi(val) {
+          onLoadDataNotifikasi(val);
+        },
+        onChangeNavbar(val) {
+          onChangeNavbar({
+            id: val.id,
+            childId: val.childId,
+          });
+        },
       });
 
-      if (checkJob?.success) {
-        setVisible(true);
-        setDataId(data.id);
-
-        const loadCountNotif = await adminNotifikasi_countNotifikasi();
-        onLoadCountNotif(loadCountNotif);
-
-        const loadListNotifikasi = await adminNotifikasi_getByUserId({
-          page: activePage,
-        });
-        onLoadDataNotifikasi(loadListNotifikasi as any);
-
-        if (loadCountNotif && loadListNotifikasi) {
-          const path = `/dev/admin/job/child/${checkJob.statusName}`;
-
-          if (checkJob.statusName == "publish") {
-            onChangeNavbar({
-              id: "Job",
-              childId: "Job_2",
-            });
-          }
-
-          if (checkJob.statusName == "review") {
-            onChangeNavbar({
-              id: "Job",
-              childId: "Job_3",
-            });
-          }
-
-          if (checkJob.statusName == "reject") {
-            onChangeNavbar({
-              id: "Job",
-              childId: "Job_4",
-            });
-          }
-
-          setIsAdminJob_TriggerReview(false);
-          router.push(path);
-          setVisible(false);
-          setDataId("");
-        }
+      if (checkJob) {
+        setIsAdminJob_TriggerReview(false);
+        setVisible(false);
+        setDataId("");
       }
     }
+    // ========================== JOB ========================== //
 
-    // EVENT
+    // ========================== EVENT ========================== //
+
     if (data.kategoriApp == "EVENT") {
+      setVisible(true);
+      setDataId(data.id);
+
       const checkEvent = await adminNotifikasi_findRouterEvent({
-        data: data,
+        appId: data.appId,
+        notifikasiId: data.id,
+        router: router,
+        activePage: activePage,
+        onLoadCountNotif(val) {
+          onLoadCountNotif(val);
+        },
+        onLoadDataNotifikasi(val) {
+          onLoadDataNotifikasi(val);
+        },
+        onChangeNavbar(val) {
+          onChangeNavbar({
+            id: val.id,
+            childId: val.childId,
+          });
+        },
       });
 
-      if (checkEvent?.success) {
-        setVisible(true);
-        setDataId(data.id);
-
-        const loadCountNotif = await adminNotifikasi_countNotifikasi();
-        onLoadCountNotif(loadCountNotif);
-
-        const loadListNotifikasi = await adminNotifikasi_getByUserId({
-          page: activePage,
-        });
-        onLoadDataNotifikasi(loadListNotifikasi as any);
-
-        if (loadCountNotif && loadListNotifikasi) {
-          const path = `/dev/admin/event/table/${checkEvent.statusName}`;
-
-          if (checkEvent.statusName == "publish") {
-            onChangeNavbar({
-              id: "Event",
-              childId: "Event_2",
-            });
-          }
-
-          if (checkEvent.statusName == "review") {
-            onChangeNavbar({
-              id: "Event",
-              childId: "Event_3",
-            });
-          }
-
-          if (checkEvent.statusName == "reject") {
-            onChangeNavbar({
-              id: "Event",
-              childId: "Event_4",
-            });
-          }
-
-          setIsAdminEvent_TriggerReview(false);
-          router.push(path);
-          setVisible(false);
-          setDataId("");
-        }
+      if (checkEvent) {
+        setIsAdminEvent_TriggerReview(false);
+        setVisible(false);
+        setDataId("");
       }
     }
+    // ========================== EVENT ========================== //
+
+    // ========================== VOTING ========================== //
+
+    if (data.kategoriApp == "VOTING") {
+      setVisible(true);
+      setDataId(data.id);
+
+      const checkVoting = await adminNotifikasi_findRouterVoting({
+        router: router,
+        appId: data.appId,
+        notifikasiId: data.id,
+        activePage: activePage,
+        onLoadCountNotif(val) {
+          onLoadCountNotif(val);
+        },
+        onLoadDataNotifikasi(val) {
+          onLoadDataNotifikasi(val);
+        },
+        onChangeNavbar(val) {
+          onChangeNavbar({
+            id: val.id,
+            childId: val.childId,
+          });
+        },
+      });
+
+      if (checkVoting) {
+        setIsAdminVoting_TriggerReview(false);
+        setVisible(false);
+        setDataId("");
+      }
+    }
+    // ========================== VOTING ========================== //
 
     // // FORUM
     // e?.kategoriApp === "FORUM" &&
@@ -213,7 +217,7 @@ export default function AdminNotifikasi_ViewCardDrawer({
         style={{
           transition: "0.5s",
         }}
-        mb={"md"}
+        mb={"15px"}
         c={"white"}
         key={data.id}
         bg={data.isRead ? "gray" : AccentColor.darkblue}
@@ -228,9 +232,8 @@ export default function AdminNotifikasi_ViewCardDrawer({
             borderWidth: "2px",
           },
         }}
-        onClick={async () => {
-          onRead({ data: data });
-          // callBackIsNotifikasi(false);
+        onClick={() => {
+          onRead();
         }}
       >
         <Card.Section p={"sm"}>

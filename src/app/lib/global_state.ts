@@ -1,9 +1,16 @@
 import { atom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
 
 export type IRealtimeData = {
-  status?: "Publish" | "Review" | "Draft" | "Reject" | "Peserta Event";
-  
+  status?:
+    | "Publish"
+    | "Review"
+    | "Draft"
+    | "Reject"
+    // EVNET
+    | "Peserta Event"
+    // VOTING
+    | "Voting Masuk";
+
   appId: string;
   userId: string;
   pesan: string;
@@ -23,11 +30,14 @@ export const gs_admin_ntf = atom<number>(0);
 export const gs_user_ntf = atom<number>(0);
 export const gs_count_ntf = atom<number>(0);
 
-
 // job
-export const gs_adminJobTriggerReview = atom<boolean>(false);
+export const gs_adminJob_triggerReview = atom<boolean>(false);
 export const gs_jobTiggerBeranda = atom<boolean>(false);
 
 // event
-export const gs_adminEventTriggerReview = atom<boolean>(false);
+export const gs_adminEvent_triggerReview = atom<boolean>(false);
 export const gs_eventTriggerBeranda = atom<boolean>(false);
+
+// voting
+export const gs_adminVoting_triggerReview = atom<boolean>(false);
+export const gs_votingTiggerBeranda = atom<boolean>(false);

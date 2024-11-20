@@ -139,7 +139,7 @@ export function Admin_NewLayout({
                   <Stack style={{ color: "white" }}>
                     <Admin_UiNavbar
                       userRoleId={userRoleId}
-                      activeId={activeId}
+                      activeId={activeId as any}
                       activeChildId={activeChildId as any}
                       setActiveId={setActiveId}
                       setActiveChildId={setActiveChildId}
@@ -186,13 +186,13 @@ export function Admin_NewLayout({
         opened={isDrawerNotifikasi}
         onClose={() => setDrawerNotifikasi(false)}
         position="right"
-        size={"xs"}
+        size={"sm"}
       >
         <ComponentAdmin_UIDrawerNotifikasi
           newAdminNtf={newAdminNtf}
           listNotifikasi={dataNotifikasi}
           onChangeNavbar={(val: { id: string; childId: string }) => {
-            setActiveId(val.id);
+            setActiveId(val.id as any);
             setActiveChildId(val.childId);
           }}
           onToggleNavbar={(val: any) => {

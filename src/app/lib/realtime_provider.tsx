@@ -5,12 +5,14 @@ import { useAtom } from "jotai";
 import { WibuRealtime } from "wibu-pkg";
 import {
   gs_admin_ntf,
-  gs_adminEventTriggerReview,
-  gs_adminJobTriggerReview,
+  gs_adminEvent_triggerReview,
+  gs_adminJob_triggerReview,
+  gs_adminVoting_triggerReview,
   gs_eventTriggerBeranda,
   gs_jobTiggerBeranda,
   gs_realtimeData,
   gs_user_ntf,
+  gs_votingTiggerBeranda,
   IRealtimeData,
 } from "./global_state";
 
@@ -35,15 +37,23 @@ export default function RealtimeProvider({
   const [isTriggerJobBeranda, setIsTriggerJobBeranda] =
     useAtom(gs_jobTiggerBeranda);
   const [isAdminJob_TriggerReview, setIsAdminJob_TriggerReview] = useAtom(
-    gs_adminJobTriggerReview
+    gs_adminJob_triggerReview
   );
 
   // EVENT
-  const [isTriggerEventBeranda, setIsTriggerEventBeranca] = useAtom(
+  const [isTriggerEventBeranda, setIsTriggerEventBeranda] = useAtom(
     gs_eventTriggerBeranda
   );
   const [isAdminEvent_TriggerReview, setIsAdminEvent_TriggerReview] = useAtom(
-    gs_adminEventTriggerReview
+    gs_adminEvent_triggerReview
+  );
+
+  // VOTING
+  const [isTriggerVotingBeranda, setIsTriggerVotingBeranda] = useAtom(
+    gs_votingTiggerBeranda
+  );
+  const [isAdminVoting_TriggerReview, setIsAdminVoting_TriggerReview] = useAtom(
+    gs_adminVoting_triggerReview
   );
 
   useShallowEffect(() => {
@@ -63,7 +73,7 @@ export default function RealtimeProvider({
           setDataRealtime(data.dataMessage as any);
         }
 
-        // JOB
+        // ---------------------- JOB ------------------------- //
         if (
           data.type == "trigger" &&
           data.pushNotificationTo == "ADMIN" &&
@@ -80,8 +90,9 @@ export default function RealtimeProvider({
         ) {
           setIsTriggerJobBeranda(true);
         }
+        // ---------------------- JOB ------------------------- //
 
-        // EVENT
+        // ---------------------- EVENT ------------------------- //
         if (
           data.type == "trigger" &&
           data.pushNotificationTo == "ADMIN" &&
@@ -96,7 +107,7 @@ export default function RealtimeProvider({
           data.dataMessage?.kategoriApp == "EVENT" &&
           data.dataMessage.status == "Publish"
         ) {
-          setIsTriggerEventBeranca(true);
+          setIsTriggerEventBeranda(true);
         }
 
         if (
@@ -107,6 +118,35 @@ export default function RealtimeProvider({
         ) {
           setNewUserNtf((e) => e + 1);
         }
+        // ---------------------- EVENT ------------------------- //
+
+        // ---------------------- VOTING ------------------------- //
+        if (
+          data.type == "trigger" &&
+          data.pushNotificationTo == "ADMIN" &&
+          data.dataMessage?.kategoriApp == "VOTING"
+        ) {
+          setIsAdminVoting_TriggerReview(true);
+        }
+
+        if (
+          data.type == "trigger" &&
+          data.pushNotificationTo == "USER" &&
+          data.dataMessage?.kategoriApp == "VOTING" &&
+          data.dataMessage.status == "Publish"
+        ) {
+          setIsTriggerVotingBeranda(true);
+        }
+
+        if (
+          data.type == "notification" &&
+          data.pushNotificationTo == "USER" &&
+          data.dataMessage?.status == "Voting Masuk" &&
+          userLoginId !== data.dataMessage?.userId
+        ) {
+          setNewUserNtf((e) => e + 1);
+        }
+        // ---------------------- VOTING ------------------------- //
       },
 
       project: "hipmi",

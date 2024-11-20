@@ -14,6 +14,7 @@ export interface MODEL_VOTING {
   Author: MODEL_USER;
   Voting_DaftarNamaVote: MODEL_VOTING_DAFTAR_NAMA_VOTE[];
   isArsip: boolean;
+  voting_StatusId: string
 }
 
 export interface MODEL_VOTING_DAFTAR_NAMA_VOTE {

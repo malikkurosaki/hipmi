@@ -7,6 +7,17 @@ export async function Vote_funEditStatusByStatusId(
   voteId: string,
   statusId: string
 ) {
+  // if (statusId !== "2") {
+  //   const checkStatus = await prisma.voting.findFirst({
+  //     where: {
+  //       id: voteId,
+  //     },
+  //   });
+
+  //   if (checkStatus?.voting_StatusId != "2")
+  //     return { status: 400, message: "Status sudah diubah admin" };
+  // }
+
   const updt = await prisma.voting.update({
     where: {
       id: voteId,

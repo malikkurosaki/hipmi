@@ -16,6 +16,8 @@ import { useState } from "react";
 import { MODEL_NOTIFIKASI } from "../model/interface";
 import { notifikasi_eventCheckStatus } from "./path/event";
 import { notifikasi_jobCheckStatus } from "./path/job";
+import { gs_vote_hotMenu } from "@/app_modules/vote/global_state";
+import { notifikasi_votingCheckStatus } from "./path/voting";
 
 export function ComponentNotifiaksi_CardView({
   data,
@@ -32,6 +34,7 @@ export function ComponentNotifiaksi_CardView({
 
   const [jobMenuId, setJobMenuId] = useAtom(gs_job_hot_menu);
   const [eventMenuId, setEventMenuId] = useAtom(gs_event_hotMenu);
+  const [votingMenu, setVotingMenu] = useAtom(gs_vote_hotMenu);
 
   return (
     <>
@@ -85,6 +88,27 @@ export function ComponentNotifiaksi_CardView({
               },
               onSetEventMenuId(val) {
                 setEventMenuId(val);
+              },
+              onLoadCountNtf(val) {
+                setLoadCountNtf(val);
+              },
+            });
+          }
+
+          if (data?.kategoriApp === "VOTING") {
+            await notifikasi_votingCheckStatus({
+              appId: data.appId,
+              dataId: data.id,
+              categoryPage: categoryPage,
+              router: router,
+              onLoadDataEvent(val) {
+                onLoadData(val);
+              },
+              onSetVisible(val) {
+                setVisible(val);
+              },
+              onSetEventMenuId(val) {
+                setVotingMenu(val);
               },
               onLoadCountNtf(val) {
                 setLoadCountNtf(val);

@@ -1,5 +1,5 @@
 import {
-  gs_adminEventTriggerReview,
+  gs_adminEvent_triggerReview,
   IRealtimeData,
 } from "@/app/lib/global_state";
 import { AccentColor } from "@/app_modules/_global/color";
@@ -63,7 +63,7 @@ export default function AdminEvent_ComponentTableReview({
 
   // Realtime state
   const [isAdminTriggerReview, setIsAdminTriggerReview] = useAtom(
-    gs_adminEventTriggerReview
+    gs_adminEvent_triggerReview
   );
   const [isShowReload, setIsShowReload] = useState(false);
 
@@ -289,27 +289,25 @@ export default function AdminEvent_ComponentTableReview({
 
         <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
           {isShowReload && (
-            <Paper bg={"red"} w={"50%"}>
-              <Affix position={{ top: rem(200) }} w={"100%"}>
-                <Center>
-                  <Button
-                    style={{
-                      transition: "0.5s",
-                      border: `1px solid ${AccentColor.skyblue}`,
-                    }}
-                    bg={AccentColor.blue}
-                    loaderPosition="center"
-                    loading={isLoading}
-                    radius={"xl"}
-                    opacity={0.8}
-                    onClick={() => onLoadData()}
-                    leftIcon={<IconRefresh />}
-                  >
-                    Update Data
-                  </Button>
-                </Center>
-              </Affix>
-            </Paper>
+            <Affix position={{ top: rem(200) }} w={"100%"}>
+              <Center>
+                <Button
+                  style={{
+                    transition: "0.5s",
+                    border: `1px solid ${AccentColor.skyblue}`,
+                  }}
+                  bg={AccentColor.blue}
+                  loaderPosition="center"
+                  loading={isLoading}
+                  radius={"xl"}
+                  opacity={0.8}
+                  onClick={() => onLoadData()}
+                  leftIcon={<IconRefresh />}
+                >
+                  Update Data
+                </Button>
+              </Center>
+            </Affix>
           )}
 
           <ScrollArea w={"100%"} h={"90%"}>

@@ -16,16 +16,16 @@ export function CobaRealtime({ userLoginId }: { userLoginId: string }) {
   //   });
 
 
-  useShallowEffect(() => {
-    WibuRealtime.init({
-      onData: (data) => {
+  // useShallowEffect(() => {
+  //   WibuRealtime.init({
+  //     onData: (data) => {
 
-        console.log(data)
-      },
-      project: "hipmi",
-      WIBU_REALTIME_TOKEN: WIBU_REALTIME_TOKEN,
-    });
-  }, []);
+  //       console.log(data)
+  //     },
+  //     project: "hipmi",
+  //     WIBU_REALTIME_TOKEN: WIBU_REALTIME_TOKEN,
+  //   });
+  // }, []);
 
   return (
     <>

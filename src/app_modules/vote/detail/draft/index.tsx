@@ -17,6 +17,11 @@ import ComponentVote_DetailDataSebelumPublish from "../../component/detail/detai
 import { Vote_funDeleteById } from "../../fun/delete/fun_delete_by_id";
 import { Vote_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_id";
 import { MODEL_VOTING } from "../../model/interface";
+import { IRealtimeData } from "@/app/lib/global_state";
+import { WibuRealtime } from "wibu-pkg";
+import { useShallowEffect } from "@mantine/hooks";
+import { voting_funGetOneVotingbyId } from "../../fun/get/fun_get_one_by_id";
+import _ from "lodash";
 
 export default function Vote_DetailDraft({
   dataVote,
@@ -24,13 +29,21 @@ export default function Vote_DetailDraft({
   dataVote: MODEL_VOTING;
 }) {
   const [data, setData] = useState(dataVote);
+
+  useShallowEffect(() => {
+    onLoadData(setData);
+  }, [setData]);
+
+  async function onLoadData(setData: any) {
+    const loadData = await voting_funGetOneVotingbyId(dataVote.id);
+    setData(loadData);
+  }
+
   return (
     <>
       <Stack spacing={"xl"}>
-        {dataVote?.catatan ? (
+        {dataVote?.catatan && (
           <ComponentGlobal_BoxInformation isReport informasi={data?.catatan} />
-        ) : (
-          ""
         )}
         <ComponentVote_DetailDataSebelumPublish data={data} />
         <ButtonAction voteId={data.id} awalVote={data.awalVote} />
@@ -60,7 +73,7 @@ function ButtonAction({
 
     const res = await Vote_funEditStatusByStatusId(voteId, "2");
     if (res.status === 200) {
-      const dataNotif: any = {
+      const dataNotifikasi: IRealtimeData = {
         appId: res.data?.id as any,
         status: res.data?.Voting_Status?.name as any,
         userId: res.data?.authorId as any,
@@ -70,16 +83,20 @@ function ButtonAction({
       };
 
       const notif = await notifikasiToAdmin_funCreate({
-        data: dataNotif as any,
+        data: dataNotifikasi as any,
       });
 
       if (notif.status === 201) {
-        mqtt_client.publish(
-          "ADMIN",
-          JSON.stringify({
-            count: 1,
-          })
-        );
+        WibuRealtime.setData({
+          type: "notification",
+          pushNotificationTo: "ADMIN",
+        });
+
+        WibuRealtime.setData({
+          type: "trigger",
+          pushNotificationTo: "ADMIN",
+          dataMessage: dataNotifikasi,
+        });
 
         ComponentGlobal_NotifikasiBerhasil("Berhasil Ajukan Review", 2000);
         setIsLoading(true);

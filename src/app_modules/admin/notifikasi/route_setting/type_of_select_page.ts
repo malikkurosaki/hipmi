@@ -1,4 +1,4 @@
-export type IAdmin_ActivePage = "Investasi" | "Donasi" | "Event" | "Vote" | "Job" | "Forum" | "Collaboration"
+export type IAdmin_ActivePage = "Main" | "Investasi" | "Donasi" | "Event" | "Voting" | "Job" | "Forum" | "Collaboration"
 export type IAdmin_ActiveChildId =
   | "Investasi_1"
   | "Investasi_2"
