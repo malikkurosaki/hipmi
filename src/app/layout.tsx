@@ -44,7 +44,7 @@ export default async function RootLayout({
   // if (!token) return <>Require Token Storage</>;
   const userLoginId = await funGetUserIdByToken();
 
-  
+      
   return (
     <RootStyleRegistry>
       {/* <MqttLoader />

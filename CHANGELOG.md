@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.2.2](https://github.com/bipproduction/hipmi/compare/v1.2.1...v1.2.2) (2024-11-21)
+
+
+### Bug Fixes
+
+* Middlerawe/6 ([b9e4b97](https://github.com/bipproduction/hipmi/commit/b9e4b97b31f1f86cd3ee64c1a51827d3d724b1e7))
+
 ## [1.2.1](https://github.com/bipproduction/hipmi/compare/v1.2.0...v1.2.1) (2024-11-21)
 
 ## 1.2.0 (2024-11-21)
