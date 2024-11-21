@@ -42,7 +42,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   // if (!token) return <>Require Token Storage</>;
-  // const userLoginId = await funGetUserIdByToken();
+  const userLoginId = await funGetUserIdByToken();
 
   return (
     <RootStyleRegistry>
