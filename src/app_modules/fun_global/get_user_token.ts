@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 export async function user_funGetOneUserId(): Promise<string | null> {
   try {
     const kukis = cookies();
-    const c = kukis.get("ssn");
+    const c = kukis.get("mySession");
     if (!c || !c?.value || _.isEmpty(c?.value) || _.isUndefined(c?.value))
       return redirect(RouterAuth.login);
 

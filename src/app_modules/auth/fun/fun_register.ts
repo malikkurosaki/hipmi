@@ -47,7 +47,7 @@ export async function Auth_funRegister({
   );
 
   cookies().set({
-    name: "ssn",
+    name: "mySession",
     value: sealToken,
     maxAge: 60 * 60 * 24 * 7,
   });

@@ -18,7 +18,7 @@ export async function auth_Logout() {
     if (!delToken) return { status: 400, message: "Gagal Hapus User Session" };
 
     cookies().delete({
-      name: "ssn",
+      name: "mySession",
     });
     return { status: 200, message: "Logout Berhasil" };
   } catch (error) {
