@@ -44,11 +44,12 @@ export default async function RootLayout({
   // if (!token) return <>Require Token Storage</>;
   const userLoginId = await funGetUserIdByToken();
 
+  
   return (
     <RootStyleRegistry>
       {/* <MqttLoader />
       <TokenProvider token={token} envObject={envObject} /> */}
-      {/* <RealtimeProvider userLoginId={userLoginId as string} /> */}
+      <RealtimeProvider userLoginId={userLoginId as string} />
       {children}
     </RootStyleRegistry>
   );

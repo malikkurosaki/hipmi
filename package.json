@@ -1,6 +1,6 @@
 {
   "name": "hipmi",
-  "version": "1.1.4-3",
+  "version": "1.2.1",
   "private": true,
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"
@@ -9,7 +9,8 @@
     "dev": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "ver": "npx commit-and-tag-version -- --prerelease"
   },
   "dependencies": {
     "@bounceapp/iframe": "^0.3.0",
