@@ -19,7 +19,7 @@ export default async function Layout({
     <>
       <KatalogLayout
         profileId={profileId}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
         authorId={authorId as any}
       >
         {children}

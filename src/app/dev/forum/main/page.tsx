@@ -8,7 +8,10 @@ export default async function Page() {
 
   return (
     <>
-      <Forum_Beranda listForum={listForum as any} userLoginId={userLoginId} />
+      <Forum_Beranda
+        listForum={listForum as any}
+        userLoginId={userLoginId as string}
+      />
     </>
   );
 }

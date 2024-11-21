@@ -17,7 +17,7 @@ export default async function Layout({
     <>
       <PortofolioLayout
         portoId={portoId}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
         authorId={getPorto?.Profile?.User?.id as any}
       >
         {children}

@@ -33,7 +33,7 @@ export default async function adminColab_funReportProjectById({
   const updateReport = await prisma.projectCollaboration_Notifikasi.create({
     data: {
       projectCollaborationId: colabId,
-      adminId: userLoginId,
+      adminId: userLoginId as string,
       userId: projectUpdate.userId as any,
       note: "Project Anda Telah Direport Admin",
     },

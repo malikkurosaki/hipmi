@@ -26,20 +26,19 @@ export default function Admin_Logout() {
   const [loadingLogout, setLoadingLogout] = useState(false);
 
   async function onClickLogout() {
-    await auth_Logout().then((res) => {
-      if (res.status === 200) {
-        setLoadingLogout(true);
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-        setKodeId("");
-      } else {
-        ComponentGlobal_NotifikasiPeringatan(res.message);
-      }
-    });
+   const res = await auth_Logout()
+    if (res.status === 200) {
+      setLoadingLogout(true);
+      ComponentGlobal_NotifikasiBerhasil(res.message);
+      setKodeId("");
+    } else {
+      ComponentGlobal_NotifikasiPeringatan(res.message);
+    }
   }
 
   return (
     <>
-      <Modal
+      {/* <Modal
         opened={opened}
         onClose={() => setOpened(false)}
         centered
@@ -70,7 +69,7 @@ export default function Admin_Logout() {
             </Button>
           </Group>
         </Stack>
-      </Modal>
+      </Modal> */}
       <ActionIcon variant="transparent">
         {loading ? (
           <Loader color="gray" />

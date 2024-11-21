@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     "ProjectCollaboration_AnggotaRoomChat",
   ]);
   let listMsg = await colab_getMessageByRoomId({ roomId: roomId, page: 1 });
-  const dataUserLogin = await user_getOneByUserId(userLoginId);
+  const dataUserLogin = await user_getOneByUserId(userLoginId as string);
 
   return (
     <>
@@ -29,7 +29,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       /> */}
 
       <Colab_GroupChatView
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
         listMsg={listMsg}
         selectRoom={dataRoom as any}
         dataUserLogin={dataUserLogin as any}

@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       <DetailPublishDonasi
         dataPublish={dataPublish as any}
         countDonatur={countDonatur}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
       />
     </>
   );

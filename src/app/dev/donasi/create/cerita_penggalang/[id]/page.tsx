@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     <>
       <CreateCeritaPenggalangDonasi
         dataTemporary={getTemporaryCreate as any}
-        userId={userLoginId}
+        userId={userLoginId as string}
       />
     </>
   );

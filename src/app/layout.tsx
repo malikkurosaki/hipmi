@@ -49,7 +49,7 @@ export default async function RootLayout({
     <RootStyleRegistry>
       {/* <MqttLoader />
       <TokenProvider token={token} envObject={envObject} /> */}
-      <RealtimeProvider userLoginId={userLoginId} />
+      <RealtimeProvider userLoginId={userLoginId as string} />
       {children}
     </RootStyleRegistry>
   );

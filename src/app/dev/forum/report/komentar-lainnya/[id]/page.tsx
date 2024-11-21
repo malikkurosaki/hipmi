@@ -9,7 +9,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     <>
       <Forum_ReportKomentarLainnya
         komentarId={komentarId}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
       />
     </>
   );

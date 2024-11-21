@@ -12,7 +12,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       <Donasi_MetodePembayaran
         listBank={listBank}
         donasiId={donasiId}
-        authorId={userLoginId}
+        authorId={userLoginId as string}
       />
     </>
   );

@@ -9,7 +9,9 @@ export default async function Page() {
   const userLoginId = await funGetUserIdByToken();
 
   const statusTransaksi = await getMaster_StatusTransaksiInvestasi();
-  const listTransaksi = await getListAllTransaksiById_Investasi(userLoginId);
+  const listTransaksi = await getListAllTransaksiById_Investasi(
+    userLoginId as string
+  );
 
   // NEW
   const dataTransaksi = await investasi_funGetTransaksiByUserId({ page: 1 });

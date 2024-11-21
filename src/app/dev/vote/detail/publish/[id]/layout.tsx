@@ -19,7 +19,7 @@ export default async function Layout({
     <>
       <LayoutVote_DetailPublish
         votingId={votingId}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
         dataVoting={dataVoting}
       >
         {children}

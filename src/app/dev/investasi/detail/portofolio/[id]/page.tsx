@@ -14,7 +14,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     <>
       <Investasi_UiDetailPortofolio
         dataInvestasi={dataPortofolio as any}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
       />
     </>
   );

@@ -17,7 +17,7 @@ export async function vote_getAllPublish({ page }: { page: number }) {
     },
     where: {
       voting_StatusId: "1",
-      authorId: userLoginId,
+      authorId: userLoginId as string,
       isActive: true,
       akhirVote: {
         gte: new Date(),

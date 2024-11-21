@@ -7,7 +7,7 @@ import { event_getOneById } from "@/app_modules/event/fun/get/get_one_by_id";
 
 export default async function Page({ params }: { params: { id: string } }) {
   let eventId = params.id;
-  const userLoginId = await funGetUserIdByToken();
+  const userLoginId  : any= await funGetUserIdByToken();
 
   const dataEvent = await event_getOneById(eventId);
   const listPeserta = await Event_getListPesertaById(eventId);
@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       <Event_DetailMain
         dataEvent={dataEvent as any}
         listPeserta={listPeserta as any}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
         isJoin={isJoin}
         totalPeserta={totalPeserta as any}
       />

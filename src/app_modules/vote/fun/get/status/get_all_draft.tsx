@@ -17,7 +17,7 @@ export async function vote_getAllDraft({ page }: { page: number }) {
     },
     where: {
       voting_StatusId: "3",
-      authorId: userLoginId,
+      authorId: userLoginId as string,
       isActive: true,
     },
   });

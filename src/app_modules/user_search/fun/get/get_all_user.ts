@@ -37,7 +37,7 @@ export async function userSearch_getAllUser({
       OR: [
         {
           NOT: {
-            id: userLoginId,
+            id: userLoginId as string,
           },
         },
       ],
