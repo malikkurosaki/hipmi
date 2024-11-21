@@ -5,7 +5,7 @@ import _ from "lodash";
 import { cookies } from "next/headers";
 
 export async function funCheckToken() {
-  const c = cookies().get("ssn");
+  const c = cookies().get("mySession");
   const cekToken = await prisma.userSession.findFirst({
     where: {
       token: c?.value,

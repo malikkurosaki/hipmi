@@ -42,7 +42,7 @@ export async function auth_funValidasi({
   );
 
   cookies().set({
-    name: "ssn",
+    name: "mySession",
     value: sealToken,
     maxAge: 60 * 60 * 24 * 30,
   });

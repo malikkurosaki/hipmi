@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   cookies().set({
-    name: "ssn",
+    name: "mySession",
     value: "",
     maxAge: 0,
   });

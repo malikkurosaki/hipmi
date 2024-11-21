@@ -37,7 +37,7 @@ export async function POST(req: Request) {
       );
 
       cookies().set({
-        name: "ssn",
+        name: "mySession",
         value: seal,
         maxAge: 60 * 60 * 24 * 7,
       });
