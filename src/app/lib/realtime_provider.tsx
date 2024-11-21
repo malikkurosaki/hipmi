@@ -23,7 +23,8 @@ export type TypeNotification = {
   userLoginId?: string;
 };
 
-const WIBU_REALTIME_TOKEN: any = process.env.NEXT_PUBLIC_WIBU_REALTIME_TOKEN;
+const WIBU_REALTIME_TOKEN: string | undefined =
+  process.env.NEXT_PUBLIC_WIBU_REALTIME_TOKEN;
 export default function RealtimeProvider({
   userLoginId,
 }: {
@@ -57,101 +58,109 @@ export default function RealtimeProvider({
   );
 
   useShallowEffect(() => {
-    WibuRealtime.init({
-      onData(data: TypeNotification) {
-        if (data.type == "notification" && data.pushNotificationTo == "ADMIN") {
-          setNewAdminNtf((e) => e + 1);
-        }
+    if (WIBU_REALTIME_TOKEN === undefined) return alert("gak dapet key");
+    try {
+      WibuRealtime.init({
+        onData(data: TypeNotification) {
+          if (
+            data.type == "notification" &&
+            data.pushNotificationTo == "ADMIN"
+          ) {
+            setNewAdminNtf((e) => e + 1);
+          }
 
-        // Notifikasi ke semua user , yang datanya di acc admin
-        if (
-          data.type == "notification" &&
-          data.pushNotificationTo == "USER" &&
-          data.dataMessage?.userId == userLoginId
-        ) {
-          setNewUserNtf((e) => e + 1);
-          setDataRealtime(data.dataMessage as any);
-        }
+          // Notifikasi ke semua user , yang datanya di acc admin
+          if (
+            data.type == "notification" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.userId == userLoginId
+          ) {
+            setNewUserNtf((e) => e + 1);
+            setDataRealtime(data.dataMessage as any);
+          }
 
-        // ---------------------- JOB ------------------------- //
-        if (
-          data.type == "trigger" &&
-          data.pushNotificationTo == "ADMIN" &&
-          data.dataMessage?.kategoriApp == "JOB"
-        ) {
-          setIsAdminJob_TriggerReview(true);
-        }
+          // ---------------------- JOB ------------------------- //
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "ADMIN" &&
+            data.dataMessage?.kategoriApp == "JOB"
+          ) {
+            setIsAdminJob_TriggerReview(true);
+          }
 
-        if (
-          data.type == "trigger" &&
-          data.pushNotificationTo == "USER" &&
-          data.dataMessage?.kategoriApp == "JOB" &&
-          data.dataMessage.status == "Publish"
-        ) {
-          setIsTriggerJobBeranda(true);
-        }
-        // ---------------------- JOB ------------------------- //
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.kategoriApp == "JOB" &&
+            data.dataMessage.status == "Publish"
+          ) {
+            setIsTriggerJobBeranda(true);
+          }
+          // ---------------------- JOB ------------------------- //
 
-        // ---------------------- EVENT ------------------------- //
-        if (
-          data.type == "trigger" &&
-          data.pushNotificationTo == "ADMIN" &&
-          data.dataMessage?.kategoriApp == "EVENT"
-        ) {
-          setIsAdminEvent_TriggerReview(true);
-        }
+          // ---------------------- EVENT ------------------------- //
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "ADMIN" &&
+            data.dataMessage?.kategoriApp == "EVENT"
+          ) {
+            setIsAdminEvent_TriggerReview(true);
+          }
 
-        if (
-          data.type == "trigger" &&
-          data.pushNotificationTo == "USER" &&
-          data.dataMessage?.kategoriApp == "EVENT" &&
-          data.dataMessage.status == "Publish"
-        ) {
-          setIsTriggerEventBeranda(true);
-        }
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.kategoriApp == "EVENT" &&
+            data.dataMessage.status == "Publish"
+          ) {
+            setIsTriggerEventBeranda(true);
+          }
 
-        if (
-          data.type == "notification" &&
-          data.pushNotificationTo == "USER" &&
-          data.dataMessage?.status == "Peserta Event" &&
-          userLoginId !== data.dataMessage?.userId
-        ) {
-          setNewUserNtf((e) => e + 1);
-        }
-        // ---------------------- EVENT ------------------------- //
+          if (
+            data.type == "notification" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.status == "Peserta Event" &&
+            userLoginId !== data.dataMessage?.userId
+          ) {
+            setNewUserNtf((e) => e + 1);
+          }
+          // ---------------------- EVENT ------------------------- //
 
-        // ---------------------- VOTING ------------------------- //
-        if (
-          data.type == "trigger" &&
-          data.pushNotificationTo == "ADMIN" &&
-          data.dataMessage?.kategoriApp == "VOTING"
-        ) {
-          setIsAdminVoting_TriggerReview(true);
-        }
+          // ---------------------- VOTING ------------------------- //
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "ADMIN" &&
+            data.dataMessage?.kategoriApp == "VOTING"
+          ) {
+            setIsAdminVoting_TriggerReview(true);
+          }
 
-        if (
-          data.type == "trigger" &&
-          data.pushNotificationTo == "USER" &&
-          data.dataMessage?.kategoriApp == "VOTING" &&
-          data.dataMessage.status == "Publish"
-        ) {
-          setIsTriggerVotingBeranda(true);
-        }
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.kategoriApp == "VOTING" &&
+            data.dataMessage.status == "Publish"
+          ) {
+            setIsTriggerVotingBeranda(true);
+          }
 
-        if (
-          data.type == "notification" &&
-          data.pushNotificationTo == "USER" &&
-          data.dataMessage?.status == "Voting Masuk" &&
-          userLoginId !== data.dataMessage?.userId
-        ) {
-          setNewUserNtf((e) => e + 1);
-        }
-        // ---------------------- VOTING ------------------------- //
-      },
+          if (
+            data.type == "notification" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.status == "Voting Masuk" &&
+            userLoginId !== data.dataMessage?.userId
+          ) {
+            setNewUserNtf((e) => e + 1);
+          }
+          // ---------------------- VOTING ------------------------- //
+        },
 
-      project: "hipmi",
-      WIBU_REALTIME_TOKEN: WIBU_REALTIME_TOKEN,
-    });
+        project: "hipmi",
+        WIBU_REALTIME_TOKEN: WIBU_REALTIME_TOKEN,
+      });
+    } catch (error) {
+      alert("error realtime");
+    }
   }, []);
 
   return null;
