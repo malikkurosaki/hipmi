@@ -12,16 +12,10 @@ export function middleware(request: NextRequest) {
     _.isEmpty(cookies?.value) ||
     _.isUndefined(cookies?.value)
   ) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/dev/auth/login", request.url));
   }
-
-  //   return NextResponse.redirect(new URL("/", request.url));
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
-  matcher: [
-
-    "/((?!_next|static|favicon.ico|manifest).*)",
-  ],
+  matcher: ["/((?!_next|static|favicon.ico|manifest).*)"],
 };
