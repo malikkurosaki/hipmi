@@ -14,19 +14,12 @@ export  default async function Layout({
   const userLoginId = await funGetUserIdByToken();
   const version = versionUpdate.version;
 
-  const dataUser = await funGlobal_getUserById({ userId: userLoginId });
+  const dataUser = await funGlobal_getUserById({ userId: userLoginId as string});
   const listNotifikasi = await adminNotifikasi_getByUserId({page: 1});
   const countNotifikasi = await adminNotifikasi_countNotifikasi();
 
   return (
     <>
-      {/* <AdminLayout
-        listNotif={listNotif as any}
-        dataUser={dataUser as any}
-        countNotifikasi={countNotifikasi}
-      >
-        {children}
-      </AdminLayout> */}
       <Admin_NewLayout
         user={dataUser as any}
         countNotifikasi={countNotifikasi as any}

@@ -18,7 +18,7 @@ export async function Vote_getAllListRiwayatSaya({ page }: { page: number }) {
     },
     where: {
       voting_StatusId: "1",
-      authorId: userLoginId,
+      authorId: userLoginId as string,
       isActive: true,
       akhirVote: {
         lte: new Date(),

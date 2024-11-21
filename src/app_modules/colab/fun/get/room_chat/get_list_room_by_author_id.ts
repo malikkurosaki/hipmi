@@ -20,7 +20,7 @@ export default async function colab_getListRoomChatByAuthorId({
       createdAt: "desc",
     },
     where: {
-      userId: userLoginId,
+      userId: userLoginId as string,
     },
     select: {
       ProjectCollaboration_RoomChat: {

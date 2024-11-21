@@ -20,7 +20,7 @@ export default async function Layout({
       <LayoutDetailMainDonasi
         donasiId={donasiId}
         authorId={authorId as any}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
       >
         {children}
       </LayoutDetailMainDonasi>

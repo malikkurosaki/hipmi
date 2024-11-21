@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         isKontributor={isKontributor}
         pilihanKontributor={pilihanKontributor as any}
         listKontributor={listKontributor as any}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
       />
     </>
   );

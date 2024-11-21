@@ -1,18 +1,17 @@
 "use server";
 
-import { cookies } from "next/headers";
 import prisma from "@/app/lib/prisma";
-import { redirect } from "next/navigation";
-import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
+import { cookies } from "next/headers";
 
 export async function funGetUserIdByToken() {
   const c = cookies().get("ssn");
+  const token = c?.value
   const cekToken = await prisma.userSession.findFirst({
     where: {
-      token: c?.value,
+      token: token,
     },
   });
 
-  if (cekToken === null) return redirect(RouterAuth.login);
+  if (cekToken === null) return null
   return cekToken.userId;
 }

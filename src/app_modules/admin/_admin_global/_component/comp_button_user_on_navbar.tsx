@@ -1,12 +1,141 @@
-import { AccentColor } from "@/app_modules/_global/color";
-import { MODEL_USER } from "@/app_modules/home/model/interface";
-import { Menu, ActionIcon, Stack, Grid, Center, Text } from "@mantine/core";
-import { IconUserCircle, IconUser, IconPhone } from "@tabler/icons-react";
-import { useState } from "react";
-import Admin_Logout from "../logout";
+"use client";
 
-export function Admin_ComponentButtonUserCircle({ dataUser }: { dataUser: MODEL_USER }) {
+import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
+import { Warna } from "@/app/lib/warna";
+import { AccentColor } from "@/app_modules/_global/color";
+import {
+  ComponentGlobal_NotifikasiBerhasil,
+  ComponentGlobal_NotifikasiPeringatan,
+} from "@/app_modules/_global/notif_global";
+import { auth_Logout } from "@/app_modules/auth/fun/fun_logout";
+import { gs_kodeId } from "@/app_modules/auth/state/state";
+import { MODEL_USER } from "@/app_modules/home/model/interface";
+import {
+  ActionIcon,
+  Button,
+  Center,
+  Divider,
+  Grid,
+  Group,
+  Menu,
+  Modal,
+  Popover,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
+import { IconPhone, IconUser, IconUserCircle } from "@tabler/icons-react";
+import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+export function Admin_ComponentButtonUserCircle({
+  dataUser,
+}: {
+  dataUser: MODEL_USER;
+}) {
+  const router = useRouter();
   const [isOpenMenuUser, setOpenMenuUser] = useState(false);
+  const [openPop, setOpenPop] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [kodeId, setKodeId] = useAtom(gs_kodeId);
+  const [loadingLogout, setLoadingLogout] = useState(false);
+
+  async function onClickLogout() {
+    const res = await auth_Logout();
+    if (res.status === 200) {
+      console.log(res);
+      setLoadingLogout(true);
+      ComponentGlobal_NotifikasiBerhasil(res.message);
+      setKodeId("");
+      setOpenModal(false);
+      router.push(RouterAuth.login, { scroll: false });
+    } else {
+      ComponentGlobal_NotifikasiPeringatan(res.message);
+    }
+  }
+
+  return (
+    <>
+      <Popover opened={openPop} onChange={setOpenPop} position="right-end">
+        <Popover.Target>
+          <ActionIcon
+            variant="transparent"
+            onClick={() => {
+              setOpenPop((o) => !o);
+            }}
+          >
+            <IconUserCircle color="white" />
+          </ActionIcon>
+        </Popover.Target>
+
+        <Popover.Dropdown style={{ backgroundColor: AccentColor.blue }}>
+          <Stack>
+            <Grid>
+              <Grid.Col span={2}>
+                <IconUser />
+              </Grid.Col>
+              <Grid.Col span={"auto"}>
+                <Text lineClamp={1}>{dataUser.username}</Text>
+              </Grid.Col>
+            </Grid>
+
+            <Grid>
+              <Grid.Col span={2}>
+                <IconPhone />
+              </Grid.Col>
+              <Grid.Col span={"auto"}>
+                <Text lineClamp={1}>+{dataUser.nomor}</Text>
+              </Grid.Col>
+            </Grid>
+
+            <Divider />
+
+            <Center>
+              <Button radius={"xl"} onClick={() => setOpenModal(true)}>
+                Keluar
+              </Button>
+            </Center>
+          </Stack>
+        </Popover.Dropdown>
+      </Popover>
+
+      <Modal
+        opened={openModal}
+        onClose={() => setOpenModal(false)}
+        centered
+        withCloseButton={false}
+        closeOnClickOutside={false}
+      >
+        <Stack>
+          <Title order={6}>Anda yakin ingin keluar ?</Title>
+          <Group align="center" position="center">
+            <Button
+              onClick={() => {
+                setOpenModal(false);
+                setLoading(false);
+              }}
+              radius={50}
+            >
+              Batal
+            </Button>
+            <Button
+              loaderPosition="center"
+              loading={loadingLogout ? true : false}
+              radius={50}
+              bg={Warna.merah}
+              color="red"
+              onClick={() => onClickLogout()}
+            >
+              Keluar
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
+    </>
+  );
+
   return (
     <>
       <Menu
@@ -35,39 +164,42 @@ export function Admin_ComponentButtonUserCircle({ dataUser }: { dataUser: MODEL_
         }}
       >
         <Menu.Target>
-          <ActionIcon variant="transparent" onClick={() => console.log("test")}>
-            <IconUserCircle color="white" />
-          </ActionIcon>
+          <IconUserCircle color="white" />
+          {/* <ActionIcon variant="transparent">
+          </ActionIcon> */}
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Stack spacing={5} px={"xs"}>
-            <Menu.Item>
-              <Grid>
-                <Grid.Col span={2}>
-                  <IconUser />
-                </Grid.Col>
-                <Grid.Col span={"auto"}>
-                  <Text lineClamp={1}>{dataUser.username}</Text>
-                </Grid.Col>
-              </Grid>
-            </Menu.Item>
-            <Menu.Item>
-              <Grid>
-                <Grid.Col span={2}>
-                  <IconPhone />
-                </Grid.Col>
-                <Grid.Col span={"auto"}>
-                  <Text lineClamp={1}>+{dataUser.nomor}</Text>
-                </Grid.Col>
-              </Grid>
-            </Menu.Item>
+          <Menu.Item>
+            <Grid>
+              <Grid.Col span={2}>
+                <IconUser />
+              </Grid.Col>
+              <Grid.Col span={"auto"}>
+                <Text lineClamp={1}>{dataUser.username}</Text>
+              </Grid.Col>
+            </Grid>
+          </Menu.Item>
+          <Menu.Item>
+            <Grid>
+              <Grid.Col span={2}>
+                <IconPhone />
+              </Grid.Col>
+              <Grid.Col span={"auto"}>
+                <Text lineClamp={1}>+{dataUser.nomor}</Text>
+              </Grid.Col>
+            </Grid>
+          </Menu.Item>
 
-            <Menu.Divider />
-            <Center py={"xs"}>
+          <Menu.Divider />
+
+          <Menu.Item>
+            {/* <Center py={"xs"}>
               <Admin_Logout />
-            </Center>
-          </Stack>
+            </Center> */}
+            {/* <Button>Keluar</Button> */}
+            <Text>Keluar</Text>
+          </Menu.Item>
         </Menu.Dropdown>
       </Menu>
     </>

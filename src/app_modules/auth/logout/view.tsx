@@ -9,6 +9,7 @@ import { IconLogout } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { auth_Logout } from "../fun/fun_logout";
+import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 
 export default function Component_Logout() {
   const router = useRouter();
@@ -16,13 +17,13 @@ export default function Component_Logout() {
   const [loading, setLoading] = useState(false);
 
   async function onClickLogout() {
-    await auth_Logout().then((res) => {
-      if (res.status === 200) {
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-      } else {
-        ComponentGlobal_NotifikasiPeringatan(res.message);
-      }
-    });
+    const res = await auth_Logout();
+    if (res.status === 200) {
+      ComponentGlobal_NotifikasiBerhasil(res.message);
+      router.push(RouterAuth.login, { scroll: false });
+    } else {
+      ComponentGlobal_NotifikasiPeringatan(res.message);
+    }
   }
 
   return (

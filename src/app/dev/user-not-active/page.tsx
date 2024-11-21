@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 export default async function Page() {
   const userLoginId = await funGetUserIdByToken();
 
-  const dataUser = await user_getOneByUserId(userLoginId);
+  const dataUser = await user_getOneByUserId(userLoginId as string);
 
   if (dataUser?.active === true) {
     return redirect(RouterHome.main_home);

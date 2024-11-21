@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       <Forum_MainDetail
         dataPosting={dataPosting as any}
         listKomentar={listKomentar as any}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
         countKomentar={countKomentar}
       />
     </>

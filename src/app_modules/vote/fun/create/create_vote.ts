@@ -15,7 +15,7 @@ export async function Vote_funCreate(req: MODEL_VOTING, listVote: any[]) {
       deskripsi: req.deskripsi,
       awalVote: req.awalVote,
       akhirVote: req.akhirVote,
-      authorId: userLoginId,
+      authorId: userLoginId as string,
     },
     select: {
       id: true,

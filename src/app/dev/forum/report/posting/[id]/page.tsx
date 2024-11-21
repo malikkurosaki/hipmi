@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       <Forum_ReportPosting
         postingId={postingId}
         listReport={listReport as any}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
       />
     </>
   );

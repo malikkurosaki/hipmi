@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     <>
       <Investasi_UiDetailMain
         dataInvestasi={dataInvestasi as any}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
       />
     </>
   );

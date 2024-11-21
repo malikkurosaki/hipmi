@@ -24,7 +24,7 @@ export async function vote_funGetAllByStatusId({
       },
       where: {
         voting_StatusId: "1",
-        authorId: userLoginId,
+        authorId: userLoginId as string,
         isActive: true,
         akhirVote: {
           gte: new Date(),
@@ -49,7 +49,7 @@ export async function vote_funGetAllByStatusId({
       },
       where: {
         voting_StatusId: statusId,
-        authorId: userLoginId,
+        authorId: userLoginId as string,
         isActive: true,
       },
     });

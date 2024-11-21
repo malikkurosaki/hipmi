@@ -11,7 +11,7 @@ export default async function colab_getListNotifikasiByUserId() {
       createdAt: "desc",
     },
     where: {
-      userId: userLoginId,
+      userId: userLoginId as string,
     },
     select: {
       id: true,

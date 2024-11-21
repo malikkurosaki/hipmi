@@ -51,7 +51,7 @@ export default async function colab_funCreateRoomChat(
   const createForAuthor =
     await prisma.projectCollaboration_AnggotaRoomChat.create({
       data: {
-        userId: userLoginId,
+        userId: userLoginId as string,
         projectCollaboration_RoomChatId: createRoom.id,
       },
     });

@@ -11,14 +11,14 @@ export default async function Layout({
   params: { id: string };
 }) {
   const votingId = params.id;
-  const userLoginId = await funGetUserIdByToken();
+  const userLoginId  = await funGetUserIdByToken();
   const dataVoting = await voting_funGetOneVotingbyId(votingId);
 
   return (
     <>
       <LayoutVote_MainDetail
         votingId={votingId}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
         dataVoting={dataVoting}
       >
         {children}

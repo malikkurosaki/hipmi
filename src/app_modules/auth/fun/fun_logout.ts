@@ -11,22 +11,20 @@ export async function auth_Logout() {
   try {
     const delToken = await prisma.userSession.delete({
       where: {
-        userId: userId,
+        userId: userId as string,
       },
     });
 
     if (!delToken) return { status: 400, message: "Gagal Hapus User Session" };
-    cookies().set({
-      name: "ssn",
-      value: "",
-     
-    });
 
+    cookies().delete({
+      name: "ssn",
+    });
     return { status: 200, message: "Logout Berhasil" };
   } catch (error) {
     console.log(error);
   }
 
   revalidatePath("/");
-  return { status: 200, message: "Logout Berhasil" };
+  return { status: 200, message: "Anda  Berhasil Logout" };
 }

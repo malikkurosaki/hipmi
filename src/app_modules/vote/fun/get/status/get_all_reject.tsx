@@ -17,7 +17,7 @@ export async function vote_getAllReject({ page }: { page: number }) {
     },
     where: {
       voting_StatusId: "4",
-      authorId: userLoginId,
+      authorId: userLoginId as string,
       isActive: true,
     },
   });

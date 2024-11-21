@@ -8,7 +8,7 @@ export default async function Page() {
 
   return (
     <>
-      <Colab_Beranda listData={listData as any} userLoginId={userLoginId} />
+      <Colab_Beranda listData={listData as any} userLoginId={userLoginId as string} />
     </>
   );
 }

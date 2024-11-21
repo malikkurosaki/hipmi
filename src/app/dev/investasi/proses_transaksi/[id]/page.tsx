@@ -6,7 +6,7 @@ import getOneInvestasiById from "@/app_modules/investasi/fun/get_one_investasi_b
 export default async function Page({ params }: { params: { id: string } }) {
   const userLoginId = await funGetUserIdByToken();
 
-  const userLogin = await funGetUserProfile(userLoginId);
+  const userLogin = await funGetUserProfile(userLoginId as string);
   const dataInvestasi = await getOneInvestasiById(params.id);
 
   // console.log(dataInvestasi);

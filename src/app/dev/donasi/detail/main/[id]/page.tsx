@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       <DetailMainDonasi
         dataDonasi={dataDonasi as any}
         countDonatur={countDonatur}
-        userLoginId={userLoginId}
+        userLoginId={userLoginId as string}
       />
     </>
   );

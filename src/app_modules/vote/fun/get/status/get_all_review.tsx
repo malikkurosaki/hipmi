@@ -17,7 +17,7 @@ export async function vote_getAllReview({ page }: { page: number }) {
     },
     where: {
       voting_StatusId: "2",
-      authorId: userLoginId,
+      authorId: userLoginId as string,
       isActive: true,
     },
   });

@@ -7,6 +7,9 @@ export default async function Page() {
   const listTipeAcara = await Event_getMasterTipeAcara();
 
   return (
-    <Event_Create listTipeAcara={listTipeAcara as any} authorId={userLoginId} />
+    <Event_Create
+      listTipeAcara={listTipeAcara as any}
+      authorId={userLoginId as string}
+    />
   );
 }

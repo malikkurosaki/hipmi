@@ -8,7 +8,7 @@ export default async function colab_CekNotifikasi() {
 
   const cekNotif = await prisma.projectCollaboration_Notifikasi.findMany({
     where: {
-      userId: userLoginId,
+      userId: userLoginId as string,
       isRead: false,
     },
     select: {
