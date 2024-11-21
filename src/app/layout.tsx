@@ -41,15 +41,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const userLoginId = await funGetUserIdByToken();
+  // const userLoginId = await funGetUserIdByToken();
 
-  if (!token) return <>Require Token Storage</>;
+  // if (!token) return <>Require Token Storage</>;
 
   return (
     <RootStyleRegistry>
       {/* <MqttLoader />
       <TokenProvider token={token} envObject={envObject} /> */}
-      <RealtimeProvider userLoginId={userLoginId as string} />
+      {/* <RealtimeProvider userLoginId={userLoginId as string} /> */}
       {children}
     </RootStyleRegistry>
   );
