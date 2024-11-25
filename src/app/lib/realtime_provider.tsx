@@ -16,6 +16,10 @@ import {
   IRealtimeData,
 } from "./global_state";
 
+// const WIBU_REALTIME_TOKEN: string | undefined =
+//   process.env.NEXT_PUBLIC_WIBU_REALTIME_TOKEN;
+
+// Pasang tipe data di package WibuRealtime sebagai type adata setData
 export type TypeNotification = {
   type: "message" | "notification" | "trigger";
   pushNotificationTo: "ADMIN" | "USER";
@@ -23,12 +27,12 @@ export type TypeNotification = {
   userLoginId?: string;
 };
 
-const WIBU_REALTIME_TOKEN: string | undefined =
-  process.env.NEXT_PUBLIC_WIBU_REALTIME_TOKEN;
 export default function RealtimeProvider({
   userLoginId,
+  WIBU_REALTIME_TOKEN,
 }: {
   userLoginId: string;
+  WIBU_REALTIME_TOKEN: string;
 }) {
   const [dataRealtime, setDataRealtime] = useAtom(gs_realtimeData);
   const [newAdminNtf, setNewAdminNtf] = useAtom(gs_admin_ntf);
@@ -58,9 +62,11 @@ export default function RealtimeProvider({
   );
 
   useShallowEffect(() => {
-    if (WIBU_REALTIME_TOKEN === undefined) return alert("gak dapet key");
+    // if (WIBU_REALTIME_TOKEN === undefined) return alert("gak dapet key");
     try {
       WibuRealtime.init({
+        project: "hipmi",
+        WIBU_REALTIME_TOKEN: WIBU_REALTIME_TOKEN,
         onData(data: TypeNotification) {
           if (
             data.type == "notification" &&
@@ -154,12 +160,9 @@ export default function RealtimeProvider({
           }
           // ---------------------- VOTING ------------------------- //
         },
-
-        project: "hipmi",
-        WIBU_REALTIME_TOKEN: WIBU_REALTIME_TOKEN,
       });
     } catch (error) {
-      alert("error realtime");
+      console.log(error);
     }
   }, []);
 

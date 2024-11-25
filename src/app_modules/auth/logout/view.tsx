@@ -20,7 +20,7 @@ export default function Component_Logout() {
     const res = await auth_Logout();
     if (res.status === 200) {
       ComponentGlobal_NotifikasiBerhasil(res.message);
-      router.push(RouterAuth.login, { scroll: false });
+      router.push("/login", { scroll: false });
     } else {
       ComponentGlobal_NotifikasiPeringatan(res.message);
     }

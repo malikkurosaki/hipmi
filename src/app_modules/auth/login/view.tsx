@@ -32,7 +32,8 @@ export default function Login({ version }: { version: string }) {
     if (res.status === 200) {
       setLoading(true);
       ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
-      router.push(RouterAuth.validasi + res.kodeId, { scroll: false });
+      // router.push(RouterAuth.validasi + res.kodeId, { scroll: false });
+      router.push("/validasi/" + res.kodeId, { scroll: false });
     } else {
       ComponentGlobal_NotifikasiPeringatan(res.message);
     }
