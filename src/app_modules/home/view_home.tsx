@@ -49,6 +49,8 @@ export default function HomeView({
     onLoad(loadNotif);
   }
 
+  // console.log(dataUser, "dipage")
+
   return (
     <>
       <UIGlobal_LayoutTamplate

@@ -1,4 +1,6 @@
+import { ServerEnv } from "@/app/lib/server_env";
 import { TokenStorage } from "@/app/lib/token";
+import { envs } from "@/lib/envs";
 
 export async function funGlobal_UploadToStorage({
   file,
@@ -7,7 +9,7 @@ export async function funGlobal_UploadToStorage({
   file: File;
   dirId: string;
 }) {
-  if (!file) console.log("Tidak ada file");
+  const Env_WS_APIKEY = TokenStorage.value;
 
   const allowedMimeTypes = [
     "image/png",
@@ -35,7 +37,7 @@ export async function funGlobal_UploadToStorage({
       method: "POST",
       body: formData,
       headers: {
-        Authorization: `Bearer ${TokenStorage.value}`,
+        Authorization: `Bearer ${Env_WS_APIKEY}`,
       },
     });
 
@@ -52,4 +54,6 @@ export async function funGlobal_UploadToStorage({
     console.error("Error:", error);
     return { success: false, data: {} };
   }
+
+  return { success: false, data: { id: "" } };
 }

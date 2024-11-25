@@ -31,6 +31,8 @@ import { useState } from "react";
 import { Donasi_funCreate } from "../fun/create/fun_create_donasi";
 import { gs_donasi_hot_menu, gs_donasi_tabs_posting } from "../global_state";
 import { MODEL_DONASI_TEMPORARY } from "../model/interface";
+import { IRealtimeData } from "@/app/lib/global_state";
+import { WibuRealtime } from "wibu-pkg";
 
 export default function CreateCeritaPenggalangDonasi({
   dataTemporary,
@@ -90,7 +92,16 @@ export default function CreateCeritaPenggalangDonasi({
       });
 
       if (res.status === 201) {
-        const dataNotif: any = {
+        // const dataNotif: any = {
+        //   appId: res.data?.id as any,
+        //   status: res.data?.DonasiMaster_Status?.name as any,
+        //   userId: res.data?.authorId as any,
+        //   pesan: res.data?.title as any,
+        //   kategoriApp: "DONASI",
+        //   title: "Donasi baru",
+        // };
+
+        const dataNotifikasi: IRealtimeData = {
           appId: res.data?.id as any,
           status: res.data?.DonasiMaster_Status?.name as any,
           userId: res.data?.authorId as any,
@@ -100,16 +111,25 @@ export default function CreateCeritaPenggalangDonasi({
         };
 
         const notif = await notifikasiToAdmin_funCreate({
-          data: dataNotif as any,
+          data: dataNotifikasi as any,
         });
 
         if (notif.status === 201) {
-          mqtt_client.publish(
-            "ADMIN",
-            JSON.stringify({
-              count: 1,
-            })
-          );
+          // mqtt_client.publish(
+          //   "ADMIN",
+          //   JSON.stringify({
+          //     count: 1,
+          //   })
+          // );
+
+          WibuRealtime.setData({
+            type: "notification",
+            pushNotificationTo: "ADMIN",
+          });
+
+          
+
+
           setDonasiHotMenu(1);
           ComponentGlobal_NotifikasiBerhasil(res.message);
           router.push(RouterDonasi.status_galang_dana({ id: "2" }), {
