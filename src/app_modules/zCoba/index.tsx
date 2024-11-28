@@ -1,15 +1,9 @@
 "use client";
 
-import { ActionIcon, Box, Button, Stack, Title } from "@mantine/core";
+import { Box, Button, Stack } from "@mantine/core";
 import { useState } from "react";
 
-import { IconPencilPlus } from "@tabler/icons-react";
 import _, { random } from "lodash";
-import UIGlobal_LayoutTamplate from "../_global/ui/ui_layout_tamplate";
-import { useShallowEffect } from "@mantine/hooks";
-import { WibuRealtime } from "wibu";
-import { v4 } from "uuid";
-import { UIGlobal_LayoutHeaderTamplate } from "../_global/ui";
 
 const newData = Array(20)
   .fill(0)

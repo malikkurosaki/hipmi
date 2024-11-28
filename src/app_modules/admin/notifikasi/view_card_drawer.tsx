@@ -1,4 +1,5 @@
 import {
+  gs_adminDonasi_triggerReview,
   gs_adminEvent_triggerReview,
   gs_adminJob_triggerReview,
   gs_adminVoting_triggerReview,
@@ -21,6 +22,7 @@ import {
   IAdmin_ActivePage,
 } from "./route_setting/type_of_select_page";
 import { adminNotifikasi_findRouterVoting } from "./route_setting/voting";
+import adminNotifikasi_findRouterDonasi from "./route_setting/donasi";
 
 export default function AdminNotifikasi_ViewCardDrawer({
   data,
@@ -54,6 +56,9 @@ export default function AdminNotifikasi_ViewCardDrawer({
   const [isAdminVoting_TriggerReview, setIsAdminVoting_TriggerReview] = useAtom(
     gs_adminVoting_triggerReview
   );
+  const [isAdminDonasi_TriggerReview, setIsAdminDonasi_TriggerReview] = useAtom(
+    gs_adminDonasi_triggerReview
+  );
 
   async function onRead() {
     // ========================== JOB ========================== //
@@ -84,6 +89,7 @@ export default function AdminNotifikasi_ViewCardDrawer({
         setIsAdminJob_TriggerReview(false);
         setVisible(false);
         setDataId("");
+        onToggleNavbar(false);
       }
     }
     // ========================== JOB ========================== //
@@ -117,6 +123,7 @@ export default function AdminNotifikasi_ViewCardDrawer({
         setIsAdminEvent_TriggerReview(false);
         setVisible(false);
         setDataId("");
+        onToggleNavbar(false);
       }
     }
     // ========================== EVENT ========================== //
@@ -150,9 +157,41 @@ export default function AdminNotifikasi_ViewCardDrawer({
         setIsAdminVoting_TriggerReview(false);
         setVisible(false);
         setDataId("");
+        onToggleNavbar(false);
       }
     }
     // ========================== VOTING ========================== //
+
+    // ========================== DONASI ========================== //
+
+    if (data.kategoriApp == "DONASI") {
+      const checkDonasi = await adminNotifikasi_findRouterDonasi({
+        appId: data.appId,
+        notifikasiId: data.id,
+        router: router,
+        onLoadCountNotif(val) {
+          onLoadCountNotif(val);
+        },
+        onLoadDataNotifikasi(val) {
+          onLoadDataNotifikasi(val);
+        },
+        onChangeNavbar(val) {
+          onChangeNavbar({
+            id: val.id,
+            childId: val.childId,
+          });
+        },
+      });
+
+      if (checkDonasi) {
+        setIsAdminDonasi_TriggerReview(false);
+        setVisible(false);
+        setDataId("");
+        onToggleNavbar(false);
+      }
+    }
+
+    // ========================== DONASI ========================== //
 
     // // FORUM
     // e?.kategoriApp === "FORUM" &&

@@ -83,7 +83,7 @@ function ButtonAction({
         ComponentGlobal_NotifikasiGagal(res.message);
       }
     } else {
-      ComponentGlobal_NotifikasiPeringatan("Voting telah di terima admin");
+      ComponentGlobal_NotifikasiPeringatan("Voting telah direview admin");
     }
   }
   return (

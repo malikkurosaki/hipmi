@@ -18,6 +18,8 @@ import { notifikasi_eventCheckStatus } from "./path/event";
 import { notifikasi_jobCheckStatus } from "./path/job";
 import { gs_vote_hotMenu } from "@/app_modules/vote/global_state";
 import { notifikasi_votingCheckStatus } from "./path/voting";
+import { redirectDonasiPage } from "./path/donasi";
+import { gs_donasi_hot_menu } from "@/app_modules/donasi/global_state";
 
 export function ComponentNotifiaksi_CardView({
   data,
@@ -35,6 +37,7 @@ export function ComponentNotifiaksi_CardView({
   const [jobMenuId, setJobMenuId] = useAtom(gs_job_hot_menu);
   const [eventMenuId, setEventMenuId] = useAtom(gs_event_hotMenu);
   const [votingMenu, setVotingMenu] = useAtom(gs_vote_hotMenu);
+  const [donasiMenu, setDonasiMenu] = useAtom(gs_donasi_hot_menu);
 
   return (
     <>
@@ -107,8 +110,29 @@ export function ComponentNotifiaksi_CardView({
               onSetVisible(val) {
                 setVisible(val);
               },
-              onSetEventMenuId(val) {
+              onSetMenuId(val) {
                 setVotingMenu(val);
+              },
+              onLoadCountNtf(val) {
+                setLoadCountNtf(val);
+              },
+            });
+          }
+
+          if (data?.kategoriApp === "DONASI") {
+            redirectDonasiPage({
+              appId: data.appId,
+              dataId: data.id,
+              categoryPage: categoryPage,
+              router: router,
+              onLoadDataEvent(val) {
+                onLoadData(val);
+              },
+              onSetVisible(val) {
+                setVisible(val);
+              },
+              onSetMenuId(val) {
+                setDonasiMenu(val);
               },
               onLoadCountNtf(val) {
                 setLoadCountNtf(val);
@@ -144,15 +168,6 @@ export function ComponentNotifiaksi_CardView({
           //   redirectDetailCollaborationPage({
           //     data: data,
           //     router: router,
-          //   });
-
-          // data.kategoriApp === "DONASI" &&
-          //   redirectDonasiPage({
-          //     data: data,
-          //     router: router,
-          //     onSetPage(val) {
-          //       // onSetMenu(val);
-          //     },
           //   });
 
           // data.kategoriApp === "INVESTASI" &&

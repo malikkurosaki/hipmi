@@ -1,19 +1,14 @@
 "use client";
 
+import { IRealtimeData } from "@/app/lib/global_state";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
-import mqtt_client from "@/util/mqtt_client";
-import {
-  Button,
-  Group,
-  Modal,
-  SimpleGrid,
-  Stack,
-  Textarea,
-} from "@mantine/core";
+import { Button, Group, SimpleGrid, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { WibuRealtime } from "wibu-pkg";
+import { Admin_ComponentModalReport } from "../../_admin_global/_component";
 import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../_admin_global/admin_notifikasi/notifikasi_berhasil";
 import { ComponentAdminGlobal_NotifikasiGagal } from "../../_admin_global/admin_notifikasi/notifikasi_gagal";
 import { ComponentAdminGlobal_NotifikasiPeringatan } from "../../_admin_global/admin_notifikasi/notifikasi_peringatan";
@@ -24,7 +19,8 @@ import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_det
 import { AdminDonasi_getOneById } from "../fun/get/get_one_by_id";
 import { AdminDonasi_funUpdateStatusPublish } from "../fun/update/fun_status_publish";
 import { AdminDonasi_funUpdateStatusReject } from "../fun/update/fun_status_reject";
-import { Admin_ComponentModalReport } from "../../_admin_global/_component";
+import { donasi_checkStatus } from "@/app_modules/donasi/fun";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 
 export default function AdminDonasi_DetailReview({
   dataReview,
@@ -70,35 +66,51 @@ function ButtonOnHeader({
   const [catatan, setCatatan] = useState("");
 
   async function onPulish() {
-    const res = await AdminDonasi_funUpdateStatusPublish(donasi.id, "1");
-    if (res.status === 200) {
-      const dataNotif = {
-        appId: res.data?.id,
-        status: res.data?.DonasiMaster_Status?.name as any,
-        userId: res.data?.authorId as any,
-        pesan: res.data?.title as any,
-        kategoriApp: "DONASI",
-        title: "Donasi publish",
-      };
+    const checkStatus = await donasi_checkStatus({ id: donasi.id });
 
-      const notif = await adminNotifikasi_funCreateToUser({
-        data: dataNotif as any,
-      });
+    if (checkStatus) {
+      const res = await AdminDonasi_funUpdateStatusPublish(donasi.id, "1");
+      if (res.status === 200) {
+        const dataNotifikasi: IRealtimeData = {
+          appId: res.data?.id as string,
+          status: res.data?.DonasiMaster_Status?.name as any,
+          userId: res.data?.authorId as any,
+          pesan: res.data?.title as any,
+          kategoriApp: "DONASI",
+          title: "Donasi publish",
+        };
 
-      if (notif.status === 201) {
-        mqtt_client.publish(
-          "USER",
-          JSON.stringify({ userId: res?.data?.authorId, count: 1 })
+        const notif = await adminNotifikasi_funCreateToUser({
+          data: dataNotifikasi as any,
+        });
+
+        if (notif.status === 201) {
+          WibuRealtime.setData({
+            type: "notification",
+            pushNotificationTo: "USER",
+            dataMessage: dataNotifikasi,
+          });
+
+          WibuRealtime.setData({
+            type: "trigger",
+            pushNotificationTo: "USER",
+            dataMessage: dataNotifikasi,
+          });
+
+          const newData = await AdminDonasi_getOneById(donasi?.id);
+          setData(newData);
+          ComponentAdminGlobal_NotifikasiBerhasil(
+            "Berhasil Mengubah Status Donasi"
+          );
+          setLoadingPublish(true);
+        }
+      } else {
+        ComponentAdminGlobal_NotifikasiPeringatan(
+          "Gagal Mengubah Status Donasi"
         );
-        const newData = await AdminDonasi_getOneById(donasi?.id);
-        setData(newData);
-        ComponentAdminGlobal_NotifikasiBerhasil(
-          "Berhasil Mengubah Status Donasi"
-        );
-        setLoadingPublish(true);
       }
     } else {
-      ComponentAdminGlobal_NotifikasiPeringatan("Gagal Mengubah Status Donasi");
+      ComponentGlobal_NotifikasiPeringatan("Status donasi telah diubah user");
     }
   }
 
@@ -108,39 +120,46 @@ function ButtonOnHeader({
         "Lengkapi Alasan Penolakan"
       );
 
-    const res = await AdminDonasi_funUpdateStatusReject(
-      donasi.id,
-      "4",
-      catatan
-    );
-    if (res.status === 200) {
-      const dataNotif = {
-        appId: res.data?.id,
-        status: res.data?.DonasiMaster_Status?.name as any,
-        userId: res.data?.authorId as any,
-        pesan: res.data?.title as any,
-        kategoriApp: "DONASI",
-        title: "Donasi anda di tolak !",
-      };
+    const checkStatus = await donasi_checkStatus({ id: donasi.id });
 
-      const notif = await adminNotifikasi_funCreateToUser({
-        data: dataNotif as any,
-      });
+    if (checkStatus) {
+      const res = await AdminDonasi_funUpdateStatusReject(
+        donasi.id,
+        "4",
+        catatan
+      );
+      if (res.status === 200) {
+        const dataNotifikasi: IRealtimeData = {
+          appId: res.data?.id as string,
+          status: res.data?.DonasiMaster_Status?.name as any,
+          userId: res.data?.authorId as any,
+          pesan: res.data?.title as any,
+          kategoriApp: "DONASI",
+          title: "Donasi anda di tolak !",
+        };
 
-      if (notif.status === 201) {
-        mqtt_client.publish(
-          "USER",
-          JSON.stringify({ userId: res?.data?.authorId, count: 1 })
-        );
+        const notif = await adminNotifikasi_funCreateToUser({
+          data: dataNotifikasi as any,
+        });
+
+        if (notif.status === 201) {
+          WibuRealtime.setData({
+            type: "notification",
+            pushNotificationTo: "USER",
+            dataMessage: dataNotifikasi,
+          });
+
+          const newData = await AdminDonasi_getOneById(donasi?.id);
+          setData(newData);
+          close();
+          ComponentAdminGlobal_NotifikasiBerhasil(res.message);
+          setLoadingReject(true);
+        }
+      } else {
+        ComponentAdminGlobal_NotifikasiGagal(res.message);
       }
-
-      const newData = await AdminDonasi_getOneById(donasi?.id);
-      setData(newData);
-      close();
-      ComponentAdminGlobal_NotifikasiBerhasil(res.message);
-      setLoadingReject(true);
     } else {
-      ComponentAdminGlobal_NotifikasiGagal(res.message);
+      ComponentGlobal_NotifikasiPeringatan("Status donasi telah diubah user");
     }
   }
 

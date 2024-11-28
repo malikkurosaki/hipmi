@@ -14,6 +14,8 @@ import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_
 import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
 import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
 import { MODEL_DONASI } from "../../model/interface";
+import { IRealtimeData } from "@/app/lib/global_state";
+import { WibuRealtime } from "wibu-pkg";
 
 export default function DetailDraftDonasi({
   dataDonasi,
@@ -52,7 +54,8 @@ function ButtonAjukanPenggalangan({
   async function onChangeStatus() {
     const res = await Donasi_funGantiStatus(dataDonasi.id, "2");
     if (res.status === 200) {
-      const dataNotif = {
+
+      const dataNotifikasi: IRealtimeData = {
         appId: res.data?.id as any,
         status: res.data?.DonasiMaster_Status?.name as any,
         userId: res.data?.authorId as any,
@@ -62,11 +65,20 @@ function ButtonAjukanPenggalangan({
       };
 
       const notif = await notifikasiToAdmin_funCreate({
-        data: dataNotif as any,
+        data: dataNotifikasi as any,
       });
 
       if (notif.status === 201) {
-        mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
+        WibuRealtime.setData({
+          type: "notification",
+          pushNotificationTo: "ADMIN",
+        });
+
+        WibuRealtime.setData({
+          type: "trigger",
+          pushNotificationTo: "ADMIN",
+          dataMessage: dataNotifikasi,
+        });
 
         setLoading(true);
         ComponentGlobal_NotifikasiBerhasil("Berhasil Diajukan");
