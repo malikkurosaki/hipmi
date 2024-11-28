@@ -185,9 +185,17 @@ export default function RealtimeProvider({
             data.dataMessage?.kategoriApp == "DONASI" &&
             data.dataMessage.status == "Publish"
           ) {
-            console.log("masuk trigger ");
             setIsTriggerDonasiBeranda(true);
           }
+
+          // if (
+          //   data.type == "notification" &&
+          //   data.pushNotificationTo == "ADMIN" &&
+          //   data.dataMessage?.status == "Menunggu" &&
+          //   userLoginId !== data.dataMessage?.userId
+          // ) {
+          //   console.log("yes");
+          // }
 
           // ---------------------- DONASI ------------------------- //
         },

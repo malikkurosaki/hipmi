@@ -1,5 +1,6 @@
 "use client";
 
+import { IRealtimeData } from "@/app/lib/global_state";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
   AccentColor,
@@ -9,13 +10,13 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { MODEL_MASTER_BANK } from "@/app_modules/investasi/_lib/interface";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
-import mqtt_client from "@/util/mqtt_client";
 import { Button, Paper, Radio, Stack, Title } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Donasi_funCreateInvoice } from "../../fun/create/fun_create_invoice";
-import { gs_proses_donasi } from "../../global_state";
+import { gs_donasi_hot_menu, gs_proses_donasi } from "../../global_state";
+import { WibuRealtime } from "wibu-pkg";
 
 export default function Donasi_MetodePembayaran({
   listBank,
@@ -31,6 +32,7 @@ export default function Donasi_MetodePembayaran({
   const [prosesDonasi, setProsesDonasi] = useAtom(gs_proses_donasi);
   const [pilihBank, setPilihBank] = useState("");
   const [bank, setBank] = useState(listBank);
+  const [activeHotMenu, setActiveHotMenu] = useAtom(gs_donasi_hot_menu);
 
   async function onProses() {
     const body = {
@@ -40,31 +42,31 @@ export default function Donasi_MetodePembayaran({
       authorId: authorId,
     };
 
-    // console.log(body)
 
     const res = await Donasi_funCreateInvoice(body);
     if (res.status === 200) {
-      const dataNotif = {
+
+      const dataNotifikasi: IRealtimeData = {
         appId: res.data?.Donasi?.id as any,
+        status: res.data?.DonasiMaster_StatusInvoice?.name as any,
         userId: res.data?.Donasi?.authorId as any,
         pesan: res.data?.Donasi?.title as any,
-        status: res.data?.DonasiMaster_StatusInvoice?.name,
         kategoriApp: "DONASI",
-        title: "Donatur mengirim invoice",
+        title: "Donatur membuat invoice donasi",
       };
 
       const notif = await notifikasiToAdmin_funCreate({
-        data: dataNotif as any,
+        data: dataNotifikasi as any,
       });
 
       if (notif.status === 201) {
-        mqtt_client.publish(
-          "ADMIN",
-          JSON.stringify({
-            count: 1,
-          })
-        );
+        WibuRealtime.setData({
+          type: "notification",
+          pushNotificationTo: "ADMIN",
+        });
+
         setLoading(true);
+        setActiveHotMenu(2);
         ComponentGlobal_NotifikasiBerhasil(res.message);
         setProsesDonasi({
           ...prosesDonasi,

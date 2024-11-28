@@ -10,10 +10,12 @@ import adminNotifikasi_funUpdateIsReadById from "../fun/update/fun_update_is_rea
 import adminNotifikasi_countNotifikasi from "../fun/count/count_is_read";
 import adminNotifikasi_getByUserId from "../fun/get/get_notifikasi_by_user_id";
 import { ComponentAdminGlobal_NotifikasiPeringatan } from "../../_admin_global/admin_notifikasi/notifikasi_peringatan";
+import { ITypeStatusNotifikasi } from "@/app/lib/global_state";
 
 export default async function adminNotifikasi_findRouterDonasi({
   appId,
   notifikasiId,
+  status,
   router,
   onLoadCountNotif,
   onLoadDataNotifikasi,
@@ -21,6 +23,7 @@ export default async function adminNotifikasi_findRouterDonasi({
 }: {
   appId: string;
   notifikasiId: string;
+  status: ITypeStatusNotifikasi;
   router: AppRouterInstance;
   onLoadCountNotif: (val: any) => void;
   onLoadDataNotifikasi: (val: any) => void;
@@ -29,54 +32,69 @@ export default async function adminNotifikasi_findRouterDonasi({
     childId: IAdmin_ActiveChildId;
   }) => void;
 }) {
-  const check = await admin_funDonasiCheckStatus({ id: appId });
-
-  if (check.status == 200) {
-    const udpateReadNotifikasi = await adminNotifikasi_funUpdateIsReadById({
-      notifId: notifikasiId,
+  if (
+    status == "Menunggu" ||
+    status == "Berhasil" ||
+    status == "Proses" ||
+    status == "Gagal"
+  ) {
+    const path = RouterAdminDonasi_OLD.detail_publish + appId;
+    router.push(path, { scroll: false });
+    onChangeNavbar({
+      id: "Donasi",
+      childId: "Donasi_2",
     });
 
-    if (udpateReadNotifikasi.status == 200) {
-      const loadCountNotif = await adminNotifikasi_countNotifikasi();
-      onLoadCountNotif(loadCountNotif);
-
-      const loadListNotifikasi = await adminNotifikasi_getByUserId({
-        page: 1,
+    return true;
+  } else {
+    const check = await admin_funDonasiCheckStatus({ id: appId });
+    if (check.status == 200) {
+      const udpateReadNotifikasi = await adminNotifikasi_funUpdateIsReadById({
+        notifId: notifikasiId,
       });
-      onLoadDataNotifikasi(loadListNotifikasi);
 
-      const path = `/dev/admin/donasi/sub-menu/${check.statusName}`;
+      if (udpateReadNotifikasi.status == 200) {
+        const loadCountNotif = await adminNotifikasi_countNotifikasi();
+        onLoadCountNotif(loadCountNotif);
 
-      if (check.statusName == "draft") {
-        ComponentAdminGlobal_NotifikasiPeringatan(
-          "Status telah dirubah oleh user"
-        );
-      } else {
-        if (check.statusName == "publish") {
-          onChangeNavbar({
-            id: "Donasi",
-            childId: "Donasi_2",
-          });
+        const loadListNotifikasi = await adminNotifikasi_getByUserId({
+          page: 1,
+        });
+        onLoadDataNotifikasi(loadListNotifikasi);
+
+        const path = `/dev/admin/donasi/sub-menu/${check.statusName}`;
+
+        if (check.statusName == "draft") {
+          ComponentAdminGlobal_NotifikasiPeringatan(
+            "Status telah dirubah oleh user"
+          );
+        } else {
+          if (check.statusName == "publish") {
+            onChangeNavbar({
+              id: "Donasi",
+              childId: "Donasi_2",
+            });
+          }
+
+          if (check.statusName == "review") {
+            onChangeNavbar({
+              id: "Donasi",
+              childId: "Donasi_3",
+            });
+          }
+
+          if (check.statusName == "reject") {
+            onChangeNavbar({
+              id: "Donasi",
+              childId: "Donasi_4",
+            });
+          }
+
+          router.push(path, { scroll: false });
         }
 
-        if (check.statusName == "review") {
-          onChangeNavbar({
-            id: "Donasi",
-            childId: "Donasi_3",
-          });
-        }
-
-        if (check.statusName == "reject") {
-          onChangeNavbar({
-            id: "Donasi",
-            childId: "Donasi_4",
-          });
-        }
-
-        router.push(path, { scroll: false });
+        return true;
       }
-
-      return true;
     } else {
       ComponentAdminGlobal_NotifikasiPeringatan("Status tidak ditemukan");
       return false;

@@ -1,16 +1,30 @@
 import { atom } from "jotai";
 
-export type IRealtimeData = {
-  status?:
-    | "Publish"
-    | "Review"
-    | "Draft"
-    | "Reject"
-    // EVNET
-    | "Peserta Event"
-    // VOTING
-    | "Voting Masuk";
+/**
+ * @param status | status jika perlu acc admin > "Publish", "Review", "Draft", "Reject"
+ * @param status | khusus kategori | EVENT > "Peserta Event" | VOTING > "Voting Masuk" | DONASI > "Berhasil", "Proses", "Menunggu", "Gagal"
+ */
+export type ITypeStatusNotifikasi =
+  | "Publish"
+  | "Review"
+  | "Draft"
+  | "Reject"
+  // EVENT
+  | "Peserta Event"
+  // VOTING
+  | "Voting Masuk"
+  // DONASI
+  | "Berhasil"
+  | "Proses"
+  | "Menunggu"
+  | "Gagal";
 
+/**
+ * @param kategoriApp | "JOB", "VOTING", "EVENT", "DONASI", "INVESTASI", "COLLABORATION", "FORUM"
+ * @type string
+ */
+export type IRealtimeData = {
+  status?: ITypeStatusNotifikasi;
   appId: string;
   userId: string;
   pesan: string;
