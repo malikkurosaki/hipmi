@@ -3,6 +3,7 @@ import {
   gs_adminEvent_triggerReview,
   gs_adminJob_triggerReview,
   gs_adminVoting_triggerReview,
+  ITypeStatusNotifikasi,
 } from "@/app/lib/global_state";
 import { AccentColor } from "@/app_modules/_global/color";
 import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
@@ -169,6 +170,7 @@ export default function AdminNotifikasi_ViewCardDrawer({
         appId: data.appId,
         notifikasiId: data.id,
         router: router,
+        status: data.status as ITypeStatusNotifikasi,
         onLoadCountNotif(val) {
           onLoadCountNotif(val);
         },

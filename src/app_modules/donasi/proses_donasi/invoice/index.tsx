@@ -1,6 +1,7 @@
 "use client";
 
 import { DIRECTORY_ID } from "@/app/lib";
+import { IRealtimeData } from "@/app/lib/global_state";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
   AccentColor,
@@ -11,7 +12,6 @@ import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/noti
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
-import mqtt_client from "@/util/mqtt_client";
 import {
   Button,
   Center,
@@ -28,6 +28,7 @@ import { IconCamera, IconCircleCheck } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { WibuRealtime } from "wibu-pkg";
 import TampilanRupiahDonasi from "../../component/tampilan_rupiah";
 import { Donasi_funUpdateStatusInvoice } from "../../fun/update/fun_update_status_invoice";
 import { gs_donasi_hot_menu } from "../../global_state";
@@ -63,26 +64,34 @@ export default function Donasi_InvoiceProses({
         fileId: uploadImage.data.id,
       });
       if (res.status === 200) {
-        const dataNotif: any = {
+        // const dataNotif: any = {
+        //   appId: res.data?.Donasi?.id as any,
+        //   userId: res.data?.Donasi?.authorId as any,
+        //   pesan: res.data?.Donasi?.title as any,
+        //   status: res.data?.DonasiMaster_StatusInvoice?.name,
+        //   kategoriApp: "DONASI",
+        //   title: "Donatur melakukan transfer",
+        // };
+
+        const dataNotifikasi: IRealtimeData = {
           appId: res.data?.Donasi?.id as any,
+          status: res.data?.DonasiMaster_StatusInvoice?.name as any,
           userId: res.data?.Donasi?.authorId as any,
           pesan: res.data?.Donasi?.title as any,
-          status: res.data?.DonasiMaster_StatusInvoice?.name,
           kategoriApp: "DONASI",
-          title: "Donatur melakukan transfer",
+          title: "Donatur telah melakukan transfer",
         };
 
         const notif = await notifikasiToAdmin_funCreate({
-          data: dataNotif as any,
+          data: dataNotifikasi as any,
         });
 
         if (notif.status === 201) {
-          mqtt_client.publish(
-            "ADMIN",
-            JSON.stringify({
-              count: 1,
-            })
-          );
+           WibuRealtime.setData({
+             type: "notification",
+             pushNotificationTo: "ADMIN",
+           });
+
           ComponentGlobal_NotifikasiBerhasil(res.message);
           setActive(2);
           router.push(RouterDonasi.proses_transaksi + `${invoice.id}`);
