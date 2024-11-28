@@ -84,7 +84,6 @@ export default function CreateDonasi({
       if (res.status === 201) {
         setTabsPostingDonasi("Review");
         router.push(RouterDonasi.create_cerita_penggalang + `${res.donasiId}`);
-        setLoading(false);
       } else {
         ComponentGlobal_NotifikasiGagal(res.message);
         setLoading(false);

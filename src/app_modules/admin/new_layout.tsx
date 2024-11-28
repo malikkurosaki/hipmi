@@ -196,8 +196,7 @@ export function Admin_NewLayout({
             setActiveChildId(val.childId);
           }}
           onToggleNavbar={(val: any) => {
-            // console.log(val, "toggle navbar");
-            // setDrawerNotifikasi(val);
+            setDrawerNotifikasi(val);
           }}
           onLoadCountNotif={(val: any) => {
             setCountNtf(val);

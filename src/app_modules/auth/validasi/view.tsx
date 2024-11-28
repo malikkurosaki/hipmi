@@ -79,7 +79,7 @@ export default function Validasi({
 
     if (res.status === 400) {
       ComponentGlobal_NotifikasiBerhasil(res.message);
-      router.push(RouterAuth.register + dataOtp.id, { scroll: false });
+      router.push("/register/" + dataOtp.id, { scroll: false });
     }
 
     if (res.status === 401) {
@@ -88,7 +88,7 @@ export default function Validasi({
       });
       if (resAktivasi.status === 200) {
         ComponentGlobal_NotifikasiPeringatan(res.message);
-        router.push(RouterAuth.login, { scroll: false });
+        router.push("/login", { scroll: false });
       }
     }
   }
@@ -102,7 +102,7 @@ export default function Validasi({
     const res = await auth_funResendCode({ nomor: nomor });
     if (res.status === 200) {
       ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
-      router.push(RouterAuth.validasi + res.kodeId, { scroll: false });
+      router.push("/validasi/" + res.kodeId, { scroll: false });
     } else {
       ComponentGlobal_NotifikasiPeringatan(res.message);
     }

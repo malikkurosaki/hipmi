@@ -5,9 +5,11 @@ import { useAtom } from "jotai";
 import { WibuRealtime } from "wibu-pkg";
 import {
   gs_admin_ntf,
+  gs_adminDonasi_triggerReview,
   gs_adminEvent_triggerReview,
   gs_adminJob_triggerReview,
   gs_adminVoting_triggerReview,
+  gs_donasiTriggerBeranda,
   gs_eventTriggerBeranda,
   gs_jobTiggerBeranda,
   gs_realtimeData,
@@ -59,6 +61,14 @@ export default function RealtimeProvider({
   );
   const [isAdminVoting_TriggerReview, setIsAdminVoting_TriggerReview] = useAtom(
     gs_adminVoting_triggerReview
+  );
+
+  // DONASI
+  const [isAdminDonasi_TriggerReview, setIsAdminDonasi_TriggerReview] = useAtom(
+    gs_adminDonasi_triggerReview
+  );
+  const [isTriggerDonasiBeranda, setIsTriggerDonasiBeranda] = useAtom(
+    gs_donasiTriggerBeranda
   );
 
   useShallowEffect(() => {
@@ -159,6 +169,27 @@ export default function RealtimeProvider({
             setNewUserNtf((e) => e + 1);
           }
           // ---------------------- VOTING ------------------------- //
+
+          // ---------------------- DONASI ------------------------- //
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "ADMIN" &&
+            data.dataMessage?.kategoriApp == "DONASI"
+          ) {
+            setIsAdminDonasi_TriggerReview(true);
+          }
+
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.kategoriApp == "DONASI" &&
+            data.dataMessage.status == "Publish"
+          ) {
+            console.log("masuk trigger ");
+            setIsTriggerDonasiBeranda(true);
+          }
+
+          // ---------------------- DONASI ------------------------- //
         },
       });
     } catch (error) {

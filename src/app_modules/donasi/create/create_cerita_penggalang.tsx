@@ -11,7 +11,6 @@ import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/noti
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
-import mqtt_client from "@/util/mqtt_client";
 import {
   AspectRatio,
   Button,
@@ -92,15 +91,6 @@ export default function CreateCeritaPenggalangDonasi({
       });
 
       if (res.status === 201) {
-        // const dataNotif: any = {
-        //   appId: res.data?.id as any,
-        //   status: res.data?.DonasiMaster_Status?.name as any,
-        //   userId: res.data?.authorId as any,
-        //   pesan: res.data?.title as any,
-        //   kategoriApp: "DONASI",
-        //   title: "Donasi baru",
-        // };
-
         const dataNotifikasi: IRealtimeData = {
           appId: res.data?.id as any,
           status: res.data?.DonasiMaster_Status?.name as any,
@@ -115,20 +105,16 @@ export default function CreateCeritaPenggalangDonasi({
         });
 
         if (notif.status === 201) {
-          // mqtt_client.publish(
-          //   "ADMIN",
-          //   JSON.stringify({
-          //     count: 1,
-          //   })
-          // );
-
           WibuRealtime.setData({
             type: "notification",
             pushNotificationTo: "ADMIN",
           });
 
-          
-
+          WibuRealtime.setData({
+            type: "trigger",
+            pushNotificationTo: "ADMIN",
+            dataMessage: dataNotifikasi,
+          });
 
           setDonasiHotMenu(1);
           ComponentGlobal_NotifikasiBerhasil(res.message);

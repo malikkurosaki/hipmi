@@ -41,3 +41,7 @@ export const gs_eventTriggerBeranda = atom<boolean>(false);
 // voting
 export const gs_adminVoting_triggerReview = atom<boolean>(false);
 export const gs_votingTiggerBeranda = atom<boolean>(false);
+
+// donasi
+export const gs_adminDonasi_triggerReview = atom<boolean>(false);
+export const gs_donasiTriggerBeranda = atom<boolean>(false);

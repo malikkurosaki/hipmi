@@ -13,7 +13,7 @@ export async function notifikasi_votingCheckStatus({
   categoryPage,
   router,
   onLoadDataEvent,
-  onSetEventMenuId,
+  onSetMenuId,
   onSetVisible,
   onLoadCountNtf,
 }: {
@@ -22,7 +22,7 @@ export async function notifikasi_votingCheckStatus({
   categoryPage: string;
   router: AppRouterInstance;
   onLoadDataEvent: (val: any) => void;
-  onSetEventMenuId(val: number): void;
+  onSetMenuId(val: number): void;
   onSetVisible(val: boolean): void;
   onLoadCountNtf(val: number): void;
 }) {
@@ -46,7 +46,7 @@ export async function notifikasi_votingCheckStatus({
       onSetVisible(true);
 
       const path = `/dev/vote/detail/${check.statusName}/${appId}`;
-      onSetEventMenuId(1);
+      onSetMenuId(1);
       router.push(path, { scroll: false });
     }
   } else {
