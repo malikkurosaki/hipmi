@@ -10,7 +10,7 @@ import { useShallowEffect } from "@mantine/hooks";
 import { useAtom } from "jotai";
 import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ComponentEvent_CardBeranda } from "../component/card_view/card_beranda";
 import { event_getListAllPublish } from "../fun/get/get_list_all_publish";
 import { MODEL_EVENT } from "../model/interface";

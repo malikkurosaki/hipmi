@@ -1,12 +1,11 @@
-import { CheckCookies_UiLayout } from "@/app_modules/check_cookies";
-import { RealtimeProvider } from "../lib";
-import { funCheckCookies } from "@/app_modules/_global/fun/get/fun_check_cookies";
 import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
+import { funCheckCookies } from "@/app_modules/_global/fun/get/fun_check_cookies";
+import { permanentRedirect, redirect } from "next/navigation";
+import { RealtimeProvider } from "../lib";
 import { ServerEnv } from "../lib/server_env";
 import { funGlobal_getUserById } from "@/app_modules/_global/fun/get/fun_get_user_by_id";
 import { RouterHome } from "../lib/router_hipmi/router_home";
-import { RouterAdminDashboard } from "../lib/router_hipmi/router_admin";
-import { redirect } from "next/navigation";
+import { CheckCookies_UiLayout } from "@/app_modules/check_cookies";
 
 export default async function Layout({
   children,
@@ -14,10 +13,14 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   const checkCookies = await funCheckCookies();
-  if (!checkCookies) return redirect("/");
-  
   const userLoginId = await funGetUserIdByToken();
-  const WIBU_REALTIME_TOKEN = process.env.NEXT_PUBLIC_WIBU_REALTIME_TOKEN;
+  if (!checkCookies) return redirect("/");
+
+  // const dataUser = await funGlobal_getUserById({ userId: userLoginId });
+  // console.log(dataUser?.active, dataUser?.username, "ini di layout");
+
+  // if(dataUser?.active == false) return permanentRedirect(RouterHome.home_user_non_active);
+  // const WIBU_REALTIME_TOKEN = process.env.NEXT_PUBLIC_WIBU_REALTIME_TOKEN;
   // console.log(WIBU_REALTIME_TOKEN, "check cookies di layout dalam");
 
   return (
