@@ -6,11 +6,11 @@
     "seed": "npx tsx prisma/seed.ts --yes"
   },
   "scripts": {
-    "dev": "next dev --experimental-https",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "ver": "npx commit-and-tag-version -- --prerelease"
+    "dev": "bun --bun run next dev --experimental-https",
+    "build": "bun --bun run next build",
+    "start": "bun --bun run next start",
+    "lint": "bun --bun run next lint",
+    "ver": "bunx commit-and-tag-version -- --prerelease"
   },
   "dependencies": {
     "@bounceapp/iframe": "^0.3.0",
