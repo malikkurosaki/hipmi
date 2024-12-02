@@ -10,20 +10,16 @@ import { Avatar, BackgroundImage, Center, Image, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 
-export default function SplashScreen({
-  checkCookies,
-}: {
-  checkCookies: boolean;
-}) {
+export default function SplashScreen() {
   const router = useRouter();
 
   useShallowEffect(() => {
     // if (!checkCookies) return router.push(RouterAuth.login, { scroll: false });
     // onCheckUser();
 
-    // setTimeout(() => {
-    //   router.push(RouterAuth.login, { scroll: false });
-    // }, 1000);
+    setTimeout(() => {
+      router.push("/login", { scroll: false });
+    }, 1000);
     // if (!userLoginId) {
     //   setTimeout(() => {
     //     router.push(RouterAuth.login, { scroll: false });

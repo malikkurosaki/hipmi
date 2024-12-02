@@ -3,7 +3,7 @@
   "version": "1.2.5",
   "private": true,
   "prisma": {
-    "seed": "npx tsx prisma/seed.ts --yes" 
+    "seed": "npx tsx prisma/seed.ts --yes"
   },
   "scripts": {
     "dev": "next dev --experimental-https",
@@ -89,6 +89,7 @@
     "utf-8-validate": "^6.0.3",
     "uuid": "^9.0.1",
     "wibu": "bipproduction/wibu",
+    "wibu-cli": "^1.0.91",
     "wibu-pkg": "^1.0.3",
     "yaml": "^2.3.2"
   }

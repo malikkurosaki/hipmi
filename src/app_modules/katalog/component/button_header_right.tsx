@@ -32,6 +32,7 @@ export function ComponentKatalog_ButtonHeaderRight({
         opened={opened}
         close={() => close()}
         profileId={profileId}
+        userId={userLoginId}
       />
     </>
   );
