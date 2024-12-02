@@ -1,5 +1,6 @@
 "use client";
 
+import { UIGlobal_LayoutDefault } from "@/app_modules/_global/ui";
 import { Avatar, BackgroundImage, Center, Image, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
@@ -15,11 +16,7 @@ export default function SplashScreen() {
 
   return (
     <>
-      <BackgroundImage
-        src={"/aset/global/main_background.png"}
-        h={"100vh"}
-        // pos={"static"}
-      >
+      <UIGlobal_LayoutDefault>
         <Center h={"100vh"}>
           <Stack align="center" justify="center" p={"md"}>
             {/* <Title c={"#002e59"}>Welcome to</Title> */}
@@ -33,7 +30,7 @@ export default function SplashScreen() {
             </Avatar>
           </Stack>
         </Center>
-      </BackgroundImage>
+      </UIGlobal_LayoutDefault>
     </>
   );
 }
