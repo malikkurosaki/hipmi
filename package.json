@@ -5,6 +5,7 @@
   "prisma": {
     "seed": "npx tsx prisma/seed.ts --yes"
   },
+  
   "scripts": {
     "dev": "next dev --experimental-https",
     "build": "next build",
