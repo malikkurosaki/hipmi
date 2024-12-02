@@ -18,7 +18,7 @@ const middlewareConfig: MiddlewareConfig = {
   loginPath: "/login",
   userPath: "/dev/home",
   publicRoutes: [
-    // "/",
+    "/",
     "/api/auth/*",
     "/login",
     "/register",
