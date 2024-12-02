@@ -8,11 +8,11 @@ import { useRouter } from "next/navigation";
 export default function SplashScreen() {
   const router = useRouter();
 
-  useShallowEffect(() => {
-    setTimeout(() => {
-      router.push("/dev/home", { scroll: false });
-    }, 1000);
-  }, []);
+  // useShallowEffect(() => {
+  //   setTimeout(() => {
+  //     router.push("/dev/home", { scroll: false });
+  //   }, 1000);
+  // }, []);
 
   return (
     <>
