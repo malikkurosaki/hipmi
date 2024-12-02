@@ -1,10 +1,14 @@
-import { redirect } from "next/navigation";
-import versionUpdate from "../../package.json";
+import { SplashScreen } from "@/app_modules/auth";
+import { useShallowEffect } from "@mantine/hooks";
 
-export default async function Page() {
-  const version = versionUpdate.version;
+export default function Page() {
+  // useShallowEffect(() => {
+  //   setTimeout(() => {
+  //     window.location.replace("/dev/home");
+  //   }, 100);
+  // }, []);
 
   // return <Login  version={version} />;
-  return redirect("/dev/home");
-  // return <PageSplash />;
+  // return <div>spash</div>;
+  return <SplashScreen />;
 }

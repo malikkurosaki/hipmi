@@ -10,8 +10,6 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { UIGlobal_LayoutDefault } from "@/app_modules/_global/ui";
 import {
-  ActionIcon,
-  Box,
   Button,
   Center,
   Loader,
@@ -24,18 +22,16 @@ import { useFocusTrap, useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import Validasi_SkeletonView from "./skeleton";
-import { auth_funDeleteAktivasiKodeOtpByNomor } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
-import { IconChevronLeft } from "@tabler/icons-react";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global";
-import { auth_funResendCode } from "../fun";
+import { auth_funDeleteAktivasiKodeOtpByNomor } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
+import Validasi_SkeletonView from "./skeleton";
 
 export default function Validasi() {
   const router = useRouter();
   const [inputCode, setInputOtp] = useState("");
   const focusTrapRef = useFocusTrap();
   const [loading, setLoading] = useState(false);
-  const [counter, setCounter] = useState(7);
+  const [counter, setCounter] = useState(60);
   const [loadingResend, setLoadingResend] = useState(false);
   const [triggerOtp, setTriggerOtp] = useState(false);
 
@@ -119,7 +115,7 @@ export default function Validasi() {
           router.push(RouterAdminDashboard.splash_admin, { scroll: false });
         }
 
-        const resAktivasi = await auth_funDeleteAktivasiKodeOtpByNomor({
+        await auth_funDeleteAktivasiKodeOtpByNomor({
           nomor: data.nomor,
         });
       }
@@ -162,7 +158,7 @@ export default function Validasi() {
         localStorage.setItem("hipmi_auth_code_id", result.kodeId);
         ComponentGlobal_NotifikasiBerhasil("Kode Berhasil Dikirim", 2000);
         setTriggerOtp(true);
-        setCounter(7);
+        setCounter(60);
         setLoadingResend(false);
         //  router.push("/validasi", { scroll: false });
       } else {
@@ -226,8 +222,8 @@ export default function Validasi() {
                   />
                 </Center>
 
-                <Stack  h={"5vh"} align="center" justify="center">
-                  <Text fs="italic" c={"white"} >
+                <Stack h={"5vh"} align="center" justify="center">
+                  <Text fs="italic" c={"white"}>
                     Tidak menerima kode ?{" "}
                     {counter > 0 ? (
                       <Text fw={"bold"} inherit span>

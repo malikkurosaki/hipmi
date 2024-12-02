@@ -1,10 +1,9 @@
 "use client";
 
 import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
+import { MODEL_EVENT } from "@/app_modules/event/model/interface";
 import {
-  MODEL_EVENT
-} from "@/app_modules/event/model/interface";
-import {
+  Box,
   Button,
   Center,
   Group,
@@ -16,7 +15,7 @@ import {
   Table,
   Text,
   TextInput,
-  Title
+  Title,
 } from "@mantine/core";
 import { IconCircleCheck, IconSearch } from "@tabler/icons-react";
 import _ from "lodash";
@@ -24,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import { adminEvent_funGetListPublish } from "../fun";
+import QRCode from "react-qr-code";
 
 export default function AdminEvent_TablePublish({
   listPublish,
@@ -78,6 +78,11 @@ function TableStatus({ listPublish }: { listPublish: any }) {
   ) : (
     data.map((e, i) => (
       <tr key={i}>
+        <td>
+          <Center w={200}>
+            <QRCode style={{ height: 50, width: 50 }} value={e.id} />
+          </Center>
+        </td>
         <td>
           <Center w={200}>
             <Text>{e?.Author?.username}</Text>
@@ -199,6 +204,10 @@ function TableStatus({ listPublish }: { listPublish: any }) {
               <thead>
                 <tr>
                   <th>
+                    <Center>QR Code</Center>
+                  </th>
+
+                  <th>
                     <Center>Username</Center>
                   </th>
                   <th>
@@ -216,6 +225,7 @@ function TableStatus({ listPublish }: { listPublish: any }) {
                   <th>
                     <Center>Tanggal & Waktu Selesai</Center>
                   </th>
+
                   <th>
                     <Center>Deskripsi</Center>
                   </th>
