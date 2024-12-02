@@ -1,11 +1,10 @@
 {
   "name": "hipmi",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "private": true,
   "prisma": {
     "seed": "npx tsx prisma/seed.ts --yes"
   },
-  
   "scripts": {
     "dev": "next dev --experimental-https",
     "build": "next build",

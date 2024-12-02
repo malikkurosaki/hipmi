@@ -15,7 +15,7 @@ export default async function Layout({
   const activationUser = await funGlobal_checkActivationUseById({
     userId: userLoginId as string,
   });
-  console.log(activationUser, "ini di layout");
+
   if (activationUser == false) return redirect("/waiting-room");
  
   return (

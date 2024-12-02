@@ -1,19 +1,11 @@
 "use client";
 
-import {
-  MainColor
-} from "@/app_modules/_global/color/color_pallet";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { UIGlobal_LayoutDefault } from "@/app_modules/_global/ui";
-import {
-  Button,
-  Stack,
-  Text,
-  TextInput,
-  Title
-} from "@mantine/core";
+import { Button, Stack, Text, TextInput, Title } from "@mantine/core";
 import { useFocusTrap, useShallowEffect } from "@mantine/hooks";
 import { IconUserCircle } from "@tabler/icons-react";
 import _ from "lodash";
@@ -77,12 +69,12 @@ export default function Register() {
         ComponentGlobal_NotifikasiBerhasil(result.message);
         router.push("/waiting-room", { scroll: false });
 
-        const resAktivasi = await auth_funDeleteAktivasiKodeOtpByNomor({
+        await auth_funDeleteAktivasiKodeOtpByNomor({
           nomor: data.nomor,
         });
       }
 
-      if(res.status === 400){
+      if (res.status === 400) {
         setLoading(false);
         ComponentGlobal_NotifikasiPeringatan(result.message);
       }
