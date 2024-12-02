@@ -6,6 +6,8 @@ export interface MODEL_EVENT {
   title: string;
   lokasi: string;
   tanggal: Date;
+  tanggalSelesai: Date;
+  isArsip: boolean;
   deskripsi: string;
   active: boolean;
   createdAt: Date;

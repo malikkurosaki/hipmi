@@ -4,7 +4,7 @@ import {
 } from "@/app/lib/router_hipmi/router_katalog";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
-import Component_Logout from "@/app_modules/auth/logout/view";
+import Component_ButtonLogout from "@/app_modules/auth/logout/view";
 import {
   ActionIcon,
   Drawer,
@@ -27,10 +27,12 @@ export function ComponentKatalog_DrawerKatalog({
   opened,
   close,
   profileId,
+  userId
 }: {
   opened: boolean;
   close: () => void;
   profileId: string;
+  userId: string
 }) {
   const router = useRouter();
   const [pageId, setPageId] = useState("");
@@ -121,7 +123,8 @@ export function ComponentKatalog_DrawerKatalog({
                 </Text>
               </Stack>
             ))}
-            <Component_Logout />
+
+            <Component_ButtonLogout userId={userId} />
           </SimpleGrid>
         </Stack>
       </Drawer>
