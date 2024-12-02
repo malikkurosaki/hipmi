@@ -1,14 +1,13 @@
 "use client";
 
+import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
 import {
-  Avatar,
-  Box,
+  MODEL_EVENT
+} from "@/app_modules/event/model/interface";
+import {
   Button,
   Center,
-  Divider,
-  Grid,
   Group,
-  Modal,
   Pagination,
   Paper,
   ScrollArea,
@@ -17,22 +16,14 @@ import {
   Table,
   Text,
   TextInput,
-  Title,
+  Title
 } from "@mantine/core";
-import { IconCircleCheck, IconEyeShare, IconSearch } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import { useDisclosure } from "@mantine/hooks";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import {
-  MODEL_EVENT,
-  MODEL_EVENT_PESERTA,
-} from "@/app_modules/event/model/interface";
+import { IconCircleCheck, IconSearch } from "@tabler/icons-react";
 import _ from "lodash";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
-import { adminEvent_getListPesertaById } from "../fun/get/get_list_peserta_by_id";
 import { adminEvent_funGetListPublish } from "../fun";
-import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
 
 export default function AdminEvent_TablePublish({
   listPublish,
@@ -78,64 +69,102 @@ function TableStatus({ listPublish }: { listPublish: any }) {
     setNPage(loadData.nPage);
   }
 
-  const TableRows = data.map((e, i) => (
-    <tr key={i}>
-      <td>
-        <Center w={200}>
-          <Text>{e?.Author?.username}</Text>
-        </Center>
-      </td>
-      <td>
-        <Center w={200}>
-          <Text lineClamp={2}>{e.title}</Text>
-        </Center>
-      </td>
-      <td>
-        <Center w={200}>
-          <Text>{e.lokasi}</Text>
-        </Center>
-      </td>
-      <td>
-        <Center w={200}>
-          <Text>{e.EventMaster_TipeAcara.name}</Text>
-        </Center>
-      </td>
-      <td>
-        <Center w={200}>
-          {e.tanggal.toLocaleString("id-ID", { dateStyle: "full" })}
-        </Center>
-      </td>
-      <td>
-        <Center w={200}>
-          {e.tanggal.toLocaleTimeString([], {
-            timeStyle: "short",
-            hourCycle: "h24",
-          })}
-        </Center>
-      </td>
-      <td>
-        <Center w={400}>
-          <Spoiler hideLabel="sembunyikan" maxHeight={50} showLabel="tampilkan">
-            {e.deskripsi}
-          </Spoiler>
-        </Center>
-      </td>
-
-      <td>
-        <Button
-          loading={e.id === eventId ? (loading === true ? true : false) : false}
-          color={"green"}
-          leftIcon={<IconCircleCheck />}
-          radius={"xl"}
-          onClick={async () => {
-            router.push(RouterAdminEvent.detail_peserta + e.id);
-          }}
-        >
-          Lihat Peserta
-        </Button>
+  const TableRows = _.isEmpty(data) ? (
+    <tr>
+      <td colSpan={12}>
+        <Center>Belum Ada Data</Center>
       </td>
     </tr>
-  ));
+  ) : (
+    data.map((e, i) => (
+      <tr key={i}>
+        <td>
+          <Center w={200}>
+            <Text>{e?.Author?.username}</Text>
+          </Center>
+        </td>
+        <td>
+          <Center w={200}>
+            <Text lineClamp={2}>{e.title}</Text>
+          </Center>
+        </td>
+        <td>
+          <Center w={200}>
+            <Text>{e.lokasi}</Text>
+          </Center>
+        </td>
+        <td>
+          <Center w={200}>
+            <Text>{e.EventMaster_TipeAcara.name}</Text>
+          </Center>
+        </td>
+
+        <td>
+          <Center w={200}>
+            <Text align="center">
+              {" "}
+              {new Intl.DateTimeFormat("id-ID", {
+                dateStyle: "full",
+              }).format(e?.tanggal)}
+              ,{" "}
+              <Text span inherit>
+                {new Intl.DateTimeFormat("id-ID", {
+                  timeStyle: "short",
+                }).format(e?.tanggal)}
+              </Text>
+            </Text>
+          </Center>
+        </td>
+        <td>
+          <Center w={200}>
+            <Text align="center">
+              {" "}
+              {new Intl.DateTimeFormat("id-ID", {
+                dateStyle: "full",
+              }).format(e?.tanggalSelesai)}
+              ,{" "}
+              <Text span inherit>
+                {new Intl.DateTimeFormat("id-ID", {
+                  timeStyle: "short",
+                }).format(e?.tanggalSelesai)}
+              </Text>
+            </Text>
+          </Center>
+        </td>
+
+        <td>
+          <Center w={400}>
+            <Spoiler
+              hideLabel="sembunyikan"
+              maxHeight={50}
+              showLabel="tampilkan"
+            >
+              {e.deskripsi}
+            </Spoiler>
+          </Center>
+        </td>
+
+        <td>
+          <Button
+            loaderPosition="center"
+            loading={
+              e.id === eventId ? (loading === true ? true : false) : false
+            }
+            color={"green"}
+            leftIcon={<IconCircleCheck />}
+            radius={"xl"}
+            onClick={async () => {
+              setEventId(e.id);
+              setLoading(true);
+              router.push(RouterAdminEvent.detail_peserta + e.id);
+            }}
+          >
+            Lihat Peserta
+          </Button>
+        </td>
+      </tr>
+    ))
+  );
 
   return (
     <>
@@ -182,10 +211,10 @@ function TableStatus({ listPublish }: { listPublish: any }) {
                     <Center>Tipe Acara</Center>
                   </th>
                   <th>
-                    <Center>Tanggal</Center>
+                    <Center>Tanggal & Waktu Mulai</Center>
                   </th>
                   <th>
-                    <Center>Jam</Center>
+                    <Center>Tanggal & Waktu Selesai</Center>
                   </th>
                   <th>
                     <Center>Deskripsi</Center>
