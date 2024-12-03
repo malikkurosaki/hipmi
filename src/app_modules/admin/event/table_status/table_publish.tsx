@@ -101,7 +101,7 @@ function TableStatus({ listPublish }: { listPublish: any }) {
               value={`${origin}/dev/event/konfirmasi/${e.id}`}
             />
           </Center>
-        </td>
+        </td> 
         <td>
           <Center w={200}>
             <Text>{e?.Author?.username}</Text>
