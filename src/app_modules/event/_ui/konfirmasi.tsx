@@ -74,9 +74,6 @@ export default function Ui_Konfirmasi({
     }
   }
 
-  if (isPresent === null) {
-    return <></>;
-  }
 
   return (
     <>

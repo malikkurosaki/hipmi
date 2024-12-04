@@ -11,7 +11,7 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const userLoginId = await funGetUserIdByToken();
+  // const userLoginId = await funGetUserIdByToken();
   // const dataUser = await funGlobal_getUserById({
   //   userId: userLoginId as string,
   // });
@@ -27,7 +27,7 @@ export default async function Layout({
   return (
     <>
       <RealtimeProvider
-        userLoginId={userLoginId as string}
+        userLoginId={"" as string}
         WIBU_REALTIME_TOKEN={
           ServerEnv.value?.NEXT_PUBLIC_WIBU_REALTIME_TOKEN as string
         }
