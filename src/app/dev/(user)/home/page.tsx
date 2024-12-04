@@ -10,15 +10,6 @@ export default async function PageHome() {
   const dataJob = await job_getTwoForHomeView();
   const countNotifikasi = await notifikasi_countUserNotifikasi();
 
-  // console.log(userLoginId, "ini di home");
-  // console.log(dataUser, "ini di home");
-
-  // if (dataUser?.active === false) {
-  //   return redirect(RouterHome.home_user_non_active);
-  // }
-  
-  // if (dataUser?.masterUserRoleId === "2" || dataUser?.masterUserRoleId === "3")
-  //   return redirect(RouterAdminDashboard.main_admin);
 
   return (
     <>
