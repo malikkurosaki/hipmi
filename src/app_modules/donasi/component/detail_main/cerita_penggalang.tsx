@@ -7,6 +7,11 @@ import { Stack, Title, Paper, Group, ActionIcon, Text } from "@mantine/core";
 import { IconCircleChevronRight } from "@tabler/icons-react";
 import moment from "moment";
 import { useState } from "react";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 
 export default function ComponentDonasi_CeritaPenggalangMain({
   donasi,
@@ -17,28 +22,48 @@ export default function ComponentDonasi_CeritaPenggalangMain({
   const [isLoading, setLoading] = useState(false);
   return (
     <>
-      <Stack spacing={"xs"}>
+      <Stack
+        spacing={"xs"}
+        style={{
+          color: "white",
+        }}
+      >
         <Title order={4}>Cerita Penggalang Dana</Title>
-        <Paper p={"sm"} withBorder>
+        <Paper
+          style={{
+            padding: "15px",
+            backgroundColor: AccentColor.darkblue,
+            border: `2px solid ${AccentColor.blue}`,
+            borderRadius: "10px",
+            color: "white",
+          }}
+        >
           <Stack>
             <Group position="apart">
               <Text>
                 {new Intl.DateTimeFormat("id-ID", { dateStyle: "full" }).format(
-                  donasi.createdAt
+                  donasi?.createdAt
                 )}
               </Text>
               <ActionIcon
-                loading={isLoading ? true : false}
                 variant="transparent"
                 onClick={() => {
                   setLoading(true);
-                  router.push(RouterDonasi.cerita_penggalang + `${donasi.id}`);
+                  router.push(RouterDonasi.cerita_penggalang + `${donasi?.id}`);
                 }}
               >
-                <IconCircleChevronRight />
+                {isLoading ? (
+                  <ComponentGlobal_Loader />
+                ) : (
+                  <IconCircleChevronRight
+                    style={{
+                      color: MainColor.yellow,
+                    }}
+                  />
+                )}
               </ActionIcon>
             </Group>
-            <Text lineClamp={4}>{donasi.CeritaDonasi.cerita}</Text>
+            <Text lineClamp={4}>{donasi?.CeritaDonasi.cerita}</Text>
             {/* <Text c={"blue"}>Baca selengkapnya</Text> */}
           </Stack>
         </Paper>

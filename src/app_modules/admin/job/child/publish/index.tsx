@@ -1,13 +1,13 @@
 "use client";
 
 import { RouterAdminJob } from "@/app/lib/router_admin/router_admin_job";
-import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
+import { ComponentAdminGlobal_TitlePage } from "@/app_modules/admin/_admin_global/_component";
+import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
 import { MODEL_JOB } from "@/app_modules/job/model/interface";
 import {
   Badge,
   Button,
   Center,
-  Group,
   Pagination,
   Paper,
   ScrollArea,
@@ -16,16 +16,12 @@ import {
   Table,
   Text,
   TextInput,
-  Title
 } from "@mantine/core";
-import {
-  IconEyeCheck,
-  IconSearch
-} from "@tabler/icons-react";
+import { IconPhotoCheck, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import adminJob_getListPublish from "../../fun/get/get_list_publish";
-import { IconPhotoCheck } from "@tabler/icons-react";
+import { RouterAdminGlobal } from "@/app/lib";
 
 export default function AdminJob_TablePublish({
   dataPublish,
@@ -49,7 +45,8 @@ function TableStatus({ dataPublish }: { dataPublish: any }) {
   const [nPage, setNPage] = useState(dataPublish.nPage);
   const [activePage, setActivePage] = useState(1);
   const [isSearch, setSearch] = useState("");
-
+  const [isLoadingShowImage, setLoadingShowImage] = useState(false);
+  const [dataId, setDataId] = useState("");
 
   async function onSearch(s: string) {
     setSearch(s);
@@ -102,19 +99,23 @@ function TableStatus({ dataPublish }: { dataPublish: any }) {
       </td>
       <td>
         <Center w={200}>
-          {e.imagesId ? (
+          {e.imageId ? (
             <Button
+              loaderPosition="center"
+              loading={isLoadingShowImage && e.id === dataId}
               color="green"
               radius={"xl"}
               leftIcon={<IconPhotoCheck />}
               onClick={() => {
-                router.push(RouterAdminJob.detail_poster + e?.imagesId);
+                setLoadingShowImage(true);
+                setDataId(e.id);
+                router.push(RouterAdminGlobal.preview_image({ id: e.imageId }));
               }}
             >
               Lihat
             </Button>
           ) : (
-            <Center w={200} >
+            <Center w={200}>
               <Text fw={"bold"} fz={"xs"} fs={"italic"}>
                 Tidak ada poster
               </Text>
@@ -147,28 +148,22 @@ function TableStatus({ dataPublish }: { dataPublish: any }) {
 
   return (
     <>
-      
-
       <Stack spacing={"xs"} h={"100%"}>
         {/* <pre>{JSON.stringify(listUser, null, 2)}</pre> */}
-        <Group
-          position="apart"
-          bg={"green.4"}
-          p={"xs"}
-          style={{ borderRadius: "6px" }}
-        >
-          <Title order={4} c={"white"}>
-            Publish
-          </Title>
-          <TextInput
-            icon={<IconSearch size={20} />}
-            radius={"xl"}
-            placeholder="Masukan judul"
-            onChange={(val) => {
-              onSearch(val.currentTarget.value);
-            }}
-          />
-        </Group>
+        <ComponentAdminGlobal_TitlePage
+          name="Publish"
+          color="green.4"
+          component={
+            <TextInput
+              icon={<IconSearch size={20} />}
+              radius={"xl"}
+              placeholder="Masukan judul"
+              onChange={(val) => {
+                onSearch(val.currentTarget.value);
+              }}
+            />
+          }
+        />
 
         <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
           <ScrollArea w={"100%"} h={"90%"}>
@@ -217,8 +212,6 @@ function TableStatus({ dataPublish }: { dataPublish: any }) {
           </Center>
         </Paper>
       </Stack>
-
-     
     </>
   );
 }

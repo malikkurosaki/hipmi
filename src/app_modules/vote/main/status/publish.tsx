@@ -1,54 +1,57 @@
 "use client";
 
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
-import {
-  Avatar,
-  Badge,
-  Box,
-  Card,
-  Center,
-  Divider,
-  Grid,
-  Group,
-  Radio,
-  Skeleton,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import moment from "moment";
-import { useRouter } from "next/navigation";
-import { MODEL_VOTING } from "../../model/interface";
-import ComponentVote_IsEmptyData from "../../component/is_empty_data";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import job_getAllStatusPublish from "@/app_modules/job/fun/get/status/get_list_publish";
+import { Center, Loader } from "@mantine/core";
 import _ from "lodash";
+import { ScrollOnly } from "next-scroll-loader";
+import { useState } from "react";
 import ComponentVote_CardViewPublish from "../../component/card_view_publish";
+import { MODEL_VOTING } from "../../model/interface";
 
 export default function Vote_StatusPublish({
   listPublish,
 }: {
   listPublish: MODEL_VOTING[];
 }) {
-  const router = useRouter();
-
-  if (_.isEmpty(listPublish))
-    return (
-      <>
-        <ComponentVote_IsEmptyData text="Tidak ada data" />
-      </>
-    );
+  const [data, setData] = useState(listPublish);
+  const [activePage, setActivePage] = useState(1);
 
   return (
     <>
-      <Stack>
-        {listPublish.map((e) => (
-          <Box key={e.id}>
+      {_.isEmpty(data) ? (
+        <ComponentGlobal_IsEmptyData />
+      ) : (
+        // --- Main component --- //
+        <ScrollOnly
+          height="75vh"
+          renderLoading={() => (
+            <Center mt={"lg"}>
+              <Loader color={"yellow"} />
+            </Center>
+          )}
+          data={data}
+          setData={setData}
+          moreData={async () => {
+            const loadData = await job_getAllStatusPublish({
+              page: activePage + 1,
+            });
+
+            setActivePage((val) => val + 1);
+
+            return loadData;
+          }}
+        >
+          {(item) => (
             <ComponentVote_CardViewPublish
-              data={e}
+              data={item}
               path={RouterVote.detail_publish}
+              statusArsip
             />
-          </Box>
-        ))}
-      </Stack>
+          )}
+        </ScrollOnly>
+      )}
     </>
   );
 }

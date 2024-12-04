@@ -1,5 +1,5 @@
 "use client";
-import { Card, Group, Button, Text, Stack, Avatar } from "@mantine/core";
+import { Avatar, Card, Group, Stack, Text } from "@mantine/core";
 import moment from "moment";
 
 export default function Event_KontribusiPeserta() {

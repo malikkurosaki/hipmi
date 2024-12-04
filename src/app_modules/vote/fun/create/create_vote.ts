@@ -1,20 +1,31 @@
 "use server";
 
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
-import { MODEL_VOTING } from "../../model/interface";
 import prisma from "@/app/lib/prisma";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
+import _ from "lodash";
 import { revalidatePath } from "next/cache";
+import { MODEL_VOTING } from "../../model/interface";
 
 export async function Vote_funCreate(req: MODEL_VOTING, listVote: any[]) {
-  const authorId = await user_getOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const create = await prisma.voting.create({
     data: {
-      title: req.title,
+      title: _.startCase(req.title),
       deskripsi: req.deskripsi,
       awalVote: req.awalVote,
       akhirVote: req.akhirVote,
-      authorId: authorId,
+      authorId: userLoginId as string,
+    },
+    select: {
+      id: true,
+      title: true,
+      Voting_Status: {
+        select: {
+          name: true,
+        },
+      },
+      authorId: true,
     },
   });
 
@@ -35,6 +46,7 @@ export async function Vote_funCreate(req: MODEL_VOTING, listVote: any[]) {
   revalidatePath("/dev/vote/main/status");
 
   return {
+    data: create,
     status: 201,
     message: "Berhasil Membuat Vote",
   };

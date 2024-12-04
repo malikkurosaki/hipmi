@@ -2,7 +2,7 @@
 
 import { RouterAdminForum } from "@/app/lib/router_admin/router_admin_forum";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
-import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
 import { MODEL_FORUM_POSTING } from "@/app_modules/forum/model/interface";
 import {
   Badge,
@@ -34,7 +34,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { adminForum_getListPosting } from "../fun/get/get_list_publish";
 import adminJob_getListPublish from "@/app_modules/admin/job/fun/get/get_list_publish";
 import ComponentAdminForum_ButtonDeletePosting from "../component/button_delete";
-import ComponentAdminGlobal_IsEmptyData from "../../component_global/is_empty_data";
+import ComponentAdminGlobal_IsEmptyData from "../../_admin_global/is_empty_data";
 
 export default function AdminForum_TablePosting({
   listPublish,
@@ -186,6 +186,7 @@ function TablePublish({ listPublish }: { listPublish: any }) {
             }}
           />
         </Group>
+        
         {isEmpty(data) ? (
           <ComponentAdminGlobal_IsEmptyData />
         ) : (

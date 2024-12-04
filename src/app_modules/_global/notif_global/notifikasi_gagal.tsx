@@ -12,7 +12,7 @@ export async function ComponentGlobal_NotifikasiGagal(text: string) {
   return notifications.show({
     message: (
       <Center>
-        <Text fw={"bold"}>{text}</Text>
+        <Text align="center" fw={"bold"}>{text}</Text>
       </Center>
     ),
     color: "red",

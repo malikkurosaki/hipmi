@@ -7,8 +7,8 @@ export default async function getPencarianInvestor() {
     select: {
       id: true,
       name: true,
-      active: true
-    }
+      active: true,
+    },
   });
 
   return data;

@@ -1,8 +1,9 @@
 "use client";
 
 import { AspectRatio, Box, Image, Paper, Stack } from "@mantine/core";
-import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
+import AdminGlobal_ComponentBackButton from "../../_admin_global/back_button";
 import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
+import { Admin_ComponentLoadImageLandscape } from "../../_admin_global";
 
 export default function AdminDonasi_BuktiTransfer({
   imageId,
@@ -12,7 +13,7 @@ export default function AdminDonasi_BuktiTransfer({
   return (
     <>
       <Stack>
-        <ComponentAdminGlobal_BackButton />
+        <AdminGlobal_ComponentBackButton />
         <BuktiTransfer imageId={imageId} />
       </Stack>
     </>
@@ -23,12 +24,13 @@ function BuktiTransfer({ imageId }: { imageId: string }) {
   return (
     <>
       <Paper withBorder  p={"lg"} bg={"gray.3"}>
-        <AspectRatio ratio={2 / 1}  mx="auto">
+        <Admin_ComponentLoadImageLandscape fileId={imageId}/>
+        {/* <AspectRatio ratio={2 / 1}  mx="auto">
           <Image
             alt="Foto"
             src={RouterAdminDonasi_OLD.api_gambar_bukti_transfer + `${imageId}`}
           />
-        </AspectRatio>
+        </AspectRatio> */}
         {/* <AspectRatio ratio={1 / 1} mah={500} p={"lg"} bg={"cyan"}>
           <Paper bg={"grape"} h={"100%"}>
             <Image

@@ -1,92 +1,58 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import {
-  AspectRatio,
-  Box,
-  Button,
-  Card,
-  Center,
-  Divider,
-  Grid,
-  Image,
-  Paper,
-  Progress,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import { useViewportSize } from "@mantine/hooks";
-import { useRouter } from "next/navigation";
-
-import toast from "react-simple-toasts";
-import { MODEL_DONASI } from "../../model/interface";
+import { Box, Center } from "@mantine/core";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import _ from "lodash";
-import ComponentDonasi_IsEmptyData from "../../component/is_empty_data";
+import { ComponentDonasi_CardStatus } from "../../component/card_view/card_status";
+import { MODEL_DONASI } from "../../model/interface";
+import { donasi_funGetAllStatusReview } from "../../fun/get/status/get_all_status_review";
+import { ScrollOnly } from "next-scroll-loader";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import { useState } from "react";
 
 export default function PostingReviewDonasi({
   listReview,
 }: {
   listReview: MODEL_DONASI[];
 }) {
-  const { height, width } = useViewportSize();
-  const router = useRouter();
-
-  if (_.isEmpty(listReview))
-    return <ComponentDonasi_IsEmptyData text="Tidak ada data" />;
+  const [data, setData] = useState(listReview);
+  const [activePage, setActivePage] = useState(1);
 
   return (
     <>
-      <SimpleGrid
-        cols={4}
-        spacing="lg"
-        breakpoints={[
-          { maxWidth: "62rem", cols: 3, spacing: "md" },
-          { maxWidth: "48rem", cols: 2, spacing: "sm" },
-          { maxWidth: "36rem", cols: 1, spacing: "sm" },
-        ]}
-      >
-        {listReview.map((e, i) => (
-          <Box
-            key={i}
-            onClick={() => router.push(RouterDonasi.detail_review + `${e.id}`)}
+      {_.isEmpty(data) ? (
+        <ComponentGlobal_IsEmptyData />
+      ) : (
+        // --- Main component --- //
+        <Box>
+          <ScrollOnly
+            height="75vh"
+            renderLoading={() => (
+              <Center>
+                <ComponentGlobal_Loader size={25} />
+              </Center>
+            )}
+            data={data}
+            setData={setData}
+            moreData={async () => {
+              const loadData = await donasi_funGetAllStatusReview({
+                page: activePage + 1,
+              });
+              setActivePage((val) => val + 1);
+
+              return loadData;
+            }}
           >
-            <Stack>
-              <Grid>
-                <Grid.Col span={7}>
-                  <AspectRatio ratio={16 / 9}>
-                    <Paper radius={"md"} bg={"gray.1"}>
-                      <Image
-                        alt="Foto"
-                        src={RouterDonasi.api_gambar + `${e.imagesId}`}
-                        radius={"md"}
-                      />
-                    </Paper>
-                  </AspectRatio>
-                </Grid.Col>
-                <Grid.Col span={5}>
-                  <Stack spacing={"xs"}>
-                    <Text fz={"sm"} fw={"bold"} lineClamp={2}>
-                      {e.title}
-                    </Text>
-                    <Stack spacing={0}>
-                      <Text fz={"sm"}>Terget Dana</Text>
-                      <Text fz={"sm"} fw={"bold"} c={"orange"} truncate>
-                        Rp.{" "}
-                        {new Intl.NumberFormat("id-ID", {
-                          maximumFractionDigits: 10,
-                        }).format(+e.target)}
-                      </Text>
-                    </Stack>
-                  </Stack>
-                </Grid.Col>
-              </Grid>
-              {width > 575 ? "" : <Divider />}
-            </Stack>
-          </Box>
-        ))}
-      </SimpleGrid>
+            {(item) => (
+              <ComponentDonasi_CardStatus
+                data={item}
+                path={RouterDonasi.detail_review}
+              />
+            )}
+          </ScrollOnly>
+        </Box>
+      )}
     </>
   );
 }

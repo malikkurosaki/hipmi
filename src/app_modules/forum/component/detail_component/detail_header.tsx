@@ -44,7 +44,12 @@ import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_
 import { forum_funEditStatusPostingById } from "../../fun/edit/fun_edit_status_posting_by_id";
 import { forum_getOnePostingById } from "../../fun/get/get_one_posting_by_id";
 import mqtt_client from "@/util/mqtt_client";
-import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_LoaderAvatar } from "@/app_modules/_global/component";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
 
 export default function ComponentForum_DetailHeader({
   data,
@@ -56,6 +61,7 @@ export default function ComponentForum_DetailHeader({
   onLoadData: (val: any) => void;
 }) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -65,30 +71,38 @@ export default function ComponentForum_DetailHeader({
             span={"content"}
             onClick={() => {
               if (data?.Author?.id) {
+                setIsLoading(true);
                 router.push(RouterForum.forumku + data?.Author?.id);
               } else {
                 ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
               }
             }}
           >
-            <Avatar
-              size={40}
-              sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-              radius={"xl"}
-              bg={"gray.1"}
-              src={
-                data?.Author.Profile.imagesId
-                  ? RouterProfile.api_foto_profile +
-                    data?.Author.Profile.imagesId
-                  : "/aset/global/avatar.png"
-              }
-            />
+            {isLoading ? (
+              <Avatar
+                size={40}
+                radius={"100%"}
+                style={{
+                  borderColor: "white",
+                  borderStyle: "solid",
+                  borderWidth: "1px",
+                }}
+              >
+                <ComponentGlobal_Loader variant="dots" />
+              </Avatar>
+            ) : (
+              <ComponentGlobal_LoaderAvatar
+                fileId={data?.Author.Profile?.imageId as any}
+              />
+            )}
           </Grid.Col>
 
           <Grid.Col span={"auto"}>
             <Stack spacing={3}>
               <Text lineClamp={1} fz={"sm"} fw={"bold"} color="white">
-                {data?.Author.username ? data?.Author.username : "Nama author "}
+                {data?.Author.Profile.name
+                  ? data?.Author.Profile.name
+                  : "Nama author "}
               </Text>
               <Badge
                 w={70}
@@ -99,11 +113,7 @@ export default function ComponentForum_DetailHeader({
                     : "red"
                 }
               >
-                <Text fz={10}>
-                  {(data?.ForumMaster_StatusPosting.id as any) === 1
-                    ? "Open"
-                    : "Close"}
-                </Text>
+                <Text fz={10}>{data?.ForumMaster_StatusPosting.status}</Text>
               </Badge>
             </Stack>
           </Grid.Col>
@@ -148,16 +158,27 @@ function ComponentForum_DetailButtonMore_V2({
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [loadingReport, setLoadingReport] = useState(false);
 
-  //   if (loadingEdit) return <ComponentGlobal_V2_LoadingPage />;
-
   return (
     <>
       <Drawer
-        // className={classes.radiusCustom}
         styles={{
           content: {
-            backgroundColor: MainColor.darkblue,
-            borderTop: `1px solid ${AccentColor.blue}`,
+            padding: 0,
+            position: "absolute",
+            margin: "auto",
+            backgroundColor: "transparent",
+            left: 0,
+            right: 0,
+            width: 500,
+          },
+          body: {
+            backgroundColor: AccentColor.darkblue,
+            borderTop: `2px solid ${AccentColor.blue}`,
+            borderRight: `1px solid ${AccentColor.blue}`,
+            borderLeft: `1px solid ${AccentColor.blue}`,
+            borderRadius: "20px 20px 0px 0px",
+            color: "white",
+            paddingBottom: "5%",
           },
         }}
         opened={opened}
@@ -338,7 +359,9 @@ function ButtonDelete({
   return (
     <>
       <Stack>
-        <Title order={6} color="white">Yakin menghapus posting ini ?</Title>
+        <Title order={6} color="white">
+          Yakin menghapus posting ini ?
+        </Title>
         <Group position="center">
           <Button radius={"xl"} onClick={() => setOpenDel(false)}>
             Batal

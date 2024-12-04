@@ -1,42 +1,51 @@
 "use client";
 
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
-import { AdminEvent_getListPesertaById } from "@/app_modules/admin/event/fun/get/get_list_peserta_by_id";
+import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
 import { MODEL_VOTING } from "@/app_modules/vote/model/interface";
 import {
-  Avatar,
+  Affix,
   Box,
   Button,
   Center,
-  Divider,
-  Grid,
   Group,
   Modal,
+  Pagination,
   Paper,
+  rem,
   ScrollArea,
   Spoiler,
   Stack,
   Table,
   Text,
   Textarea,
+  TextInput,
   Title,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconBan } from "@tabler/icons-react";
-import { IconEyeShare } from "@tabler/icons-react";
-import _ from "lodash";
-import { useRouter } from "next/navigation";
+import { useDisclosure, useShallowEffect } from "@mantine/hooks";
+import {
+  IconBan,
+  IconCircleCheck,
+  IconRefresh,
+  IconSearch,
+} from "@tabler/icons-react";
 
-import { useState } from "react";
-import { AdminVote_funEditStatusPublishById } from "../../fun/edit/fun_edit_status_publish_by_id";
-import toast from "react-simple-toasts";
-import { AdminVote_getListTableByStatusId } from "../../fun/get/get_list_table_by_status_id";
+import {
+  gs_adminVoting_triggerReview,
+  IRealtimeData,
+} from "@/app/lib/global_state";
+import { AccentColor } from "@/app_modules/_global/color";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import { AdminEvent_funEditCatatanById } from "../../fun/edit/fun_edit_status_reject_by_id";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import adminNotifikasi_funCreateToUser from "@/app_modules/admin/notifikasi/fun/create/fun_create_notif_user";
+import mqtt_client from "@/util/mqtt_client";
+import { useAtom } from "jotai";
 import moment from "moment";
+import { useState } from "react";
+import { WibuRealtime } from "wibu-pkg";
+import { adminVote_funGetListReview } from "../../fun";
+import { AdminVote_funEditStatusPublishById } from "../../fun/edit/fun_edit_status_publish_by_id";
+import { AdminEvent_funEditCatatanById } from "../../fun/edit/fun_edit_status_reject_by_id";
 
 export default function AdminVote_TableReview({
   listVote,
@@ -46,26 +55,72 @@ export default function AdminVote_TableReview({
   return (
     <>
       <Stack>
-        <ComponentAdminGlobal_HeaderTamplate name="Voting: Table Review" />
+        <ComponentAdminGlobal_HeaderTamplate name="Voting" />
         <TableStatus listData={listVote} />
       </Stack>
     </>
   );
 }
 
-function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
-  const router = useRouter();
+function TableStatus({ listData }: { listData: any }) {
   const [opened, { open, close }] = useDisclosure(false);
-  const [data, setData] = useState(listData);
+  const [data, setData] = useState<MODEL_VOTING[]>(listData.data);
+  const [isNPage, setNPage] = useState(listData.nPage);
   const [votingId, setVotingId] = useState("");
   const [catatan, setCatatan] = useState("");
   const [isLoadingPublish, setLoadingPublish] = useState(false);
   const [isSaveLoading, setSaveLoading] = useState(false);
 
+  const [isActivePage, setActivePage] = useState(1);
+  const [isSearch, setSearch] = useState("");
+
+  // Realtine
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAdminVoting_TriggerReview, setIsAdminVoting_TriggerReview] = useAtom(
+    gs_adminVoting_triggerReview
+  );
+  const [isShowReload, setIsShowReload] = useState(false);
+
+  useShallowEffect(() => {
+    if (isAdminVoting_TriggerReview) {
+      setIsShowReload(true);
+    }
+  }, [isAdminVoting_TriggerReview, setIsShowReload]);
+
+  async function onLoadData() {
+    const loadData = await adminVote_funGetListReview({ page: 1 });
+
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+    setIsLoading(false);
+    setIsShowReload(false);
+    setIsAdminVoting_TriggerReview(false);
+  }
+
+  async function onSearch(s: string) {
+    setSearch(s);
+    const loadData = await adminVote_funGetListReview({
+      page: 1,
+      search: s,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  async function onPageClick(p: any) {
+    setActivePage(p);
+    const loadData = await adminVote_funGetListReview({
+      search: isSearch,
+      page: p,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
   const TableRows = data.map((e, i) => (
     <tr key={i}>
       <td>
-        <Center>{e?.Author?.Profile?.name}</Center>
+        <Center>{e?.Author?.username}</Center>
       </td>
       <td>
         <Center>{e.title}</Center>
@@ -111,16 +166,19 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
             }
             w={120}
             color={"green"}
-            leftIcon={<IconEyeShare />}
+            leftIcon={<IconCircleCheck />}
             radius={"xl"}
             onClick={() =>
-              onPublish(
-                e.id,
-                setData,
-                e.awalVote,
-                setLoadingPublish,
-                setVotingId
-              )
+              onPublish({
+                voteId: e.id,
+                awalVote: e.awalVote,
+                setLoadingPublish: setLoadingPublish,
+                setVotingId: setVotingId,
+                setData(val) {
+                  setData(val.data);
+                  setNPage(val.nPage);
+                },
+              })
             }
           >
             Publish
@@ -144,63 +202,61 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
 
   return (
     <>
-      <Modal
-        opened={opened}
-        onClose={close}
-        centered
-        withCloseButton={false}
-        size={"lg"}
-      >
-        <Stack>
-          <Textarea
-            minRows={2}
-            maxRows={5}
-            maxLength={300}
-            autosize
-            label="Masukan Alasan Penolakan"
-            placeholder="Contoh: Karena deskripsi kurang lengkap, dll"
+      <Stack spacing={"xs"} h={"100%"}>
+        {/* <pre>{JSON.stringify(listUser, null, 2)}</pre> */}
+        <Group
+          position="apart"
+          bg={"orange.4"}
+          p={"xs"}
+          style={{ borderRadius: "6px" }}
+        >
+          <Title order={4}>Review</Title>
+          <TextInput
+            icon={<IconSearch size={20} />}
+            radius={"xl"}
+            placeholder="Masukan judul"
             onChange={(val) => {
-              setCatatan(val.target.value);
+              onSearch(val.currentTarget.value);
             }}
           />
-          <Group position="right">
-            <Button radius={"xl"} onClick={() => close()}>
-              Batal
-            </Button>
-            <Button
-              loaderPosition="center"
-              loading={isSaveLoading ? true : false}
-              radius={"xl"}
-              onClick={() => {
-                onReject(votingId, setData, catatan, close, setSaveLoading);
-              }}
-            >
-              Simpan
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
+        </Group>
 
-      <Box>
-        <Box bg={"orange.1"} p={"xs"}>
-          <Title order={6} c={"orange"}>
-            REVIEW
-          </Title>
-        </Box>
-        <ScrollArea w={"100%"}>
-          <Box>
+        <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
+          {isShowReload && (
+            <Affix position={{ top: rem(200) }} w={"100%"}>
+              <Center>
+                <Button
+                  style={{
+                    transition: "0.5s",
+                    border: `1px solid ${AccentColor.skyblue}`,
+                  }}
+                  bg={AccentColor.blue}
+                  loaderPosition="center"
+                  loading={isLoading}
+                  radius={"xl"}
+                  opacity={0.8}
+                  onClick={() => onLoadData()}
+                  leftIcon={<IconRefresh />}
+                >
+                  Update Data
+                </Button>
+              </Center>
+            </Affix>
+          )}
+
+          <ScrollArea w={"100%"} h={"90%"}>
             <Table
-              withBorder
               verticalSpacing={"md"}
-              horizontalSpacing={"xl"}
+              horizontalSpacing={"md"}
               p={"md"}
+              w={1500}
               striped
               highlightOnHover
             >
               <thead>
                 <tr>
                   <th>
-                    <Center>Author</Center>
+                    <Center>Username</Center>
                   </th>
                   <th>
                     <Center>Judul</Center>
@@ -225,29 +281,86 @@ function TableStatus({ listData }: { listData: MODEL_VOTING[] }) {
               </thead>
               <tbody>{TableRows}</tbody>
             </Table>
-          </Box>
-        </ScrollArea>
-        <Center>
-          {_.isEmpty(TableRows) ? (
-            <Center h={"50vh"}>
-              <Title order={6}>Tidak Ada Data</Title>
-            </Center>
-          ) : (
-            ""
-          )}
-        </Center>
-      </Box>
+          </ScrollArea>
+
+          <Center mt={"xl"}>
+            <Pagination
+              value={isActivePage}
+              total={isNPage}
+              onChange={(val) => {
+                onPageClick(val);
+              }}
+            />
+          </Center>
+        </Paper>
+      </Stack>
+
+      <Modal
+        opened={opened}
+        onClose={close}
+        centered
+        withCloseButton={false}
+        size={"md"}
+      >
+        <Stack>
+          <Textarea
+            minRows={2}
+            maxRows={5}
+            maxLength={300}
+            autosize
+            label="Masukan Alasan Penolakan"
+            placeholder="Contoh: Karena deskripsi kurang lengkap, dll"
+            onChange={(val) => {
+              setCatatan(val.target.value);
+            }}
+          />
+          <Group position="right">
+            <Button radius={"xl"} onClick={() => close()}>
+              Batal
+            </Button>
+            <Button
+              loaderPosition="center"
+              loading={isSaveLoading ? true : false}
+              radius={"xl"}
+              onClick={() => {
+                onReject({
+                  catatan: catatan,
+                  voteId: votingId,
+                  setData(val) {
+                    setData(val.data);
+                    setNPage(val.nPage);
+                  },
+                  close: () => {
+                    close();
+                  },
+                  setSaveLoading(val) {
+                    setSaveLoading(val);
+                  },
+                });
+              }}
+            >
+              Simpan
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
     </>
   );
 }
 
-async function onPublish(
-  voteId: string,
-  setData: any,
-  awalVote: Date,
-  setLoadingPublish: any,
-  setVotingId: any
-) {
+async function onPublish({
+  voteId,
+  setData,
+  awalVote,
+  setLoadingPublish,
+  setVotingId,
+}: {
+  voteId: string;
+  setData: (val: { data: any[]; nPage: number }) => void;
+  awalVote: Date;
+  setLoadingPublish: (val: boolean) => void;
+  setVotingId: (val: string) => void;
+}) {
   const hariIni = new Date();
   const cekHari = moment(awalVote).diff(hariIni, "days");
 
@@ -255,40 +368,109 @@ async function onPublish(
     return ComponentGlobal_NotifikasiPeringatan("Tanggal Voting Lewat");
 
   setVotingId(voteId);
-  await AdminVote_funEditStatusPublishById(voteId).then(async (res) => {
-    if (res.status === 200) {
-      await AdminVote_getListTableByStatusId("2").then((val) => {
-        setData(val);
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-        setLoadingPublish(true);
+  const res = await AdminVote_funEditStatusPublishById(voteId);
+  if (res.status === 200) {
+    setLoadingPublish(true);
+
+    const dataNotifikasi: IRealtimeData = {
+      appId: res.data?.id as string,
+      status: res.data?.Voting_Status?.name as any,
+      userId: res.data?.authorId as any,
+      pesan: res.data?.title as any,
+      kategoriApp: "VOTING",
+      title: "Voting publish",
+    };
+
+    const notif = await adminNotifikasi_funCreateToUser({
+      data: dataNotifikasi as any,
+    });
+
+    if (notif.status === 201) {
+      WibuRealtime.setData({
+        type: "notification",
+        pushNotificationTo: "USER",
+        dataMessage: dataNotifikasi,
       });
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
+
+      WibuRealtime.setData({
+        type: "trigger",
+        pushNotificationTo: "USER",
+        dataMessage: dataNotifikasi,
+      });
     }
-  });
+    const loadData = await adminVote_funGetListReview({ page: 1 });
+    setData({
+      data: loadData.data,
+      nPage: loadData.nPage,
+    });
+
+    ComponentGlobal_NotifikasiBerhasil(res.message);
+    setLoadingPublish(false);
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }
 
-async function onReject(
-  voteId: string,
-  setData: any,
-  catatan: string,
-  close: any,
-  setSaveLoading: any
-) {
+async function onReject({
+  voteId,
+  catatan,
+  close,
+  setSaveLoading,
+  setData,
+}: {
+  voteId: string;
+  catatan: string;
+  close: any;
+  setSaveLoading: (val: boolean) => void;
+  setData: (val: { data: any[]; nPage: number }) => void;
+}) {
   const data = {
     id: voteId,
     catatan: catatan,
   };
-  await AdminEvent_funEditCatatanById(data as any).then(async (res) => {
-    if (res.status === 200) {
-      await AdminVote_getListTableByStatusId("2").then((val) => {
-        setData(val);
-        setSaveLoading(true);
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-        close();
+
+  const res = await AdminEvent_funEditCatatanById(data as any);
+  if (res.status === 200) {
+    setSaveLoading(true);
+    // const dataNotif = {
+    //   appId: res.data?.id,
+    //   status: res.data?.Voting_Status?.name as any,
+    //   userId: res.data?.authorId as any,
+    //   pesan: res.data?.title as any,
+    //   kategoriApp: "VOTING",
+    //   title: "Voting anda di tolak !",
+    // };
+
+    const dataNotifikasi: IRealtimeData = {
+      appId: res.data?.id as string,
+      status: res.data?.Voting_Status?.name as any,
+      userId: res.data?.authorId as any,
+      pesan: res.data?.title as any,
+      kategoriApp: "VOTING",
+      title: "Voting anda di tolak !",
+    };
+
+    const notif = await adminNotifikasi_funCreateToUser({
+      data: dataNotifikasi as any,
+    });
+
+    if (notif.status === 201) {
+      WibuRealtime.setData({
+        type: "notification",
+        pushNotificationTo: "USER",
+        dataMessage: dataNotifikasi,
       });
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
     }
-  });
+
+    const loadData = await adminVote_funGetListReview({ page: 1 });
+    setData({
+      data: loadData.data,
+      nPage: loadData.nPage,
+    });
+    setSaveLoading(false);
+    ComponentGlobal_NotifikasiBerhasil(res.message);
+    close();
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }

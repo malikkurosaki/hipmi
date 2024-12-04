@@ -1,22 +1,35 @@
 "use client";
 
-import { AppShell } from "@mantine/core";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import React from "react";
-import ComponentVote_HeaderTamplate from "../../component/header_tamplate";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
+import { Voting_ComponentLayoutHeaderDetailPublish } from "../../component";
 
 export default function LayoutVote_DetailPublish({
   children,
+  votingId,
+  userLoginId,
+  dataVoting,
 }: {
   children: React.ReactNode;
+  votingId: string;
+  userLoginId: string;
+  dataVoting: any;
 }) {
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
-        header={<ComponentVote_HeaderTamplate title="Detail Publish" />}
+      <UIGlobal_LayoutTamplate
+        header={
+          <Voting_ComponentLayoutHeaderDetailPublish
+            dataVoting={dataVoting}
+            title="Detail Publish"
+            votingId={votingId}
+            userLoginId={userLoginId}
+          />
+        }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

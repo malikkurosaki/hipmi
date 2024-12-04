@@ -1,25 +1,14 @@
 "use client";
 
-import {
-  ActionIcon,
-  Box,
-  Center,
-  Divider,
-  Grid,
-  Group,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import Admin_Investasi from "../../investasi/main/view";
-import { IconChevronsRight } from "@tabler/icons-react";
-import router from "next/router";
-import * as echarts from 'echarts';
-import EChartsReact from "echarts-for-react";
+import { Divider, Grid, Group, Paper, Stack, Text, Title } from "@mantine/core";
 
-
-export default function AdminMain({countUser, countPorto}: {countUser: number, countPorto: number} ) {
+export default function AdminMain({
+  countUser,
+  countPorto,
+}: {
+  countUser: number;
+  countPorto: number;
+}) {
   const listBox = [
     {
       id: 1,
@@ -42,21 +31,11 @@ export default function AdminMain({countUser, countPorto}: {countUser: number, c
       <Stack spacing={"sm"}>
         <Title>Main Dashboard</Title>
         <Divider mb={"md"} />
-        {/* <Stack align="center" justify="center" h={"80vh"}>
-          <Title>Cooming Soon !!</Title>
-        </Stack> */}
 
         <Grid>
           {listBox.map((e) => (
             <Grid.Col md={4} lg={4} key={e.id}>
-              <Paper
-                withBorder
-                // bg={`${e.color}.2`}
-                shadow="md"
-                radius="md"
-                p="md"
-                //   sx={{ borderColor: e.color, borderStyle: "solid" }}
-              >
+              <Paper withBorder shadow="md" radius="md" p="md">
                 <Group position="center">
                   <Stack align="center" spacing={0}>
                     <Text>{e.name}</Text>
@@ -75,41 +54,3 @@ export default function AdminMain({countUser, countPorto}: {countUser: number, c
     </>
   );
 }
-
-// const PieChart = () => {
-//   const option: echarts.EChartsOption = {
-//     title: {},
-//     tooltip: {
-//       trigger: "item",
-//     },
-//     legend: {
-//       top: "bottom",
-//     },
-//     series: [
-//       {
-//         name: "Anggota Partai",
-//         type: "pie",
-//         bottom: "40",
-//         data: [
-//           { value: 10, name: "Laki-Laki" },
-//           { value: 20, name: "Perempuan" },
-//         ],
-//       },
-//     ],
-//   };
-
-//   return (
-//     <>
-//       <Box
-//         sx={{
-//           backgroundColor: "gray",
-//         }}
-//       >
-//         <Text ta={"center"} fz={20} fw={700}>
-//           Jenis Kelamin
-//         </Text>
-//         <EChartsReact style={{ height: 300 }} option={option} />
-//       </Box>
-//     </>
-//   );
-// };

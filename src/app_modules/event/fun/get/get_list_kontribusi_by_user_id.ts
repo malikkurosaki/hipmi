@@ -1,11 +1,26 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
-export async function Event_getListKontibusiByUserId(userId: string) {
+export async function event_getListKontibusiByUserId({
+  page,
+}: {
+  page: number;
+}) {
+  const userLoginId = await funGetUserIdByToken();
+
+  const takeData = 10;
+  const skipData = page * takeData - takeData;
+
   const data = await prisma.event_Peserta.findMany({
+    take: takeData,
+    skip: skipData,
+    orderBy: {
+      createdAt: "desc",
+    },
     where: {
-      userId: userId,
+      userId: userLoginId,
     },
     select: {
       id: true,
@@ -30,8 +45,8 @@ export async function Event_getListKontibusiByUserId(userId: string) {
               userId: true,
               User: {
                 select: {
-                    Profile: true
-                }
+                  Profile: true,
+                },
               },
             },
           },
@@ -39,7 +54,7 @@ export async function Event_getListKontibusiByUserId(userId: string) {
       },
     },
   });
-//   console.log(data);
+  //   console.log(data);
 
   return data;
 }

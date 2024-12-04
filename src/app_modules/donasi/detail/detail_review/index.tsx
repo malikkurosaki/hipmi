@@ -1,40 +1,21 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import {
-  Stack,
-  AspectRatio,
-  Paper,
-  Title,
-  Progress,
-  Grid,
-  Group,
-  Divider,
-  ActionIcon,
-  Avatar,
-  Text,
-  Image,
-  Button,
-} from "@mantine/core";
-import {
-  IconClover,
-  IconMail,
-  IconMoneybag,
-  IconCircleChevronRight,
-  IconMessageChatbot,
-} from "@tabler/icons-react";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { UIGlobal_Modal } from "@/app_modules/_global/ui";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
+import { Button, Stack } from "@mantine/core";
 import { useRouter } from "next/navigation";
-import ComponentDonasi_NotedBox from "../../component/noted_box";
-import { useAtom } from "jotai";
-import { gs_donasi_tabs_posting } from "../../global_state";
-import { MODEL_DONASI } from "../../model/interface";
 import { useState } from "react";
-import TampilanRupiahDonasi from "../../component/tampilan_rupiah";
+import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_dana/detail_data_donasi";
 import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
 import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
-import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
-import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
-import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_dana/detail_data_donasi";
+import { MODEL_DONASI } from "../../model/interface";
+import { donasi_checkStatus } from "../../fun";
+import { WibuRealtime } from "wibu-pkg";
+import { IRealtimeData } from "@/app/lib/global_state";
 
 export default function DetailReviewDonasi({
   dataDonasi,
@@ -45,7 +26,7 @@ export default function DetailReviewDonasi({
 
   return (
     <>
-      <Stack spacing={"xl"}>
+      <Stack spacing={"xl"} pb={"md"}>
         <ComponentDonasi_DetailDataGalangDana donasi={donasi} />
         <ComponentDonasi_CeritaPenggalangMain donasi={donasi} />
         <ButtonBatalReview donasi={donasi} />
@@ -56,37 +37,96 @@ export default function DetailReviewDonasi({
 function ButtonBatalReview({ donasi }: { donasi: MODEL_DONASI }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
-  const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
-    gs_donasi_tabs_posting
-  );
+  const [openModal, setOpenModal] = useState(false);
 
-  async function onCLick() {
-    await Donasi_funGantiStatus(donasi.id, "3").then((res) => {
+  async function onChangeStatus() {
+    const check = await donasi_checkStatus({ id: donasi.id });
+    if (check) {
+      const res = await Donasi_funGantiStatus(donasi.id, "3");
       if (res.status === 200) {
-        setTabsPostingDonasi("Draft");
-        NotifBerhasil("Berhasil Dibatalkan");
-        setLoading(true);
-        router.push(RouterDonasi.main_galang_dana);
+        // const dataNotif = {
+        //   appId: res.data?.id as any,
+        //   status: res.data?.DonasiMaster_Status?.name as any,
+        //   userId: res.data?.authorId as any,
+        //   pesan: res.data?.title as any,
+        //   kategoriApp: "DONASI",
+        //   title: "Membatalkan review",
+        // };
+
+        const dataNotifikasi: IRealtimeData = {
+          appId: res.data?.id as any,
+          status: res.data?.DonasiMaster_Status?.name as any,
+          userId: res.data?.authorId as any,
+          pesan: res.data?.title as any,
+          kategoriApp: "DONASI",
+          title: "Membatalkan review",
+        };
+
+        const notif = await notifikasiToAdmin_funCreate({
+          data: dataNotifikasi as any,
+        });
+
+        if (notif.status === 201) {
+          WibuRealtime.setData({
+            type: "notification",
+            pushNotificationTo: "ADMIN",
+          });
+
+          WibuRealtime.setData({
+            type: "trigger",
+            pushNotificationTo: "ADMIN",
+            dataMessage: dataNotifikasi,
+          });
+
+          ComponentGlobal_NotifikasiBerhasil("Berhasil Dibatalkan");
+          setLoading(true);
+          router.push(RouterDonasi.status_galang_dana({ id: "3" }));
+        }
       } else {
-        NotifPeringatan(res.message);
+        ComponentGlobal_NotifikasiPeringatan(res.message);
       }
-    });
+    } else {
+      ComponentGlobal_NotifikasiPeringatan("Donasi telah direview admin");
+    }
   }
   return (
     <>
       <Button
+        mt={"lg"}
         style={{
           transition: "0.5s",
         }}
-        loaderPosition="center"
-        loading={isLoading ? true : false}
         radius={"xl"}
-        bg={"red"}
-        color="red"
-        onClick={() => onCLick()}
+        bg={"orange"}
+        color="orange"
+        onClick={() => setOpenModal(true)}
       >
         Batalkan Review
       </Button>
+
+      <UIGlobal_Modal
+        title={"Anda yakin ingin batalkan review ?"}
+        opened={openModal}
+        close={() => setOpenModal(false)}
+        buttonKiri={
+          <Button radius={"xl"} onClick={() => setOpenModal(false)}>
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            loaderPosition="center"
+            loading={isLoading ? true : false}
+            radius={"xl"}
+            color="orange"
+            onClick={() => {
+              onChangeStatus();
+            }}
+          >
+            Simpan
+          </Button>
+        }
+      />
     </>
   );
 }

@@ -1,150 +1,170 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
+import { funGlobal_DeleteFileById } from "@/app_modules/_global/fun";
 import {
-  Stack,
-  AspectRatio,
-  Paper,
-  Title,
-  Progress,
-  Grid,
-  Group,
-  Divider,
-  ActionIcon,
-  Avatar,
-  Text,
-  Image,
-  Button,
-  Spoiler,
-  Modal,
-} from "@mantine/core";
-import {
-  IconClover,
-  IconMail,
-  IconMoneybag,
-  IconCircleChevronRight,
-  IconMessageChatbot,
-} from "@tabler/icons-react";
+  ComponentGlobal_NotifikasiBerhasil,
+  ComponentGlobal_NotifikasiGagal,
+  ComponentGlobal_NotifikasiPeringatan,
+} from "@/app_modules/_global/notif_global";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
+import { Button, Group, Stack } from "@mantine/core";
 import { useRouter } from "next/navigation";
-import ComponentDonasi_NotedBox from "../../component/noted_box";
-import { useAtom } from "jotai";
-import { gs_donasi_tabs_posting } from "../../global_state";
-import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
-import { MODEL_DONASI } from "../../model/interface";
-import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
-import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
-import { NotifGagal } from "../../component/notifikasi/notif_gagal";
-import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
 import ComponentDonasi_DetailDataGalangDana from "../../component/detail_galang_dana/detail_data_donasi";
+import ComponentDonasi_CeritaPenggalangMain from "../../component/detail_main/cerita_penggalang";
 import { Donasi_funDeleteDonasiById } from "../../fun/delete/fin_delete_donasi_by_id";
+import { Donasi_funGantiStatus } from "../../fun/update/fun_ganti_status";
+import { MODEL_DONASI } from "../../model/interface";
 
 export default function DetailRejectDonasi({
   dataReject,
+  fileIdImageCerita,
 }: {
   dataReject: MODEL_DONASI;
+  fileIdImageCerita: string;
 }) {
-  const [donasi, setDonasi] = useState(dataReject);
+  const [data, setData] = useState(dataReject);
   return (
     <>
-      <Stack spacing={"xl"}>
-        <AlasanPenolakan catatan={donasi.catatan} />
-        <ComponentDonasi_DetailDataGalangDana donasi={donasi} />
-        <ComponentDonasi_CeritaPenggalangMain donasi={donasi} />
-        <ButtonAction donasiId={donasi.id} />
+      <Stack spacing={"xl"} pb={"md"}>
+        <ComponentGlobal_BoxInformation isReport informasi={data.catatan} />
+        <ComponentDonasi_DetailDataGalangDana donasi={data} />
+        <ComponentDonasi_CeritaPenggalangMain donasi={data} />
+        <ButtonAction
+          donasiId={data.id}
+          fileIdImageCerita={fileIdImageCerita}
+          imageId={data.imageId}
+        />
       </Stack>
     </>
   );
 }
 
-function AlasanPenolakan({ catatan }: { catatan: string }) {
-  return (
-    <>
-      <Paper bg={"blue.1"} p={"sm"}>
-        <Title order={5}>Alasan penolakan</Title>
-        <Spoiler
-          maxHeight={50}
-          hideLabel="Sembunyikan"
-          showLabel="Selengkapnya"
-        >
-          {catatan}
-        </Spoiler>
-      </Paper>
-    </>
-  );
-}
-
-function ButtonAction({ donasiId }: { donasiId: string }) {
-  const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
-    gs_donasi_tabs_posting
-  );
+function ButtonAction({
+  donasiId,
+  fileIdImageCerita,
+  imageId,
+}: {
+  donasiId: string;
+  fileIdImageCerita: string;
+  imageId: string;
+}) {
   const router = useRouter();
-  const [opened, { open, close }] = useDisclosure(false);
+  const [openModaEdit, setOpenModalEdit] = useState(false);
+  const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [isLoadingEdit, setLoadingEdit] = useState(false);
+  const [isLoadingDelete, setLoadingDelete] = useState(false);
 
-  async function onCLick() {
+  async function onChangeStatus() {
     await Donasi_funGantiStatus(donasiId, "3").then((res) => {
       if (res.status === 200) {
-        NotifBerhasil(res.message);
-        router.push(RouterDonasi.main_galang_dana);
+        setLoadingEdit(true);
+        ComponentGlobal_NotifikasiBerhasil(res.message);
+        router.replace(RouterDonasi.status_galang_dana({ id: "3" }));
       } else {
-        NotifGagal(res.message);
+        ComponentGlobal_NotifikasiGagal(res.message);
+        setLoadingEdit(true);
       }
     });
-    setTabsPostingDonasi("Draft");
   }
   async function onDelete() {
-    await Donasi_funDeleteDonasiById(donasiId).then((res) => {
-      if (res.status === 200) {
-        router.push(RouterDonasi.main_galang_dana);
-        setTabsPostingDonasi("Reject");
-        NotifBerhasil(res.message);
-      } else {
-        NotifGagal(res.message);
+    const del = await Donasi_funDeleteDonasiById(donasiId);
+    if (del.status === 200) {
+      setLoadingDelete(true);
+      const deleteImageDonasi = await funGlobal_DeleteFileById({
+        fileId: imageId as any,
+      });
+
+      if (!deleteImageDonasi.success) {
+        ComponentGlobal_NotifikasiPeringatan("Gagal hapus gambar ");
+        setLoadingDelete(false);
       }
-    });
+
+      const deleteImageCerita = await funGlobal_DeleteFileById({
+        fileId: fileIdImageCerita as any,
+      });
+
+      if (!deleteImageCerita.success) {
+        ComponentGlobal_NotifikasiPeringatan("Gagal hapus gambar ");
+        setLoadingDelete(false);
+      }
+
+      router.replace(RouterDonasi.status_galang_dana({ id: "4" }));
+      ComponentGlobal_NotifikasiBerhasil(del.message);
+      setLoadingDelete(false);
+    } else {
+      ComponentGlobal_NotifikasiGagal(del.message);
+      setLoadingDelete(false);
+    }
   }
   return (
     <>
-      <Group position="center">
+      <Group grow>
         <Button
           radius={"xl"}
           bg={"orange"}
           color="orange"
-          onClick={() => onCLick()}
-          compact
+          onClick={() => setOpenModalEdit(true)}
         >
-          Edit Donasi
+          Edit Kembali
         </Button>
         <Button
           radius={"xl"}
           bg={"red"}
           color="red"
-          onClick={() => open()}
-          compact
+          onClick={() => setOpenModalDelete(true)}
         >
           Hapus Donasi
         </Button>
       </Group>
-      <Modal
-        opened={opened}
-        onClose={close}
-        centered
-        title="Yakin menghapus Penggalanagn Dana ini ?"
-      >
-        <Group position="center">
-          <Button radius={"xl"} variant="outline" onClick={close}>
+
+      {/* MODAL EDIT */}
+      <UIGlobal_Modal
+        title={"Anda yakin ingin mengedit donasi ini ?"}
+        opened={openModaEdit}
+        close={() => setOpenModalEdit(false)}
+        buttonKiri={
+          <Button radius={"xl"} onClick={() => setOpenModalEdit(false)}>
             Batal
           </Button>
+        }
+        buttonKanan={
           <Button
+            loaderPosition="center"
+            loading={isLoadingEdit}
             radius={"xl"}
-            variant="outline"
+            color="orange"
+            onClick={() => onChangeStatus()}
+          >
+            Edit
+          </Button>
+        }
+      />
+
+      {/* HAPUS */}
+      <UIGlobal_Modal
+        title={"Anda yakin ingin menghapus donasi ini ?"}
+        opened={openModalDelete}
+        close={() => setOpenModalDelete(false)}
+        buttonKiri={
+          <Button radius={"xl"} onClick={() => setOpenModalDelete(false)}>
+            Batal
+          </Button>
+        }
+        buttonKanan={
+          <Button
+            loaderPosition="center"
+            loading={isLoadingDelete}
+            radius={"xl"}
             color="red"
             onClick={() => onDelete()}
           >
             Hapus
           </Button>
-        </Group>
-      </Modal>
+        }
+      />
     </>
   );
 }

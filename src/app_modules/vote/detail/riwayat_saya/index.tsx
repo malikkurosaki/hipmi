@@ -15,7 +15,7 @@ export default function Vote_DetailRiwayatSaya({
 }) {
   return (
     <>
-      <Stack>
+      <Stack pb={"md"}>
         <ComponentVote_DetailDataSetelahPublish
           data={dataVote}
           authorName={true}

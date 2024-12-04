@@ -1,3 +1,5 @@
+"use client"
+
 import {
   ActionIcon,
   Drawer,
@@ -82,7 +84,7 @@ export default function UIGlobal_Drawer({
                   onClick={() => {
                     setPageId(e?.id);
                     setIsLoading(true);
-                    router.push(e?.path);
+                    router.push(e?.path, {scroll: false});
                   }}
                 >
                   {isLoading && e?.id === pageId ? (
@@ -91,7 +93,7 @@ export default function UIGlobal_Drawer({
                     e?.icon
                   )}
                 </ActionIcon>
-                <Text align="center" color="white">
+                <Text fz={"sm"} align="center" color="white">
                   {e?.name}
                 </Text>
               </Stack>

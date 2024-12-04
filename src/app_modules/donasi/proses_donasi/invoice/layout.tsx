@@ -1,16 +1,15 @@
 "use client";
 
-import { ActionIcon, AppShell, Group, Header, Title } from "@mantine/core";
-import React from "react";
-import ComponentDonasi_HeaderTamplate from "../../component/header_tamplate";
-import { IconChevronLeft, IconX } from "@tabler/icons-react";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { gs_donasi_hot_menu } from "../../global_state";
+import { ActionIcon } from "@mantine/core";
+import { IconX } from "@tabler/icons-react";
 import { useAtom } from "jotai";
+import React from "react";
+import { gs_donasi_hot_menu } from "../../global_state";
 
-import { title } from "process";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import { useRouter } from "next/navigation";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
 
 export default function LayoutDonasi_InvoiceProses({
   children,
@@ -25,21 +24,20 @@ export default function LayoutDonasi_InvoiceProses({
   }
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <UIGlobal_LayoutTamplate
         header={
-          <Header height={50} sx={{ borderStyle: "none" }}>
-            <Group h={50} position="apart" px={"md"}>
+          <UIGlobal_LayoutHeaderTamplate
+            title="Invoice"
+            customButtonLeft={
               <ActionIcon variant="transparent" onClick={() => onClick()}>
-                <IconX />
+                <IconX color="white"/>
               </ActionIcon>
-              <Title order={5}>Invoice</Title>
-              <ActionIcon disabled variant="transparent"></ActionIcon>
-            </Group>
-          </Header>
+            }
+          />
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

@@ -1,12 +1,24 @@
 "use client";
 
+import { pathAssetImage } from "@/app/lib";
+import { RouterImagePreview } from "@/app/lib/router_hipmi/router_image_preview";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_LoaderAvatar } from "@/app_modules/_global/component";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
-import { Avatar, Button, Center, Grid, Stack, Text } from "@mantine/core";
+import {
+  Avatar,
+  Box,
+  Button,
+  Center,
+  Grid,
+  Image,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { IconCircleFilled } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
@@ -21,25 +33,54 @@ export default function ComponentForum_ViewForumProfile({
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [isLoadingImage, setIsLoadingImage] = useState(false);
 
   return (
     <>
       <Center>
-        <Avatar
-          bg={"gray"}
-          radius={"100%"}
-          sx={{
-            borderStyle: "solid",
-            borderWidth: "0.5px",
-            borderColor: AccentColor.yellow,
+        <Box
+          h={100}
+          style={{ borderRadius: "50%" }}
+          onClick={() => {
+            router.push(
+              RouterImagePreview.main({
+                id: auhtorSelectedData.Profile.imageId as any,
+              }),
+              { scroll: false }
+            );
+            setIsLoadingImage(true);
           }}
-          size={100}
-          alt="foto"
-          src={
-            RouterProfile.api_foto_profile +
-            auhtorSelectedData?.Profile?.imagesId
-          }
-        />
+        >
+          {isLoadingImage ? (
+            <Avatar
+              size={100}
+              radius={"100%"}
+              style={{
+                borderColor: "white",
+                borderStyle: "solid",
+                borderWidth: "1px",
+              }}
+              opacity={0.7}
+            >
+              <ComponentGlobal_LoaderAvatar
+                sizeAvatar={100}
+                fileId={auhtorSelectedData.Profile.imageId as any}
+              />
+              <Image
+                pos={"absolute"}
+                height={50}
+                width={50}
+                alt="Photo"
+                src={pathAssetImage.new_loader}
+              />
+            </Avatar>
+          ) : (
+            <ComponentGlobal_LoaderAvatar
+              sizeAvatar={100}
+              fileId={auhtorSelectedData.Profile.imageId as any}
+            />
+          )}
+        </Box>
       </Center>
       <Grid>
         <Grid.Col span={"auto"}>
@@ -69,7 +110,7 @@ export default function ComponentForum_ViewForumProfile({
                 border: `1px solid ${AccentColor.yellow}`,
                 backgroundColor: MainColor.yellow,
               }}
-              c="white"
+              c="black"
               loaderPosition="center"
               loading={loading ? true : false}
               radius={"xl"}
@@ -77,7 +118,7 @@ export default function ComponentForum_ViewForumProfile({
               onClick={() => {
                 setLoading(true);
                 router.push(
-                  RouterProfile.katalog + auhtorSelectedData?.Profile?.id
+                  RouterProfile.katalogOLD + auhtorSelectedData?.Profile?.id
                 );
               }}
             >

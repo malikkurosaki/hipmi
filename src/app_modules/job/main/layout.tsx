@@ -33,7 +33,7 @@ export default function LayoutJob_Main({
     {
       id: 2,
       name: "Status",
-      path: RouterJob.status,
+      path: RouterJob.status({ id: "1" }),
       icon: <IconReservedLine />,
     },
     {
@@ -49,12 +49,12 @@ export default function LayoutJob_Main({
       <UIGlobal_LayoutTamplate
         header={
           <UIGlobal_LayoutHeaderTamplate
-            title="JOB"
+            title="Job"
             routerLeft={RouterHome.main_home}
           />
         }
         footer={
-          <SimpleGrid cols={3} h={"10vh"} mx={"xs"}>
+          <SimpleGrid cols={3} h={"9vh"} mx={"xs"}>
             {listFooter.map((e, i) => (
               <Stack key={i} align="center" justify="center" spacing={0}>
                 <ActionIcon
@@ -79,42 +79,6 @@ export default function LayoutJob_Main({
               </Stack>
             ))}
           </SimpleGrid>
-          // <Stack justify="center" h={"100%"}>
-          //   <Grid>
-          //     {listFooter.map((e) => (
-          //       <Grid.Col
-          //         key={e.id}
-          //         span={"auto"}
-          //         pt={"md"}
-          //         onClick={() => {
-          //           // setLoading(true);
-          //           // setTimeout(() => router.replace(e.path), 3000);
-          //           router.replace(e.path);
-          //           setHotMenuId(e.id);
-          //           // setTimeout(() => setLoading(false), 1000);
-          //         }}
-          //       >
-          //         <Center>
-          //           <Stack align="center" spacing={0}>
-          //             <ActionIcon
-          //               radius={"xl"}
-          //               variant="transparent"
-          //               c={hotMenuId === e.id ? MainColor.yellow : "white"}
-          //             >
-          //               {e.icon}
-          //             </ActionIcon>
-          //             <Text
-          //               fz={10}
-          //               c={hotMenuId === e.id ? MainColor.yellow : "white"}
-          //             >
-          //               {e.name}
-          //             </Text>
-          //           </Stack>
-          //         </Center>
-          //       </Grid.Col>
-          //     ))}
-          //   </Grid>
-          // </Stack>
         }
       >
         {children}

@@ -1,16 +1,14 @@
 "use client";
 
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import {
   Avatar,
-  Box,
   Card,
   Center,
   Grid,
-  Group,
-  List,
   Stack,
   Text,
-  Title,
+  Title
 } from "@mantine/core";
 import { MODEL_VOTING_DAFTAR_NAMA_VOTE } from "../../model/interface";
 
@@ -21,7 +19,15 @@ export default function ComponentVote_HasilVoting({
 }) {
   return (
     <>
-      <Card shadow="lg" withBorder p={30}>
+      <Card
+        p={30}
+        style={{
+          backgroundColor: AccentColor.darkblue,
+          borderRadius: "10px",
+          border: `2px solid ${AccentColor.blue}`,
+          color: "white",
+        }}
+      >
         <Card.Section>
           <Stack>
             <Center>
@@ -36,11 +42,13 @@ export default function ComponentVote_HasilVoting({
                       radius={100}
                       size={70}
                       variant="outline"
-                      color="blue"
+                      color="yellow"
                     >
-                      <Text> {e.jumlah}</Text>
+                      <Text>{e.jumlah}</Text>
                     </Avatar>
-                    <Text fz={"xs"}>{e.value}</Text>
+                    <Text fz={"xs"} align="center">
+                      {e.value}
+                    </Text>
                   </Stack>
                 </Grid.Col>
               ))}

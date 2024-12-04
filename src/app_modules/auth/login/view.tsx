@@ -1,92 +1,59 @@
 "use client";
 
 import {
-  BackgroundImage,
-  Box,
-  Button,
-  Center,
-  Flex,
-  Grid,
-  Group,
-  Image,
-  Stack,
-  Text,
-  TextInput,
-  Title,
-} from "@mantine/core";
-import { useFocusTrap } from "@mantine/hooks";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useAtom } from "jotai";
-import { gs_kodeId } from "../state/state";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { auth_funLogin } from "@/app_modules/auth/fun/fun_login";
-import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { PhoneInput } from "react-international-phone";
-import "react-international-phone/style.css";
-import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import {
+  ComponentGlobal_NotifikasiBerhasil,
+  ComponentGlobal_NotifikasiGagal,
+  ComponentGlobal_NotifikasiPeringatan,
+} from "@/app_modules/_global/notif_global";
+import { UIGlobal_LayoutDefault } from "@/app_modules/_global/ui";
+import { Box, Button, Center, Stack, Text, Title } from "@mantine/core";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 
-export default function Login() {
+export default function Login({ version }: { version: string }) {
   const router = useRouter();
-  const [kodeId, setKodeId] = useAtom(gs_kodeId);
-  const focusTrapRef = useFocusTrap();
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
 
   async function onLogin() {
-    const nomorHp = phone.substring(1);
+    const nomor = phone.substring(1);
+    if (nomor.length <= 4) return setError(true);
 
-    if (nomorHp.length <= 4) return setError(true);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ nomor: nomor }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    await auth_funLogin(nomorHp).then((res) => {
+      const result = await res.json();
       if (res.status === 200) {
-        setLoading(true);
-        ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
-        setKodeId(res.kodeOtpId);
-        router.push(RouterAuth.validasi + res.kodeOtpId);
+        localStorage.setItem("hipmi_auth_code_id", result.kodeId);
+        ComponentGlobal_NotifikasiBerhasil(result.message, 2000);
+        router.push("/validasi", { scroll: false });
       } else {
-        ComponentGlobal_NotifikasiPeringatan(res.message);
+        ComponentGlobal_NotifikasiPeringatan(result.message);
       }
-    });
-
-    // await fetch(ApiHipmi.login, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(body),
-    // })
-    //   .then((res) => res.json())
-    //   .then((val) => {
-    //     // console.log(val);
-    //     if (val.success === true) {
-    //       router.push(RouterAdminDashboard.splash_admin);
-    //     } else {
-    //       if (val.status == 200) {
-    //         setCode(val.body.otp);
-    //         setInputNumber(val.body.nomor);
-    //         router.push("/dev/auth/validasi");
-    //         return NotifBerhasil("Nomor OTP terkirim");
-    //       } else {
-    //         NotifGagal(val.message);
-    //       }
-    //     }
-    //   });
+    } catch (error) {
+      console.error(error);
+      ComponentGlobal_NotifikasiGagal("Terjadi Kesalahan");
+    }
   }
 
   return (
     <>
-      <BackgroundImage
-        src={"/aset/global/main_background.png"}
-        h={"100vh"}
-        // pos={"static"}
-      >
+      <UIGlobal_LayoutDefault>
         <Stack align="center" justify="center" h={"100vh"} spacing={100}>
           <Stack align="center" spacing={0}>
             <Title order={3} c={MainColor.yellow}>
@@ -130,8 +97,14 @@ export default function Login() {
               LOGIN
             </Button>
           </Stack>
+
+          <Box pos={"fixed"} bottom={10}>
+            <Text fw={"bold"} c={"white"} fs={"italic"} fz={"xs"}>
+              v {version}
+            </Text>
+          </Box>
         </Stack>
-      </BackgroundImage>
+      </UIGlobal_LayoutDefault>
     </>
   );
 }

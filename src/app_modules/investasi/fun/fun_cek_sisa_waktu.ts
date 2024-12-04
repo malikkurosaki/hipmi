@@ -1,7 +1,7 @@
 "use server";
 
 import moment from "moment";
-import { MODEL_Transaksi_Investasi } from "../model/model_investasi";
+import { MODEL_Transaksi_Investasi } from "../_lib/interface";
 import funGantiStatusTransaksi_Investasi from "./fun_ganti_status_transaksi";
 
 export default async function funCekSisaWaktuTransaksiInvestasi(

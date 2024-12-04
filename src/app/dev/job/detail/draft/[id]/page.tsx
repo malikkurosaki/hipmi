@@ -8,7 +8,7 @@ export default async function Page({params}: {params: {id: string}}) {
 
   return (
     <>
-      <Job_DetailDraft dataJob={dataJob as any} />
+      <Job_DetailDraft dataJob={dataJob as any} jobId={jobId} />
     </>
   );
 }

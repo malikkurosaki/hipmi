@@ -1,45 +1,32 @@
 "use client";
 
-import {
-  ActionIcon,
-  Button,
-  Group,
-  Modal,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import { useRouter } from "next/navigation";
-import { useAtom } from "jotai";
-import { gs_kodeId, gs_nomor, gs_otp } from "../state/state";
-import { IconLogout } from "@tabler/icons-react";
 import { Warna } from "@/app/lib/warna";
-import { useDisclosure } from "@mantine/hooks";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { auth_Logout } from "../fun/fun_logout";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
-import { useState } from "react";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
+import { ActionIcon, Button, Stack, Text } from "@mantine/core";
+import { IconLogout } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { auth_Logout } from "../fun/fun_logout";
+import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
 
-export default function Component_Logout() {
+export default function Component_ButtonLogout({userId}: {userId: string}) {
   const router = useRouter();
   const [opened, setOpened] = useState(false);
-  const [kodeId, setKodeId] = useAtom(gs_kodeId);
   const [loading, setLoading] = useState(false);
 
   async function onClickLogout() {
-    // await auth_Logout(kodeId).then((res) => {
-    //   ComponentGlobal_NotifikasiBerhasil("Berhasil Logout");
-    // });
-    await auth_Logout(kodeId).then((res) => {
-      if (res.status === 200) {
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-        setKodeId("");
-      } else {
-        ComponentGlobal_NotifikasiPeringatan(res.message);
-      }
+    setLoading(true);
+    const res = await fetch(`/api/auth/logout?id=${userId}`, {
+      method: "GET",
     });
+
+    const result = await res.json();
+    if (res.status === 200) {
+      ComponentGlobal_NotifikasiBerhasil(result.message);
+      router.push("/", { scroll: false });
+    }
   }
 
   return (
@@ -65,7 +52,6 @@ export default function Component_Logout() {
             bg={Warna.merah}
             color="red"
             onClick={() => {
-              setLoading(true);
               onClickLogout();
             }}
           >

@@ -53,7 +53,7 @@ export async function Vote_funEditById(
     if (!namaPilihan) return { status: 400, message: "Gagal Membuat List" };
   }
 
-  revalidatePath("/dev/vote/detail/draft");
+  revalidatePath(`/dev/vote/detail/draft`);
   return {
     status: 200,
     message: "Berhasil Update",

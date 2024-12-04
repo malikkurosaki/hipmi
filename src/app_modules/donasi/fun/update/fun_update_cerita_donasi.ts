@@ -1,42 +1,28 @@
 "use server";
 
-import _ from "lodash";
-import { MODEL_CERITA_DONASI } from "../../model/interface";
-import { v4 } from "uuid";
 import prisma from "@/app/lib/prisma";
+import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import { revalidatePath } from "next/cache";
-import fs from "fs";
+import { MODEL_CERITA_DONASI } from "../../model/interface";
 
-export async function Donasi_funUpdateCerita(
-  data: MODEL_CERITA_DONASI,
-  file: FormData
-) {
-
-
-  const gambar: any = file.get("file");
-  if (gambar !== "null") {
-    const fileName = gambar.name;
-    const fileExtension = _.lowerCase(gambar.name.split(".").pop());
-    const fileRandomName = v4(fileName) + "." + fileExtension;
-
-
-    const updateGambar = await prisma.images.update({
+export async function Donasi_funUpdateCerita({
+  data,
+  fileId,
+}: {
+  data: MODEL_CERITA_DONASI;
+  fileId?: string;
+}) {
+  if (fileId !== undefined) {
+    const updateFileId = await prisma.donasi_Cerita.update({
       where: {
-        id: data.imagesId,
+        id: data.id,
       },
       data: {
-        url: fileRandomName,
+        imageId: fileId,
       },
     });
 
-    if (!updateGambar) return { status: 400, message: "Update gambat gagal" };
-    revalidatePath("/dev/donasi/detail/detail_draft");
-
-    const uploadFolder = Buffer.from(await gambar.arrayBuffer());
-    fs.writeFileSync(
-      `./public/donasi/image_cerita/${updateGambar.url}`,
-      uploadFolder
-    );
+    if (!updateFileId) return { status: 400, message: "Gagal update" };
   }
 
   const update = await prisma.donasi_Cerita.update({
@@ -50,7 +36,7 @@ export async function Donasi_funUpdateCerita(
   });
 
   if (!update) return { status: 400, message: "Gagal update cerita" };
-  revalidatePath("/dev/donasi/detail/detail_draft");
+  revalidatePath(RouterDonasi.detail_draft);
 
   return {
     status: 200,

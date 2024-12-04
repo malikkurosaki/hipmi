@@ -1,198 +1,83 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import { Warna } from "@/app/lib/warna";
-import {
-  ActionIcon,
-  AspectRatio,
-  Avatar,
-  Box,
-  Button,
-  Center,
-  Flex,
-  Grid,
-  Group,
-  Image,
-  Paper,
-  Slider,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import {
-  IconBookDownload,
-  IconFileDescription,
-  IconSpeakerphone,
-} from "@tabler/icons-react";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import { Button, Stack } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { gs_StatusPortoInvestasi } from "../../g_state";
-import toast from "react-simple-toasts";
-import { MODEL_Investasi } from "../../model/model_investasi";
-import funGantiStatusInvestasi from "../../fun/fun_ganti_status";
-import { useState } from "react";
-import _ from "lodash";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { gs_investasi_status } from "../../g_state";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import mqtt_client from "@/util/mqtt_client";
+import { useState } from "react";
+import { MODEL_INVESTASI } from "../../_lib/interface";
+import { ComponentInvestasi_DetailDataNonPublish } from "../../component/detail/x_detai_data_non_publish";
+import { investasi_funEditStatusById } from "../../fun/edit/fun_edit_status_by_id";
 
 export default function DetailReviewInvestasi({
   dataInvestasi,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
 }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
 
-  const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
-  const [investasi, setInvestasi] = useState<MODEL_Investasi>(dataInvestasi);
+  const [activeTab, setActiveTab] = useAtom(gs_investasi_status);
+  const [data, setData] = useState<MODEL_INVESTASI>(dataInvestasi);
 
-  const listBox = [
-    {
-      id: 1,
-      name: "Prospektus",
-      icon: <IconBookDownload size={70} />,
-      route: RouterInvestasi.detail_prospektus,
-    },
-    {
-      id: 2,
-      name: "Dokumen",
-      icon: <IconFileDescription size={70} />,
-      route: RouterInvestasi.detail_dokumen,
-    },
-    // {
-    //   id: 3,
-    //   name: "Berita",
-    //   icon: <IconSpeakerphone size={70} />,
-    //   route: RouterInvestasi.berita,
-    // },
-  ];
+  async function onCancleReview() {
+    const res = await investasi_funEditStatusById({
+      investasiId: data.id,
+      statusId: "3",
+    });
+    if (res.status === 200) {
+      const dataNotif = {
+        appId: res.data?.id,
+        userId: res.data?.authorId,
+        pesan: res.data?.title,
+        status: res.data?.MasterStatusInvestasi?.name,
+        kategoriApp: "INVESTASI",
+        title: "Membatalkan review",
+      };
 
-  async function onsubmit() {
-    await funGantiStatusInvestasi(investasi.id, "1")
-      .then((val) => {
-        if (val.status === 200) {
-          ComponentGlobal_NotifikasiBerhasil("Review Dibatalkan");
-          router.push(RouterInvestasi.portofolio);
-          setActiveTab("Draft");
-        } else {
-          ComponentGlobal_NotifikasiPeringatan("Error");
-        }
+      const notif = await notifikasiToAdmin_funCreate({
+        data: dataNotif as any,
       });
+
+      if (notif.status === 201) {
+        mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
+
+        setLoading(true);
+        ComponentGlobal_NotifikasiBerhasil("Review Dibatalkan");
+        setActiveTab("Draft");
+        router.push(RouterInvestasi_OLD.portofolio);
+      }
+    } else {
+      ComponentGlobal_NotifikasiPeringatan(res.message);
+    }
   }
 
   return (
     <>
-      <Stack>
-        <Paper withBorder>
-          <AspectRatio ratio={16 / 9}>
-            <Image
-              alt=""
-              src={RouterInvestasi.api_gambar + `${investasi.imagesId}`}
-            />
-          </AspectRatio>
-        </Paper>
-
-        {/* Title dan Persentase */}
-        <Center>
-          <Title order={4}>{_.capitalize(investasi.title)}</Title>
-        </Center>
-
-        {/* Rincian Data */}
-        <Grid p={"md"}>
-          <Grid.Col span={6}>
-            <Stack>
-              <Box>
-                <Text>Dana Dibutuhkan</Text>
-                <Text>
-                  Rp.{" "}
-                  {new Intl.NumberFormat("id-ID", {
-                    maximumSignificantDigits: 20,
-                  }).format(+investasi.targetDana)}
-                </Text>
-              </Box>
-              <Box>
-                <Text>Harga Per Lembar</Text>
-                <Text>
-                  Rp.{" "}
-                  {new Intl.NumberFormat("id-ID", {
-                    maximumSignificantDigits: 10,
-                  }).format(+investasi.hargaLembar)}
-                </Text>
-              </Box>
-              <Box>
-                <Text>Jadwal Pembagian</Text>
-                <Text>{investasi.MasterPembagianDeviden.name} Bulan </Text>
-              </Box>
-              <Box>
-                <Text>Pencarian Investor</Text>
-                <Text>{investasi.MasterPencarianInvestor.name} Hari </Text>
-              </Box>
-            </Stack>
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <Stack>
-              <Box>
-                <Text>ROI</Text>
-                <Text>{investasi.roi} %</Text>
-              </Box>
-              <Box>
-                <Text>Total Lembar</Text>
-                <Text>
-                  {new Intl.NumberFormat("id-ID", {
-                    maximumSignificantDigits: 10,
-                  }).format(+investasi.totalLembar)}{" "}
-                  lembar
-                </Text>
-              </Box>
-              <Box>
-                <Text>Pembagian Deviden</Text>
-                <Text>{investasi.MasterPeriodeDeviden.name}</Text>
-              </Box>
-            </Stack>
-          </Grid.Col>
-        </Grid>
-
-        {/* List Box */}
-        <Grid>
-          {listBox.map((e) => (
-            <Grid.Col
-              span={"auto"}
-              key={e.id}
-              onClick={() => router.push(e.route + `${investasi.id}`)}
-            >
-              <Center>
-                <Paper h={100} w={100} bg={"gray.4"} withBorder py={"xs"}>
-                  <Flex
-                    direction={"column"}
-                    align={"center"}
-                    justify={"center"}
-                  >
-                    <Text fz={12}>{e.name}</Text>
-                    <ActionIcon variant="transparent" size={60}>
-                      {e.icon}
-                    </ActionIcon>
-                  </Flex>
-                </Paper>
-              </Center>
-            </Grid.Col>
-          ))}
-        </Grid>
-
+      <Stack spacing={"xl"} >
+        <ComponentInvestasi_DetailDataNonPublish data={data} />
         {/* Tombol Ajukan */}
-        <Button
-          style={{
-            transition: "0.5s",
-          }}
-          loaderPosition="center"
-          loading={isLoading ? true : false}
-          my={"xl"}
-          radius={50}
-          bg={"orange"}
-          color="yellow"
-          onClick={() => onsubmit()}
-        >
-          Batalkan Review
-        </Button>
+        <Stack>
+          <Button
+          mb={"xl"}
+            style={{
+              transition: "0.5s",
+            }}
+            loaderPosition="center"
+            loading={isLoading ? true : false}
+            radius={50}
+            bg={"orange"}
+            color="yellow"
+            onClick={() => onCancleReview()}
+          >
+            Batalkan Review
+          </Button>
+        </Stack>
       </Stack>
     </>
   );

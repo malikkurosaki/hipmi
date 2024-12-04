@@ -1,16 +1,22 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { sealData } from "iron-session";
-import fs from "fs";
-import yaml from "yaml";
-import { cookies } from "next/headers";
-import { revalidatePath } from "next/cache";
 import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-const config = yaml.parse(fs.readFileSync("config.yaml").toString());
+import { sealData, unsealData } from "iron-session";
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 
-export async function auth_funValidasi(nomor: string) {
-  const cek = await prisma.user.findUnique({
+export async function auth_funValidasi({
+  nomor,
+  HIPMI_PWD,
+}: {
+  nomor: string;
+  HIPMI_PWD: string;
+}) {
+  const pswd = process.env.WIBU_PWD as string;
+
+
+  const cekUser = await prisma.user.findUnique({
     where: {
       nomor: nomor,
     },
@@ -18,32 +24,62 @@ export async function auth_funValidasi(nomor: string) {
       id: true,
       nomor: true,
       username: true,
-      masterUserRoleId: true
+      masterUserRoleId: true,
     },
   });
 
-  if (cek === null) return { status: 400, message: "Nomor Belum Terdaftar" };
-  if (cek) {
-    const res = await sealData(
-      JSON.stringify({
-        id: cek.id,
-        username: cek.username,
-      }),
-      {
-        password: await config.server.password,
-      }
-    );
+  if (cekUser === null)
+    return { status: 400, message: "Nomor Belum Terdaftar", role: {} };
 
-    cookies().set({
-      name: "ssn",
-      value: res,
-      maxAge: 60 * 60 * 24 * 7,
+  const sealToken = await sealData(
+    JSON.stringify({
+      id: cekUser.id,
+      username: cekUser.username,
+    }),
+    {
+      password: pswd,
+    }
+  );
+
+  cookies().set({
+    name: "mySession",
+    value: sealToken,
+    maxAge: 60 * 60 * 24 * 30,
+  });
+
+  const cekSessionUser = await prisma.userSession.findFirst({
+    where: {
+      userId: cekUser.id,
+    },
+  });
+
+  if (cekSessionUser !== null) {
+    await prisma.userSession.delete({
+      where: {
+        userId: cekUser.id,
+      },
     });
-
-    revalidatePath(RouterHome.main_home);
   }
 
+  try {
+    const createUserSession = await prisma.userSession.create({
+      data: {
+        token: sealToken,
+        userId: cekUser.id,
+      },
+    });
 
+    if (!createUserSession)
+      return { status: 401, message: "Gagal Membuat User Session", role: {} };
 
-  return { status: 200, message: "Nomor Terverifikasi", role: cek.masterUserRoleId };
+    revalidatePath(RouterHome.main_home);
+  } catch (error) {
+    console.log(error);
+  }
+
+  return {
+    status: 200,
+    message: "Nomor Terverifikasi",
+    role: cekUser.masterUserRoleId,
+  };
 }

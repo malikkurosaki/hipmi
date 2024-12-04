@@ -1,8 +1,8 @@
 "use client";
 
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import React from "react";
-import ComponentDonasi_HeaderTamplate from "../../../component/header_tamplate";
 
 export default function LayoutDonaturDonasi({
   children,
@@ -11,9 +11,11 @@ export default function LayoutDonaturDonasi({
 }) {
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate header={<ComponentDonasi_HeaderTamplate title="Donatur" />}>
+      <UIGlobal_LayoutTamplate
+        header={<UIGlobal_LayoutHeaderTamplate title="Donatur" />}
+      >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

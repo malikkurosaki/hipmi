@@ -1,17 +1,16 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { revalidatePath } from "next/cache";
-
 export async function forum_funCreate(value: string) {
-  const AuthorId = await user_getOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const create = await prisma.forum_Posting.create({
     data: {
       diskusi: value,
-      authorId: AuthorId,
-      forumMaster_StatusPostingId: 1
+      authorId: userLoginId,
+      forumMaster_StatusPostingId: 1,
     },
   });
 

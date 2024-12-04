@@ -4,13 +4,15 @@ import prisma from "@/app/lib/prisma";
 
 export async function Vote_getListKontributorById(votingId: string) {
   const data = await prisma.voting_Kontributor.findMany({
+    orderBy:{
+      createdAt: "desc"
+    },
     where: {
       votingId: votingId,
     },
-    select: {
-      id: true,
+    include: {
       Author: {
-        select: {
+        include: {
           Profile: true,
         },
       },

@@ -1,10 +1,12 @@
 "use client";
 
+import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
 import {
   AspectRatio,
   Button,
-  Divider,
   Group,
   Image,
   Modal,
@@ -15,19 +17,16 @@ import {
   Textarea,
   Title,
 } from "@mantine/core";
-import { useState } from "react";
-import ComponentAdminDonasi_TombolKembali from "../component/tombol_kembali";
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
 import { useDisclosure } from "@mantine/hooks";
-import { AdminDonasi_funUpdateCatatanReject } from "../fun/update/fun_update_catatan_reject";
-import { NotifBerhasil } from "@/app_modules/donasi/component/notifikasi/notif_berhasil";
-import { NotifGagal } from "@/app_modules/donasi/component/notifikasi/notif_gagal";
-import { AdminDonasi_getOneById } from "../fun/get/get_one_by_id";
-import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
-import ComponentAdminGlobal_BackButton from "../../component_global/back_button";
-import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_detail_donasi";
+import React, { useState } from "react";
+import { ComponentAdminGlobal_NotifikasiBerhasil } from "../../_admin_global/admin_notifikasi/notifikasi_berhasil";
+import AdminGlobal_ComponentBackButton from "../../_admin_global/back_button";
 import ComponentAdminDonasi_CeritaPenggalangDana from "../component/tampilan_detail_cerita";
+import ComponentAdminDonasi_TampilanDetailDonasi from "../component/tampilan_detail_donasi";
+import { AdminDonasi_getOneById } from "../fun/get/get_one_by_id";
+import { AdminDonasi_funUpdateCatatanReject } from "../fun/update/fun_update_catatan_reject";
+import { ComponentAdminGlobal_NotifikasiGagal } from "../../_admin_global/admin_notifikasi/notifikasi_gagal";
+import { Admin_ComponentModalReport } from "../../_admin_global/_component";
 
 export default function AdminDonasi_DetailReject({
   dataReject,
@@ -44,7 +43,7 @@ export default function AdminDonasi_DetailReject({
           donasiId={data.id}
           setDonasi={setData}
         />
-          <CatatanReject catatan={data.catatan} />
+        <CatatanReject catatan={data.catatan} />
         <SimpleGrid
           cols={2}
           spacing="lg"
@@ -74,35 +73,82 @@ function ButtonOnHeader({
   setDonasi: any;
 }) {
   const [report, setReport] = useState(catatan);
-  const [opened, { open, close }] = useDisclosure(false);
+  const [opened, setOpened] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   async function onUpdate() {
-    await AdminDonasi_funUpdateCatatanReject(donasiId, report).then(
-      async (res) => {
-        if (res.status === 200) {
-          NotifBerhasil(res.message);
-          close();
-          await AdminDonasi_getOneById(donasiId).then((res) => setDonasi(res));
-        } else {
-          NotifGagal(res.message);
-        }
-      }
-    );
+    const res = await AdminDonasi_funUpdateCatatanReject(donasiId, report);
+    if (res.status === 200) {
+      setLoading(true);
+      ComponentAdminGlobal_NotifikasiBerhasil(res.message);
+      setOpened(false);
+      await AdminDonasi_getOneById(donasiId).then((res) => setDonasi(res));
+    } else {
+      ComponentAdminGlobal_NotifikasiGagal(res.message);
+    }
   }
 
   return (
     <>
       <Stack>
         <Group position="apart">
-          <ComponentAdminGlobal_BackButton />
-          <Button radius={"xl"} bg={"orange"} color="orange" onClick={open}>
+          <AdminGlobal_ComponentBackButton />
+          <Button
+            radius={"xl"}
+            bg={"orange"}
+            color="orange"
+            onClick={() => setOpened(true)}
+          >
             Tambah catatan
           </Button>
         </Group>
-
       </Stack>
 
-      <Modal
+      <Admin_ComponentModalReport
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="Tambah catatan"
+        value={report}
+        onHandlerChange={(val: React.ChangeEvent<HTMLTextAreaElement>) =>
+          setReport(val.target.value)
+        }
+        buttonKanan={
+          <>
+            <Button
+              loaderPosition="center"
+              loading={isLoading}
+              radius={"xl"}
+              onClick={() => {
+                onUpdate();
+              }}
+            >
+              Simpan
+            </Button>
+          </>
+        }
+        buttonKiri={
+          <>
+            <Button
+              radius={"xl"}
+              onClick={() => {
+                close();
+              }}
+            >
+              Batal
+            </Button>
+          </>
+        }
+        cekInputKarakter={
+          <>
+            <ComponentGlobal_InputCountDown
+              maxInput={300}
+              lengthInput={report.length}
+            />
+          </>
+        }
+      />
+
+      {/* <Modal
         opened={opened}
         onClose={close}
         centered
@@ -120,73 +166,10 @@ function ButtonOnHeader({
             value={report}
             onChange={(val) => setReport(val.target.value)}
           />
-          <ComponentGlobal_InputCountDown
-            maxInput={300}
-            lengthInput={report.length}
-          />
 
-          <Group position="right">
-            <Button
-              radius={"xl"}
-              onClick={() => {
-                close();
-              }}
-            >
-              Batal
-            </Button>
-            <Button
-              radius={"xl"}
-              onClick={() => {
-                onUpdate();
-              }}
-            >
-              Simpan
-            </Button>
-          </Group>
+          <Group position="right"></Group>
         </Stack>
-      </Modal>
-    </>
-  );
-}
-
-function TampilanDetailDonasi({ donasi }: { donasi: MODEL_DONASI }) {
-  return (
-    <>
-      <Paper radius={"md"} p={"md"}>
-        <Stack>
-          <Stack>
-            <AspectRatio ratio={16 / 9}>
-              <Paper radius={"md"}>
-                <Image
-                  alt="Foto"
-                  src={RouterDonasi.api_gambar + `${donasi.imagesId}`}
-                />
-              </Paper>
-            </AspectRatio>
-            <Stack spacing={0}>
-              <Title order={4}>{donasi.title}</Title>
-              <Text fz={"xs"}>
-                Durasi: {donasi.DonasiMaster_Durasi.name} hari
-              </Text>
-            </Stack>
-
-            <Stack spacing={0}>
-              <Group>
-                <Text fz={12}>Dana dibutuhkan</Text>
-                <Title order={4} c="blue">
-                  <TampilanRupiahDonasi nominal={+donasi.target} />
-                </Title>
-              </Group>
-              <Group>
-                <Text fz={12}>Kategori</Text>
-                <Title order={4} c="blue">
-                  {donasi.DonasiMaster_Ketegori.name}
-                </Title>
-              </Group>
-            </Stack>
-          </Stack>
-        </Stack>
-      </Paper>
+      </Modal> */}
     </>
   );
 }
@@ -196,7 +179,7 @@ function CatatanReject({ catatan }: { catatan: string }) {
     <>
       <Paper p={"md"} bg={"gray.1"}>
         <Stack>
-          <Title order={5} >Alasan Penolakan :</Title>
+          <Title order={5}>Alasan Penolakan :</Title>
           <Text>{catatan}</Text>
         </Stack>
       </Paper>

@@ -1,17 +1,17 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export default async function job_getAllStatusReject({
   page,
 }: {
   page: number;
 }) {
+  const userLoginId = await funGetUserIdByToken();
   const takeData = 10;
   const skipData = page * takeData - takeData;
 
-  const authorId = await user_getOneUserId();
   const data = await prisma.job.findMany({
     take: takeData,
     skip: skipData,
@@ -20,7 +20,7 @@ export default async function job_getAllStatusReject({
     },
     where: {
       masterStatusId: "4",
-      authorId: authorId,
+      authorId: userLoginId,
       isActive: true,
     },
   });

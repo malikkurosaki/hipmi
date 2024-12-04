@@ -1,10 +1,12 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
-import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
-import { AppShell } from "@mantine/core";
-import { IconEdit } from "@tabler/icons-react";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import UIGlobal_Drawer from "@/app_modules/_global/ui/ui_drawer";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
+import { ActionIcon } from "@mantine/core";
+import { IconDotsVertical, IconFilePlus } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function LayoutEditDokumenInvestasi({
@@ -12,21 +14,47 @@ export default function LayoutEditDokumenInvestasi({
   idInves,
 }: {
   children: React.ReactNode;
-  idInves: string 
+  idInves: string;
 }) {
+  const router = useRouter();
+  const [isOpenDrawer, setIsOpenDrawer] = React.useState(false);
+
+  const listPage = [
+    {
+      id: "1",
+      name: "Tambah Dokumen",
+      icon: <IconFilePlus />,
+      path: RouterInvestasi_OLD.upload_dokumen + `${idInves}`,
+    },
+  ];
+
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <UIGlobal_LayoutTamplate
         header={
-          <ComponentGlobal_HeaderTamplate
-            title="Edit Dokumen"
-            icon={<IconEdit />}
-            route2={RouterInvestasi.upload_dokumen + `${idInves}`}
+          <UIGlobal_LayoutHeaderTamplate
+            title="Daftar Dokumen"
+            // iconRight={<IconEdit />}
+            // routerRight={RouterInvestasi.upload_dokumen + `${idInves}`}
+            customButtonRight={
+              <ActionIcon
+                variant="transparent"
+                onClick={() => setIsOpenDrawer(true)}
+              >
+                <IconDotsVertical color="white" />
+              </ActionIcon>
+            }
           />
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
+
+      <UIGlobal_Drawer
+        opened={isOpenDrawer}
+        close={() => setIsOpenDrawer(false)}
+        component={listPage}
+      />
     </>
   );
 }

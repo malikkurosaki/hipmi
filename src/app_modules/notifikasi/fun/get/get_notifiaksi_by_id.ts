@@ -1,24 +1,64 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
+import _ from "lodash";
 
-export default async function notifikasi_getByUserId({page}: {page: number }) {
-  const userId = await user_getOneUserId();
-   const takeData = 10;
-   const skipData = page * takeData - takeData;
+type ICategoryapp =
+  | "Semua"
+  | "Event"
+  | "Job"
+  | "Voting"
+  | "Donasi"
+  | "Investasi"
+  | "Forum"
+  | "Collaboration";
 
-  const data = await prisma.notifikasi.findMany({
+export default async function notifikasi_getByUserId({
+  page,
+  kategoriApp,
+}: {
+  page: number;
+  kategoriApp?: ICategoryapp;
+}) {
+  const userLoginId = await funGetUserIdByToken();
+  const takeData = 10;
+  const skipData = page * takeData - takeData;
+
+  if (kategoriApp === "Semua") {
+    const data = await prisma.notifikasi.findMany({
+      take: takeData,
+      skip: skipData,
+      orderBy: [
+        {
+          isRead: "asc",
+        },
+        { createdAt: "desc" },
+      ],
+      where: {
+        userId: userLoginId,
+        userRoleId: "1",
+      },
+    });
+
+    return data;
+  }
+
+  const allData = await prisma.notifikasi.findMany({
     take: takeData,
     skip: skipData,
-    orderBy: {
-      isRead: "asc"
-    },
+    orderBy: [
+      {
+        isRead: "asc",
+      },
+      { createdAt: "desc" },
+    ],
     where: {
-      userId: userId,
+      userId: userLoginId,
       userRoleId: "1",
+      kategoriApp: _.upperCase(kategoriApp),
     },
   });
 
-  return data;
+  return allData;
 }

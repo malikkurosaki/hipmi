@@ -1,32 +1,30 @@
 "use client";
 
+import { gs_adminDonasi_triggerReview } from "@/app/lib/global_state";
 import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
+import { AccentColor } from "@/app_modules/_global/color";
+import { ComponentGlobal_TampilanRupiah } from "@/app_modules/_global/component";
+import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
 import {
-  ActionIcon,
-  Box,
+  Affix,
   Button,
   Center,
   Group,
-  Modal,
   Pagination,
   Paper,
+  rem,
   ScrollArea,
   Stack,
   Table,
-  Text,
   TextInput,
   Title,
 } from "@mantine/core";
-import { IconChevronLeft, IconEyeCheck, IconSearch } from "@tabler/icons-react";
+import { useShallowEffect } from "@mantine/hooks";
+import { IconEyeCheck, IconRefresh, IconSearch } from "@tabler/icons-react";
+import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import ComponentAdminDonasi_TombolKembali from "../component/tombol_kembali";
-import { useDisclosure } from "@mantine/hooks";
-import AdminDonasi_DetailReview from "../detail/detail_review";
-import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
 import { useState } from "react";
-import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
-import _ from "lodash";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import adminDonasi_getListReview from "../fun/get/get_list_review";
 
 export default function AdminDonasi_TableReview({
@@ -52,6 +50,29 @@ function TableStatus({ listReview }: { listReview: any }) {
   const [isNPage, setNPage] = useState(listReview.nPage);
   const [isActivePage, setActivePage] = useState(1);
   const [isSearch, setSearch] = useState("");
+
+  // Realtime
+  const [isAdminDonasi_TriggerReview, setIsAdminDonasi_TriggerReview] = useAtom(
+    gs_adminDonasi_triggerReview
+  );
+  const [isShowReload, setIsShowReload] = useState(false);
+  const [isLoadingReload, setLoadingReload] = useState(false);
+
+  useShallowEffect(() => {
+    if (isAdminDonasi_TriggerReview) {
+      setIsShowReload(true);
+    }
+  }, [isAdminDonasi_TriggerReview, setIsShowReload]);
+
+  async function onLoadData() {
+    const loadData = await adminDonasi_getListReview({ page: 1 });
+
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+    setLoadingReload(false);
+    setIsShowReload(false);
+    setIsAdminDonasi_TriggerReview(false);
+  }
 
   async function onSearch(s: string) {
     setSearch(s);
@@ -83,7 +104,7 @@ function TableStatus({ listReview }: { listReview: any }) {
       </td>
       <td>
         <Center>
-          <TampilanRupiahDonasi nominal={+e?.target} />
+          <ComponentGlobal_TampilanRupiah color="black" nominal={+e.target} />
         </Center>
       </td>
       <td>
@@ -136,6 +157,27 @@ function TableStatus({ listReview }: { listReview: any }) {
         </Group>
 
         <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
+          {isShowReload && (
+            <Affix position={{ top: rem(200) }} w={"100%"}>
+              <Center>
+                <Button
+                  style={{
+                    transition: "0.5s",
+                    border: `1px solid ${AccentColor.skyblue}`,
+                  }}
+                  bg={AccentColor.blue}
+                  loaderPosition="center"
+                  loading={isLoadingReload}
+                  radius={"xl"}
+                  opacity={0.8}
+                  onClick={() => onLoadData()}
+                  leftIcon={<IconRefresh />}
+                >
+                  Update Data
+                </Button>
+              </Center>
+            </Affix>
+          )}
           <ScrollArea w={"100%"} h={"90%"}>
             <Table
               verticalSpacing={"md"}

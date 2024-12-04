@@ -1,32 +1,35 @@
 "use client";
 
 import {
-  Paper,
-  Center,
-  Title,
-  ScrollArea,
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import {
+  ActionIcon,
   Box,
+  Button,
+  Center,
+  Drawer,
+  Group,
+  Paper,
+  ScrollArea,
   Stack,
   Text,
-  Divider,
-  Button,
-  Drawer,
   Textarea,
-  Group,
+  Title,
 } from "@mantine/core";
-import ComponentColab_AuthorNameOnHeader from "../header_author_name";
-import {
-  MODEL_COLLABORATION_MASTER,
-  MODEL_COLLABORATION_PARTISIPASI,
-} from "../../model/interface";
-import _ from "lodash";
+import { useDisclosure } from "@mantine/hooks";
+import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import colab_funCreatePartisipan from "../../fun/create/fun_create_partisipan_by_user_id";
 import colab_getListPartisipanByColabId from "../../fun/get/get_list_partisipan_by_id";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import { useDisclosure } from "@mantine/hooks";
+import { MODEL_COLLABORATION_PARTISIPASI } from "../../model/interface";
 import ComponentColab_AuthorNameOnListPartisipan from "./header_author_list_partisipan";
+import notifikasiToUser_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_user";
+import mqtt_client from "@/util/mqtt_client";
 
 export default function ComponentColab_DetailListPartisipasiUser({
   listPartisipan,
@@ -47,22 +50,43 @@ export default function ComponentColab_DetailListPartisipasiUser({
   const [deskripsi, setDeskripsi] = useState("");
 
   async function onJoin() {
-    await colab_funCreatePartisipan(
+    const res = await colab_funCreatePartisipan(
       colabId as any,
       userLoginId as any,
       deskripsi
-    ).then(async (res) => {
-      if (res.status === 201) {
-        await colab_getListPartisipanByColabId(colabId as any).then((val) => {
-          setApply(true);
-          close();
-          setData(val as any);
-          ComponentGlobal_NotifikasiBerhasil(res.message);
-        });
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
+    );
+    if (res.status === 201) {
+      const dataNotif = {
+        appId: res?.data?.ProjectCollaboration?.id,
+        userId: res?.data?.ProjectCollaboration?.userId,
+        pesan: res?.data?.ProjectCollaboration?.title,
+        status: "Partisipan Project",
+        kategoriApp: "COLLABORATION",
+        title: "Partisipan baru telah bergabung !",
+      };
+
+      const createNotifikasi = await notifikasiToUser_funCreate({
+        data: dataNotif as any,
+      });
+
+      if (createNotifikasi.status === 201) {
+        mqtt_client.publish(
+          "USER",
+          JSON.stringify({
+            userId: dataNotif.userId,
+            count: 1,
+          })
+        );
       }
-    });
+
+      const resList = await colab_getListPartisipanByColabId(colabId as any);
+      setApply(true);
+      close();
+      setData(resList as any);
+      ComponentGlobal_NotifikasiBerhasil(res.message);
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+    }
   }
 
   return (
@@ -71,23 +95,63 @@ export default function ComponentColab_DetailListPartisipasiUser({
         opened={opened}
         onClose={close}
         position="bottom"
-        size={"30vh"}
+        size={"auto"}
         withCloseButton={false}
+        styles={{
+          content: {
+            padding: 0,
+            position: "absolute",
+            margin: "auto",
+            backgroundColor: "transparent",
+            left: 0,
+            right: 0,
+            width: 500,
+          },
+          body: {
+            backgroundColor: AccentColor.darkblue,
+            borderTop: `2px solid ${AccentColor.blue}`,
+            borderRight: `1px solid ${AccentColor.blue}`,
+            borderLeft: `1px solid ${AccentColor.blue}`,
+            borderRadius: "20px 20px 0px 0px",
+            color: "white",
+            paddingBottom: "5%",
+          },
+        }}
       >
-        <Stack>
+        
+        <Stack spacing={"xs"}>
+          <Group position="right">
+            <ActionIcon onClick={close} variant="transparent">
+              <IconX color="white" />
+            </ActionIcon>
+          </Group>
           <Textarea
-            label="Deskripsi Diri"
+            maxLength={300}
+            label={<Text c={"white"} mb={"sm"} fw={"bold"}>Deskripsi Diri</Text>}
             placeholder="Deskripsikan diri anda yang sesuai dengan proyek ini.."
             minRows={4}
             onChange={(val) => {
               setDeskripsi(val.currentTarget.value);
             }}
           />
-          <Group position="center">
-            <Button radius={"xl"} onClick={() => close()}>
+          <Group position="apart">
+            {/* <Button radius={"xl"} onClick={() => close()}>
               Batal
-            </Button>
-            <Button radius={"xl"} color="green" onClick={() => onJoin()}>
+            </Button> */}
+            <ComponentGlobal_InputCountDown
+              lengthInput={deskripsi?.length}
+              maxInput={300}
+            />
+            <Button
+              disabled={!deskripsi}
+              radius={"xl"}
+              color="yellow"
+              bg={MainColor.yellow}
+              onClick={() => onJoin()}
+              style={{
+                transition: "0.5s",
+              }}
+            >
               Simpan
             </Button>
           </Group>
@@ -100,11 +164,9 @@ export default function ComponentColab_DetailListPartisipasiUser({
             <Button
               radius={"xl"}
               disabled={cekPartisipan ? true : false}
-              color={cekPartisipan ? "green" : "blue"}
-              onClick={() => {
-                // onJoin();
-                open();
-              }}
+              color={cekPartisipan ? "green" : "yellow"}
+              onClick={open}
+              // bg={MainColor.yellow}
             >
               {cekPartisipan ? "Telah Berpartisipasi" : "Partisipasi"}
             </Button>
@@ -113,7 +175,15 @@ export default function ComponentColab_DetailListPartisipasiUser({
           ""
         )}
 
-        <Paper withBorder p={"md"}>
+        <Paper
+          style={{
+            border: `2px solid ${AccentColor.softblue}`,
+            backgroundColor: AccentColor.blue,
+            color: "white",
+            borderRadius: "10px",
+            padding: "15px",
+          }}
+        >
           <Stack spacing={"xl"}>
             <Center>
               <Title order={5}>Partispasi User ({data?.length})</Title>

@@ -1,73 +1,114 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { Warna } from "@/app/lib/warna";
-import {
-  ActionIcon,
-  Affix,
-  AspectRatio,
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Card,
-  CardSection,
-  Center,
-  Divider,
-  Grid,
-  Group,
-  Image,
-  Paper,
-  Progress,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title,
-  rem,
-} from "@mantine/core";
-import { useViewportSize, useWindowScroll } from "@mantine/hooks";
-import { useRouter } from "next/navigation";
-import { MODEL_DONASI } from "../model/interface";
+import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import { Affix, Box, Button, Center, rem } from "@mantine/core";
+import _ from "lodash";
+import { ScrollOnly } from "next-scroll-loader";
 import { useState } from "react";
-import ComponentDonasi_BoxPublish from "../component/box_publish";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import { IconPencilPlus } from "@tabler/icons-react";
+import ComponentDonasi_CardPublish from "../component/card_view/card_publish";
+import { donasi_funGetAllPublish } from "../fun/get/get_list_beranda";
+import { MODEL_DONASI } from "../model/interface";
+import { gs_donasiTriggerBeranda } from "@/app/lib/global_state";
+import { useAtom } from "jotai";
+import { useShallowEffect } from "@mantine/hooks";
+import { AccentColor } from "@/app_modules/_global/color";
 
 export default function MainDonasi({
   listDonasi,
 }: {
   listDonasi: MODEL_DONASI[];
 }) {
-  const router = useRouter();
-  const [isLoading, setLoading] = useState(false);
-  const [scroll, scrollTo] = useWindowScroll();
+  const [data, setData] = useState(listDonasi);
+  const [activePage, setActivePage] = useState(1);
+
+  // Realtime
+  const [isTriggerDonasiBeranda, setIsTriggerDonasiBeranda] = useAtom(
+    gs_donasiTriggerBeranda
+  );
+  const [isShowUpdate, setIsShowUpdate] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useShallowEffect(() => {
+    if (isTriggerDonasiBeranda) {
+      setIsShowUpdate(true);
+    }
+  }, [isTriggerDonasiBeranda, setIsShowUpdate]);
+
+  async function onLoadData({ onPublish }: { onPublish: (val: any) => void }) {
+    setIsLoading(true);
+    const loadData = await donasi_funGetAllPublish({ page: 1 });
+    onPublish(loadData);
+
+    setIsShowUpdate(false);
+    setIsTriggerDonasiBeranda(false);
+    setIsLoading(false);
+  }
 
   return (
     <>
-      <Affix position={{ bottom: rem(150), right: rem(30) }}>
-        <ActionIcon
-          loading={isLoading ? true : false}
-          opacity={scroll.y > 0 ? 0.5 : ""}
-          style={{
-            transition: "0.5s",
-          }}
-          size={"xl"}
-          radius={"xl"}
-          variant="transparent"
-          bg={"orange"}
-          onClick={() => {
-            setLoading(true);
-            router.push(RouterDonasi.create_donasi);
-          }}
-        >
-          <IconPencilPlus color="white" />
-        </ActionIcon>
-      </Affix>
+      <Box>
+        {isShowUpdate && (
+          <Affix position={{ top: rem(100) }} w={"100%"}>
+            <Center>
+              <Button
+                style={{
+                  transition: "0.5s",
+                  border: `1px solid ${AccentColor.skyblue}`,
+                }}
+                bg={AccentColor.blue}
+                loaderPosition="center"
+                loading={isLoading}
+                radius={"xl"}
+                opacity={0.8}
+                onClick={() => {
+                  onLoadData({
+                    onPublish(val) {
+                      setData(val);
+                    },
+                  });
+                }}
+              >
+                Update beranda
+              </Button>
+            </Center>
+          </Affix>
+        )}
 
-      <ComponentDonasi_BoxPublish
-        dataDonasi={listDonasi}
-        path={RouterDonasi.detail_main}
-      />
+        <ComponentGlobal_CreateButton path={RouterDonasi.create_donasi} />
+        {_.isEmpty(data) ? (
+          <ComponentGlobal_IsEmptyData />
+        ) : (
+          <ScrollOnly
+            height="82vh"
+            renderLoading={() => (
+              <Center>
+                <ComponentGlobal_Loader size={25} />
+              </Center>
+            )}
+            data={data}
+            setData={setData}
+            moreData={async () => {
+              const loadData = await donasi_funGetAllPublish({
+                page: activePage + 1,
+              });
+
+              setActivePage((val) => val + 1);
+
+              return loadData;
+            }}
+          >
+            {(item) => (
+              <ComponentDonasi_CardPublish
+                data={item as any}
+                path={RouterDonasi.detail_main}
+              />
+            )}
+          </ScrollOnly>
+        )}
+      </Box>
     </>
   );
 }

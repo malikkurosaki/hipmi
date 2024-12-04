@@ -1,20 +1,12 @@
 "use client";
 
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
-  Paper,
-  Stack,
-  Group,
-  Avatar,
-  Title,
-  Text,
-  AspectRatio,
-  Image,
-  Divider,
-} from "@mantine/core";
-import moment from "moment";
-import { MODEL_DONASI_KABAR } from "../../model/interface";
+  ComponentGlobal_CardStyles,
+  ComponentGlobal_LoadImageLandscape,
+} from "@/app_modules/_global/component";
+import { Group, Stack, Text, Title } from "@mantine/core";
 import { useState } from "react";
+import { MODEL_DONASI_KABAR } from "../../model/interface";
 
 export default function UpdateKabarDonasi({
   dataKabar,
@@ -24,25 +16,27 @@ export default function UpdateKabarDonasi({
   const [kabar, setKabar] = useState(dataKabar);
   return (
     <>
-      <Stack>
+      <ComponentGlobal_CardStyles>
         <Stack>
-          <Text fz={"xs"}>{moment(Date.now()).format("ll")}</Text>
-          <Title order={5}>{kabar.title}</Title>
-          {kabar.imagesId === null ? (
+          <Group position="right">
+            <Text>
+              {new Intl.DateTimeFormat("id-ID", { dateStyle: "medium" }).format(
+                kabar.createdAt
+              )}
+            </Text>
+          </Group>
+
+          {kabar.imageId === null ? (
             ""
           ) : (
-            <AspectRatio ratio={16 / 9}>
-              <Paper radius={"md"}>
-                <Image
-                  alt="Foro"
-                  src={RouterDonasi.api_gambar_kabar + `${kabar.imagesId}`}
-                />
-              </Paper>
-            </AspectRatio>
+            <ComponentGlobal_LoadImageLandscape fileId={kabar.imageId} />
           )}
+          <Title align="center" order={4}>
+            {kabar.title}
+          </Title>
           <Text>{kabar.deskripsi}</Text>
         </Stack>
-      </Stack>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

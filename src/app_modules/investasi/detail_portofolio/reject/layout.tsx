@@ -1,9 +1,7 @@
 "use client";
 
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
-import ComponentGlobal_HeaderTamplate from "@/app_modules/_global/header_tamplate";
-import { AppShell } from "@mantine/core";
-import { IconEdit } from "@tabler/icons-react";
+import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import React from "react";
 
 export default function LayoutDetailRejecttInvestasi({
@@ -15,9 +13,9 @@ export default function LayoutDetailRejecttInvestasi({
 }) {
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <UIGlobal_LayoutTamplate
         header={
-          <ComponentGlobal_HeaderTamplate
+          <UIGlobal_LayoutHeaderTamplate
             title="Detail Reject"
             // icon={<IconEdit />}
             // route2={`/dev/investasi/edit/${idInves}`}
@@ -25,7 +23,7 @@ export default function LayoutDetailRejecttInvestasi({
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

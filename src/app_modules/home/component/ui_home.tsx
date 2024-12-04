@@ -42,6 +42,9 @@ import { MODEL_USER } from "../model/interface";
 import { MODEL_JOB } from "@/app_modules/job/model/interface";
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { RouterMap } from "@/app/lib/router_hipmi/router_map";
+import { Home_ComponentAvatarProfile } from "./comp_avatar_profile";
+import { APIs } from "@/app/lib";
 
 export function Home_UiView({
   dataUser,
@@ -64,7 +67,7 @@ export function Home_UiView({
     },
     {
       id: 2,
-      name: "Project Collaboration",
+      name: "Collaboration",
       icon: <IconAffiliate size={50} />,
       link: RouterColab.splash,
     },
@@ -126,7 +129,7 @@ export function Home_UiView({
                 onClick={() => {
                   if (dataUser.Profile === null) {
                     return ComponentGlobal_NotifikasiPeringatan(
-                      "Lengkapi Data Profile"
+                      "Lengkapi Profile"
                     );
                   } else {
                     if (e.link === "") {
@@ -153,7 +156,7 @@ export function Home_UiView({
                       e.icon
                     )}
                   </ActionIcon>
-                  <Text c={e.link === "" ? "gray.3" : "white"} fz={"sm"}>
+                  <Text c={e.link === "" ? "gray.3" : "white"} fz={"xs"}>
                     {e.name}
                   </Text>
                 </Stack>
@@ -162,7 +165,6 @@ export function Home_UiView({
           </SimpleGrid>
 
           {/* Job View */}
-
           <Paper
             p={"md"}
             w={"100%"}
@@ -176,7 +178,7 @@ export function Home_UiView({
               onClick={() => {
                 if (dataUser.Profile === null) {
                   return ComponentGlobal_NotifikasiPeringatan(
-                    "Lengkapi Data Profile"
+                    "Lengkapi Profile"
                   );
                 } else {
                   if (routePageJob.link === "") {
@@ -217,11 +219,16 @@ export function Home_UiView({
                         <Stack h={"100%"} align="center" justify="flex-start">
                           <IconUserSearch size={20} color="white" />
                         </Stack>
-                        <Stack spacing={0} w={"80%"}>
-                          <Text c={MainColor.yellow} fw={"bold"}>
+                        <Stack spacing={0} w={"60%"}>
+                          <Text
+                            lineClamp={1}
+                            fz={"sm"}
+                            c={MainColor.yellow}
+                            fw={"bold"}
+                          >
                             {e?.Author.username}
                           </Text>
-                          <Text c={"white"} lineClamp={2} fz={"sm"}>
+                          <Text fz={"sm"} c={"white"} lineClamp={2}>
                             {e?.title}
                           </Text>
                         </Stack>
@@ -245,7 +252,6 @@ const listHalamanFooter = [
     icon: <IconMessages />,
     link: RouterForum.splash,
   },
-
   {
     id: 2,
     name: "MarketPlace",
@@ -256,7 +262,7 @@ const listHalamanFooter = [
     id: 3,
     name: "Business Maps",
     icon: <IconMap2 />,
-    link: "",
+    link: RouterMap.splash,
   },
 ];
 
@@ -274,11 +280,11 @@ export function Home_UiFooter({ dataUser }: { dataUser: MODEL_USER }) {
         }}
         w={"100%"}
         bottom={0}
-        h={"10vh"}
+        h={"9vh"}
       >
-        <SimpleGrid cols={4}>
+        <SimpleGrid cols={listHalamanFooter.length + 1}>
           {listHalamanFooter.map((e, i) => (
-            <Center h={"10vh"} key={e.id}>
+            <Center h={"9vh"} key={e.id}>
               <Stack align="center" spacing={0}>
                 <ActionIcon
                   radius={"xl"}
@@ -303,14 +309,18 @@ export function Home_UiFooter({ dataUser }: { dataUser: MODEL_USER }) {
                     e.icon
                   )}
                 </ActionIcon>
-                <Text c={e.link === "" ? "gray" : "white"} fz={"xs"}>
+                <Text
+                  lineClamp={1}
+                  c={e.link === "" ? "gray" : "white"}
+                  fz={12}
+                >
                   {e.name}
                 </Text>
               </Stack>
             </Center>
           ))}
 
-          <Center h={"10vh"}>
+          <Center h={"9vh"}>
             <Stack
               align="center"
               spacing={2}
@@ -320,7 +330,7 @@ export function Home_UiFooter({ dataUser }: { dataUser: MODEL_USER }) {
                   router.push(RouterProfile.create, { scroll: false });
                 } else {
                   router.push(
-                    RouterProfile.katalog + `${dataUser?.Profile?.id}`,
+                    RouterProfile.katalogOLD + `${dataUser?.Profile?.id}`,
                     { scroll: false }
                   );
                 }
@@ -332,22 +342,15 @@ export function Home_UiFooter({ dataUser }: { dataUser: MODEL_USER }) {
                 ) : isLoadingProfil ? (
                   <Loader color={AccentColor.yellow} size={20} />
                 ) : (
-                  <Avatar
-                    radius={"xl"}
-                    size={25}
-                    sx={{
-                      borderStyle: "solid",
-                      borderWidth: "0.5px",
-                      borderColor: "white",
-                    }}
-                    src={
-                      RouterProfile.api_foto_profile +
-                      `${dataUser?.Profile.imagesId}`
-                    }
+                  <Home_ComponentAvatarProfile
+                    url={APIs.GET({
+                      fileId: dataUser?.Profile?.imageId as string,
+                      size: "50"
+                    })}
                   />
                 )}
               </ActionIcon>
-              <Text fz={"xs"} c={"white"}>
+              <Text fz={10} c={"white"}>
                 Profile
               </Text>
             </Stack>

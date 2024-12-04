@@ -1,15 +1,12 @@
 "use client";
-import { MainColor } from "@/app_modules/_global/color/color_pallet";
 // import './globals.css'
 import { CacheProvider } from "@emotion/react";
 import {
-  Box,
-  Container,
   MantineProvider,
-  rem,
-  useEmotionCache,
+  useEmotionCache
 } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import { Provider } from "jotai";
 import { useServerInsertedHTML } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -39,25 +36,7 @@ export default function RootStyleRegistry({
         <CacheProvider value={cache}>
           <MantineProvider withGlobalStyles withNormalizeCSS>
             <Notifications position="top-center" containerWidth={300} />
-            {children}
-            {/* <Box
-              bg={"#252A2F"}
-              pos={"fixed"}
-              w={"100%"}
-              h={"100%"}
-              style={{
-                overflowY: "auto",
-              }}
-            >
-              <Container
-                mih={"100vh"}
-                p={0}
-                size={rem(500)}
-                bg={MainColor.darkblue}
-              >
-                
-              </Container>
-            </Box> */}
+            <Provider>{children}</Provider>
           </MantineProvider>
         </CacheProvider>
       </body>

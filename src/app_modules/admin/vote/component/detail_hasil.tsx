@@ -1,5 +1,6 @@
 "use client";
 
+import { pathAssetImage, RouterImagePreview } from "@/app/lib";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import {
   MODEL_VOTE_KONTRIBUTOR,
@@ -72,7 +73,8 @@ export default function ComponentAdminVote_DetailHasil({
                             span={2}
                             onClick={() =>
                               router.push(
-                                RouterProfile.katalog + e?.Author?.Profile?.id
+                                RouterProfile.katalogOLD +
+                                  e?.Author?.Profile?.id
                               )
                             }
                           >
@@ -84,12 +86,7 @@ export default function ComponentAdminVote_DetailHasil({
                               }}
                               radius={"xl"}
                               bg={"gray.1"}
-                              src={
-                                e
-                                  ? RouterProfile.api_foto_profile +
-                                    e?.Author?.Profile?.imagesId
-                                  : "/aset/global/avatar.png"
-                              }
+                              src={pathAssetImage.avatar}
                             />
                           </Grid.Col>
                           <Grid.Col span={5}>

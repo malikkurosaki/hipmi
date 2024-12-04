@@ -1,10 +1,29 @@
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { LayoutVote_DetailPublish } from "@/app_modules/vote";
+import { voting_funGetOneVotingbyId } from "@/app_modules/vote/fun/get/fun_get_one_by_id";
 import React from "react";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: { id: string };
+}) {
+  const votingId = params.id;
+  const userLoginId = await funGetUserIdByToken();
+
+  const dataVoting = await voting_funGetOneVotingbyId(votingId);
+
   return (
     <>
-      <LayoutVote_DetailPublish>{children}</LayoutVote_DetailPublish>
+      <LayoutVote_DetailPublish
+        votingId={votingId}
+        userLoginId={userLoginId as string}
+        dataVoting={dataVoting}
+      >
+        {children}
+      </LayoutVote_DetailPublish>
     </>
   );
 }

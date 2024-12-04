@@ -3,39 +3,30 @@
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import {
-  Drawer,
-  Stack,
-  Grid,
-  Button,
-  Modal,
-  Title,
-  Group,
   ActionIcon,
-  Text,
-  Box,
-  Center,
+  Button,
+  Drawer,
+  Grid,
+  Group,
   Loader,
+  Modal,
+  Stack,
+  Text,
+  Title,
 } from "@mantine/core";
-import { useDisclosure, useShallowEffect } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 import {
-  IconTrash,
+  IconDots,
   IconEdit,
   IconFlag3,
-  IconDots,
-  IconSquareRoundedX,
   IconSquareCheck,
+  IconSquareRoundedX,
+  IconTrash,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-import { createStyles } from "@mantine/core";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
-import { useAtom } from "jotai";
-import { gs_forum_loading_edit_posting } from "../../global_state";
-import ComponentForum_LoadingDrawer from "../loading_drawer";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
-import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_by_id";
 import { forum_funEditStatusPostingById } from "../../fun/edit/fun_edit_status_posting_by_id";
 import { forum_getListAllPosting } from "../../fun/get/get_list_all_posting";
 import { forum_getAllPostingByAuhtorId } from "../../fun/get/get_list_posting_by_author_id";
@@ -277,9 +268,10 @@ function ButtonStatus({
       async (res) => {
         if (res.status === 200) {
           if (userLoginId === authorId) {
-            await forum_getAllPostingByAuhtorId({authorId: authorId, page: 1}).then((val: any) =>
-              setData(val)
-            );
+            await forum_getAllPostingByAuhtorId({
+              authorId: authorId,
+              page: 1,
+            }).then((val: any) => setData(val));
           } else {
             await forum_getListAllPosting().then((val) => setData(val as any));
           }
@@ -299,9 +291,10 @@ function ButtonStatus({
       async (res) => {
         if (res.status === 200) {
           if (userLoginId === authorId) {
-            await forum_getAllPostingByAuhtorId({authorId: authorId, page: 1}).then((val: any) =>
-              setData(val)
-            );
+            await forum_getAllPostingByAuhtorId({
+              authorId: authorId,
+              page: 1,
+            }).then((val: any) => setData(val));
           } else {
             await forum_getListAllPosting().then((val) => setData(val as any));
           }

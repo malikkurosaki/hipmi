@@ -1,7 +1,14 @@
-import { SplashScreen } from "@/app_modules/auth";
-import { redirect } from "next/navigation";
-import PageSplash from "./dev/auth/splash/page";
+"use client";
 
-export default async function Page() {
-  return <PageSplash/>
+import { SplashScreen } from "@/app_modules/auth";
+import { useShallowEffect } from "@mantine/hooks";
+
+export default function Page() {
+  useShallowEffect(() => {
+    setTimeout(() => {
+      window.location.replace("/dev/home");
+    }, 1000);
+  }, []);
+
+  return <SplashScreen />;
 }

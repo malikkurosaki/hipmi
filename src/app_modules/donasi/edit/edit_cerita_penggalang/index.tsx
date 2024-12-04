@@ -1,32 +1,35 @@
 "use client";
 
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import { DIRECTORY_ID } from "@/app/lib";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  ComponentGlobal_BoxUploadImage,
+  ComponentGlobal_LoadImageCustom,
+} from "@/app_modules/_global/component";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
+import {
+  funGlobal_DeleteFileById,
+  funGlobal_UploadToStorage,
+} from "@/app_modules/_global/fun";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import {
   AspectRatio,
   Button,
   Center,
   FileButton,
   Image,
-  Paper,
   Stack,
   Textarea,
 } from "@mantine/core";
 import { IconCamera } from "@tabler/icons-react";
-import { useAtom } from "jotai";
+import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { gs_donasi_tabs_posting } from "../../global_state";
-import toast from "react-simple-toasts";
-import { MODEL_CERITA_DONASI } from "../../model/interface";
-import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
-import _ from "lodash";
 import { Donasi_funUpdateCerita } from "../../fun/update/fun_update_cerita_donasi";
-import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
-import {
-  ComponentGlobal_WarningMaxUpload,
-  maksimalUploadFile,
-} from "@/app_modules/_global/component/waring_popup";
-import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import { MODEL_CERITA_DONASI } from "../../model/interface";
 
 export default function EditCeritaPenggalangDonasi({
   dataCerita,
@@ -35,42 +38,130 @@ export default function EditCeritaPenggalangDonasi({
 }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
-
-  const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
-    gs_donasi_tabs_posting
-  );
-  const [value, setValue] = useState(dataCerita);
+  const [data, setData] = useState(dataCerita);
   const [file, setFile] = useState<File | null>(null);
   const [updateImage, setUpdateImage] = useState<any | null>();
 
+  async function onUpdate() {
+    setLoading(true);
+
+    const body = {
+      id: data.id,
+      pembukaan: data.pembukaan,
+      cerita: data.cerita,
+    };
+
+    if (_.values(body).includes(""))
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapin Data");
+
+    try {
+      if (file !== null) {
+        const uploadImage = await funGlobal_UploadToStorage({
+          file: file as File,
+          dirId: DIRECTORY_ID.donasi_cerita_image,
+        });
+        if (!uploadImage.success) {
+          setLoading(false);
+          ComponentGlobal_NotifikasiPeringatan("Gagal upload file gambar");
+        }
+
+        const deleteImage = await funGlobal_DeleteFileById({
+          fileId: data.imageId,
+        });
+        if (!deleteImage.success) {
+          setLoading(false);
+          ComponentGlobal_NotifikasiPeringatan("Gagal hapus gambar lama");
+        }
+
+        const res = await Donasi_funUpdateCerita({
+          data: body as any,
+          fileId: uploadImage.data.id,
+        });
+        if (res.status === 200) {
+          ComponentGlobal_NotifikasiBerhasil(res.message);
+          router.back();
+          setLoading(false);
+        } else {
+          ComponentGlobal_NotifikasiGagal(res.message);
+          setLoading(false);
+        }
+      } else {
+        const res = await Donasi_funUpdateCerita({
+          data: body as any,
+        });
+
+        if (res.status === 200) {
+          ComponentGlobal_NotifikasiBerhasil(res.message);
+          router.back();
+          setLoading(false);
+        } else {
+          ComponentGlobal_NotifikasiGagal(res.message);
+          setLoading(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <>
-      {/* <pre>{JSON.stringify(value, null, 2)}</pre> */}
-      <Stack spacing={"md"} px={"md"}>
-        <Textarea
-          autosize
-          minRows={2}
-          maxRows={7}
-          withAsterisk
-          label="Pembukaan"
-          placeholder="Pembuka dari isi cerita"
-          value={value.pembukaan}
-          error={
-            value.pembukaan === "" ? (
-              <ComponentGlobal_ErrorInput text="Masukan pembukaan cerita" />
-            ) : (
-              ""
-            )
-          }
-          onChange={(val) =>
-            setValue({
-              ...value,
-              pembukaan: val.target.value,
-            })
-          }
-        />
+      <Stack px={"sm"}>
+        <Stack spacing={5}>
+          <Textarea
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
+            autosize
+            minRows={2}
+            maxRows={7}
+            withAsterisk
+            label="Pembukaan"
+            placeholder="Pembuka dari isi cerita"
+            value={data.pembukaan}
+            error={
+              data.pembukaan === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan pembukaan cerita" />
+              ) : (
+                ""
+              )
+            }
+            onChange={(val) =>
+              setData({
+                ...data,
+                pembukaan: val.target.value,
+              })
+            }
+          />
+          <ComponentGlobal_InputCountDown
+            lengthInput={data.pembukaan.length}
+            maxInput={300}
+          />
+        </Stack>
 
-        <Stack spacing={"lg"}>
+        <Stack>
+          <ComponentGlobal_BoxUploadImage>
+            {updateImage ? (
+              <AspectRatio ratio={1 / 1} mt={5} maw={300} mx={"auto"}>
+                <Image
+                  style={{ maxHeight: 250 }}
+                  alt="Foto"
+                  height={250}
+                  src={updateImage}
+                />
+              </AspectRatio>
+            ) : (
+              <Stack align="center" justify="center" p={"xs"} h={"100%"}>
+                <ComponentGlobal_LoadImageCustom
+                  fileId={data.imageId}
+                  height={200}
+                />
+              </Stack>
+            )}
+          </ComponentGlobal_BoxUploadImage>
+
           <Center>
             <FileButton
               onChange={async (files: any | null) => {
@@ -79,12 +170,8 @@ export default function EditCeritaPenggalangDonasi({
                     new Blob([new Uint8Array(await files.arrayBuffer())])
                   );
 
-                  if (files.size > maksimalUploadFile) {
-                    ComponentGlobal_WarningMaxUpload({});
-                  } else {
-                    setUpdateImage(buffer);
-                    setFile(files);
-                  }
+                  setUpdateImage(buffer);
+                  setFile(files);
                 } catch (error) {
                   console.log(error);
                 }
@@ -93,55 +180,53 @@ export default function EditCeritaPenggalangDonasi({
             >
               {(props) => (
                 <Button
-                  compact
                   {...props}
                   radius={"xl"}
-                  variant="outline"
-                  w={150}
                   leftIcon={<IconCamera />}
+                  bg={MainColor.yellow}
+                  color="yellow"
+                  c={"black"}
                 >
                   Upload
                 </Button>
               )}
             </FileButton>
           </Center>
-          <AspectRatio ratio={16 / 9}>
-            <Paper radius={"md"}>
-              <Image
-                alt="Foto"
-                src={
-                  updateImage
-                    ? updateImage
-                    : RouterDonasi.api_image_cerita +
-                      value.imageCeritaDonasi.url
-                }
-              />
-            </Paper>
-          </AspectRatio>
         </Stack>
 
-        <Textarea
-          autosize
-          minRows={2}
-          maxRows={7}
-          withAsterisk
-          label="Cerita"
-          placeholder="Ceritakan alasan mengapa harus membuat Penggalangan Dana"
-          value={value.cerita}
-          error={
-            value.cerita === "" ? (
-              <ComponentGlobal_ErrorInput text="Masukan pembukaan cerita" />
-            ) : (
-              ""
-            )
-          }
-          onChange={(val) =>
-            setValue({
-              ...value,
-              cerita: val.target.value,
-            })
-          }
-        />
+        <Stack spacing={5}>
+          <Textarea
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
+            autosize
+            minRows={2}
+            maxRows={7}
+            withAsterisk
+            label="Cerita"
+            placeholder="Ceritakan alasan mengapa harus membuat Penggalangan Dana"
+            value={data.cerita}
+            error={
+              data.cerita === "" ? (
+                <ComponentGlobal_ErrorInput text="Masukan pembukaan cerita" />
+              ) : (
+                ""
+              )
+            }
+            onChange={(val) =>
+              setData({
+                ...data,
+                cerita: val.target.value,
+              })
+            }
+          />
+          <ComponentGlobal_InputCountDown
+            lengthInput={data.cerita.length}
+            maxInput={300}
+          />
+        </Stack>
 
         <Button
           style={{
@@ -149,12 +234,15 @@ export default function EditCeritaPenggalangDonasi({
           }}
           loaderPosition="center"
           loading={isLoading ? true : false}
-          disabled={
-            value.cerita === "" || value.pembukaan === "" ? true : false
-          }
+          disabled={data.cerita === "" || data.pembukaan === "" ? true : false}
           w={"100%"}
           radius={"xl"}
-          onClick={() => onUpdate(router, value, file as any)}
+          onClick={() => {
+            onUpdate();
+          }}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
         >
           Update
         </Button>
@@ -162,31 +250,4 @@ export default function EditCeritaPenggalangDonasi({
       {/* <pre> {JSON.stringify(value.pembukaan, null, 2)}</pre> */}
     </>
   );
-}
-
-async function onUpdate(
-  router: any,
-  value: MODEL_CERITA_DONASI,
-  file: FormData
-) {
-  // router.back();
-  const body = {
-    id: value.id,
-    pembukaan: value.pembukaan,
-    cerita: value.cerita,
-    imagesId: value.imageCeritaDonasi.id,
-  };
-
-  const gambar = new FormData();
-  gambar.append("file", file as any);
-
-  if (_.values(body).includes("")) return NotifPeringatan("Lengkapi Data");
-  await Donasi_funUpdateCerita(body as any, gambar).then((res) => {
-    if (res.status === 200) {
-      NotifBerhasil(res.message);
-      router.back();
-    } else {
-      toast(res.message);
-    }
-  });
 }

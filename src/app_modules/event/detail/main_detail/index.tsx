@@ -1,31 +1,19 @@
 "use client";
 
-import {
-  Avatar,
-  Box,
-  Button,
-  Center,
-  Divider,
-  Grid,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import ComponentEvent_DetailData from "../../component/detail/detail_data";
-import { MODEL_EVENT, MODEL_EVENT_PESERTA } from "../../model/interface";
-import _ from "lodash";
-import { Event_funJoinEvent } from "../../fun/create/fun_join_event";
-import { useState } from "react";
+import { IRealtimeData } from "@/app/lib/global_state";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { Event_getListPesertaById } from "../../fun/get/get_list_peserta_by_id";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import ComponentEvent_DetailMainData from "../../component/detail/detail_main";
+import notifikasiToUser_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_user";
+import { Button, Stack } from "@mantine/core";
 import { useRouter } from "next/navigation";
-import { Event_countTotalPesertaById } from "../../fun/count/count_total_peserta_by_id";
+import { useState } from "react";
+import { WibuRealtime } from "wibu-pkg";
+import ComponentEvent_DetailMainData from "../../component/detail/detail_main";
 import ComponentEvent_ListPeserta from "../../component/detail/list_peserta";
+import { Event_countTotalPesertaById } from "../../fun/count/count_total_peserta_by_id";
+import { Event_funJoinEvent } from "../../fun/create/fun_join_event";
+import { Event_getListPesertaById } from "../../fun/get/get_list_peserta_by_id";
+import { MODEL_EVENT, MODEL_EVENT_PESERTA } from "../../model/interface";
 
 export default function Event_DetailMain({
   dataEvent,
@@ -47,7 +35,7 @@ export default function Event_DetailMain({
 
   return (
     <>
-      <Stack spacing={"lg"}>
+      <Stack spacing={"lg"} pb={"md"}>
         <ComponentEvent_DetailMainData data={dataEvent} />
         {isJoin ? (
           <Button disabled radius={"xl"} color="green">
@@ -91,18 +79,42 @@ async function onJoin(
     eventId: eventId,
   };
 
-  await Event_funJoinEvent(body as any).then(async (res) => {
-    if (res.status === 200) {
-      await Event_getListPesertaById(eventId).then(async (val) => {
-        await Event_countTotalPesertaById(eventId).then((ttl) => {
-          setPeserta(val);
-          setTotal(ttl);
-          setLoading(true);
-          ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
-        });
+  const userLoginId = userId;
+
+  const res = await Event_funJoinEvent(body as any);
+  if (res.status === 200) {
+    const resPeserta = await Event_getListPesertaById(eventId);
+    setPeserta(resPeserta);
+
+    const resTotal = await Event_countTotalPesertaById(eventId);
+    setTotal(resTotal);
+
+    if (userLoginId !== res.data?.Event?.authorId) {
+      const dataNotifikasi: IRealtimeData = {
+        appId: res?.data?.Event?.id as any,
+        status: "Peserta Event" as any,
+        userId: res.data?.Event?.authorId as any,
+        pesan: res.data?.Event?.title as any,
+        kategoriApp: "EVENT",
+        title: "Peserta baru event anda !",
+      };
+
+      const createNotifikasi = await notifikasiToUser_funCreate({
+        data: dataNotifikasi as any,
       });
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
+
+      if (createNotifikasi.status === 201) {
+        WibuRealtime.setData({
+          type: "notification",
+          pushNotificationTo: "USER",
+          dataMessage: dataNotifikasi,
+        });
+      }
     }
-  });
+
+    setLoading(true);
+    ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
+  } else {
+    ComponentGlobal_NotifikasiGagal(res.message);
+  }
 }

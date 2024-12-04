@@ -2,14 +2,15 @@
 
 import prisma from "@/app/lib/prisma";
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { revalidatePath } from "next/cache";
 
 export default async function colab_funCreateMessageByUserId(
   message: string,
   roomId: string
 ) {
-  const userLoginId = await user_getOneUserId();
+  const userLoginId = await funGetUserIdByToken();
+
   const msg = await prisma.projectCollaboration_Message.create({
     data: {
       userId: userLoginId,

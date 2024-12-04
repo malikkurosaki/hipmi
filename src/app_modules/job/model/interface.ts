@@ -1,11 +1,13 @@
 import { MODEL_USER } from "@/app_modules/home/model/interface";
-import { MODEL_IMAGES, MODEL_NEW_DEFAULT_MASTER } from "@/app_modules/model_global/interface";
+import {
+  MODEL_NEW_DEFAULT_MASTER
+} from "@/app_modules/model_global/interface";
 
 export interface MODEL_JOB {
   id: string;
-  title: string
+  title: string;
   content: string;
-  deskripsi: string
+  deskripsi: string;
   isActive: boolean;
   isArsip: boolean;
   createdAt: Date;
@@ -13,8 +15,7 @@ export interface MODEL_JOB {
   catatan: string;
   authorId: string;
   Author: MODEL_USER;
-  Images: MODEL_IMAGES
-  imagesId: string
-  MasterStatus: MODEL_NEW_DEFAULT_MASTER
-  masterStatusId: string
+  MasterStatus: MODEL_NEW_DEFAULT_MASTER;
+  masterStatusId: string;
+  imageId: string;
 }

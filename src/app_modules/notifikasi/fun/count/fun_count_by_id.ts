@@ -1,18 +1,21 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { RouterHome } from "@/app/lib/router_hipmi/router_home";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
+import { revalidatePath } from "next/cache";
 
 export default async function notifikasi_countUserNotifikasi() {
-  const userId = await user_getOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const count = await prisma.notifikasi.findMany({
     where: {
-      userId: userId,
+      userId: userLoginId,
       isRead: false,
-      userRoleId: "1"
+      userRoleId: "1",
     },
   });
 
+  revalidatePath(RouterHome.main_home);
   return count.length;
 }

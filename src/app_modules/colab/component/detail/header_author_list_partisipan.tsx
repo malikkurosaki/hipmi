@@ -1,27 +1,26 @@
 "use client";
 
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import {
-  Stack,
-  Grid,
-  Avatar,
-  Divider,
-  Text,
-  Group,
-  ActionIcon,
-  Drawer,
-  ScrollArea,
-  Title,
-  Paper,
-  Button,
-} from "@mantine/core";
-import { useRouter } from "next/navigation";
-import moment from "moment";
+import { AccentColor, MainColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_AvatarAndUsername } from "@/app_modules/_global/component";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
-import { IconEyeCheck, IconZoomCheck } from "@tabler/icons-react";
+import {
+  ActionIcon,
+  Avatar,
+  Divider,
+  Drawer,
+  Grid,
+  Group,
+  Paper,
+  ScrollArea,
+  Stack,
+  Text,
+  Title
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconFileCheck } from "@tabler/icons-react";
+import { IconCaretRight, IconX } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 
 export default function ComponentColab_AuthorNameOnListPartisipan({
   author,
@@ -41,29 +40,81 @@ export default function ComponentColab_AuthorNameOnListPartisipan({
         opened={opened}
         onClose={close}
         position="bottom"
-        size={"40vh"}
+        size={"auto"}
         withCloseButton={false}
+        styles={{
+          content: {
+            padding: 0,
+            position: "absolute",
+            margin: "auto",
+            backgroundColor: "transparent",
+            left: 0,
+            right: 0,
+            width: 500,
+          },
+          body: {
+            backgroundColor: AccentColor.darkblue,
+            borderTop: `2px solid ${AccentColor.blue}`,
+            borderRight: `1px solid ${AccentColor.blue}`,
+            borderLeft: `1px solid ${AccentColor.blue}`,
+            borderRadius: "20px 20px 0px 0px",
+            color: "white",
+            paddingBottom: "5%",
+          },
+        }}
       >
         <Stack>
-          <Title order={6}>Deskripsi Diri</Title>
-          <Paper withBorder p={"xs"}>
+          <Group position="apart">
+            <Title order={5}>Deskripsi Diri</Title>
+            <ActionIcon onClick={close} variant="transparent">
+              <IconX color="white" />
+            </ActionIcon>
+          </Group>
+          <Paper
+            p={"xs"}
+            style={{
+              backgroundColor: AccentColor.darkblue,
+              border: `2px solid ${AccentColor.blue}`,
+              borderRadius: "10px ",
+              color: "white",
+            }}
+          >
             <ScrollArea h={"20vh"} scrollbarSize={2}>
               <Text>{deskripsi}</Text>
             </ScrollArea>
           </Paper>
-          <Button radius={"xl"} onClick={close}>
+          {/* <Button radius={"xl"} onClick={close}>
             Tutup
-          </Button>
+          </Button> */}
         </Stack>
       </Drawer>
 
-      <Stack spacing={"xs"}>
-        <Grid>
+      <Stack spacing={"xs"} p={"xs"}>
+        <ComponentGlobal_AvatarAndUsername
+          profile={author?.Profile as any}
+          fontSize={"sm"}
+          component={
+            <Stack justify="center" align="flex-end" h={"100%"}>
+              {deskripsi ? (
+                <ActionIcon
+                  onClick={() => open()}
+                  radius={"xl"}
+                  variant="transparent"
+                >
+                  <IconCaretRight color={MainColor.yellow} />
+                </ActionIcon>
+              ) : (
+                ""
+              )}
+            </Stack>
+          }
+        />
+        {/* <Grid>
           <Grid.Col
             span={"content"}
             onClick={() => {
               if (author?.Profile.id) {
-                router.push(RouterProfile.katalog + author?.Profile.id);
+                router.push(RouterProfile.katalogOLD + author?.Profile.id);
               } else {
                 ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
               }
@@ -96,7 +147,7 @@ export default function ComponentColab_AuthorNameOnListPartisipan({
                   radius={"xl"}
                   variant="transparent"
                 >
-                  <IconFileCheck color={opened ? "blue" : "gray"}/>
+                  <IconCaretRight color={"white"} />
                 </ActionIcon>
               ) : (
                 ""
@@ -104,7 +155,7 @@ export default function ComponentColab_AuthorNameOnListPartisipan({
             </Stack>
           </Grid.Col>
         </Grid>
-        {isPembatas ? <Divider /> : ""}
+        {isPembatas ? <Divider /> : ""} */}
       </Stack>
     </>
   );

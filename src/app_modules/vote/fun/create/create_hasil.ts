@@ -1,14 +1,14 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { revalidatePath } from "next/cache";
 
 export async function Vote_funCreateHasil(
   pilihanVotingId: string,
   votingId: string
 ) {
-  const authorId = await user_getOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const get = await prisma.voting_DaftarNamaVote.findFirst({
     where: {
@@ -16,6 +16,7 @@ export async function Vote_funCreateHasil(
     },
     select: {
       jumlah: true,
+      value: true,
     },
   });
 
@@ -31,16 +32,30 @@ export async function Vote_funCreateHasil(
   });
   if (!updt) return { status: 400, message: "Gagal Update" };
 
-  const create = await prisma.voting_Kontributor.create({
+  const createKontributor = await prisma.voting_Kontributor.create({
     data: {
       voting_DaftarNamaVoteId: pilihanVotingId,
       votingId: votingId,
-      authorId: authorId,
+      authorId: userLoginId,
+    },
+    select: {
+      Voting: {
+        select: {
+          id: true,
+          title: true,
+          authorId: true,
+        },
+      },
     },
   });
-  if (!create) return { status: 400, message: "Gagal Menjadi Kontributor" };
 
-
+  if (!createKontributor)
+    return { status: 400, message: "Gagal Menjadi Kontributor" };
   revalidatePath("/dev/vote/detail/main/");
-  return { status: 201, message: "Berhasil Voting" };
+  return {
+    data: createKontributor,
+    pilihan: get.value,
+    status: 201,
+    message: "Berhasil Voting",
+  };
 }

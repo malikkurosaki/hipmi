@@ -13,6 +13,7 @@ export default async function Donasi_getCeritaByDonasiId(donasiId: string) {
       cerita: true,
       imageCeritaDonasi: true,
       createdAt: true,
+      imageId: true,
     },
   });
   return data;

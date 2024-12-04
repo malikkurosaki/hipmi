@@ -2,14 +2,18 @@
 
 import prisma from "@/app/lib/prisma";
 
-export async function auth_funEditAktivasiKodeOtpById(otpId: string) {
+export async function auth_funDeleteAktivasiKodeOtpByNomor({
+  nomor,
+}: {
+  nomor: string;
+}) {
   // console.log(otpId);
-  const updt = await prisma.kodeOtp.update({
+
+
+  
+  const updt = await prisma.kodeOtp.deleteMany({
     where: {
-      id: otpId,
-    },
-    data: {
-      isActive: false,
+      nomor: nomor,
     },
   });
 

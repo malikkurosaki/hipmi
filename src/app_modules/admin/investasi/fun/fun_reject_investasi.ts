@@ -1,26 +1,51 @@
-"use server"
+"use server";
 
-import prisma from "@/app/lib/prisma"
-import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin"
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi"
-import { revalidatePath } from "next/cache"
+import prisma from "@/app/lib/prisma";
+import { RouterAdminInvestasi } from "@/app/lib/router_admin/router_admin_investasi";
+import { revalidatePath } from "next/cache";
 
 export default async function Admin_funRejectInvestasi(data: any) {
-    // console.log(data)
+  // console.log(data)
+   const cekStatus = await prisma.investasi.findFirst({
+     where: {
+       id: data.id,
+     },
+     select: {
+       masterStatusInvestasiId: true,
+     },
+   });
 
-    const res = await prisma.investasi.update({
-        where: { id: data.id },
-        data: {
-            masterStatusInvestasiId: data.status,
-            catatan: data.catatan
-        }
-    })
-    if(!res) return {status: 400, message: "Gagal reject"}
+   if (cekStatus?.masterStatusInvestasiId !== "2") {
+     return {
+       status: 400,
+       message: "User membatalkan review",
+     };
+   }
 
-    revalidatePath(RouterAdminInvestasi_OLD.main_investasi)
+  const res = await prisma.investasi.update({
+    where: { id: data.id },
+    data: {
+      masterStatusInvestasiId: data.status,
+      catatan: data.catatan,
+    },
+    select: {
+      id: true,
+      title: true,
+      authorId: true,
+      MasterStatusInvestasi: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+  if (!res) return { status: 400, message: "Gagal reject" };
 
-    return {
-        status: 200,
-        message: "Reject berhasil"
-    }
+  revalidatePath(RouterAdminInvestasi.detail_review);
+
+  return {
+    data: res,
+    status: 200,
+    message: "Reject berhasil",
+  };
 }

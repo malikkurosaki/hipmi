@@ -1,35 +1,34 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { MODEL_DONASI } from "../../model/interface";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import {
-  Stack,
-  AspectRatio,
-  Paper,
-  Title,
+  ComponentGlobal_CardStyles,
+  ComponentGlobal_LoadImageLandscape,
+} from "@/app_modules/_global/component";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
+import {
+  Divider,
+  Grid,
   Group,
   Progress,
-  Grid,
-  Divider,
-  Image,
+  Stack,
   Text,
-  Center,
-  Loader,
+  Title,
 } from "@mantine/core";
 import {
   IconClover,
   IconMessageChatbot,
   IconMoneybag,
 } from "@tabler/icons-react";
-import TampilanRupiahDonasi from "../tampilan_rupiah";
-import ComponentDonasi_TampilanHitungMundur from "../tampilan_hitung_mundur";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { NotifPeringatan } from "../notifikasi/notif_peringatan";
-import { NotifBerhasil } from "../notifikasi/notif_berhasil";
-import { Donasi_findDonaturByTokenId } from "../../fun/get/get_donatur_by_token_id";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
+import { Donasi_findDonaturByTokenId } from "../../fun/get/get_donatur_by_token_id";
+import { MODEL_DONASI } from "../../model/interface";
+import ComponentDonasi_TampilanHitungMundur from "../tampilan_hitung_mundur";
+import TampilanRupiahDonasi from "../tampilan_rupiah";
 
 export function ComponentDonasi_DetailDataMain({
   donasi,
@@ -47,26 +46,15 @@ export function ComponentDonasi_DetailDataMain({
 
   return (
     <>
-      <Stack px={"xs"}>
+      <ComponentGlobal_CardStyles>
         <Stack>
-          <Center>
-            <Image
-              mah={500}
-              maw={"auto"}
-              radius={"md"}
-              alt="Foto"
-              src={RouterDonasi.api_gambar + `${donasi.imagesId}`}
-            />
-          </Center>
-          {/* <AspectRatio ratio={16 / 9}>
-            <Paper radius={"md"}>
-            </Paper>
-          </AspectRatio> */}
+          <ComponentGlobal_LoadImageLandscape fileId={donasi.imageId} />
+
           <Stack spacing={0} mt={"lg"}>
-            <Title order={4}>{donasi.title}</Title>
+            <Title order={4}>{donasi?.title}</Title>
             <ComponentDonasi_TampilanHitungMundur
-              durasi={donasi.DonasiMaster_Durasi.name}
-              publishTime={donasi.publishTime}
+              durasi={donasi?.DonasiMaster_Durasi.name}
+              publishTime={donasi?.publishTime}
             />
           </Stack>
           <Stack spacing={0}>
@@ -74,25 +62,30 @@ export function ComponentDonasi_DetailDataMain({
               <Stack spacing={0}>
                 <Text fz={12}>Dana terkumpul</Text>
                 <Title order={4} c="blue">
-                  <TampilanRupiahDonasi nominal={+donasi.terkumpul} />
+                  <TampilanRupiahDonasi nominal={+donasi?.terkumpul} />
                 </Title>
                 <Group>
-                  <Text fz={10}>Dari total</Text>{" "}
+                  <Text fz={10}>Dari target</Text>{" "}
                   <TampilanRupiahDonasi
-                    nominal={+donasi.target}
+                    nominal={+donasi?.target}
                     fontSize={10}
                   />
                 </Group>
               </Stack>
               <Stack spacing={0}>
                 <Text fz={12}>Kategori</Text>
-                <Title order={4} c="blue">
-                  {donasi.DonasiMaster_Ketegori.name}
+                <Title
+                  order={4}
+                  style={{
+                    color: MainColor.yellow,
+                  }}
+                >
+                  {donasi?.DonasiMaster_Ketegori.name}
                 </Title>
               </Stack>
             </Group>
           </Stack>
-          <Progress value={+donasi.progres} animate />
+          <Progress value={+donasi?.progres} color="yellow" size={"lg"} />
 
           <Grid>
             <Grid.Col
@@ -102,19 +95,25 @@ export function ComponentDonasi_DetailDataMain({
                 router.push(RouterDonasi.donatur + `${donasi.id}`);
               }}
             >
-              <Stack align="center" spacing={"xs"}>
-                <Group>
+              <Stack
+                align="center"
+                spacing={"xs"}
+                style={{
+                  color: MainColor.yellow,
+                }}
+              >
+                <Group align="center" h={"100%"}>
                   {isLoadingDonatur ? (
-                    <Loader size={25} />
+                    <ComponentGlobal_Loader size={25} />
                   ) : (
-                    <IconClover color="skyblue" />
+                    <IconClover />
                   )}
 
-                  <Title order={6} c={"blue"}>
-                    {countDonatur}
-                  </Title>
+                  <Title order={6}>{countDonatur}</Title>
                 </Group>
-                <Text fz={"xs"}>Donatur</Text>
+                <Text fz={"xs"} c={"white"}>
+                  Donatur
+                </Text>
               </Stack>
             </Grid.Col>
             <Divider orientation="vertical" />
@@ -122,14 +121,20 @@ export function ComponentDonasi_DetailDataMain({
               span={"auto"}
               onClick={() => {
                 setLoadingKabar(true);
-                router.push(RouterDonasi.kabar + `${donasi.id}`);
+                router.push(RouterDonasi.daftar_kabar({ id: donasi.id }), {
+                  scroll: false,
+                });
               }}
             >
               <Stack spacing={"sm"} align="center">
                 {isLoadingKabar ? (
-                  <Loader size={25} />
+                  <ComponentGlobal_Loader size={25} />
                 ) : (
-                  <IconMessageChatbot color="skyblue" />
+                  <IconMessageChatbot
+                    style={{
+                      color: MainColor.yellow,
+                    }}
+                  />
                 )}
                 <Text fz={"xs"}>Kabar Terbaru</Text>
               </Stack>
@@ -138,22 +143,30 @@ export function ComponentDonasi_DetailDataMain({
             <Grid.Col
               span={"auto"}
               onClick={() => {
-                setLoadingPencairan(true);
-                onPencairanDana(router, donasi, userLoginId);
+                onPencairanDana(
+                  router,
+                  donasi,
+                  userLoginId,
+                  setLoadingPencairan
+                );
               }}
             >
               <Stack spacing={"sm"} align="center">
                 {isLoadingPencairan ? (
-                  <Loader size={25} />
+                  <ComponentGlobal_Loader size={25} />
                 ) : (
-                  <IconMoneybag color="skyblue" />
+                  <IconMoneybag
+                    style={{
+                      color: MainColor.yellow,
+                    }}
+                  />
                 )}
                 <Text fz={"xs"}>Pencairan Dana</Text>
               </Stack>
             </Grid.Col>
           </Grid>
         </Stack>
-      </Stack>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }
@@ -161,19 +174,19 @@ export function ComponentDonasi_DetailDataMain({
 async function onPencairanDana(
   router: AppRouterInstance,
   donasi: MODEL_DONASI,
-  userLoginId: string
+  userLoginId: string,
+  setLoadingPencairan: any
 ) {
-  // console.log(userLoginId)
-  // console.log(donasi.authorId)
   const cek = await Donasi_findDonaturByTokenId(donasi.id, userLoginId);
-
-  if (userLoginId == donasi.authorId)
+  if (userLoginId == donasi.authorId) {
+    setLoadingPencairan(true);
     return router.push(RouterDonasi.pencairan_dana + `${donasi.id}`);
+  }
 
-  if (!cek) return NotifPeringatan("Halaman khusus donatur");
-  router.push(RouterDonasi.pencairan_dana + `${donasi.id}`);
-
-  // if (userLoginId != donasi.authorId)
-  //   return NotifPeringatan("Halaman khusus donatur");
-  // router.push(RouterDonasi.pencairan_dana + `${donasi.id}`);
+  if (!cek) {
+    return ComponentGlobal_NotifikasiPeringatan("Halaman khusus donatur");
+  } else {
+    setLoadingPencairan(true);
+    router.push(RouterDonasi.pencairan_dana + `${donasi.id}`);
+  }
 }

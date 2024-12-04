@@ -1,45 +1,64 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import _ from "lodash";
+import _, { ceil } from "lodash";
 
-export async function AdminEvent_getListAllRiwayat() {
+export async function adminEvent_funGetListAllRiwayat({
+  page,
+  search,
+}: {
+  page: number;
+  search?: string;
+}) {
+  let takeData = 10;
+  let skipData = page * takeData - takeData;
+
   const data = await prisma.event.findMany({
+    skip: skipData,
+    take: takeData,
     orderBy: {
       tanggal: "desc",
     },
     where: {
       eventMaster_StatusId: "1",
-      tanggal: {
-        lte: new Date(),
+      isArsip: true,
+      title: {
+        contains: search,
+        mode: "insensitive",
       },
     },
-    select: {
-        id: true,
-        title: true,
-        lokasi: true,
-        tanggal: true,
-        deskripsi: true,
-        Author: {
-          select: {
-            id: true,
-            username: true,
-            Profile: {
-              select: {
-                name: true,
-              },
+    include: {
+      Author: {
+        select: {
+          id: true,
+          username: true,
+          Profile: {
+            select: {
+              name: true,
             },
           },
         },
-        EventMaster_TipeAcara: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
       },
-
+      EventMaster_Status: true,
+      EventMaster_TipeAcara: true,
+    },
   });
 
-  return data;
+  const nCount = await prisma.event.count({
+    where: {
+      eventMaster_StatusId: "1",
+      isArsip: true,
+      title: {
+        contains: search,
+        mode: "insensitive",
+      },
+    },
+  });
+
+  const allData = {
+    data: data,
+    nPage: ceil(nCount / takeData),
+  };
+
+  return allData;
 }

@@ -7,7 +7,12 @@ export const RouterJob = {
 
   // main
   beranda: "/dev/job/main/beranda",
-  status: "/dev/job/main/status",
+  /**
+   * 
+   * @param statusId | 1 - 4 | 1: Publish, 2: Review, 3: Draft, 4: Reject 
+   * @returns 
+   */
+  status: ({ id }: { id?: string }) => `/dev/job/main/status/${id}`,
   arsip: "/dev/job/main/arsip",
 
   // create & edit
@@ -24,4 +29,5 @@ export const RouterJob = {
 
   // non user
   non_user_view: "/dev/job/non_user_view/",
+  "job_vacancy_non_user": ({ id }: { id: string }) => `/job-vacancy/${id}`,
 };

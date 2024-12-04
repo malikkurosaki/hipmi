@@ -1,12 +1,14 @@
 "use client";
 
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
 import {
   ActionIcon,
-  Box,
   Button,
   Divider,
   Group,
-  List,
   Modal,
   Paper,
   SimpleGrid,
@@ -15,20 +17,14 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import ComponentAdminDonasi_TombolKembali from "../../donasi/component/tombol_kembali";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
-import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
-import { useState } from "react";
-import { AdminEvent_funCreateTipeAcara } from "../fun/create/fun_create_tipe_acara";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import { AdminEvent_getListTipeAcara } from "../fun/get/get_list_tipe_acara";
-import { IconEditCircle, IconTrash } from "@tabler/icons-react";
-import { AdminEvent_funEditTipeAcara } from "../fun/edit/fun_edit_tipe_acara";
 import { useDisclosure } from "@mantine/hooks";
+import { IconCirclePlus, IconEditCircle, IconTrash } from "@tabler/icons-react";
+import { useState } from "react";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
+import { AdminEvent_funCreateTipeAcara } from "../fun/create/fun_create_tipe_acara";
 import { AdminEvent_funEditActivationTipeAcaraById } from "../fun/edit/fun_edit_activation_tipe_acara";
-import { number } from "echarts";
+import { AdminEvent_funEditTipeAcara } from "../fun/edit/fun_edit_tipe_acara";
+import { AdminEvent_getListTipeAcara } from "../fun/get/get_list_tipe_acara";
 
 export default function AdminEvent_DetailTipeAcara({
   listTipe,
@@ -38,14 +34,19 @@ export default function AdminEvent_DetailTipeAcara({
   return (
     <>
       <Stack>
-        <ComponentAdminGlobal_HeaderTamplate name="Event: Tipe Acara" />
+        <ComponentAdminGlobal_HeaderTamplate name="Event" />
+
         <DetailTipeAcara listTipe={listTipe} />
       </Stack>
     </>
   );
 }
 
-function DetailTipeAcara({ listTipe }: { listTipe: MODEL_DEFAULT_MASTER_OLD[] }) {
+function DetailTipeAcara({
+  listTipe,
+}: {
+  listTipe: MODEL_DEFAULT_MASTER_OLD[];
+}) {
   const [tipe, setTipe] = useState(listTipe);
   const [name, setName] = useState("");
   const [openEditor, setOpenEditor] = useState(false);
@@ -55,6 +56,7 @@ function DetailTipeAcara({ listTipe }: { listTipe: MODEL_DEFAULT_MASTER_OLD[] })
     id: "",
     name: "",
   });
+  const [openCreate, setOpenCreate] = useState(false);
 
   return (
     <>
@@ -79,8 +81,28 @@ function DetailTipeAcara({ listTipe }: { listTipe: MODEL_DEFAULT_MASTER_OLD[] })
         </Stack>
       </Modal>
 
+      <Group
+        position="apart"
+        bg={"gray.4"}
+        p={"xs"}
+        style={{ borderRadius: "6px" }}
+      >
+        <Title order={4}>Tipe Acara</Title>
+        <Button
+          leftIcon={<IconCirclePlus />}
+          radius={"xl"}
+          color="green"
+          onClick={() => {
+            setOpenCreate(true);
+            setOpenEditor(false);
+          }}
+        >
+          Tambah
+        </Button>
+      </Group>
+
       <SimpleGrid
-        cols={3}
+        cols={2}
         spacing="lg"
         breakpoints={[
           { maxWidth: "62rem", cols: 4, spacing: "lg" },
@@ -88,26 +110,6 @@ function DetailTipeAcara({ listTipe }: { listTipe: MODEL_DEFAULT_MASTER_OLD[] })
           { maxWidth: "36rem", cols: 1, spacing: "sm" },
         ]}
       >
-        <div>
-          <Paper p={"sm"} shadow="lg" withBorder>
-            <Stack>
-              <TextInput
-                value={name ? name : ""}
-                label="Masukan Tipe"
-                placeholder="Contoh: Seminar, Workshop, dll."
-                onChange={(val) => {
-                  setName(val.target.value);
-                }}
-              />
-              <Group position="right">
-                <Button onClick={() => onSave(name, setName, setTipe)}>
-                  Tambah
-                </Button>
-              </Group>
-            </Stack>
-          </Paper>
-        </div>
-
         <div>
           <Paper p={"md"} shadow="lg" withBorder>
             <Stack>
@@ -122,6 +124,7 @@ function DetailTipeAcara({ listTipe }: { listTipe: MODEL_DEFAULT_MASTER_OLD[] })
                           variant="transparent"
                           onClick={() => {
                             setOpenEditor(true);
+                            setOpenCreate(false);
                             setEdit(e);
                           }}
                         >
@@ -150,27 +153,67 @@ function DetailTipeAcara({ listTipe }: { listTipe: MODEL_DEFAULT_MASTER_OLD[] })
           </Paper>
         </div>
 
+        {openCreate ? (
+          <div>
+            <Paper p={"sm"} shadow="lg" withBorder>
+              <Stack>
+                <TextInput
+                  value={name ? name : ""}
+                  label="Masukan Tipe"
+                  placeholder="Contoh: Seminar, Workshop, dll."
+                  onChange={(val) => {
+                    setName(val.currentTarget.value);
+                  }}
+                />
+                <Group position="right">
+                  <Button radius={"xl"} onClick={() => setOpenCreate(false)}>
+                    Batal
+                  </Button>
+                  <Button
+                    disabled={!name}
+                    style={{
+                      transition: "all 0.5s ease",
+                    }}
+                    color="green"
+                    radius={"xl"}
+                    onClick={() => onSave(name, setName, setTipe)}
+                  >
+                    Simpan
+                  </Button>
+                </Group>
+              </Stack>
+            </Paper>
+          </div>
+        ) : (
+          ""
+        )}
+
         <div>
           {openEditor ? (
             <Paper p={"sm"} shadow="lg" withBorder>
               <Stack>
                 <TextInput
                   value={edit?.name ? edit?.name : ""}
-                  label="Edit Tipe Event"
+                  label="Edit Tipe"
                   placeholder="Contoh: Ramah Tamah, dll"
                   onChange={(val) => {
                     setEdit({
                       ...(edit as any),
-                      name: val.target.value,
+                      namaBank: val.target.value,
                     });
                   }}
                 />
                 <Group position="right">
                   <Group position="apart">
-                    <Button color="red" onClick={() => setOpenEditor(false)}>
+                    <Button radius={"xl"} onClick={() => setOpenEditor(false)}>
                       Batal
                     </Button>
                     <Button
+                      disabled={!edit?.name}
+                      style={{
+                        transition: "all 0.5s ease",
+                      }}
+                      radius={"xl"}
                       color="green"
                       onClick={() =>
                         onUpdate(edit?.id, edit?.name, setTipe, setOpenEditor)
@@ -222,7 +265,11 @@ async function onUpdate(id: any, edit: any, setTipe: any, setOpenEditor: any) {
   });
 }
 
-async function onDelete(data: MODEL_DEFAULT_MASTER_OLD, close: any, setTipe: any) {
+async function onDelete(
+  data: MODEL_DEFAULT_MASTER_OLD,
+  close: any,
+  setTipe: any
+) {
   await AdminEvent_funEditActivationTipeAcaraById(data.id as any).then(
     async (res) => {
       if (res.status === 200) {

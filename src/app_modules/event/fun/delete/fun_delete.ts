@@ -1,9 +1,11 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import { revalidatePath } from "next/cache";
 
 export async function Event_funDeleteById(eventId: string) {
+  console.log(eventId);
   const del = await prisma.event.delete({
     where: {
       id: eventId,
@@ -11,17 +13,9 @@ export async function Event_funDeleteById(eventId: string) {
   });
   if (!del) return { status: 400, message: "Gagal hapus data" };
 
-  // const delTemporary = await prisma.event.update({
-  //   where: {
-  //     id: eventId,
-  //   },
-  //   data: {
-  //     active: false,
-  //   },
-  // });
-  // if (!delTemporary) return { status: 400, message: "Gagal hapus data" };
+  revalidatePath("/dev/event/main/status/3");
+  revalidatePath("/dev/event/main/status/4");
 
-  revalidatePath("/dev/event/main/status_page");
   return {
     status: 200,
     message: "Hapus data berhasil",

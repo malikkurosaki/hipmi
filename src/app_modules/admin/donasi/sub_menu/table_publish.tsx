@@ -1,9 +1,9 @@
 "use client";
 
 import { RouterAdminDonasi_OLD } from "@/app/lib/router_hipmi/router_admin";
+import { ComponentGlobal_TampilanRupiah } from "@/app_modules/_global/component";
+import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
 import {
-  ActionIcon,
-  Box,
   Button,
   Center,
   Group,
@@ -12,17 +12,13 @@ import {
   ScrollArea,
   Stack,
   Table,
-  Text,
   TextInput,
-  Title,
+  Title
 } from "@mantine/core";
-import { IconChevronLeft, IconEyeCheck, IconSearch } from "@tabler/icons-react";
+import { IconEyeCheck, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import ComponentAdminDonasi_TombolKembali from "../component/tombol_kembali";
-import { MODEL_DONASI } from "@/app_modules/donasi/model/interface";
 import { useState } from "react";
-import TampilanRupiahDonasi from "@/app_modules/donasi/component/tampilan_rupiah";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 import adminDonasi_getListPublish from "../fun/get/get_list_publish";
 
 export default function AdminDonasi_TablePublish({
@@ -77,12 +73,12 @@ function TableStatus({ listPublish }: { listPublish: any }) {
       </td>
       <td>
         <Center>
-          <TampilanRupiahDonasi nominal={+e.target} />
+          <ComponentGlobal_TampilanRupiah color="black" nominal={+e.target} />
         </Center>
       </td>
       <td>
         <Center>
-          <TampilanRupiahDonasi nominal={+e.terkumpul} />
+          <ComponentGlobal_TampilanRupiah color="black" nominal={+e.terkumpul} />
         </Center>
       </td>
       <td>

@@ -1,12 +1,11 @@
 "use client";
 
-import { Card, Stack, Skeleton, Image, Text, Center } from "@mantine/core";
-import { MODEL_JOB } from "../../model/interface";
-import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
+  ComponentGlobal_CardStyles,
+  ComponentGlobal_LoadImage,
+} from "@/app_modules/_global/component";
+import { Box, Center, Skeleton, Stack, Text } from "@mantine/core";
+import { MODEL_JOB } from "../../model/interface";
 
 export default function ComponentJob_DetailData({
   data,
@@ -15,92 +14,49 @@ export default function ComponentJob_DetailData({
 }) {
   return (
     <>
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       {data ? (
-        <Card
-          shadow="lg"
-          withBorder
-          p={30}
-          style={{
-            backgroundColor: MainColor.darkblue,
-            border: `2px solid ${AccentColor.blue}`,
-          }}
-          c={"white"}
-        >
-          <Card.Section px={"xs"} pb={"lg"}>
-            <Stack spacing={"xl"}>
-              {data.imagesId ? (
-                <Stack align="center">
-                  <Image
-                    alt=""
-                    src={
-                      data.imagesId ? RouterJob.api_gambar + data.imagesId : ""
-                    }
-                    height={300}
-                    width={200}
-                  />
-                </Stack>
-              ) : (
-                ""
-              )}
+        <ComponentGlobal_CardStyles>
+          <Stack spacing={"xl"}>
+            {data.imageId && (
+              <ComponentGlobal_LoadImage fileId={data?.imageId} />
+            )}
 
-              <Stack>
-                <Center>
-                  <Text fz={20} fw={"bold"}>
-                    {data.title}
-                  </Text>
-                </Center>
-                <Stack spacing={0}>
-                  <Text>
-                    <div dangerouslySetInnerHTML={{ __html: data.content }} />
-                  </Text>
-                  <Text>
-                    <div dangerouslySetInnerHTML={{ __html: data.deskripsi }} />
-                  </Text>
-                </Stack>
-              </Stack>
-            </Stack>
-          </Card.Section>
-        </Card>
-      ) : (
-        <Card shadow="lg" withBorder p={30}>
-          <Card.Section px={"xs"} pb={"lg"}>
-            <Stack spacing={"xl"}>
-              <Stack align="center">
-                <Image alt="" src={"/aset/no-file.png"} mah={500} maw={200} />
+            <Stack>
+              <Center>
                 <Text fz={20} fw={"bold"}>
-                  Judul Lowongan Kerja
+                  {data.title}
                 </Text>
-              </Stack>
-
-              <Stack>
-                <Text fw={"bold"} fz={"xs"}>
-                  Syarat & Ketentuan :
+              </Center>
+              <Stack spacing={0}>
+                <Text>
+                  <div dangerouslySetInnerHTML={{ __html: data.content }} />
                 </Text>
-                <Stack>
-                  {Array(5)
-                    .fill(0)
-                    .map((e, i) => (
-                      <Skeleton key={i} height={8} radius="xl" />
-                    ))}
-                </Stack>
-              </Stack>
-
-              <Stack>
-                <Text fw={"bold"} fz={"xs"}>
-                  Deskripsi
+                <Text>
+                  <div dangerouslySetInnerHTML={{ __html: data.deskripsi }} />
                 </Text>
-                <Stack>
-                  {Array(5)
-                    .fill(0)
-                    .map((e, i) => (
-                      <Skeleton key={i} height={8} radius="xl" />
-                    ))}
-                </Stack>
               </Stack>
             </Stack>
-          </Card.Section>
-        </Card>
+          </Stack>
+        </ComponentGlobal_CardStyles>
+      ) : (
+        <ComponentGlobal_CardStyles>
+          <Stack spacing={"xl"}>
+            <Stack align="center">
+              <Skeleton h={250} w={200} radius="md" />
+              <Skeleton h={10} w={200} />
+            </Stack>
+
+            {Array.from(new Array(2)).map((e, i) => (
+              <Stack key={i}>
+                <Skeleton h={10} w={100} />
+
+                {Array.from({ length: 3 }).map((_, ii) => (
+                  <Skeleton h={10} key={ii} />
+                ))}
+              </Stack>
+            ))}
+          </Stack>
+        </ComponentGlobal_CardStyles>
       )}
     </>
   );

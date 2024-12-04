@@ -1,11 +1,8 @@
 "use client"
 
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentForum_MainCardView from "../component/main_card_view";
 import { MODEL_FORUM_POSTING } from "../model/interface";
-import ComponentForum_ForumkuMainCardView from "../component/forumku_component/forumku_view";
 
 export default function ComponentForum_PostinganPribadi({
   dataPosting,

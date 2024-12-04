@@ -30,6 +30,23 @@ export default async function adminDonasi_funUpdateStatusDanTotal({
     data: {
       donasiMaster_StatusInvoiceId: statusInvoiceId,
     },
+    select: {
+      id: true,
+      authorId: true,
+      Donasi: {
+        select: {
+          id: true,
+          title: true,
+          authorId: true,
+          
+        },
+      },
+      DonasiMaster_StatusInvoice: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
   if (!updateInvoice) return { status: 400, message: "Update invoice gagal" };
 
@@ -45,5 +62,5 @@ export default async function adminDonasi_funUpdateStatusDanTotal({
 
   if (!updateDonasi) return { status: 400, message: "Update donasi gagal" };
   revalidatePath(RouterAdminDonasi_OLD.detail_publish + donasiId);
-  return { status: 200, message: "Update Berhasil" };
+  return { data: updateInvoice, status: 200, message: "Update Berhasil" };
 }

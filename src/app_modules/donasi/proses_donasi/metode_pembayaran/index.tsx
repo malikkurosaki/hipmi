@@ -1,24 +1,29 @@
 "use client";
 
-import { useAtom } from "jotai";
-import { gs_proses_donasi } from "../../global_state";
-import { Box, Button, Group, Paper, Radio, Stack, Title } from "@mantine/core";
-import { IconChevronRight } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
+import { IRealtimeData } from "@/app/lib/global_state";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { MODEL_MASTER_BANK } from "@/app_modules/investasi/_lib/interface";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
+import { Button, Paper, Radio, Stack, Title } from "@mantine/core";
+import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { MODEL_DATA_BANK } from "@/app_modules/investasi/model/model_investasi";
-import { Donasi_getNamaBank } from "../../fun/get/get_nama_bank";
 import { Donasi_funCreateInvoice } from "../../fun/create/fun_create_invoice";
-import { NotifBerhasil } from "../../component/notifikasi/notif_berhasil";
-import { NotifGagal } from "../../component/notifikasi/notif_gagal";
+import { gs_donasi_hot_menu, gs_proses_donasi } from "../../global_state";
+import { WibuRealtime } from "wibu-pkg";
 
 export default function Donasi_MetodePembayaran({
   listBank,
   donasiId,
   authorId,
 }: {
-  listBank: MODEL_DATA_BANK[];
+  listBank: MODEL_MASTER_BANK[];
   donasiId: string;
   authorId: string;
 }) {
@@ -27,6 +32,7 @@ export default function Donasi_MetodePembayaran({
   const [prosesDonasi, setProsesDonasi] = useAtom(gs_proses_donasi);
   const [pilihBank, setPilihBank] = useState("");
   const [bank, setBank] = useState(listBank);
+  const [activeHotMenu, setActiveHotMenu] = useAtom(gs_donasi_hot_menu);
 
   async function onProses() {
     const body = {
@@ -36,21 +42,41 @@ export default function Donasi_MetodePembayaran({
       authorId: authorId,
     };
 
-    // console.log(body)
 
-    await Donasi_funCreateInvoice(body).then((res) => {
-      if (res.status === 200) {
+    const res = await Donasi_funCreateInvoice(body);
+    if (res.status === 200) {
+
+      const dataNotifikasi: IRealtimeData = {
+        appId: res.data?.Donasi?.id as any,
+        status: res.data?.DonasiMaster_StatusInvoice?.name as any,
+        userId: res.data?.Donasi?.authorId as any,
+        pesan: res.data?.Donasi?.title as any,
+        kategoriApp: "DONASI",
+        title: "Donatur membuat invoice donasi",
+      };
+
+      const notif = await notifikasiToAdmin_funCreate({
+        data: dataNotifikasi as any,
+      });
+
+      if (notif.status === 201) {
+        WibuRealtime.setData({
+          type: "notification",
+          pushNotificationTo: "ADMIN",
+        });
+
         setLoading(true);
-        NotifBerhasil(res.message);
-        router.push(RouterDonasi.invoice + `${res.invoiceId}`);
+        setActiveHotMenu(2);
+        ComponentGlobal_NotifikasiBerhasil(res.message);
         setProsesDonasi({
           ...prosesDonasi,
           nominal: "",
         });
-      } else {
-        NotifGagal(res.message);
+        router.push(RouterDonasi.invoice + `${res.data?.id}`);
       }
-    });
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+    }
   }
 
   return (
@@ -58,17 +84,38 @@ export default function Donasi_MetodePembayaran({
       <Stack>
         {/* <pre>{JSON.stringify(prosesDonasi, null, 2)}</pre> */}
 
-        <Radio.Group value={pilihBank} onChange={setPilihBank} withAsterisk>
+        <Radio.Group
+          value={pilihBank}
+          onChange={setPilihBank}
+          withAsterisk
+          color="yellow"
+        >
           {bank.map((e, i) => (
             <Paper
               key={e.id}
-              withBorder
-              radius={"md"}
-              p={"sm"}
-              shadow="lg"
-              mb={"xs"}
+              style={{
+                backgroundColor: AccentColor.blue,
+                border: `2px solid ${AccentColor.darkblue}`,
+                padding: "15px",
+                cursor: "pointer",
+                borderRadius: "10px",
+                color: "white",
+                marginBottom: "15px",
+              }}
             >
-              <Radio value={e.id} label={<Title order={6}>{e.name}</Title>} />
+              <Radio
+                styles={{
+                  radio: {
+                    color: "yellow",
+                  },
+                }}
+                value={e.id}
+                label={
+                  <Title order={6} color="white">
+                    {e.namaBank}
+                  </Title>
+                }
+              />
             </Paper>
           ))}
         </Radio.Group>
@@ -81,8 +128,10 @@ export default function Donasi_MetodePembayaran({
           radius={"xl"}
           onClick={() => {
             onProses();
-
           }}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
         >
           Pilih
         </Button>

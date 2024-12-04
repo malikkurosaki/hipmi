@@ -1,16 +1,14 @@
 import { Admin_KonfirmasiInvestasi } from "@/app_modules/admin/investasi";
-import { funGetUserProfile } from "@/app_modules/fun_global/get_user_profile";
-import getOneInvestasiById from "@/app_modules/investasi/fun/get_one_investasi_by_id";
-
+import { adminInvestasi_getOneById } from "@/app_modules/admin/investasi/fun";
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const dataInvestasi = await getOneInvestasiById(params.id)
-  const dataUser = await funGetUserProfile(dataInvestasi?.authorId as any)
+  const investasiId = params.id;
+  const dataInvestasi = await adminInvestasi_getOneById({investasiId});
   // console.log(dataUser)
 
   return (
     <>
-      <Admin_KonfirmasiInvestasi dataInvestasi={dataInvestasi as any} dataUser={dataUser as any} />
+      <Admin_KonfirmasiInvestasi dataInvestasi={dataInvestasi as any} />
     </>
   );
 }

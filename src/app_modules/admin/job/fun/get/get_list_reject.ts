@@ -27,18 +27,8 @@ export default async function adminJob_getListReject({
         mode: "insensitive",
       },
     },
-    select: {
-      id: true,
-      title: true,
-      isActive: true,
-      createdAt: true,
-      updatedAt: true,
-      content: true,
-      deskripsi: true,
-      catatan: true,
-      authorId: true,
+    include: {
       Author: true,
-      imagesId: true,
     },
   });
 

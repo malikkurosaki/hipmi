@@ -1,0 +1,31 @@
+import dotenv from "dotenv";
+import path from "path";
+dotenv.config({
+  path: path.join(process.cwd(), ".env"),
+});
+
+const DATABASE_URL = process.env.DATABASE_URL!;
+const WIBU_PWD = process.env.WIBU_PWD!;
+const Client_KEY = process.env.Client_KEY!;
+const Server_KEY = process.env.Server_KEY!;
+const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN!;
+const WS_APIKEY = process.env.WS_APIKEY!;
+
+if (!DATABASE_URL) throw new Error("Require DATABASE_URL");
+if (!WIBU_PWD) throw new Error("Require WIBU_PWD");
+if (!Client_KEY) throw new Error("Require Client_KEY");
+if (!Server_KEY) throw new Error("Require Server_KEY");
+if (!MAPBOX_TOKEN) throw new Error("Require MAPBOX_TOKEN");
+if (!WS_APIKEY) throw new Error("Require WS_APIKEY");
+
+export function hipmiEnv() {
+  const envObject = {
+    DATABASE_URL,
+    WIBU_PWD,
+    Client_KEY,
+    Server_KEY,
+    MAPBOX_TOKEN,
+    WS_APIKEY,
+  };
+  return envObject;
+}

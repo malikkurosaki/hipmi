@@ -1,11 +1,12 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
+import { MODEL_MASTER_BANK } from "@/app_modules/investasi/_lib/interface";
 
 export default async function adminAppInformation_createBank({
   data,
 }: {
-  data: any;
+  data: MODEL_MASTER_BANK;
 }) {
   const count = await prisma.masterBank.count({});
   const idBank = count + 1;
@@ -13,7 +14,8 @@ export default async function adminAppInformation_createBank({
   const create = await prisma.masterBank.create({
     data: {
       id: idBank.toString(),
-      name: data.name,
+      namaBank: data.namaBank,
+      namaAkun: data.namaAkun,
       norek: data.norek,
     },
   });

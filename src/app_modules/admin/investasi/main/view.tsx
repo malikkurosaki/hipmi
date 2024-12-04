@@ -1,7 +1,7 @@
 "use client";
 
 import { RouterAdminInvestasi_OLD } from "@/app/lib/router_hipmi/router_admin";
-import { MODEL_Investasi } from "@/app_modules/investasi/model/model_investasi";
+import { MODEL_INVESTASI } from "@/app_modules/investasi/_lib/interface"; 
 import {
   ActionIcon,
   Avatar,
@@ -38,7 +38,7 @@ import moment from "moment";
 import _ from "lodash";
 import TableTotalInvestasi from "./table_total_investasi";
 import TablePublikasiProgresInvestasi from "./table_publikasi_progres";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 
 export default function Admin_Investasi({
   listInvestasi,
@@ -49,7 +49,7 @@ export default function Admin_Investasi({
   totalInvestasiByUser,
   publishProgres,
 }: {
-  listInvestasi: MODEL_Investasi[];
+  listInvestasi: MODEL_INVESTASI[];
   countDraft: number | any;
   countReview: number | any;
   countPublish: number | any;
@@ -63,10 +63,10 @@ export default function Admin_Investasi({
   const listBox = [
     {
       id: 1,
-      name: "Draft",
-      jumlah: countDraft,
-      link: "",
-      color: "yellow",
+      name: "Publish",
+      jumlah: countPublish,
+      link: RouterAdminInvestasi_OLD.table_status_publish,
+      color: "green",
     },
     {
       id: 2,
@@ -77,13 +77,6 @@ export default function Admin_Investasi({
     },
     {
       id: 3,
-      name: "Publish",
-      jumlah: countPublish,
-      link: RouterAdminInvestasi_OLD.table_status_publish,
-      color: "green",
-    },
-    {
-      id: 4,
       name: "Reject",
       jumlah: countReject,
       link: RouterAdminInvestasi_OLD.table_status_reject,
@@ -97,7 +90,7 @@ export default function Admin_Investasi({
         <ComponentAdminGlobal_HeaderTamplate name="Investasi" />
 
         <SimpleGrid
-          cols={4}
+          cols={3}
           spacing="lg"
           breakpoints={[
             { maxWidth: "62rem", cols: 4, spacing: "lg" },

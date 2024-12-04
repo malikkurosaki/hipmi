@@ -1,13 +1,14 @@
 "use client";
 
+import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import { Warna } from "@/app/lib/warna";
 import {
-  ActionIcon,
-  Avatar,
-  Box,
-  Button,
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import mqtt_client from "@/util/mqtt_client";
+import {
   Center,
-  CopyButton,
-  Grid,
   Group,
   Loader,
   Paper,
@@ -15,116 +16,149 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import invoice from "../invoice";
-import { MODEL_DONASI_INVOICE } from "../../model/interface";
-import { useState } from "react";
-import { useInterval, useShallowEffect } from "@mantine/hooks";
-import { redirect, useRouter } from "next/navigation";
-import { Donasi_getOneInvoiceById } from "../../fun/get/get_one_invoice_by_id";
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import { useAtom } from "jotai";
-import { gs_donasi_hot_menu } from "../../global_state";
-import moment from "moment";
+import { useShallowEffect } from "@mantine/hooks";
 import { IconBrandWhatsapp } from "@tabler/icons-react";
-import { Warna } from "@/app/lib/warna";
+import { useAtom } from "jotai";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { donasi_getOneStatusInvoiceById } from "../../fun/get/get_one_status_invoice_by_id";
+import { gs_donasi_hot_menu } from "../../global_state";
+import { MODEL_DONASI_INVOICE } from "../../model/interface";
 
 export default function Donasi_ProsesTransaksi({
-  dataInvoice,
+  statusInvoice,
   nomorAdmin,
 }: {
-  dataInvoice: MODEL_DONASI_INVOICE;
-  nomorAdmin: any
+  statusInvoice: MODEL_DONASI_INVOICE;
+  nomorAdmin: any;
 }) {
-  const [invoice, setInvoice] = useState(dataInvoice);
+  const router = useRouter();
+  const [data, setData] = useState(statusInvoice);
   const [hotMenu, setHotMenu] = useAtom(gs_donasi_hot_menu);
-  const [countD, setCountD] = useState<Date | any>();
-  const interval = useInterval(
-    () =>
-      reloadData(invoice.id).then((res) =>
-        setInvoice(res as MODEL_DONASI_INVOICE)
-      ),
-    5000
-  );
+
+  interface MODAL_DONASI_INVOICE {
+    invoiceId: string;
+    statusInvoiceId: string;
+  }
 
   useShallowEffect(() => {
-    interval.start();
-  }, [invoice.id]);
+    mqtt_client.subscribe("donasi_invoice");
 
-  function reloadData(invoiceId: string) {
-    const res = Donasi_getOneInvoiceById(invoiceId);
-    return res;
+    mqtt_client.on("message", (topic, message) => {
+      const dataClient: MODAL_DONASI_INVOICE = JSON.parse(message.toString());
+      if (topic === "donasi_invoice" && dataClient.invoiceId === data.id) {
+        // setData({
+        //   ...data,
+        //   donasiMaster_StatusInvoiceId: dataClient.statusInvoiceId,
+        // });
+        onLoad();
+      }
+    });
+  }, []);
+
+  async function onLoad() {
+    const loadData = await donasi_getOneStatusInvoiceById({
+      invoiceId: data.id,
+    });
+    setData(loadData as any);
   }
 
-  //-------------------------------------------------//
-
-  // const inter2 = useInterval(
-  //   () => cekCD().then((res) => console.log(res)),
-  //   1000
-  // );
-
-  // useShallowEffect(() => {
-  //   inter2.start();
-  // }, []);
-
-  async function cekCD() {
-    const date = new Date().getTime();
-    // const jam = date.toTimeString()
-    // const cd = moment(jam).diff((invoice.createdAt), "hour")
-    var a = moment.duration(date).asSeconds();
-    return a;
-  }
-
-  if (invoice.donasiMaster_StatusInvoiceId === "1") {
-    redirect(RouterDonasi.detail_donasi_saya + `${invoice.id}`);
+  if (data.DonasiMaster_StatusInvoice.id === "1") {
+    setHotMenu(2);
+    router.replace(RouterDonasi.detail_donasi_saya + `${data.id}`, {
+      scroll: false,
+    });
   }
 
   return (
     <>
-      <Stack>
-        <Paper p={"sm"} withBorder>
-          <Stack spacing={"md"}>
-            <Paper bg={"gray.1"} p={"sm"} radius={"md"}>
-              <Stack align="center" justify="center">
-                <Title order={6}>Admin sedang memproses transaksimu</Title>
-                <Paper radius={1000} w={100} h={100}>
-                  <Center h={"100%"}>
-                    <Loader size={"lg"} color="orange" variant="bars" />
-                  </Center>
-                </Paper>
-                <Title order={6}>Mohon menunggu !</Title>
-              </Stack>
-            </Paper>
-          </Stack>
-        </Paper>
-        <Paper p={"sm"} withBorder>
-          <Paper bg={"gray.1"} p={5} radius={"md"}>
-            <Group position="center">
-              <Stack spacing={0}>
-                <Text fz={"xs"} fs={"italic"}>
-                  Hubungi admin jika tidak kunjung di proses!
-                </Text>
-                <Text fz={"xs"} fs={"italic"}>
-                  Klik pada logo Whatsapp ini.
-                </Text>
-              </Stack>
-              <Link
-                color="white"
+      {data.DonasiMaster_StatusInvoice.id === "1" ? (
+        <>
+          <Center h={"50vh"}>
+            <Loader color="yellow" />
+          </Center>
+        </>
+      ) : (
+        <Stack>
+          <Paper
+            style={{
+              backgroundColor: AccentColor.blue,
+              border: `2px solid ${AccentColor.darkblue}`,
+              padding: "15px",
+              cursor: "pointer",
+              borderRadius: "10px",
+              color: "white",
+            }}
+          >
+            <Stack spacing={"md"}>
+              <Paper
                 style={{
-                  color: "black",
-                  textDecoration: "none",
+                  backgroundColor: MainColor.darkblue,
+                  border: `2px solid ${AccentColor.darkblue}`,
+                  padding: "15px",
+                  cursor: "pointer",
+                  borderRadius: "10px",
+                  color: "white",
                 }}
-                target="_blank"
-                href={
-                  `https://wa.me/+${nomorAdmin.nomor}?text=Hallo Admin , Saya ada kendala dalam proses transfer donasi!`
-                }
               >
-                <IconBrandWhatsapp size={40} color={Warna.hijau_cerah} />
-              </Link>
-            </Group>
+                <Stack align="center" justify="center">
+                  <Title order={6}>Admin sedang memproses transaksimu</Title>
+                  <Paper radius={1000} w={100} h={100}>
+                    <Center h={"100%"}>
+                      <Loader size={"lg"} color="yellow" variant="dots" />
+                    </Center>
+                  </Paper>
+                  <Title order={6}>Mohon menunggu !</Title>
+                </Stack>
+              </Paper>
+            </Stack>
           </Paper>
-        </Paper>
-      </Stack>
+          <Paper
+            style={{
+              backgroundColor: AccentColor.blue,
+              border: `2px solid ${AccentColor.darkblue}`,
+              padding: "15px",
+              cursor: "pointer",
+              borderRadius: "10px",
+              color: "white",
+            }}
+          >
+            <Paper
+              style={{
+                backgroundColor: AccentColor.darkblue,
+                border: `2px solid ${AccentColor.darkblue}`,
+                padding: "15px",
+                cursor: "pointer",
+                borderRadius: "10px",
+                color: "white",
+              }}
+            >
+              <Group position="center">
+                <Stack spacing={0}>
+                  <Text fz={"xs"} fs={"italic"}>
+                    Hubungi admin jika tidak kunjung di proses!
+                  </Text>
+                  <Text fz={"xs"} fs={"italic"}>
+                    Klik pada logo Whatsapp ini.
+                  </Text>
+                </Stack>
+                <Link
+                  color="white"
+                  style={{
+                    color: "black",
+                    textDecoration: "none",
+                  }}
+                  target="_blank"
+                  href={`https://wa.me/+${nomorAdmin.nomor}?text=Hallo Admin , Saya ada kendala dalam proses transfer donasi!`}
+                >
+                  <IconBrandWhatsapp size={40} color={Warna.hijau_cerah} />
+                </Link>
+              </Group>
+            </Paper>
+          </Paper>
+        </Stack>
+      )}
     </>
   );
 }

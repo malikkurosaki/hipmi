@@ -1,22 +1,21 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import { Warna } from "@/app/lib/warna";
+import UIGlobal_LayoutTamplate from "@/app_modules/_global/ui/ui_layout_tamplate";
 import {
-  AppShell,
-  Header,
-  Group,
-  CloseButton,
   ActionIcon,
-  Footer,
-  Center,
   Button,
-  Text,
+  Center,
+  CloseButton,
+  Footer,
+  Group,
+  Header,
+  Text
 } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { gs_investasiFooter } from "../../g_state";
-import AppComponentGlobal_LayoutTamplate from "@/app_modules/_global/component_layout_tamplate";
+import { gs_investas_menu } from "../../g_state";
 
 export default function LayoutStatusTransaksiInvestasi_Gagal({
   children,
@@ -24,18 +23,18 @@ export default function LayoutStatusTransaksiInvestasi_Gagal({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [hotMenu, setHotMenu] = useAtom(gs_investasiFooter);
+  const [hotMenu, setHotMenu] = useAtom(gs_investas_menu);
 
   return (
     <>
-      <AppComponentGlobal_LayoutTamplate
+      <UIGlobal_LayoutTamplate
         header={
           <Header height={50}>
             <Group position="apart" align="center" h={50} px={"md"}>
               <CloseButton
                 size={"md"}
                 onClick={() => {
-                  router.push(RouterInvestasi.main_transaksi);
+                  router.push(RouterInvestasi_OLD.main_transaksi);
                   setHotMenu(3);
                 }}
               />
@@ -52,7 +51,7 @@ export default function LayoutStatusTransaksiInvestasi_Gagal({
                 radius={50}
                 bg={Warna.biru}
                 onClick={() => {
-                  router.push(RouterInvestasi.main_transaksi), setHotMenu(3);
+                  router.push(RouterInvestasi_OLD.main_transaksi), setHotMenu(3);
                 }}
               >
                 Kembali Ke Transaksi
@@ -62,7 +61,7 @@ export default function LayoutStatusTransaksiInvestasi_Gagal({
         }
       >
         {children}
-      </AppComponentGlobal_LayoutTamplate>
+      </UIGlobal_LayoutTamplate>
     </>
   );
 }

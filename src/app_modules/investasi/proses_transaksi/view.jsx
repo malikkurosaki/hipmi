@@ -1,29 +1,29 @@
 "use client";
 
-import { Warna } from "@/app/lib/warna";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import {
   Box,
+  Button,
+  Center,
+  Divider,
   Group,
   NumberInput,
-  Divider,
-  Center,
-  Button,
   Text,
-  Container,
-  Flex,
 } from "@mantine/core";
 import { useFocusTrap, useShallowEffect } from "@mantine/hooks";
-import { useRouter } from "next/navigation";
-import { MODEL_Investasi } from "../model/model_investasi";
-import { MODEL_PROFILE_OLD } from "@/app_modules/home/model/user_profile";
-import { useEffect, useState } from "react";
-import getTokenTransaksi from "../fun/get_token_transaksi";
-import toast from "react-simple-toasts";
-import funUpdatePaymentInvestasi from "../fun/fun_update_payment";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
 import { useAtom } from "jotai";
-import { gs_investasiFooter, gs_midtrans_snap } from "../g_state";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import funUpdateInvestasi from "../fun/fun_update_investasi";
+import funUpdatePaymentInvestasi from "../fun/fun_update_payment";
+import getTokenTransaksi from "../fun/get_token_transaksi";
+import { gs_investas_menu } from "../g_state";
 
 export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
   const router = useRouter();
@@ -35,13 +35,13 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
   );
   const [total, setTotal] = useState(0);
   const [jumlah, setJumlah] = useState(0);
-  const [hotmenu, setHotmenu] = useAtom(gs_investasiFooter);
+  const [hotmenu, setHotmenu] = useAtom(gs_investas_menu);
   const [snapShow, setSnapShow] = useState(false);
 
   useShallowEffect(() => {
-    setJumlah(0)
-    setTotal(0)
-  },[])
+    setJumlah(0);
+    setTotal(0);
+  }, []);
 
   // console.log(userLogin.id);
   // console.log(investasi);
@@ -76,7 +76,8 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
               async (resUpdate) => {
                 if (resUpdate.status === 200) {
                   // console.log(resUpdate.message)
-                  const lembarTersisa = investasi.sisaLembar - resUpdate.data.quantity;
+                  const lembarTersisa =
+                    investasi.sisaLembar - resUpdate.data.quantity;
 
                   const body2 = {
                     id: investasi.id,
@@ -84,37 +85,39 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
                   };
 
                   await funUpdateInvestasi(body2, investasi);
-                  toast(res.message);
+                  ComponentGlobal_NotifikasiBerhasil(res.message);
                   router.push(
-                    RouterInvestasi.status_pesanan + `${resUpdate.data.id}`
+                    RouterInvestasi_OLD.status_pesanan + `${resUpdate.data.id}`
                   );
 
                   setHotmenu(3);
                 } else {
-                  toast(res.message);
+                  ComponentGlobal_NotifikasiGagal(res.message);
                 }
               }
             );
           },
           onPending: async function (result) {
-            // console.log("pending");
-            // console.log(result);
+            console.log(result);
             // await funUpdatePaymentInvestasi(result, res.dataTransaksi.id);
-            // toast(res.message);
+            // setHotmenu(3);
+            // ComponentGlobal_NotifikasiBerhasil(res.message);
             // router.push(
             //   RouterInvestasi.status_pesanan + `${res.dataTransaksi.id}`
             // );
-            // router.push(RouterInvestasi.detail + `${investasi.id}`)
-            await router.push(RouterInvestasi.detail + `${investasi.id}`);
-            setJumlah(0); 
+            // setSnapShow(false);
+            // setJumlah(0);
           },
           onClose: async function (result) {
-            await router.push(RouterInvestasi.detail + `${investasi.id}`);
+            console.log(result);
+            // router.replace(RouterInvestasi.detail + `${investasi.id}`);
 
             // if (result === undefined) {
             //   const data = {
             //     status_code: "400",
             //   };
+            //     router.back();
+            //     setJumlah(0);
             //   // await funUpdatePaymentInvestasi(data, res.dataTransaksi.id);
             //   router.push(RouterInvestasi.main_transaksi);
             //   setSnapShow(false);
@@ -124,7 +127,7 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
           },
         });
       } else {
-        toast("Gagal Membuat Token");
+        ComponentGlobal_NotifikasiGagal("Gagal Membuat Token");
       }
     });
   }
@@ -150,7 +153,16 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
       {/* {!snapShow && (
         
       )} */}
-      <Box>
+      <Box
+        style={{
+          padding: "15px",
+          backgroundColor: AccentColor.darkblue,
+          border: `2px solid ${AccentColor.blue}`,
+          borderRadius: "10px",
+          color: "white",
+          marginBottom: "15px",
+        }}
+      >
         {/* Sisa Lembar Saham */}
         <Group position="apart" mb={"md"}>
           <Text>Sisa Lembar Saham</Text>
@@ -193,6 +205,7 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
               setJumlah(val);
               // console.log(val);
             }}
+            inputMode="numeric"
           />
         </Group>
 
@@ -211,22 +224,22 @@ export default function ProsesTransaksiInvestasi({ dataInvestasi, userLogin }) {
         </Group>
 
         <Center>
-          {jumlah < 10 ? (
-            <Button w={350} radius={50} bg={"gray"} disabled>
-              Beli 
-            </Button>
-          ) : (
-            <Button
-              w={350}
-              radius={50}
-              bg={Warna.biru}
-              onClick={() => {
-                onProses();
-              }}
-            >
-              Beli 
-            </Button>
-          )}
+          <Button
+            disabled={jumlah < 10}
+            w={350}
+            radius={50}
+            onClick={() => {
+              onProses();
+            }}
+            bg={MainColor.yellow}
+            color="yellow"
+            c={"black"}
+            style={{
+              transition: "0.5s",
+            }}
+          >
+            Beli
+          </Button>
         </Center>
       </Box>
 

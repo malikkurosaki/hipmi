@@ -1,12 +1,14 @@
 "use client";
 
-import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
-import { Paper, Stack, Group, Title, Text, Grid, Card } from "@mantine/core";
-import moment from "moment";
-import { MODEL_EVENT } from "../model/interface";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import {
+  ComponentGlobal_CardLoadingOverlay,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
+import { Card, Group, Stack, Text, Title } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ComponentGlobal_CardLoadingOverlay from "@/app_modules/_global/loading_card";
+import { MODEL_EVENT } from "../model/interface";
 
 export default function ComponentEvent_BoxListStatus({
   data,
@@ -21,31 +23,25 @@ export default function ComponentEvent_BoxListStatus({
 
   return (
     <>
-      <Card
-        shadow="lg"
-        radius={"md"}
-        p={"md"}
-        withBorder
-        mb={"sm"}
-        onClick={() => {
+      <ComponentGlobal_CardStyles
+        marginBottom={"15px"}
+        onClickHandler={() => {
           setEventId(data?.id);
           setVisible(true);
           router.push(path + data.id);
         }}
       >
         <Stack>
-          <Grid>
-            <Grid.Col span={8}>
-              <Title order={6} truncate>
-                {data.title}
-              </Title>
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <Text fz={"sm"} truncate>
-                {moment(data.tanggal).format("ll")}
-              </Text>
-            </Grid.Col>
-          </Grid>
+          <Group w={"100%"} position="apart" grow>
+            <Title order={5} lineClamp={1}>
+              {data.title}
+            </Title>
+            <Text align="right" fz={"sm"} lineClamp={1}>
+              {new Intl.DateTimeFormat("id-ID", {
+                dateStyle: "medium",
+              }).format(data.tanggal)}
+            </Text>
+          </Group>
 
           <Text fz={"sm"} lineClamp={2}>
             {data.deskripsi}
@@ -56,7 +52,7 @@ export default function ComponentEvent_BoxListStatus({
         ) : (
           ""
         )}
-      </Card>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

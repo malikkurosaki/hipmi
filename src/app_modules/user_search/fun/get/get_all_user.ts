@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export async function userSearch_getAllUser({
   page,
@@ -10,7 +10,8 @@ export async function userSearch_getAllUser({
   page: number;
   search?: string;
 }) {
-  const userLoginId = await user_getOneUserId();
+  const userLoginId = await funGetUserIdByToken();
+
   const takeData = 20;
   const skipData = page * takeData - takeData;
 
@@ -23,32 +24,30 @@ export async function userSearch_getAllUser({
     where: {
       active: true,
       masterUserRoleId: "1",
-      username: {
-        contains: search,
-        mode: "insensitive",
+      Profile: {
+        name: {
+          contains: search,
+          mode: "insensitive",
+        },
       },
+
       NOT: {
         Profile: null,
       },
       OR: [
         {
           NOT: {
-            id: userLoginId,
+            id: userLoginId as string,
           },
         },
       ],
     },
-    select: {
-      id: true,
-      username: true,
-      nomor: true,
-      active: true,
-      masterUserRoleId: true,
+    include: {
       Profile: {
         select: {
           id: true,
           name: true,
-          imagesId: true,
+          imageId: true,
         },
       },
     },

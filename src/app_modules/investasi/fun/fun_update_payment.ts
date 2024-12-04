@@ -1,9 +1,9 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { MODEL_Investasi } from "../model/model_investasi";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import { revalidatePath } from "next/cache";
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 
 export interface Model_Midtrans_Success {
   status_code: string;
@@ -70,7 +70,7 @@ export default async function funUpdatePaymentInvestasi(
 
     if (!res) return { status: 400, message: "Gagal update transaksi" };
 
-    revalidatePath(RouterInvestasi.main_transaksi);
+    revalidatePath(RouterInvestasi_OLD.main_transaksi);
 
     return {
       status: 200,

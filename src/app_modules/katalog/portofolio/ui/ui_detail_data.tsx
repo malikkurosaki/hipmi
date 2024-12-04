@@ -1,13 +1,28 @@
-import { Paper, Title, Stack, Grid, Text } from "@mantine/core";
+import { APIs } from "@/app/lib";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_LoadImage } from "@/app_modules/_global/component";
+import {
+  Box,
+  Divider,
+  Grid,
+  Group,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import {
   IconBuildingSkyscraper,
-  IconPhoneCall,
-  IconMapPin,
   IconListDetails,
+  IconMapPin,
+  IconPhoneCall,
   IconPinned,
 } from "@tabler/icons-react";
 import { MODEL_PORTOFOLIO } from "../model/interface";
-import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 
 export function Portofolio_UiDetailData({
   dataPorto,
@@ -26,48 +41,80 @@ export function Portofolio_UiDetailData({
           color: "white",
         }}
       >
-        <Title order={6}>Data Bisnis</Title>
-        <Stack p={"sm"}>
-          <Grid>
-            <Grid.Col span={2}>
-              <IconBuildingSkyscraper />
-            </Grid.Col>
-            <Grid.Col span={"auto"}>
-              <Text>{dataPorto?.namaBisnis}</Text>
-            </Grid.Col>
-          </Grid>
-          <Grid>
-            <Grid.Col span={2}>
-              <IconPhoneCall />
-            </Grid.Col>
-            <Grid.Col span={"auto"}>
-              <Text>+{dataPorto?.tlpn}</Text>
-            </Grid.Col>
-          </Grid>
-          <Grid>
-            <Grid.Col span={2}>
-              <IconMapPin />
-            </Grid.Col>
-            <Grid.Col span={"auto"}>
-              <Text>{dataPorto?.alamatKantor}</Text>
-            </Grid.Col>
-          </Grid>
-          <Grid>
-            <Grid.Col span={2}>
-              <IconListDetails />
-            </Grid.Col>
-            <Grid.Col span={"auto"}>
-              <Text>{dataPorto?.MasterBidangBisnis.name}</Text>
-            </Grid.Col>
-          </Grid>
-          <Grid>
-            <Grid.Col span={2}>
+        <Stack>
+          <Group position="apart">
+            <Title order={6}>Data Bisnis</Title>
+            <Text color={MainColor.yellow} fw={"bold"}>
+              id: {"  "}
+              <Text span inherit>
+                #{dataPorto.id_Portofolio}
+              </Text>
+            </Text>
+          </Group>
+          <Stack>
+            <SimpleGrid
+              cols={2}
+              spacing={"md"}
+              breakpoints={[
+                { maxWidth: "62rem", cols: 2, spacing: "md" },
+                { maxWidth: "48rem", cols: 1, spacing: "sm" },
+                { maxWidth: "36rem", cols: 1, spacing: "sm" },
+              ]}
+            >
+              <Box>
+                <Paper>
+                  <ComponentGlobal_LoadImage fileId={dataPorto.logoId} />
+                </Paper>
+              </Box>
+
+              <Box>
+                <Grid>
+                  <Grid.Col span={2}>
+                    <IconBuildingSkyscraper />
+                  </Grid.Col>
+                  <Grid.Col span={"auto"}>
+                    <Text>{dataPorto?.namaBisnis}</Text>
+                  </Grid.Col>
+                </Grid>
+                <Grid>
+                  <Grid.Col span={2}>
+                    <IconListDetails />
+                  </Grid.Col>
+                  <Grid.Col span={"auto"}>
+                    <Text>{dataPorto?.MasterBidangBisnis.name}</Text>
+                  </Grid.Col>
+                </Grid>
+                <Grid>
+                  <Grid.Col span={2}>
+                    <IconPhoneCall />
+                  </Grid.Col>
+                  <Grid.Col span={"auto"}>
+                    <Text>+{dataPorto?.tlpn}</Text>
+                  </Grid.Col>
+                </Grid>
+                <Grid>
+                  <Grid.Col span={2}>
+                    <IconMapPin />
+                  </Grid.Col>
+                  <Grid.Col span={"auto"}>
+                    <Text>{dataPorto?.alamatKantor}</Text>
+                  </Grid.Col>
+                </Grid>
+              </Box>
+            </SimpleGrid>
+          </Stack>
+
+          <Divider color={AccentColor.softblue} />
+
+          <Stack spacing={5}>
+            <Group spacing={"xs"}>
               <IconPinned />
-            </Grid.Col>
-            <Grid.Col span={"auto"}>
-              <Text>{dataPorto?.deskripsi}</Text>
-            </Grid.Col>
-          </Grid>
+              <Text fz={"sm"} fw={"bold"}>
+                Tentang Kami
+              </Text>
+            </Group>
+            <Text px={"sm"}>{dataPorto?.deskripsi}</Text>
+          </Stack>
         </Stack>
       </Paper>
     </>

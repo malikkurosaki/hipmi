@@ -1,92 +1,95 @@
 "use client";
 
-import { Warna } from "@/app/lib/warna";
-import {
-  Flex,
-  Title,
-  TextInput,
-  Button,
-  Text,
-  Center,
-  PinInput,
-  Stack,
-  BackgroundImage,
-} from "@mantine/core";
-import {
-  IconCircleLetterH,
-  IconCloudLockOpen,
-  IconUserCircle,
-} from "@tabler/icons-react";
-import { gs_nomor } from "../state/state";
-import { useAtom } from "jotai";
-import { useState } from "react";
-import { myConsole } from "@/app/fun/my_console";
-import toast from "react-simple-toasts";
-import { ApiHipmi } from "@/app/lib/api";
-import { useRouter } from "next/navigation";
-import _ from "lodash";
-import { useFocusTrap } from "@mantine/hooks";
-import { Auth_funRegister } from "../fun/fun_register";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { IconPencilCheck } from "@tabler/icons-react";
-import { RouterHome } from "@/app/lib/router_hipmi/router_home";
-import { auth_funEditAktivasiKodeOtpById } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
-import {
-  AccentColor,
-  MainColor,
-} from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import { UIGlobal_LayoutDefault } from "@/app_modules/_global/ui";
+import { Button, Stack, Text, TextInput, Title } from "@mantine/core";
+import { useFocusTrap, useShallowEffect } from "@mantine/hooks";
+import { IconUserCircle } from "@tabler/icons-react";
+import _ from "lodash";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { auth_funDeleteAktivasiKodeOtpByNomor } from "../fun/fun_edit_aktivasi_kode_otp_by_id";
+import Register_SkeletonView from "./skeleton";
 
-export default function Register({ dataOtp }: { dataOtp: any }) {
+export default function Register() {
   const router = useRouter();
-  const [nomor, setNomor] = useState(dataOtp.nomor);
+  const [nomor, setNomor] = useState("");
   const [value, setValue] = useState("");
   const [isValue, setIsValue] = useState(false);
   const focusTrapRef = useFocusTrap();
   const [loading, setLoading] = useState(false);
 
+  useShallowEffect(() => {
+    const kodeId = localStorage.getItem("hipmi_auth_code_id");
+    if (kodeId != null) {
+      onCheckAuthCode({ kodeId: kodeId as string, onSetData: setNomor });
+    } else {
+      console.log("code id not found");
+    }
+  }, [setNomor]);
+
+  async function onCheckAuthCode({
+    kodeId,
+    onSetData,
+  }: {
+    kodeId: string;
+    onSetData: any;
+  }) {
+    const res = await fetch(`/api/auth/check?id=${kodeId}`);
+    const result = await res.json();
+
+    onSetData(result.data.nomor);
+  }
+
   async function onRegistarsi() {
-    const body = {
+    const data = {
       username: value,
       nomor: nomor,
     };
-    // console.log(body);
 
-    if (body.username === "") {
-      setIsValue(true);
-      return null;
-    }
-    if (body.username.length < 5) return null;
-    if (_.values(body.username).includes(" ")) return null;
+    try {
+      setLoading(true);
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify({
+          data,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    await Auth_funRegister(body).then(async (res) => {
+      const result = await res.json();
+
       if (res.status === 200) {
-        await auth_funEditAktivasiKodeOtpById(dataOtp.id).then((val) => {
-          if (val.status === 200) {
-            ComponentGlobal_NotifikasiBerhasil(res.message);
-            setLoading(true);
-            router.push(RouterHome.main_home, { scroll: false });
-          } else {
-            ComponentGlobal_NotifikasiPeringatan(val.message);
-          }
+        localStorage.removeItem("hipmi_auth_code_id");
+        ComponentGlobal_NotifikasiBerhasil(result.message);
+        router.push("/dev/home", { scroll: false });
+
+        await auth_funDeleteAktivasiKodeOtpByNomor({
+          nomor: data.nomor,
         });
-      } else {
-        ComponentGlobal_NotifikasiPeringatan(res.message);
       }
-    });
+
+      if (res.status === 400) {
+        setLoading(false);
+        ComponentGlobal_NotifikasiPeringatan(result.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
     <>
-      {/* <pre>{JSON.stringify(dataOtp,null,2)}</pre> */}
-      <BackgroundImage
-        src={"/aset/global/main_background.png"}
-        h={"100vh"}
-        // pos={"static"}
-      >
-        <Center h={"100vh"}>
-          <Stack h={"100%"} align="center" justify="center" spacing={70}>
+      <UIGlobal_LayoutDefault>
+        {nomor == "" ? (
+          <Register_SkeletonView />
+        ) : (
+          <Stack h={"100vh"} align="center" justify="center" spacing={50}>
             <Title order={2} c={MainColor.yellow}>
               REGISTRASI
             </Title>
@@ -94,7 +97,7 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
             <IconUserCircle size={100} color="white" />
 
             <Stack spacing={"sm"} w={300}>
-              <Text fz={10} c={"white"}>
+              <Text align="center" c={"white"}>
                 Anda akan terdaftar dengan nomor berikut{" "}
                 <Text inherit span fw={"bold"}>
                   +{nomor}
@@ -125,6 +128,11 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
               />
               <Stack>
                 <Button
+                  disabled={
+                    value === "" ||
+                    value.length < 5 ||
+                    _.values(value).includes(" ")
+                  }
                   loading={loading ? true : false}
                   loaderPosition="center"
                   radius={"md"}
@@ -133,9 +141,6 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
                   c={"black"}
                   bg={MainColor.yellow}
                   color={"yellow"}
-                  style={{
-                    borderColor: AccentColor.yellow,
-                  }}
                   onClick={() => {
                     onRegistarsi();
                   }}
@@ -145,8 +150,8 @@ export default function Register({ dataOtp }: { dataOtp: any }) {
               </Stack>
             </Stack>
           </Stack>
-        </Center>
-      </BackgroundImage>
+        )}
+      </UIGlobal_LayoutDefault>
     </>
   );
 }

@@ -1,8 +1,8 @@
 import { Admin_TablePublishInvestasi } from "@/app_modules/admin/investasi";
-import Admin_funGetAllInvestasi from "@/app_modules/admin/investasi/fun/get_all_investasi";
+import { adminInvestasi_funGetAllPublish } from "@/app_modules/admin/investasi/fun/get/get_all_publish";
 
 export default async function Page() {
-  const listInvestasi = await Admin_funGetAllInvestasi();
+  const listInvestasi = await adminInvestasi_funGetAllPublish({page: 1});
 
   return (
     <>

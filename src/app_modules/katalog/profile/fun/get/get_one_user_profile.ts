@@ -7,18 +7,8 @@ export async function Profile_getOneProfileAndUserById(profileId: string) {
     where: {
       id: profileId,
     },
-    select: {
-      userId: true,
+    include: {
       User: true,
-      id: true,
-      name: true,
-      email: true,
-      alamat: true,
-      jenisKelamin: true,
-      imagesId: true,
-      imagesBackgroundId: true,
-      ImageProfile: true,
-      ImagesBackground: true,
     },
   });
   // console.log(data)

@@ -2,11 +2,13 @@
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
 import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import {
   Box,
   Button,
-  Grid,
   Group,
-  NumberInput,
   Paper,
   Stack,
   Text,
@@ -20,11 +22,11 @@ import {
   IconMoodSmileDizzy,
   IconMoodXd,
 } from "@tabler/icons-react";
+import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { NotifPeringatan } from "../../component/notifikasi/notif_peringatan";
-import { useAtom } from "jotai";
 import { gs_proses_donasi } from "../../global_state";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 
 const listNominal = [
   {
@@ -57,9 +59,12 @@ export default function MasukanDonasi({ donasiId }: { donasiId: string }) {
   const [prosesDonasi, setProsesDonasi] = useAtom(gs_proses_donasi);
 
   async function onProses(nominal: number) {
-    if (nominal === 0) return NotifPeringatan("Masukan Nominal");
+    if (nominal === 0)
+      return ComponentGlobal_NotifikasiPeringatan("Masukan Nominal");
     if (nominal < 10000)
-      return NotifPeringatan("Mohon maaf, Minimal donasi Rp. 10.000");
+      return ComponentGlobal_NotifikasiPeringatan(
+        "Mohon maaf, Minimal donasi Rp. 10.000"
+      );
     setProsesDonasi({
       ...prosesDonasi,
       nominal: "" + nominal,
@@ -75,12 +80,16 @@ export default function MasukanDonasi({ donasiId }: { donasiId: string }) {
           {listNominal.map((e) => (
             <Paper
               key={e.id}
-              withBorder
-              radius={"md"}
-              p={"sm"}
-              shadow="lg"
-              mb={"md"}
               onClick={() => onProses(e.jumlah)}
+              style={{
+                backgroundColor: AccentColor.blue,
+                border: `2px solid ${AccentColor.darkblue}`,
+                padding: "15px",
+                cursor: "pointer",
+                borderRadius: "10px",
+                color: "white",
+                marginBottom: "15px",
+              }}
             >
               <Group position="apart">
                 <Group>
@@ -97,7 +106,17 @@ export default function MasukanDonasi({ donasiId }: { donasiId: string }) {
             </Paper>
           ))}
         </Box>
-        <Paper p={"sm"} withBorder shadow="lg">
+
+        <Paper
+          style={{
+            backgroundColor: AccentColor.blue,
+            border: `2px solid ${AccentColor.darkblue}`,
+            padding: "15px",
+            cursor: "pointer",
+            borderRadius: "10px",
+            color: "white",
+          }}
+        >
           <Stack>
             <Text>Nominal Lainnya</Text>
             <TextInput
@@ -133,6 +152,9 @@ export default function MasukanDonasi({ donasiId }: { donasiId: string }) {
           disabled={value === 0 || value < 10000}
           radius={"xl"}
           onClick={() => onProses(value)}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
         >
           Lanjutan Pembayaran
         </Button>

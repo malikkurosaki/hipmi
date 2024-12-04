@@ -1,36 +1,26 @@
 "use client";
 
+import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
+import { MODEL_EVENT } from "@/app_modules/event/model/interface";
 import {
-  Avatar,
-  Box,
   Button,
   Center,
-  Divider,
-  Grid,
   Group,
-  Loader,
-  Modal,
+  Pagination,
   Paper,
-  SimpleGrid,
+  ScrollArea,
   Spoiler,
   Stack,
   Table,
   Text,
+  TextInput,
   Title,
 } from "@mantine/core";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
-import {
-  MODEL_EVENT,
-  MODEL_EVENT_PESERTA,
-} from "@/app_modules/event/model/interface";
-import { data } from "autoprefixer";
-import _ from "lodash";
-import moment from "moment";
-import { IconEyeShare } from "@tabler/icons-react";
-import { useDisclosure, useShallowEffect } from "@mantine/hooks";
+import { IconCircleCheck, IconSearch } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { AdminEvent_getListPesertaById } from "../fun/get/get_list_peserta_by_id";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
+import { adminEvent_funGetListAllRiwayat } from "../fun";
 
 export default function AdminEvent_Riwayat({
   listRiwayat,
@@ -47,153 +37,192 @@ export default function AdminEvent_Riwayat({
   );
 }
 
-function DetailRiwayat({ listRiwayat }: { listRiwayat: MODEL_EVENT[] }) {
-  const [opened, setOpen] = useState(false);
-  const [peserta, setPeserta] = useState<MODEL_EVENT_PESERTA[]>();
+function DetailRiwayat({ listRiwayat }: { listRiwayat: any }) {
+  const router = useRouter();
   const [eventId, setEventId] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const TableRows = listRiwayat.map((e, i) => (
-    <tr key={e.id}>
+  const [data, setData] = useState<MODEL_EVENT[]>(listRiwayat.data);
+  const [isNPage, setNPage] = useState(listRiwayat.nPage);
+  const [isActivePage, setActivePage] = useState(1);
+  const [isSearch, setSearch] = useState("");
+
+  async function onSearch(s: string) {
+    setSearch(s);
+    const loadData = await adminEvent_funGetListAllRiwayat({
+      page: 1,
+      search: s,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  async function onPageClick(p: any) {
+    setActivePage(p);
+    const loadData = await adminEvent_funGetListAllRiwayat({
+      search: isSearch,
+      page: p,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  const TableRows = data.map((e, i) => (
+    <tr key={i}>
       <td>
         <Button
-          loading={e.id === eventId ? (loading === true ? true : false) : false}
+          loaderPosition="center"
+          loading={e.id === eventId && loading ? true : false}
           color={"green"}
-          leftIcon={<IconEyeShare />}
+          leftIcon={<IconCircleCheck />}
           radius={"xl"}
-          onClick={async () => {
+          onClick={() => {
             setEventId(e.id);
             setLoading(true);
-            await new Promise((r) => setTimeout(r, 500));
-            await AdminEvent_getListPesertaById(e.id).then((res: any) => {
-              setLoading(false);
-              setPeserta(res);
-            });
-            setOpen(true);
+            router.push(RouterAdminEvent.detail_peserta + e.id);
           }}
         >
-          Peserta
+          Lihat Peserta
         </Button>
       </td>
-      <td>{e?.Author?.Profile?.name}</td>
-      <td>{e?.title}</td>
-      <td>{e?.lokasi}</td>
-      <td>{e?.EventMaster_TipeAcara?.name}</td>
-      <td>{e?.tanggal.toLocaleString("id-ID", { dateStyle: "full" })}</td>
+
       <td>
-        {e.tanggal.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        })}
+        <Center w={200}>
+          <Text>{e?.Author?.username}</Text>
+        </Center>
       </td>
       <td>
-        <Spoiler hideLabel="sembunyikan" maxHeight={50} showLabel="tampilkan">
-          {e.deskripsi}
-        </Spoiler>
+        <Center w={200}>
+          <Text lineClamp={2}>{e.title}</Text>
+        </Center>
+      </td>
+      <td>
+        <Center w={200}>
+          <Text>{e.lokasi}</Text>
+        </Center>
+      </td>
+      <td>
+        <Center w={200}>
+          <Text>{e.EventMaster_TipeAcara.name}</Text>
+        </Center>
+      </td>
+
+      <td>
+        <Center w={200}>
+          <Text align="center">
+            {" "}
+            {new Intl.DateTimeFormat("id-ID", {
+              dateStyle: "full",
+            }).format(e?.tanggal)}
+            ,{" "}
+            <Text span inherit>
+              {new Intl.DateTimeFormat("id-ID", {
+                timeStyle: "short",
+              }).format(e?.tanggal)}
+            </Text>
+          </Text>
+        </Center>
+      </td>
+      <td>
+        <Center w={200}>
+          <Text align="center">
+            {" "}
+            {new Intl.DateTimeFormat("id-ID", {
+              dateStyle: "full",
+            }).format(e?.tanggalSelesai)}
+            ,{" "}
+            <Text span inherit>
+              {new Intl.DateTimeFormat("id-ID", {
+                timeStyle: "short",
+              }).format(e?.tanggalSelesai)}
+            </Text>
+          </Text>
+        </Center>
+      </td>
+
+      <td>
+        <Center w={400}>
+          <Spoiler hideLabel="sembunyikan" maxHeight={50} showLabel="tampilkan">
+            {e.deskripsi}
+          </Spoiler>
+        </Center>
       </td>
     </tr>
   ));
 
-  useShallowEffect(() => {
-    getAllPeserta(eventId);
-  }, [eventId]);
-
-  async function getAllPeserta(eventId: string) {
-    await AdminEvent_getListPesertaById(eventId).then((res: any) =>
-      setPeserta(res)
-    );
-  }
-
   return (
     <>
-      <Modal
-        opened={opened}
-        onClose={() => setOpen(false)}
-        size={"md"}
-        // closeOnClickOutside={false}
-        withCloseButton={false}
-      >
-        <Paper>
-          <Stack>
-            <Center>
-              <Title order={3}>Daftar Peserta</Title>
-            </Center>
-            <Stack>
-              {peserta?.map((e) => (
-                <Stack key={e.id} spacing={"xs"}>
-                  <Grid>
-                    <Grid.Col span={"content"}>
-                      <Avatar
-                        sx={{ borderStyle: "solid", borderWidth: "0.5px" }}
-                        radius={"xl"}
-                        src={
-                          RouterProfile.api_foto_profile +
-                          e?.User?.Profile?.imagesId
-                        }
-                      />
-                    </Grid.Col>
-                    <Grid.Col span={"auto"}>
-                      <Group align="center" h={"100%"}>
-                        <Text>{e?.User?.Profile?.name}</Text>
-                      </Group>
-                    </Grid.Col>
-                  </Grid>
-                  <Divider />
-                </Stack>
-              ))}
-            </Stack>
-          </Stack>
-        </Paper>
-      </Modal>
-
-      <Box>
-        <Box bg={"gray.1"} p={"xs"}>
-          <Title order={6} c={"gray"}>
-            RIWAYAT
-          </Title>
-        </Box>
-        <Table
-          withBorder
-          verticalSpacing={"md"}
-          horizontalSpacing={"xl"}
-          p={"md"}
-          striped
-          highlightOnHover
+      <Stack spacing={"xs"} h={"100%"}>
+        <Group
+          position="apart"
+          bg={"gray.4"}
+          p={"xs"}
+          style={{ borderRadius: "6px" }}
         >
-          <thead>
-            <tr>
-              <th>
-                <Center>Aksi</Center>
-              </th>
-              <th>
-                <Center>Author</Center>
-              </th>
-              <th>
-                <Center>Judul</Center>
-              </th>
-              <th>
-                <Center>Lokasi</Center>
-              </th>
-              <th>Tipe Acara</th>
-              <th>Tanggal</th>
-              <th>Jam</th>
-              <th>
-                <Center>Deskripsi</Center>
-              </th>
-            </tr>
-          </thead>
-          <tbody>{TableRows}</tbody>
-        </Table>
-        <Center>
-          {_.isEmpty(TableRows) ? (
-            <Center h={"50vh"}>
-              <Title order={6}>Tidak Ada Data</Title>
-            </Center>
-          ) : (
-            ""
-          )}
-        </Center>
-      </Box>
+          <Title order={4}>Riwayat</Title>
+          <TextInput
+            icon={<IconSearch size={20} />}
+            radius={"xl"}
+            placeholder="Masukan judul"
+            onChange={(val) => {
+              onSearch(val.currentTarget.value);
+            }}
+          />
+        </Group>
+
+        <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
+          <ScrollArea w={"100%"} h={"90%"}>
+            <Table
+              verticalSpacing={"md"}
+              horizontalSpacing={"md"}
+              p={"md"}
+              w={"100%"}
+              striped
+              highlightOnHover
+            >
+              <thead>
+                <tr>
+                  <th>
+                    <Center>Aksi</Center>
+                  </th>
+                  <th>
+                    <Center>Username</Center>
+                  </th>
+                  <th>
+                    <Center>Judul</Center>
+                  </th>
+                  <th>
+                    <Center>Lokasi</Center>
+                  </th>
+                  <th>
+                    <Center>Tipe Acara</Center>
+                  </th>
+                  <th>
+                    <Center>Tanggal & Waktu Mulai</Center>
+                  </th>
+                  <th>
+                    <Center>Tanggal & Waktu Selesai</Center>
+                  </th>
+                  <th>
+                    <Center>Deskripsi</Center>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>{TableRows}</tbody>
+            </Table>
+          </ScrollArea>
+
+          <Center mt={"xl"}>
+            <Pagination
+              value={isActivePage}
+              total={isNPage}
+              onChange={(val) => {
+                onPageClick(val);
+              }}
+            />
+          </Center>
+        </Paper>
+      </Stack>
     </>
   );
 }

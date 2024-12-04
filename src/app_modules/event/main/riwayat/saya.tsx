@@ -1,61 +1,54 @@
 "use client";
 
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
-import { Card, Stack, Grid, Title, Text, Center } from "@mantine/core";
-import moment from "moment";
-import { MODEL_EVENT } from "../../model/interface";
-import { useRouter } from "next/navigation";
-import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import { Box, Center, Loader } from "@mantine/core";
 import _ from "lodash";
+import { ScrollOnly } from "next-scroll-loader";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { ComponentEvent_CardRiwayat } from "../../component/card_view/card_riwayat";
+import { event_getListSemuaRiwayat } from "../../fun/get/riwayat/get_list_semua_riwayat";
+import { MODEL_EVENT } from "../../model/interface";
+import { event_getListRiwayatSaya } from "../../fun/get/riwayat/get_list_riwayat_saya";
 
-export default function Event_RiwayatSaya({ data }: { data: MODEL_EVENT[] }) {
+export default function Event_RiwayatSaya({
+  listData,
+}: {
+  listData: MODEL_EVENT[];
+}) {
   const router = useRouter();
-
-  if (_.isEmpty(data))
-    return (
-      <Center h={"80vh"}>
-        <Text fw={"bold"} fz={"sm"}>
-          Tidak Ada Event
-        </Text>
-      </Center>
-    );
+  const [data, setData] = useState(listData);
+  const [activePage, setActivePage] = useState(1);
 
   return (
     <>
-      {data.map((e, i) => (
-        <Card key={e.id} shadow="lg" radius={"md"} withBorder mb={"sm"}>
-          <Card.Section px={"sm"} pt={"sm"}>
-            <ComponentGlobal_AuthorNameOnHeader
-              profileId={e.Author.Profile.id}
-              imagesId={e.Author.Profile.imagesId}
-              authorName={e.Author.Profile.name}
-            />
-          </Card.Section>
-          <Card.Section
-            p={"sm"}
-            onClick={() => router.push(RouterEvent.detail_riwayat + e.id)}
-          >
-            <Stack>
-              <Grid>
-                <Grid.Col span={8}>
-                  <Title order={6} truncate>
-                    {e.title}
-                  </Title>
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <Text fz={"sm"} truncate>
-                    {moment(e.tanggal).format("ll")}
-                  </Text>
-                </Grid.Col>
-              </Grid>
+      {_.isEmpty(data) ? (
+        <ComponentGlobal_IsEmptyData />
+      ) : (
+        // --- Main component --- //
+        <Box>
+          <ScrollOnly
+            height="77vh"
+            renderLoading={() => (
+              <Center mt={"lg"}>
+                <Loader color={"yellow"} />
+              </Center>
+            )}
+            data={data}
+            setData={setData}
+            moreData={async () => {
+              const loadData = await event_getListRiwayatSaya({
+                page: activePage + 1,
+              });
+              setActivePage((val) => val + 1);
 
-              <Text fz={"sm"} lineClamp={2}>
-                {e.deskripsi}
-              </Text>
-            </Stack>
-          </Card.Section>
-        </Card>
-      ))}
+              return loadData;
+            }}
+          >
+            {(item) => <ComponentEvent_CardRiwayat data={item} />}
+          </ScrollOnly>
+        </Box>
+      )}
     </>
   );
 }

@@ -1,10 +1,13 @@
 "use client";
 
+import { IRealtimeData } from "@/app/lib/global_state";
 import { RouterVote } from "@/app/lib/router_hipmi/router_vote";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import {
   Box,
   Button,
@@ -13,35 +16,30 @@ import {
   Stack,
   Text,
   TextInput,
-  Textarea
+  Textarea,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import _ from "lodash";
 import moment from "moment";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { WibuRealtime } from "wibu-pkg";
 import { Vote_funCreate } from "../fun/create/create_vote";
-import { gs_vote_hotMenu, gs_vote_status } from "../global_state";
-import { MODEL_VOTING } from "../model/interface";
+import { gs_vote_hotMenu } from "../global_state";
 
 export default function Vote_Create() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [hotMenu, setHotMenu] = useAtom(gs_vote_hotMenu);
-  const [tabsStatus, setTabsStatus] = useAtom(gs_vote_status);
 
   const [data, setData] = useState({
     title: "",
     deskripsi: "",
-    awalVote: Date,
-    akhirVote: Date,
+    awalVote: "",
+    akhirVote: "",
   });
-
-  // const [range, setRange] = useState({
-  // });
 
   const [listVote, setListVote] = useState([
     {
@@ -54,11 +52,70 @@ export default function Vote_Create() {
     },
   ]);
 
+  async function onSave() {
+    if (_.values(data).includes(""))
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
+
+    const cekAwalVote = moment(data.awalVote).format();
+    if (cekAwalVote === "Invalid date")
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
+
+    const cekAkhirVote = moment(data.akhirVote).format();
+    if (cekAkhirVote === "Invalid date")
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
+
+    if (_.values(listVote.map((e) => e.value)).includes(""))
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Pilihan Voting");
+
+    // console.log("berhasil");
+
+    const res = await Vote_funCreate(data as any, listVote);
+    if (res.status === 201) {
+       const dataNotifikasi: IRealtimeData = {
+        appId: res.data?.id as any,
+        status: res.data?.Voting_Status?.name as any,
+        userId: res.data?.authorId as any,
+        pesan: res.data?.title as any,
+        kategoriApp: "VOTING",
+        title: "Voting baru",
+      };
+
+      const notif = await notifikasiToAdmin_funCreate({
+        data: dataNotifikasi as any,
+      });
+
+      if (notif.status === 201) {
+        WibuRealtime.setData({
+          type: "notification",
+          pushNotificationTo: "ADMIN",
+        });
+
+        WibuRealtime.setData({
+          type: "trigger",
+          pushNotificationTo: "ADMIN",
+          dataMessage: dataNotifikasi,
+        });
+
+        setHotMenu(2);
+        router.replace(RouterVote.status({ id: "2" }));
+        ComponentGlobal_NotifikasiBerhasil(res.message);
+        setIsLoading(true);
+      }
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+    }
+  }
+
   return (
     <>
-      <Stack px={"sm"} spacing={"xl"}>
+      <Stack px={"sm"} spacing={"xl"} mb={"xl"}>
         <Stack>
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Judul"
             withAsterisk
             placeholder="Masukan judul"
@@ -72,6 +129,11 @@ export default function Vote_Create() {
           />
           <Stack spacing={5}>
             <Textarea
+              styles={{
+                label: {
+                  color: "white",
+                },
+              }}
               label="Deskripsi"
               autosize
               minRows={2}
@@ -93,6 +155,11 @@ export default function Vote_Create() {
           </Stack>
 
           <DatePickerInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Jangka Waktu"
             placeholder="Masukan jangka waktu voting"
             withAsterisk
@@ -113,16 +180,21 @@ export default function Vote_Create() {
 
         <Stack spacing={0}>
           <Center>
-            <Text fw={"bold"} fz={"sm"}>
+            <Text fw={"bold"} fz={"sm"} c={"white"}>
               Daftar Pilihan
             </Text>
           </Center>
 
-          <Stack>
+          <Stack spacing={"xl"}>
             <Stack>
               {listVote.map((e, index) => (
                 <Box key={index}>
                   <TextInput
+                    styles={{
+                      label: {
+                        color: "white",
+                      },
+                    }}
                     label={e.name}
                     withAsterisk
                     maxLength={100}
@@ -140,31 +212,33 @@ export default function Vote_Create() {
             <Group position="center">
               <Button
                 disabled={listVote.length >= 4 ? true : false}
-                compact
-                w={100}
                 radius={"xl"}
                 leftIcon={<IconPlus size={15} />}
-                variant="outline"
                 onClick={() => {
                   setListVote([
                     ...listVote,
                     { name: "Nama Voting", value: "" },
                   ]);
                 }}
+                compact
+                bg={MainColor.yellow}
+                color={"yellow"}
+                c={"black"}
               >
                 <Text fz={8}>Tambah List</Text>
               </Button>
 
               <Button
                 disabled={listVote.length <= 2 ? true : false}
-                compact
-                w={100}
                 radius={"xl"}
                 leftIcon={<IconMinus size={15} />}
-                variant="outline"
                 onClick={() => {
                   setListVote([...listVote.slice(0, -1)]);
                 }}
+                compact
+                bg={MainColor.yellow}
+                color={"yellow"}
+                c={"black"}
               >
                 <Text fz={8}>Kurangi List</Text>
               </Button>
@@ -173,20 +247,27 @@ export default function Vote_Create() {
         </Stack>
 
         <Button
-          // disabled
+          disabled={
+            !data.title ||
+            !data.deskripsi ||
+            !data.awalVote ||
+            !data.akhirVote ||
+            listVote.map((e, i) => e.value).includes("")
+              ? true
+              : false
+          }
           loaderPosition="center"
           loading={isLoading ? true : false}
           mt={"lg"}
           radius={"xl"}
           onClick={() => {
-            onSave(
-              router,
-              setHotMenu,
-              setTabsStatus,
-              data as any,
-              listVote,
-              setIsLoading
-            );
+            onSave();
+          }}
+          c={"black"}
+          bg={MainColor.yellow}
+          color="yellow"
+          style={{
+            transition: "0.5s",
           }}
         >
           Simpan
@@ -194,41 +275,4 @@ export default function Vote_Create() {
       </Stack>
     </>
   );
-}
-
-async function onSave(
-  router: AppRouterInstance,
-  setHotMenu: any,
-  setTabsStatus: any,
-  data: MODEL_VOTING,
-  listVote: any[],
-  setIsLoading: any
-) {
-  if (_.values(data).includes(""))
-    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
-
-  const cekAwalVote = moment(data.awalVote).format();
-  if (cekAwalVote === "Invalid date")
-    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
-
-  const cekAkhirVote = moment(data.akhirVote).format();
-  if (cekAkhirVote === "Invalid date")
-    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
-
-  if (_.values(listVote.map((e) => e.value)).includes(""))
-    return ComponentGlobal_NotifikasiPeringatan("Lengkapi Pilihan Voting");
-
-  // console.log("berhasil");
-
-  await Vote_funCreate(data, listVote).then((res) => {
-    if (res.status === 201) {
-      setHotMenu(1);
-      setTabsStatus("Review");
-      router.replace(RouterVote.status);
-      ComponentGlobal_NotifikasiBerhasil(res.message);
-      setIsLoading(true);
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
-    }
-  });
 }

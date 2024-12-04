@@ -1,20 +1,22 @@
 "use client";
 
-import UIGlobal_LayoutHeaderTamplate from "@/app_modules/_global/ui/ui_header_tamplate";
-import { ActionIcon, Indicator, Loader, Text } from "@mantine/core";
-import { MODEL_USER } from "../model/interface";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { gs_user_ntf } from "@/app/lib/global_state";
+import { RouterNotifikasi } from "@/app/lib/router_hipmi/router_notifikasi";
 import { RouterUserSearch } from "@/app/lib/router_hipmi/router_user_search";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
-import { IconBell, IconUserSearch } from "@tabler/icons-react";
-import { RouterNotifikasi } from "@/app/lib/router_hipmi/router_notifikasi";
-import { useShallowEffect } from "@mantine/hooks";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import notifikasi_countUserNotifikasi from "@/app_modules/notifikasi/fun/count/fun_count_by_id";
+import { gs_notifikasi_kategori_app } from "@/app_modules/notifikasi/lib";
+import { ActionIcon, Indicator, Loader, Text } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
+import { IconBell, IconUserSearch } from "@tabler/icons-react";
+import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { MODEL_USER } from "../model/interface";
 
 export function ComponentHome_ButtonHeaderLeft({
   dataUser,
@@ -56,21 +58,30 @@ export function ComponentHome_ButtonHeaderRight({
   countNotifikasi: number;
 }) {
   const router = useRouter();
-  const [count, setCount] = useState(countNotifikasi);
   const [isLoadingBell, setIsLoadingBell] = useState(false);
 
-  useShallowEffect(() => {
-    onLoadNotifkasi({
-      onLoad(val) {
-        setCount(val);
-      },
-    });
-  }, []);
+  // Notifikasi
+  // const [countNtf, setCountNtf] = useState(countNotifikasi);
+  // const [newUserNtf, setNewUserNtf] = useAtom(gs_user_ntf);
+  const [categoryPage, setCategoryPage] = useAtom(gs_notifikasi_kategori_app);
 
-  async function onLoadNotifkasi({ onLoad }: { onLoad: (val: any) => void }) {
-    const loadNotifikasi = await notifikasi_countUserNotifikasi();
-    onLoad(loadNotifikasi);
-  }
+  // useEffect(() => {
+  //   onLoadNotifikasi({
+  //     onLoad(val) {
+  //       setCountNtf(val);
+  //     },
+  //   });
+  // }, [setCountNtf]);
+
+  // useShallowEffect(() => {
+  //   setCountNtf(countNtf + newUserNtf);
+  //   setNewUserNtf(0);
+  // }, [newUserNtf, setCountNtf]);
+
+  // async function onLoadNotifikasi({ onLoad }: { onLoad: (val: any) => void }) {
+  //   const loadNotif = await notifikasi_countUserNotifikasi();
+  //   onLoad(loadNotif);
+  // }
 
   return (
     <>
@@ -80,20 +91,25 @@ export function ComponentHome_ButtonHeaderRight({
           if (dataUser?.Profile === null) {
             ComponentGlobal_NotifikasiPeringatan("Lengkapi Profile");
           } else {
-            router.push(RouterNotifikasi.main, { scroll: false });
+            router.push(RouterNotifikasi.categoryApp({ name: "semua" }), {
+              scroll: false,
+            });
+            setCategoryPage("Semua");
             setIsLoadingBell(true);
           }
         }}
       >
         {isLoadingBell ? (
           <Loader color={AccentColor.yellow} size={20} />
+        ) : countNotifikasi === 0 ? (
+          <IconBell color="white" />
         ) : (
           <Indicator
             processing
             color={MainColor.yellow}
             label={
               <Text fz={10} c={MainColor.darkblue}>
-                {count > 99 ? "99+" : count}
+                {countNotifikasi > 99 ? "99+" : countNotifikasi}
               </Text>
             }
           >

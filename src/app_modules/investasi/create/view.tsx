@@ -1,60 +1,51 @@
 "use client";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import { Warna } from "@/app/lib/warna";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import {
-  ComponentGlobal_WarningMaxUpload,
-  maksimalUploadFile,
-} from "@/app_modules/_global/component/waring_popup";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+  ComponentGlobal_BoxInformation,
+  ComponentGlobal_BoxUploadImage,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
 import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/model_default_master";
 import {
   AspectRatio,
   Box,
   Button,
   Center,
-  Divider,
   FileButton,
+  Grid,
   Group,
   Image,
-  Paper,
   Select,
   Stack,
   Text,
-  TextInput
+  TextInput,
 } from "@mantine/core";
 import {
-  IconUpload
+  IconCamera,
+  IconCircleCheck,
+  IconFileTypePdf,
+  IconPdf,
+  IconUpload,
 } from "@tabler/icons-react";
-import { useAtom } from "jotai";
 import _ from "lodash";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
-import { funCreateInvestasi } from "../fun/fun_create_investasi";
-import { gs_StatusPortoInvestasi, gs_investasiFooter } from "../g_state";
+import { Investasi_ComponentButtonCreateNewInvestasi } from "../_component";
 
 export default function InvestasiCreate({
-  id,
   pencarianInvestor,
   periodeDeviden,
   pembagianDeviden,
 }: {
-  id: string;
   pencarianInvestor: MODEL_DEFAULT_MASTER_OLD[];
   periodeDeviden: MODEL_DEFAULT_MASTER_OLD[];
   pembagianDeviden: MODEL_DEFAULT_MASTER_OLD[];
 }) {
-  const router = useRouter();
-  const [fl, setFl] = useState<File | null>(null);
+  const [fileImage, setFileImage] = useState<File | null>(null);
   const [img, setImg] = useState<any | null>();
-  const [pdf, setPdf] = useState<File | null>(null);
-  const [filePdf, setFilePdf] = useState<any | null>(null);
-
-  const [changeColor, setChangeColor] = useAtom(gs_investasiFooter);
-  const [activeTab, setActiveTab] = useAtom(gs_StatusPortoInvestasi);
+  const [filePdf, setFilePdf] = useState<File | null>(null);
+  const [fPdf, setFPdf] = useState<any | null>(null);
   const [totalLembar, setTotalLembar] = useState(0);
-  const [isLoading, setLoading] = useState(false);
 
   const [value, setValue] = useState({
     title: "",
@@ -68,88 +59,58 @@ export default function InvestasiCreate({
   const [target, setTarget] = useState("");
   const [harga, setHarga] = useState("");
 
-  async function onSubmit() {
-    const body = {
-      authorId: id,
-      title: value.title,
-      targetDana: value.targetDana,
-      hargaLembar: value.hargaLembar,
-      totalLembar: totalLembar,
-      roi: value.roi,
-      masterPeriodeDevidenId: value.periodeDevidenId,
-      masterPembagianDevidenId: value.pembagianDevidenId,
-      masterPencarianInvestorId: value.pencarianInvestorId,
-    };
-
-    // if (_.values(body).includes("")) return toast("Lengkapi data");
-    if (!fl) return ComponentGlobal_NotifikasiPeringatan("Gambar Kosong");
-    if (!pdf) return ComponentGlobal_NotifikasiPeringatan("File Kosong");
-
-    const gmbr = new FormData();
-    gmbr.append("file", fl as any);
-
-    const flPdf = new FormData();
-    flPdf.append("file", fl as any);
-
-    await funCreateInvestasi(gmbr, flPdf, body as any).then((res) => {
-      if (res.status === 201) {
-        setChangeColor(1);
-        setActiveTab("Review");
-        setLoading(true);
-        router.push(RouterInvestasi.dialog_create);
-      } else {
-        toast(res.message);
-      }
-    });
-  }
-
   async function onTotalLembar({
     target,
     harga,
   }: {
-    target: number;
-    harga: number;
+    target?: number | any;
+    harga?: number | any;
   }) {
-    // console.log(target, "ini target");
-    // console.log(harga, "ini harga");
-
-    // if (harga === +"Nan") setTotalLembar(0);
-
-    const hasil: any = target / harga;
-    setTotalLembar(_.floor(hasil === Infinity ? 0 : hasil));
+    if (target !== 0 && harga !== 0) {
+      const hasil: any = target / harga;
+      setTotalLembar(_.floor(hasil === Infinity ? 0 : hasil));
+    }
   }
 
   return (
     <>
-      <Box>
-        {/* Inputan Create */}
-        <Stack spacing={"sm"} px={"md"}>
-          <AspectRatio ratio={16 / 9}>
-            <Paper radius={"md"} withBorder>
-              {img ? (
-                <Image alt="" src={img} />
-              ) : (
-                <Image alt="" src={"/aset/no-img.png"} />
-              )}
-            </Paper>
-          </AspectRatio>
+      <Stack px={"xs"} spacing={40}>
+        {/* Upload Image */}
+        <Stack spacing={0}>
+          <Box mb={"sm"}>
+            <ComponentGlobal_BoxInformation informasi="Gambar investasi bisa berupa ilustrasi, poster atau foto terkait investasi" />
+          </Box>
+          <ComponentGlobal_BoxUploadImage>
+            {img ? (
+              <AspectRatio ratio={1 / 1} mah={265} mx={"auto"}>
+                <Image
+                  style={{ maxHeight: 250, margin: "auto", padding: "5px" }}
+                  alt="Foto"
+                  height={250}
+                  src={img}
+                />
+              </AspectRatio>
+            ) : (
+              <Stack justify="center" align="center" h={"100%"}>
+                <IconUpload color="white" />
+                <Text fz={10} fs={"italic"} c={"white"} fw={"bold"}>
+                  Upload Gambar
+                </Text>
+              </Stack>
+            )}
+          </ComponentGlobal_BoxUploadImage>
 
           {/* Upload Foto */}
-          <Group position="center" mb={"md"}>
+          <Group position="center">
             <FileButton
               onChange={async (files: any) => {
                 try {
                   const buffer = URL.createObjectURL(
                     new Blob([new Uint8Array(await files.arrayBuffer())])
                   );
-                  console.log(files.size);
 
-                  if (files.size > maksimalUploadFile) {
-                    ComponentGlobal_WarningMaxUpload({});
-                  } else {
-                    setImg(buffer);
-                    setFl(files);
-                  }
+                  setImg(buffer);
+                  setFileImage(files);
                 } catch (error) {
                   console.log(error);
                 }
@@ -159,43 +120,54 @@ export default function InvestasiCreate({
               {(props) => (
                 <Button
                   {...props}
-                  leftIcon={<IconUpload size={12} />}
-                  compact
+                  leftIcon={<IconCamera color="black" />}
                   radius={50}
-                  bg={Warna.hijau_muda}
-                  // onClick={() => router.push("/dev/investasi/upload")}
+                  bg={MainColor.yellow}
+                  color="yellow"
+                  c={"black"}
                 >
                   Upload Gambar
                 </Button>
               )}
             </FileButton>
           </Group>
-          {/* Upload File */}
-          <Group position="center">
-            {!pdf ? (
-              <Paper w={"100%"} bg={"gray.3"} p={"sm"}>
-                <Text opacity={"0.3"}>Upload File Prospektus</Text>
-              </Paper>
+        </Stack>
+
+        {/* Upload File */}
+        <Stack spacing={"sm"}>
+          <ComponentGlobal_BoxInformation informasi="File prospektus wajib untuk diupload, agar calon investor paham dengan prospek investasi yang akan anda jalankan kedepan !" />
+          <ComponentGlobal_CardStyles marginBottom={"0px"}>
+            {!filePdf ? (
+              <Text lineClamp={1} align="center" c={"gray"}>
+                Upload File Prospektus
+              </Text>
             ) : (
-              <Paper w={"100%"} bg={"gray.6"} p={"sm"}>
-                <Text truncate>{pdf.name}</Text>
-              </Paper>
+              <Grid align="center">
+                <Grid.Col span={2}></Grid.Col>
+                <Grid.Col span={"auto"}>
+                  <Text lineClamp={1} align="center">
+                    {filePdf.name}
+                  </Text>
+                </Grid.Col>
+                <Grid.Col span={2}>
+                  <Center>
+                    <IconCircleCheck color="green" />
+                  </Center>
+                </Grid.Col>
+              </Grid>
             )}
-            {/* {JSON.stringify(filePdf)} */}
+          </ComponentGlobal_CardStyles>
+
+          <Group position="center">
             <FileButton
-              accept="application/pdf"
+              accept={"application/pdf"}
               onChange={async (files: any) => {
                 try {
                   const buffer = URL.createObjectURL(
                     new Blob([new Uint8Array(await files.arrayBuffer())])
                   );
-
-                  if (files.size > maksimalUploadFile) {
-                    ComponentGlobal_WarningMaxUpload({});
-                  } else {
-                    setFilePdf(buffer);
-                    setPdf(files);
-                  }
+                  setFPdf(buffer);
+                  setFilePdf(files);
                 } catch (error) {
                   console.log(error);
                 }
@@ -203,18 +175,27 @@ export default function InvestasiCreate({
             >
               {(props) => (
                 <Button
-                  leftIcon={<IconUpload size={12} />}
+                  leftIcon={<IconFileTypePdf />}
                   {...props}
-                  compact
                   radius={"xl"}
-                  bg={Warna.hijau_muda}
+                  bg={MainColor.yellow}
+                  color="yellow"
+                  c={"black"}
                 >
                   Upload File
                 </Button>
               )}
             </FileButton>
           </Group>
+        </Stack>
+
+        <Stack>
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             label="Judul Investasi"
             placeholder="Judul investasi"
@@ -227,32 +208,12 @@ export default function InvestasiCreate({
             }}
           />
 
-          {/* <NumberInput
-            withAsterisk
-            type="number"
-            label="Dana Dibutuhkan"
-            placeholder="Masukan nominal dana"
-            onChange={(val: any) => {
-              setValue({
-                ...value,
-                targetDana: val,
-              });
-            }}
-          />
-          <NumberInput
-            label="Harga Per Lembar"
-            type="number"
-            placeholder="Masukan nominal harga"
-            onChange={(val) => {
-              setValue({
-                ...value,
-                hargaLembar: +val,
-              });
-              onTotalLembar({ target: value.targetDana, harga: +val });
-            }}
-          /> */}
-
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             icon={<Text fw={"bold"}>Rp.</Text>}
             min={0}
             withAsterisk
@@ -271,6 +232,11 @@ export default function InvestasiCreate({
               const nilai = val.currentTarget.value.replace(/\./g, "");
               const targetNilai = Intl.NumberFormat("id-ID").format(+nilai);
 
+              onTotalLembar({
+                target: +nilai,
+                harga: +value.hargaLembar,
+              });
+
               setTarget(targetNilai);
               setValue({
                 ...value,
@@ -280,6 +246,11 @@ export default function InvestasiCreate({
           />
 
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             icon={<Text fw={"bold"}>Rp.</Text>}
             min={0}
             withAsterisk
@@ -302,8 +273,8 @@ export default function InvestasiCreate({
                 const targetNilai = Intl.NumberFormat("id-ID").format(+nilai);
 
                 onTotalLembar({
-                  target: value.targetDana,
                   harga: +nilai,
+                  target: +value.targetDana,
                 });
 
                 setHarga(targetNilai);
@@ -317,20 +288,24 @@ export default function InvestasiCreate({
             }}
           />
 
-          <Stack spacing={3}>
-            <Text fz={"sm"} fw={500}>
-              Total Lembar
-            </Text>
-            <Stack spacing={0}>
-              <Text>{totalLembar}</Text>
-              <Divider />
-            </Stack>
-            <Text c={"gray"} fz={10} fs={"italic"}>
-              *Total lembar dihitung dari, Target Dana : Harga Perlembar
-            </Text>
-          </Stack>
+          <TextInput
+            description="*Total lembar dihitung dari, Target Dana / Harga Perlembar"
+            label="Total Lembar"
+            value={harga === "0" ? "0" : target === "0" ? 0 : totalLembar}
+            readOnly
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
+          />
 
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             rightSection={
               <Text fw={"bold"} c={"gray"}>
                 %
@@ -349,6 +324,11 @@ export default function InvestasiCreate({
           />
 
           <Select
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             label="Pencarian Investor"
             placeholder="Pilih batas waktu"
@@ -363,7 +343,13 @@ export default function InvestasiCreate({
               });
             }}
           />
+
           <Select
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             label="Periode Deviden"
             placeholder="Pilih batas waktu"
@@ -375,7 +361,13 @@ export default function InvestasiCreate({
               });
             }}
           />
+
           <Select
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             label="Pembagian Deviden"
             placeholder="Pilih batas waktu"
@@ -392,35 +384,13 @@ export default function InvestasiCreate({
           />
         </Stack>
 
-        <Center my={"lg"}>
-          <Button
-            style={{
-              transition: "0.5s",
-            }}
-            loaderPosition="center"
-            loading={isLoading ? true : false}
-            disabled={
-              value.title === "" ||
-              value.hargaLembar === 0 ||
-              value.targetDana === 0 ||
-              value.roi === 0 ||
-              value.pencarianInvestorId === "" ||
-              value.periodeDevidenId === "" ||
-              value.pembagianDevidenId === "" ||
-              fl === null ||
-              filePdf === null
-                ? true
-                : false
-            }
-            w={300}
-            radius={50}
-            bg={Warna.biru}
-            onClick={() => onSubmit()}
-          >
-            Simpan
-          </Button>
-        </Center>
-      </Box>
+        <Investasi_ComponentButtonCreateNewInvestasi
+          data={value}
+          totalLembar={totalLembar}
+          fileImage={fileImage as any}
+          filePdf={filePdf as any}
+        />
+      </Stack>
     </>
   );
 }

@@ -10,6 +10,7 @@ export async function job_getTwoForHomeView() {
     },
     where: {
       isActive: true,
+      masterStatusId: "1"
     },
     select: {
       id: true,

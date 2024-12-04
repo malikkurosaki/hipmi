@@ -9,7 +9,7 @@ import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { useAtom } from "jotai";
 import { Job_funEditArsipById } from "../../fun/edit/fun_edit_arsip_by_id";
-import { gs_job_status, gs_job_hot_menu } from "../../global_state";
+import { gs_job_hot_menu } from "../../global_state";
 import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
@@ -28,14 +28,12 @@ export default function Job_DetailArsip({ dataJob }: { dataJob: MODEL_JOB }) {
 function ButtonAction({ jobId }: { jobId: string }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
-  const [status, setStatus] = useAtom(gs_job_status);
   const [hotMenu, setHotMenu] = useAtom(gs_job_hot_menu);
   const [opened, { open, close }] = useDisclosure();
 
   async function onPublish() {
     await Job_funEditArsipById(jobId, false).then((res) => {
       if (res.status === 200) {
-        setStatus("Publish");
         setHotMenu(1);
         ComponentGlobal_NotifikasiBerhasil("Berhasil Dipublish");
         setLoading(true);

@@ -1,6 +1,5 @@
 "use server";
 import prisma from "@/app/lib/prisma";
-import { data } from "autoprefixer";
 
 export default async function getOneInvestasiById(id: string) {
   const data = await prisma.investasi.findUnique({
@@ -8,7 +7,17 @@ export default async function getOneInvestasiById(id: string) {
       id: id,
     },
     select: {
+      imageId: true,
+      prospektusFileId: true,
       id: true,
+      author: {
+        select: {
+          id: true,
+          username: true,
+          nomor: true,
+          Profile: true,
+        },
+      },
       title: true,
       authorId: true,
       hargaLembar: true,
@@ -31,8 +40,14 @@ export default async function getOneInvestasiById(id: string) {
       MasterPencarianInvestor: true,
       MasterPeriodeDeviden: true,
       MasterProgresInvestasi: true,
-      author: true,
-      countDown: true
+      masterStatusInvestasiId: true,
+      Investasi_Invoice: {
+        where: {
+          statusInvoiceId: "1",
+        },
+      },
+      countDown: true,
+      
     },
   });
 

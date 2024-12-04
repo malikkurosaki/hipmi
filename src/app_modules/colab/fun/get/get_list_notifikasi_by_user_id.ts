@@ -1,20 +1,20 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
 export default async function colab_getListNotifikasiByUserId() {
-  const authorId = await user_getOneUserId();
+  const userLoginId = await funGetUserIdByToken();
 
   const get = await prisma.projectCollaboration_Notifikasi.findMany({
     orderBy: {
-        createdAt: "desc",
+      createdAt: "desc",
     },
     where: {
-      userId: authorId,
+      userId: userLoginId as string,
     },
     select: {
-      id:true,
+      id: true,
       createdAt: true,
       isRead: true,
       note: true,

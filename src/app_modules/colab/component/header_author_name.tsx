@@ -1,34 +1,43 @@
 "use client";
 
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import { Stack, Grid, Avatar, Divider, Text, Group } from "@mantine/core";
+import { ComponentGlobal_AvatarAndUsername } from "@/app_modules/_global/component";
+import { Group, Stack, Text } from "@mantine/core";
 import { useRouter } from "next/navigation";
-import moment from "moment";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 
 export default function ComponentColab_AuthorNameOnHeader({
-  profileId,
-  imagesId,
-  authorName,
   tglPublish,
-  isPembatas,
+  profile,
 }: {
-  profileId?: string;
-  imagesId?: string;
-  authorName?: string;
   tglPublish?: Date;
-  isPembatas?: boolean;
+  profile: any;
 }) {
   const router = useRouter();
   return (
     <>
+      <ComponentGlobal_AvatarAndUsername
+        profile={profile}
+        component={
+          <Group position="right">
+            {tglPublish ? (
+              <Text fz={"xs"}>
+                {new Intl.DateTimeFormat("id-ID", {
+                  dateStyle: "medium",
+                }).format(tglPublish)}
+              </Text>
+            ) : (
+              ""
+            )}
+          </Group>
+        }
+      />
+
       <Stack spacing={"xs"}>
-        <Grid>
+        {/* <Grid>
           <Grid.Col
             span={"content"}
             onClick={() => {
               if (profileId) {
-                router.push(RouterProfile.katalog + profileId);
+                router.push(RouterProfile.katalogOLD + profileId);
               } else {
                 ComponentGlobal_NotifikasiPeringatan("Id tidak ditemukan");
               }
@@ -56,16 +65,18 @@ export default function ComponentColab_AuthorNameOnHeader({
           <Grid.Col span={"content"}>
             <Stack justify="center" h={"100%"}>
               {tglPublish ? (
-                <Text c={"gray"} fz={"xs"}>
-                  {new Intl.DateTimeFormat("id-ID").format(tglPublish)}
+                <Text fz={"xs"}>
+                  {new Intl.DateTimeFormat("id-ID", {
+                    dateStyle: "medium"
+
+                  }).format(tglPublish)}
                 </Text>
               ) : (
                 ""
               )}
             </Stack>
           </Grid.Col>
-        </Grid>
-        {isPembatas ? <Divider /> : ""}
+        </Grid> */}
       </Stack>
     </>
   );

@@ -1,7 +1,11 @@
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { RouterAdminDashboard } from "@/app/lib/router_hipmi/router_admin";
+import {
+  RouterPortofolio,
+  RouterProfile,
+} from "@/app/lib/router_hipmi/router_katalog";
 import { AccentColor } from "@/app_modules/_global/color/color_pallet";
 import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
-import Component_Logout from "@/app_modules/auth/logout/view";
+import Component_ButtonLogout from "@/app_modules/auth/logout/view";
 import {
   ActionIcon,
   Drawer,
@@ -11,10 +15,12 @@ import {
   Text,
 } from "@mantine/core";
 import {
+  IconDashboard,
   IconEdit,
+  IconPencilPlus,
   IconPhotoEdit,
   IconPolaroid,
-  IconX
+  IconX,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -23,14 +29,19 @@ export function ComponentKatalog_DrawerKatalog({
   opened,
   close,
   profileId,
+  userId,
+  userRoleId
 }: {
   opened: boolean;
   close: () => void;
   profileId: string;
+  userId: string
+  userRoleId: string
 }) {
   const router = useRouter();
   const [pageId, setPageId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingAdmin, setIsLoadingAdmin] = useState(false);
 
   const listPage = [
     {
@@ -41,15 +52,21 @@ export function ComponentKatalog_DrawerKatalog({
     },
     {
       id: "2",
-      name: "Ubah Foto Profile",
+      name: "Ubah foto profile",
       icon: <IconPhotoEdit />,
       path: RouterProfile.update_foto_profile + profileId,
     },
     {
       id: "3",
-      name: "Ubah Latar Belakang",
+      name: "Ubah latar belakang",
       icon: <IconPolaroid />,
       path: RouterProfile.update_foto_background + profileId,
+    },
+    {
+      id: "4",
+      name: "Tambah portofolio",
+      icon: <IconPencilPlus />,
+      path: RouterPortofolio.create + profileId,
     },
   ];
 
@@ -95,19 +112,45 @@ export function ComponentKatalog_DrawerKatalog({
                   variant="transparent"
                   c="white"
                   onClick={() => {
-                    router.push(e.path);
+                    router.push(e.path, { scroll: false });
                     setPageId(e?.id);
-                    setIsLoading(true)
+                    setIsLoading(true);
                   }}
                 >
-                  {isLoading && e.id === pageId ? <ComponentGlobal_Loader /> :  e.icon}
+                  {isLoading && e.id === pageId ? (
+                    <ComponentGlobal_Loader />
+                  ) : (
+                    e.icon
+                  )}
                 </ActionIcon>
                 <Text align="center" color="white">
                   {e.name}
                 </Text>
               </Stack>
             ))}
-            <Component_Logout />
+
+            <Component_ButtonLogout userId={userId} />
+            {userRoleId != "1" && (
+              <Stack align="center" spacing={"xs"}>
+                <ActionIcon
+                  variant="transparent"
+                  c="white"
+                  onClick={() => {
+                    router.push(RouterAdminDashboard.main_admin, { scroll: false });
+                    setIsLoadingAdmin(true);
+                  }}
+                >
+                  {isLoadingAdmin  ? (
+                    <ComponentGlobal_Loader />
+                  ) : (
+                    <IconDashboard/>
+                  )}
+                </ActionIcon>
+                <Text align="center" color="white">
+                  Dashboard Admin
+                </Text>
+              </Stack>
+            )}
           </SimpleGrid>
         </Stack>
       </Drawer>

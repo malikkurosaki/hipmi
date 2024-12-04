@@ -1,8 +1,7 @@
 "use client";
 
 import { Group, Paper, SimpleGrid, Stack, Text, Title } from "@mantine/core";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
-import ComponentAdminGlobal_LoadingPage from "../../component_global/loading_admin_page";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 
 export default function AdminForum_Main({
   countPublish,
@@ -23,7 +22,6 @@ export default function AdminForum_Main({
           countLaporanKomentar={countLaporanKomentar}
         />
       </Stack>
-      {/* <ComponentAdminGlobal_LoadingPage /> */}
     </>
   );
 }

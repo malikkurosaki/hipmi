@@ -1,52 +1,28 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import { MODEL_DONASI } from "../../model/interface";
-import _ from "lodash";
-import { v4 } from "uuid";
-import fs from "fs";
-import { revalidatePath, revalidateTag } from "next/cache";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import { revalidatePath } from "next/cache";
+import { MODEL_DONASI } from "../../model/interface";
 
-export async function Donasi_funUpdateDonasi(
-  data: MODEL_DONASI,
-  file: FormData
-) {
-  //   console.log(data);
-
-  const gambar: any = file.get("file");
-  if (gambar !== "null") {
-    const fileName = gambar.name;
-    const fileExtension = _.lowerCase(gambar.name.split(".").pop());
-    const fileRandomName = v4(fileName) + "." + fileExtension;
-
-    const cariGambar = await prisma.images.findFirst({
+export async function Donasi_funUpdateDonasi({
+  data,
+  fileId,
+}: {
+  data: MODEL_DONASI;
+  fileId?: string;
+}) {
+  if (fileId !== undefined) {
+    const updateFileId = await prisma.donasi.update({
       where: {
-        id: data.imagesId,
-      },
-      select: {
-        url: true,
-      },
-    });
-
-    if (!cariGambar) return { status: 400, message: "Gambar tidak ditemukan" };
-    revalidatePath("/dev/donasi/detail/detail_draft");
-    fs.unlinkSync(`./public/donasi/image/${cariGambar.url}`);
-
-    const updateGambar = await prisma.images.update({
-      where: {
-        id: data.imagesId,
+        id: data.id,
       },
       data: {
-        url: fileRandomName,
+        imageId: fileId,
       },
     });
 
-    if (!updateGambar) return { status: 400, message: "Update gambat gagal" };
-    revalidatePath("/dev/donasi/detail/detail_draft");
-
-    const uploadFolder = Buffer.from(await gambar.arrayBuffer());
-    fs.writeFileSync(`./public/donasi/image/${updateGambar.url}`, uploadFolder);
+    if (!updateFileId) return { status: 400, message: "Gagal update" };
   }
 
   const update = await prisma.donasi.update({
@@ -62,7 +38,7 @@ export async function Donasi_funUpdateDonasi(
   });
 
   if (!update) return { status: 400, message: "Gagal update" };
-  revalidatePath("/dev/donasi/detail/detail_draft");
+  revalidatePath(RouterDonasi.detail_draft);
 
   return {
     status: 200,

@@ -1,9 +1,16 @@
 "use client";
 
 import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
+import {
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
 import ComponentColab_DetailData from "@/app_modules/colab/component/detail/detail_data";
 import ComponentColab_AuthorNameOnListPartisipan from "@/app_modules/colab/component/detail/header_author_list_partisipan";
-import ComponentColab_AuthorNameOnHeader from "@/app_modules/colab/component/header_author_name";
 import ComponentColab_IsEmptyData from "@/app_modules/colab/component/is_empty_data";
 import colab_funCreateRoomChat from "@/app_modules/colab/fun/create/fun_create_room_chat";
 import { gs_colab_hot_menu } from "@/app_modules/colab/global_state";
@@ -11,10 +18,9 @@ import {
   MODEL_COLLABORATION,
   MODEL_COLLABORATION_PARTISIPASI,
 } from "@/app_modules/colab/model/interface";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import mqtt_client from "@/util/mqtt_client";
 import {
+  ActionIcon,
   Button,
   Checkbox,
   Drawer,
@@ -28,6 +34,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconX } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
@@ -42,13 +49,15 @@ export default function Colab_DetailProyekSaya({
 }) {
   return (
     <>
-      <Stack px={5} spacing={"xl"}>
-        <ComponentColab_DetailData data={dataColab} />
-        <CheckBoxPartisipan
-          listPartisipan={listPartisipan}
-          colabId={dataColab.id}
-        />
-      </Stack>
+      <ComponentGlobal_CardStyles marginBottom={"15px"}>
+        <Stack>
+          <ComponentColab_DetailData data={dataColab} />
+          <CheckBoxPartisipan
+            listPartisipan={listPartisipan}
+            colabId={dataColab.id}
+          />
+        </Stack>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }
@@ -62,79 +71,35 @@ function CheckBoxPartisipan({
 }) {
   const [value, setValue] = useState<string[]>([]);
 
-  const listCheck = [
-    {
-      id: 1,
-      value: "satu",
-      label: "Satu",
-    },
-    {
-      id: 2,
-      value: "dua",
-      label: "Dua",
-    },
-    {
-      id: 3,
-      value: "tiga",
-      label: "Tiga",
-    },
-    {
-      id: 4,
-      value: "empat",
-      label: "Empat",
-    },
-    {
-      id: 5,
-      value: "lima",
-      label: "Lima",
-    },
-    {
-      id: 6,
-      value: "enam",
-      label: "Enam",
-    },
-    {
-      id: 7,
-      value: "tujuh",
-      label: "Tujuh",
-    },
-    {
-      id: 8,
-      value: "delapan",
-      label: "Delapan",
-    },
-    {
-      id: 9,
-      value: "sembilan",
-      label: "Sembilan",
-    },
-    {
-      id: 10,
-      value: "sepuluh",
-      label: "Sepuluh",
-    },
-  ];
-
   return (
     <>
       <Stack>
         {/* <pre>{JSON.stringify(listPartisipan,null,2)}</pre> */}
-        <Paper withBorder shadow="lg" p={"sm"}>
+        <Paper
+          style={{
+            border: `2px solid ${AccentColor.softblue}`,
+            backgroundColor: AccentColor.blue,
+            color: "white",
+            borderRadius: "10px",
+            marginBottom: "20px",
+            padding: "15px",
+          }}
+        >
           {/* {JSON.stringify(value, null, 2)} */}
           <Stack>
             <Stack spacing={5}>
               <Text c={"red"} fz={10}>
                 *
-                <Text px={"xs"} span inherit c={"gray"}>
+                <Text px={"xs"} span inherit c={"white"}>
                   Pilih user yang akan menjadi tim proyek anda
                 </Text>
               </Text>
-              <Text c={"red"} fz={10}>
+              {/* <Text c={"red"} fz={10}>
                 *
-                <Text px={"xs"} span inherit c={"gray"}>
+                <Text px={"xs"} span inherit c={"white"}>
                   Room chat dapat dibentuk jika ada 2 user yang dipilih
                 </Text>
-              </Text>
+              </Text> */}
             </Stack>
             <ScrollArea h={400} offsetScrollbars>
               <Checkbox.Group value={value} onChange={setValue}>
@@ -144,8 +109,8 @@ function CheckBoxPartisipan({
                   ) : (
                     listPartisipan.map((e, i) => (
                       <Grid key={i} align="center">
-                        <Grid.Col span={"content"}>
-                          <Checkbox value={e?.User?.id} />
+                        <Grid.Col span={2}>
+                          <Checkbox color={"yellow"} value={e?.User?.id} />
                         </Grid.Col>
                         <Grid.Col span={"auto"}>
                           <ComponentColab_AuthorNameOnListPartisipan
@@ -183,19 +148,29 @@ function ButtonAction({
 
   async function onSave() {
     if (nameRoom === "")
-      return ComponentGlobal_NotifikasiPeringatan("Isi Nama Grup");
-    await colab_funCreateRoomChat(nameRoom, value, colabId).then((res) => {
-      console.log(res);
-      if (res.status === 201) {
-        setLoading(true);
-        close();
-        ComponentGlobal_NotifikasiBerhasil("Berhasil Membuat Grup");
-        setHotMenu(4);
-        router.push(RouterColab.grup_diskusi);
-      } else {
-        ComponentGlobal_NotifikasiGagal("Gagal Membuat Grup");
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi Nama Grup");
+
+    // await notifikasiToUser_CreateGroupCollaboration({ colabId: colabId });
+
+    const res = await colab_funCreateRoomChat(nameRoom, value, colabId);
+    if (res.status === 201) {
+      for (let a of value) {
+        mqtt_client.publish(
+          "USER",
+          JSON.stringify({
+            userId: a,
+            count: 1,
+          })
+        );
       }
-    });
+
+      setLoading(true);
+      ComponentGlobal_NotifikasiBerhasil("Berhasil Membuat Grup");
+      setHotMenu(4);
+      router.push(RouterColab.grup_diskusi);
+    } else {
+      ComponentGlobal_NotifikasiGagal("Gagal Membuat Grup");
+    }
   }
 
   return (
@@ -206,6 +181,12 @@ function ButtonAction({
         onClick={() => {
           open();
         }}
+        bg={MainColor.yellow}
+        color="yellow"
+        c={"black"}
+        style={{
+          transition: "0.5s",
+        }}
       >
         Buat Ruang Diskusi{" "}
       </Button>
@@ -214,11 +195,36 @@ function ButtonAction({
         opened={opened}
         onClose={close}
         position="bottom"
-        size={150}
+        size={"auto"}
         withCloseButton={false}
+        styles={{
+          content: {
+            padding: 0,
+            position: "absolute",
+            margin: "auto",
+            backgroundColor: "transparent",
+            left: 0,
+            right: 0,
+            width: 500,
+          },
+          body: {
+            backgroundColor: AccentColor.darkblue,
+            borderTop: `2px solid ${AccentColor.blue}`,
+            borderRight: `1px solid ${AccentColor.blue}`,
+            borderLeft: `1px solid ${AccentColor.blue}`,
+            borderRadius: "20px 20px 0px 0px",
+            color: "white",
+            paddingBottom: "5%",
+          },
+        }}
       >
         <Stack>
-          <Title order={6}>Nama Grup Diskusi</Title>
+          <Group position="apart">
+            <Title order={6}>Nama Grup Diskusi</Title>
+            <ActionIcon onClick={close} variant="transparent">
+              <IconX color="white" />
+            </ActionIcon>
+          </Group>
           <TextInput
             placeholder="Masukan nama grup diskusi .."
             radius={"xl"}
@@ -226,16 +232,19 @@ function ButtonAction({
               setNameRoom(val.currentTarget.value);
             }}
           />
-          <Group grow>
-            <Button radius={"xl"} onClick={close}>
-              Batal
-            </Button>
+          <Group position="right">
             <Button
+              disabled={!nameRoom}
               loaderPosition="center"
               loading={loading ? true : false}
               radius={"xl"}
-              color="green"
+              color="yellow"
+              c={"black"}
+              bg={MainColor.yellow}
               onClick={() => onSave()}
+              style={{
+                transition: "0.5s",
+              }}
             >
               Simpan
             </Button>

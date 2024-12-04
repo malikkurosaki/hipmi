@@ -3,7 +3,7 @@ import Donasi_getCeritaByDonasiId from "@/app_modules/donasi/fun/get/get_cerita_
 
 export default async function Page({ params }: { params: { id: string } }) {
   const dataCerita = await Donasi_getCeritaByDonasiId(params.id)
-  // console.log(dataCerita);
+
   return (
     <>
       <EditCeritaPenggalangDonasi dataCerita={dataCerita as any} />

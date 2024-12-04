@@ -1,12 +1,11 @@
 "use client";
 
-import { RouterColab } from "@/app/lib/router_hipmi/router_colab";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
-import { Card, Center, Title, Stack, Grid, Text } from "@mantine/core";
+import { Card, Center, Grid, Stack, Text, Title } from "@mantine/core";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { MODEL_COLLABORATION } from "../../model/interface";
+import { useState } from "react";
+import { ComponentGlobal_CardLoadingOverlay } from "@/app_modules/_global/component";
 
 export default function ComponentColab_CardSectionData({
   colabId,
@@ -18,6 +17,7 @@ export default function ComponentColab_CardSectionData({
   data?: MODEL_COLLABORATION;
 }) {
   const router = useRouter();
+  const [visible, setVisible] = useState(false);
 
   return (
     <>
@@ -25,6 +25,7 @@ export default function ComponentColab_CardSectionData({
         px={"md"}
         onClick={() => {
           if (path) {
+            setVisible(true);
             router.push(path + colabId);
           } else {
             ComponentGlobal_NotifikasiPeringatan("Path tidak ditemukan");
@@ -82,6 +83,7 @@ export default function ComponentColab_CardSectionData({
             </Text>
           </Stack>
         </Stack>
+        {visible && <ComponentGlobal_CardLoadingOverlay />}
       </Card.Section>
     </>
   );

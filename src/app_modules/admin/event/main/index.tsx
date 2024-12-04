@@ -3,20 +3,15 @@
 import { RouterAdminEvent } from "@/app/lib/router_admin/router_admin_event";
 
 import {
-  Stack,
-  Title,
-  Divider,
-  SimpleGrid,
-  Paper,
-  Center,
-  Text,
-  Box,
   Group,
-  ActionIcon,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title
 } from "@mantine/core";
-import { IconChevronsRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import ComponentAdminGlobal_HeaderTamplate from "../../component_global/header_tamplate";
+import ComponentAdminGlobal_HeaderTamplate from "../../_admin_global/header_tamplate";
 
 export default function AdminEvent_Main({
   countPublish,

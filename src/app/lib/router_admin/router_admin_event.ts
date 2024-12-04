@@ -2,6 +2,9 @@ export const RouterAdminEvent = {
   main_event: "/dev/admin/event/main",
 
   // detail
+  detail_peserta: "/dev/admin/event/detail/peserta/",
+
+  // child
   detail_tipe_acara: "/dev/admin/event/child/tipe_acara",
   detail_riwayat: "/dev/admin/event/child/riwayat",
 

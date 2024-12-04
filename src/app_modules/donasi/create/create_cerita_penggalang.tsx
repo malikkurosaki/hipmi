@@ -1,34 +1,38 @@
 "use client";
 
+import { DIRECTORY_ID } from "@/app/lib";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import { MainColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_BoxUploadImage } from "@/app_modules/_global/component";
+import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
-import {
-  ComponentGlobal_WarningMaxUpload,
-  maksimalUploadFile,
-} from "@/app_modules/_global/component/waring_popup";
+import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import {
   AspectRatio,
   Button,
-  Center,
   FileButton,
+  Group,
   Image,
-  Paper,
   Stack,
   Text,
   TextInput,
   Textarea,
 } from "@mantine/core";
-import { IconCamera } from "@tabler/icons-react";
+import { IconCamera, IconUpload } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
-import ComponentDonasi_NotedBox from "../component/noted_box";
-import { NotifPeringatan } from "../component/notifikasi/notif_peringatan";
 import { Donasi_funCreate } from "../fun/create/fun_create_donasi";
-import { gs_donasi_tabs_posting } from "../global_state";
+import { gs_donasi_hot_menu, gs_donasi_tabs_posting } from "../global_state";
 import { MODEL_DONASI_TEMPORARY } from "../model/interface";
+import { IRealtimeData } from "@/app/lib/global_state";
+import { WibuRealtime } from "wibu-pkg";
+
 export default function CreateCeritaPenggalangDonasi({
   dataTemporary,
   userId,
@@ -38,11 +42,9 @@ export default function CreateCeritaPenggalangDonasi({
 }) {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
+  const [donasiHotMenu, setDonasiHotMenu] = useAtom(gs_donasi_hot_menu);
 
-  const [tabsPostingDonasi, setTabsPostingDonasi] = useAtom(
-    gs_donasi_tabs_posting
-  );
-  const [create, setCreate] = useState({
+  const [data, setData] = useState({
     pembukaan: "",
     cerita: "",
     namaBank: "",
@@ -50,72 +52,126 @@ export default function CreateCeritaPenggalangDonasi({
   });
   const [temporary, setTemporary] = useState(dataTemporary);
   const [file, setFile] = useState<File | null>(null);
-  const [imageCerita, setImageCerita] = useState<any | null>();
+  const [img, setImg] = useState<any | null>();
 
   async function onCreate() {
-    if (_.values(create).includes("")) return NotifPeringatan("Lengkapin Data");
-    if (!file) return NotifPeringatan("Lengkapi Gambar");
-
-    const gambar = new FormData();
-    gambar.append("file", file as any);
+    if (_.values(data).includes(""))
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapin Data");
 
     const body = {
       id: temporary.id,
       title: temporary.title,
       target: temporary.target,
-      imagesId: temporary.imagesId,
       donasiMaster_KategoriId: temporary.donasiMaster_KategoriId,
       donasiMaster_DurasiId: temporary.donasiMaster_DurasiId,
       authorId: userId,
-      namaBank: create.namaBank,
-      rekening: create.rekening,
+      namaBank: data.namaBank,
+      rekening: data.rekening,
+      imageId: temporary.imageId,
       CeritaDonasi: {
-        pembukaan: create.pembukaan,
-        cerita: create.cerita,
+        pembukaan: data.pembukaan,
+        cerita: data.cerita,
       },
     };
 
-    await Donasi_funCreate(body as any, gambar).then((res) => {
-      if (res.status === 201) {
-        setLoading(true);
-        router.push(RouterDonasi.page_pop_up_create);
-        setTabsPostingDonasi("Review");
-      } else {
-        toast(res.message);
+    try {
+      setLoading(true);
+      const uploadImage = await funGlobal_UploadToStorage({
+        file: file as File,
+        dirId: DIRECTORY_ID.donasi_cerita_image,
+      });
+      if (!uploadImage.success) {
+        setLoading(false);
+        return ComponentGlobal_NotifikasiPeringatan("Gagal upload file gambar");
       }
-    });
+
+      const res = await Donasi_funCreate({
+        data: body as any,
+        fileId: uploadImage.data.id,
+      });
+
+      if (res.status === 201) {
+        const dataNotifikasi: IRealtimeData = {
+          appId: res.data?.id as any,
+          status: res.data?.DonasiMaster_Status?.name as any,
+          userId: res.data?.authorId as any,
+          pesan: res.data?.title as any,
+          kategoriApp: "DONASI",
+          title: "Donasi baru",
+        };
+
+        const notif = await notifikasiToAdmin_funCreate({
+          data: dataNotifikasi as any,
+        });
+
+        if (notif.status === 201) {
+          WibuRealtime.setData({
+            type: "notification",
+            pushNotificationTo: "ADMIN",
+          });
+
+          WibuRealtime.setData({
+            type: "trigger",
+            pushNotificationTo: "ADMIN",
+            dataMessage: dataNotifikasi,
+          });
+
+          setDonasiHotMenu(1);
+          ComponentGlobal_NotifikasiBerhasil(res.message);
+          router.push(RouterDonasi.status_galang_dana({ id: "2" }), {
+            scroll: false,
+          });
+        }
+        setLoading(false);
+      } else {
+        ComponentGlobal_NotifikasiGagal(res.message);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <>
-      <Stack spacing={50} px={"md"}>
+      <Stack spacing={50} px={"xl"} py={"md"}>
         {/* <pre>{JSON.stringify(dataTempo, null, 2)}</pre> */}
         <Stack spacing={"sm"}>
-          <ComponentDonasi_NotedBox informasi="Ceritakan dengan jujur & benar mengapa Penggalanagn Dana ini harus diadakan!" />
+          <ComponentGlobal_BoxInformation informasi="Ceritakan dengan jujur & benar mengapa Penggalanagn Dana ini harus diadakan!" />
 
           <Stack spacing={5}>
             <Textarea
+              styles={{
+                label: {
+                  color: "white",
+                },
+              }}
               autosize
               minRows={2}
               maxRows={4}
               withAsterisk
               label="Pembukaan"
-              placeholder="Pembuka dari isi cerita"
+              placeholder="Pembuka cerita"
               maxLength={300}
               onChange={(val) =>
-                setCreate({
-                  ...create,
+                setData({
+                  ...data,
                   pembukaan: val.target.value,
                 })
               }
             />
             <ComponentGlobal_InputCountDown
               maxInput={300}
-              lengthInput={create.pembukaan.length}
+              lengthInput={data.pembukaan.length}
             />
           </Stack>
 
           <Stack spacing={5}>
             <Textarea
+              styles={{
+                label: {
+                  color: "white",
+                },
+              }}
               autosize
               minRows={2}
               maxRows={10}
@@ -124,32 +180,49 @@ export default function CreateCeritaPenggalangDonasi({
               placeholder="Ceritakan alasan mengapa harus membuat Penggalangan Dana"
               maxLength={300}
               onChange={(val) =>
-                setCreate({
-                  ...create,
+                setData({
+                  ...data,
                   cerita: val.target.value,
                 })
               }
             />
             <ComponentGlobal_InputCountDown
               maxInput={300}
-              lengthInput={create.cerita.length}
+              lengthInput={data.cerita.length}
             />
           </Stack>
 
-          <Stack spacing={"xs"}>
-            <Center>
+          <Stack spacing={5}>
+            <ComponentGlobal_BoxUploadImage>
+              {img ? (
+                <AspectRatio ratio={1 / 1} mah={265} mx={"auto"}>
+                  <Image
+                    style={{ maxHeight: 250, margin: "auto", padding: "5px" }}
+                    alt="Foto"
+                    height={250}
+                    src={img}
+                  />
+                </AspectRatio>
+              ) : (
+                <Stack justify="center" align="center" h={"100%"}>
+                  <IconUpload color="white" />
+                  <Text fz={10} fs={"italic"} c={"white"} fw={"bold"}>
+                    Upload Gambar
+                  </Text>
+                </Stack>
+              )}
+            </ComponentGlobal_BoxUploadImage>
+
+            {/* Upload Foto */}
+            <Group position="center">
               <FileButton
-                onChange={async (files: any | null) => {
+                onChange={async (files: any) => {
                   try {
                     const buffer = URL.createObjectURL(
                       new Blob([new Uint8Array(await files.arrayBuffer())])
                     );
-                    if (files.size > maksimalUploadFile) {
-                      ComponentGlobal_WarningMaxUpload({});
-                    } else {
-                      setImageCerita(buffer);
-                      setFile(files);
-                    }
+                    setImg(buffer);
+                    setFile(files);
                   } catch (error) {
                     console.log(error);
                   }
@@ -158,60 +231,53 @@ export default function CreateCeritaPenggalangDonasi({
               >
                 {(props) => (
                   <Button
-                    compact
                     {...props}
-                    radius={"xl"}
-                    variant="outline"
-                    w={150}
-                    leftIcon={<IconCamera />}
+                    leftIcon={<IconCamera color="black" />}
+                    radius={50}
+                    bg={MainColor.yellow}
+                    color="yellow"
+                    c={"black"}
                   >
-                    Upload
+                    Upload Gambar
                   </Button>
                 )}
               </FileButton>
-            </Center>
-
-            {imageCerita ? (
-              <AspectRatio ratio={16 / 9}>
-                <Paper radius={"md"}>
-                  <Image
-                    alt="Foto"
-                    src={imageCerita ? imageCerita : "/aset/no-img.png"}
-                  />
-                </Paper>
-              </AspectRatio>
-            ) : (
-              <Center>
-                <Text fs={"italic"} fz={10}>
-                  Upload poster atau gambar penggalangan !
-                </Text>
-              </Center>
-            )}
+            </Group>
           </Stack>
         </Stack>
 
         <Stack spacing={"sm"}>
-          <ComponentDonasi_NotedBox informasi="Lengkapi nama bank dan rekening di bawah untuk mempermudah admin jika penggalangan dana ini telah di publish!" />
+          <ComponentGlobal_BoxInformation informasi="Lengkapi nama bank dan rekening di bawah untuk mempermudah admin jika penggalangan dana ini telah di publish!" />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             placeholder="Contoh: BNI, BCA, MANDIRI, DLL"
             label="Nama Bank"
             maxLength={50}
             onChange={(val) => {
-              setCreate({
-                ...create,
+              setData({
+                ...data,
                 namaBank: _.upperCase(val.target.value),
               });
             }}
           />
           <TextInput
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             withAsterisk
             placeholder="Maskuan nomor rekening"
             label="Nomor rekening"
             maxLength={100}
             onChange={(val) => {
-              setCreate({
-                ...create,
+              setData({
+                ...data,
                 rekening: val.target.value,
               });
             }}
@@ -221,14 +287,15 @@ export default function CreateCeritaPenggalangDonasi({
           style={{
             transition: "0.5s",
           }}
-          disabled={
-            _.values(create).includes("") || file === null ? true : false
-          }
+          disabled={_.values(data).includes("") || file === null ? true : false}
           loaderPosition="center"
           loading={isLoading ? true : false}
           w={"100%"}
           radius={"xl"}
           onClick={() => onCreate()}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
         >
           Simpan
         </Button>

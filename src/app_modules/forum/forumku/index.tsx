@@ -2,8 +2,7 @@
 
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import {
-  AccentColor,
-  MainColor,
+  AccentColor
 } from "@/app_modules/_global/color/color_pallet";
 import { MODEL_USER } from "@/app_modules/home/model/interface";
 import {
@@ -25,6 +24,7 @@ import ComponentForum_ForumkuMainCardView from "../component/forumku_component/f
 import { forum_getAllPostingByAuhtorId } from "../fun/get/get_list_posting_by_author_id";
 import { MODEL_FORUM_POSTING } from "../model/interface";
 import ComponentForum_ViewForumProfile from "./forum_profile";
+import ComponentGlobal_CreateButton from "@/app_modules/_global/component/button_create";
 
 export default function Forum_Forumku({
   auhtorSelectedData,
@@ -46,32 +46,8 @@ export default function Forum_Forumku({
 
   return (
     <>
-      {userLoginId === auhtorSelectedData.id ? (
-        <Affix position={{ bottom: rem(100), right: rem(30) }}>
-          <ActionIcon
-            opacity={scroll.y > 0 ? 0.5 : ""}
-            style={{
-              transition: "0.5s",
-              border: `1px solid ${AccentColor.skyblue}`,
-            }}
-            size={"xl"}
-            radius={"xl"}
-            variant="transparent"
-            bg={AccentColor.blue}
-            onClick={() => {
-              setLoadingCreate(true);
-              router.push(RouterForum.create);
-            }}
-          >
-            {loadingCreate ? (
-              <Loader size={25} />
-            ) : (
-              <IconPencilPlus color="white" />
-            )}
-          </ActionIcon>
-        </Affix>
-      ) : (
-        ""
+      {userLoginId === auhtorSelectedData.id && (
+        <ComponentGlobal_CreateButton path={RouterForum.create} />
       )}
 
       <Stack spacing={"xl"}>
@@ -92,7 +68,7 @@ export default function Forum_Forumku({
         ) : (
           // --- Main component --- //
           <ScrollOnly
-            height={data.length < 5 ? "60vh" : "100vh"}
+            height={data.length < 5 ? "75vh" : "100vh"}
             renderLoading={() => (
               <Center mt={"lg"}>
                 <Loader color={"yellow"} />

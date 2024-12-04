@@ -1,9 +1,11 @@
 "use client";
 
-import { Stack, Title, Grid, Text, Paper, Spoiler } from "@mantine/core";
-import moment from "moment";
+import {
+  ComponentGlobal_AvatarAndUsername,
+  ComponentGlobal_CardStyles,
+} from "@/app_modules/_global/component";
+import { Grid, Stack, Text, Title } from "@mantine/core";
 import { MODEL_EVENT } from "../../model/interface";
-import ComponentGlobal_AuthorNameOnHeader from "@/app_modules/_global/author_name_on_header";
 
 export default function ComponentEvent_DetailMainData({
   data,
@@ -14,26 +16,25 @@ export default function ComponentEvent_DetailMainData({
   const hari = tgl.toLocaleString("id-ID", { dateStyle: "full" });
 
   const jam = tgl.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
+    timeStyle: "short",
+    hourCycle: "h24",
   });
 
   return (
     <>
-      <Paper withBorder p={"md"} shadow="lg">
-        <Stack>
-          <ComponentGlobal_AuthorNameOnHeader
-            authorName={data.Author.Profile.name}
-            imagesId={data.Author.Profile.imagesId}
-            profileId={data.Author.Profile.id}
+      <ComponentGlobal_CardStyles>
+        <Stack px={"xs"} spacing={"xl"}>
+          <ComponentGlobal_AvatarAndUsername
+            profile={data?.Author?.Profile as any}
           />
-          <Stack px={"sm"}>
-            <Title order={4}>{data ? data.title : null}</Title>
+
+          <Stack spacing={"xl"}>
+            <Title align="center" order={4}>
+              {data ? data.title : null}
+            </Title>
             <Grid>
               <Grid.Col span={4}>
-                <Text fw={"bold"} fz={"sm"}>
-                  Lokasi
-                </Text>
+                <Text fw={"bold"}>Lokasi</Text>
               </Grid.Col>
               <Grid.Col span={1}>:</Grid.Col>
               <Grid.Col span={"auto"}>
@@ -42,48 +43,65 @@ export default function ComponentEvent_DetailMainData({
             </Grid>
             <Grid>
               <Grid.Col span={4}>
-                <Text fw={"bold"} fz={"sm"}>
-                  Tipe Acara
-                </Text>
+                <Text fw={"bold"}>Tipe Acara</Text>
               </Grid.Col>
               <Grid.Col span={1}>:</Grid.Col>
               <Grid.Col span={"auto"}>
                 <Text>{data ? data.EventMaster_TipeAcara.name : null}</Text>
               </Grid.Col>
             </Grid>
-            <Grid>
-              <Grid.Col span={4}>
-                <Text fw={"bold"} fz={"sm"}>
-                  Tanggal
-                </Text>
-              </Grid.Col>
-              <Grid.Col span={1}>:</Grid.Col>
-              <Grid.Col span={"auto"}>{hari}</Grid.Col>
-            </Grid>
-            <Grid>
-              <Grid.Col span={4}>
-                <Text fw={"bold"} fz={"sm"}>
-                  Jam
-                </Text>
-              </Grid.Col>
-              <Grid.Col span={1}>:</Grid.Col>
-              <Grid.Col span={"auto"}>{jam}</Grid.Col>
-            </Grid>
+
+            <Stack spacing={"xs"}>
+              <Text fw={"bold"}>Tanggal & Waktu</Text>
+              <Grid>
+                <Grid.Col span={4}>
+                  <Text fw={"bold"}>Mulai</Text>
+                </Grid.Col>
+                <Grid.Col span={1}>:</Grid.Col>
+                <Grid.Col span={"auto"}>
+                  <Text>
+                    {" "}
+                    {new Intl.DateTimeFormat("id-ID", {
+                      dateStyle: "full",
+                    }).format(data?.tanggal)}
+                    ,{" "}
+                    <Text span inherit>
+                      {new Intl.DateTimeFormat("id-ID", {
+                        timeStyle: "short",
+                      }).format(data?.tanggal)}
+                    </Text>
+                  </Text>
+                </Grid.Col>
+              </Grid>
+              <Grid>
+                <Grid.Col span={4}>
+                  <Text fw={"bold"}>Selesai</Text>
+                </Grid.Col>
+                <Grid.Col span={1}>:</Grid.Col>
+                <Grid.Col span={"auto"}>
+                  <Text>
+                    {" "}
+                    {new Intl.DateTimeFormat("id-ID", {
+                      dateStyle: "full",
+                    }).format(data?.tanggalSelesai)}
+                    ,{" "}
+                    <Text span inherit>
+                      {new Intl.DateTimeFormat("id-ID", {
+                        timeStyle: "short",
+                      }).format(data?.tanggalSelesai)}
+                    </Text>
+                  </Text>
+                </Grid.Col>
+              </Grid>
+            </Stack>
+
             <Stack spacing={2}>
-              <Text fw={"bold"} fz={"sm"}>
-                Deskripsi
-              </Text>
-              <Spoiler
-                hideLabel="Lihat sedikit"
-                maxHeight={50}
-                showLabel="Lihat banyak"
-              >
-                {data ? data.deskripsi : null}
-              </Spoiler>
+              <Text fw={"bold"}>Deskripsi</Text>
+              <Text>{data ? data?.deskripsi : null}</Text>
             </Stack>
           </Stack>
         </Stack>
-      </Paper>
+      </ComponentGlobal_CardStyles>
     </>
   );
 }

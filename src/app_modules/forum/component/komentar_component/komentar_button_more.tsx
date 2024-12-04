@@ -3,38 +3,30 @@
 import { RouterForum } from "@/app/lib/router_hipmi/router_forum";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import {
-  Drawer,
-  Stack,
-  Grid,
-  Button,
-  Modal,
-  Title,
-  Group,
   ActionIcon,
-  Text,
-  Box,
-  Center,
+  Button,
+  Drawer,
+  Grid,
+  Group,
   Loader,
+  Modal,
+  Stack,
+  Text,
+  Title,
 } from "@mantine/core";
-import { useDisclosure, useShallowEffect } from "@mantine/hooks";
-import { IconTrash, IconEdit, IconFlag3, IconDots } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
+import { IconDots, IconFlag3, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { createStyles } from "@mantine/core";
-import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
-import { useAtom } from "jotai";
-import { gs_forum_loading_edit_posting } from "../../global_state";
-import ComponentForum_LoadingDrawer from "../loading_drawer";
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
-import { forum_funDeletePostingById } from "../../fun/delete/fun_delete_posting_by_id";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
-import { forum_funDeleteKomentarById } from "../../fun/delete/fun_delete_komentar_by_id";
-import { forum_funGetAllKomentarById } from "../../fun/get/get_all_komentar_by_id";
 import {
   AccentColor,
   MainColor,
 } from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_V2_LoadingPage from "@/app_modules/_global/loading_page_v2";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { forum_funDeleteKomentarById } from "../../fun/delete/fun_delete_komentar_by_id";
+import { forum_funGetAllKomentarById } from "../../fun/get/get_all_komentar_by_id";
 
 export default function ComponentForum_KomentarButtonMore({
   userId,
@@ -62,12 +54,22 @@ export default function ComponentForum_KomentarButtonMore({
       <Drawer
         styles={{
           content: {
-            backgroundColor: MainColor.darkblue,
-            borderTop: `1px solid ${AccentColor.blue}`,
-            borderRadius: "10px 10px 0px 0px",
+            padding: 0,
+            position: "absolute",
+            margin: "auto",
+            backgroundColor: "transparent",
+            left: 0,
+            right: 0,
+            width: 500,
           },
-          header: {
-            borderRadius: "10px 10px 0px 0px",
+          body: {
+            backgroundColor: AccentColor.darkblue,
+            borderTop: `2px solid ${AccentColor.blue}`,
+            borderRight: `1px solid ${AccentColor.blue}`,
+            borderLeft: `1px solid ${AccentColor.blue}`,
+            borderRadius: "20px 20px 0px 0px",
+            color: "white",
+            paddingBottom: "5%",
           },
         }}
         opened={opened}
@@ -190,7 +192,9 @@ function ButtonDelete({
   return (
     <>
       <Stack>
-        <Title order={6} c="white">Yakin menghapus komentar ini ?</Title>
+        <Title order={6} c="white">
+          Yakin menghapus komentar ini ?
+        </Title>
         <Group position="center">
           <Button radius={"xl"} onClick={() => setOpenDel(false)}>
             Batal

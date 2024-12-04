@@ -1,66 +1,48 @@
 "use server";
 
 import prisma from "@/app/lib/prisma";
-import _ from "lodash";
-import { v4 } from "uuid";
-import fs from "fs";
-import { MODEL_DONASI_KABAR } from "../../model/interface";
-import { revalidatePath } from "next/cache";
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import { revalidatePath } from "next/cache";
+import { MODEL_DONASI_KABAR } from "../../model/interface";
 
-export async function Donasi_funCreateKabar(
-  req: MODEL_DONASI_KABAR | any,
-  file: FormData
-) {
-  const create = await prisma.donasi_Kabar.create({
-    data: {
-      title: req.title,
-      deskripsi: req.deskripsi,
-      donasiId: req.donasiId,
-    },
-  });
-
-  if (!create) return { status: 400, message: "Gagal membuat data" };
-
-  const dataImage: any = file.get("file");
-  if (dataImage !== "null") {
-    const fileName = dataImage.name;
-    const fileExtension = _.lowerCase(dataImage.name.split(".").pop());
-    const fRandomName = v4(fileName) + "." + fileExtension;
-
-    const upload = await prisma.images.create({
+export async function Donasi_funCreateKabar({
+  data,
+  fileId,
+}: {
+  data: MODEL_DONASI_KABAR;
+  fileId?: string;
+}) {
+  if (fileId !== undefined) {
+    const createWithFile = await prisma.donasi_Kabar.create({
       data: {
-        url: fRandomName,
-        label: "DONASI_KABAR",
-      },
-      select: {
-        id: true,
-        url: true,
+        title: data.title,
+        deskripsi: data.deskripsi,
+        donasiId: data.donasiId,
+        imageId: fileId,
       },
     });
 
-    if (!upload) return { status: 400, message: "Gagal upload gambar" };
-    const uploadFolder = Buffer.from(await dataImage.arrayBuffer());
-    fs.writeFileSync(`./public/donasi/kabar/${upload.url}`, uploadFolder);
-
-    const updateKabar = await prisma.donasi_Kabar.update({
-      where: {
-        id: create.id,
-      },
+    if (!createWithFile) return { status: 400, message: "Gagal disimpan" };
+    revalidatePath(RouterDonasi.list_kabar + data.donasiId);
+    return {
+      status: 200,
+      message: "Berhasil disimpan",
+      kabarId: createWithFile.id,
+    };
+  } else {
+    const create = await prisma.donasi_Kabar.create({
       data: {
-        imagesId: upload.id,
+        title: data.title,
+        deskripsi: data.deskripsi,
+        donasiId: data.donasiId,
       },
     });
 
-    if (!updateKabar) return { status: 400, message: "Gagal upload gambar" };
+    revalidatePath(RouterDonasi.list_kabar + data.donasiId);
+    return {
+      status: 200,
+      message: "Berhasil disimpan",
+      kabarId: create.id,
+    };
   }
-
-  
-
-  revalidatePath("/dev/donasi/list_kabar");
-  return {
-    status: 200,
-    message: "Berhasil disimpan",
-    kabarId: create.id
-  };
 }

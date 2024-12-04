@@ -1,40 +1,58 @@
 "use client";
 
 import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
-import {
-  AspectRatio,
-  Box,
-  Button,
-  Card,
-  Center,
-  Divider,
-  Grid,
-  Group,
-  Image,
-  Paper,
-  Progress,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import { useViewportSize } from "@mantine/hooks";
-import { useRouter } from "next/navigation";
-import toast from "react-simple-toasts";
-import { MODEL_DONASI } from "../../model/interface";
+import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
+import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
+import { Box, Center } from "@mantine/core";
+import _ from "lodash";
+import { ScrollOnly } from "next-scroll-loader";
 import { useState } from "react";
-import TampilanRupiahDonasi from "../../component/tampilan_rupiah";
-import ComponentDonasi_TampilanHitungMundur from "../../component/tampilan_hitung_mundur";
-import ComponentDonasi_BoxPublish from "../../component/box_publish";
+import ComponentDonasi_CardPublish from "../../component/card_view/card_publish";
+import { donasi_funGetAllStatusPublish } from "../../fun/get/status/get_all_status_publish";
+import { MODEL_DONASI } from "../../model/interface";
 
 export default function PostingPublishDonasi({
   listPublish,
 }: {
   listPublish: MODEL_DONASI[];
 }) {
+  const [data, setData] = useState(listPublish);
+  const [activePage, setActivePage] = useState(1);
+
   return (
     <>
-      <ComponentDonasi_BoxPublish dataDonasi={listPublish} path={RouterDonasi.detail_publish} />
+      {_.isEmpty(data) ? (
+        <ComponentGlobal_IsEmptyData />
+      ) : (
+        <Box >
+          <ScrollOnly
+            height="75vh"
+            renderLoading={() => (
+              <Center>
+                <ComponentGlobal_Loader size={25} />
+              </Center>
+            )}
+            data={data}
+            setData={setData}
+            moreData={async () => {
+              const loadData = await donasi_funGetAllStatusPublish({
+                page: activePage + 1,
+              });
+
+              setActivePage((val) => val + 1);
+
+              return loadData;
+            }}
+          >
+            {(item) => (
+              <ComponentDonasi_CardPublish
+                data={item}
+                path={RouterDonasi.detail_publish}
+              />
+            )}
+          </ScrollOnly>
+        </Box>
+      )}
     </>
   );
 }

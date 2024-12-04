@@ -1,3 +1,5 @@
+"use client";
+
 import { Modal, Stack, Title, Group, Button, Box } from "@mantine/core";
 import { MainColor, AccentColor } from "../color/color_pallet";
 

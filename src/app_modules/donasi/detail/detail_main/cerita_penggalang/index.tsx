@@ -1,9 +1,9 @@
 "use client";
 
-import { RouterDonasi } from "@/app/lib/router_hipmi/router_donasi";
+import { AccentColor } from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_LoadImageLandscape } from "@/app_modules/_global/component";
 import { MODEL_CERITA_DONASI } from "@/app_modules/donasi/model/interface";
-import { Box, Image, Stack, Text } from "@mantine/core";
-import moment from "moment";
+import { Stack, Text } from "@mantine/core";
 import { useState } from "react";
 
 export default function CeritaPenggalangDonasi({
@@ -15,7 +15,16 @@ export default function CeritaPenggalangDonasi({
   return (
     <>
       {/* <pre>{JSON.stringify(data.imageCeritaDonasi, null, 2)}</pre> */}
-      <Stack px={"xs"}>
+      <Stack
+        style={{
+          padding: "15px",
+          backgroundColor: AccentColor.darkblue,
+          borderRadius: "10px",
+          border: `2px solid ${AccentColor.blue}`,
+          color: "white",
+          marginBottom: "15px",
+        }}
+      >
         <Text>
           {new Intl.DateTimeFormat("id-ID", { dateStyle: "full" }).format(
             data.createdAt
@@ -23,11 +32,8 @@ export default function CeritaPenggalangDonasi({
         </Text>
         <Text fw={"bold"}> #HaloOrangBaik</Text>
         <Text>{data.pembukaan}</Text>
-        <Image
-          radius={"sm"}
-          alt="Foto"
-          src={RouterDonasi.api_image_cerita + `${data.imageCeritaDonasi.url}`}
-        />
+
+        <ComponentGlobal_LoadImageLandscape fileId={data.imageId} />
         <Text>{data.cerita}</Text>
       </Stack>
     </>

@@ -3,51 +3,77 @@
 import { RouterJob } from "@/app/lib/router_hipmi/router_job";
 import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
 import { Button, Group, Stack } from "@mantine/core";
-import { useAtom } from "jotai";
-
 import ComponentGlobal_BoxInformation from "@/app_modules/_global/component/box_information";
 import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import notifikasiToAdmin_funCreate from "@/app_modules/notifikasi/fun/create/create_notif_to_admin";
 import mqtt_client from "@/util/mqtt_client";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useShallowEffect } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentJob_DetailData from "../../component/detail/detail_data";
 import { Job_funDeleteById } from "../../fun/delete/fun_delete_by_id";
 import { Job_funEditStatusByStatusId } from "../../fun/edit/fun_edit_status_by_status_id";
-import { gs_job_status } from "../../global_state";
 import { MODEL_JOB } from "../../model/interface";
+import { funGlobal_DeleteFileById } from "@/app_modules/_global/fun";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
+import { job_getOneById } from "../../fun/get/get_one_by_id";
+import { IRealtimeData } from "@/app/lib/global_state";
+import { WibuRealtime } from "wibu-pkg";
 
-export default function Job_DetailDraft({ dataJob }: { dataJob: MODEL_JOB }) {
+export default function Job_DetailDraft({
+  dataJob,
+  jobId,
+}: {
+  dataJob: MODEL_JOB;
+  jobId: string;
+}) {
+  const [data, setData] = useState<MODEL_JOB | null>(dataJob);
+
+  useShallowEffect(() => {
+    onLoadData({
+      loadData(val) {
+        setData(val);
+      },
+    });
+  }, [setData]);
+
+  async function onLoadData({ loadData }: { loadData: (val: any) => void }) {
+    const dataJob = await job_getOneById(jobId);
+    loadData(dataJob as any);
+  }
+
   return (
     <>
       <Stack>
-        {dataJob.catatan ? (
+        {data?.catatan ? (
           <ComponentGlobal_BoxInformation
-            informasi={dataJob.catatan}
+            informasi={data?.catatan}
             isReport={true}
           />
         ) : (
           ""
         )}
-        <ComponentJob_DetailData data={dataJob} />
-        <ButtonAction jobId={dataJob.id} />
+        <ComponentJob_DetailData data={data as any} />
+        <ButtonAction jobId={data?.id as any} imageId={data?.imageId as any} />
       </Stack>
     </>
   );
 }
 
-function ButtonAction({ jobId }: { jobId: string }) {
+function ButtonAction({ jobId, imageId }: { jobId: string; imageId: string }) {
   const router = useRouter();
-  const [status, setStatus] = useAtom(gs_job_status);
   const [opened, { open, close }] = useDisclosure();
   const [isAjukan, setAjukan] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [isLoadingDelete, setLoadingDelete] = useState(false);
 
   async function onAjukan() {
     const update = await Job_funEditStatusByStatusId(jobId, "2");
     if (update.status === 200) {
-      const dataNotif = {
+      setLoading(true);
+
+      const dataNotifikasi: IRealtimeData = {
         appId: update.data?.id as any,
         status: update.data?.MasterStatus?.name as any,
         userId: update.data?.authorId as any,
@@ -57,115 +83,54 @@ function ButtonAction({ jobId }: { jobId: string }) {
       };
 
       const notif = await notifikasiToAdmin_funCreate({
-        data: dataNotif as any,
+        data: dataNotifikasi as any,
       });
 
       if (notif.status === 201) {
-        mqtt_client.publish("ADMIN", JSON.stringify({ count: 1 }));
+        WibuRealtime.setData({
+          type: "notification",
+          pushNotificationTo: "ADMIN",
+        });
+
+        WibuRealtime.setData({
+          type: "trigger",
+          pushNotificationTo: "ADMIN",
+          dataMessage: dataNotifikasi,
+        });
       }
 
-      setStatus("Review");
       ComponentGlobal_NotifikasiBerhasil("Berhasil Diajukan");
-      router.push(RouterJob.status);
+      router.replace(RouterJob.status({ id: "2" }));
+
+      setLoading(false);
     } else {
       ComponentGlobal_NotifikasiGagal(update.message);
+      setLoading(false);
     }
   }
 
   async function onDelete() {
-    await Job_funDeleteById(jobId).then((res) => {
-      if (res.status === 200) {
-        setStatus("Draft");
-        ComponentGlobal_NotifikasiBerhasil(res.message);
-        router.push(RouterJob.status);
-      } else {
-        ComponentGlobal_NotifikasiGagal(res.message);
+    const res = await Job_funDeleteById(jobId);
+    if (res.status === 200) {
+      setLoadingDelete(true);
+
+      if (imageId) {
+        const delFile = await funGlobal_DeleteFileById({ fileId: imageId });
+        if (!delFile.success) {
+          ComponentGlobal_NotifikasiPeringatan("Gagal hapus gambar lama");
+        }
       }
-    });
+
+      ComponentGlobal_NotifikasiBerhasil(res.message);
+      router.replace(RouterJob.status({ id: "3" }));
+    } else {
+      ComponentGlobal_NotifikasiGagal(res.message);
+      setLoadingDelete(false);
+    }
   }
 
   return (
     <>
-      {/* HAPUS */}
-      {/* <Modal
-        opened={opened}
-        onClose={close}
-        centered
-        withCloseButton={false}
-        styles={{
-          content: {
-            backgroundColor: MainColor.darkblue,
-            border: `2px solid ${AccentColor.blue}`,
-          },
-        }}
-      >
-        <Stack>
-          <Title order={6} c={"white"} align="center">
-            Yakin ingin menghapus ini ?
-          </Title>
-          <Group position="center">
-            <Button
-              radius={"xl"}
-              onClick={() => {
-                close();
-              }}
-            >
-              Batal
-            </Button>
-            <Button
-              radius={"xl"}
-              color="red"
-              onClick={() => {
-                onDelete();
-              }}
-            >
-              Hapus
-            </Button>
-          </Group>
-        </Stack>
-      </Modal> */}
-
-      {/* AJUKAN KEMBALI */}
-      {/* <Modal
-        opened={isAjukan}
-        onClose={() => {
-          setAjukan(false);
-        }}
-        centered
-        withCloseButton={false}
-        styles={{
-          content: {
-            backgroundColor: MainColor.darkblue,
-            border: `2px solid ${AccentColor.blue}`,
-          },
-        }}
-      >
-        <Stack>
-          <Title order={6} c={"white"} align="center">
-            Anda yakin akan melakukan pengajuan review kembali ?
-          </Title>
-          <Group position="center">
-            <Button
-              radius={"xl"}
-              onClick={() => {
-                setAjukan(false);
-              }}
-            >
-              Batal
-            </Button>
-            <Button
-              radius={"xl"}
-              color="yellow"
-              onClick={() => {
-                onAjukan();
-              }}
-            >
-              Ajukan
-            </Button>
-          </Group>
-        </Stack>
-      </Modal> */}
-
       {/* Ajukan */}
       <UIGlobal_Modal
         opened={isAjukan}
@@ -183,6 +148,8 @@ function ButtonAction({ jobId }: { jobId: string }) {
         }
         buttonKanan={
           <Button
+            loading={isLoading}
+            loaderPosition="center"
             radius={"xl"}
             color="orange"
             onClick={() => {
@@ -211,13 +178,15 @@ function ButtonAction({ jobId }: { jobId: string }) {
         }
         buttonKanan={
           <Button
+            loaderPosition="center"
+            loading={isLoadingDelete}
             radius={"xl"}
             color="red"
             onClick={() => {
               onDelete();
             }}
           >
-            hapus
+            Hapus
           </Button>
         }
       />

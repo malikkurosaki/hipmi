@@ -1,13 +1,13 @@
 import { KabarDonasi } from "@/app_modules/donasi";
-import { Donasi_getListKabar } from "@/app_modules/donasi/fun/get/get_list_kabar";
+import { Donasi_getOneKabar } from "@/app_modules/donasi/fun/get/get_one_kabar";
 
-export default async function Page({params}: {params: {id: string}}) {
-  const donasiId = params.id
-  const listKabar = await Donasi_getListKabar(donasiId)
+export default async function Page({ params }: { params: { id: string } }) {
+  let kabarId = params.id;
+  const dataDonasi = await Donasi_getOneKabar(kabarId);
 
   return (
     <>
-      <KabarDonasi listKabar={listKabar as any} />
+      <KabarDonasi dataDonasi={dataDonasi as any} />
     </>
   );
 }

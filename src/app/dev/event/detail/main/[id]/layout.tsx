@@ -1,5 +1,4 @@
 import { LayoutEvent_DetailMain } from "@/app_modules/event";
-import { AppShell } from "@mantine/core";
 import React from "react";
 
 export default async function Layout({

@@ -1,44 +1,31 @@
 "use client";
 
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
-import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/component_global/header_tamplate";
-import { AdminEvent_getListPesertaById } from "@/app_modules/admin/event/fun/get/get_list_peserta_by_id";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import ComponentAdminGlobal_HeaderTamplate from "@/app_modules/admin/_admin_global/header_tamplate";
+import { MODEL_VOTING } from "@/app_modules/vote/model/interface";
 import {
-  MODEL_EVENT,
-  MODEL_EVENT_PESERTA,
-} from "@/app_modules/event/model/interface";
-import {
-  MODEL_VOTE_KONTRIBUTOR,
-  MODEL_VOTING,
-  MODEL_VOTING_DAFTAR_NAMA_VOTE,
-} from "@/app_modules/vote/model/interface";
-import {
-  Avatar,
-  Badge,
   Box,
   Button,
-  Card,
   Center,
-  Divider,
-  Grid,
   Group,
   Modal,
+  Pagination,
   Paper,
+  ScrollArea,
   Spoiler,
   Stack,
   Table,
   Text,
+  TextInput,
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconEyeCheck, IconEyeShare } from "@tabler/icons-react";
-import _ from "lodash";
+import { IconCircleCheckFilled, IconEyeCheck, IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import ComponentAdminVote_DetailHasil from "../../component/detail_hasil";
 import { AdminVote_getHasilById } from "../../fun/get/get_hasil_by_id";
 import { AdminVote_getListKontributorById } from "../../fun/get/get_list_kontributor_by_id";
-import ComponentAdminVote_DetailHasil from "../../component/detail_hasil";
+import { adminVote_funGetListPublish } from "../../fun/get/status/get_list_publish";
 
 export default function AdminVote_TablePublish({
   dataVote,
@@ -48,21 +35,45 @@ export default function AdminVote_TablePublish({
   return (
     <>
       <Stack>
-        <ComponentAdminGlobal_HeaderTamplate name="Voting: Table Publish" />
+        <ComponentAdminGlobal_HeaderTamplate name="Voting" />
         <TableStatus listPublish={dataVote} />
       </Stack>
     </>
   );
 }
 
-function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
+function TableStatus({ listPublish }: { listPublish: any }) {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
-  const [data, setData] = useState(listPublish);
+  const [data, setData] = useState<MODEL_VOTING[]>(listPublish.data);
   const [hasil, setHasil] = useState<any[]>();
   const [kontributor, setKontributor] = useState<any[]>();
   const [voteId, setVoteId] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [isNPage, setNPage] = useState(listPublish.nPage);
+  const [isActivePage, setActivePage] = useState(1);
+  const [isSearch, setSearch] = useState("");
+
+  async function onSearch(s: string) {
+    setSearch(s);
+    const loadData = await adminVote_funGetListPublish({
+      page: 1,
+      search: s,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
+
+  async function onPageClick(p: any) {
+    setActivePage(p);
+    const loadData = await adminVote_funGetListPublish({
+      search: isSearch,
+      page: p,
+    });
+    setData(loadData.data as any);
+    setNPage(loadData.nPage);
+  }
 
   const TableRows = data.map((e, i) => (
     <tr key={i}>
@@ -74,7 +85,7 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
             }
             radius={"xl"}
             color="green"
-            leftIcon={<IconEyeCheck />}
+            leftIcon={<IconCircleCheckFilled />}
             onClick={async () => {
               setVoteId(e?.id);
               setLoading(true);
@@ -87,7 +98,7 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
         </Center>
       </td>
       <td>
-        <Center>{e?.Author?.Profile?.name}</Center>
+        <Center>{e?.Author?.username}</Center>
       </td>
       <td>
         <Center>{e?.title}</Center>
@@ -128,6 +139,76 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
 
   return (
     <>
+      <Stack spacing={"xs"} h={"100%"}>
+        {/* <pre>{JSON.stringify(listUser, null, 2)}</pre> */}
+        <Group
+          position="apart"
+          bg={"green.4"}
+          p={"xs"}
+          style={{ borderRadius: "6px" }}
+        >
+          <Title order={4}>Publish</Title>
+          <TextInput
+            icon={<IconSearch size={20} />}
+            radius={"xl"}
+            placeholder="Masukan judul"
+            onChange={(val) => {
+              onSearch(val.currentTarget.value);
+            }}
+          />
+        </Group>
+
+        <Paper p={"md"} withBorder shadow="lg" h={"80vh"}>
+          <ScrollArea w={"100%"} h={"90%"}>
+            <Table
+              verticalSpacing={"md"}
+              horizontalSpacing={"md"}
+              p={"md"}
+              w={1500}
+              striped
+              highlightOnHover
+            >
+              <thead>
+                <tr>
+                  <th>
+                    <Center>Aksi</Center>
+                  </th>
+                  <th>
+                    <Center>Username</Center>
+                  </th>
+                  <th>
+                    <Center>Judul</Center>
+                  </th>
+                  <th>
+                    <Center>Deskripsi</Center>
+                  </th>
+                  <th>
+                    <Center>Pilihan</Center>
+                  </th>
+                  <th>
+                    <Center>Mulai Vote</Center>
+                  </th>
+                  <th>
+                    <Center>Selesai Vote</Center>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>{TableRows}</tbody>
+            </Table>
+          </ScrollArea>
+
+          <Center mt={"xl"}>
+            <Pagination
+              value={isActivePage}
+              total={isNPage}
+              onChange={(val) => {
+                onPageClick(val);
+              }}
+            />
+          </Center>
+        </Paper>
+      </Stack>
+
       <Modal
         opened={opened}
         onClose={close}
@@ -139,57 +220,6 @@ function TableStatus({ listPublish }: { listPublish: MODEL_VOTING[] }) {
           kontributor={kontributor}
         />
       </Modal>
-      <Box>
-        <Box bg={"green.1"} p={"xs"}>
-          <Title order={6} c={"green"}>
-            PUBLISH
-          </Title>
-        </Box>
-        <Table
-          withBorder
-          verticalSpacing={"md"}
-          horizontalSpacing={"xl"}
-          p={"md"}
-          striped
-          highlightOnHover
-        >
-          <thead>
-            <tr>
-              <th>
-                <Center>Aksi</Center>
-              </th>
-              <th>
-                <Center>Author</Center>
-              </th>
-              <th>
-                <Center>Judul</Center>
-              </th>
-              <th>
-                <Center>Deskripsi</Center>
-              </th>
-              <th>
-                <Center>Pilihan</Center>
-              </th>
-              <th>
-                <Center>Mulai Vote</Center>
-              </th>
-              <th>
-                <Center>Selesai Vote</Center>
-              </th>
-            </tr>
-          </thead>
-          <tbody>{TableRows}</tbody>
-        </Table>
-        <Center>
-          {_.isEmpty(TableRows) ? (
-            <Center h={"50vh"}>
-              <Title order={6}>Tidak Ada Data</Title>
-            </Center>
-          ) : (
-            ""
-          )}
-        </Center>
-      </Box>
     </>
   );
 }

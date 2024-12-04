@@ -17,12 +17,21 @@ export default async function getListTransaksiBerhasilInvestasi(
       id: true,
       Investasi: {
         select: {
-          author: true,
+          author: {
+            select: {
+              username: true,
+              Profile: {
+                select: {
+                  userId: true,
+                  imageId: true
+                },
+              },
+            },
+          },
           imagesId: true,
           title: true,
           totalLembar: true,
           sisaLembar: true,
-          
         },
       },
       Author: true,

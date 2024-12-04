@@ -1,22 +1,28 @@
 "use server";
 
-import { cookies } from "next/headers";
-import yaml from "yaml";
-import fs from "fs";
-import { unsealData } from "iron-session";
-import { redirect } from "next/navigation";
 import { RouterAuth } from "@/app/lib/router_hipmi/router_auth";
-const config = yaml.parse(fs.readFileSync("config.yaml").toString());
+import { ServerEnv } from "@/app/lib/server_env";
+import { unsealData } from "iron-session";
+import _ from "lodash";
+import { cookies } from "next/headers";
 
-export async function user_getOneUserId() {
-  const c = cookies().get("ssn");
-  if (!c?.value || c.value === "") return redirect(RouterAuth.login);
 
-  const token = JSON.parse(
-    await unsealData(c?.value as string, {
-      password: config.server.password,
-    })
-  );
+export async function user_funGetOneUserId(): Promise<string | null> {
+  try {
+    const kukis = cookies();
+    const c = kukis.get("mySession");
+    // if (!c || !c?.value || _.isEmpty(c?.value) || _.isUndefined(c?.value))
+    //   return re-di-re-ct(RouterAuth.login);
 
-  return token.id
+    const token = JSON.parse(
+      await unsealData(c?.value as string, {
+        password: ServerEnv.value?.WIBU_PWD as string,
+      })
+    );
+
+    return token.id;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 }

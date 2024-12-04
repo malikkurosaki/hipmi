@@ -1,22 +1,25 @@
 "use client";
 
-import { Warna } from "@/app/lib/warna";
 import {
-  Group,
-  FileButton,
-  Button,
-  Box,
-  Paper,
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import {
   AspectRatio,
+  Box,
+  Button,
+  FileButton,
+  Group,
   Image,
-  Stack,
-  Center,
+  Paper,
+  Stack
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-simple-toasts";
 import funUploadProspektusInvestasi from "../fun/fun_upload_prospek";
-import funLoadDataInvestasi from "../fun/fun_load_data";
 
 export default function UploadProspektusInvestasi({
   idInves,
@@ -28,25 +31,24 @@ export default function UploadProspektusInvestasi({
   const [pdf, setPdf] = useState<File | null>(null);
 
   async function onUpload() {
-    if (!pdf) return toast("File Kosong");
+    if (!pdf) return ComponentGlobal_NotifikasiPeringatan("File Kosong");
 
     const fd = new FormData();
     fd.append("file", pdf as any);
 
     await funUploadProspektusInvestasi(fd, idInves).then((res) => {
       if (res.status === 201) {
-        toast("Berhasil upload");
+        ComponentGlobal_NotifikasiBerhasil("Berhasil upload");
         router.back();
-       
       } else {
-        toast(res.message);
+        ComponentGlobal_NotifikasiGagal(res.message);
       }
     });
   }
 
   return (
     <>
-      <Stack>
+      <Stack px={"md"}>
         <Group position="center" px={"md"}>
           <FileButton
             onChange={async (file: any) => {
@@ -62,8 +64,9 @@ export default function UploadProspektusInvestasi({
             {(props) => (
               <Button
                 {...props}
-                bg={Warna.hijau_muda}
-                color="green"
+                bg={MainColor.yellow}
+                color="yellow"
+                c={"black"}
                 radius={50}
               >
                 Upload File
@@ -74,29 +77,51 @@ export default function UploadProspektusInvestasi({
 
         <Box my={"lg"}>
           {!file ? (
-            <Paper radius={20}>
+            <Paper
+              radius={20}
+              style={{
+                border: `2px solid gray`,
+                backgroundColor: "gray",
+                padding: "10px",
+                borderRadius: "10px",
+              }}
+            >
               <AspectRatio ratio={2 / 4} mah={300} maw={200} mx={"auto"}>
-                <Image alt="" src={"/aset/no-file.png"} />
+                <Image
+                  color="gray"
+                  alt=""
+                  opacity={0.1}
+                  src={"/aset/pdf-icon.png"}
+                />
               </AspectRatio>
             </Paper>
           ) : (
-            <Paper radius={20}>
+            <Paper
+              radius={20}
+              style={{
+                border: `2px solid ${AccentColor.softblue}`,
+                backgroundColor: AccentColor.blue,
+                padding: "10px",
+                borderRadius: "10px",
+              }}
+            >
               <AspectRatio ratio={2 / 4} mah={300} maw={200} mx={"auto"}>
                 <Image alt="" src={"/aset/pdf-icon.png"} />
               </AspectRatio>
             </Paper>
           )}
         </Box>
-        <Center>
+        <Stack>
           <Button
-            w={300}
             radius={50}
-            bg={Warna.biru}
+            bg={MainColor.yellow}
+            color="yellow"
+            c={"black"}
             onClick={() => onUpload()}
           >
             Simpan
           </Button>
-        </Center>
+        </Stack>
       </Stack>
     </>
   );

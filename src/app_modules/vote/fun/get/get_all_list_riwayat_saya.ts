@@ -1,17 +1,24 @@
 "use server";
 
-import { user_getOneUserId } from "@/app_modules/fun_global/get_user_token";
 import prisma from "@/app/lib/prisma";
+import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 
-export async function Vote_getAllListRiwayatSaya() {
-  const authorId = await user_getOneUserId();
+export async function Vote_getAllListRiwayatSaya({ page }: { page: number }) {
+  const userLoginId = await funGetUserIdByToken();
+
+  const takeData = 5;
+  const skipData = page * takeData - takeData;
+
   const data = await prisma.voting.findMany({
+    take: takeData,
+    skip: skipData,
+
     orderBy: {
       createdAt: "asc",
     },
     where: {
       voting_StatusId: "1",
-      authorId: authorId,
+      authorId: userLoginId as string,
       isActive: true,
       akhirVote: {
         lte: new Date(),

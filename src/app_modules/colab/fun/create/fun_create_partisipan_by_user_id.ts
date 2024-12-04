@@ -13,11 +13,24 @@ export default async function colab_funCreatePartisipan(
     data: {
       projectCollaborationId: colabId,
       userId: userId,
-      deskripsi_diri: deskripsi
+      deskripsi_diri: deskripsi,
+    },
+    select: {
+      ProjectCollaboration: {
+        select: {
+          id: true,
+          title: true,
+          userId: true,
+        },
+      },
     },
   });
 
   if (!create) return { status: 400, message: "Gagal menambahkan partisipan" };
   revalidatePath(RouterColab.main_detail + colabId);
-  return { status: 201, message: "Berhasil menambahkan partisipan" };
+  return {
+    data: create,
+    status: 201,
+    message: "Berhasil menambahkan partisipan",
+  };
 }

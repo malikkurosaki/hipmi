@@ -20,7 +20,7 @@ export default async function adminDonasi_getListReview({
     skip: skipData,
     take: takeData,
     orderBy: {
-      createdAt: "desc",
+      updatedAt: "desc",
     },
     where: {
       donasiMaster_StatusDonasiId: "2",

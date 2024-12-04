@@ -1,26 +1,20 @@
 "use client";
 
-import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import ComponentGlobal_InputCountDown from "@/app_modules/_global/component/input_countdown";
-import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
-import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
 import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/interface";
 import {
   Button,
   Select,
   Stack,
+  Text,
   TextInput,
-  Textarea
+  Textarea,
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
-import { useAtom } from "jotai";
 import moment from "moment";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Event_ComponentCreateButton } from "../component";
 import ComponentEvent_ErrorMaximalInput from "../component/error_maksimal_input";
-import { Event_funCreate } from "../fun/create/fun_create";
-import { gs_event_hotMenu, gs_event_status } from "../global_state";
 
 export default function Event_Create({
   listTipeAcara,
@@ -29,18 +23,19 @@ export default function Event_Create({
   listTipeAcara: MODEL_DEFAULT_MASTER_OLD[];
   authorId: string;
 }) {
-  const router = useRouter();
-  const [tabsStatus, setTabsStatus] = useAtom(gs_event_status);
   const [listTipe, setListTipe] = useState(listTipeAcara);
-  const [hotMenu, setHotMenu] = useAtom(gs_event_hotMenu);
-  const [isTime, setIsTime] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+
+  const [isTimeStart, setIsTimeStart] = useState(false);
+  const [diffTimeStart, setDiffTimeStart] = useState(0);
+  const [isTimeEnd, setIsTimeEnd] = useState(false);
+  const [diffTimeEnd, setDiffTimeEnd] = useState(0);
 
   const [value, setValue] = useState({
     title: "",
     lokasi: "",
     deskripsi: "",
     tanggal: Date.toString(),
+    tanggalSelesai: Date.toString(),
     eventMaster_TipeAcaraId: 0,
     authorId: authorId,
   });
@@ -48,8 +43,13 @@ export default function Event_Create({
   return (
     <>
       {/* <pre>{JSON.stringify(value, null, 2)}</pre> */}
-      <Stack px={"sm"}>
+      <Stack px={"xl"}>
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Judul"
           placeholder="Masukan judul"
           withAsterisk
@@ -62,6 +62,11 @@ export default function Event_Create({
           }}
         />
         <Select
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           withAsterisk
           label="Tipe Acara"
           placeholder="Pilih Tipe Acara"
@@ -78,6 +83,11 @@ export default function Event_Create({
         />
 
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Lokasi"
           placeholder="Masukan lokasi acara"
           withAsterisk
@@ -89,15 +99,22 @@ export default function Event_Create({
             });
           }}
         />
+
+        
         <DateTimePicker
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           excludeDate={(date) => {
             return moment(date).diff(Date.now(), "days") < 0;
           }}
           withAsterisk
-          label="Tanggal & Waktu "
-          placeholder="Masukan tangal dan waktu acara"
+          label="Tanggal & Waktu Mulai"
+          placeholder="Masukan tangal dan waktu"
           error={
-            isTime ? (
+            isTimeStart ? (
               <ComponentEvent_ErrorMaximalInput text="Invalid Time !" />
             ) : (
               ""
@@ -107,9 +124,15 @@ export default function Event_Create({
             // console.log(
             //   moment(val?.toISOString().toString()).diff(moment(), "minutes" )
             // );
+            const diffTime = moment(val?.toISOString().toString()).diff(
+              moment(),
+              "minutes"
+            );
+            setDiffTimeStart(diffTime);
+
             moment(val?.toISOString().toString()).diff(moment(), "minutes") < 0
-              ? setIsTime(true)
-              : setIsTime(false);
+              ? setIsTimeStart(true)
+              : setIsTimeStart(false);
 
             setValue({
               ...value,
@@ -118,8 +141,55 @@ export default function Event_Create({
           }}
         />
 
+        <DateTimePicker
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
+          excludeDate={(date) => {
+            return moment(date).diff(Date.now(), "days") < 0;
+          }}
+          withAsterisk
+          label="Tanggal & Waktu Berakhir"
+          placeholder="Masukan tangal dan waktu "
+          error={
+            isTimeEnd ? (
+              <ComponentEvent_ErrorMaximalInput text="Invalid Time !" />
+            ) : diffTimeEnd - 1 < diffTimeStart && diffTimeEnd != 0 ? (
+              <ComponentEvent_ErrorMaximalInput text="Invalid Time !" />
+            ) : (
+              ""
+            )
+          }
+          onChange={(val) => {
+            // console.log(
+            //   moment(val?.toISOString().toString()).diff(moment(), "minutes" )
+            // );
+            const diffTime = moment(val?.toISOString().toString()).diff(
+              moment(),
+              "minutes"
+            );
+            setDiffTimeEnd(diffTime);
+
+            moment(val?.toISOString().toString()).diff(moment(), "minutes") < 0
+              ? setIsTimeEnd(true)
+              : setIsTimeEnd(false);
+
+            setValue({
+              ...value,
+              tanggalSelesai: val as any,
+            });
+          }}
+        />
+
         <Stack spacing={5}>
           <Textarea
+            styles={{
+              label: {
+                color: "white",
+              },
+            }}
             label="Deskripsi"
             placeholder="Deskripsikan acara yang akan di selenggarakan"
             withAsterisk
@@ -138,60 +208,12 @@ export default function Event_Create({
           />
         </Stack>
 
-        <Button
-          style={{
-            transition: "0.5s",
-          }}
-          disabled={
-            value.title === "" ||
-            value.lokasi === "" ||
-            value.deskripsi === "" ||
-            value.eventMaster_TipeAcaraId === 0 ||
-            value.tanggal === "function Date() { [native code] }" ||
-            moment(value.tanggal).diff(moment(), "minutes") < 0
-          }
-          loaderPosition="center"
-          loading={isLoading ? true : false}
-          radius={"xl"}
-          mt={"xl"}
-          onClick={() =>
-            onSave(router, setTabsStatus, value, setHotMenu, setLoading)
-          }
-        >
-          Simpan
-        </Button>
+        <Event_ComponentCreateButton
+          value={value}
+          diffTimeStart={diffTimeStart}
+          diffTimeEnd={diffTimeEnd}
+        />
       </Stack>
     </>
   );
-}
-
-async function onSave(
-  router: AppRouterInstance,
-  setTabsStatus: any,
-  value: any,
-  setHotMenu: any,
-  setLoading: any
-) {
-  // if (_.values(value).includes(""))
-  //   return ComponentGlobal_NotifikasiPeringatan("Lengkapi Data");
-  // if (value.eventMaster_TipeAcaraId === 0)
-  //   return ComponentGlobal_NotifikasiPeringatan("Pilih Tipe Acara");
-  // if (moment(value.tanggal).format() === "Invalid date")
-  //   return ComponentGlobal_NotifikasiPeringatan("Lengkapi Tanggal");
-  // if (
-  //   moment(value.tanggal.toISOString().toString()).diff(moment(), "minutes") < 0
-  // )
-  //   return null;
-
-  await Event_funCreate(value).then((res) => {
-    if (res.status === 201) {
-      ComponentGlobal_NotifikasiBerhasil(res.message);
-      setTabsStatus("Review");
-      setHotMenu(1);
-      setLoading(true);
-      router.push(RouterEvent.status_page);
-    } else {
-      ComponentGlobal_NotifikasiGagal(res.message);
-    }
-  });
 }

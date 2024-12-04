@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ComponentJob_DetailData from "../../component/detail/detail_data";
 import { Job_funEditArsipById } from "../../fun/edit/fun_edit_arsip_by_id";
-import { gs_job_hot_menu, gs_job_status } from "../../global_state";
+import { gs_job_hot_menu,  } from "../../global_state";
 import { MODEL_JOB } from "../../model/interface";
 import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 
@@ -34,13 +34,13 @@ function ButtonAction({ jobId }: { jobId: string }) {
   const [isLoading, setLoading] = useState(false);
   const [opened, { open, close }] = useDisclosure();
 
-  const [status, setStatus] = useAtom(gs_job_status);
+
   const [hotMenu, setHotMenu] = useAtom(gs_job_hot_menu);
 
   async function onArsipkan() {
     await Job_funEditArsipById(jobId, true).then((res) => {
       if (res.status === 200) {
-        setStatus("Publish");
+
         setHotMenu(3);
         ComponentGlobal_NotifikasiBerhasil("Berhasil Diarsipkan");
         setLoading(true);

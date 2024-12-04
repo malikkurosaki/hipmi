@@ -1,6 +1,5 @@
 "use client";
 
-import { Warna } from "@/app/lib/warna";
 import {
   AspectRatio,
   Button,
@@ -9,30 +8,32 @@ import {
   FileButton,
   Group,
   Image,
-  Modal,
   NumberInput,
   Paper,
   Select,
   Stack,
   Text,
-  TextInput
+  TextInput,
 } from "@mantine/core";
 import { IconUpload } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
-import { RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import { RouterInvestasi_OLD } from "@/app/lib/router_hipmi/router_investasi";
 import {
-  ComponentGlobal_WarningMaxUpload,
-  maksimalUploadFile,
-} from "@/app_modules/_global/component/waring_popup";
+  AccentColor,
+  MainColor,
+} from "@/app_modules/_global/color/color_pallet";
+import ComponentGlobal_ErrorInput from "@/app_modules/_global/component/error_input";
+import { ComponentGlobal_NotifikasiBerhasil } from "@/app_modules/_global/notif_global/notifikasi_berhasil";
+import { ComponentGlobal_NotifikasiGagal } from "@/app_modules/_global/notif_global/notifikasi_gagal";
+import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global/notifikasi_peringatan";
+import UIGlobal_Modal from "@/app_modules/_global/ui/ui_modal";
 import { MODEL_DEFAULT_MASTER_OLD } from "@/app_modules/model_global/model_default_master";
 import { useDisclosure, useWindowScroll } from "@mantine/hooks";
 import _ from "lodash";
 import { useState } from "react";
-import toast from "react-simple-toasts";
+import { MODEL_INVESTASI } from "../_lib/interface";
 import funEditInvestasi from "../fun/fun_edit_investasi";
-import { MODEL_Investasi } from "../model/model_investasi";
 
 export default function EditIntroInvestasi({
   dataInvestasi,
@@ -40,7 +41,7 @@ export default function EditIntroInvestasi({
   listPeriode,
   listPembagian,
 }: {
-  dataInvestasi: MODEL_Investasi;
+  dataInvestasi: MODEL_INVESTASI;
   listPencarian: MODEL_DEFAULT_MASTER_OLD[];
   listPeriode: MODEL_DEFAULT_MASTER_OLD[];
   listPembagian: MODEL_DEFAULT_MASTER_OLD[];
@@ -63,39 +64,75 @@ export default function EditIntroInvestasi({
 
   async function onUpdate() {
     const body = edit_inves;
-    if (_.values(edit_inves).includes("")) return toast("Lengkapi data");
+    if (_.values(edit_inves).includes(""))
+      return ComponentGlobal_NotifikasiPeringatan("Lengkapi data");
 
     const fd = new FormData();
     fd.append("file", fl as any);
 
     await funEditInvestasi(fd, body).then(async (res) => {
       res.status === 200
-        ? (toast(res.message), router.back())
-        : toast(res.message);
+        ? (ComponentGlobal_NotifikasiBerhasil(res.message), router.back())
+        : ComponentGlobal_NotifikasiGagal(res.message);
     });
   }
 
   return (
     <>
-      <Modal
+      <UIGlobal_Modal
+        title={"Anda yakin ingin menyimpan perubahan ini?"}
         opened={opened}
-        onClose={close}
-        centered
-        title="Simpan perubahan data ?"
-        withCloseButton={false}
-      >
-        <Group position="center">
-          <Button onClick={close} bg={"red"} color="red">
+        close={close}
+        buttonKiri={
+          <Button radius={"xl"} onClick={close} bg={"red"} color="red">
             Batal
           </Button>
-          <Button onClick={onUpdate} bg={Warna.hijau_muda} color="green">
+        }
+        buttonKanan={
+          <Button
+            radius={"xl"}
+            onClick={onUpdate}
+            bg={MainColor.yellow}
+            color="yellow"
+            c={"black"}
+          >
             Simpan
           </Button>
-        </Group>
-      </Modal>
+        }
+      />
 
       <Stack spacing={"xs"} px={"md"}>
-        <AspectRatio ratio={16 / 9}>
+        {img ? (
+          <Center>
+            <Paper h={300} w={200} withBorder shadow="lg" bg={"gray.1"}>
+              <Stack justify="center" align="center" h={"100%"}>
+                <IconUpload color="gray" />
+                <Text fz={10} fs={"italic"} c={"gray"} fw={"bold"}>
+                  Upload Gambar
+                </Text>
+              </Stack>
+            </Paper>
+          </Center>
+        ) : (
+          <AspectRatio ratio={1 / 1} mah={300}>
+            <Paper
+              style={{
+                border: `2px solid ${AccentColor.softblue}`,
+                backgroundColor: AccentColor.blue,
+                padding: "10px",
+                borderRadius: "10px",
+              }}
+            >
+              <Image
+                alt="Foto"
+                src={RouterInvestasi_OLD.api_gambar + `${edit_inves.imagesId}`}
+                maw={200}
+              />
+            </Paper>
+          </AspectRatio>
+        )}
+
+        {/* <AspectRatio ratio={16 / 9}>
           <Paper withBorder radius={"md"}>
             {img ? (
               <Image alt="" src={img} />
@@ -106,7 +143,8 @@ export default function EditIntroInvestasi({
               />
             )}
           </Paper>
-        </AspectRatio>
+        </AspectRatio> */}
+
         <Group position="center" mb={"md"}>
           <FileButton
             onChange={async (files: any) => {
@@ -115,12 +153,8 @@ export default function EditIntroInvestasi({
                   new Blob([new Uint8Array(await files.arrayBuffer())])
                 );
 
-                if (files.size > maksimalUploadFile) {
-                  ComponentGlobal_WarningMaxUpload({});
-                } else {
-                  setImg(buffer);
-                  setFl(files);
-                }
+                setImg(buffer);
+                setFl(files);
               } catch (error) {
                 console.log(error);
               }
@@ -132,9 +166,9 @@ export default function EditIntroInvestasi({
                 {...props}
                 radius={50}
                 leftIcon={<IconUpload size={12} />}
-                compact
-                bg={Warna.hijau_muda}
-                color="green"
+                bg={MainColor.yellow}
+                color="yellow"
+                c={"black"}
               >
                 Upload Gambar
               </Button>
@@ -143,6 +177,11 @@ export default function EditIntroInvestasi({
         </Group>
 
         <TextInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Judul Proyek"
           placeholder={"Masukan Judul"}
           value={edit_inves.title}
@@ -163,6 +202,11 @@ export default function EditIntroInvestasi({
         />
 
         <NumberInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Dana Dibutuhan"
           type="number"
           value={+edit_inves.targetDana}
@@ -175,6 +219,11 @@ export default function EditIntroInvestasi({
         />
 
         <NumberInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Harga Per Lember"
           type="number"
           value={+edit_inves.hargaLembar}
@@ -188,7 +237,12 @@ export default function EditIntroInvestasi({
         />
 
         {/* Total Lembar */}
-        <Stack spacing={3}>
+        <Stack
+          spacing={3}
+          style={{
+            color: "white",
+          }}
+        >
           <Text fz={"sm"} fw={500}>
             Total Lembar
           </Text>
@@ -196,12 +250,17 @@ export default function EditIntroInvestasi({
             <Text>{totalLembar}</Text>
             <Divider />
           </Stack>
-          <Text c={"blue"} fz={10}>
+          <Text fz={10}>
             *Total lembar dihitung dari, Target Dana : Harga Perlembar
           </Text>
         </Stack>
 
         <NumberInput
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Rasio Keuntungan / ROI"
           type="number"
           value={+edit_inves.roi}
@@ -215,6 +274,11 @@ export default function EditIntroInvestasi({
 
         {/* Select Start */}
         <Select
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Pencarian Investor"
           data={listPencarian.map((e) => ({
             value: e.id,
@@ -231,6 +295,11 @@ export default function EditIntroInvestasi({
           }}
         />
         <Select
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Periode Deviden"
           data={listPeriode.map((e) => ({
             value: e.id,
@@ -246,7 +315,13 @@ export default function EditIntroInvestasi({
             });
           }}
         />
+
         <Select
+          styles={{
+            label: {
+              color: "white",
+            },
+          }}
           label="Pembagian Deviden"
           data={listPembagian.map((e) => ({
             value: e.id,
@@ -263,21 +338,19 @@ export default function EditIntroInvestasi({
           }}
         />
         {/* Select End */}
-
-        <Center my={"lg"}>
-          <Button
-            w={200}
-            radius={50}
-            bg={Warna.hijau_muda}
-            color="green"
-            onClick={() => {
-              scrollTo({ y: 0 });
-              open();
-            }}
-          >
-            Update
-          </Button>
-        </Center>
+        <Button
+          my={"xl"}
+          radius={50}
+          bg={MainColor.yellow}
+          color="yellow"
+          c={"black"}
+          onClick={() => {
+            scrollTo({ y: 0 });
+            open();
+          }}
+        >
+          Update
+        </Button>
       </Stack>
     </>
   );
