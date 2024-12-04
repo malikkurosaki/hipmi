@@ -23,6 +23,7 @@ const middlewareConfig: MiddlewareConfig = {
     "/api/auth/*",
     "/api/origin-url",
     "/api/user",
+    "/api/event/*",
     "/login",
     "/register",
     "/validasi",

@@ -5,6 +5,7 @@ import {
   event_funCheckPesertaByUserId,
 } from "@/app_modules/event/fun";
 import { event_getOneById } from "@/app_modules/event/fun/get/get_one_by_id";
+import moment from "moment";
 import { redirect } from "next/navigation";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -17,7 +18,10 @@ export default async function Page({ params }: { params: { id: string } }) {
     userId: userLoginId as string,
   });
 
- 
+  if (dataEvent == null) return redirect("/dev/event/main/beranda");
+
+  if (moment(dataEvent?.tanggal).diff(moment(), "minutes") > 0)
+    return redirect("/dev/event/main/beranda");
 
   if (dataEvent?.isArsip)
     return redirect(`/dev/event/detail/riwayat/${dataEvent.id}`);

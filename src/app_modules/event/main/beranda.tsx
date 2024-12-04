@@ -20,7 +20,7 @@ export default function Event_Beranda({
 }: {
   dataEvent: MODEL_EVENT[];
 }) {
-  const [data, setData] = useState(dataEvent);
+  const [data, setData] = useState<MODEL_EVENT[] >([]);
   const [activePage, setActivePage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -76,8 +76,6 @@ export default function Event_Beranda({
                       setData(val);
                     },
                   });
-
-                  
                 }}
               >
                 Update beranda

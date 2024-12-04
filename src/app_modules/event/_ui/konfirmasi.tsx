@@ -30,14 +30,6 @@ export default function Ui_Konfirmasi({
   const [isLoading, setLoading] = useState(false);
   const [isPresent, setIsPresent] = useState<boolean | null>(null);
 
-  //   useShallowEffect(() => {
-  //     onLoadData({
-  //       onPublish(val) {
-  //         setData(val);
-  //       },
-  //     });
-  //   }, [setData]);
-
   useShallowEffect(() => {
     onLoadKehadiran({
       onChange(val) {
@@ -51,12 +43,12 @@ export default function Ui_Konfirmasi({
   }: {
     onChange: (val: boolean) => void;
   }) {
-    const checkKehadiran = await event_funCheckKehadiran({
-      eventId: dataEvent.id,
-      userId: userLoginId as string,
-    });
+    const res = await fetch(
+      `/api/event/check-kehadiran?userId=${userLoginId}&eventId=${dataEvent.id}`
+    );
+    const checkKehadiran = await res.json();
 
-    onChange(checkKehadiran);
+    onChange(checkKehadiran.res);
   }
   async function onUpdateKonfirmasi() {
     setLoading(true);
@@ -74,6 +66,7 @@ export default function Ui_Konfirmasi({
     }
   }
 
+  console.log(isPresent, "isPresent");
 
   return (
     <>
