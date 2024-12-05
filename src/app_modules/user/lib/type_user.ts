@@ -1,4 +1,4 @@
-export interface IUserLogin {
+export interface IUserProfile {
    id: string
    username: string
    nomor: string

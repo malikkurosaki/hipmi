@@ -1,3 +1,5 @@
+import { IListPortofolio } from './lib/type_portofolio';
+import { apiGetPortofolioByProfile } from './lib/api_portofolio';
 import CreatePortofolio from "./create/view";
 import CreatePortofolioLayout from "./create/layout";
 import PortofolioLayout from "./ui/ui_layout";
@@ -20,6 +22,8 @@ export {
   LayoutPortofolio_EditDataBisnis,
   LayoutPortofolio_EditLogoBisnis,
   LayoutPortofolio_EditMedsosBisnis,
+  apiGetPortofolioByProfile
 };
+export type { IListPortofolio };
 export { Portofolio_ViewListDetail } from "./view/view_list_detail_portofolio";
 

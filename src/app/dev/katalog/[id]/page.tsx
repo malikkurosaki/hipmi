@@ -1,5 +1,5 @@
 import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
-import { Katalog_MainView } from "@/app_modules/katalog";
+import { Katalog_MainView, ViewKatalogNew } from "@/app_modules/katalog";
 import { funGetListPortofolio } from "@/app_modules/katalog/portofolio/fun/get/get_list_portofolio";
 import { Profile_getOneProfileAndUserById } from "@/app_modules/katalog/profile/fun/get/get_one_user_profile";
 
@@ -12,11 +12,13 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <Katalog_MainView
+      {/* <Katalog_MainView
         profile={dataProfile as any}
         listPorto={listPorto as any}
         userLoginId={userLoginId as any}
-      />
+      /> */}
+
+      <ViewKatalogNew />
     </>
   );
 }

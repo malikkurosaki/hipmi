@@ -1,53 +1,50 @@
 import { prisma } from "@/app/lib";
-import { funGetUserIdByToken } from "@/app_modules/_global/fun/get";
 import { NextResponse } from "next/server";
 
 
-// GET DATA USER LOGIN
+// GET ONE DATA USER PROFILE BY PROFILE ID
 export async function GET(request: Request) {
    try {
-      const userLoginId = await funGetUserIdByToken()
-      if (userLoginId == null) {
-         return NextResponse.json({ success: false, message: "Gagal mendapatkan data, user id tidak ada" }, { status: 500 });
-      }
+      const { searchParams } = new URL(request.url)
+      const profile = searchParams.get("profile")
 
-      const data = await prisma.user.findFirst({
+      const data = await prisma.profile.findUnique({
          where: {
-            id: userLoginId,
+            id: String(profile),
          },
          select: {
             id: true,
-            username: true,
-            nomor: true,
-            active: true,
-            masterUserRoleId: true,
-            Profile: {
+            name: true,
+            email: true,
+            alamat: true,
+            jenisKelamin: true,
+            imageId: true,
+            imageBackgroundId: true,
+            userId: true,
+            User: {
                select: {
-                  id: true,
-                  name: true,
-                  email: true,
-                  alamat: true,
-                  jenisKelamin: true,
-                  imageId: true,
-                  imageBackgroundId: true
+                  username: true,
+                  nomor: true,
+                  active: true,
+                  masterUserRoleId: true
                }
             }
          }
       });
 
       const dataFix = {
-         id: data?.id,
-         username: data?.username,
-         nomor: data?.nomor,
-         active: data?.active,
-         masterUserRoleId: data?.masterUserRoleId,
-         idProfile: data?.Profile?.id,
-         name: data?.Profile?.name,
-         email: data?.Profile?.email,
-         alamat: data?.Profile?.alamat,
-         jenisKelamin: data?.Profile?.jenisKelamin,
-         imageId: data?.Profile?.imageId,
-         imageBackgroundId: data?.Profile?.imageBackgroundId
+         id: data?.userId,
+         username: data?.User?.username,
+         nomor: data?.User?.nomor,
+         active: data?.User?.active,
+         masterUserRoleId: data?.User?.masterUserRoleId,
+         idProfile: data?.id,
+         name: data?.name,
+         email: data?.email,
+         alamat: data?.alamat,
+         jenisKelamin: data?.jenisKelamin,
+         imageId: data?.imageId,
+         imageBackgroundId: data?.imageBackgroundId
 
       }
 
