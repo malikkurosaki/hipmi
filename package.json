@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "bun --bun run next dev --experimental-https",
     "build": "NODE_OPTIONS='--max-old-space-size=2048' bun --bun run next build",
+    "build:dev": "bun --bun run next build",
     "start": "bun --bun run next start",
     "lint": "bun --bun run next lint",
     "ver": "bunx commit-and-tag-version -- --prerelease"
