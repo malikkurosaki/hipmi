@@ -13,6 +13,7 @@ import {
   Loader,
   rem,
   Skeleton,
+  Paper,
 } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { useAtom } from "jotai";
@@ -22,12 +23,10 @@ import { useState } from "react";
 import { ComponentEvent_CardBeranda } from "../component/card_view/card_beranda";
 import { event_getListAllPublish } from "../fun/get/get_list_all_publish";
 import { MODEL_EVENT } from "../model/interface";
+import { Event_ComponentSkeletonBeranda } from "../component";
+import { API_RouteEvent } from "@/app/lib/api_user_router/route_api_event";
 
-export default function Event_Beranda({
-  dataEvent,
-}: {
-  dataEvent: MODEL_EVENT[];
-}) {
+export default function Event_Beranda() {
   const [data, setData] = useState<MODEL_EVENT[] | null>(null);
   const [activePage, setActivePage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,6 +38,7 @@ export default function Event_Beranda({
   const [isShowUpdate, setIsShowUpdate] = useState(false);
 
   useShallowEffect(() => {
+    setIsShowUpdate(false);
     loadData();
   }, []);
 
@@ -49,14 +49,16 @@ export default function Event_Beranda({
   }, [isTriggerEventBeranda]);
 
   async function loadData() {
-    const loadData = await event_getListAllPublish({ page: 1 });
-    setData(loadData as any);
+    const res = await fetch(API_RouteEvent.get_all({ page: activePage }));
+    const data = await res.json();
+    setData(data.data as any);
   }
 
   async function onLoadNewData() {
     setIsLoading(true);
-    const loadData = await event_getListAllPublish({ page: 1 });
-    setData(loadData as any);
+    const res = await fetch(API_RouteEvent.get_all({ page: 1 }));
+    const data = await res.json();
+    setData(data.data as any);
 
     setIsShowUpdate(false);
     setIsTriggerEventBeranca(false);
@@ -92,16 +94,7 @@ export default function Event_Beranda({
         <ComponentGlobal_CreateButton path={RouterEvent.create} />
 
         {data == null ? (
-          Array.from({ length: 10 }).map((_, index) => (
-            <Skeleton
-              animate
-              mb={"15px"}
-              key={index}
-              radius={"md"}
-              height={"15vh"}
-              w={"100%"}
-            />
-          ))
+          <Event_ComponentSkeletonBeranda />
         ) : _.isEmpty(data) ? (
           <ComponentGlobal_IsEmptyData />
         ) : (

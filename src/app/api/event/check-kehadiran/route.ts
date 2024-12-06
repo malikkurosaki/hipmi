@@ -11,5 +11,5 @@ export async function GET(req: Request) {
     userId: userId as string,
   });
 
-  return NextResponse.json({ res });
+  return NextResponse.json(res, { status: 200 });
 }
