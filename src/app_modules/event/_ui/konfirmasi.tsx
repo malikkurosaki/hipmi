@@ -4,7 +4,17 @@ import {
   UIGlobal_LayoutDefault,
   UIGlobal_LayoutTamplate,
 } from "@/app_modules/_global/ui";
-import { Button, Paper, Skeleton, Stack, Text, Title } from "@mantine/core";
+import {
+  Button,
+  Card,
+  Center,
+  Group,
+  Paper,
+  Skeleton,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { MODEL_EVENT } from "../model/interface";
 import { useShallowEffect } from "@mantine/hooks";
 import { AccentColor, MainColor } from "@/app_modules/_global/color";
@@ -13,112 +23,328 @@ import {
   ComponentGlobal_NotifikasiBerhasil,
   ComponentGlobal_NotifikasiGagal,
 } from "@/app_modules/_global/notif_global";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { RouterEvent } from "@/app/lib/router_hipmi/router_event";
 import { useState } from "react";
+import { API_RouteEvent } from "@/app/lib/api_user_router/route_api_event";
+import { ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
+import moment from "moment";
+import { gs_event_hotMenu } from "../global_state";
+import { useAtom } from "jotai";
 
 export default function Ui_Konfirmasi({
-  dataEvent,
   userLoginId,
+  eventId,
 }: {
-  dataEvent: MODEL_EVENT;
   userLoginId: string;
+  eventId: string;
 }) {
   //   console.log(dataEvent);
 
   const router = useRouter();
-  const [isLoading, setLoading] = useState(false);
+  const [data, setData] = useState<MODEL_EVENT | null>(null);
   const [isPresent, setIsPresent] = useState<boolean | null>(null);
 
   useShallowEffect(() => {
-    onLoadKehadiran({
-      onChange(val) {
-        setIsPresent(val);
-      },
-    });
-  }, [setIsPresent]);
+    onLoadData();
+  }, []);
 
-  async function onLoadKehadiran({
-    onChange,
-  }: {
-    onChange: (val: boolean) => void;
-  }) {
-    const res = await fetch(
-      `/api/event/check-kehadiran?userId=${userLoginId}&eventId=${dataEvent.id}`
+  async function onLoadData() {
+    const data = await fetch(
+      API_RouteEvent.get_one_by_id({ eventId: eventId })
     );
-    const checkKehadiran = await res.json();
-
-    onChange(checkKehadiran.res);
+    const res = await data.json();
+    console.log(res.data, "data event");
+    setData(res.data);
   }
+
+  useShallowEffect(() => {
+    onLoadKehadiran();
+  }, []);
+
+  async function onLoadKehadiran() {
+    const res = await fetch(
+      API_RouteEvent.check_kehadiran({ eventId: eventId, userId: userLoginId })
+    );
+    const data = await res.json();
+
+    setIsPresent(data);
+  }
+
+  // console.log("kehadiran:", isPresent);
+  // console.log("data:", data);
+
+  if (data == null && isPresent == null) {
+    return <SkeletonIsDataNull />;
+  }
+
+  if (data == null) {
+    return (
+      <>
+        <DataNotFound />
+      </>
+    );
+  }
+
+  if (moment(data?.tanggal).diff(moment(), "minute") < 0) {
+    return (
+      <>
+        <EventAlreadyDone title={data?.title} eventId={eventId} />
+      </>
+    );
+  }
+
+  if (isPresent && data) {
+    return <UserAlreadyConfirm title={data.title} />;
+  }
+
+  if (isPresent == false && data) {
+    return (
+      <UserNotConfirm
+        title={data.title}
+        eventId={eventId}
+        userLoginId={userLoginId}
+      />
+    );
+  }
+  // const tgl = moment(data?.tanggal).diff(moment(), "minute") < 0;
+  // return (
+  //   <>
+  //     <UIGlobal_LayoutDefault>
+  //       <Stack h={"100vh"} justify="center" c={"white"}>
+  //         {JSON.stringify(tgl)}
+  //       </Stack>
+  //     </UIGlobal_LayoutDefault>
+  //   </>
+  // );
+}
+
+function DataNotFound() {
+  const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+  const [hotMenu, setHotMenu] = useAtom(gs_event_hotMenu);
+
+  return (
+    <>
+      <UIGlobal_LayoutDefault>
+        <Stack h={"100vh"} justify="center">
+          <ComponentGlobal_CardStyles>
+            <Stack>
+              <Text fw={"bold"} align="center">
+                Data Event Tidak Ditemukan
+              </Text>
+
+              <Button
+                loading={isLoading}
+                loaderPosition="center"
+                radius={"xl"}
+                color="green"
+                c={"black"}
+                onClick={() => {
+                  setHotMenu(0);
+                  setLoading(true);
+                  router.push(RouterEvent.beranda, { scroll: false });
+                }}
+              >
+                Kembali Ke Beranda
+              </Button>
+            </Stack>
+          </ComponentGlobal_CardStyles>
+        </Stack>
+      </UIGlobal_LayoutDefault>
+    </>
+  );
+}
+
+function SkeletonIsDataNull() {
+  return (
+    <>
+      <UIGlobal_LayoutDefault>
+        <Stack h={"100vh"} justify="center">
+          <ComponentGlobal_CardStyles>
+            <Stack>
+              <Skeleton height={20} width={"100%"} radius={"xl"} />{" "}
+              <Skeleton height={20} width={"100%"} radius={"xl"} />{" "}
+              <Skeleton height={20} width={"100%"} radius={"xl"} />
+              <Center>
+                <Skeleton height={40} width={"40%"} radius={"sm"} />
+              </Center>
+            </Stack>
+          </ComponentGlobal_CardStyles>
+        </Stack>
+      </UIGlobal_LayoutDefault>
+    </>
+  );
+}
+
+function EventAlreadyDone({
+  title,
+  eventId,
+}: {
+  title: string;
+  eventId: string;
+}) {
+  const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+  const [isLoadingDetail, setLoadingDetail] = useState(false);
+  const [hotMenu, setHotMenu] = useAtom(gs_event_hotMenu);
+
+  return (
+    <>
+      <UIGlobal_LayoutDefault>
+        <Stack h={"100vh"} justify="center">
+          <ComponentGlobal_CardStyles>
+            <Stack align="center" justify="center">
+              <Text align="center">
+                Kami mohon maaf, Bapak/Ibu, acara{" "}
+                <Text inherit span fw={"bold"}>
+                  {title}
+                </Text>{" "}
+                telah selesai, sehingga konfirmasi kehadiran sudah tidak dapat
+                dilakukan. Terima kasih atas perhatian dan minat Anda. Kami
+                berharap dapat bertemu di acara kami berikutnya. Terima kasih,
+                Bapak/Ibu, kehadiran Anda di acara.
+              </Text>
+            </Stack>
+            <Group grow mt={"lg"}>
+              <Button
+                loading={isLoading}
+                loaderPosition="center"
+                radius={"xl"}
+                color="green"
+                c={"black"}
+                onClick={() => {
+                  setHotMenu(0);
+                  setLoading(true);
+                  router.push(RouterEvent.beranda, { scroll: false });
+                }}
+              >
+                Beranda
+              </Button>
+
+              <Button
+                loading={isLoadingDetail}
+                loaderPosition="center"
+                radius={"xl"}
+                c={"black"}
+                onClick={() => {
+                  setHotMenu(3);
+                  setLoadingDetail(true);
+                  router.push(RouterEvent.detail_riwayat + eventId, {
+                    scroll: false,
+                  });
+                }}
+              >
+                Riwayat Event
+              </Button>
+            </Group>
+          </ComponentGlobal_CardStyles>
+        </Stack>
+      </UIGlobal_LayoutDefault>
+    </>
+  );
+}
+
+function UserNotConfirm({
+  title,
+  eventId,
+  userLoginId,
+}: {
+  title: string;
+  eventId: string;
+  userLoginId: string;
+}) {
+  const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
   async function onUpdateKonfirmasi() {
     setLoading(true);
     const res = await event_funUpdateKehadiran({
-      eventId: dataEvent.id,
+      eventId: eventId,
       userId: userLoginId,
     });
 
     if (res.status === 200) {
       ComponentGlobal_NotifikasiBerhasil(res.message, 2000);
-      router.push(RouterEvent.detail_main + dataEvent.id);
+      router.push(RouterEvent.detail_main + eventId);
     } else {
       setLoading(false);
       ComponentGlobal_NotifikasiGagal(res.message);
     }
   }
+  return (
+    <>
+      <UIGlobal_LayoutDefault>
+        <Stack h={"100vh"} justify="center">
+          <ComponentGlobal_CardStyles>
+            <Stack align="center" justify="center">
+              <Text align="center">
+                Terima kasih atas kehadiran Anda di acara{" "}
+                <Text inherit span fw={"bold"}>
+                  {title}
+                </Text>{" "}
+                pada hari ini. Mohon untuk mengonfirmasi kehadiran Anda dengan
+                menekan tombol {"Hadir"} atau fitur konfirmasi yang tersedia di
+                bawah. Terima kasih dan selamat menikmati acara.
+              </Text>
 
-  console.log(isPresent, "isPresent");
+              <Button
+                loading={isLoading}
+                loaderPosition="center"
+                radius={"xs"}
+                bg={MainColor.yellow}
+                color="yellow"
+                c={"black"}
+                onClick={() => {
+                  onUpdateKonfirmasi();
+                }}
+              >
+                HADIR
+              </Button>
+            </Stack>
+          </ComponentGlobal_CardStyles>
+        </Stack>
+      </UIGlobal_LayoutDefault>
+    </>
+  );
+}
+
+function UserAlreadyConfirm({ title }: { title: string }) {
+  const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+  const [hotMenu, setHotMenu] = useAtom(gs_event_hotMenu);
 
   return (
     <>
       <UIGlobal_LayoutDefault>
-        <Stack h={"100vh"} align="center" justify="center">
-          {isPresent == null ? (
-            <Skeleton h={200} w={300} radius={"sm"} />
-          ) : isPresent ? (
-            <Paper p={"md"} withBorder bg={AccentColor.softblue}>
-              <Stack align="center" justify="center">
-                <Text fw={"bold"} align="center">
-                  Anda telah terkonfirmasi silahkan kembali ke beranda !
-                </Text>
-                <Title order={3}>{dataEvent.title}</Title>
-                <Button
-                  loading={isLoading}
-                  loaderPosition="center"
-                  radius={"md"}
-                  color="green"
-                  c={"black"}
-                  onClick={() => {
-                    router.push(RouterEvent.beranda, { scroll: false });
-                  }}
-                >
-                  Beranda
-                </Button>
-              </Stack>
-            </Paper>
-          ) : (
-            <Paper p={"md"} withBorder bg={AccentColor.softblue}>
-              <Stack align="center" justify="center">
-                <Text fw={"bold"} align="center">
-                  Anda mengkonfirmasi bahwa anda telah datang & ikut menghadir
-                  di event
-                </Text>
-                <Title order={3}>{dataEvent.title}</Title>
-                <Button
-                  loading={isLoading}
-                  loaderPosition="center"
-                  radius={"xs"}
-                  bg={MainColor.yellow}
-                  color="yellow"
-                  c={"black"}
-                  onClick={() => {
-                    onUpdateKonfirmasi();
-                  }}
-                >
-                  YA
-                </Button>
-              </Stack>
-            </Paper>
-          )}
+        <Stack h={"100vh"} justify="center">
+          <ComponentGlobal_CardStyles>
+            <Stack align="center" justify="center">
+              <Text align="center">
+                Terima kasih, Bapak/Ibu, kehadiran Anda di acara{" "}
+                <Text inherit span fw={"bold"}>
+                  {title}
+                </Text>{" "}
+                telah berhasil dikonfirmasi. Kami senang menyambut Anda dan
+                semoga acara ini memberikan manfaat yang maksimal. Selamat
+                mengikuti kegiatan.
+              </Text>
+
+              <Button
+                loading={isLoading}
+                loaderPosition="center"
+                radius={"xl"}
+                color="green"
+                c={"black"}
+                onClick={() => {
+                  setHotMenu(0);
+                  setLoading(true);
+                  router.push(RouterEvent.beranda, { scroll: false });
+                }}
+              >
+                Beranda
+              </Button>
+            </Stack>
+          </ComponentGlobal_CardStyles>
         </Stack>
       </UIGlobal_LayoutDefault>
     </>

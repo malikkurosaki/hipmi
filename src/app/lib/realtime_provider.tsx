@@ -17,8 +17,8 @@ import {
   gs_votingTiggerBeranda,
   IRealtimeData,
 } from "./global_state";
+import { newFunGetUserId } from "./new_fun_user_id";
 import { useState } from "react";
-import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
 
 // const WIBU_REALTIME_TOKEN: string | undefined =
 //   process.env.NEXT_PUBLIC_WIBU_REALTIME_TOKEN;
@@ -32,13 +32,11 @@ export type TypeNotification = {
 };
 
 export default function RealtimeProvider({
-  userLoginId,
   WIBU_REALTIME_TOKEN,
 }: {
-  userLoginId: string;
   WIBU_REALTIME_TOKEN: string;
 }) {
-  const [userId, setUserId] = useState("");
+  const [userLoginId, setUserLoginId] = useState("");
   const [dataRealtime, setDataRealtime] = useAtom(gs_realtimeData);
   const [newAdminNtf, setNewAdminNtf] = useAtom(gs_admin_ntf);
   const [newUserNtf, setNewUserNtf] = useAtom(gs_user_ntf);
@@ -74,159 +72,146 @@ export default function RealtimeProvider({
     gs_donasiTriggerBeranda
   );
 
-  useShallowEffect(() => {
-    onLoadUser({
-      onSetUser(val: string) {
+  async function loadUserId() {
+    const userId = await newFunGetUserId();
 
-        if (val !== "" || val !== undefined) {
-          try {
-            WibuRealtime.init({
-              project: "hipmi",
-              WIBU_REALTIME_TOKEN: WIBU_REALTIME_TOKEN,
-              onData(data: TypeNotification) {
-                if (
-                  data.type == "notification" &&
-                  data.pushNotificationTo == "ADMIN"
-                ) {
-                  setNewAdminNtf((e) => e + 1);
-                }
-
-                // Notifikasi ke semua user , yang datanya di acc admin
-                if (
-                  data.type == "notification" &&
-                  data.pushNotificationTo == "USER" &&
-                  data.dataMessage?.userId == userId
-                ) {
-                  setNewUserNtf((e) => e + 1);
-                  setDataRealtime(data.dataMessage as any);
-                }
-
-                // ---------------------- JOB ------------------------- //
-                if (
-                  data.type == "trigger" &&
-                  data.pushNotificationTo == "ADMIN" &&
-                  data.dataMessage?.kategoriApp == "JOB"
-                ) {
-                  setIsAdminJob_TriggerReview(true);
-                }
-
-                if (
-                  data.type == "trigger" &&
-                  data.pushNotificationTo == "USER" &&
-                  data.dataMessage?.kategoriApp == "JOB" &&
-                  data.dataMessage.status == "Publish"
-                ) {
-                  setIsTriggerJobBeranda(true);
-                }
-                // ---------------------- JOB ------------------------- //
-
-                // ---------------------- EVENT ------------------------- //
-                if (
-                  data.type == "trigger" &&
-                  data.pushNotificationTo == "ADMIN" &&
-                  data.dataMessage?.kategoriApp == "EVENT"
-                ) {
-                  setIsAdminEvent_TriggerReview(true);
-                }
-
-                if (
-                  data.type == "trigger" &&
-                  data.pushNotificationTo == "USER" &&
-                  data.dataMessage?.kategoriApp == "EVENT" &&
-                  data.dataMessage.status == "Publish"
-                ) {
-                  setIsTriggerEventBeranda(true);
-                }
-
-                if (
-                  data.type == "notification" &&
-                  data.pushNotificationTo == "USER" &&
-                  data.dataMessage?.status == "Peserta Event" &&
-                  userId !== data.dataMessage?.userId
-                ) {
-                  setNewUserNtf((e) => e + 1);
-                }
-                // ---------------------- EVENT ------------------------- //
-
-                // ---------------------- VOTING ------------------------- //
-                if (
-                  data.type == "trigger" &&
-                  data.pushNotificationTo == "ADMIN" &&
-                  data.dataMessage?.kategoriApp == "VOTING"
-                ) {
-                  setIsAdminVoting_TriggerReview(true);
-                }
-
-                if (
-                  data.type == "trigger" &&
-                  data.pushNotificationTo == "USER" &&
-                  data.dataMessage?.kategoriApp == "VOTING" &&
-                  data.dataMessage.status == "Publish"
-                ) {
-                  setIsTriggerVotingBeranda(true);
-                }
-
-                if (
-                  data.type == "notification" &&
-                  data.pushNotificationTo == "USER" &&
-                  data.dataMessage?.status == "Voting Masuk" &&
-                  userId !== data.dataMessage?.userId
-                ) {
-                  setNewUserNtf((e) => e + 1);
-                }
-                // ---------------------- VOTING ------------------------- //
-
-                // ---------------------- DONASI ------------------------- //
-                if (
-                  data.type == "trigger" &&
-                  data.pushNotificationTo == "ADMIN" &&
-                  data.dataMessage?.kategoriApp == "DONASI"
-                ) {
-                  setIsAdminDonasi_TriggerReview(true);
-                }
-
-                if (
-                  data.type == "trigger" &&
-                  data.pushNotificationTo == "USER" &&
-                  data.dataMessage?.kategoriApp == "DONASI" &&
-                  data.dataMessage.status == "Publish"
-                ) {
-                  setIsTriggerDonasiBeranda(true);
-                }
-
-                // if (
-                //   data.type == "notification" &&
-                //   data.pushNotificationTo == "ADMIN" &&
-                //   data.dataMessage?.status == "Menunggu" &&
-                //   userLoginId !== data.dataMessage?.userId
-                // ) {
-                //   console.log("yes");
-                // }
-
-                // ---------------------- DONASI ------------------------- //
-              },
-            });
-          } catch (error) {
-            console.log(error);
-          }
-        } else {
-          return undefined;
-        }
-      },
-    });
-  }, [setUserId]);
-
-  async function onLoadUser({
-    onSetUser,
-  }: {
-    onSetUser: (val: string) => void;
-  }) {
-    const res = await fetch("/api/user", {
-      method: "GET",
-    });
-    const result = await res.json();
-    onSetUser(result.data.id);
+    setUserLoginId(userId as string);
   }
+
+  useShallowEffect(() => {
+    loadUserId();
+
+    try {
+      WibuRealtime.init({
+        project: "hipmi",
+        WIBU_REALTIME_TOKEN: WIBU_REALTIME_TOKEN,
+        onData(data: TypeNotification) {
+          if (
+            data.type == "notification" &&
+            data.pushNotificationTo == "ADMIN"
+          ) {
+            setNewAdminNtf((e) => e + 1);
+          }
+
+          // Notifikasi ke semua user , yang datanya di acc admin
+          if (
+            data.type == "notification" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.userId == userLoginId
+          ) {
+            setNewUserNtf((e) => e + 1);
+            setDataRealtime(data.dataMessage as any);
+          }
+
+          // ---------------------- JOB ------------------------- //
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "ADMIN" &&
+            data.dataMessage?.kategoriApp == "JOB"
+          ) {
+            setIsAdminJob_TriggerReview(true);
+          }
+
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.kategoriApp == "JOB" &&
+            data.dataMessage.status == "Publish"
+          ) {
+            setIsTriggerJobBeranda(true);
+          }
+          // ---------------------- JOB ------------------------- //
+
+          // ---------------------- EVENT ------------------------- //
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "ADMIN" &&
+            data.dataMessage?.kategoriApp == "EVENT"
+          ) {
+            setIsAdminEvent_TriggerReview(true);
+          }
+
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.kategoriApp == "EVENT" &&
+            data.dataMessage.status == "Publish"
+          ) {
+            setIsTriggerEventBeranda(true);
+          }
+
+          if (
+            data.type == "notification" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.status == "Peserta Event" &&
+            userLoginId !== data.dataMessage?.userId
+          ) {
+            setNewUserNtf((e) => e + 1);
+          }
+          // ---------------------- EVENT ------------------------- //
+
+          // ---------------------- VOTING ------------------------- //
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "ADMIN" &&
+            data.dataMessage?.kategoriApp == "VOTING"
+          ) {
+            setIsAdminVoting_TriggerReview(true);
+          }
+
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.kategoriApp == "VOTING" &&
+            data.dataMessage.status == "Publish"
+          ) {
+            setIsTriggerVotingBeranda(true);
+          }
+
+          if (
+            data.type == "notification" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.status == "Voting Masuk" &&
+            userLoginId !== data.dataMessage?.userId
+          ) {
+            setNewUserNtf((e) => e + 1);
+          }
+          // ---------------------- VOTING ------------------------- //
+
+          // ---------------------- DONASI ------------------------- //
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "ADMIN" &&
+            data.dataMessage?.kategoriApp == "DONASI"
+          ) {
+            setIsAdminDonasi_TriggerReview(true);
+          }
+
+          if (
+            data.type == "trigger" &&
+            data.pushNotificationTo == "USER" &&
+            data.dataMessage?.kategoriApp == "DONASI" &&
+            data.dataMessage.status == "Publish"
+          ) {
+            setIsTriggerDonasiBeranda(true);
+          }
+
+          // if (
+          //   data.type == "notification" &&
+          //   data.pushNotificationTo == "ADMIN" &&
+          //   data.dataMessage?.status == "Menunggu" &&
+          //   userLoginId !== data.dataMessage?.userId
+          // ) {
+          //   console.log("yes");
+          // }
+
+          // ---------------------- DONASI ------------------------- //
+        },
+      });
+    } catch (error) {
+      console.log("Error!:", error);
+    }
+  }, []);
 
   return null;
 }
