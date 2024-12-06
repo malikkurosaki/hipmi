@@ -17,7 +17,7 @@ export default function ListPortofolioProfileNew() {
    async function getPortofolio() {
       try {
          setLoading(true)
-         const response = await apiGetPortofolioByProfile(`?profile=${param.id}&page=profile`)
+         const response = await apiGetPortofolioByProfile(`?profile=${param.id}&cat=profile`)
          if (response.success) {
             setDataPortofolio(response.data);
          }
