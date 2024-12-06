@@ -8,11 +8,6 @@ export default function ViewKatalogNew() {
       <>
          <Stack mb={"lg"}>
             <ProfileDetail />
-            {/* <Portofolio_UiListView
-               listPorto={listPorto as any}
-               profile={profile}
-               userLoginId={userLoginId}
-            /> */}
             <ListPortofolioProfileNew />
          </Stack>
       </>

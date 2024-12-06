@@ -8,9 +8,11 @@ export async function GET(request: Request) {
       let fixData
       const { searchParams } = new URL(request.url)
       const profile = searchParams.get("profile")
+      const kategori_halaman = searchParams.get("cat")
       const page = searchParams.get("page")
+      const dataSkip = Number(page) * 10 - 10;
 
-      if (page == "profile") {
+      if (kategori_halaman == "profile") {
          fixData = await prisma.portofolio.findMany({
             take: 2,
             orderBy: {
@@ -27,8 +29,10 @@ export async function GET(request: Request) {
                profileId: true,
             },
          });
-      } else if (page == "portofolio") {
+      } else if (kategori_halaman == "portofolio") {
          fixData = await prisma.portofolio.findMany({
+            skip: dataSkip,
+            take: 10,
             orderBy: {
                createdAt: "desc",
             },
