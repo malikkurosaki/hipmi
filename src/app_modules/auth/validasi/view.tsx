@@ -70,8 +70,8 @@ export default function Validasi() {
     const result = await res.json();
 
     onSetData({
-      nomor: result.data.nomor,
-      code: result.data.otp,
+      nomor: result.nomor,
+      code: result.otp,
     });
   }
 
