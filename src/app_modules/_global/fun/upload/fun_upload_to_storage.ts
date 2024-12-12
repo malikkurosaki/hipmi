@@ -54,6 +54,8 @@ export async function funGlobal_UploadToStorage({
 
     if (res.ok) {
       const dataRes = await res.json();
+      // const cekLog = await res.text();
+      // console.log(cekLog);
       return { success: true, data: dataRes.data };
     } else {
       const errorText = await res.text();

@@ -24,6 +24,7 @@ export function ComponentGlobal_ButtonUploadFileImage({
 
           if (files.size > MAX_SIZE) {
             ComponentGlobal_NotifikasiPeringatan(PemberitahuanMaksimalFile);
+            return;
           } else {
             onSetFile(files);
             onSetImage(buffer);
