@@ -7,7 +7,10 @@ import {
   ComponentGlobal_BoxUploadImage,
   ComponentGlobal_ErrorInput,
 } from "@/app_modules/_global/component";
-import { funGlobal_UploadToStorage } from "@/app_modules/_global/fun";
+import {
+  funGlobal_DeleteFileById,
+  funGlobal_UploadToStorage,
+} from "@/app_modules/_global/fun";
 import { MAX_SIZE } from "@/app_modules/_global/lib";
 import { PemberitahuanMaksimalFile } from "@/app_modules/_global/lib/max_size";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
@@ -95,6 +98,35 @@ export default function CreateProfile() {
                       ComponentGlobal_NotifikasiPeringatan(
                         PemberitahuanMaksimalFile
                       );
+                      setImgPP(null);
+                      setFilePP(null);
+
+                      return;
+                    }
+
+                    if (fotoProfileId != "") {
+                      const deleteFotoProfile = await funGlobal_DeleteFileById({
+                        fileId: fotoProfileId,
+                      });
+
+                      if (deleteFotoProfile.success) {
+                        setFotoProfileId("");
+
+                        const uploadPhoto = await funGlobal_UploadToStorage({
+                          file: files,
+                          dirId: DIRECTORY_ID.profile_foto,
+                        });
+
+                        if (uploadPhoto.success) {
+                          setFotoProfileId(uploadPhoto.data.id);
+                          setImgPP(buffer);
+                          setFilePP(files);
+                        } else {
+                          ComponentGlobal_NotifikasiPeringatan(
+                            "Gagal upload foto profile"
+                          );
+                        }
+                      }
                     } else {
                       const uploadPhoto = await funGlobal_UploadToStorage({
                         file: files,
@@ -169,6 +201,35 @@ export default function CreateProfile() {
                       ComponentGlobal_NotifikasiPeringatan(
                         PemberitahuanMaksimalFile
                       );
+                      setImgBG(null);
+                      setFileBG(null);
+                      return;
+                    }
+
+                    if (backgroundProfileId != "") {
+                      const deleteFotoBg = await funGlobal_DeleteFileById({
+                        fileId: backgroundProfileId,
+                      });
+
+                      if (deleteFotoBg.success) {
+                        setBackgroundProfileId("");
+
+                        const uploadBackground =
+                          await funGlobal_UploadToStorage({
+                            file: files,
+                            dirId: DIRECTORY_ID.profile_background,
+                          });
+
+                        if (uploadBackground.success) {
+                          setBackgroundProfileId(uploadBackground.data.id);
+                          setImgBG(buffer);
+                          setFileBG(files);
+                        } else {
+                          ComponentGlobal_NotifikasiPeringatan(
+                            "Gagal upload background profile"
+                          );
+                        }
+                      }
                     } else {
                       const uploadBackground = await funGlobal_UploadToStorage({
                         file: files,
@@ -284,8 +345,6 @@ export default function CreateProfile() {
 
           <Profile_ComponentCreateNewProfile
             value={value as any}
-            // filePP={filePP as any}
-            // fileBG={fileBG as any}
             fotoProfileId={fotoProfileId}
             backgroundProfileId={backgroundProfileId}
           />
