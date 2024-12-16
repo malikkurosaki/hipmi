@@ -13,3 +13,12 @@ export interface IDataInvestasi {
    masterPeriodeDevidenId: string
    masterPembagianDevidenId: string
 }
+
+export interface IDataInvestasiBursa {
+   id: string
+   title: string
+   imageId: string
+   progress: string
+   countDown: string
+   pencarianInvestor: string
+}

@@ -25,6 +25,7 @@ import { Investasi_UiRekapBerita } from "./detail/ui_rekap_berita";
 import { Investasi_UiCreateBerita } from "./create/ui_create_berita";
 import { Investasi_UiDetailBerita } from "./detail/ui_berita";
 import { Investasi_UiEditInvestasiNew } from "./edit/ui_edit_investasi_new";
+import { Investasi_ViewBerandaNew } from "../_view/main/view_beranda_new";
 
 export { Investasi_UiProsesPembelian };
 export { Investasi_UiMetodePembayaran };
@@ -53,3 +54,4 @@ export { Investasi_UiRekapBerita };
 export { Investasi_UiCreateBerita };
 export { Investasi_UiDetailBerita };
 export { Investasi_UiEditInvestasiNew }
+export { Investasi_ViewBerandaNew }
