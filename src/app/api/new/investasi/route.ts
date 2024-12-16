@@ -98,6 +98,38 @@ export async function GET(request: Request) {
          if (userLoginId == null) {
             return NextResponse.json({ success: false, message: "Gagal mendapatkan data, user id tidak ada" }, { status: 500 });
          }
+
+         const data = await prisma.investasi.findMany({
+            take: 5,
+            skip: dataSkip,
+            orderBy: {
+               updatedAt: "desc",
+            },
+            where: {
+               authorId: userLoginId,
+               masterStatusInvestasiId: status,
+            },
+            select: {
+               id: true,
+               title: true,
+               targetDana: true,
+               imageId: true,
+               countDown: true,
+               updatedAt: true,
+               MasterPencarianInvestor: {
+                  select: {
+                     name: true
+                  }
+               }
+            }
+         });
+
+         dataFix = data.map((v: any) => ({
+            ..._.omit(v, ["MasterPencarianInvestor"]),
+            pencarianInvestor: v.MasterPencarianInvestor.name
+         }))
+
+
       }
 
 

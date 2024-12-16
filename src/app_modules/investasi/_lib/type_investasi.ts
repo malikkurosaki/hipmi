@@ -20,5 +20,7 @@ export interface IDataInvestasiBursa {
    imageId: string
    progress: string
    countDown: string
+   targetDana: string
    pencarianInvestor: string
+   updatedAt: Date
 }
