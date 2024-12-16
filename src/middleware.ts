@@ -19,7 +19,8 @@ const middlewareConfig: MiddlewareConfig = {
   userPath: "/dev/home",
   publicRoutes: [
     "/",
-    "/api/upload",
+    "/api/logs/*",
+    "/api/image/*",
     "/api/job/*",
     "/api/validation",
     "/api/auth/*",
