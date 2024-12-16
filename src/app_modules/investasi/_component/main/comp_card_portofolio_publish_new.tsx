@@ -1,17 +1,15 @@
 import { NEW_RouterInvestasi } from "@/app/lib/router_hipmi/router_investasi";
-import { ComponentGlobal_CardLoadingOverlay, ComponentGlobal_LoadImageCustom, } from "@/app_modules/_global/component";
+import { ComponentGlobal_LoadImageCustom } from "@/app_modules/_global/component";
 import { Box, Grid, Group, Stack, Text } from "@mantine/core";
 import { IconChecklist, IconCircleCheck } from "@tabler/icons-react";
 import _ from "lodash";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { IDataInvestasiBursa } from "../../_lib/type_investasi";
 import { Investasi_ComponentStylesCard } from "../comp_card_border_and_background";
 
 export function Investasi_ComponentCardPortofolioPublishNew({ data }: { data: IDataInvestasiBursa; }) {
   const router = useRouter();
-  const [visible, setVisible] = useState(false);
 
   return (
     <>
@@ -21,7 +19,6 @@ export function Investasi_ComponentCardPortofolioPublishNew({ data }: { data: ID
           router.push(NEW_RouterInvestasi.detail_main({ id: data?.id }), {
             scroll: false,
           });
-          setVisible(true);
         }}
       >
         <Grid>
@@ -82,7 +79,6 @@ export function Investasi_ComponentCardPortofolioPublishNew({ data }: { data: ID
             </Group>
           )}
         </Group>
-        {visible && <ComponentGlobal_CardLoadingOverlay />}
       </Investasi_ComponentStylesCard>
     </>
   );
