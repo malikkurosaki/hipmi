@@ -6,6 +6,7 @@ import { MainColor } from "../color";
 import { MAX_SIZE } from "../lib";
 import { PemberitahuanMaksimalFile } from "../lib/max_size";
 import { ComponentGlobal_NotifikasiPeringatan } from "../notif_global";
+import { clientLogger } from "@/util/clientLogger";
 
 export function ComponentGlobal_ButtonUploadFileImage({
   onSetFile,
@@ -30,7 +31,7 @@ export function ComponentGlobal_ButtonUploadFileImage({
             onSetImage(buffer);
           }
         } catch (error) {
-          console.log(error);
+          clientLogger.error("Upload error:", error);
         }
       }}
       accept="image/png,image/jpeg"
