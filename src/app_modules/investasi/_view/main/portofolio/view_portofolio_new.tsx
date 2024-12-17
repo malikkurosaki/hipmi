@@ -61,7 +61,7 @@ export function Investasi_ViewPortofolioNew() {
                   const loadData = await apiGetAllInvestasi(`?cat=portofolio&status=${param.id}&page=${pageNew}`)
                   setActivePage((val) => val + 1);
 
-                  return loadData;
+                  return loadData.data;
                 }}
               >
                 {
