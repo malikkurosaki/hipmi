@@ -7,37 +7,39 @@ import { useAtom } from "jotai";
 import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";
 import { useState } from "react";
-import { ComponentNotifiaksi_CardView } from "../component";
+import {
+  ComponentNotifiaksi_CardView,
+  Notifikasi_ComponentSkeletonView,
+} from "../component";
 import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
 import { gs_notifikasi_kategori_app } from "../lib";
 import { MODEL_NOTIFIKASI } from "../model/interface";
 import { useShallowEffect } from "@mantine/hooks";
+import { API_RouteNotifikasi } from "@/app/lib/api_user_router/route_api_notifikasi";
 
-export default function Notifikasi_UiEvent({
-  listNotifikasi,
-}: {
-  listNotifikasi: any[];
-}) {
-  const [data, setData] = useState<MODEL_NOTIFIKASI[]>(listNotifikasi);
+export default function Notifikasi_UiEvent() {
+  const [data, setData] = useState<MODEL_NOTIFIKASI[] | null>(null);
   const [activePage, setActivePage] = useState(1);
   const [categoryPage, setCategoryPage] = useAtom(gs_notifikasi_kategori_app);
 
   useShallowEffect(() => {
-    onLoadData(setData);
-  }, [setData]);
+    onLoadData();
+  }, []);
 
-  async function onLoadData(setData: any) {
-    const listNotifikasi = await notifikasi_getByUserId({
-      page: 1,
-      kategoriApp: "Event",
-    });
-    setData(listNotifikasi);
+  async function onLoadData() {
+    const loadData = await fetch(
+      API_RouteNotifikasi.get_all_by_category({  category: categoryPage as any, page: 1 })
+    );
+    const data = await loadData.json().then((res) => res.data as any);
+    setData(data);
   }
 
   return (
     <>
       <Box>
-        {_.isEmpty(data) ? (
+        {_.isNull(data) ? (
+          <Notifikasi_ComponentSkeletonView />
+        ) : _.isEmpty(data) ? (
           <ComponentGlobal_IsEmptyData text="Tidak ada pemberitahuan" />
         ) : (
           <ScrollOnly
@@ -48,22 +50,25 @@ export default function Notifikasi_UiEvent({
               </Center>
             )}
             data={data}
-            setData={setData}
+            setData={setData as any}
             moreData={async () => {
-              const loadData = await notifikasi_getByUserId({
-                page: activePage + 1,
-                kategoriApp: categoryPage as any,
-              });
+              const loadData = await fetch(
+                API_RouteNotifikasi.get_all_by_category({
+                  category: categoryPage as any,
+                  page: activePage + 1,
+                })
+              );
+              const data = await loadData.json().then((res) => res.data as any);
 
               setActivePage((val) => val + 1);
-              return loadData;
+              return data;
             }}
           >
             {(item) => (
               <ComponentNotifiaksi_CardView
                 data={item}
                 onLoadData={setData}
-                categoryPage={categoryPage}
+                categoryPage={categoryPage as any}
               />
             )}
           </ScrollOnly>
