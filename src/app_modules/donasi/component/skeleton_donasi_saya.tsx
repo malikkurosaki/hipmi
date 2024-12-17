@@ -1,15 +1,12 @@
 import { ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
 import { Box, Grid, Skeleton } from "@mantine/core";
 
-export default function SkeletonDonasi() {
+export default function SkeletonDonasiSaya() {
    return <>
       <Box>
          {[...Array(3)].map((_, index) => (
             <ComponentGlobal_CardStyles key={index}>
                <Grid>
-                  <Grid.Col span={6}>
-                     <Skeleton w={"100%"} height={100} radius="md" />
-                  </Grid.Col>
                   <Grid.Col span={6}>
                      <Box>
                         {[...Array(4)].map((_, index) => (
@@ -22,6 +19,10 @@ export default function SkeletonDonasi() {
                            </Box>
                         ))}
                      </Box>
+
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                     <Skeleton w={"100%"} height={100} radius="md" />
                   </Grid.Col>
                </Grid>
             </ComponentGlobal_CardStyles>
