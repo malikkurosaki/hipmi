@@ -1,10 +1,8 @@
-import { investasi_funGetPortofolioByStatusId } from "@/app_modules/investasi/_fun";
-import { Investasi_UiPortofolio, Investasi_UiPortofolioNew } from "@/app_modules/investasi/_ui";
-import getStatusInvestasi from "@/app_modules/investasi/fun/master/get_status_investasi";
+import { Investasi_UiPortofolioNew } from "@/app_modules/investasi/_ui";
 
 export default async function Page({ params }: { params: { id: string } }) {
   // const statusId = params.id;
-  const listStatus = await getStatusInvestasi();
+  // const listStatus = await getStatusInvestasi();
   // const dataPortofolio = await investasi_funGetPortofolioByStatusId({
   //   page: 1,
   //   statusId: statusId,
@@ -17,7 +15,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         listStatus={listStatus as any}
         dataPortofolio={dataPortofolio as any}
       /> */}
-      <Investasi_UiPortofolioNew listStatus={listStatus as any} />
+      <Investasi_UiPortofolioNew />
     </>
   );
 }

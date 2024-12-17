@@ -5,5 +5,6 @@ export interface IDataAllDonasi {
    publishTime: Date
    progres: string
    terkumpul: string
+   target: string
    nameDonasiDurasi: string
 }
