@@ -17,6 +17,7 @@ import BodyHome from "./component/body_home";
 import FooterHome from "./component/footer_home";
 import { apiGetDataHome } from "./fun/get/api_home";
 import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
+import { gs_notifikasi_kategori_app } from "../notifikasi/lib";
 
 export default function HomeViewNew({
   countNotifikasi,
@@ -27,6 +28,7 @@ export default function HomeViewNew({
   const [newUserNtf, setNewUserNtf] = useAtom(gs_user_ntf);
   const [countLoadNtf, setCountLoadNtf] = useAtom(gs_count_ntf);
   const [dataUser, setDataUser] = useState<any>({});
+  const [categoryPage, setCategoryPage] = useAtom(gs_notifikasi_kategori_app);
   const router = useRouter();
 
   useShallowEffect(() => {
@@ -98,12 +100,14 @@ export default function HomeViewNew({
                   ) {
                     router.push(RouterProfile.create, { scroll: false });
                   } else {
+                    setCategoryPage("Semua")
                     router.push(
                       RouterNotifikasi.categoryApp({ name: "semua" }),
                       {
                         scroll: false,
                       }
                     );
+
                   }
                 }}
               >

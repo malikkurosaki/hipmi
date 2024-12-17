@@ -3,12 +3,12 @@
 import { RouterNotifikasi } from "@/app/lib/router_hipmi/router_notifikasi";
 import { MainColor } from "@/app_modules/_global/color/color_pallet";
 import {
-    BackgroundImage,
-    Box,
-    Button,
-    Container,
-    Flex,
-    rem,
+  BackgroundImage,
+  Box,
+  Button,
+  Container,
+  Flex,
+  rem,
 } from "@mantine/core";
 import { useAtom } from "jotai";
 import _ from "lodash";
@@ -108,9 +108,7 @@ function UIChildren({
                 style={{
                   transition: "0.3s",
                   backgroundColor:
-                    categoryPage === e.name
-                      ? MainColor.yellow
-                      : "GrayText",
+                    categoryPage === e.name ? MainColor.yellow : "GrayText",
                 }}
                 onClick={() => {
                   router.replace(
@@ -120,7 +118,6 @@ function UIChildren({
                     }
                   );
                   setCategoryPage(e.name);
-                  // onLoadDataNotifikasi(e.name);
                 }}
               >
                 {e.name}
