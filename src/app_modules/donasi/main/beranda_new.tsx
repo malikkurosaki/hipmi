@@ -37,7 +37,7 @@ export default function MainDonasiNew() {
    async function onLoadData({ onPublish }: { onPublish: (val: any) => void }) {
       setIsLoading(true);
       const loadData = await apiGetAllDonasi(`?cat=beranda&page=1`)
-      onPublish(loadData);
+      onPublish(loadData.data)
 
       setIsShowUpdate(false);
       setIsTriggerDonasiBeranda(false);
