@@ -8,3 +8,16 @@ export interface IDataAllDonasi {
    target: string
    nameDonasiDurasi: string
 }
+
+export interface IDataAllDonasiSaya {
+   id: string
+   nominal: string
+   donasiMaster_StatusInvoiceId: string
+   nameStatusInvoice: string
+   donasiId: string
+   title: string
+   publishTime: Date
+   progres: string
+   imageId: string
+   durasiDonasi: string
+}
