@@ -1,17 +1,12 @@
 "use client";
 
+import { API_RouteNotifikasi } from "@/app/lib/api_user_router/route_api_notifikasi";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import ComponentGlobal_Loader from "@/app_modules/_global/component/loader";
-import {
-  Box,
-  Center,
-  Divider,
-  Grid,
-  Group,
-  Loader,
-  Skeleton,
-  Stack,
-} from "@mantine/core";
+import { clientLogger } from "@/util/clientLogger";
+import { Box, Center } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
+import { useAtom } from "jotai";
 import _ from "lodash";
 import { ScrollOnly } from "next-scroll-loader";
 import { useState } from "react";
@@ -19,15 +14,11 @@ import {
   ComponentNotifiaksi_CardView,
   Notifikasi_ComponentSkeletonView,
 } from "../component";
-import notifikasi_getByUserId from "../fun/get/get_notifiaksi_by_id";
-import { ICategoryapp, MODEL_NOTIFIKASI } from "../model/interface";
-import { useAtom } from "jotai";
 import { gs_notifikasi_kategori_app } from "../lib";
-import { useShallowEffect } from "@mantine/hooks";
-import { API_RouteNotifikasi } from "@/app/lib/api_user_router/route_api_notifikasi";
-import { ComponentGlobal_CardStyles } from "@/app_modules/_global/component";
+import { apiGetAllNotifikasiByCategory } from "../lib/api_notifikasi";
+import { MODEL_NOTIFIKASI } from "../model/interface";
 
-export default function Notifikasi_UiAll() {
+export default function Notifikasi_UiMain() {
   const [data, setData] = useState<MODEL_NOTIFIKASI[] | null>(null);
   const [activePage, setActivePage] = useState(1);
   const [categoryPage, setCategoryPage] = useAtom(gs_notifikasi_kategori_app);
@@ -37,14 +28,18 @@ export default function Notifikasi_UiAll() {
   }, []);
 
   async function onLoadData() {
-    const loadData = await fetch(
-      API_RouteNotifikasi.get_all_by_category({
+    try {
+      const respon = await apiGetAllNotifikasiByCategory({
         category: categoryPage as any,
         page: 1,
-      })
-    );
-    const data = await loadData.json().then((res) => res.data as any);
-    setData(data);
+      });
+
+      if (respon.success) {
+        setData(respon.data);
+      }
+    } catch (error) {
+      clientLogger.error("Error get notifikasi", error);
+    }
   }
 
   return (
@@ -65,16 +60,19 @@ export default function Notifikasi_UiAll() {
             data={data}
             setData={setData as any}
             moreData={async () => {
-              const loadData = await fetch(
-                API_RouteNotifikasi.get_all_by_category({
+              try {
+                const respon = await apiGetAllNotifikasiByCategory({
                   category: categoryPage as any,
                   page: activePage + 1,
-                })
-              );
-              const data = await loadData.json().then((res) => res.data as any);
+                });
 
-              setActivePage((val) => val + 1);
-              return data;
+                if (respon.success) {
+                  setActivePage((val) => val + 1);
+                  return respon.data;
+                }
+              } catch (error) {
+                clientLogger.error("Error get notifikasi", error);
+              }
             }}
           >
             {(item) => (
