@@ -1,11 +1,9 @@
-import { Notifikasi_UiEvent } from "@/app_modules/notifikasi/_ui";
+import Notifikasi_UiMain from "@/app_modules/notifikasi/_ui/ui_notifikasi";
 
 export default async function Page() {
-  // 
-
   return (
     <>
-      <Notifikasi_UiEvent />
+      <Notifikasi_UiMain />
     </>
   );
 }

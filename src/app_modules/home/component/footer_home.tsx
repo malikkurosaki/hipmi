@@ -57,6 +57,11 @@ export default function FooterHome() {
                   dataUser.profile === undefined ||
                   dataUser?.profile === null
                 ) {
+                  return null;
+                } else if (
+                  dataUser.profile === undefined ||
+                  dataUser?.profile === null
+                ) {
                   router.push(RouterProfile.create, { scroll: false });
                 } else {
                   if (e.link == "") {

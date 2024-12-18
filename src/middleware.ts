@@ -19,6 +19,7 @@ const middlewareConfig: MiddlewareConfig = {
   userPath: "/dev/home",
   publicRoutes: [
     "/",
+    "/api/collaboration/*",
     "/api/notifikasi/*",
     "/api/logs/*",
     "/api/image/*",

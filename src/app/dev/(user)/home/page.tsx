@@ -15,7 +15,7 @@ export default async function PageHome() {
         dataJob={dataJob as any}
         countNotifikasi={countNotifikasi}
       /> */}
-      <HomeViewNew countNotifikasi={countNotifikasi} />
+      <HomeViewNew countNotifikasi={countNotifikasi}/>
     </>
   );
 }

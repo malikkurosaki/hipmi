@@ -1,3 +1,4 @@
+import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 import { AccentColor, MainColor } from "@/app_modules/_global/color";
 import ComponentGlobal_IsEmptyData from "@/app_modules/_global/component/is_empty_data";
 import { ComponentGlobal_NotifikasiPeringatan } from "@/app_modules/_global/notif_global";
@@ -19,7 +20,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { apiGetDataHome } from "../fun/get/api_home";
 import { listMenuHomeBody, menuHomeJob } from "./list_menu_home";
-import { RouterProfile } from "@/app/lib/router_hipmi/router_katalog";
 
 export default function BodyHome() {
   const router = useRouter();
@@ -83,12 +83,19 @@ export default function BodyHome() {
               }}
               onClick={() => {
                 if (
-                  dataUser.profile === undefined ||
-                  dataUser?.profile === null
+                  dataUser.profile == undefined ||
+                  dataUser?.profile == null ||
+                  dataJob.length == undefined ||
+                  dataJob.length == null
+                ) {
+                  return null;
+                } else if (
+                  dataUser.profile == undefined ||
+                  dataUser?.profile == null
                 ) {
                   router.push(RouterProfile.create, { scroll: false });
                 } else {
-                  if (e.link === "") {
+                  if (e.link == "") {
                     return ComponentGlobal_NotifikasiPeringatan(
                       "Cooming Soon !!"
                     );
@@ -102,11 +109,11 @@ export default function BodyHome() {
                 <ActionIcon
                   size={50}
                   variant="transparent"
-                  c={e.link === "" ? "gray.3" : "white"}
+                  c={e.link == "" ? "gray.3" : "white"}
                 >
                   {e.icon}
                 </ActionIcon>
-                <Text c={e.link === "" ? "gray.3" : "white"} fz={"xs"}>
+                <Text c={e.link == "" ? "gray.3" : "white"} fz={"xs"}>
                   {e.name}
                 </Text>
               </Stack>
@@ -127,12 +134,19 @@ export default function BodyHome() {
           <Stack
             onClick={() => {
               if (
-                dataUser.profile === undefined ||
-                dataUser?.profile === null
+                dataUser.profile == undefined ||
+                dataUser?.profile == null ||
+                dataJob.length == undefined ||
+                dataJob.length == null
+              ) {
+                return null;
+              } else if (
+                dataUser.profile == undefined ||
+                dataUser?.profile == null
               ) {
                 router.push(RouterProfile.create, { scroll: false });
               } else {
-                if (menuHomeJob.link === "") {
+                if (menuHomeJob.link == "") {
                   return ComponentGlobal_NotifikasiPeringatan(
                     "Cooming Soon !!"
                   );
@@ -146,11 +160,11 @@ export default function BodyHome() {
               <ActionIcon
                 variant="transparent"
                 size={40}
-                c={menuHomeJob.link === "" ? "gray.3" : "white"}
+                c={menuHomeJob.link == "" ? "gray.3" : "white"}
               >
                 {menuHomeJob.icon}
               </ActionIcon>
-              <Text c={menuHomeJob.link === "" ? "gray.3" : "white"}>
+              <Text c={menuHomeJob.link == "" ? "gray.3" : "white"}>
                 {menuHomeJob.name}
               </Text>
             </Group>
