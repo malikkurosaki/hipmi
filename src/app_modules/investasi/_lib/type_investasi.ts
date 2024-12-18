@@ -24,3 +24,14 @@ export interface IDataInvestasiBursa {
    pencarianInvestor: string
    updatedAt: Date
 }
+
+export interface IDataSahamSaya {
+   id: string
+   nominal: string
+   lembarTerbeli: string
+   statusInvoiceId: string
+   createdAt: Date
+   statusInvoice: string
+   title: string
+   progress: string
+}
